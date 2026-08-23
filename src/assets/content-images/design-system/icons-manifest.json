@@ -18,7 +18,8 @@
 				"mn47",
 				"mn138",
 				"mn140",
-				"mn148"
+				"mn148",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -43,7 +44,8 @@
 				"mn95",
 				"mn138",
 				"mn140",
-				"mn148"
+				"mn148",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -64,7 +66,8 @@
 				"mn18",
 				"mn138",
 				"mn140",
-				"mn148"
+				"mn148",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -89,7 +92,8 @@
 				"mn138",
 				"mn140",
 				"mn148",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -981,6 +985,7 @@
 				"mn10",
 				"mn43",
 				"mn148",
+				"dn22",
 				"sn46.2",
 				"an10.60"
 			],
@@ -1005,7 +1010,8 @@
 				"mn118",
 				"mn9",
 				"mn10",
-				"mn43"
+				"mn43",
+				"dn22"
 			],
 			"labels": [
 				"mindfulness",
@@ -1230,7 +1236,8 @@
 			"discourse": [
 				"mn118",
 				"mn9",
-				"mn10"
+				"mn10",
+				"dn22"
 			],
 			"labels": [
 				"mindfulness",
@@ -1251,7 +1258,8 @@
 			"discourse": [
 				"mn118",
 				"mn10",
-				"mn110"
+				"mn110",
+				"dn22"
 			],
 			"labels": [
 				"mindfulness",
@@ -1272,6 +1280,7 @@
 			"discourse": [
 				"mn118",
 				"mn10",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1292,6 +1301,7 @@
 			"discourse": [
 				"mn118",
 				"mn10",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1313,6 +1323,7 @@
 			"discourse": [
 				"mn118",
 				"mn10",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1334,6 +1345,7 @@
 				"mn118",
 				"mn6",
 				"mn10",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1356,6 +1368,7 @@
 				"mn10",
 				"mn111",
 				"dn9",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1376,6 +1389,7 @@
 			"discourse": [
 				"mn118",
 				"mn10",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -1397,6 +1411,7 @@
 			"discourse": [
 				"mn119",
 				"mn10",
+				"dn22",
 				"an10.60"
 			],
 			"labels": [
@@ -1418,7 +1433,8 @@
 			"discourse": [
 				"mn119",
 				"mn10",
-				"mn20"
+				"mn20",
+				"dn22"
 			],
 			"labels": [
 				"mindfulness",
@@ -1438,7 +1454,8 @@
 				"mn39",
 				"mn9",
 				"mn10",
-				"mn119"
+				"mn119",
+				"dn22"
 			],
 			"labels": [
 				"clear awareness",
@@ -1458,6 +1475,7 @@
 			"discourse": [
 				"mn119",
 				"mn10",
+				"dn22",
 				"an10.60"
 			],
 			"labels": [
@@ -1477,7 +1495,8 @@
 				"mn119",
 				"mn10",
 				"mn106",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"elements",
@@ -1497,7 +1516,8 @@
 			"discourse": [
 				"mn119",
 				"mn9",
-				"mn10"
+				"mn10",
+				"dn22"
 			],
 			"labels": [
 				"mindfulness",
@@ -1524,7 +1544,8 @@
 				"mn111",
 				"mn119",
 				"mn138",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"awakening",
@@ -1552,7 +1573,8 @@
 				"mn111",
 				"mn119",
 				"mn138",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"awakening",
@@ -1580,7 +1602,8 @@
 				"mn111",
 				"mn119",
 				"mn138",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"awakening",
@@ -1612,7 +1635,8 @@
 				"mn111",
 				"mn119",
 				"mn138",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"awakening",
@@ -2307,7 +2331,8 @@
 				"mn18",
 				"mn43",
 				"mn138",
-				"mn140"
+				"mn140",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -2329,7 +2354,8 @@
 				"mn18",
 				"mn43",
 				"mn138",
-				"mn140"
+				"mn140",
+				"dn22"
 			],
 			"labels": [
 				"phenomena",
@@ -2415,6 +2441,7 @@
 				"mn10",
 				"mn43",
 				"dn9",
+				"dn22",
 				"sn46.2"
 			],
 			"labels": [
@@ -2435,7 +2462,8 @@
 			],
 			"discourse": [
 				"mn10",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"five hindrances",
@@ -3188,7 +3216,8 @@
 			"discourse": [
 				"mn77",
 				"mn43",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"insight",
@@ -3208,7 +3237,8 @@
 			"discourse": [
 				"mn9",
 				"mn77",
-				"dn9"
+				"dn9",
+				"dn22"
 			],
 			"labels": [
 				"collectedness",
@@ -3226,7 +3256,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"dn22"
+			],
 			"labels": [
 				"diligence",
 				"effort",

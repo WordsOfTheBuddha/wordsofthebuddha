@@ -168,7 +168,7 @@ const icons: IconEntry[] = [
 		id: "seen",
 		title: "Sense: seen",
 		description: "Eye motif for diṭṭha",
-		discourse: ["mn1", "mn47", "mn148", "mn10", "mn18", "mn140", "mn138", "mn43"],
+		discourse: ["mn1", "mn47", "mn148", "mn10", "mn18", "mn140", "mn138", "mn43", "dn22"],
 		tags: ["gold", "line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -176,7 +176,7 @@ const icons: IconEntry[] = [
 		id: "heard",
 		title: "Sense: heard",
 		description: "Ear motif for suta",
-		discourse: ["mn1", "mn47", "mn148", "mn10", "mn18", "mn95", "mn140", "mn138", "mn43"],
+		discourse: ["mn1", "mn47", "mn148", "mn10", "mn18", "mn95", "mn140", "mn138", "mn43", "dn22"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -184,7 +184,7 @@ const icons: IconEntry[] = [
 		id: "sensed",
 		title: "Sense: sensed",
 		description: "Touch/nose motif for muta",
-		discourse: ["mn1", "mn148", "mn18", "mn140", "mn138"],
+		discourse: ["mn1", "mn148", "mn18", "mn140", "mn138", "dn22"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -192,7 +192,7 @@ const icons: IconEntry[] = [
 		id: "cognized",
 		title: "Sense: cognized",
 		description: "Mind/consciousness motif for viññāta",
-		discourse: ["mn1", "mn9", "mn148", "mn10", "mn18", "mn140", "mn138", "mn43", "dn9"],
+		discourse: ["mn1", "mn9", "mn148", "mn10", "mn18", "mn140", "mn138", "mn43", "dn9", "dn22"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -602,7 +602,7 @@ const icons: IconEntry[] = [
 		id: "body-observer",
 		title: "Body contemplation",
 		description: "Small seated figure — kāyānupassī",
-		discourse: ["mn118", "mn148", "mn10", "an10.60", "mn43", "sn46.2"],
+		discourse: ["mn118", "mn148", "mn10", "an10.60", "mn43", "sn46.2", "dn22"],
 		tags: ["line-art", "figure", "body"],
 		themes: ["mindfulness", "sense bases", "sense restraint", "wholesome"],
 	},
@@ -610,7 +610,7 @@ const icons: IconEntry[] = [
 		id: "feeling-droplet",
 		title: "Feeling contemplation",
 		description: "Droplet or flame — vedanānupassī",
-		discourse: ["mn118", "mn9", "mn10", "mn43"],
+		discourse: ["mn118", "mn9", "mn10", "mn43", "dn22"],
 		tags: ["line-art", "feeling"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -738,7 +738,7 @@ const icons: IconEntry[] = [
 		title: "Mind contemplation",
 		description:
 			"Concentric circles — citte cittānupassī; reused for mental intention nutriment (manosañcetanā)",
-		discourse: ["mn118", "mn9", "mn10"],
+		discourse: ["mn118", "mn9", "mn10", "dn22"],
 		tags: ["line-art", "mind"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -747,7 +747,7 @@ const icons: IconEntry[] = [
 		title: "Mental qualities",
 		description:
 			"dhammesu dhammānupassī",
-		discourse: ["mn118", "mn10", "mn110"],
+		discourse: ["mn118", "mn10", "mn110", "dn22"],
 		tags: ["line-art", "dhamma"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -756,7 +756,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: investigation of states",
 		description:
 			"dhammavicayasambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "sn46.2"],
+		discourse: ["mn118", "mn10", "sn46.2", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "wisdom"]
 	},
@@ -765,7 +765,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: energy",
 		description:
 			"vīriyasambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "sn46.2"],
+		discourse: ["mn118", "mn10", "sn46.2", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "diligence", "effort"]
 	},
@@ -774,7 +774,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: joy",
 		description:
 			"pītisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "sn46.2"],
+		discourse: ["mn118", "mn10", "sn46.2", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -783,7 +783,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: tranquility",
 		description:
 			"passaddhisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "mn6", "sn46.2"],
+		discourse: ["mn118", "mn10", "mn6", "sn46.2", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -792,7 +792,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: collectedness",
 		description:
 			"samādhisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "mn111", "sn46.2", "dn9"],
+		discourse: ["mn118", "mn10", "mn111", "sn46.2", "dn9", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -801,7 +801,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: equanimity",
 		description:
 			"upekkhāsambojjhaṅgo glyph",
-		discourse: ["mn118", "mn10", "sn46.2"],
+		discourse: ["mn118", "mn10", "sn46.2", "dn22"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "equanimity"]
 	},
@@ -811,7 +811,7 @@ const icons: IconEntry[] = [
 		title: "Mindfulness of breathing (torso icon)",
 		description:
 			"Breath and torso line-art",
-		discourse: ["mn119", "mn10", "an10.60"],
+		discourse: ["mn119", "mn10", "an10.60", "dn22"],
 		tags: ["line-art", "breath", "body"],
 		themes: ["mindfulness", "awakening", "clear awareness"],
 	},
@@ -820,7 +820,7 @@ const icons: IconEntry[] = [
 		title: "Four postures",
 		description:
 			"Four postures: walk → stand → sit → lie",
-		discourse: ["mn119", "mn20", "mn10"],
+		discourse: ["mn119", "mn20", "mn10", "dn22"],
 		tags: ["line-art", "figure"],
 		themes: ["skillful means", "mindfulness"],
 	},
@@ -829,7 +829,7 @@ const icons: IconEntry[] = [
 		title: "Clear awareness — four sense domains",
 		description:
 			"2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī; reused for six sense bases (saḷāyatana)",
-		discourse: ["mn39", "mn119", "mn10", "mn9"],
+		discourse: ["mn39", "mn119", "mn10", "mn9", "dn22"],
 		tags: ["line-art"],
 		themes: ["clear awareness", "mindfulness"],
 	},
@@ -838,7 +838,7 @@ const icons: IconEntry[] = [
 		title: "Body impurities review",
 		description:
 			"Asuci paccavekkhana motif, kāyānupassanā",
-		discourse: ["mn119", "mn10", "an10.60"],
+		discourse: ["mn119", "mn10", "an10.60", "dn22"],
 		tags: ["line-art", "body"],
 		themes: ["mindfulness"],
 	},
@@ -847,7 +847,7 @@ const icons: IconEntry[] = [
 		title: "Four elements in the body",
 		description:
 			"Earth, water, fire, wind motifs",
-		discourse: ["mn119", "mn10", "mn106", "dn9"],
+		discourse: ["mn119", "mn10", "mn106", "dn9", "dn22"],
 		tags: ["line-art"],
 		themes: ["elements", "mindfulness"],
 	},
@@ -856,7 +856,7 @@ const icons: IconEntry[] = [
 		title: "Nine charnel grounds",
 		description:
 			"Skull and bones — sivathikā",
-		discourse: ["mn119", "mn9", "mn10"],
+		discourse: ["mn119", "mn9", "mn10", "dn22"],
 		tags: ["line-art", "death"],
 		themes: ["mindfulness", "wholesome"],
 	},
@@ -864,7 +864,7 @@ const icons: IconEntry[] = [
 		id: "jhana-first",
 		title: "First jhāna simile",
 		description: "Kneading bath with bubbles — jhāna band",
-		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "mn43", "dn9"],
+		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "mn43", "dn9", "dn22"],
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
@@ -872,7 +872,7 @@ const icons: IconEntry[] = [
 		id: "jhana-second",
 		title: "Second jhāna simile",
 		description: "Lake and spring — jhāna band",
-		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "dn9"],
+		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "dn9", "dn22"],
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
@@ -880,7 +880,7 @@ const icons: IconEntry[] = [
 		id: "jhana-third",
 		title: "Third jhāna simile",
 		description: "Submerged lotus — jhāna band",
-		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "dn9"],
+		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "dn9", "dn22"],
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm", "mindfulness", "equanimity"]
 	},
@@ -888,7 +888,7 @@ const icons: IconEntry[] = [
 		id: "jhana-fourth",
 		title: "Fourth jhāna simile",
 		description: "Bright orb — jhāna band",
-		discourse: ["mn39", "mn119", "mn106", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "mn43", "dn9"],
+		discourse: ["mn39", "mn119", "mn106", "mn25", "mn6", "mn111", "mn77", "mn19", "mn138", "mn43", "dn9", "dn22"],
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "direct knowledge", "awakening", "renunciation", "non-harm", "clear awareness", "mindfulness", "equanimity", "dispassion"]
 	},
@@ -1195,7 +1195,7 @@ const icons: IconEntry[] = [
 		title: "Internal sense base: nose",
 		description:
 			"Nose outline — ghāna",
-		discourse: ["mn148", "mn10", "mn18", "mn140", "mn138", "mn43"],
+		discourse: ["mn148", "mn10", "mn18", "mn140", "mn138", "mn43", "dn22"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -1204,7 +1204,7 @@ const icons: IconEntry[] = [
 		title: "Internal sense base: tongue",
 		description:
 			"Tongue outline — jivhā",
-		discourse: ["mn148", "mn10", "mn18", "mn140", "mn138", "mn43"],
+		discourse: ["mn148", "mn10", "mn18", "mn140", "mn138", "mn43", "dn22"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -1246,7 +1246,7 @@ const icons: IconEntry[] = [
 		id: "hindrance-dullness",
 		title: "Hindrance: dullness and drowsiness",
 		description: "Thinamiddha motif — cloud and drooping line.",
-		discourse: ["mn10", "mn43", "sn46.2", "dn9"],
+		discourse: ["mn10", "mn43", "sn46.2", "dn9", "dn22"],
 		tags: ["line-art", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
@@ -1254,7 +1254,7 @@ const icons: IconEntry[] = [
 		id: "hindrance-doubt",
 		title: "Hindrance: doubt",
 		description: "Vicikicchā motif — question-mark curve.",
-		discourse: ["mn10", "dn9"],
+		discourse: ["mn10", "dn9", "dn22"],
 		tags: ["line-art", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
@@ -1572,7 +1572,7 @@ const icons: IconEntry[] = [
 		id: "four-noble-truths",
 		title: "The Four Noble Truths",
 		description: "Quartered disc — cattāri ariyasaccāni",
-		discourse: ["mn77", "mn43", "dn9"],
+		discourse: ["mn77", "mn43", "dn9", "dn22"],
 		tags: ["line-art"],
 		labels: ["wisdom", "insight"],
 	},
@@ -1580,7 +1580,7 @@ const icons: IconEntry[] = [
 		id: "eightfold-path-wheel",
 		title: "Noble Eightfold Path",
 		description: "Eight-spoked wheel — ariya aṭṭhaṅgika magga",
-		discourse: ["mn9", "mn77", "dn9"],
+		discourse: ["mn9", "mn77", "dn9", "dn22"],
 		tags: ["line-art", "gold"],
 		labels: ["path", "ethical conduct", "collectedness", "wisdom"],
 	},
@@ -1588,7 +1588,7 @@ const icons: IconEntry[] = [
 		id: "four-right-efforts",
 		title: "Four right efforts",
 		description: "Four striving flags — cattāro sammappadhānā",
-		discourse: "mn77",
+		discourse: ["mn77", "dn22"],
 		tags: ["line-art"],
 		labels: ["effort", "diligence", "wholesome"],
 	},

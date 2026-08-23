@@ -4,10 +4,10 @@ Generated from `icons-manifest.json` (version 1).
 
 | id | title | discourse | labels | tags | svg |
 |----|-------|-----------|--------|------|-----|
-| seen | Sense: seen | mn1, mn10, mn18, mn43, mn47, mn138, mn140, mn148 | phenomena, sense bases | gold, line-art, sense | `icons/seen.svg` |
-| heard | Sense: heard | mn1, mn10, mn18, mn43, mn47, mn95, mn138, mn140, mn148 | phenomena, sense bases | line-art, sense | `icons/heard.svg` |
-| sensed | Sense: sensed | mn1, mn18, mn138, mn140, mn148 | phenomena, sense bases | line-art, sense | `icons/sensed.svg` |
-| cognized | Sense: cognized | mn1, mn9, mn10, mn18, mn43, mn138, mn140, mn148, dn9 | phenomena, sense bases | line-art, sense | `icons/cognized.svg` |
+| seen | Sense: seen | mn1, mn10, mn18, mn43, mn47, mn138, mn140, mn148, dn22 | phenomena, sense bases | gold, line-art, sense | `icons/seen.svg` |
+| heard | Sense: heard | mn1, mn10, mn18, mn43, mn47, mn95, mn138, mn140, mn148, dn22 | phenomena, sense bases | line-art, sense | `icons/heard.svg` |
+| sensed | Sense: sensed | mn1, mn18, mn138, mn140, mn148, dn22 | phenomena, sense bases | line-art, sense | `icons/sensed.svg` |
+| cognized | Sense: cognized | mn1, mn9, mn10, mn18, mn43, mn138, mn140, mn148, dn9, dn22 | phenomena, sense bases | line-art, sense | `icons/cognized.svg` |
 | puthujjana-header | Uninstructed ordinary person | mn1, mn29, mn30, mn110, mn113, mn138, mn148 | path, phenomena, unprincipled conduct | burgundy, line-art | `icons/puthujjana-header.svg` |
 | ariya-header | Noble disciple | mn1, mn29, mn30, mn110, mn113, mn138, mn148 | path, person of integrity, phenomena | teal, line-art | `icons/ariya-header.svg` |
 | earth | Earth element | mn1, mn77, mn140 | elements, phenomena | line-art, elements | `icons/earth.svg` |
@@ -58,8 +58,8 @@ Generated from `icons-manifest.json` (version 1).
 | wish-requisite-bowl | Requisite: alms bowl | mn5 | unwholesome | line-art, wish, bowl | `icons/wish-requisite-bowl.svg` |
 | wish-requisite-lodging | Requisite: lodging | mn5 | unwholesome | line-art, wish | `icons/wish-requisite-lodging.svg` |
 | wish-requisite-medicine | Requisite: medicine | mn5 | unwholesome | line-art, wish | `icons/wish-requisite-medicine.svg` |
-| body-observer | Body contemplation | mn118, mn10, mn43, mn148, sn46.2, an10.60 | mindfulness, sense bases, sense restraint, wholesome | line-art, figure, body | `icons/body-observer.svg` |
-| feeling-droplet | Feeling contemplation | mn118, mn9, mn10, mn43 | mindfulness, sense restraint, wholesome | line-art, feeling | `icons/feeling-droplet.svg` |
+| body-observer | Body contemplation | mn118, mn10, mn43, mn148, dn22, sn46.2, an10.60 | mindfulness, sense bases, sense restraint, wholesome | line-art, figure, body | `icons/body-observer.svg` |
+| feeling-droplet | Feeling contemplation | mn118, mn9, mn10, mn43, dn22 | mindfulness, sense restraint, wholesome | line-art, feeling | `icons/feeling-droplet.svg` |
 | elbow-bracket | Elbow bracket | mn118 |  | line-art, connector | `icons/elbow-bracket.svg` |
 | number-badge-r10 | Number badge (r=10) | mn118 |  | badge, number | `icons/number-badge-r10.svg` |
 | number-badge-02 | Step badge: 2 | mn118 |  | badge, number | `icons/number-badge-02.svg` |
@@ -77,24 +77,24 @@ Generated from `icons-manifest.json` (version 1).
 | number-badge-14 | Step badge: 14 | mn118 |  | badge, number | `icons/number-badge-14.svg` |
 | number-badge-15 | Step badge: 15 | mn118 |  | badge, number | `icons/number-badge-15.svg` |
 | number-badge-16 | Step badge: 16 | mn118 |  | badge, number | `icons/number-badge-16.svg` |
-| mind-contemplation | Mind contemplation | mn118, mn9, mn10 | mindfulness, sense restraint, wholesome | line-art, mind | `icons/mind-contemplation.svg` |
-| mental-qualities | Mental qualities | mn118, mn10, mn110 | mindfulness, sense restraint, wholesome | line-art, dhamma | `icons/mental-qualities.svg` |
-| bojjhanga-investigation | Bojjhaṅga: investigation of states | mn118, mn10, sn46.2 | awakening, wisdom | line-art, bojjhanga | `icons/bojjhanga-investigation.svg` |
-| bojjhanga-energy | Bojjhaṅga: energy | mn118, mn10, sn46.2 | awakening, diligence, effort | line-art, bojjhanga | `icons/bojjhanga-energy.svg` |
-| bojjhanga-joy | Bojjhaṅga: joy | mn118, mn10, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-joy.svg` |
-| bojjhanga-tranquility | Bojjhaṅga: tranquility | mn118, mn6, mn10, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-tranquility.svg` |
-| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10, mn111, dn9, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
-| bojjhanga-equanimity | Bojjhaṅga: equanimity | mn118, mn10, sn46.2 | awakening, equanimity | line-art, bojjhanga | `icons/bojjhanga-equanimity.svg` |
-| breath-torso | Mindfulness of breathing (torso icon) | mn119, mn10, an10.60 | awakening, clear awareness, mindfulness | line-art, breath, body | `icons/breath-torso.svg` |
-| shared-postures-four | Four postures | mn119, mn10, mn20 | mindfulness, skillful means | line-art, figure | `icons/shared-postures-four.svg` |
-| clear-awareness-fourfold | Clear awareness — four sense domains | mn39, mn9, mn10, mn119 | clear awareness, mindfulness | line-art | `icons/clear-awareness-fourfold.svg` |
-| body-impurities | Body impurities review | mn119, mn10, an10.60 | mindfulness | line-art, body | `icons/body-impurities.svg` |
-| four-elements | Four elements in the body | mn119, mn10, mn106, dn9 | elements, mindfulness | line-art | `icons/four-elements.svg` |
-| charnel-skull | Nine charnel grounds | mn119, mn9, mn10 | mindfulness, wholesome | line-art, death | `icons/charnel-skull.svg` |
-| jhana-first | First jhāna simile | mn39, mn6, mn19, mn25, mn43, mn77, mn111, mn119, mn138, dn9 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-first.svg` |
-| jhana-second | Second jhāna simile | mn39, mn6, mn19, mn25, mn77, mn111, mn119, mn138, dn9 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-second.svg` |
-| jhana-third | Third jhāna simile | mn39, mn6, mn19, mn25, mn77, mn111, mn119, mn138, dn9 | awakening, collectedness, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-third.svg` |
-| jhana-fourth | Fourth jhāna simile | mn39, mn6, mn19, mn25, mn43, mn77, mn106, mn111, mn119, mn138, dn9 | awakening, clear awareness, collectedness, direct knowledge, dispassion, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-fourth.svg` |
+| mind-contemplation | Mind contemplation | mn118, mn9, mn10, dn22 | mindfulness, sense restraint, wholesome | line-art, mind | `icons/mind-contemplation.svg` |
+| mental-qualities | Mental qualities | mn118, mn10, mn110, dn22 | mindfulness, sense restraint, wholesome | line-art, dhamma | `icons/mental-qualities.svg` |
+| bojjhanga-investigation | Bojjhaṅga: investigation of states | mn118, mn10, dn22, sn46.2 | awakening, wisdom | line-art, bojjhanga | `icons/bojjhanga-investigation.svg` |
+| bojjhanga-energy | Bojjhaṅga: energy | mn118, mn10, dn22, sn46.2 | awakening, diligence, effort | line-art, bojjhanga | `icons/bojjhanga-energy.svg` |
+| bojjhanga-joy | Bojjhaṅga: joy | mn118, mn10, dn22, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-joy.svg` |
+| bojjhanga-tranquility | Bojjhaṅga: tranquility | mn118, mn6, mn10, dn22, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-tranquility.svg` |
+| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10, mn111, dn9, dn22, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
+| bojjhanga-equanimity | Bojjhaṅga: equanimity | mn118, mn10, dn22, sn46.2 | awakening, equanimity | line-art, bojjhanga | `icons/bojjhanga-equanimity.svg` |
+| breath-torso | Mindfulness of breathing (torso icon) | mn119, mn10, dn22, an10.60 | awakening, clear awareness, mindfulness | line-art, breath, body | `icons/breath-torso.svg` |
+| shared-postures-four | Four postures | mn119, mn10, mn20, dn22 | mindfulness, skillful means | line-art, figure | `icons/shared-postures-four.svg` |
+| clear-awareness-fourfold | Clear awareness — four sense domains | mn39, mn9, mn10, mn119, dn22 | clear awareness, mindfulness | line-art | `icons/clear-awareness-fourfold.svg` |
+| body-impurities | Body impurities review | mn119, mn10, dn22, an10.60 | mindfulness | line-art, body | `icons/body-impurities.svg` |
+| four-elements | Four elements in the body | mn119, mn10, mn106, dn9, dn22 | elements, mindfulness | line-art | `icons/four-elements.svg` |
+| charnel-skull | Nine charnel grounds | mn119, mn9, mn10, dn22 | mindfulness, wholesome | line-art, death | `icons/charnel-skull.svg` |
+| jhana-first | First jhāna simile | mn39, mn6, mn19, mn25, mn43, mn77, mn111, mn119, mn138, dn9, dn22 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-first.svg` |
+| jhana-second | Second jhāna simile | mn39, mn6, mn19, mn25, mn77, mn111, mn119, mn138, dn9, dn22 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-second.svg` |
+| jhana-third | Third jhāna simile | mn39, mn6, mn19, mn25, mn77, mn111, mn119, mn138, dn9, dn22 | awakening, collectedness, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-third.svg` |
+| jhana-fourth | Fourth jhāna simile | mn39, mn6, mn19, mn25, mn43, mn77, mn106, mn111, mn119, mn138, dn9, dn22 | awakening, clear awareness, collectedness, direct knowledge, dispassion, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-fourth.svg` |
 | simile-uncultivated-clay | Uncultivated: clay and rock | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-clay.svg` |
 | simile-uncultivated-wood | Uncultivated: dry wood | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-wood.svg` |
 | simile-uncultivated-jar | Uncultivated: empty jar | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-jar.svg` |
@@ -133,14 +133,14 @@ Generated from `icons-manifest.json` (version 1).
 | past-lives-eye | Recollection of past lives | mn39, mn6, mn19, mn53 | direct knowledge, insight, liberation, psychic power | line-art, sekha | `icons/past-lives-eye.svg` |
 | breakthrough-divine-eye | Divine eye | mn39, mn6, mn19, mn53, mn119 | direct knowledge, insight, liberation, psychic power | line-art, sekha | `icons/divine-eye.svg` |
 | broken-chain | breaking of fetters | mn2, mn43, mn53, mn119, mn138 | direct knowledge, ending, insight, liberation, psychic power | line-art, sekha | `icons/broken-chain.svg` |
-| sense-nose | Internal sense base: nose | mn148, mn10, mn18, mn43, mn138, mn140 | phenomena, sense bases | line-art, sense | `icons/sense-nose.svg` |
-| sense-tongue | Internal sense base: tongue | mn148, mn10, mn18, mn43, mn138, mn140 | phenomena, sense bases | line-art, sense | `icons/sense-tongue.svg` |
+| sense-nose | Internal sense base: nose | mn148, mn10, mn18, mn43, mn138, mn140, dn22 | phenomena, sense bases | line-art, sense | `icons/sense-nose.svg` |
+| sense-tongue | Internal sense base: tongue | mn148, mn10, mn18, mn43, mn138, mn140, dn22 | phenomena, sense bases | line-art, sense | `icons/sense-tongue.svg` |
 | simile-carpenter-pegs | Fine peg replaces coarse peg | mn20 | skillful means, wholesome | line-art, vitakka | `icons/simile-carpenter-pegs.svg` |
 | simile-carcass-necklace | Carcass hung around the neck | mn20 | dispassion, insight, skillful means | line-art, vitakka | `icons/simile-carcass-necklace.svg` |
 | simile-look-away | Closing the eyes / looking away | mn20 | sense restraint, skillful means | line-art, vitakka | `icons/simile-look-away.svg` |
 | simile-subdue-figures | Strong person subdues a weaker one | mn20 | effort, skillful means, wholesome | line-art, vitakka | `icons/simile-subdue-figures.svg` |
-| hindrance-dullness | Hindrance: dullness and drowsiness | mn10, mn43, dn9, sn46.2 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-dullness.svg` |
-| hindrance-doubt | Hindrance: doubt | mn10, dn9 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-doubt.svg` |
+| hindrance-dullness | Hindrance: dullness and drowsiness | mn10, mn43, dn9, dn22, sn46.2 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-dullness.svg` |
+| hindrance-doubt | Hindrance: doubt | mn10, dn9, dn22 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-doubt.svg` |
 | simile-debt | Simile: debt (craving) | mn39, mn16 | five hindrances, harm, unwholesome | line-art | `icons/simile-debt.svg` |
 | simile-debt-free | Simile: free from debt (craving abandoned) | mn39, mn16 | five hindrances, non harm, renunciation, wholesome | line-art | `icons/simile-debt-free.svg` |
 | simile-disease | Simile: disease (ill will) | mn39, an10.60 | five hindrances, harm, unwholesome | line-art | `icons/simile-disease.svg` |
@@ -179,9 +179,9 @@ Generated from `icons-manifest.json` (version 1).
 | untainted-lotus | Untainted lotus | mn47, mn19 | integrity, purity, renunciation | line-art | `icons/untainted-lotus.svg` |
 | honey-pure | Pure honey free of wax | mn77 | faith, simile | line-art, gold | `icons/honey-pure.svg` |
 | knowledge-vision | Knowledge and vision | mn77, mn43, mn95, mn110, mn140, dn9 | direct knowledge, insight, wisdom | line-art | `icons/knowledge-vision.svg` |
-| four-noble-truths | The Four Noble Truths | mn77, mn43, dn9 | insight, wisdom | line-art | `icons/four-noble-truths.svg` |
-| eightfold-path-wheel | Noble Eightfold Path | mn9, mn77, dn9 | collectedness, ethical conduct, path, wisdom | line-art, gold | `icons/eightfold-path-wheel.svg` |
-| four-right-efforts | Four right efforts | mn77 | diligence, effort, wholesome | line-art | `icons/four-right-efforts.svg` |
+| four-noble-truths | The Four Noble Truths | mn77, mn43, dn9, dn22 | insight, wisdom | line-art | `icons/four-noble-truths.svg` |
+| eightfold-path-wheel | Noble Eightfold Path | mn9, mn77, dn9, dn22 | collectedness, ethical conduct, path, wisdom | line-art, gold | `icons/eightfold-path-wheel.svg` |
+| four-right-efforts | Four right efforts | mn77, dn22 | diligence, effort, wholesome | line-art | `icons/four-right-efforts.svg` |
 | iddhipada-four | Four bases of psychic power | mn77, mn16 | collectedness, effort, psychic power | line-art | `icons/iddhipada-four.svg` |
 | five-faculties | Five spiritual faculties | mn77 | collectedness, effort, faith, mindfulness, wisdom | line-art | `icons/five-faculties.svg` |
 | beryl-gem-thread | Beryl gem strung on a thread | mn77 | direct knowledge, insight, simile | line-art | `icons/beryl-gem-thread.svg` |
