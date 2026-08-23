@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	DISCOURSE_TOC_MIN_HEADINGS,
+	TOC_ACTIVE_SLACK_PX,
 	headingLabel,
 	isNamedSectionHeading,
 	namedSectionHeadingsFromMarkdown,
 	pickActiveHeadingId,
+	scrollYToAlignHeading,
 	shouldShowDiscourseToc,
 	slugifyHeading,
 	tocBaseLevel,
@@ -89,11 +91,9 @@ verse
 		assert.equal(shouldShowDiscourseToc(markdown), false);
 	});
 
-	it("hides a ToC when there are fewer than three named sections", () => {
+	it("hides a ToC when there are fewer named sections than the minimum", () => {
 		const markdown = `
 ### Setting
-text
-### Preservation of Truth
 text
 `;
 		assert.equal(shouldShowDiscourseToc(markdown), false);
@@ -151,11 +151,50 @@ describe("pickActiveHeadingId", () => {
 		assert.equal(pickActiveHeadingId(headings, 900), "three");
 	});
 
-	it("uses the first heading before any title has reached the line", () => {
-		assert.equal(pickActiveHeadingId(headings, 0), "one");
+	it("highlights nothing before the first title has reached the line", () => {
+		assert.equal(pickActiveHeadingId(headings, 0), null);
+		assert.equal(pickActiveHeadingId(headings, 39), null);
+		assert.equal(
+			pickActiveHeadingId(
+				[
+					{ id: "one", top: 500 },
+					{ id: "two", top: 900 },
+				],
+				100,
+			),
+			null,
+		);
+	});
+
+	it("activates the first heading once it reaches the line", () => {
+		assert.equal(pickActiveHeadingId(headings, 40), "one");
+	});
+
+	it("counts a heading a few pixels below the line when slack is set", () => {
+		const landedShort = [
+			{ id: "one", top: 40 },
+			{ id: "two", top: 104 },
+		];
+		assert.equal(pickActiveHeadingId(landedShort, 100), "one");
+		assert.equal(
+			pickActiveHeadingId(landedShort, 100, TOC_ACTIVE_SLACK_PX),
+			"two",
+		);
 	});
 
 	it("returns null when there are no headings", () => {
 		assert.equal(pickActiveHeadingId([], 100), null);
+	});
+});
+
+describe("scrollYToAlignHeading", () => {
+	it("scrolls far enough that the heading is at or above the reading line", () => {
+		assert.equal(scrollYToAlignHeading(500, 0), 404);
+		assert.equal(scrollYToAlignHeading(500.4, 0), 405);
+		assert.equal(scrollYToAlignHeading(100, 0), 4);
+	});
+
+	it("does not scroll above the page top", () => {
+		assert.equal(scrollYToAlignHeading(50, 0), 0);
 	});
 });

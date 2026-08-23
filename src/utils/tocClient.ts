@@ -9,7 +9,7 @@
 
 import { slugify } from "./slugify";
 
-export const DISCOURSE_TOC_MIN_HEADINGS = 3;
+export const DISCOURSE_TOC_MIN_HEADINGS = 2;
 export const DISCOURSE_TOC_HEADING_SELECTOR = "h1, h2, h3, h4, h5";
 
 const LETTER_RE = /\p{L}/u;
@@ -120,27 +120,52 @@ function visibleHeadingForId(id: string): HTMLElement | null {
 export const TOC_SCROLL_OFFSET_PX = 100;
 
 /**
- * The current section is the last heading whose top has passed `anchorY`.
- * Until the next title reaches that line, the previous section stays active.
+ * Headings this far below the reading line still count as current.
+ * Smooth-scroll and subpixel rounding often land a few pixels short.
+ */
+export const TOC_ACTIVE_SLACK_PX = 8;
+
+/** Extra pixels past the reading line when jumping to a heading. */
+const TOC_SCROLL_NUDGE_PX = 4;
+
+/**
+ * The current section is the last heading whose top has passed `anchorY`
+ * (optionally plus `slackPx`). Until the next title reaches that line, the
+ * previous section stays active. If no title has reached the line yet —
+ * a prologue before the first section — there is no active item.
  */
 export function pickActiveHeadingId(
 	headings: ReadonlyArray<{ id: string; top: number }>,
 	anchorY: number,
+	slackPx: number = 0,
 ): string | null {
-	if (headings.length === 0) return null;
-	let activeId = headings[0].id;
+	let activeId: string | null = null;
 	for (const heading of headings) {
-		if (heading.top <= anchorY) activeId = heading.id;
+		if (heading.top <= anchorY + slackPx) activeId = heading.id;
 	}
 	return activeId;
+}
+
+export function scrollYToAlignHeading(
+	headingTop: number,
+	pageYOffset: number,
+): number {
+	return Math.max(
+		0,
+		Math.ceil(
+			headingTop + pageYOffset - TOC_SCROLL_OFFSET_PX + TOC_SCROLL_NUDGE_PX,
+		),
+	);
 }
 
 export function scrollToVisibleId(id: string): boolean {
 	const heading = visibleHeadingForId(id);
 	if (!heading) return false;
 	const rect = heading.getBoundingClientRect();
-	const top = Math.max(0, rect.top + window.pageYOffset - TOC_SCROLL_OFFSET_PX);
-	window.scrollTo({ top, behavior: "smooth" });
+	window.scrollTo({
+		top: scrollYToAlignHeading(rect.top, window.scrollY),
+		behavior: "smooth",
+	});
 	return true;
 }
 
@@ -260,6 +285,42 @@ export function attachTableOfContents(
 		document.querySelector(".toc-shell")?.classList.add("toc-reserve");
 	}
 
+	const navs = [nav, mobileNav];
+	let pinnedHeadingId: string | null = null;
+
+	function setActiveTocLink(headingId: string | null) {
+		const href = headingId ? `#${headingId}` : null;
+		for (const toc of navs) {
+			if (!toc) continue;
+			for (const link of toc.querySelectorAll("a")) {
+				link.classList.toggle(
+					"active",
+					href !== null && link.getAttribute("href") === href,
+				);
+			}
+		}
+	}
+
+	function updateActiveFromScroll() {
+		if (pinnedHeadingId) {
+			setActiveTocLink(pinnedHeadingId);
+			return;
+		}
+		const tops = [];
+		for (const heading of headings) {
+			const visible = visibleHeadingForId(heading.id);
+			if (!visible) continue;
+			tops.push({
+				id: heading.id,
+				top: visible.getBoundingClientRect().top,
+			});
+		}
+		if (tops.length === 0) return;
+		setActiveTocLink(
+			pickActiveHeadingId(tops, TOC_SCROLL_OFFSET_PX, TOC_ACTIVE_SLACK_PX),
+		);
+	}
+
 	function scrollToHeading(event: Event) {
 		const link = (event.target as HTMLElement | null)?.closest("a");
 		if (!link) return;
@@ -272,6 +333,13 @@ export function attachTableOfContents(
 			/* keep raw id */
 		}
 		event.preventDefault();
+		pinnedHeadingId = id;
+		setActiveTocLink(id);
+		window.setTimeout(() => {
+			if (pinnedHeadingId !== id) return;
+			pinnedHeadingId = null;
+			updateActiveFromScroll();
+		}, 1000);
 		const tryScroll = (attempt = 0) => {
 			if (scrollToVisibleId(id) || attempt >= 12) return;
 			setTimeout(() => tryScroll(attempt + 1), 50);
@@ -305,35 +373,6 @@ export function attachTableOfContents(
 		});
 	}
 
-	const navs = [nav, mobileNav];
-
-	function setActiveTocLink(headingId: string | null) {
-		const href = headingId ? `#${headingId}` : null;
-		for (const toc of navs) {
-			if (!toc) continue;
-			for (const link of toc.querySelectorAll("a")) {
-				link.classList.toggle(
-					"active",
-					href !== null && link.getAttribute("href") === href,
-				);
-			}
-		}
-	}
-
-	function updateActiveFromScroll() {
-		const tops = [];
-		for (const heading of headings) {
-			const visible = visibleHeadingForId(heading.id);
-			if (!visible) continue;
-			tops.push({
-				id: heading.id,
-				top: visible.getBoundingClientRect().top,
-			});
-		}
-		if (tops.length === 0) return;
-		setActiveTocLink(pickActiveHeadingId(tops, TOC_SCROLL_OFFSET_PX));
-	}
-
 	let ticking = false;
 	function onScrollOrResize() {
 		if (ticking) return;
@@ -344,7 +383,13 @@ export function attachTableOfContents(
 		});
 	}
 
+	function onScrollEnd() {
+		pinnedHeadingId = null;
+		updateActiveFromScroll();
+	}
+
 	window.addEventListener("scroll", onScrollOrResize, { passive: true });
+	window.addEventListener("scrollend", onScrollEnd);
 	window.addEventListener("resize", onScrollOrResize);
 	document.addEventListener("layoutChanged", updateActiveFromScroll);
 	document.addEventListener("paliModeChanged", updateActiveFromScroll);
