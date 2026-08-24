@@ -34,7 +34,7 @@
 		"preview:pwa": "HOST=0.0.0.0 PORT=4322 node dist/server/entry.mjs",
 		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host",
 		"test:listen": "npx tsx --test src/utils/listenDisplayWords.test.ts",
-		"test:suggestions": "npx tsx --test src/utils/suggestForToken.test.ts src/utils/suggestionIndexLayers.test.ts src/utils/suggestionSearcher.test.ts src/utils/paliInflectionUtils.test.ts src/utils/searchAutocompleteClient.test.ts src/utils/searchHistoryClient.test.ts src/utils/searchFocusShortcut.test.ts src/utils/parentNavShortcut.test.ts src/utils/searchGatewayClient.test.ts src/service/search/snippetSelection.test.ts src/utils/discourseIdSuggest.test.ts src/utils/ptsReferences.test.ts",
+		"test:suggestions": "npx tsx --test src/utils/suggestForToken.test.ts src/utils/suggestionIndexLayers.test.ts src/utils/suggestionSearcher.test.ts src/utils/paliInflectionUtils.test.ts src/utils/searchAutocompleteClient.test.ts src/utils/searchHistoryClient.test.ts src/utils/searchFocusShortcut.test.ts src/utils/parentNavShortcut.test.ts src/utils/breadcrumbTrail.test.ts src/utils/searchGatewayClient.test.ts src/service/search/snippetSelection.test.ts src/utils/discourseIdSuggest.test.ts src/utils/ptsReferences.test.ts",
 		"test:search": "cd src/search-tests && node search-test-cli.js",
 		"test:search:update": "cd src/search-tests && node search-test-cli.js --update",
 		"test:search:ai": "cd src/search-tests && node search-test-cli.js --ai-eval",

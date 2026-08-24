@@ -1,6 +1,9 @@
 ---
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
-import { buildBreadcrumbTrail } from "../utils/breadcrumbTrail";
+import {
+	buildBreadcrumbTrail,
+	currentBreadcrumbIndex,
+} from "../utils/breadcrumbTrail";
 
 const { path } = Astro.props;
 
@@ -9,6 +12,8 @@ const hideBreadcrumbs = hideBreadcrumbsForPath(path);
 const segments = path.split("/").filter(Boolean);
 const lastSegment = segments[segments.length - 1];
 const breadcrumbs = buildBreadcrumbTrail(path, Astro.url.pathname);
+const currentIndex = currentBreadcrumbIndex(breadcrumbs, lastSegment);
+const parentIndex = currentIndex > 0 ? currentIndex - 1 : -1;
 ---
 
 {
@@ -35,8 +40,7 @@ const breadcrumbs = buildBreadcrumbTrail(path, Astro.url.pathname);
 								/>
 							</svg>
 						)}
-						{index === breadcrumbs.length - 1 &&
-						path.split("/")[1] === lastSegment ? (
+						{index === currentIndex ? (
 							<span
 								class="text-[var(--text-muted)] flex-shrink-0"
 								title={item.title}
@@ -51,18 +55,16 @@ const breadcrumbs = buildBreadcrumbTrail(path, Astro.url.pathname);
 								title={item.title}
 								aria-label={`Go to ${item.label}`}
 								aria-keyshortcuts={
-									index === breadcrumbs.length - 2
+									index === parentIndex
 										? "Meta+ArrowUp Alt+ArrowUp"
 										: undefined
 								}
 								data-nav-up={
-									index === breadcrumbs.length - 2
-										? ""
-										: undefined
+									index === parentIndex ? "" : undefined
 								}
 							>
 								{item.label}
-								{index === breadcrumbs.length - 2 && (
+								{index === parentIndex && (
 									<kbd
 										class="parent-nav-kbd"
 										data-parent-nav-kbd
