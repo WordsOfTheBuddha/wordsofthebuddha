@@ -128,6 +128,9 @@ export const TOC_ACTIVE_SLACK_PX = 8;
 /** Extra pixels past the reading line when jumping to a heading. */
 const TOC_SCROLL_NUDGE_PX = 4;
 
+/** Wait this long after load/scroll restoration before painting the active item. */
+const TOC_SPY_SETTLE_MS = 150;
+
 /**
  * The current section is the last heading whose top has passed `anchorY`
  * (optionally plus `slackPx`). Until the next title reaches that line, the
@@ -162,9 +165,12 @@ export function scrollToVisibleId(id: string): boolean {
 	const heading = visibleHeadingForId(id);
 	if (!heading) return false;
 	const rect = heading.getBoundingClientRect();
+	const reduceMotion = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
 	window.scrollTo({
 		top: scrollYToAlignHeading(rect.top, window.scrollY),
-		behavior: "smooth",
+		behavior: reduceMotion ? "auto" : "smooth",
 	});
 	return true;
 }
@@ -287,6 +293,21 @@ export function attachTableOfContents(
 
 	const navs = [nav, mobileNav];
 	let pinnedHeadingId: string | null = null;
+	let spyArmed = false;
+	let armTimer = 0;
+	let loadPassed = document.readyState === "complete";
+
+	function armSpy() {
+		spyArmed = true;
+		window.clearTimeout(armTimer);
+		updateActiveFromScroll();
+	}
+
+	function scheduleArm() {
+		if (!loadPassed) return;
+		window.clearTimeout(armTimer);
+		armTimer = window.setTimeout(armSpy, TOC_SPY_SETTLE_MS);
+	}
 
 	function setActiveTocLink(headingId: string | null) {
 		const href = headingId ? `#${headingId}` : null;
@@ -302,6 +323,10 @@ export function attachTableOfContents(
 	}
 
 	function updateActiveFromScroll() {
+		if (!spyArmed) {
+			scheduleArm();
+			if (!pinnedHeadingId) return;
+		}
 		if (pinnedHeadingId) {
 			setActiveTocLink(pinnedHeadingId);
 			return;
@@ -393,7 +418,18 @@ export function attachTableOfContents(
 	window.addEventListener("resize", onScrollOrResize);
 	document.addEventListener("layoutChanged", updateActiveFromScroll);
 	document.addEventListener("paliModeChanged", updateActiveFromScroll);
-	updateActiveFromScroll();
+	if (!loadPassed) {
+		window.addEventListener(
+			"load",
+			() => {
+				loadPassed = true;
+				scheduleArm();
+			},
+			{ once: true },
+		);
+	} else {
+		scheduleArm();
+	}
 
 	return true;
 }

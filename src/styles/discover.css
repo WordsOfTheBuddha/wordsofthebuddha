@@ -34,10 +34,6 @@ html.dark .alphabet-link:disabled:hover {
 	border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
 }
 
-/* Smooth scrolling for anchor links */
-html {
-	scroll-behavior: smooth;
-}
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

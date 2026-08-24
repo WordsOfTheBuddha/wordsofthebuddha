@@ -322,9 +322,10 @@ html.dark body::before {
 
 /* Paragraph numbers are real `.paragraph-num` nodes; see content.css / listen-mode.css */
 
-/* Smooth scroll for hash navigation */
+/* Instant scroll on the root so reload restoration does not animate
+   through the page (CSS smooth scroll would walk the ToC). In-page
+   jumps still pass behavior: "smooth" to window.scrollTo. */
 html {
-	scroll-behavior: smooth;
 	overflow-x: clip;
 }
 
