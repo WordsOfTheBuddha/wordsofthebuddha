@@ -962,7 +962,7 @@
     <g id="loci-captions" transform="translate(70, 178)">
       <rect x="0" y="0" width="385" height="36" rx="6" fill="#201420" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.7" />
       <rect x="10" y="12" width="12" height="12" rx="3" fill="#a06070" fill-opacity="0.9" />
-      <text x="200" y="15" text-anchor="middle" fill="#c8a8b0" font-size="10" font-weight="bold">When arising, arises; when settling, settles</text>
+      <text x="200" y="15" text-anchor="middle" fill="#c8a8b0" font-size="10" font-weight="bold">When arising, arises; when become established, it is established</text>
       <text x="200" y="30" text-anchor="middle" fill="#a07078" font-size="9" font-style="italic">uppajjamānā uppajjati · nivisamānā nivisati</text>
       <rect x="395" y="0" width="385" height="36" rx="6" fill="#142a28" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.7" />
       <rect x="405" y="12" width="12" height="12" rx="3" fill="#60a088" fill-opacity="0.9" />
@@ -1050,14 +1050,14 @@
       <g id="loci-row-labels">
         <text x="118" y="67" text-anchor="end" fill="#a0b0c8" font-size="9">Faculty</text>
         <text x="118" y="89" text-anchor="end" fill="#a0b0c8" font-size="9">Object</text>
-        <text x="118" y="111" text-anchor="end" fill="#a0b0c8" font-size="9">Consciousness</text>
-        <text x="118" y="133" text-anchor="end" fill="#a0b0c8" font-size="9">Contact</text>
-        <text x="118" y="155" text-anchor="end" fill="#a0b0c8" font-size="9">Feeling</text>
-        <text x="118" y="177" text-anchor="end" fill="#a0b0c8" font-size="9">Perception</text>
-        <text x="118" y="199" text-anchor="end" fill="#a0b0c8" font-size="9">Intention</text>
-        <text x="118" y="221" text-anchor="end" fill="#a0b0c8" font-size="9">Craving<tspan fill="#c8a040">*</tspan></text>
-        <text x="118" y="243" text-anchor="end" fill="#a0b0c8" font-size="9">Thinking</text>
-        <text x="118" y="265" text-anchor="end" fill="#a0b0c8" font-size="9">Examining</text>
+        <text x="118" y="111" text-anchor="end" fill="#a0b0c8" font-size="9">Consciousness · viññāṇa</text>
+        <text x="118" y="133" text-anchor="end" fill="#a0b0c8" font-size="9">Contact · phassa</text>
+        <text x="118" y="155" text-anchor="end" fill="#a0b0c8" font-size="9">Feeling · vedanā</text>
+        <text x="118" y="177" text-anchor="end" fill="#a0b0c8" font-size="9">Perception · saññā</text>
+        <text x="118" y="199" text-anchor="end" fill="#a0b0c8" font-size="9">Intention · sañcetanā</text>
+        <text x="118" y="221" text-anchor="end" fill="#a0b0c8" font-size="9">Craving · taṇhā<tspan fill="#c8a040">*</tspan></text>
+        <text x="118" y="243" text-anchor="end" fill="#a0b0c8" font-size="9">Reflection · vitakka</text>
+        <text x="118" y="265" text-anchor="end" fill="#a0b0c8" font-size="9">Examination · vicāra</text>
       </g>
       <g id="grid-loci">
         <rect x="181" y="205" width="586" height="26" rx="8" fill="none" stroke="#c8a040" stroke-width="0.75" stroke-opacity="0.7" />
@@ -1370,14 +1370,14 @@
     <g id="direct-way-1" transform="translate(74, 342)">
       <rect x="0" y="0" width="148" height="40" rx="6" fill="url(#fruitFill)" stroke="#c8a040" stroke-width="0.5" stroke-opacity="0.25" filter="url(#shadowDrop)" />
       <circle cx="14" cy="14" r="7" fill="none" stroke="#c8a040" stroke-width="0.6" opacity="0.5" />
-      <text x="14" y="17" text-anchor="middle" fill="#c8a040" font-size="8">1</text>
+      <text x="14" y="16" text-anchor="middle" fill="#c8a040" font-size="8">1</text>
       <text x="28" y="17" fill="#c8d8e8" font-size="9.5">Purification of beings</text>
       <text x="74" y="32" text-anchor="middle" fill="#7888a0" font-size="8" font-style="italic">sattānaṁ visuddhiyā</text>
     </g>
     <g id="direct-way-2" transform="translate(230, 342)">
       <rect x="0" y="0" width="148" height="40" rx="6" fill="url(#fruitFill)" stroke="#c8a040" stroke-width="0.5" stroke-opacity="0.28" filter="url(#shadowDrop)" />
       <circle cx="14" cy="14" r="7" fill="none" stroke="#c8a040" stroke-width="0.6" opacity="0.5" />
-      <text x="14" y="17" text-anchor="middle" fill="#c8a040" font-size="8">2</text>
+      <text x="14" y="16" text-anchor="middle" fill="#c8a040" font-size="8">2</text>
       <text x="28" y="17" fill="#c8d8e8" font-size="9.5">Overcoming of sorrow</text>
       <text x="74" y="32" text-anchor="middle" fill="#7888a0" font-size="8" font-style="italic">sokaparidevānaṁ samatikkamāya</text>
     </g>
