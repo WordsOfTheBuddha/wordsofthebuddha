@@ -2,9 +2,29 @@ import { defineMiddleware } from "astro:middleware";
 import { getEnglishEntry } from "./utils/getContentEntry";
 import { referenceOnlyRouteSet } from "./utils/referenceOnlyRoutes";
 import { routes } from "./utils/routes";
-import { canonicalOnSlug } from "./utils/discover-data";
+import { canonicalOnSlug, resolveOnSlugFallback } from "./utils/discover-data";
+import {
+	isRootPostCandidate,
+	parsePostSlugFromGlobPath,
+} from "./utils/rootPostSlugs";
 
 const englishRouteSet = new Set<string>(routes);
+
+/** Raw glob so `draft: true` page files still count as root posts. */
+const editorialPostFiles = import.meta.glob("./pages/posts/*.{md,mdx}", {
+	eager: true,
+	query: "?raw",
+	import: "default",
+});
+const rootPostSlugSet = new Set(
+	Object.keys(editorialPostFiles)
+		.map(parsePostSlugFromGlobPath)
+		.filter((postSlug) =>
+			isRootPostCandidate(postSlug, {
+				isDiscourse: englishRouteSet.has(postSlug),
+			}),
+		),
+);
 
 /** Top-level path with a single segment, e.g. /mn98 (not /sn1.1.1-2/foo). */
 const TOP_LEVEL_SLUG = /^\/[^/]+$/;
@@ -115,6 +135,21 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
 	if (englishRouteSet.has(slug)) {
 		return withNoindexIfNeeded(context.url, await next());
+	}
+
+	// Bare quality/topic slugs 301/302 to /on/:slug in the catch-all. If an
+	// editorial post claims that slug, rewrite to the post renderer instead
+	// (URL stays /mindfulness; /on/mindfulness is unchanged).
+	if (rootPostSlugSet.has(slug)) {
+		const onPage = resolveOnSlugFallback(slug);
+		if (onPage.kind === "on") {
+			return withNoindexIfNeeded(
+				context.url,
+				await context.rewrite(
+					rewriteURL(`/editorial/${slug}`, context.url),
+				),
+			);
+		}
 	}
 
 	if (referenceOnlyRouteSet.has(slug)) {

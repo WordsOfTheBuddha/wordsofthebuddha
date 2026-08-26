@@ -7,6 +7,22 @@ import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
+import {
+	parsePostSlugFromGlobPath,
+	slugIsRootPost,
+} from "../utils/rootPostSlugs";
+
+type CatchAllPostModule = { frontmatter?: { draft?: boolean } };
+const rootPostModules = import.meta.glob<CatchAllPostModule>(
+	"./posts/*.{md,mdx}",
+	{ eager: true },
+);
+const rootPostEntries = Object.entries(rootPostModules).map(
+	([filePath, mod]) => ({
+		slug: parsePostSlugFromGlobPath(filePath),
+		draft: mod?.frontmatter?.draft === true,
+	}),
+);
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
@@ -99,11 +115,31 @@ if (isSystemRequest) {
 }
 
 // Bare quality/topic/simile/person slugs used to soft-404 into /search?q=…
-// (e.g. /bad-friendship, /mluv-creeper). Send them to the canonical /on/ page.
+// (e.g. /bad-friendship, /mluv-creeper). Send them to the canonical /on/ page
+// unless an editorial post already claims the root slug (/mindfulness → post
+// via [post].astro, /on/mindfulness → quality). Do not rewrite to /posts/:slug
+// here — Astro omits `draft: true` page files, and prerender rewrite to
+// /posts/:slug also fails under the Node/PWA adapter.
 if (id && !id.includes("/")) {
+	if (
+		slugIsRootPost(id, rootPostEntries, {
+			includeDrafts: true,
+			discourseSlugs: routes,
+		})
+	) {
+		return Astro.rewrite(new URL(`/editorial/${id}`, Astro.url));
+	}
 	const fallback = resolveOnSlugFallback(id);
 	if (fallback.kind === "on") {
-		return Astro.redirect(`/on/${fallback.slug}`, 301);
+		// 302 + no-store: a 301 here is cached by browsers forever and
+		// cannot later yield the URL to an editorial post (e.g. /mindfulness).
+		return new Response(null, {
+			status: 302,
+			headers: {
+				Location: `/on/${fallback.slug}`,
+				"Cache-Control": "no-store",
+			},
+		});
 	}
 }
 

@@ -13,6 +13,10 @@ import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
 import personMappings from "../data/personMappings.json";
 import { canonicalOnSlug } from "../utils/discover-data";
+import {
+	isRootPostCandidate,
+	parsePostSlugFromGlobPath,
+} from "../utils/rootPostSlugs";
 import { directoryStructure } from "../data/directoryStructure";
 
 const SITE_URL = "https://www.wordsofthebuddha.org";
@@ -61,8 +65,8 @@ function collectionSlugs(): string[] {
 }
 
 /**
- * Root-level editorial posts served by `[post].astro`. Draft detection mirrors
- * that route's `getStaticPaths`, so an unpublished post is never announced.
+ * Root-level editorial posts served by `[post].astro`. Frontmatter drafts are
+ * previewable at `/:slug` but omitted here until published.
  */
 function postSlugs(): string[] {
 	const modules = import.meta.glob<{
@@ -71,15 +75,15 @@ function postSlugs(): string[] {
 	const discourseSet = new Set(routes);
 	return Object.entries(modules)
 		.map(([filePath, mod]) => ({
-			slug: filePath.replace("./posts/", "").replace(/\.mdx?$/, ""),
+			slug: parsePostSlugFromGlobPath(filePath),
 			draft: mod?.frontmatter?.draft === true,
 		}))
-		.filter(
-			({ slug, draft }) =>
-				!draft &&
-				!/-draft$/.test(slug) &&
-				!/-testcases$/.test(slug) &&
-				!discourseSet.has(slug),
+		.filter(({ slug, draft }) =>
+			isRootPostCandidate(slug, {
+				draft,
+				includeDrafts: false,
+				isDiscourse: discourseSet.has(slug),
+			}),
 		)
 		.map(({ slug }) => slug);
 }

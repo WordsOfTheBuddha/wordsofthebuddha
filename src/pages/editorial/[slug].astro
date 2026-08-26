@@ -1,0 +1,55 @@
+---
+/**
+ * Internal renderer for editorial posts. Used when the SSR catch-all would
+ * otherwise swallow `/:slug` (quality 301/302). Browser URL stays `/:slug`
+ * via rewrite; `/on/:slug` is unchanged.
+ */
+export const prerender = false;
+
+import PostLayout from "../../layouts/PostLayout.astro";
+import { routes } from "../../utils/routes";
+import {
+	parsePostSlugFromGlobPath,
+	isRootPostCandidate,
+} from "../../utils/rootPostSlugs";
+
+type PostModule = {
+	default?: any;
+	Content?: any;
+	frontmatter?: Record<string, unknown> & { draft?: boolean };
+};
+
+const postModules = import.meta.glob<PostModule>("../posts/*.{md,mdx}");
+
+const { slug } = Astro.params;
+if (!slug) {
+	return new Response(null, { status: 404 });
+}
+
+const match = Object.keys(postModules).find(
+	(filePath) => parsePostSlugFromGlobPath(filePath) === slug,
+);
+if (
+	!match ||
+	!isRootPostCandidate(slug, {
+		isDiscourse: routes.includes(slug),
+	})
+) {
+	return new Response(null, { status: 404 });
+}
+
+const mod = await postModules[match]!();
+const Content = mod.Content ?? mod.default;
+const { layout, ...frontmatter } = mod.frontmatter || {};
+const alreadyWrapped = typeof layout === "string" && layout.length > 0;
+---
+
+{
+	alreadyWrapped ? (
+		<Content />
+	) : (
+		<PostLayout {...frontmatter}>
+			<Content />
+		</PostLayout>
+	)
+}
