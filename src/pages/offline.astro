@@ -252,6 +252,8 @@ import Layout from "../layouts/Layout.astro";
 	</main>
 
 	<script>
+		import { waitForServiceWorkerControl } from "../utils/waitForServiceWorkerControl";
+
 		const STATE = {
 			manifest: null as any,
 			onJob: null as any,
@@ -874,35 +876,10 @@ import Layout from "../layouts/Layout.astro";
 			}
 		}
 
-		// Ensure the page is controlled by the SW before starting downloads (iOS PWA quirk)
-		async function waitForSWControl(timeout = 5000): Promise<boolean> {
-			if (navigator.serviceWorker?.controller) return true;
-			// Registration may exist with an active worker that hasn't claimed yet
-			try {
-				const reg = await navigator.serviceWorker?.ready;
-				if (reg?.active && !navigator.serviceWorker?.controller) {
-					// Ask the worker to claim; controllerchange fires after claim
-					reg.active.postMessage({ type: "PING" });
-				}
-			} catch {}
-			return new Promise((resolve) => {
-				let done = false;
-				const finish = (ok: boolean) => {
-					if (done) return;
-					done = true;
-					clearTimeout(timer);
-					resolve(ok);
-				};
-				const timer = setTimeout(
-					() => finish(!!navigator.serviceWorker?.controller),
-					timeout,
-				);
-				navigator.serviceWorker?.addEventListener(
-					"controllerchange",
-					() => finish(true),
-					{ once: true } as any,
-				);
-			});
+		/** Downloads need a real worker. Dev unregisters SW in Layout.astro. */
+		function swDownloadsSupported(): boolean {
+			if (import.meta.env.DEV) return false;
+			return hasCacheAPI() && hasSW();
 		}
 
 		function pingSW(timeout = 1500): Promise<boolean> {
@@ -934,8 +911,24 @@ import Layout from "../layouts/Layout.astro";
 		}
 
 		async function ensureSWReady(): Promise<boolean> {
-			if (!hasCacheAPI() || !hasSW()) return false;
-			await waitForSWControl(4000);
+			if (!swDownloadsSupported()) return false;
+			try {
+				const existing = await withTimeout(
+					navigator.serviceWorker?.getRegistration() ??
+						Promise.resolve(undefined),
+					1500,
+				);
+				if (!existing) {
+					await withTimeout(
+						navigator.serviceWorker.register("/sw.js?v=10"),
+						3000,
+					);
+				}
+			} catch {}
+			await waitForServiceWorkerControl(
+				navigator.serviceWorker,
+				4000,
+			);
 			const worker = await getActiveWorker();
 			if (!worker) return false;
 			// Prefer a successful ping, but an active worker is enough to start CACHE_URLS
@@ -963,15 +956,13 @@ import Layout from "../layouts/Layout.astro";
 				)?.checked;
 			const isOnline =
 				typeof navigator !== "undefined" ? navigator.onLine : true;
-			// Enable when SW API + Cache exist; first-visit claim is handled on click
-			const compatible = hasCacheAPI() && hasSW();
+			// First-visit claim is handled on click; DEV has no worker at all
+			const compatible = swDownloadsSupported();
 			btn.disabled = !(anySelected && isOnline && compatible);
 			const offlineMsg = document.getElementById("offline-msg");
 			if (offlineMsg) offlineMsg.classList.toggle("hidden", !!isOnline);
 			const compatMsg = document.getElementById("compat-msg");
-			// Only show the hard error when SW API itself is missing
-			if (compatMsg)
-				compatMsg.classList.toggle("hidden", hasCacheAPI() && hasSW());
+			if (compatMsg) compatMsg.classList.toggle("hidden", compatible);
 			updateConnectivityBanner();
 		}
 
@@ -994,7 +985,7 @@ import Layout from "../layouts/Layout.astro";
 		) as HTMLButtonElement | null;
 		downloadBtn?.addEventListener("click", async () => {
 			// Bail if Cache API or SW aren’t available in this context
-			if (!hasCacheAPI() || !hasSW()) {
+			if (!swDownloadsSupported()) {
 				const c = document.getElementById("compat-msg");
 				c?.classList.remove("hidden");
 				return;
@@ -1016,8 +1007,9 @@ import Layout from "../layouts/Layout.astro";
 			const ready = await ensureSWReady();
 			if (!ready) {
 				if (ptxt)
-					ptxt.textContent =
-						"Service worker not ready — reload this page and try again.";
+					ptxt.textContent = import.meta.env.DEV
+						? "Service worker is disabled in development."
+						: "Service worker not ready — reload this page and try again.";
 				const c = document.getElementById("compat-msg");
 				c?.classList.remove("hidden");
 				downloadBtn.disabled = false;
