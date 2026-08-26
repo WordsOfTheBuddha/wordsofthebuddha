@@ -105,6 +105,7 @@ export default defineConfig({
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
+		"/explore": "/discover",
 		...mnVaggaRedirects,
 	},
 });

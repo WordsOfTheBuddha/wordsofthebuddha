@@ -37,5 +37,6 @@ export default defineConfig({
 		"/suttanipata": "/snp",
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
+		"/explore": "/discover",
 	},
 });

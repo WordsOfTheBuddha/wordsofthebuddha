@@ -10,11 +10,9 @@ import CollectionCards from '../../components/CollectionCards.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
 import DailyQuote from '../../components/DailyQuote.astro'
 import SacredMandala from '../../components/SacredMandala.astro'
-import StartHere from '../../components/StartHere.astro'
 import HomeSearch from '../../components/HomeSearch.astro'
 import { Picture } from 'astro:assets'
 import fireImage from '../../assets/content-images/fire.webp'
-import { discoverStartHereEntries } from '../../data/discoverStartHere'
 
 {/* ── Hero ── */}
 <SacredMandala variant="hero" />
@@ -37,9 +35,6 @@ import { discoverStartHereEntries } from '../../data/discoverStartHere'
     </a>
   </div>
 </section>
-
-{/* ── Start Here ── */}
-<StartHere items={discoverStartHereEntries} />
 
 {/* ── Daily Quote ── */}
 <DailyQuote variant="simple" />
