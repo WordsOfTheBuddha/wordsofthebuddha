@@ -63,6 +63,7 @@ function buildCoreAssets(): string[] {
 		"/assets/fonts/Spectral-Regular.woff2",
 		"/assets/fonts/Spectral-Italic.woff2",
 		"/assets/fonts/GentiumPlus-Regular-mdot.woff2",
+		"/assets/fonts/GentiumPlus-Italic-mdot.woff2",
 		"/assets/fonts/GentiumPlus-Regular.ttf",
 	];
 }
