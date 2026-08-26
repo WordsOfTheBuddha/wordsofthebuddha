@@ -8,7 +8,7 @@ import {
 
 const { slug } = Astro.params;
 if (!slug || Array.isArray(slug)) {
-	return Astro.redirect("/topic");
+	return Astro.redirect("/qualities");
 }
 
 let actualSlug = slug;
@@ -24,7 +24,7 @@ if (!topic) {
 }
 
 if (!topic) {
-	return Astro.redirect("/topic");
+	return Astro.redirect("/qualities");
 }
 
 return Astro.redirect(`/on/${actualSlug}`, 301);

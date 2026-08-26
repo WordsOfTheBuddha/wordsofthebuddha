@@ -445,6 +445,20 @@ describe("composeNavSuggestions", () => {
 		assert.equal(items[1]?.hit.href, "/simile");
 	});
 
+	it("shows the qualities index for topic and topics queries", () => {
+		const topics = composeNavSuggestions(
+			"topics",
+			[],
+			SITE_PAGE_SUGGESTIONS,
+		);
+		assert.equal(topics[0]?.type, "page");
+		assert.equal(topics[0]?.hit.href, "/qualities");
+
+		const topic = composeNavSuggestions("topic", [], SITE_PAGE_SUGGESTIONS);
+		assert.equal(topic[0]?.type, "page");
+		assert.equal(topic[0]?.hit.href, "/qualities");
+	});
+
 	it("detects quality/topic/simile filters so token suggestions stay off", () => {
 		assert.equal(hasCatalogKindFilter("quality:rad"), true);
 		assert.equal(hasCatalogKindFilter("topic radical"), true);

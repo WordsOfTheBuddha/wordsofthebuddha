@@ -49,11 +49,11 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		return path;
 	}
 
-	// Handle topic paths
+	// Legacy /topic index now lives on /qualities
 	if (idPath[0] === "topic") {
 		path.push({
-			label: "Topic",
-			path: "/topic",
+			label: "Qualities",
+			path: "/qualities",
 		});
 		return path;
 	}

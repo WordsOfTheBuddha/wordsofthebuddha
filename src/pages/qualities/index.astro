@@ -1,36 +1,157 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import qualityMappings from "../../data/qualityMappings.json";
+import topicMappings from "../../data/topicMappings.json";
 import qualities from "../../data/qualities.json";
+import { qualityListIncludes } from "../../utils/ContentTagUtils";
+import { canonicalOnSlug } from "../../utils/discover-data";
 
 // Ensure this page is server-rendered
 export const prerender = false;
 
-// Group qualities by first letter with TypeScript type annotations
-function groupByFirstLetter(items: string[]): Record<string, string[]> {
-	const groups: Record<string, string[]> = {};
-
-	items.forEach((item) => {
-		const firstLetter = item.charAt(0).toUpperCase();
-		if (!groups[firstLetter]) {
-			groups[firstLetter] = [];
-		}
-		groups[firstLetter].push(item);
-	});
-
-	return groups;
+interface IndexCard {
+	href: string;
+	displayName: string;
+	discourseCount: number;
+	isQuality: boolean;
+	isTopic: boolean;
+	isPositive: boolean;
+	isNegative: boolean;
+	synonymsList: (string | string[])[];
+	description?: string;
 }
 
-// Get all available first letters
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVW".split("");
-const positiveByLetter = groupByFirstLetter(qualities.positive);
-const negativeByLetter = groupByFirstLetter(qualities.negative);
-const neutralByLetter = groupByFirstLetter(qualities.neutral);
+type TopicRecord = {
+	title: string;
+	description: string;
+	discourses?: unknown[];
+};
+
+function displayLabel(value: string): string {
+	return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function qualitySynonyms(key: string): (string | string[])[] {
+	const list = (qualities as { qualities?: Record<string, unknown> })
+		.qualities?.[key];
+	return Array.isArray(list) ? (list as (string | string[])[]) : [];
+}
+
+function qualityDiscourseCount(key: string): number {
+	const list =
+		qualityMappings[key as keyof typeof qualityMappings] || [];
+	return Array.isArray(list) ? list.length : 0;
+}
+
+const RELATION_FIELDS: { prefix: string; heading: string }[] = [
+	{ prefix: "Supported by:", heading: "Supported by:" },
+	{ prefix: "Leads to:", heading: "Leads to:" },
+	{ prefix: "Guarded by:", heading: "Guarded by:" },
+	{ prefix: "Related:", heading: "Related Qualities:" },
+	{ prefix: "Opposite:", heading: "Opposite:" },
+];
+
+const META_PREFIXES = [
+	"Context:",
+	...RELATION_FIELDS.map((field) => field.prefix),
+];
+
+function isPlainSynonym(term: string | string[]): term is string {
+	return (
+		typeof term === "string" &&
+		!term.startsWith("[") &&
+		!META_PREFIXES.some((prefix) => term.startsWith(prefix))
+	);
+}
+
+function parseRelationTerms(
+	synonymsList: (string | string[])[],
+	prefix: string,
+): string[] {
+	const item = synonymsList.find(
+		(term): term is string =>
+			typeof term === "string" && term.startsWith(prefix),
+	);
+	if (!item) return [];
+	return item
+		.replace(prefix, "")
+		.replace(/[{}]/g, "")
+		.split(",")
+		.map((s) => s.trim())
+		.filter(Boolean);
+}
+
+function qualityTagClass(name: string): string {
+	if (qualityListIncludes(qualities.positive, name))
+		return "quality-tag positive";
+	if (qualityListIncludes(qualities.negative, name))
+		return "quality-tag negative";
+	return "quality-tag neutral";
+}
+
+const qualityKeys = [
+	...qualities.positive,
+	...qualities.negative,
+	...qualities.neutral,
+];
+const qualityKeyByCanon = new Map(
+	qualityKeys.map((key) => [canonicalOnSlug(key), key]),
+);
+const typedTopics = topicMappings as Record<string, TopicRecord>;
+const topicSlugByQualityKey = new Map<string, string>();
+const topicOnlyCards: IndexCard[] = [];
+
+for (const [slug, topic] of Object.entries(typedTopics)) {
+	const qualityKey =
+		qualityKeyByCanon.get(canonicalOnSlug(slug)) ||
+		qualityKeyByCanon.get(canonicalOnSlug(topic.title));
+	if (qualityKey) {
+		topicSlugByQualityKey.set(qualityKey, slug);
+		continue;
+	}
+	topicOnlyCards.push({
+		href: `/on/${canonicalOnSlug(slug)}`,
+		displayName: topic.title,
+		discourseCount: topic.discourses?.length ?? 0,
+		isQuality: false,
+		isTopic: true,
+		isPositive: false,
+		isNegative: false,
+		synonymsList: [],
+		description: topic.description,
+	});
+}
+
+const qualityCards: IndexCard[] = qualityKeys.map((quality) => ({
+	href: `/on/${canonicalOnSlug(quality)}`,
+	displayName: displayLabel(quality),
+	discourseCount: qualityDiscourseCount(quality),
+	isQuality: true,
+	isTopic: topicSlugByQualityKey.has(quality),
+	isPositive: qualities.positive.includes(quality),
+	isNegative: qualities.negative.includes(quality),
+	synonymsList: qualitySynonyms(quality),
+}));
+
+const allCards = [...qualityCards, ...topicOnlyCards];
+const cardsByLetter: Record<string, IndexCard[]> = {};
+for (const card of allCards) {
+	const letter = card.displayName.charAt(0).toUpperCase();
+	if (!cardsByLetter[letter]) cardsByLetter[letter] = [];
+	cardsByLetter[letter].push(card);
+}
+for (const letter of Object.keys(cardsByLetter)) {
+	cardsByLetter[letter].sort((a, b) =>
+		a.displayName.localeCompare(b.displayName),
+	);
+}
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 ---
 
 <Layout
 	seoTitle="Mental Qualities - Words of the Buddha"
-	seoDescription="Browse the mental qualities the Buddha taught — from diligence and contentment to collectedness and equanimity — with the discourses where each one is explained."
+	seoDescription="Browse the mental qualities the Buddha taught — from diligence and contentment to collectedness and equanimity — along with curated topics, linked to the discourses where each is explained."
 	showAuth={true}
 >
 	<main class="container mx-auto py-8">
@@ -43,7 +164,7 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 					type="text"
 					id="quality-filter"
 					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
-					placeholder="Filter qualities..."
+					placeholder="Filter qualities & topics..."
 				/>
 			</div>
 		</div>
@@ -51,19 +172,13 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 		<div class="mb-8 flex flex-wrap gap-2">
 			{
 				alphabet.map((letter) => {
-					const hasQualities =
-						(positiveByLetter[letter] &&
-							positiveByLetter[letter].length > 0) ||
-						(negativeByLetter[letter] &&
-							negativeByLetter[letter].length > 0) ||
-						(neutralByLetter[letter] &&
-							neutralByLetter[letter].length > 0);
+					const hasCards = (cardsByLetter[letter] || []).length > 0;
 
 					return (
 						<a
-							href={hasQualities ? `#${letter}` : "#"}
+							href={hasCards ? `#${letter}` : "#"}
 							class={`w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
-								hasQualities
+								hasCards
 									? "text-[var(--primary-color)] hover:opacity-80 border border-[var(--primary-color)]"
 									: "text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-default"
 							}`}
@@ -79,13 +194,8 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 		<div class="space-y-8">
 			{
 				alphabet.map((letter) => {
-					let qualitiesForLetter = [
-						...(positiveByLetter[letter] || []),
-						...(negativeByLetter[letter] || []),
-						...(neutralByLetter[letter] || []),
-					];
-
-					if (qualitiesForLetter.length === 0) return null;
+					const cardsForLetter = cardsByLetter[letter] || [];
+					if (cardsForLetter.length === 0) return null;
 
 					return (
 						<div id={letter} class="scroll-mt-16 letter-section">
@@ -93,23 +203,8 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 								{letter}
 							</h2>
 							<div class="space-y-4">
-								{qualitiesForLetter.sort().map((quality) => {
-									// Explicitly type synonymsList as array of strings or arrays of strings
-									const synonymsList: (string | string[])[] =
-										qualities.qualities[
-											quality as keyof typeof qualities.qualities
-										] || [];
-									const discourses =
-										qualityMappings[
-											quality as keyof typeof qualityMappings
-										] || [];
-									const isPositive =
-										qualities.positive.includes(quality);
-									const isNegative =
-										qualities.negative.includes(quality);
-									const displayName =
-										quality.charAt(0).toUpperCase() +
-										quality.slice(1);
+								{cardsForLetter.map((card) => {
+									const synonymsList = card.synonymsList;
 
 									return (
 										<div class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md hover:shadow-lg">
@@ -118,12 +213,12 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 													<div class="min-w-0 pr-4">
 														<h3 class="text-base sm:text-lg font-semibold flex items-center flex-wrap">
 															<a
-																href={`/qualities/${quality}`}
+																href={card.href}
 																class="post-link hover:text-link-color id font-normal"
 															>
-																{displayName}
+																{card.displayName}
 															</a>
-															{isPositive && (
+															{card.isPositive && (
 																<span
 																	class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-amber-400 text-amber-600 dark:text-amber-400 cursor-help tooltip"
 																	data-tooltip="When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
@@ -131,7 +226,7 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																	☀️ bright
 																</span>
 															)}
-															{isNegative && (
+															{card.isNegative && (
 																<span
 																	class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-slate-500 text-slate-600 dark:text-slate-400 cursor-help tooltip"
 																	data-tooltip="When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
@@ -139,8 +234,9 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																	☁️ dark
 																</span>
 															)}
-															{!isPositive &&
-																!isNegative && (
+															{card.isQuality &&
+																!card.isPositive &&
+																!card.isNegative && (
 																	<span
 																		class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-cyan-400 text-cyan-600 dark:text-cyan-400 cursor-help tooltip"
 																		data-tooltip="This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
@@ -149,12 +245,25 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																		neutral
 																	</span>
 																)}
+															{card.isTopic && (
+																<span
+																	class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-blue-400 text-blue-600 dark:text-blue-400 cursor-help tooltip"
+																	data-tooltip="A curated collection of discourses on a specific theme or subject."
+																>
+																	topic
+																</span>
+															)}
 														</h3>
+														{card.description && (
+															<p class="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
+																{card.description}
+															</p>
+														)}
 													</div>
 												</div>
 												<div class="shrink-0 self-start">
 													<span class="px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
-														{discourses.length}
+														{card.discourseCount}
 													</span>
 												</div>
 											</div>
@@ -162,20 +271,7 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 												<div class="mt-6 grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 text-sm">
 													{/* Non-Pāli terms */}
 													{synonymsList.some(
-														(
-															term
-														): term is string =>
-															typeof term ===
-																"string" &&
-															!term.startsWith(
-																"["
-															) &&
-															!term.startsWith(
-																"Context:"
-															) &&
-															!term.startsWith(
-																"Related:"
-															)
+														isPlainSynonym,
 													) && (
 														<>
 															<span class="text-gray-500 dark:text-gray-400 pr-4">
@@ -184,20 +280,7 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 															<span class="text-text">
 																{synonymsList
 																	.filter(
-																		(
-																			term
-																		): term is string =>
-																			typeof term ===
-																				"string" &&
-																			!term.startsWith(
-																				"["
-																			) &&
-																			!term.startsWith(
-																				"Context:"
-																			) &&
-																			!term.startsWith(
-																				"Related:"
-																			)
+																		isPlainSynonym,
 																	)
 																	.join(", ")}
 															</span>
@@ -278,101 +361,56 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 														</>
 													)}
 
-													{/* Related qualities */}
-													{synonymsList.some(
-														(
-															term
-														): term is string =>
-															typeof term ===
-																"string" &&
-															term.startsWith(
-																"Related:"
+													{/* Related quality links */}
+													{RELATION_FIELDS.map(
+														({
+															prefix,
+															heading,
+														}) => {
+															const terms =
+																parseRelationTerms(
+																	synonymsList,
+																	prefix,
+																);
+															if (
+																terms.length ===
+																0
 															)
-													) && (
-														<>
-															<span class="text-gray-500 dark:text-gray-400 self-center">
-																Related
-																Qualities:
-															</span>
-															<div class="flex flex-wrap gap-2">
-																{synonymsList
-																	.find(
-																		(
-																			term
-																		): term is string =>
-																			typeof term ===
-																				"string" &&
-																			term.startsWith(
-																				"Related:"
-																			)
-																	)
-																	?.replace(
-																		"Related:",
-																		""
-																	)
-																	.replace(
-																		/[{}]/g,
-																		""
-																	)
-																	.split(",")
-																	.map(
-																		(
-																			quality
-																		) =>
-																			quality.trim()
-																	)
-																	.sort()
-																	.map(
-																		(
-																			relatedQuality
-																		) => {
-																			const qualitySlug =
-																				encodeURIComponent(
-																					relatedQuality.toLowerCase()
-																				);
-																			const capitalizedQuality =
-																				relatedQuality
-																					.charAt(
-																						0
-																					)
-																					.toUpperCase() +
-																				relatedQuality.slice(
-																					1
-																				);
+																return null;
 
-																			// Determine quality type for styling
-																			const isPositive =
-																				qualities.positive.includes(
-																					relatedQuality.toLowerCase()
-																				);
-																			const isNegative =
-																				qualities.negative.includes(
-																					relatedQuality.toLowerCase()
-																				);
-
-																			const tagClass =
-																				isPositive
-																					? "quality-tag positive"
-																					: isNegative
-																						? "quality-tag negative"
-																						: "quality-tag neutral";
-
-																			return (
-																				<a
-																					href={`/qualities/${qualitySlug}`}
-																					class={
-																						tagClass
-																					}
-																				>
-																					{
-																						capitalizedQuality
-																					}
-																				</a>
-																			);
+															return (
+																<>
+																	<span class="text-gray-500 dark:text-gray-400 self-center">
+																		{
+																			heading
 																		}
-																	)}
-															</div>
-														</>
+																	</span>
+																	<div class="flex flex-wrap gap-2">
+																		{terms.map(
+																			(
+																				relatedQuality,
+																			) => (
+																				<a
+																					href={`/qualities/${canonicalOnSlug(relatedQuality)}`}
+																					class={qualityTagClass(
+																						relatedQuality,
+																					)}
+																				>
+																					{relatedQuality
+																						.charAt(
+																							0,
+																						)
+																						.toUpperCase() +
+																						relatedQuality.slice(
+																							1,
+																						)}
+																				</a>
+																			),
+																		)}
+																	</div>
+																</>
+															);
+														},
 													)}
 												</div>
 											)}

@@ -85,7 +85,12 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 		href: "/simile",
 		aliases: ["simile"],
 	},
-	{ kind: "page", title: "Qualities", href: "/qualities", aliases: [] },
+	{
+		kind: "page",
+		title: "Qualities",
+		href: "/qualities",
+		aliases: ["topic", "topics", "quality", "mental qualities"],
+	},
 	{
 		kind: "page",
 		title: "In the Buddha's Words",

@@ -664,7 +664,7 @@ const showDiscourseSectionHeading =
 					}
 					<div
 						id="discourses-grid"
-						class="space-y-3 on-page-discourses [&_.post-item]:!mt-0"
+						class="flex flex-col gap-6 on-page-discourses [&_.post-item]:!mt-0 [&_.post-item]:!mb-0"
 					>
 						{additionalDiscourses.map((discourse: any) => (
 							<PostCard
@@ -674,7 +674,7 @@ const showDiscourseSectionHeading =
 								volpage={getPtsDisplay(discourse.id)}
 							/>
 						))}
-						<div id="reference-cards-mount" />
+						<div id="reference-cards-mount" class="hidden"></div>
 					</div>
 				</div>
 			)
