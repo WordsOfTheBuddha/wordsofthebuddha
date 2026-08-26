@@ -5,6 +5,7 @@ qualities: jhana, cultivation, wholesome, unwholesome
 theme: wisdom, inspiration, training guideline
 slug: an7.67
 priority: 1.5
+simile: king’s frontier fortress, gatekeeper
 ---
 
 “Yato kho, bhikkhave, rañño paccantimaṁ nagaraṁ sattahi nagaraparikkhārehi suparikkhataṁ hoti, catunnañca āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Idaṁ vuccati, bhikkhave, rañño paccantimaṁ nagaraṁ akaraṇīyaṁ bāhirehi paccatthikehi paccāmittehi.

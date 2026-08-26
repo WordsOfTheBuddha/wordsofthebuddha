@@ -1,5 +1,5 @@
 ---
-title: Jaṭā sutta - Knot
+title: Jaṭā sutta - Tangle
 description: The Buddha explains how the tangle of defilements can be disentangled through the practice of virtue, meditation, and wisdom.
 qualities: attachment, ethical conduct, cultivation, wisdom
 theme: training guideline, principle
