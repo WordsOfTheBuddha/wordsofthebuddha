@@ -95,7 +95,8 @@
 	margin-right: 0.5rem;
 }
 
-.search-gateway .search-suggest-id {
+.search-gateway .search-suggest-id,
+.search-gateway .search-suggest-kind {
 	font-weight: 600;
 }
 

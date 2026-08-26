@@ -9,8 +9,17 @@ import {
 } from "./suggestForToken";
 import type { SuggestionSearcher } from "./suggestionSearcher";
 import { highlightSuggestionText } from "./paliInflectionUtils";
-import type { DiscourseSuggestHit } from "./discourseIdSuggest";
-import { compactDiscourseIdQuery } from "./discourseIdSuggest";
+import {
+	compactDiscourseIdQuery,
+	type DiscourseSuggestHit,
+} from "./discourseIdSuggest";
+import {
+	composeNavSuggestions,
+	hasCatalogKindFilter,
+	type NavSuggestItem,
+	type PageSuggestEntry,
+	type PageSuggestHit,
+} from "./pageSuggest";
 
 const MIN_INDEX_SUGGEST_LEN = 2;
 
@@ -122,6 +131,8 @@ export interface SearchAutocompleteOptions {
 	onClearRecentSearches?: () => void;
 	matchDiscourses?: (query: string) => DiscourseSuggestHit[];
 	onDiscourseSelect?: (hit: DiscourseSuggestHit) => void;
+	pageEntries?: readonly PageSuggestEntry[];
+	onPageSelect?: (hit: PageSuggestHit) => void;
 	/** Stretch to the input, or grow left from a compact navbar field. */
 	alignDropdown?: "stretch" | "end";
 }
@@ -142,7 +153,7 @@ export interface SearchAutocompleteController {
 	refresh: () => void;
 }
 
-type DropdownMode = "recent" | "index" | "discourse";
+type DropdownMode = "recent" | "index" | "nav";
 
 function highlightMatch(text: string, query: string): string {
 	return highlightSuggestionText(text, query);
@@ -190,6 +201,8 @@ export function attachSearchAutocomplete(
 		onClearRecentSearches,
 		matchDiscourses,
 		onDiscourseSelect,
+		pageEntries,
+		onPageSelect,
 		alignDropdown = "stretch",
 	} = options;
 
@@ -198,7 +211,7 @@ export function attachSearchAutocomplete(
 	let mode: DropdownMode | null = null;
 	let currentSuggestions: SuggestionIndexEntry[] = [];
 	let currentRecentItems: string[] = [];
-	let currentDiscourseHits: DiscourseSuggestHit[] = [];
+	let currentNavItems: NavSuggestItem[] = [];
 	let currentToken: ActiveToken | null = null;
 	let listMouseDown = false;
 	const textMeasurer = createTextMeasurer(input);
@@ -233,7 +246,7 @@ export function attachSearchAutocomplete(
 		mode = null;
 		currentSuggestions = [];
 		currentRecentItems = [];
-		currentDiscourseHits = [];
+		currentNavItems = [];
 		currentToken = null;
 		dropdown.classList.add("hidden");
 		list.replaceChildren();
@@ -273,7 +286,7 @@ export function attachSearchAutocomplete(
 
 	function getActiveItemCount(): number {
 		if (mode === "recent") return currentRecentItems.length;
-		if (mode === "discourse") return currentDiscourseHits.length;
+		if (mode === "nav") return currentNavItems.length;
 		return currentSuggestions.length;
 	}
 
@@ -359,69 +372,110 @@ export function attachSearchAutocomplete(
 		setExpanded(true);
 	}
 
-	function renderDiscourseSuggestions() {
+	function appendNavItemChrome(item: HTMLButtonElement, index: number) {
+		item.classList.add("search-suggest-discourse");
+		item.style.removeProperty("display");
+		item.style.minWidth = "0";
+		if (index === activeIndex) {
+			item.classList.add("is-active");
+			item.setAttribute("aria-selected", "true");
+			input.setAttribute("aria-activedescendant", item.id);
+		} else {
+			item.setAttribute("aria-selected", "false");
+		}
+	}
+
+	function renderDiscourseNavHit(
+		hit: DiscourseSuggestHit,
+		index: number,
+	): HTMLButtonElement {
+		const item = createSuggestionItemButton(inputId, index);
+		item.dataset.kind = "discourse";
+		appendNavItemChrome(item, index);
+
+		const metaEl = document.createElement("span");
+		metaEl.className = "search-suggest-discourse-meta";
+
+		const idEl = document.createElement("span");
+		idEl.className = "search-suggest-id";
+		idEl.textContent = hit.idLabel;
+		metaEl.append(idEl);
+
+		if (hit.referenceOnly) {
+			const badge = document.createElement("span");
+			badge.className = "search-suggest-ref";
+			badge.textContent = "Ref";
+			metaEl.append(" ", badge);
+		}
+
+		const titlesEl = document.createElement("span");
+		titlesEl.className = "search-suggest-discourse-titles";
+
+		if (hit.paliTitle) {
+			const paliEl = document.createElement("span");
+			paliEl.className = "search-suggest-pali";
+			paliEl.textContent = hit.paliTitle;
+			titlesEl.append(paliEl);
+		}
+		if (hit.paliTitle && hit.englishTitle) {
+			const sep = document.createElement("span");
+			sep.className = "search-suggest-title-sep";
+			sep.textContent = " · ";
+			titlesEl.append(sep);
+		}
+		if (hit.englishTitle) {
+			const enEl = document.createElement("span");
+			enEl.className = "search-suggest-en";
+			enEl.textContent = hit.englishTitle;
+			titlesEl.append(enEl);
+		}
+
+		const inner = document.createElement("span");
+		inner.className = "search-suggest-discourse-inner";
+		inner.append(metaEl, titlesEl);
+		item.append(inner);
+		return item;
+	}
+
+	function renderPageNavHit(
+		hit: PageSuggestHit,
+		index: number,
+	): HTMLButtonElement {
+		const item = createSuggestionItemButton(inputId, index);
+		item.dataset.kind = hit.kind;
+		appendNavItemChrome(item, index);
+
+		const metaEl = document.createElement("span");
+		metaEl.className = "search-suggest-discourse-meta";
+
+		const kindEl = document.createElement("span");
+		kindEl.className = "search-suggest-kind";
+		kindEl.textContent = hit.kindLabel;
+		metaEl.append(kindEl);
+
+		const titlesEl = document.createElement("span");
+		titlesEl.className = "search-suggest-discourse-titles";
+		titlesEl.textContent = hit.title;
+
+		const inner = document.createElement("span");
+		inner.className = "search-suggest-discourse-inner";
+		inner.append(metaEl, titlesEl);
+		item.append(inner);
+		return item;
+	}
+
+	function renderNavSuggestions() {
 		list.replaceChildren();
-		if (currentDiscourseHits.length === 0) {
+		if (currentNavItems.length === 0) {
 			close();
 			return;
 		}
 
-		currentDiscourseHits.forEach((hit, index) => {
-			const item = createSuggestionItemButton(inputId, index);
-			item.classList.add("search-suggest-discourse");
-			item.dataset.kind = "discourse";
-			item.style.removeProperty("display");
-			item.style.minWidth = "0";
-
-			const metaEl = document.createElement("span");
-			metaEl.className = "search-suggest-discourse-meta";
-
-			const idEl = document.createElement("span");
-			idEl.className = "search-suggest-id";
-			idEl.textContent = hit.idLabel;
-			metaEl.append(idEl);
-
-			if (hit.referenceOnly) {
-				const badge = document.createElement("span");
-				badge.className = "search-suggest-ref";
-				badge.textContent = "Ref";
-				metaEl.append(" ", badge);
-			}
-
-			const titlesEl = document.createElement("span");
-			titlesEl.className = "search-suggest-discourse-titles";
-
-			if (hit.paliTitle) {
-				const paliEl = document.createElement("span");
-				paliEl.className = "search-suggest-pali";
-				paliEl.textContent = hit.paliTitle;
-				titlesEl.append(paliEl);
-			}
-			if (hit.paliTitle && hit.englishTitle) {
-				const sep = document.createElement("span");
-				sep.className = "search-suggest-title-sep";
-				sep.textContent = " · ";
-				titlesEl.append(sep);
-			}
-			if (hit.englishTitle) {
-				const enEl = document.createElement("span");
-				enEl.className = "search-suggest-en";
-				enEl.textContent = hit.englishTitle;
-				titlesEl.append(enEl);
-			}
-
-			const inner = document.createElement("span");
-			inner.className = "search-suggest-discourse-inner";
-			inner.append(metaEl, titlesEl);
-			item.append(inner);
-
-			if (index === activeIndex) {
-				item.classList.add("is-active");
-				item.setAttribute("aria-selected", "true");
-				input.setAttribute("aria-activedescendant", item.id);
-			} else {
-				item.setAttribute("aria-selected", "false");
-			}
+		currentNavItems.forEach((navItem, index) => {
+			const item =
+				navItem.type === "discourse"
+					? renderDiscourseNavHit(navItem.hit, index)
+					: renderPageNavHit(navItem.hit, index);
 			list.appendChild(item);
 		});
 
@@ -452,7 +506,7 @@ export function attachSearchAutocomplete(
 
 		mode = "index";
 		currentRecentItems = [];
-		currentDiscourseHits = [];
+		currentNavItems = [];
 		currentSuggestions = next;
 		activeIndex = -1;
 		renderIndexSuggestions();
@@ -473,32 +527,36 @@ export function attachSearchAutocomplete(
 
 		mode = "recent";
 		currentSuggestions = [];
-		currentDiscourseHits = [];
+		currentNavItems = [];
 		currentToken = null;
 		currentRecentItems = filtered;
 		activeIndex = -1;
 		renderRecentSearches();
 	}
 
-	function refreshDiscourseSuggestions() {
-		if (!matchDiscourses) return false;
+	function refreshNavSuggestions() {
 		const isIdQuery = Boolean(compactDiscourseIdQuery(input.value));
-		const next = matchDiscourses(input.value);
+		const discourses = matchDiscourses?.(input.value) ?? [];
+		const next = composeNavSuggestions(
+			input.value,
+			discourses,
+			pageEntries ?? [],
+		);
 		if (next.length === 0) {
-			if (isIdQuery) {
+			if (isIdQuery || hasCatalogKindFilter(input.value)) {
 				close();
 				return true;
 			}
 			return false;
 		}
 
-		mode = "discourse";
+		mode = "nav";
 		currentSuggestions = [];
 		currentRecentItems = [];
 		currentToken = null;
-		currentDiscourseHits = next;
-		activeIndex = discourseSuggestionActiveIndex(isIdQuery, next.length);
-		renderDiscourseSuggestions();
+		currentNavItems = next;
+		activeIndex = discourseSuggestionActiveIndex(isIdQuery, discourses.length);
+		renderNavSuggestions();
 		return true;
 	}
 
@@ -507,7 +565,7 @@ export function attachSearchAutocomplete(
 			close();
 			return;
 		}
-		if (refreshDiscourseSuggestions()) return;
+		if (refreshNavSuggestions()) return;
 		if (input.value.length >= MIN_INDEX_SUGGEST_LEN) {
 			refreshIndexSuggestions();
 			return;
@@ -539,10 +597,14 @@ export function attachSearchAutocomplete(
 		close();
 	}
 
-	function acceptDiscourse(index: number) {
-		const hit = currentDiscourseHits[index];
-		if (!hit) return;
-		onDiscourseSelect?.(hit);
+	function acceptNavItem(index: number) {
+		const navItem = currentNavItems[index];
+		if (!navItem) return;
+		if (navItem.type === "discourse") {
+			onDiscourseSelect?.(navItem.hit);
+		} else {
+			onPageSelect?.(navItem.hit);
+		}
 		close();
 	}
 
@@ -551,8 +613,8 @@ export function attachSearchAutocomplete(
 			acceptRecentSearch(index);
 			return;
 		}
-		if (mode === "discourse") {
-			acceptDiscourse(index);
+		if (mode === "nav") {
+			acceptNavItem(index);
 			return;
 		}
 		acceptSuggestion(index);

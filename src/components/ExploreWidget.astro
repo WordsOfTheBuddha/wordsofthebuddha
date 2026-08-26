@@ -563,7 +563,8 @@ const isSearchOnly = mode === "search-only";
 		margin-right: 0.5rem;
 	}
 
-	.explore-widget .search-suggest-id {
+	.explore-widget .search-suggest-id,
+	.explore-widget .search-suggest-kind {
 		font-weight: 600;
 	}
 
@@ -642,6 +643,7 @@ const isSearchOnly = mode === "search-only";
 		suggestDiscourses,
 		type DiscourseSuggestEntry,
 	} from "../utils/discourseIdSuggest";
+	import type { PageSuggestEntry } from "../utils/pageSuggest";
 	import Fuse from "fuse.js";
 
 	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
@@ -706,6 +708,7 @@ const isSearchOnly = mode === "search-only";
 	let searchSuggestionsList: HTMLElement | null = null;
 	let suggestionSearcher: SuggestionSearcher | null = null;
 	let discourseEntries: DiscourseSuggestEntry[] = [];
+	let pageEntries: PageSuggestEntry[] = [];
 	let searchAutocomplete: SearchAutocompleteController | null = null;
 
 	function resolveDom(): boolean {
@@ -793,6 +796,7 @@ const isSearchOnly = mode === "search-only";
 			if (discourseRes.ok) {
 				const data = await discourseRes.json();
 				discourseEntries = Array.isArray(data?.entries) ? data.entries : [];
+				pageEntries = Array.isArray(data?.pages) ? data.pages : [];
 			}
 		} catch (error) {
 			console.warn("Failed to load suggestions index:", error);
@@ -804,7 +808,13 @@ const isSearchOnly = mode === "search-only";
 		searchAutocomplete = null;
 
 		if (!searchInput || !searchSuggestions || !searchSuggestionsList) return;
-		if (!suggestionSearcher && discourseEntries.length === 0) return;
+		if (
+			!suggestionSearcher &&
+			discourseEntries.length === 0 &&
+			pageEntries.length === 0
+		) {
+			return;
+		}
 
 		searchAutocomplete = attachSearchAutocomplete({
 			input: searchInput,
@@ -840,6 +850,10 @@ const isSearchOnly = mode === "search-only";
 					discourseSuggestLimit(),
 				),
 			onDiscourseSelect: (hit) => {
+				window.location.assign(hit.href);
+			},
+			pageEntries,
+			onPageSelect: (hit) => {
 				window.location.assign(hit.href);
 			},
 		});

@@ -12,6 +12,7 @@ import {
 	uniqueExactDiscourse,
 	type DiscourseSuggestEntry,
 } from "./discourseIdSuggest";
+import type { PageSuggestEntry } from "./pageSuggest";
 
 export interface SearchGatewayOptions {
 	form: HTMLFormElement;
@@ -53,6 +54,7 @@ export function attachSearchGateway(options: SearchGatewayOptions): void {
 
 	let suggestionSearcher: SuggestionSearcher | null = null;
 	let discourseEntries: DiscourseSuggestEntry[] = [];
+	let pageEntries: PageSuggestEntry[] = [];
 	let autocomplete: SearchAutocompleteController | null = null;
 	let loadPromise: Promise<void> | null = null;
 
@@ -88,12 +90,19 @@ export function attachSearchGateway(options: SearchGatewayOptions): void {
 					discourseEntries = Array.isArray(data?.entries)
 						? data.entries
 						: [];
+					pageEntries = Array.isArray(data?.pages) ? data.pages : [];
 				}
 			} catch (error) {
 				console.warn("Search gateway: failed to load suggestion indexes", error);
 			}
 
-			if (!suggestionSearcher && discourseEntries.length === 0) return;
+			if (
+				!suggestionSearcher &&
+				discourseEntries.length === 0 &&
+				pageEntries.length === 0
+			) {
+				return;
+			}
 
 			autocomplete = attachSearchAutocomplete({
 				input,
@@ -115,6 +124,10 @@ export function attachSearchGateway(options: SearchGatewayOptions): void {
 						discourseSuggestLimit(),
 					),
 				onDiscourseSelect: (hit) => {
+					goToHref(hit.href);
+				},
+				pageEntries,
+				onPageSelect: (hit) => {
 					goToHref(hit.href);
 				},
 			});
