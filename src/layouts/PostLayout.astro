@@ -11,6 +11,7 @@ import DiscourseImage from "../components/DiscourseImage.astro";
 import Commentary from "../components/Commentary.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { findContentImage } from "../utils/contentImage";
+import { POST_TOC_HEADING_SELECTOR } from "../utils/tocClient";
 
 const props = Astro.props.frontmatter || Astro.props;
 const {
@@ -84,7 +85,7 @@ if (cleanTitle) {
 const serverTheme = "dark";
 ---
 
-<html lang="en" class={serverTheme} dir="ltr">
+<html lang="en" class:list={[serverTheme, "has-toc"]} dir="ltr">
 	<head>
 		<meta charset="UTF-8" />
 		<meta
@@ -275,7 +276,7 @@ const serverTheme = "dark";
 					</article>
 					<TableOfContents
 						contentSelector=".post-content"
-						headingSelector="h2, h3"
+						headingSelector={POST_TOC_HEADING_SELECTOR}
 						nestedTag="H3"
 						minHeadings={1}
 						requireNamed={false}
@@ -288,7 +289,10 @@ const serverTheme = "dark";
 	</body>
 
 	<style>
-		/* Centered container — matches content width on mobile, widens for ToC on desktop */
+		/* Centered container — matches content width on mobile, widens for ToC on desktop.
+		   Scoped `.post-container { max-width: 56rem }` otherwise beats the global
+		   `.toc-shell.toc-reserve` rule until JS adds `html.has-toc`, so short posts
+		   (no headings) would stay narrow. Keep the essay shell width here. */
 		.post-container {
 			max-width: 56rem;
 			margin: 0 auto;
@@ -303,6 +307,15 @@ const serverTheme = "dark";
 		@media (min-width: 1024px) {
 			.post-container {
 				padding: 0 2rem;
+			}
+			.post-container.toc-reserve {
+				max-width: calc(56rem + 260px + 1.5rem);
+			}
+		}
+
+		@media (min-width: 1280px) {
+			.post-container.toc-reserve {
+				max-width: calc(56rem + 280px + 2.5rem);
 			}
 		}
 	</style>

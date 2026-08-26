@@ -124,10 +124,12 @@ describe("tocLinkClass", () => {
 		assert.equal(tocLinkClass("H5", base, 0), "toc-h5");
 	});
 
-	it("keeps essay h3 nested under h2", () => {
+	it("keeps essay h3–h5 nested under h2", () => {
 		const base = tocBaseLevel("H3");
 		assert.equal(tocLinkClass("H2", base, 0), "");
 		assert.equal(tocLinkClass("H3", base, 0), "toc-h3");
+		assert.equal(tocLinkClass("H4", base, 0), "toc-h5");
+		assert.equal(tocLinkClass("H5", base, 0), "toc-h5");
 	});
 
 	it("does not indent a flat list of h4 or h5 headings", () => {

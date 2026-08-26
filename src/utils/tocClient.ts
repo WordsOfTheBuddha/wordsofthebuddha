@@ -11,6 +11,8 @@ import { slugify } from "./slugify";
 
 export const DISCOURSE_TOC_MIN_HEADINGS = 2;
 export const DISCOURSE_TOC_HEADING_SELECTOR = "h1, h2, h3, h4, h5";
+/** Essay posts skip the layout `h1` title; nest `h3`–`h5` under `h2`. */
+export const POST_TOC_HEADING_SELECTOR = "h2, h3, h4, h5";
 
 const LETTER_RE = /\p{L}/u;
 const GLOSS_RE = /\|([^:|]+)::[^|]*\|/g;
@@ -194,7 +196,8 @@ export function tocBaseLevel(nestedTag: string): number {
 
 /**
  * H1/H2 fold into the top section level. Depth is 0 for that level, 1 for the
- * next (h4 / essay h3), 2 for h5.
+ * next (discourse h4 / essay h3), 2 for the level after that (h5 / essay h4).
+ * Deeper tags share the last indent class.
  */
 export function tocDepth(tagName: string, baseLevel: number): number {
 	const level = headingLevel(tagName);
@@ -250,7 +253,19 @@ export function attachTableOfContents(
 		options.headingSelector,
 		options.requireNamed,
 	);
-	if (headings.length < options.minHeadings) return false;
+	const hasEnoughHeadings = headings.length >= options.minHeadings;
+	// Essay posts reserve the two-column shell even with an empty ToC.
+	// Discourses (fixed rail) stay hidden until there are real sections.
+	if (!hasEnoughHeadings && options.placement === "fixed") return false;
+
+	if (options.activeClass) {
+		document.documentElement.classList.add(options.activeClass);
+	}
+	if (options.placement !== "fixed") {
+		document.querySelector(".toc-shell")?.classList.add("toc-reserve");
+	}
+
+	if (!hasEnoughHeadings) return true;
 
 	const baseLevel = tocBaseLevel(options.nestedTag);
 	const minDepth = Math.min(
@@ -282,13 +297,6 @@ export function attachTableOfContents(
 				),
 			);
 		}
-	}
-
-	if (options.activeClass) {
-		document.documentElement.classList.add(options.activeClass);
-	}
-	if (options.placement !== "fixed") {
-		document.querySelector(".toc-shell")?.classList.add("toc-reserve");
 	}
 
 	const navs = [nav, mobileNav];

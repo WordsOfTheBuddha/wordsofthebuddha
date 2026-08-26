@@ -251,13 +251,18 @@ const {
 	.split-panel h4,
 	.split-panel h5,
 	.post-content h2,
-	.post-content h3 {
+	.post-content h3,
+	.post-content h4,
+	.post-content h5 {
 		scroll-margin-top: 1.25rem;
 	}
 
-	/* Essay posts: sidebar becomes a real column and the shell widens. */
+	/* Essay posts: sidebar becomes a real column and the shell widens.
+	   Include `.post-container` so this beats PostLayout's scoped
+	   `max-width: 56rem` even when the ToC has no headings yet. */
 	@media (min-width: 1024px) {
 		.toc-shell.toc-reserve,
+		.toc-shell.toc-reserve.post-container,
 		html.has-toc .toc-shell {
 			max-width: calc(56rem + 260px + 1.5rem);
 		}
@@ -300,6 +305,7 @@ const {
 
 	@media (min-width: 1280px) {
 		.toc-shell.toc-reserve,
+		.toc-shell.toc-reserve.post-container,
 		html.has-toc .toc-shell {
 			max-width: calc(56rem + 280px + 2.5rem);
 		}
@@ -353,7 +359,7 @@ const {
 		if (!root) return;
 		attachTableOfContents({
 			contentSelector: root.dataset.contentSelector || "",
-			headingSelector: root.dataset.headingSelector || "h2, h3",
+			headingSelector: root.dataset.headingSelector || "h2, h3, h4, h5",
 			nestedTag: root.dataset.nestedTag || "H3",
 			minHeadings: Number(root.dataset.minHeadings || "1"),
 			requireNamed: root.dataset.requireNamed === "true",
