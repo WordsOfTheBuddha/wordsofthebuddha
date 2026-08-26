@@ -231,7 +231,7 @@ import Layout from "../layouts/Layout.astro";
 							<span id="progress-text"></span>
 							<button
 								id="pause-resume"
-								class="px-2 py-0.5 border rounded">Pause</button
+								class="px-2 py-0.5 border rounded hidden">Pause</button
 							>
 						</div>
 					</div>
@@ -253,6 +253,11 @@ import Layout from "../layouts/Layout.astro";
 
 	<script>
 		import { waitForServiceWorkerControl } from "../utils/waitForServiceWorkerControl";
+		import {
+			addPathVariantsToSet,
+			anyVariantPresent,
+			filterUncachedPaths,
+		} from "../utils/offlineCachePaths";
 
 		const STATE = {
 			manifest: null as any,
@@ -1128,14 +1133,33 @@ import Layout from "../layouts/Layout.astro";
 				urls.push("/search");
 			}
 
-			// Queue download
 			if (urls.length === 0) {
 				if (ptxt) ptxt.textContent = "Nothing selected to download.";
 				downloadBtn.disabled = false;
 				updateDownloadButton();
 				return;
 			}
-			if (ptxt) ptxt.textContent = "Starting…";
+
+			if (ptxt) ptxt.textContent = "Checking cache…";
+			const cachedPaths = await buildNavKeySet();
+			const selectedCount = urls.length;
+			const toFetch = filterUncachedPaths(urls, cachedPaths);
+			const skipped = selectedCount - toFetch.length;
+
+			if (toFetch.length === 0) {
+				if (ptxt)
+					ptxt.textContent =
+						"Already cached — nothing new to download.";
+				pauseResumeBtn?.classList.add("hidden");
+				downloadBtn.disabled = false;
+				updateDownloadButton();
+				return;
+			}
+
+			if (ptxt)
+				ptxt.textContent = skipped
+					? `Starting… (${skipped} already cached)`
+					: "Starting…";
 			// Reset Pause/Cancel on new job
 			const pauseBtn = document.getElementById("pause-resume");
 			if (pauseBtn) {
@@ -1144,7 +1168,7 @@ import Layout from "../layouts/Layout.astro";
 			}
 			postToSW({
 				type: "CACHE_URLS",
-				urls,
+				urls: toFetch,
 				progressKey: "download",
 			});
 			downloadBtn.disabled = false;
@@ -1223,31 +1247,6 @@ import Layout from "../layouts/Layout.astro";
 					"dark:text-gray-300",
 				);
 			}
-		}
-
-		function addPathVariantsToSet(path: string, set: Set<string>) {
-			const p = path.split("#")[0];
-			set.add(p);
-			if (p.endsWith("/")) set.add(p.slice(0, -1));
-			else set.add(p + "/");
-			if (p.endsWith("/index.html"))
-				set.add(p.replace(/\/?index\.html$/, "/"));
-			else set.add((p.endsWith("/") ? p : p + "/") + "index.html");
-		}
-
-		function anyVariantPresent(path: string, set: Set<string>) {
-			// Consider raw, encoded, and decoded forms to cope with spaces and unicode in slugs
-			const candidates = new Set<string>([path]);
-			try {
-				candidates.add(encodeURI(path));
-			} catch {}
-			try {
-				candidates.add(decodeURI(path));
-			} catch {}
-			const variants = new Set<string>();
-			for (const p of candidates) addPathVariantsToSet(p, variants);
-			for (const v of variants) if (set.has(v)) return true;
-			return false;
 		}
 
 		async function buildNavKeySet() {
