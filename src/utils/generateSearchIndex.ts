@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 // Build-time generator for a client-usable search dataset (English + Pali).
-// Outputs:
-// - public/search-index.json (static asset; not bundled into serverless functions)
+// Outputs (copied to the client by searchIndexStatic):
+// - generated/search-index.json (full docs; API / body search)
+// - generated/search-meta.json (slug/title/description only; light client search)
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -71,6 +72,14 @@ const contentRoot = path.join(repoRoot, "src", "content", "en");
 const pliRoot = path.join(repoRoot, "src", "content", "pli");
 const generatedDir = path.join(repoRoot, "generated");
 const jsonOutFile = path.join(generatedDir, "search-index.json");
+const metaOutFile = path.join(generatedDir, "search-meta.json");
+
+function toMetaDocs(docs: SearchDoc[]): Omit<
+	SearchDoc,
+	"content" | "contentPali"
+>[] {
+	return docs.map(({ content: _c, contentPali: _p, ...rest }) => rest);
+}
 
 /**
  * Get the path to the corresponding Pali file for an English content file.
@@ -145,11 +154,12 @@ async function parseFileToDoc(
 	return doc;
 }
 
-/** Write the docs array to public/search-index.json */
+/** Write the full index and the metadata-only sibling used by light client search. */
 async function writeSearchIndex(docs: SearchDoc[]) {
 	await mkdir(generatedDir, { recursive: true });
 	const json = JSON.stringify(docs);
 	await writeFile(jsonOutFile, json, "utf8");
+	await writeFile(metaOutFile, JSON.stringify(toMetaDocs(docs)), "utf8");
 	return json;
 }
 
@@ -213,6 +223,7 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 			old.slug === newDoc.slug &&
 			old.title === newDoc.title &&
 			old.description === newDoc.description &&
+			old.priority === newDoc.priority &&
 			old.volpage === newDoc.volpage
 		) {
 			if (logStatus) {
@@ -266,10 +277,14 @@ export async function fullBuild() {
 	const bytes = Buffer.byteLength(json, "utf8");
 	const kb = bytes / 1024;
 	const ms = Date.now() - start;
+	const metaBytes = Buffer.byteLength(
+		JSON.stringify(toMetaDocs(docs)),
+		"utf8",
+	);
 	console.log(
 		`search-index: wrote ${docs.length} docs to generated/search-index.json (${kb.toFixed(
 			1,
-		)} KB) in ${ms}ms`,
+		)} KB) and search-meta.json (${(metaBytes / 1024).toFixed(1)} KB) in ${ms}ms`,
 	);
 }
 

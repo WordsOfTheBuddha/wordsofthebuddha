@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	buildFuseQuery,
 	normalizeSearchQuery,
+	queryHasContentField,
 	splitLetterHyphens,
 } from "./fuseQueryParser";
 
@@ -68,5 +69,15 @@ describe("buildFuseQuery slug prefix routing", () => {
 			!result.highlightTerms.some((ht) => ht.term === "SN22"),
 			"^SN22 should not become a content highlight term",
 		);
+	});
+});
+
+describe("queryHasContentField", () => {
+	it("detects content: and contentPali: field queries", () => {
+		assert.equal(queryHasContentField("content:consciousness"), true);
+		assert.equal(queryHasContentField("title:element content:space"), true);
+		assert.equal(queryHasContentField("contentPali:sati"), true);
+		assert.equal(queryHasContentField("craving"), false);
+		assert.equal(queryHasContentField("title:element"), false);
 	});
 });

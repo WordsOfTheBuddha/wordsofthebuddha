@@ -1,6 +1,8 @@
 ---
-// SSR so `?q=` requests can emit noindex (prerendered HTML cannot see the query).
-export const prerender = false;
+// Static HTML from the CDN. `?q=` noindex is applied at request time by
+// middleware (`X-Robots-Tag`) — the same pattern as prerendered discourses
+// with view-state params. Search results themselves run in the browser.
+export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import BottomDrawer from "../components/BottomDrawer.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
@@ -9,14 +11,6 @@ Astro.response.headers.set(
 	"Cache-Control",
 	"public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
 );
-
-const requestUrl = new URL(Astro.request.url);
-const searchRobots = requestUrl.searchParams.has("q")
-	? "noindex, follow"
-	: null;
-if (searchRobots) {
-	Astro.response.headers.set("X-Robots-Tag", searchRobots);
-}
 ---
 
 <Layout
@@ -25,7 +19,6 @@ if (searchRobots) {
 	seoDescription="Search the discourses of the Buddha by phrase, Pāli term, topic, or reference across the Majjhima, Saṁyutta, Aṅguttara, and Dīgha Nikāyas, the Dhammapada, and more."
 	showAuth={false}
 	showSearch={false}
-	robots={searchRobots}
 >
 	<main class="container mx-auto px-3 sm:px-4 pt-0">
 		<ExploreWidget mode="search-only" title="" />

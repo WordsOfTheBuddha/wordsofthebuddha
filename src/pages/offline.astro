@@ -647,43 +647,33 @@ import Layout from "../layouts/Layout.astro";
 			}
 
 			// Estimate size for making search available offline
-			// This includes: discourse searchIndex + topics/qualities/similes data
+			// (search-meta + full index + suggestions + category bundle overhead).
 			(async () => {
+				const fallback = 13 * 1024 * 1024;
 				try {
-					// Import all search-related data modules to get accurate size
-					const [searchRes, discoverMod] = await Promise.all([
-						fetch("/search-index.json"),
-						import("../utils/discover-data"),
-					]);
-
-					// Get discourse index size
-					const searchData = searchRes.ok
-						? await searchRes.json()
-						: [];
-					const searchBytes = new TextEncoder().encode(
-						JSON.stringify(searchData),
-					).length;
-
-					// Get topics/qualities/similes/persons size by building unified content
-					const categoryData = discoverMod.buildAllContent([
-						"topics",
-						"qualities",
-						"similes",
-						"persons",
-					]);
-					const categoryBytes = new TextEncoder().encode(
-						JSON.stringify(categoryData),
-					).length;
-
-					// Total estimate (with some overhead for Fuse.js and other bundled code)
-					const totalBytes = searchBytes + categoryBytes + 200 * 1024; // ~200KB overhead
-
+					const lengths = await Promise.all(
+						[
+							"/search-index.json",
+							"/search-meta.json",
+							"/suggestions-index.json",
+							"/discourse-suggest-index.json",
+						].map(async (url) => {
+							try {
+								const res = await fetch(url, { method: "HEAD" });
+								const len = res.headers.get("content-length");
+								return len ? parseInt(len, 10) : 0;
+							} catch {
+								return 0;
+							}
+						}),
+					);
+					const summed = lengths.reduce((a, b) => a + b, 0);
+					const totalBytes =
+						(summed > 0 ? summed : fallback) + 400 * 1024;
 					const se = document.getElementById("search-estimate");
 					if (se) se.textContent = formatBytes(totalBytes);
 					STATE._searchEstimate = totalBytes;
 				} catch (e) {
-					// Fallback estimate if dynamic import fails
-					const fallback = 5 * 1024 * 1024;
 					const se = document.getElementById("search-estimate");
 					if (se) se.textContent = formatBytes(fallback);
 					STATE._searchEstimate = fallback;
@@ -1131,6 +1121,10 @@ import Layout from "../layouts/Layout.astro";
 			// entry chunk and its linked modules (tooltipFormatter, theme, etc.) are cached.
 			if (searchChecked) {
 				urls.push("/search");
+				urls.push("/search-meta.json");
+				urls.push("/search-index.json");
+				urls.push("/suggestions-index.json");
+				urls.push("/discourse-suggest-index.json");
 			}
 
 			if (urls.length === 0) {
@@ -1286,6 +1280,7 @@ import Layout from "../layouts/Layout.astro";
 				const ms = await Promise.all([
 					c.match("/search/"),
 					c.match("/search/index.html"),
+					c.match("/search-index.json"),
 				]);
 				return ms.some(Boolean);
 			} catch {
@@ -1317,6 +1312,7 @@ import Layout from "../layouts/Layout.astro";
 				// Search status
 				const hasSearch =
 					anyVariantPresent("/search", navSet) ||
+					anyVariantPresent("/search-index.json", navSet) ||
 					(await hasCoreSearch());
 				const searchStatus = document.getElementById("search-status");
 				setStatusPill(

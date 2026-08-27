@@ -93,6 +93,7 @@ export default defineConfig({
 		includeFiles: vercelPdfIncludeContentImages,
 		excludeFiles: [
 			"generated/search-index.json",
+			"generated/search-meta.json",
 			"generated/reference-search-index.json",
 			"generated/suggestions-index.json",
 			"generated/discourse-suggest-index.json",

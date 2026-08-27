@@ -9,6 +9,7 @@ const DEV_RELOAD_INDEX_FILES = new Set([
 
 const INDEX_FILES = [
 	"search-index.json",
+	"search-meta.json",
 	"reference-search-index.json",
 	"suggestions-index.json",
 	"discourse-suggest-index.json",
@@ -47,7 +48,16 @@ export function searchIndexStatic() {
 												"Content-Type",
 												"application/json",
 											);
-											res.end(readFileSync(path));
+											const body = readFileSync(path);
+											res.setHeader(
+												"Content-Length",
+												String(body.length),
+											);
+											if (req.method === "HEAD") {
+												res.end();
+												return;
+											}
+											res.end(body);
 										});
 									}
 

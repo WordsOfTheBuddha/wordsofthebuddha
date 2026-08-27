@@ -12,6 +12,7 @@ import SearchIcon from "../assets/search.svg?raw";
 import HelpIcon from "../assets/question-mark-circle.svg?raw";
 import Funnel from "../assets/funnel.svg?raw";
 import BrowseIcon from "../assets/list-bullet.svg?raw";
+import MagnifyingGlassPlus from "../assets/magnifying-glass-plus.svg?raw";
 import ProjectStatus from "./ProjectStatus.astro";
 import "../styles/discover.css";
 
@@ -326,6 +327,7 @@ const isSearchOnly = mode === "search-only";
 				<div class="max-w-[600px] p-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] text-[var(--surface-ink)] shadow-sm text-sm max-h-[50vh] overflow-y-auto">
 					<h3 class="font-semibold mb-2">Simple search</h3>
 					<ul class="space-y-1">
+							<li>Default search matches titles, descriptions, IDs, and topics/qualities/similes. Use <em>Search the sutta texts</em> under the results to look in the full discourses (one-time download).</li>
 							<li><code class="not-prose">quest</code> — finds “quest” (fuzzy)</li>
 							<li><code class="not-prose">^SN</code> or <code class="not-prose">^AN</code> — only in that collection (e.g. SN, AN, MN, DHP)</li>
 							<li><code class="not-prose">!word</code> — exclude discourses containing <em>word</em></li>
@@ -361,14 +363,23 @@ const isSearchOnly = mode === "search-only";
 		</div>
 	</div>
 
-	<!-- Loading State -->
-	<div id="loading" class="text-center py-8">
+	<!-- Loading State. Search-only ships the input in HTML, so skip the spinner. -->
+	<div
+		id="loading"
+		class:list={["text-center py-8", isSearchOnly && "hidden"]}
+	>
 		<div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-gray-100"></div>
 		<p class="mt-2 text-gray-600 dark:text-gray-400">Loading...</p>
 	</div>
 
 	<!-- Results Container -->
-	<div id="results-container" class="hidden overflow-x-hidden">
+	<div
+		id="results-container"
+		class:list={[
+			"overflow-x-hidden",
+			!isSearchOnly && "hidden",
+		]}
+	>
 		<!-- Browse Results (A-Z grouped) -->
 		{!isSearchOnly && (
 			<div id="browse-results" class="space-y-6">
@@ -378,7 +389,35 @@ const isSearchOnly = mode === "search-only";
 
 		<!-- Search Results (relevance ranked) -->
 		<div id="search-results" class={isSearchOnly ? "" : "hidden"}>
-			<p id="search-results-count" class="mb-4 text-sm text-gray-500 dark:text-gray-300"></p>
+			<div
+				id="search-results-meta"
+				class="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2"
+			>
+				<p
+					id="search-results-count"
+					class="text-sm text-gray-500 dark:text-gray-300 m-0"
+				>
+				</p>
+				<button
+					type="button"
+					id="search-inside-opt-in"
+					class="search-inside-opt-in hidden inline-flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-left"
+					title="Look for this query in the full discourse texts. Downloads once, then stays available."
+				>
+					<span class="w-4 h-4 shrink-0" set:html={MagnifyingGlassPlus} />
+					<span class="flex min-w-0 flex-col leading-tight">
+						<span class="text-sm font-medium">Search the sutta texts</span>
+						<span class="search-inside-opt-in-hint text-[11px] font-normal">Looks in the full discourses · one-time download</span>
+					</span>
+				</button>
+				<p
+					id="search-inside-status"
+					class="hidden text-xs sm:text-sm m-0"
+					style="color:var(--text-muted)"
+				>
+					Loading the sutta texts…
+				</p>
+			</div>
 			<div id="search-results-list">
 				<!-- Will be populated by JavaScript -->
 			</div>
@@ -437,6 +476,18 @@ const isSearchOnly = mode === "search-only";
 	/* Code in help panel: original style — monospace dark chip */
 	.explore-widget #search-help code {
 		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
+	}
+
+	.explore-widget .search-inside-opt-in {
+		color: var(--primary-color);
+		background-color: var(--background-color);
+		border-color: color-mix(in srgb, var(--primary-color) 30%, var(--surface-border));
+	}
+	.explore-widget .search-inside-opt-in:hover {
+		background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+	}
+	.explore-widget .search-inside-opt-in-hint {
+		color: var(--text-muted);
 	}
 
 	/* Discourse card in search results */
@@ -626,7 +677,6 @@ const isSearchOnly = mode === "search-only";
 
 <script>
 	import { DiscoverRenderer } from "../utils/discover-renderer";
-	import { buildUnifiedContent, buildAllContent } from "../utils/discover-data";
 	import type { UnifiedContentItem } from "../types/discover";
 	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
 	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
@@ -644,7 +694,12 @@ const isSearchOnly = mode === "search-only";
 		type DiscourseSuggestEntry,
 	} from "../utils/discourseIdSuggest";
 	import type { PageSuggestEntry } from "../utils/pageSuggest";
-	import Fuse from "fuse.js";
+	import type Fuse from "fuse.js";
+	import {
+		hasNativeSearchIndexContent,
+		ensureNativeSearchIndexContent,
+		isNativeSearchIndexContentCached,
+	} from "../utils/loadSearchIndexData";
 
 	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
 	let widget!: HTMLElement;
@@ -669,8 +724,11 @@ const isSearchOnly = mode === "search-only";
 		similes: false,
 		persons: false,
 		includeReferences: false,
+		searchInsideDiscourses: false,
 	};
 	let searchQuery = "";
+	let searchGeneration = 0;
+	let searchInsidePrefLoaded = false;
 	let searchTimeout: NodeJS.Timeout | null = null;
 	let referenceIndexCached = false;
 	let recentSearchCandidate: { query: string } | null = null;
@@ -679,8 +737,9 @@ const isSearchOnly = mode === "search-only";
 	/** Browse + search filter prefs; matches Layout.astro pattern (localStorage for durable UI state). */
 	const DISCOVER_FILTERS_KEY = "discoverExploreFilters";
 
-	// Fuse.js index for categories
+	// Fuse.js index for categories (built after a dynamic import of ~3MB mapping JSON)
 	let categoryFuse: Fuse<UnifiedContentItem> | null = null;
+	let categoryIndexPromise: Promise<void> | null = null;
 
 	// Result counts for display
 	let resultCounts = {
@@ -706,6 +765,8 @@ const isSearchOnly = mode === "search-only";
 	let searchHelp: HTMLElement | null = null;
 	let searchSuggestions: HTMLElement | null = null;
 	let searchSuggestionsList: HTMLElement | null = null;
+	let searchInsideStatusEl: HTMLElement | null = null;
+	let searchInsideOptInEl: HTMLButtonElement | null = null;
 	let suggestionSearcher: SuggestionSearcher | null = null;
 	let discourseEntries: DiscourseSuggestEntry[] = [];
 	let pageEntries: PageSuggestEntry[] = [];
@@ -733,6 +794,8 @@ const isSearchOnly = mode === "search-only";
 		searchHelp = widget.querySelector("#search-help");
 		searchSuggestions = widget.querySelector("#search-suggestions");
 		searchSuggestionsList = widget.querySelector("#search-suggestions-list");
+		searchInsideStatusEl = widget.querySelector("#search-inside-status");
+		searchInsideOptInEl = widget.querySelector("#search-inside-opt-in");
 		domReady = true;
 		return true;
 	}
@@ -745,39 +808,62 @@ const isSearchOnly = mode === "search-only";
 		}
 
 		setupEventListeners();
-		await loadData();
 		loadPersistedFiltersIntoState();
 
-		// Check URL for initial state
+		if (
+			!searchInsidePrefLoaded &&
+			(hasNativeSearchIndexContent() ||
+				(await isNativeSearchIndexContentCached()))
+		) {
+			searchFilters.searchInsideDiscourses = true;
+			persistExploreFilters();
+			syncSearchInsideControls();
+		}
+
+		// Autocomplete JSON is independent of the category Fuse index.
+		void loadSuggestionsIndex().then(() => setupSearchAutocomplete());
+
 		const urlParams = new URLSearchParams(window.location.search);
 		const queryFromUrl = urlParams.get("q");
 
 		if (queryFromUrl) {
-			// Start in search mode with query
 			if (!isSearchOnly) switchToSearchMode();
 			if (searchInput) searchInput.value = queryFromUrl;
 			await performSearch(queryFromUrl, { trackCandidate: false });
 		} else if (isSearchOnly) {
-			// Search-only mode: show empty search state
 			if (loadingEl) loadingEl.classList.add("hidden");
 			if (resultsContainer) resultsContainer.classList.remove("hidden");
 			if (searchInput) searchInput.focus();
+			void ensureCategoryIndex();
 		} else {
-			// Full mode: start with browse
+			await ensureCategoryIndex();
 			renderBrowseResults();
 			setupScrollSpy();
 		}
 	}
 
-	async function loadData() {
+	async function ensureCategoryIndex() {
+		if (categoryFuse) return;
+		if (!categoryIndexPromise) {
+			categoryIndexPromise = loadCategoryIndex();
+		}
+		await categoryIndexPromise;
+	}
+
+	async function loadCategoryIndex() {
 		try {
-			// Load all content for both browse and search
-			browseData = buildUnifiedContent();
-			initCategoryFuse();
-			await loadSuggestionsIndex();
-			setupSearchAutocomplete();
+			const [{ buildUnifiedContent, buildAllContent }, fuseMod] =
+				await Promise.all([
+					import("../utils/discover-data"),
+					import("fuse.js"),
+				]);
+			if (!isSearchOnly && browseData.length === 0) {
+				browseData = buildUnifiedContent();
+			}
+			initCategoryFuse(fuseMod.default, buildAllContent);
 		} catch (error) {
-			console.error("Failed to load data:", error);
+			categoryIndexPromise = null;
+			console.error("Failed to load category index:", error);
 		}
 	}
 
@@ -873,7 +959,10 @@ const isSearchOnly = mode === "search-only";
 		}, DEBOUNCE_MS);
 	}
 
-	function initCategoryFuse() {
+	function initCategoryFuse(
+		FuseCtor: typeof import("fuse.js").default,
+		buildAllContent: typeof import("../utils/discover-data").buildAllContent,
+	) {
 		// Load all topics, qualities, and similes for Fuse.js search
 		allCategoryData = buildAllContent([
 			"topics",
@@ -934,7 +1023,7 @@ const isSearchOnly = mode === "search-only";
 			return true;
 		});
 
-		categoryFuse = new Fuse(allCategoryData, {
+		categoryFuse = new FuseCtor(allCategoryData, {
 			// Weights match API for parity (api/search.ts)
 			keys: [
 				{ name: "title", weight: 2 },
@@ -1169,13 +1258,62 @@ const isSearchOnly = mode === "search-only";
 		textContainsStrictWord,
 		STRICT_WORD_MAX_SUFFIX,
 	} from "../utils/searchRanking";
-	import { normalizeSearchQuery } from "../utils/fuseQueryParser";
+	import { normalizeSearchQuery, queryHasContentField } from "../utils/fuseQueryParser";
+
+	function setSearchInsideStatus(message: string | null) {
+		if (!searchInsideStatusEl) return;
+		if (!message) {
+			searchInsideStatusEl.classList.add("hidden");
+			searchInsideStatusEl.textContent = "Loading the sutta texts…";
+			return;
+		}
+		searchInsideStatusEl.textContent = message;
+		searchInsideStatusEl.classList.remove("hidden");
+	}
+
+	function setElHidden(el: HTMLElement | null, hidden: boolean) {
+		if (!el) return;
+		el.classList.toggle("hidden", hidden);
+	}
+
+	function syncSearchInsideControls() {
+		const hasQuery = Boolean(searchQuery.trim());
+		const inside = searchFilters.searchInsideDiscourses;
+		setElHidden(searchInsideOptInEl, !hasQuery || inside);
+	}
+
+	function enableSearchInsidePreference() {
+		if (searchFilters.searchInsideDiscourses) return;
+		searchFilters.searchInsideDiscourses = true;
+		persistExploreFilters();
+		syncSearchInsideControls();
+	}
+
+	async function loadInsideAndRefresh(query: string, generation: number) {
+		setSearchInsideStatus("Loading the sutta texts…");
+		try {
+			await ensureNativeSearchIndexContent();
+			setSearchInsideStatus(null);
+			if (generation !== searchGeneration) return;
+			if (!searchFilters.searchInsideDiscourses) return;
+			if (searchQuery !== query) return;
+			await performSearch(query, { trackCandidate: false, skipInsideHydrate: true });
+		} catch (err) {
+			if ((err as { name?: string })?.name === "AbortError") {
+				setSearchInsideStatus(null);
+				return;
+			}
+			console.error("Failed to load discourse texts:", err);
+			setSearchInsideStatus("Could not load the sutta texts. Try again.");
+		}
+	}
 
 	async function performSearch(
 		query: string,
-		options: { trackCandidate?: boolean } = {},
+		options: { trackCandidate?: boolean; skipInsideHydrate?: boolean } = {},
 	) {
 		const trackCandidate = options.trackCandidate !== false;
+		const generation = ++searchGeneration;
 		// Close help panel when a new search is performed
 		if (searchHelp) searchHelp.classList.add("hidden");
 		// Show results area
@@ -1184,16 +1322,43 @@ const isSearchOnly = mode === "search-only";
 
 		if (!query.trim()) {
 			if (searchResultsList) searchResultsList.innerHTML = "";
-			if (searchResultsCount) searchResultsCount.textContent = "";
+			if (searchResultsCount) {
+				searchResultsCount.textContent = "";
+				searchResultsCount.classList.add("hidden");
+			}
 			hideEmptyResultsMessage();
 			updateResultCounts(0, 0, 0, 0);
 			searchQuery = "";
 			updateURL(); // Clear q parameter from URL
+			setSearchInsideStatus(null);
+			syncSearchInsideControls();
 			return;
 		}
 
+		if (queryHasContentField(query)) {
+			enableSearchInsidePreference();
+		}
+
+		await ensureCategoryIndex();
+		if (generation !== searchGeneration) return;
+
 		searchQuery = query;
 		updateURL();
+
+		const contentReady = hasNativeSearchIndexContent();
+		const wantsInside = searchFilters.searchInsideDiscourses;
+		if (wantsInside && !contentReady && !options.skipInsideHydrate) {
+			if (await isNativeSearchIndexContentCached()) {
+				try {
+					await ensureNativeSearchIndexContent();
+				} catch (err) {
+					console.error("Failed to load discourse texts:", err);
+				}
+				if (generation !== searchGeneration) return;
+			} else {
+				void loadInsideAndRefresh(query, generation);
+			}
+		}
 
 		try {
 			const isDev = import.meta.env.DEV;
@@ -1649,6 +1814,7 @@ const isSearchOnly = mode === "search-only";
 			}
 
 			tCategories = performance.now();
+			if (generation !== searchGeneration) return;
 
 			// Search discourses using existing Fuse.js search
 			// For filter-only queries, we need to get all matching discourses from the index
@@ -1660,9 +1826,16 @@ const isSearchOnly = mode === "search-only";
 				referenceIndexCached = true;
 			}
 
-			// Create content lookup for full content matching (English + Pali)
-			const getContentBySlug = await getContentLookup({ includeReferences });
-			const getPaliContentBySlug = await getPaliContentLookup({ includeReferences });
+			const includeContent =
+				searchFilters.searchInsideDiscourses &&
+				hasNativeSearchIndexContent();
+
+			const getContentBySlug = includeContent
+				? await getContentLookup({ includeReferences })
+				: (_slug: string) => null;
+			const getPaliContentBySlug = includeContent
+				? await getPaliContentLookup({ includeReferences })
+				: (_slug: string) => null;
 
 			let discourseResults: any[];
 			if (isFilterOnly) {
@@ -1675,7 +1848,8 @@ const isSearchOnly = mode === "search-only";
 				discourseResults = await searchDiscourses(
 					normalizedQuery.trim(),
 					{
-						highlight: true,
+						highlight: includeContent,
+						includeContent,
 						includeReferences,
 						...(isDev ? { perf: searchPerf } : {}),
 					},
@@ -2089,6 +2263,8 @@ const isSearchOnly = mode === "search-only";
 				console.groupEnd();
 			}
 
+			if (generation !== searchGeneration) return;
+
 			// Render results
 			const { transformId } = await import("../utils/transformId");
 			renderSearchResults(rankedResults, query, transformId);
@@ -2340,8 +2516,12 @@ const isSearchOnly = mode === "search-only";
 
 		if (results.length === 0) {
 			searchResultsList.innerHTML = "";
-			if (searchResultsCount) searchResultsCount.textContent = "";
+			if (searchResultsCount) {
+				searchResultsCount.textContent = "";
+				searchResultsCount.classList.add("hidden");
+			}
 			setEmptyResultsMessage(getSearchEmptyMessage());
+			syncSearchInsideControls();
 			return;
 		}
 
@@ -2350,7 +2530,9 @@ const isSearchOnly = mode === "search-only";
 		hideEmptyResultsMessage();
 
 		const total = results.length;
+		searchResultsCount.classList.remove("hidden");
 		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for "${query}"`;
+		syncSearchInsideControls();
 
 		// Create renderer with highlighting function for search results
 		const highlightFn = (text: string) => highlightText(text, query);
@@ -2596,6 +2778,11 @@ const isSearchOnly = mode === "search-only";
 			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
+		searchInsideOptInEl?.addEventListener("click", () => {
+			enableSearchInsidePreference();
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
+		});
+
 		// Search input
 		searchInput?.addEventListener("input", handleSearchInput);
 		searchInput?.addEventListener("blur", () => {
@@ -2714,6 +2901,10 @@ const isSearchOnly = mode === "search-only";
 						if (typeof s.similes === "boolean") searchFilters.similes = s.similes;
 						if (typeof s.persons === "boolean") searchFilters.persons = s.persons;
 						if (typeof s.includeReferences === "boolean") searchFilters.includeReferences = s.includeReferences;
+						if (typeof s.searchInsideDiscourses === "boolean") {
+							searchFilters.searchInsideDiscourses = s.searchInsideDiscourses;
+							searchInsidePrefLoaded = true;
+						}
 					}
 				}
 			}
@@ -2722,6 +2913,7 @@ const isSearchOnly = mode === "search-only";
 		}
 		syncBrowseCheckboxDomFromState();
 		syncSearchCheckboxDomFromState();
+		syncSearchInsideControls();
 	}
 
 	function handleSearchInput(event: Event) {

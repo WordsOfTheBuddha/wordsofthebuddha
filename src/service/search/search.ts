@@ -2,6 +2,9 @@
 import {
 	loadNativeSearchIndex,
 	loadReferenceSearchIndex,
+	hasNativeSearchIndexContent,
+	ensureNativeSearchIndexContent,
+	isNativeSearchIndexContentCached,
 } from "../../utils/loadSearchIndexData";
 import {
 	buildFuseQuery,
@@ -102,8 +105,21 @@ function invalidateDerivedSearchCaches(): void {
 	mergedNormalizedContentMap = null;
 }
 
-async function ensureNativeSearchData(): Promise<SearchData[]> {
-	const fresh = (await loadNativeSearchIndex()) as unknown as SearchData[];
+export {
+	hasNativeSearchIndexContent,
+	ensureNativeSearchIndexContent,
+	isNativeSearchIndexContentCached,
+};
+
+async function ensureNativeSearchData(
+	includeContent = false,
+): Promise<SearchData[]> {
+	const fresh = (await loadNativeSearchIndex({
+		includeContent,
+	})) as unknown as SearchData[];
+	for (const doc of fresh) {
+		if (doc.content == null) doc.content = "";
+	}
 	if (nativeSearchData !== fresh) {
 		nativeSearchData = fresh;
 		invalidateDerivedSearchCaches();
@@ -114,14 +130,14 @@ async function ensureNativeSearchData(): Promise<SearchData[]> {
 async function buildNativeNormalizedContentMap(): Promise<
 	Map<string, { content: string; contentPali: string }>
 > {
-	const data = await ensureNativeSearchData();
+	const data = await ensureNativeSearchData(true);
 	return buildNormalizedContentMap(data);
 }
 
 async function buildMergedNormalizedContentMap(): Promise<
 	Map<string, { content: string; contentPali: string }>
 > {
-	const native = await ensureNativeSearchData();
+	const native = await ensureNativeSearchData(true);
 	const merged = referenceSearchData
 		? [...native, ...referenceSearchData]
 		: native;
@@ -227,6 +243,12 @@ export interface SearchOptions {
 	highlight?: boolean;
 	/** Include reference-only (Sujato) discourses from lazy-loaded referenceSearchIndex */
 	includeReferences?: boolean;
+	/**
+	 * Search discourse bodies (content / contentPali) and generate snippets.
+	 * SSR / API always behave as true. Client light search omits this until
+	 * the full index is requested.
+	 */
+	includeContent?: boolean;
 	/** Populated with refIndexLoad / refDocCount when includeReferences is true */
 	perf?: SearchPerfStats;
 }
@@ -1154,7 +1176,8 @@ async function performSearchInner(
 	}
 
 	const includeReferences = options.includeReferences === true;
-	let activeSearchData: SearchData[] = await ensureNativeSearchData();
+	const useContent = import.meta.env.SSR || options.includeContent === true;
+	let activeSearchData: SearchData[] = await ensureNativeSearchData(useContent);
 
 	// Direct PTS volume/page lookup (exact start page or covering range).
 	// Always include reference-only discourses — researchers cite PTS pages
@@ -1248,10 +1271,16 @@ async function performSearchInner(
 		}
 	}
 
-	const normalizedMap = includeReferences
-		? (mergedNormalizedContentMap ??=
-				await buildMergedNormalizedContentMap())
-		: (normalizedContentMap ??= await buildNativeNormalizedContentMap());
+	const emptyNormalizedMap = new Map<
+		string,
+		{ content: string; contentPali: string }
+	>();
+	const normalizedMap = !useContent
+		? emptyNormalizedMap
+		: includeReferences
+			? (mergedNormalizedContentMap ??=
+					await buildMergedNormalizedContentMap())
+			: (normalizedContentMap ??= await buildNativeNormalizedContentMap());
 
 	const fuse = await getSearchIndex(
 		slugPrefixFilter,
@@ -1306,14 +1335,18 @@ async function performSearchInner(
 		const metaSlugs = new Set(metadataMatches.map((d) => d.slug));
 
 		// Also match docs where content/contentPali contains any OR term (union with metadata)
-		const contentMatches = subset.filter((doc) => {
-			if (metaSlugs.has(doc.slug)) return false;
-			const norm = normalizedMap.get(doc.slug);
-			if (!norm) return false;
-			return [...terms].some((t) =>
-				norm.content.includes(t) || norm.contentPali.includes(t),
-			);
-		});
+		const contentMatches = useContent
+			? subset.filter((doc) => {
+					if (metaSlugs.has(doc.slug)) return false;
+					const norm = normalizedMap.get(doc.slug);
+					if (!norm) return false;
+					return [...terms].some(
+						(t) =>
+							norm.content.includes(t) ||
+							norm.contentPali.includes(t),
+					);
+				})
+			: [];
 
 		const allMatches = [...metadataMatches, ...contentMatches];
 		fuseResults = allMatches.map((item, refIndex) => ({
@@ -1352,7 +1385,7 @@ async function performSearchInner(
 		highlightTerms,
 	);
 	const runContentSupplement =
-		!isSlugOnlyQuery(fuseQuery) && !skipUltraShort;
+		useContent && !isSlugOnlyQuery(fuseQuery) && !skipUltraShort;
 	if (import.meta.env?.DEV && skipUltraShort) {
 		console.log(
 			"[search] skipping content supplement (all non-stopword terms < 3 chars)",
@@ -1527,7 +1560,7 @@ async function performSearchInner(
 		const withinSnippetBudget =
 			!capSnippets || snippetAttempts < SHORT_QUERY_SNIPPET_CAP;
 
-		if (options.highlight && showContentSnippet && withinSnippetBudget) {
+		if (options.highlight && useContent && showContentSnippet && withinSnippetBudget) {
 			snippetAttempts++;
 			const matchList = (matches as { key?: string; indices?: [number, number][] }[] | undefined) ?? [];
 			const contentMatches = matchList.filter((m) => m.key === "content");
@@ -1635,7 +1668,7 @@ export async function getSearchDocBySlug(
 	slug: string,
 	includeReferences = false,
 ): Promise<SearchData | undefined> {
-	const native = await ensureNativeSearchData();
+	const native = await ensureNativeSearchData(true);
 	const found = native.find((d) => d.slug === slug);
 	if (found || !includeReferences) return found;
 	const refData = await loadReferenceSearchData();
@@ -1652,7 +1685,7 @@ export async function findContentWholeWordMatches(
 	query: string,
 	excludeSlugs: Set<string>,
 ): Promise<SearchResult[]> {
-	const searchData = await ensureNativeSearchData();
+	const searchData = await ensureNativeSearchData(true);
 	const queryLower = query.toLowerCase().trim();
 	const queryTerms = queryLower.split(/\s+/).filter((t) => t.length > 0);
 
@@ -1685,7 +1718,7 @@ export async function findContentWholeWordMatches(
  * Used for client-side term matching where contentSnippet is insufficient.
  */
 export async function getFullContentBySlug(slug: string): Promise<string | null> {
-	const searchData = await ensureNativeSearchData();
+	const searchData = await ensureNativeSearchData(true);
 	const item = searchData.find((d) => d.slug === slug);
 	return item?.content ?? null;
 }
@@ -1697,14 +1730,14 @@ export async function getFullContentBySlug(slug: string): Promise<string | null>
 export async function getContentLookup(
 	options: Pick<SearchOptions, "includeReferences"> = {},
 ): Promise<(slug: string) => string | null> {
-	let searchData = await ensureNativeSearchData();
+	let searchData = await ensureNativeSearchData(true);
 	if (options.includeReferences) {
 		const refData = await loadReferenceSearchData();
 		searchData = [...searchData, ...refData];
 	}
 	const contentMap = new Map<string, string>();
 	for (const item of searchData) {
-		contentMap.set(item.slug, item.content);
+		contentMap.set(item.slug, item.content || "");
 	}
 	return (slug: string) => contentMap.get(slug) ?? null;
 }
@@ -1716,7 +1749,7 @@ export async function getContentLookup(
 export async function getPaliContentLookup(
 	options: Pick<SearchOptions, "includeReferences"> = {},
 ): Promise<(slug: string) => string | null> {
-	let searchData = await ensureNativeSearchData();
+	let searchData = await ensureNativeSearchData(true);
 	if (options.includeReferences) {
 		const refData = await loadReferenceSearchData();
 		searchData = [...searchData, ...refData];

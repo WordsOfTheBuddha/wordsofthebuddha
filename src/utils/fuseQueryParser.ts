@@ -64,6 +64,11 @@ export function parseFieldPattern(term: string): { field?: SearchField; value: s
     return { value: term };
 }
 
+/** True when the query restricts matching to discourse body fields. */
+export function queryHasContentField(query: string): boolean {
+	return /(?:^|[\s("])content(?:Pali)?:/i.test(query.trim());
+}
+
 function splitParenthesizedTerms(term: string): string[] {
     // If it's not a parenthesized group, return as is
     if (!term.startsWith('(') || !term.endsWith(')')) {
