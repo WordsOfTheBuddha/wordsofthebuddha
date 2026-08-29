@@ -1,6 +1,6 @@
 ---
 title: Paṭhama dvebrāhmaṇa sutta - Two Brahmins (First)
-description: Two elderly brahmins admit to the Buddha that they have failed to do good deeds or create a shelter from fear. They ask the Buddha for advice on how to find shelter from fear in old age, sickness, and death.
+description: Two elderly brahmins admit to the Buddha that they have failed to do good deeds or create a shelter from fear. They ask the Buddha for advise on how to find shelter from fear in old age, sickness, and death.
 qualities: merit, self-control
 theme: inspiration, urgency
 slug: an3.51

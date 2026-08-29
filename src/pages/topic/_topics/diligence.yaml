@@ -15,6 +15,8 @@ redirects:
 opposite:
     - negligence
 discourses:
+    - id: "dn31"
+      note: "Energy that does not make excuses of cold, heat, or hunger"
     - id: "sn45.139"
       note: "As the foremost quality"
     - id: "dhp21-32"
