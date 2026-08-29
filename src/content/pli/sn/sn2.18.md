@@ -1,9 +1,11 @@
 ---
+title: Kakudha sutta - Kakudha
+description: The young deity Kakudha asks whether the Buddha delights or sorrows. The Buddha shows that delight and distress arise together, and that a bhikkhu free of both has crossed over entanglement in the world.
+qualities: delight, sorrow, discontentment, quenching
+theme: wisdom, inspiration
 slug: sn2.18
-source: suttacentral/bilara-data
-title: Kakudhasutta
-edition: ms
-granularity: paragraph
+character: Deity Kakudha
+priority: 1.2
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sākete viharati añjanavane migadāye.
