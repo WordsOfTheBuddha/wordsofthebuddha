@@ -1,7 +1,7 @@
 ---
 title: Santatara sutta - More Peaceful than
 description: Cessation is more peaceful than the form or formless realms. Beings attached to these states face renewed existence.
-qualities: formless, ending, tranquility, free from attachment
+qualities: form, formless, ending, tranquility, free from attachment
 theme: wisdom, directly knowing
 slug: iti73
 ---
