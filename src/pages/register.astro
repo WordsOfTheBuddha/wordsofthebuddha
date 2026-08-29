@@ -1,16 +1,16 @@
 ---
-export const prerender = false;
+export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import { isFirebaseInitialized } from "../service/firebase/server";
 
-/* Check if Firebase is initialized */
-if (!isFirebaseInitialized) {
-	// Redirect to home page with error message
+const firebaseReady = Boolean(
+	(import.meta.env.FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID) &&
+		(import.meta.env.FIREBASE_CLIENT_EMAIL ||
+			process.env.FIREBASE_CLIENT_EMAIL) &&
+		(import.meta.env.FIREBASE_PRIVATE_KEY || process.env.FIREBASE_PRIVATE_KEY),
+);
+if (!firebaseReady) {
 	return Astro.redirect("/?auth-unavailable=true");
 }
-
-const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
-console.log("return to in register is: ", returnTo);
 ---
 
 <Layout>
@@ -27,6 +27,7 @@ console.log("return to in register is: ", returnTo);
 				<p class="mt-2 text-center text-sm text-[var(--text-color)]">
 					Already have an account?&nbsp;
 					<a
+						id="signin-link"
 						href="/signin"
 						class="font-medium text-[var(--link-color)] hover:text-[var(--link-hover-color)]"
 					>
@@ -91,7 +92,12 @@ console.log("return to in register is: ", returnTo);
 					</div>
 				</div>
 
-				<input type="hidden" name="returnTo" value={returnTo} />
+				<input
+					type="hidden"
+					name="returnTo"
+					id="returnTo"
+					value="/review-room"
+				/>
 
 				<div>
 					<button
@@ -112,6 +118,20 @@ console.log("return to in register is: ", returnTo);
 	const submitButton = document.querySelector(
 		'button[type="submit"]'
 	) as HTMLButtonElement;
+
+	const returnTo =
+		new URL(window.location.href).searchParams.get("returnTo") ||
+		"/review-room";
+	const returnToInput = document.getElementById(
+		"returnTo",
+	) as HTMLInputElement | null;
+	if (returnToInput) returnToInput.value = returnTo;
+	const signinLink = document.getElementById(
+		"signin-link",
+	) as HTMLAnchorElement | null;
+	if (signinLink) {
+		signinLink.href = `/signin?returnTo=${encodeURIComponent(returnTo)}`;
+	}
 
 	function validateEmail(email: string): {
 		isValid: boolean;

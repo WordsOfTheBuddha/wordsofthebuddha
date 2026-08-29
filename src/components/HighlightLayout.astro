@@ -4,18 +4,6 @@ import { verifyUser } from "../middleware/auth";
 import Eraser from "../assets/eraser.svg?raw";
 import "../styles/highlight.css";
 
-// Get authentication status
-let isAuthenticated = false;
-try {
-	const sessionCookie = Astro.cookies.get("__session")?.value;
-	if (sessionCookie) {
-		const user = await verifyUser(sessionCookie);
-		isAuthenticated = !!user;
-	}
-} catch (error) {
-	// Invalid cookie
-}
-
 // HighlightLayout.astro
 const currentPath = Astro.url.pathname;
 
@@ -54,6 +42,21 @@ const isHome = currentPath === "/" || currentPath === "";
 const isHighlightingDisabled =
 	isHome ||
 	HIGHLIGHT_BLACKLIST.some((path) => currentPath.startsWith(path));
+
+// Skip Firebase session verification when highlights are off. `verifySessionCookie(..., true)`
+// is a network round-trip and was adding TTFB on /search, /register, /signin, etc.
+let isAuthenticated = false;
+if (!isHighlightingDisabled) {
+	try {
+		const sessionCookie = Astro.cookies.get("__session")?.value;
+		if (sessionCookie) {
+			const user = await verifyUser(sessionCookie);
+			isAuthenticated = !!user;
+		}
+	} catch {
+		// Invalid cookie
+	}
+}
 
 const { title, description } = Astro.props;
 ---
