@@ -208,11 +208,23 @@
 				return "";
 			}
 
+			var included = [];
+			for (var b = 0; b < blocks.length; b++) {
+				if (__suttaShouldIncludeBlock(blocks[b])) included.push(blocks[b]);
+			}
+
 			var parts = [];
-			for (var i = 0; i < blocks.length; i++) {
-				var block = blocks[i];
-				if (!__suttaShouldIncludeBlock(block)) continue;
+			for (var i = 0; i < included.length; i++) {
+				var block = included[i];
 				if (!__suttaRangeIntersectsNode(range, block)) continue;
+				var nested = false;
+				for (var j = 0; j < included.length; j++) {
+					if (included[j] !== block && included[j].contains(block)) {
+						nested = true;
+						break;
+					}
+				}
+				if (nested) continue;
 				var blockText = __suttaExtractBlockPlainText(block, range);
 				if (blockText) parts.push(blockText);
 			}

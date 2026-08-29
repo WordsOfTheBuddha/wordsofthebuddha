@@ -219,6 +219,11 @@ function extractBlockPlainText(block: HTMLElement, range: Range): string {
 	return out.replace(/[ \t]+$/gm, "").replace(/^[ \t]+/gm, "");
 }
 
+/** Skip inner blocks already covered by an ancestor copy block (h1 > .pali-paragraph). */
+function isNestedCopyBlock(el: HTMLElement, included: HTMLElement[]): boolean {
+	return included.some((other) => other !== el && other.contains(el));
+}
+
 /**
  * Iterate live discourse blocks under the selection root. Adjacent blocks are
  * joined with `\n\n`. Verse `<br>` inside a block stays a single `\n`.
@@ -246,6 +251,7 @@ function serializeCopyTree(root: Node, range: Range): string {
 	const parts: string[] = [];
 	for (const block of blocks) {
 		if (!rangeIntersectsNode(range, block)) continue;
+		if (isNestedCopyBlock(block, blocks)) continue;
 		const text = extractBlockPlainText(block, range)
 			.replace(/[ \t]{2,}/g, " ")
 			.trim();

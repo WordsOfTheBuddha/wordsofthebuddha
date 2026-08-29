@@ -306,6 +306,31 @@ describe("getPlainTextFromRange", () => {
 		);
 	});
 
+	it("does not duplicate a Pāli title nested in the page h1", () => {
+		const { document } = installDom(`
+			<div id="highlight-root">
+				<h1 id="page-title">
+					<span class="text-primary-color">SN 48.11&nbsp;</span>
+					<span class="pali-paragraph">Paṭilābha sutta</span>
+					 - Acquires
+				</h1>
+				<article class="md-content">
+					<p class="english-paragraph">There are these five faculties.</p>
+				</article>
+			</div>
+		`);
+		document.documentElement.classList.add("pali-on");
+		const paliTitle = document.querySelector(".pali-paragraph")!;
+		assert.equal(getPlainTextFromRange(selectAll(paliTitle)), "Paṭilābha sutta");
+
+		const heading = document.querySelector("#page-title")!;
+		const fullTitle = getPlainTextFromRange(selectAll(heading));
+		assert.equal((fullTitle.match(/Paṭilābha sutta/g) || []).length, 1);
+		assert.equal(fullTitle.includes("Paṭilābha sutta\n\nPaṭilābha sutta"), false);
+		assert.match(fullTitle, /SN 48\.11/);
+		assert.match(fullTitle, /Acquires/);
+	});
+
 	it("joins paragraphs when intersectsNode is broken (WebKit)", () => {
 		const { document } = installDom(`
 			<article class="md-content">
@@ -562,6 +587,52 @@ describe("copy event handler", () => {
 
 		assert.equal(event.defaultPrevented, true);
 		assert.equal(stored["text/plain"], "paragraph one\n\nparagraph two");
+	});
+
+	it("inline copy does not duplicate a Pāli title nested in the page h1", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<div id="highlight-root">
+				<h1 id="page-title">
+					<span class="text-primary-color">SN 48.11&nbsp;</span>
+					<span class="pali-paragraph">Paṭilābha sutta</span>
+					 - Acquires
+				</h1>
+			</div>
+		`);
+		document.documentElement.classList.add("pali-on");
+		assert.equal(typeof window.__suttaPlainCopyPrepare, "undefined");
+		const inlineSrc = readFileSync(
+			path.join(
+				path.dirname(fileURLToPath(import.meta.url)),
+				"discoursePlainCopyInline.js",
+			),
+			"utf8",
+		);
+		(window as unknown as { eval: (code: string) => void }).eval(inlineSrc);
+
+		const paliTitle = document.querySelector(".pali-paragraph")!;
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(selectAll(paliTitle));
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+
+		assert.equal(event.defaultPrevented, true);
+		assert.equal(stored["text/plain"], "Paṭilābha sutta");
 	});
 
 	it("inline copy does not log on copy", () => {
