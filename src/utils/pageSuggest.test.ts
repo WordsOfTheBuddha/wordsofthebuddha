@@ -110,7 +110,7 @@ const supportPage: PageSuggestEntry = {
 	kind: "page",
 	title: "Support",
 	href: "/support",
-	aliases: [],
+	aliases: ["give", "gift", "donate"],
 };
 
 const discoverPage: PageSuggestEntry = {
@@ -359,6 +359,19 @@ describe("composeNavSuggestions", () => {
 		const items = composeNavSuggestions("explore", [], pages);
 		assert.equal(items[0]?.type, "page");
 		assert.equal(items[0]?.hit.href, "/discover");
+	});
+
+	it("shows Support on give, gift, and donate aliases", () => {
+		for (const query of ["give", "gift", "donate"]) {
+			const items = composeNavSuggestions(
+				query,
+				[],
+				SITE_PAGE_SUGGESTIONS,
+			);
+			assert.equal(items[0]?.type, "page", query);
+			assert.equal(items[0]?.hit.href, "/support", query);
+			assert.equal(items[0]?.hit.title, "Support", query);
+		}
 	});
 
 	it("matches an anthology title without the apostrophe", () => {

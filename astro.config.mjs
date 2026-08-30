@@ -107,6 +107,8 @@ export default defineConfig({
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
 		"/explore": "/discover",
+		"/give": "/support",
+		"/donate": "/support",
 		...mnVaggaRedirects,
 	},
 });

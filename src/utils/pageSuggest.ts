@@ -53,7 +53,12 @@ const MAX_CATALOG_HITS = 5;
 
 /** Hand-maintained site pages shown on exact title/alias match. */
 export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
-	{ kind: "page", title: "Support", href: "/support", aliases: [] },
+	{
+		kind: "page",
+		title: "Support",
+		href: "/support",
+		aliases: ["give", "gift", "donate"],
+	},
 	{
 		kind: "page",
 		title: "Discover",
