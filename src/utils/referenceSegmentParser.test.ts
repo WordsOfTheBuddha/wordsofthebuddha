@@ -105,7 +105,7 @@ describe("referenceSegmentParser", () => {
 			.filter(
 				(text) =>
 					text &&
-					!/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/.test(
+					!/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)ṁ?\.$/.test(
 						text.trim(),
 					),
 			).length;

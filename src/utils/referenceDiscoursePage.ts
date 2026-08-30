@@ -5,9 +5,11 @@ import {
 	PALI_ONLY_NOTICE,
 	parseContent,
 	parsePaliOnly,
+	extractPaliParagraphsForTm,
 	REFERENCE_TRANSLATION_CREDIT,
 	toSmartQuotes,
 	type ContentPair,
+	type TmPaliParagraph,
 } from "./contentParser";
 import {
 	hasSegmentMarkers,
@@ -54,6 +56,7 @@ export type ReferenceDiscoursePage = {
 		vizNext: null;
 		viewSource: "pli" | "en" | "sujato-reference";
 		referenceFallback: boolean;
+		tmFullPaliParagraphs?: TmPaliParagraph[] | null;
 	};
 };
 
@@ -209,6 +212,9 @@ export async function buildReferenceDiscoursePage(
 					? "pli"
 					: "en",
 			referenceFallback: useReferenceEnglish,
+			tmFullPaliParagraphs: import.meta.env.DEV
+				? extractPaliParagraphsForTm(paliParagraphEntry.body)
+				: null,
 		},
 	};
 }

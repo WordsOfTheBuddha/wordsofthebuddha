@@ -17,6 +17,7 @@ import {
 	parseContent,
 	createCombinedMarkdown,
 	hasPaliPairs,
+	extractPaliParagraphsForTm,
 } from "../utils/contentParser";
 import { getLastModified } from "../utils/getLastModified";
 import { findContentImages } from "../utils/contentImage";
@@ -102,6 +103,9 @@ const suttaProps = {
 	discourseRange: null,
 	commentary: contentItem.data.commentary,
 	contentImage,
+	tmFullPaliParagraphs: import.meta.env.DEV
+		? extractPaliParagraphsForTm(paliContent.body)
+		: null,
 };
 ---
 

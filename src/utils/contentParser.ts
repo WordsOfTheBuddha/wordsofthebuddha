@@ -518,8 +518,9 @@ export function parseContent(
 	return result;
 }
 
+/** Collection ordinal closers, e.g. `Dutiyaṁ.` / `Paṭhamaṁ.` */
 const END_MARKER =
-	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/;
+	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)ṁ?\.$/;
 
 function processBlocks(
 	englishText: string,
@@ -724,6 +725,37 @@ export function parsePaliOnly(paliText: string): ContentPair[] {
 		english: "",
 		pali,
 	}));
+}
+
+/** Plain Pāli paragraph for dev-mode Discourse Translation Memory (full file). */
+export type TmPaliParagraph = {
+	num: number;
+	text: string;
+};
+
+/**
+ * Numbered plain Pāli paragraphs from a discourse body (dev TM embed).
+ * Skips frontmatter separators, headings, and collection end markers so
+ * numbering matches translated ¶ numbers (1…N content paragraphs).
+ */
+export function extractPaliParagraphsForTm(paliText: string): TmPaliParagraph[] {
+	if (!paliText?.trim()) return [];
+
+	const blocks = paliText
+		.split(/\n\n+/)
+		.map((p) => p.trim())
+		.filter((p) => p.length > 0 && !p.startsWith("---"));
+
+	const result: TmPaliParagraph[] = [];
+	let num = 1;
+	for (const block of blocks) {
+		if (block.startsWith("#")) continue;
+		if (END_MARKER.test(block)) continue;
+		const text = block.replace(/\s+/g, " ").trim();
+		if (!text) continue;
+		result.push({ num: num++, text });
+	}
+	return result;
 }
 
 // Helper to process quotes in a paragraph based on boundaries.

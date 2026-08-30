@@ -39,7 +39,7 @@ import {
 } from "../utils/tocClient";
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
-import { debug } from "../utils/contentParser";
+import { debug, type TmPaliParagraph } from "../utils/contentParser";
 import discoursePlainCopyInline from "../utils/discoursePlainCopyInline.js?raw";
 
 const paramTheme = Astro.url.searchParams.get("theme");
@@ -79,6 +79,7 @@ const {
 	robots = null,
 	ogType = null,
 	seoDescription = null,
+	tmFullPaliParagraphs = null,
 } = Astro.props as {
 	id?: string;
 	fp?: string;
@@ -111,6 +112,8 @@ const {
 	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms";
 	/** Page shows a B. Sujato reference translation fallback; defaults to Pali-only with a translation toggle. */
 	referenceFallback?: boolean;
+	/** Dev-only: full Pāli paragraph list for Discourse Translation Memory. */
+	tmFullPaliParagraphs?: TmPaliParagraph[] | null;
 	/**
 	 * Canonical path, e.g. `/mn1`. Required on middleware-rewritten routes
 	 * (`/discourse-ssr/*`, `/discourse-sujato/*`, `/discourse-dynamic/*`) where
@@ -491,7 +494,7 @@ const structuredData = buildStructuredData({
 		<Analytics />
 		<SpeedInsights />
 		<BottomDrawer />
-		<TranslationMatchesLazy />
+		<TranslationMatchesLazy tmFullPaliParagraphs={tmFullPaliParagraphs} />
 		<PrintFormatter />
 		<main class="flex-1 flex flex-col p-4">
 			<div

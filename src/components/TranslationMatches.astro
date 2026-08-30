@@ -3393,6 +3393,48 @@ function getCurrentSuttaId(): string {
     return paragraphs;
   }
 
+  /** Dev embed: full discourse Pāli (beyond the page's 3-preview window). */
+  function readEmbeddedFullPaliParagraphs(): Array<{ num: number; text: string }> | null {
+    const raw = (window as any).__TM_FULL_PALI_PARAGRAPHS__;
+    if (!Array.isArray(raw) || raw.length === 0) return null;
+    const paragraphs: Array<{ num: number; text: string }> = [];
+    for (const item of raw) {
+      if (!item || typeof item.num !== 'number' || typeof item.text !== 'string') continue;
+      const text = item.text.replace(/\s+/g, ' ').trim();
+      if (!text) continue;
+      paragraphs.push({ num: item.num, text });
+    }
+    return paragraphs.length > 0 ? paragraphs : null;
+  }
+
+  /**
+   * Prefer the full-file embed when present; merge DOM nodes so on-page
+   * paragraphs keep English pairing and cached TM results.
+   */
+  function collectDiscourseTmParagraphs(): Array<{ num: number; text: string; el?: Element }> {
+    const pageParagraphs = collectPagePaliParagraphs();
+    const embedded = readEmbeddedFullPaliParagraphs();
+    if (!embedded) return pageParagraphs;
+
+    const pageByNum = new Map(pageParagraphs.map((p) => [p.num, p]));
+    const merged: Array<{ num: number; text: string; el?: Element }> = embedded.map((p) => {
+      const page = pageByNum.get(p.num);
+      return {
+        num: p.num,
+        text: page?.text ?? p.text,
+        el: page?.el,
+      };
+    });
+
+    for (const page of pageParagraphs) {
+      if (!merged.some((p) => p.num === page.num)) {
+        merged.push(page);
+      }
+    }
+    merged.sort((a, b) => a.num - b.num);
+    return merged;
+  }
+
   const DISCOURSE_TM_AGENT_BRIEF =
     'Whole-discourse Translation Memory. Each paragraphs[] item is one Pāli paragraph in reading order. phraseTabs[].matches are the same up-to-3 diverse existing translations shown in the TM popover (topMatch is matches[0]). Reuse englishTranslation phrasing where it aligns with matchedSegmentPali so the new rendering stays consistent with the corpus. currentEnglish is this discourse’s existing translation when present; needsTranslation marks paragraphs still to translate. Glosses in strings use |term::definition|. Adapt for context; do not copy a match when the surrounding sentence differs.';
 
@@ -3408,7 +3450,7 @@ function getCurrentSuttaId(): string {
 
     const suttaId = getCurrentSuttaId() || null;
     const hideSameDiscourse = Boolean(excludeSameDiscourse && suttaId);
-    const pageParagraphs = collectPagePaliParagraphs();
+    const sourceParagraphs = collectDiscourseTmParagraphs();
     const BATCH_SIZE = 3;
     const paragraphs: Array<{
       paragraphNum: number;
@@ -3418,16 +3460,19 @@ function getCurrentSuttaId(): string {
       phraseTabs: ReturnType<typeof buildAgentPhraseTabs>;
     }> = [];
 
-    for (let i = 0; i < pageParagraphs.length; i++) {
+    for (let i = 0; i < sourceParagraphs.length; i++) {
       if (shouldAbort?.()) return null;
-      const para = pageParagraphs[i];
-      onProgress?.(i + 1, pageParagraphs.length);
+      const para = sourceParagraphs[i];
+      onProgress?.(i + 1, sourceParagraphs.length);
 
-      const english = getPairedEnglish(para.el);
+      // Off-page paragraphs (beyond the 3-preview) have no English in the DOM.
+      const english = para.el
+        ? getPairedEnglish(para.el)
+        : { currentEnglish: null, needsTranslation: true };
       const sourceRef = suttaId ? { suttaId, paragraphNum: para.num } : undefined;
       let result: TMMatchResult | null = null;
       // Cached TM results include same-discourse matches, so skip the cache when hiding them.
-      if (!hideSameDiscourse) {
+      if (!hideSameDiscourse && para.el) {
         const cachedRaw = para.el.querySelector('.tm-lookup-btn')?.getAttribute('data-tm-matches');
         if (cachedRaw) {
           try {
@@ -3543,7 +3588,7 @@ function getCurrentSuttaId(): string {
 
   function renderDiscourseTmIndex(payload: DiscourseTmSnapshot): string {
     if (!payload.paragraphs.length) {
-      return '<div class="tm-discourse-index-empty">No Pāli paragraphs found on this page.</div>';
+      return '<div class="tm-discourse-index-empty">No Pāli paragraphs found for this discourse.</div>';
     }
 
     return payload.paragraphs.map((para, index) => {

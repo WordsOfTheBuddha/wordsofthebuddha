@@ -3,10 +3,43 @@
  * Dev-only lazy loader for TranslationMatches.
  * Keeps the ~4k-line TM component out of Layout's static import graph so
  * content saves don't trigger a full recompile of it on the next page load.
+ *
+ * When `tmFullPaliParagraphs` is provided, embeds the full discourse Pāli list
+ * so the Discourse TM panel can match paragraphs beyond the page's 3-preview.
  */
+import type { TmPaliParagraph } from "../utils/contentParser";
+
+interface Props {
+	tmFullPaliParagraphs?: TmPaliParagraph[] | null;
+}
+
+const { tmFullPaliParagraphs = null } = Astro.props;
+
 let TranslationMatches = null;
 if (import.meta.env.DEV) {
 	TranslationMatches = (await import("./TranslationMatches.astro")).default;
 }
+
+const embedParagraphs =
+	import.meta.env.DEV && tmFullPaliParagraphs && tmFullPaliParagraphs.length > 0
+		? tmFullPaliParagraphs
+		: null;
 ---
-{TranslationMatches && <TranslationMatches />}
+
+{
+	TranslationMatches && (
+		<>
+			{
+				embedParagraphs && (
+					<script
+						is:inline
+						define:vars={{ __tmFullPaliParagraphs: embedParagraphs }}
+					>
+						window.__TM_FULL_PALI_PARAGRAPHS__ = __tmFullPaliParagraphs;
+					</script>
+				)
+			}
+			<TranslationMatches />
+		</>
+	)
+}

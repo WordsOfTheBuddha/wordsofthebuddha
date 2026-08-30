@@ -2,6 +2,7 @@ import {
 	parseContent,
 	createCombinedMarkdown,
 	hasPaliPairs,
+	extractPaliParagraphsForTm,
 	compareHierarchicalNumber,
 	constructHierarchicalEnd,
 	isValidParagraphRange,
@@ -341,6 +342,9 @@ export async function resolveCatchAllDiscoursePage(
 		contentImage,
 		vizPrev: prevViz,
 		vizNext: nextViz,
+		tmFullPaliParagraphs: import.meta.env.DEV
+			? extractPaliParagraphsForTm(paliContent.body)
+			: null,
 	};
 
 	return {

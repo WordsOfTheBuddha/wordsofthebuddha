@@ -10,8 +10,9 @@ type SegmentEntry = { key: string; text: string };
 
 const SEGMENT_MARKER_RE = /^<!-- @segment ([^\s>]+) -->$/;
 
+/** Collection ordinal closers, e.g. `Dutiyaṁ.` / `Paṭhamaṁ.` */
 const END_MARKER_RE =
-	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/;
+	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)ṁ?\.$/;
 
 export type ReferenceSubsetFilter = {
 	sectionNumber?: string;
