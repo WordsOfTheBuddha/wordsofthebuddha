@@ -927,5 +927,11 @@
 	"puttadāropissa": ["puttadāro", "api", "assa"],
 	"sāpateyyampissa": ["sāpateyya", "api", "assa"],
 	"rattimuṭṭhānadessinā": ["rattinuṭṭhānadassī"],
-	"parammukhāssa": ["parammukha", "assa"]
+	"parammukhāssa": ["parammukha", "assa"],
+	"saṅgāmavijayotipi": ["saṅgāmavijayo", "iti", "api"],
+	"amatadundubhītipi": ["amatadundubhi", "iti", "api"],
+	"dhammādāsotipi": ["dhammādāso", "iti", "api"],
+	"bahudhātukotipi": ["bahudhātuko", "iti", "api"],
+	"catuparivaṭṭotipi": ["catuparivaṭṭo", "iti", "api"],
+	"bhavanettinirodhoti": ["bhavanetti", "nirodho"]
 }
