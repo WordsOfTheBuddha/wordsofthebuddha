@@ -255,7 +255,7 @@ html[data-collection-view="discourses"] #discourses-panel.hidden {
 html[data-collection-view="discourses"] #filter-wrap.hidden {
 	display: flex !important;
 }
-html[data-collection-view="discourses"] .toggle-ref--discourses.hidden {
+html[data-collection-view="discourses"] .collection-chrome__ref--mobile.hidden {
 	display: inline-flex !important;
 }
 html[data-collection-view="discourses"] #view-collections {
@@ -265,6 +265,14 @@ html[data-collection-view="discourses"] #view-collections {
 html[data-collection-view="discourses"] #view-discourses {
 	background-color: var(--primary-color) !important;
 	color: white !important;
+}
+@media (min-width: 768px) {
+	html[data-collection-view="discourses"] .collection-chrome__ref--desktop.toggle-ref--discourses.hidden {
+		display: inline-flex !important;
+	}
+	html[data-collection-view="discourses"] .collection-chrome__ref--mobile {
+		display: none !important;
+	}
 }`}
 			</style>
 		)
@@ -309,40 +317,85 @@ html[data-collection-view="discourses"] #view-discourses {
 				)
 			}
 			{
-				collectionSlug && (
-					<div class="collection-chrome__print collection-chrome__print--mobile shrink-0 sm:hidden">
-						<CollectionExportButton collectionSlug={collectionSlug} />
-					</div>
+				/* Leaf pages: Download stays in its own grid cell (unchanged mobile/desktop). */
+				!hasChildren && collectionSlug && (
+					<>
+						<div class="collection-chrome__print collection-chrome__print--mobile shrink-0 sm:hidden">
+							<CollectionExportButton collectionSlug={collectionSlug} />
+						</div>
+						<div class="collection-chrome__print collection-chrome__print--desktop hidden shrink-0 sm:block">
+							<CollectionExportButton collectionSlug={collectionSlug} />
+						</div>
+					</>
 				)
 			}
 			{
-				collectionSlug && (
-					<div class="collection-chrome__print collection-chrome__print--desktop hidden shrink-0 sm:block">
-						<CollectionExportButton collectionSlug={collectionSlug} />
-					</div>
-				)
-			}
-			{
-				hasChildren && hasRefCountableChildren && (
-					<div
-						id="collections-ref-wrap"
-						class:list={[
-							"not-prose w-full min-w-0",
-							!defaultShowCollections ? "hidden" : "",
-						]}
-					>
-						<button
-							type="button"
-							class:list={[
-								"toggle-ref toggle-ref--collections filter-toolbar-btn",
-								refModeOnPage ? "filter-toolbar-btn--active" : "",
-							]}
-							aria-pressed={refModeOnPage ? "true" : "false"}
-							title="Include reference discourses in collection counts"
-						>
-							<span class="md:hidden">Ref</span>
-							<span class="hidden md:inline">See Refs</span>
-						</button>
+				/* Parent pages: pin See Refs + Download in one right-side cluster so
+				   they keep the same desktop position across Collections/Discourses.
+				   Mobile layout is unchanged (Download top-right; See Refs in filter). */
+				hasChildren && (
+					<div class="collection-chrome__actions shrink-0">
+						{(hasRefCountableChildren ||
+							hasReferenceOnlyDiscourses) && (
+							<div class="collection-chrome__ref-slot">
+								{hasRefCountableChildren && (
+									<div
+										id="collections-ref-wrap"
+										class:list={[
+											"collection-chrome__ref collection-chrome__ref--desktop not-prose",
+											!defaultShowCollections
+												? "hidden"
+												: "",
+										]}
+									>
+										<button
+											type="button"
+											class:list={[
+												"toggle-ref toggle-ref--collections filter-toolbar-btn",
+												refModeOnPage
+													? "filter-toolbar-btn--active"
+													: "",
+											]}
+											aria-pressed={
+												refModeOnPage ? "true" : "false"
+											}
+											title="Include reference discourses in collection counts"
+										>
+											See Refs
+										</button>
+									</div>
+								)}
+								{hasReferenceOnlyDiscourses && (
+									<button
+										type="button"
+										aria-pressed="false"
+										class:list={[
+											"toggle-ref toggle-ref--discourses filter-toolbar-btn collection-chrome__ref collection-chrome__ref--desktop",
+											defaultShowCollections
+												? "hidden"
+												: "",
+										]}
+										title="Include reference-only discourses (Sujato translation)"
+									>
+										See Refs
+									</button>
+								)}
+							</div>
+						)}
+						{collectionSlug && (
+							<>
+								<div class="sm:hidden">
+									<CollectionExportButton
+										collectionSlug={collectionSlug}
+									/>
+								</div>
+								<div class="hidden sm:block">
+									<CollectionExportButton
+										collectionSlug={collectionSlug}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 				)
 			}
@@ -374,6 +427,9 @@ html[data-collection-view="discourses"] #view-discourses {
 								aria-pressed="false"
 								class:list={[
 									"toggle-ref toggle-ref--discourses filter-toolbar-btn",
+									hasChildren
+										? "collection-chrome__ref collection-chrome__ref--mobile"
+										: "",
 									hasChildren && defaultShowCollections
 										? "hidden"
 										: "",
@@ -644,7 +700,7 @@ html[data-collection-view="discourses"] #view-discourses {
 		.collection-chrome--parent {
 			grid-template-columns: minmax(0, 1fr) auto;
 			grid-template-areas:
-				"toggle print"
+				"toggle actions"
 				"filter filter";
 		}
 		.collection-chrome__toggle {
@@ -654,11 +710,22 @@ html[data-collection-view="discourses"] #view-discourses {
 			grid-area: print;
 			justify-self: end;
 		}
+		.collection-chrome__actions {
+			grid-area: actions;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 0.75rem;
+			justify-self: end;
+		}
+		/* Keep See Refs + Download pinned; stack both See Refs variants in one slot. */
+		.collection-chrome__ref-slot {
+			display: none;
+		}
 		.collection-chrome__discourses:not(.hidden) {
 			display: contents;
 		}
-		#filter-wrap,
-		#collections-ref-wrap {
+		#filter-wrap {
 			grid-area: filter;
 		}
 		#discourses-grid {
@@ -670,27 +737,48 @@ html[data-collection-view="discourses"] #view-discourses {
 			}
 			.collection-chrome--parent {
 				grid-template-columns: auto minmax(0, 1fr) auto;
-				grid-template-areas: "toggle filter print";
+				grid-template-areas: "toggle filter actions";
+				/* Top-align so a taller filter doesn't vertically nudge toggle/actions. */
+				align-items: start;
+			}
+			.collection-chrome__ref-slot {
+				display: grid;
+				grid-template: 1fr / 1fr;
+				align-items: center;
+				justify-items: end;
+			}
+			.collection-chrome__ref-slot > * {
+				grid-area: 1 / 1;
+			}
+			/* Optically center toggle/actions against the filter control height. */
+			.collection-chrome--parent .collection-chrome__toggle,
+			.collection-chrome--parent .collection-chrome__actions {
+				margin-top: 0.2rem;
 			}
 		}
 		#filter-wrap.hidden {
 			display: none !important;
 		}
-		#collections-ref-wrap.hidden {
-			display: none !important;
-		}
-		#collections-ref-wrap:not(.hidden) {
-			display: none;
-		}
-		@media (min-width: 768px) {
-			#collections-ref-wrap:not(.hidden) {
-				display: flex;
-				justify-content: flex-end;
-				align-items: center;
-			}
-		}
+		#collections-ref-wrap.hidden,
 		.toggle-ref--discourses.hidden {
 			display: none !important;
+		}
+		/* Parent desktop: See Refs lives in the right actions cluster.
+		   Parent mobile: keep See Refs inside the filter row only. */
+		.collection-chrome--parent .collection-chrome__ref--desktop {
+			display: none;
+		}
+		.collection-chrome--parent .collection-chrome__ref--mobile:not(.hidden) {
+			display: inline-flex;
+		}
+		@media (min-width: 768px) {
+			.collection-chrome--parent
+				.collection-chrome__ref--desktop:not(.hidden) {
+				display: inline-flex;
+			}
+			.collection-chrome--parent .collection-chrome__ref--mobile {
+				display: none !important;
+			}
 		}
 		.filter-toolbar-btn:not(.hidden) {
 			display: inline-flex;
