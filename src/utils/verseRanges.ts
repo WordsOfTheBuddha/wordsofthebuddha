@@ -1,6 +1,6 @@
 /**
  * Light verse-range helpers for discourse chrome and PED slug mapping.
- * Not in-text verse numbering — just the sutta’s span (e.g. vv. 143–152).
+ * Ranges cover all Snp discourses (curated or reference), not only hosted EN.
  */
 
 import { SNP_VERSE_RANGES } from "../data/snpVerseRanges.generated";

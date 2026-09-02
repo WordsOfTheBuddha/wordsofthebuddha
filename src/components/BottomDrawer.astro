@@ -140,6 +140,7 @@ import "../styles/bottomDrawer.css";
 			dictionaryLookupStack.length = 0;
 			currentDictionaryWord = "";
 			preferredDictPanel = "dpd";
+			preferredPedPartIndex = 0;
 		}
 
 		private setupLinkHandlers() {
@@ -166,7 +167,7 @@ import "../styles/bottomDrawer.css";
 				});
 			});
 
-			// Nested lookup from top-row sandhi parts (pushes history for Back)
+			// Top-row sandhi: on PED → switch headword; on DPD → nested lookup
 			const lookupTargets = this.popover?.querySelectorAll(
 				"[data-lookup-word]",
 			);
@@ -174,6 +175,17 @@ import "../styles/bottomDrawer.css";
 				el.addEventListener("click", (e) => {
 					e.preventDefault();
 					e.stopPropagation();
+					const pedIdx = el.getAttribute("data-ped-part");
+					const shell = this.popover?.querySelector(".dict-shell");
+					if (
+						preferredDictPanel === "ped" &&
+						pedIdx != null &&
+						shell?.querySelector(`[data-ped-part-body="${pedIdx}"]`)
+					) {
+						preferredPedPartIndex = Number(pedIdx) || 0;
+						applyPedPartPreference(shell, pedIdx);
+						return;
+					}
 					const raw = el.getAttribute("data-lookup-word") || "";
 					const word = cleanPaliWordForLookup(raw);
 					if (word) showDictionaryPopover(word, false, { nested: true });
@@ -200,6 +212,24 @@ import "../styles/bottomDrawer.css";
 						this.popover?.querySelector(".dict-shell"),
 						panel,
 						true,
+					);
+				});
+			});
+
+			// Fallback PED chips (only when construction cannot cover all entries)
+			const pedChips = this.popover?.querySelectorAll(
+				".ped-part-chips [data-ped-part]",
+			);
+			pedChips?.forEach((chip) => {
+				chip.addEventListener("click", (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					const idx = chip.getAttribute("data-ped-part");
+					if (idx == null) return;
+					preferredPedPartIndex = Number(idx) || 0;
+					applyPedPartPreference(
+						this.popover?.querySelector(".dict-shell"),
+						idx,
 					);
 				});
 			});
@@ -616,16 +646,23 @@ import "../styles/bottomDrawer.css";
 	let currentDictionaryWord = "";
 	/** Remember DPD vs PED across nested lookups and async PED upgrades. */
 	let preferredDictPanel: "dpd" | "ped" = "dpd";
+	/** Which PED headword body is active when multiple entries exist. */
+	let preferredPedPartIndex = 0;
 	/** Bumped on every dictionary open so late PED responses cannot clobber newer lookups. */
 	let dictionaryLookupGeneration = 0;
 
 	type DictView = {
+		word: string;
 		headerHtml: string;
 		dpdBodyHtml: string;
 		/** Lexical sandhi parts only (no root √ analyses / single-letter suffixes). */
 		constructionParts: string[];
 		lemmas: string[];
+		construction?: string;
+		pos?: string;
 	};
+
+	const DPD_ATTRIBUTION_HTML = `<div class="dict-attribution">Digital Pāḷi Dictionary · CC BY-NC-SA 4.0</div>`;
 
 	/** Short / morphological bits from DPD constructions that must not drive PED. */
 	const PED_PART_BLOCKLIST = new Set([
@@ -702,26 +739,105 @@ import "../styles/bottomDrawer.css";
 			.filter(isUsefulPedPart);
 	}
 
-	function createPedBodiesHtml(
+	type PedPanelHtml = {
+		/**
+		 * Fallback chips only when the sticky construction row cannot cover
+		 * all PED headwords. Prefer reusing āhāra + nirodha as switchers.
+		 */
+		chipsHtml: string;
+		bodyHtml: string;
+		/** Construction parts drive PED switching (no extra chip row). */
+		usesConstructionSwitcher: boolean;
+	};
+
+	async function mapConstructionPartsToPedIndices(
+		parts: string[],
+		entries: Array<{ word: string; html: string }>,
+		pedHeadword: typeof import("../utils/pedLookup").lookupPedHeadword,
+	): Promise<Map<string, number>> {
+		const map = new Map<string, number>();
+		for (const part of parts) {
+			const hit = await pedHeadword(part);
+			if (!hit) continue;
+			const idx = entries.findIndex((e) => e.word === hit.word);
+			if (idx >= 0) map.set(part, idx);
+		}
+		return map;
+	}
+
+	function createPedPanelHtml(
 		entries: Array<{ word: string; html: string }>,
 		linkify: (html: string) => string,
-	): string {
+		opts: { useConstructionSwitcher: boolean; activeIndex: number },
+	): PedPanelHtml {
+		const multi = entries.length >= 2;
+		const activeIndex = Math.min(
+			Math.max(0, opts.activeIndex),
+			Math.max(0, entries.length - 1),
+		);
+		// Fallback chips only when construction cannot act as the switcher
+		const chipsHtml =
+			multi && !opts.useConstructionSwitcher
+				? `<div class="ped-part-chips" role="tablist" aria-label="PED headwords">
+					${entries
+						.map(
+							(entry, i) => `
+						<button type="button"
+							class="ped-part-chip${i === activeIndex ? " active" : ""}"
+							role="tab"
+							aria-selected="${i === activeIndex ? "true" : "false"}"
+							data-ped-part="${i}"
+							title="${escapeHtml(entry.word)}"
+						>${escapeHtml(entry.word)}</button>`,
+						)
+						.join("")}
+				</div>`
+				: "";
+
 		const blocks = entries
 			.map(
-				(entry) => `
-			<div class="ped-entry-block">
-				<div class="ped-entry-headword">${escapeHtml(entry.word)}</div>
+				(entry, i) => `
+			<div class="ped-entry-block${i === activeIndex ? "" : " hidden"}" data-ped-part-body="${i}">
+				${
+					multi && opts.useConstructionSwitcher
+						? ""
+						: `<div class="ped-entry-headword">${escapeHtml(entry.word)}</div>`
+				}
 				<div class="ped-entry">${linkify(entry.html)}</div>
 			</div>
 		`,
 			)
 			.join("");
-		return `
+
+		return {
+			chipsHtml,
+			usesConstructionSwitcher: opts.useConstructionSwitcher,
+			bodyHtml: `
 			<div class="ped-content">
 				${blocks}
-				<div class="ped-attribution">Pali-English Dictionary (Rhys Davids &amp; Stede), PTS · CC BY-NC 3.0</div>
+				<div class="dict-attribution">Pali-English Dictionary (Rhys Davids &amp; Stede), PTS · CC BY-NC 3.0</div>
 			</div>
-		`;
+		`,
+		};
+	}
+
+	function applyPedPartPreference(
+		root: Element | null | undefined,
+		partIndex: string,
+	) {
+		if (!root) return;
+		root.querySelectorAll("[data-ped-part]").forEach((chip) => {
+			const on = chip.getAttribute("data-ped-part") === partIndex;
+			chip.classList.toggle("active", on);
+			chip.setAttribute("aria-selected", on ? "true" : "false");
+		});
+		root.querySelectorAll("[data-ped-part-body]").forEach((body) => {
+			body.classList.toggle(
+				"hidden",
+				body.getAttribute("data-ped-part-body") !== partIndex,
+			);
+		});
+		root.querySelector(".dict-scroll")?.scrollTo?.({ top: 0 });
 	}
 
 	function applyDictPanelPreference(
@@ -731,6 +847,7 @@ import "../styles/bottomDrawer.css";
 	) {
 		if (!root) return;
 		const active = hasPed && panel === "ped" ? "ped" : "dpd";
+		root.setAttribute("data-dict-active", active);
 		root.querySelectorAll("[data-dict-panel]").forEach((t) => {
 			const on = t.getAttribute("data-dict-panel") === active;
 			t.classList.toggle("active", on);
@@ -742,23 +859,49 @@ import "../styles/bottomDrawer.css";
 				body.getAttribute("data-dict-panel-body") !== active,
 			),
 		);
+		const chipsRow = root.querySelector(".dict-chrome-parts");
+		if (chipsRow) {
+			chipsRow.classList.toggle("hidden", active !== "ped");
+		}
+		if (active === "ped") {
+			const bodies = [
+				...root.querySelectorAll("[data-ped-part-body]"),
+			];
+			const max = Math.max(0, bodies.length - 1);
+			const idx = String(
+				Math.min(Math.max(0, preferredPedPartIndex), max),
+			);
+			applyPedPartPreference(root, idx);
+		} else {
+			// DPD: construction parts are nested-lookup links, not PED chips
+			root.querySelectorAll(
+				".construction [data-ped-part]",
+			).forEach((el) => {
+				el.classList.remove("active");
+				el.setAttribute("aria-selected", "false");
+			});
+		}
 	}
 
 	function wrapDictShell(
 		headerHtml: string,
 		dpdBodyHtml: string,
-		pedBodyHtml: string | null,
+		pedPanel: PedPanelHtml | null,
 	): string {
 		const showBack = dictionaryLookupStack.length > 0;
-		const hasPed = !!pedBodyHtml;
+		const hasPed = !!pedPanel;
 		const activePanel =
 			hasPed && preferredDictPanel === "ped" ? "ped" : "dpd";
 		const pedTab = hasPed
 			? `<button type="button" class="dict-panel-tab${activePanel === "ped" ? " active" : ""}" role="tab" aria-selected="${activePanel === "ped" ? "true" : "false"}" data-dict-panel="ped">PED</button>`
 			: "";
 		const pedBody = hasPed
-			? `<div class="dict-panel-body${activePanel === "ped" ? "" : " hidden"}" data-dict-panel-body="ped" role="tabpanel">${pedBodyHtml}</div>`
+			? `<div class="dict-panel-body${activePanel === "ped" ? "" : " hidden"}" data-dict-panel-body="ped" role="tabpanel">${pedPanel!.bodyHtml}</div>`
 			: "";
+		const chipsRow =
+			hasPed && pedPanel!.chipsHtml
+				? `<div class="dict-chrome-parts${activePanel === "ped" ? "" : " hidden"}">${pedPanel!.chipsHtml}</div>`
+				: "";
 		const backBtn = showBack
 			? `<button type="button" class="dict-back-btn" data-dict-back aria-label="Back to previous word" title="Back to previous word">
 					<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -767,16 +910,19 @@ import "../styles/bottomDrawer.css";
 				</button>`
 			: "";
 		return `
-			<div class="dict-shell">
+			<div class="dict-shell" data-dict-active="${activePanel}">
 				<div class="dict-chrome">
-					<div class="dict-panel-tabs" role="tablist" aria-label="Dictionary">
-						<button type="button" class="dict-panel-tab${activePanel === "dpd" ? " active" : ""}" role="tab" aria-selected="${activePanel === "dpd" ? "true" : "false"}" data-dict-panel="dpd">DPD</button>
-						${pedTab}
+					<div class="dict-chrome-top">
+						<div class="dict-panel-tabs" role="tablist" aria-label="Dictionary">
+							<button type="button" class="dict-panel-tab${activePanel === "dpd" ? " active" : ""}" role="tab" aria-selected="${activePanel === "dpd" ? "true" : "false"}" data-dict-panel="dpd">DPD</button>
+							${pedTab}
+						</div>
+						<div class="dict-chrome-main">
+							${backBtn}
+							${headerHtml}
+						</div>
 					</div>
-					<div class="dict-chrome-main">
-						${backBtn}
-						${headerHtml}
-					</div>
+					${chipsRow}
 				</div>
 				<div class="dict-scroll">
 					<div class="dict-panel-body${activePanel === "dpd" ? "" : " hidden"}" data-dict-panel-body="dpd" role="tabpanel">${dpdBodyHtml}</div>
@@ -850,6 +996,7 @@ import "../styles/bottomDrawer.css";
 			dictionaryLookupStack.length = 0;
 			if (!opts.preservePanel) {
 				preferredDictPanel = "dpd";
+				preferredPedPartIndex = 0;
 			}
 		}
 		currentDictionaryWord = word;
@@ -899,11 +1046,34 @@ import "../styles/bottomDrawer.css";
 							return;
 						}
 
+						const pedPartMap = await mapConstructionPartsToPedIndices(
+							view.constructionParts,
+							pedEntries,
+							pedHeadword,
+						);
+						const mappedIndices = new Set(pedPartMap.values());
+						// Reuse sticky āhāra + nirodha when it covers every PED entry
+						const useConstructionSwitcher =
+							pedEntries.length >= 2 &&
+							mappedIndices.size >= 2 &&
+							mappedIndices.size === pedEntries.length;
+
+						const headerHtml = buildSharedHeaderHtml(
+							view.word,
+							view.construction,
+							view.pos,
+							useConstructionSwitcher ? pedPartMap : undefined,
+						);
+						const pedPanel = createPedPanelHtml(pedEntries, linkify, {
+							useConstructionSwitcher,
+							activeIndex: preferredPedPartIndex,
+						});
+
 						bottomPopover.show(
 							wrapDictShell(
-								view.headerHtml,
+								headerHtml,
 								view.dpdBodyHtml,
-								createPedBodiesHtml(pedEntries, linkify),
+								pedPanel,
 							),
 							"dictionary",
 						);
@@ -947,6 +1117,7 @@ import "../styles/bottomDrawer.css";
 		word: string,
 		construction: string | undefined,
 		pos: string | undefined,
+		pedPartMap?: Map<string, number>,
 	): string {
 		const displayConstruction = pickLexicalConstruction(construction);
 		return `
@@ -954,7 +1125,7 @@ import "../styles/bottomDrawer.css";
 				<span class="dict-headword">${escapeHtml(word)}</span>
 				${
 					displayConstruction
-						? `<span>${formatConstructionLinks(displayConstruction, word)}</span>`
+						? `<span>${formatConstructionLinks(displayConstruction, word, pedPartMap)}</span>`
 						: ""
 				}
 				${pos ? `<span><span class="grammar">${escapeHtml(pos)}</span></span>` : ""}
@@ -1046,6 +1217,7 @@ import "../styles/bottomDrawer.css";
 			isSingleGroup && topDef.pos ? topDef.pos : undefined;
 
 		return {
+			word,
 			headerHtml: buildSharedHeaderHtml(word, construction, pos),
 			dpdBodyHtml: `
 				<div class="dpd-content lemma-groups">
@@ -1060,10 +1232,13 @@ import "../styles/bottomDrawer.css";
 					`
 							: ""
 					}
+					${DPD_ATTRIBUTION_HTML}
 				</div>
 			`,
 			constructionParts: extractConstructionParts(data),
 			lemmas: extractLemmaCandidates(word, data),
+			construction,
+			pos,
 		};
 	}
 
@@ -1086,11 +1261,13 @@ import "../styles/bottomDrawer.css";
 
 	/**
 	 * Top-row sandhi only: split "buddha+sāsana" / "imaṃ + atthaṁ" into tappable
-	 * parts. Lemma/constituent headers in the meanings body stay plain text.
+	 * parts. On PED, parts with data-ped-part switch headwords in-place; on DPD
+	 * they nested-lookup. Lemma/constituent headers in the body stay plain text.
 	 */
 	function formatConstructionLinks(
 		construction: string,
 		lookupWord: string,
+		pedPartMap?: Map<string, number>,
 	): string {
 		const flat = construction.replace(/\n/g, " ; ").trim();
 		if (!flat.includes("+")) {
@@ -1103,6 +1280,7 @@ import "../styles/bottomDrawer.css";
 		if (parts.length < 2) {
 			return `<span class="construction">${escapeHtml(flat)}</span>`;
 		}
+		const usePedSwitcher = !!pedPartMap && pedPartMap.size >= 2;
 		const linked = parts
 			.map((part) => {
 				const clean = part.replace(/^√/u, "").trim();
@@ -1112,10 +1290,25 @@ import "../styles/bottomDrawer.css";
 				) {
 					return `<span class="construction-part">${escapeHtml(clean || part)}</span>`;
 				}
-				return `<button type="button" class="construction-part lookup-word-btn" data-lookup-word="${escapeHtml(clean)}" title="Look up ${escapeHtml(clean)}">${escapeHtml(clean)}</button>`;
+				const pedIdx = pedPartMap?.get(clean);
+				const pedAttrs =
+					usePedSwitcher && pedIdx != null
+						? ` data-ped-part="${pedIdx}" aria-selected="false"`
+						: "";
+				const pedClass =
+					usePedSwitcher && pedIdx != null
+						? " construction-part--ped"
+						: "";
+				// No title on PED switcher chips — the label is enough; a dual-mode
+				// tooltip ("PED switch / DPD look up") was more confusing than helpful.
+				const titleAttr =
+					usePedSwitcher && pedIdx != null
+						? ""
+						: ` title="Look up ${escapeHtml(clean)}"`;
+				return `<button type="button" class="construction-part lookup-word-btn${pedClass}" data-lookup-word="${escapeHtml(clean)}"${pedAttrs}${titleAttr}>${escapeHtml(clean)}</button>`;
 			})
 			.join('<span class="construction-sep"> + </span>');
-		return `<span class="construction">${linked}</span>`;
+		return `<span class="construction${usePedSwitcher ? " construction--ped-switcher" : ""}">${linked}</span>`;
 	}
 
 	function buildCompoundDictView(word: string, data: any): DictView {
@@ -1139,6 +1332,7 @@ import "../styles/bottomDrawer.css";
 		const pos = definitions[0]?.pos;
 
 		return {
+			word,
 			headerHtml: buildSharedHeaderHtml(word, construction, pos),
 			dpdBodyHtml: `
 				<div class="dpd-content compound-content">
@@ -1160,10 +1354,13 @@ import "../styles/bottomDrawer.css";
 					`,
 						)
 						.join("")}
+					${DPD_ATTRIBUTION_HTML}
 				</div>
 			`,
 			constructionParts: extractConstructionParts(data),
 			lemmas: extractLemmaCandidates(word, data),
+			construction,
+			pos,
 		};
 	}
 

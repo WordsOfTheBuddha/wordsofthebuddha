@@ -87,9 +87,16 @@ describe("resolvePedCitation", () => {
 		assert.equal(late!.href, "/snp5.2");
 	});
 
-	it("leaves Snp verses for unhosted suttas unlinked", () => {
-		// snp3.9 (600–662) is not on the site yet
-		assert.equal(resolvePedCitation("Snp verse 609"), null);
+	it("maps Snp verses to reference-only slugs too", () => {
+		// SC verseNo: snp2.11 = 338–345 (PED “Snp verse 344”)
+		const v344 = resolvePedCitation("Snp verse 344");
+		assert.ok(v344);
+		assert.equal(v344!.href, "/snp2.11");
+
+		// snp3.9 may lack a curated EN file but still has a reference page
+		const v609 = resolvePedCitation("Snp verse 609");
+		assert.ok(v609);
+		assert.equal(v609!.href, "/snp3.9");
 	});
 
 	it("leaves unsupported collections unlinked", () => {

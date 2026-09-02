@@ -1,5 +1,5 @@
-// Auto-generated from SuttaCentral suttaplex verseNo for hosted Snp discourses.
-// Used to resolve PED “Snp verse N” citations to native /{slug} links.
+// Auto-generated from SuttaCentral suttaplex verseNo for all Snp discourses.
+// Used to resolve PED “Snp verse N” citations to /{slug} (curated or reference).
 // Regenerate: node scripts/build-snp-verse-ranges.mjs
 
 export type SnpVerseRange = { start: number; end: number; slug: string };
@@ -8,20 +8,40 @@ export const SNP_VERSE_RANGES: SnpVerseRange[] = [
 	{ start: 1, end: 17, slug: "snp1.1" },
 	{ start: 18, end: 34, slug: "snp1.2" },
 	{ start: 35, end: 75, slug: "snp1.3" },
+	{ start: 76, end: 82, slug: "snp1.4" },
+	{ start: 83, end: 90, slug: "snp1.5" },
 	{ start: 91, end: 115, slug: "snp1.6" },
+	{ start: 116, end: 142, slug: "snp1.7" },
 	{ start: 143, end: 152, slug: "snp1.8" },
+	{ start: 153, end: 182, slug: "snp1.9" },
+	{ start: 183, end: 194, slug: "snp1.10" },
 	{ start: 195, end: 208, slug: "snp1.11" },
 	{ start: 209, end: 223, slug: "snp1.12" },
 	{ start: 224, end: 241, slug: "snp2.1" },
+	{ start: 242, end: 255, slug: "snp2.2" },
 	{ start: 256, end: 260, slug: "snp2.3" },
 	{ start: 261, end: 272, slug: "snp2.4" },
 	{ start: 273, end: 276, slug: "snp2.5" },
+	{ start: 277, end: 286, slug: "snp2.6" },
+	{ start: 287, end: 318, slug: "snp2.7" },
+	{ start: 319, end: 326, slug: "snp2.8" },
 	{ start: 327, end: 333, slug: "snp2.9" },
 	{ start: 334, end: 337, slug: "snp2.10" },
+	{ start: 338, end: 345, slug: "snp2.11" },
+	{ start: 346, end: 361, slug: "snp2.12" },
+	{ start: 362, end: 378, slug: "snp2.13" },
+	{ start: 379, end: 407, slug: "snp2.14" },
 	{ start: 408, end: 427, slug: "snp3.1" },
 	{ start: 428, end: 452, slug: "snp3.2" },
 	{ start: 453, end: 457, slug: "snp3.3" },
+	{ start: 458, end: 491, slug: "snp3.4" },
+	{ start: 492, end: 515, slug: "snp3.5" },
+	{ start: 516, end: 553, slug: "snp3.6" },
+	{ start: 554, end: 579, slug: "snp3.7" },
 	{ start: 580, end: 599, slug: "snp3.8" },
+	{ start: 600, end: 662, slug: "snp3.9" },
+	{ start: 663, end: 684, slug: "snp3.10" },
+	{ start: 685, end: 729, slug: "snp3.11" },
 	{ start: 730, end: 772, slug: "snp3.12" },
 	{ start: 773, end: 778, slug: "snp4.1" },
 	{ start: 779, end: 786, slug: "snp4.2" },
@@ -55,4 +75,7 @@ export const SNP_VERSE_RANGES: SnpVerseRange[] = [
 	{ start: 1112, end: 1118, slug: "snp5.14" },
 	{ start: 1119, end: 1122, slug: "snp5.15" },
 	{ start: 1123, end: 1126, slug: "snp5.16" },
+	{ start: 1127, end: 1130, slug: "snp5.17" },
+	{ start: 1131, end: 1137, slug: "snp5.18" },
+	{ start: 1138, end: 1156, slug: "snp5.19" },
 ];

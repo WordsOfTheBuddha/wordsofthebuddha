@@ -351,6 +351,44 @@ button.construction-part.lookup-word-btn:hover {
 	opacity: 0.7;
 }
 
+/*
+ * On PED, the same construction parts act as headword switchers (no second chip row).
+ * DPD keeps the underline-link look above.
+ */
+.dict-shell[data-dict-active="ped"] .construction--ped-switcher .construction-part--ped {
+	border: 1px solid var(--auth-input-border);
+	background: transparent;
+	color: var(--text-muted);
+	font-family: "Gentium Plus", serif;
+	font-size: 0.9rem;
+	font-weight: 500;
+	line-height: 1.2;
+	padding: 0.12rem 0.5rem;
+	border-radius: 999px;
+	text-decoration: none;
+	opacity: 0.9;
+}
+
+.dict-shell[data-dict-active="ped"]
+	.construction--ped-switcher
+	.construction-part--ped:hover {
+	color: var(--link-color);
+	border-color: color-mix(in srgb, var(--link-color) 45%, var(--auth-input-border));
+	text-decoration: none;
+	opacity: 1;
+}
+
+.dict-shell[data-dict-active="ped"]
+	.construction--ped-switcher
+	.construction-part--ped.active {
+	color: var(--link-color);
+	border-color: color-mix(in srgb, var(--link-color) 55%, var(--auth-input-border));
+	background: color-mix(in srgb, var(--link-color) 12%, transparent);
+	font-weight: 600;
+	opacity: 1;
+	text-decoration: none;
+}
+
 /* Dictionary shell: fixed chrome (tabs + shared title); only definitions scroll */
 .dict-shell {
 	display: flex;
@@ -363,12 +401,79 @@ button.construction-part.lookup-word-btn:hover {
 .dict-chrome {
 	flex-shrink: 0;
 	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 0.65rem;
+	flex-direction: column;
+	gap: 0.35rem;
 	padding-bottom: 0.45rem;
 	margin-bottom: 0.35rem;
 	border-bottom: 1px solid var(--auth-input-border);
+}
+
+.dict-chrome-top {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.65rem;
+	min-width: 0;
+}
+
+.dict-chrome-parts {
+	min-width: 0;
+}
+
+.dict-chrome-parts.hidden {
+	display: none;
+}
+
+.ped-part-chips {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 0.35rem;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	padding-bottom: 0.05rem;
+	-webkit-overflow-scrolling: touch;
+}
+
+.ped-part-chip {
+	appearance: none;
+	border: 1px solid var(--auth-input-border);
+	background: transparent;
+	color: var(--text-muted);
+	font-family: "Gentium Plus", serif;
+	font-size: 0.9rem;
+	font-weight: 500;
+	line-height: 1.2;
+	padding: 0.2rem 0.55rem;
+	border-radius: 999px;
+	cursor: pointer;
+	flex-shrink: 0;
+	opacity: 0.85;
+	transition:
+		color 0.15s ease,
+		border-color 0.15s ease,
+		background-color 0.15s ease,
+		opacity 0.15s ease;
+}
+
+.ped-part-chip:hover {
+	color: var(--link-color);
+	border-color: color-mix(in srgb, var(--link-color) 45%, var(--auth-input-border));
+	opacity: 1;
+}
+
+.ped-part-chip.active {
+	color: var(--link-color);
+	border-color: color-mix(in srgb, var(--link-color) 55%, var(--auth-input-border));
+	background: color-mix(in srgb, var(--link-color) 12%, transparent);
+	opacity: 1;
+	font-weight: 600;
+}
+
+.ped-part-chip:focus-visible {
+	outline: 1px solid var(--link-color);
+	outline-offset: 2px;
 }
 
 .dict-panel-tabs {
@@ -489,10 +594,8 @@ button.construction-part.lookup-word-btn:hover {
 	display: none;
 }
 
-.ped-content .ped-entry-block + .ped-entry-block {
-	margin-top: 0.85rem;
-	padding-top: 0.75rem;
-	border-top: 1px solid var(--auth-input-border);
+.ped-entry-block.hidden {
+	display: none;
 }
 
 .ped-content .ped-entry-headword {
@@ -542,7 +645,7 @@ button.construction-part.lookup-word-btn:hover {
 	text-decoration: none;
 }
 
-.ped-attribution {
+.dict-attribution {
 	margin-top: 0.75rem;
 	padding-top: 0.5rem;
 	border-top: 1px solid var(--auth-input-border);

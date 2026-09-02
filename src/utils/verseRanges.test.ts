@@ -14,8 +14,16 @@ describe("getSnpVerseRange", () => {
 		});
 	});
 
-	it("returns null for unknown / unhosted slugs", () => {
-		assert.equal(getSnpVerseRange("snp3.9"), null);
+	it("returns ranges for reference-only slugs too", () => {
+		assert.deepEqual(getSnpVerseRange("snp2.11"), {
+			start: 338,
+			end: 345,
+		});
+		assert.deepEqual(getSnpVerseRange("snp2.12"), {
+			start: 346,
+			end: 361,
+		});
+		assert.ok(getSnpVerseRange("snp3.9"));
 	});
 });
 
