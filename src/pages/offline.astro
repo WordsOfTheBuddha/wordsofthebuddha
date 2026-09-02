@@ -1067,6 +1067,9 @@ import Layout from "../layouts/Layout.astro";
 									m?.warmupPaliDictionary?.(),
 								)
 								.catch(() => {}),
+							import("../utils/pedLookup")
+								.then((m: any) => m?.warmupPedDictionary?.())
+								.catch(() => {}),
 						]),
 						8000,
 					);

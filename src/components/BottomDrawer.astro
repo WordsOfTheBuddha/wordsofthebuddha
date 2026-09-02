@@ -20,6 +20,22 @@ import "../styles/bottomDrawer.css";
 		return lookupSingleWord;
 	}
 
+	let lookupPedHeadword:
+		| typeof import("../utils/pedLookup").lookupPedHeadword
+		| undefined;
+	let linkifyPedHtml:
+		| typeof import("../utils/pedCitationLinks").linkifyPedHtml
+		| undefined;
+	async function loadPedLookup() {
+		if (!lookupPedHeadword) {
+			({ lookupPedHeadword } = await import("../utils/pedLookup"));
+		}
+		if (!linkifyPedHtml) {
+			({ linkifyPedHtml } = await import("../utils/pedCitationLinks"));
+		}
+		return { lookupPedHeadword, linkifyPedHtml };
+	}
+
 	// Helper function to parse Markdown-style links
 	function parseMarkdownLinks(text: string) {
 		return text.replace(
@@ -121,17 +137,70 @@ import "../styles/bottomDrawer.css";
 			if (!this.popover) return;
 			this.popover.classList.remove("visible");
 			this.isVisible = false;
+			dictionaryLookupStack.length = 0;
+			currentDictionaryWord = "";
+			preferredDictPanel = "dpd";
 		}
 
 		private setupLinkHandlers() {
 			const links = this.popover?.querySelectorAll(".tooltip-link, a");
 			links?.forEach((link) => {
 				link.addEventListener("click", (e) => {
-					if (link instanceof HTMLAnchorElement) {
+					if (!(link instanceof HTMLAnchorElement)) return;
+					const href = link.getAttribute("href") || "";
+					if (!href) return;
+
+					// PED citation links: new tab, keep drawer open for reading
+					const opensNewTab =
+						link.classList.contains("ped-ref-link") ||
+						link.target === "_blank";
+					if (opensNewTab) {
 						e.preventDefault();
-						window.location.href = link.getAttribute("href") || "";
-						this.hide();
+						window.open(href, "_blank", "noopener,noreferrer");
+						return;
 					}
+
+					e.preventDefault();
+					window.location.href = href;
+					this.hide();
+				});
+			});
+
+			// Nested lookup from top-row sandhi parts (pushes history for Back)
+			const lookupTargets = this.popover?.querySelectorAll(
+				"[data-lookup-word]",
+			);
+			lookupTargets?.forEach((el) => {
+				el.addEventListener("click", (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					const raw = el.getAttribute("data-lookup-word") || "";
+					const word = cleanPaliWordForLookup(raw);
+					if (word) showDictionaryPopover(word, false, { nested: true });
+				});
+			});
+
+			const backBtn = this.popover?.querySelector("[data-dict-back]");
+			backBtn?.addEventListener("click", (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				goBackDictionaryLookup();
+			});
+
+			// DPD / PED panel switcher (chrome stays fixed; only bodies toggle)
+			const tabs = this.popover?.querySelectorAll("[data-dict-panel]");
+			tabs?.forEach((tab) => {
+				tab.addEventListener("click", (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					const panel = tab.getAttribute("data-dict-panel");
+					if (panel !== "dpd" && panel !== "ped") return;
+					preferredDictPanel = panel;
+					applyDictPanelPreference(
+						this.popover?.querySelector(".dict-shell"),
+						panel,
+						true,
+					);
 				});
 			});
 		}
@@ -494,7 +563,10 @@ import "../styles/bottomDrawer.css";
 				const cleanWord = cleanPaliWordForLookup(
 					word.textContent || "",
 				);
-				await showDictionaryPopover(cleanWord, true);
+				// Prev/Next (mouse or keyboard) keep DPD/PED choice when the next word has PED
+				await showDictionaryPopover(cleanWord, true, {
+					preservePanel: true,
+				});
 			} else if (word.classList.contains("tooltip-text")) {
 				const content = word.getAttribute("data-tooltip-content") || "";
 				const primaryText = word.textContent || "";
@@ -539,13 +611,249 @@ import "../styles/bottomDrawer.css";
 		nextBtn?.addEventListener("click", navigateToNextWord);
 	}
 
+	/** Nested sandhi drill-down history (Back restores the previous word). */
+	const dictionaryLookupStack: string[] = [];
+	let currentDictionaryWord = "";
+	/** Remember DPD vs PED across nested lookups and async PED upgrades. */
+	let preferredDictPanel: "dpd" | "ped" = "dpd";
+	/** Bumped on every dictionary open so late PED responses cannot clobber newer lookups. */
+	let dictionaryLookupGeneration = 0;
+
+	type DictView = {
+		headerHtml: string;
+		dpdBodyHtml: string;
+		/** Lexical sandhi parts only (no root √ analyses / single-letter suffixes). */
+		constructionParts: string[];
+		lemmas: string[];
+	};
+
+	/** Short / morphological bits from DPD constructions that must not drive PED. */
+	const PED_PART_BLOCKLIST = new Set([
+		"a",
+		"ā",
+		"i",
+		"ī",
+		"u",
+		"ū",
+		"e",
+		"o",
+		"ti",
+		"si",
+		"mi",
+		"anti",
+		"enti",
+		"ati",
+		"ave",
+		"esi",
+		"etha",
+		"antu",
+		"ahi",
+		"oma",
+		"omi",
+	]);
+
+	function extractLemmaCandidates(word: string, data: any): string[] {
+		const lemmas: string[] = [];
+		const seen = new Set<string>();
+		const add = (raw: string | undefined) => {
+			if (!raw) return;
+			const base = raw.replace(/ \d+(\.\d+)*$/, "").trim();
+			const key = base.toLowerCase();
+			if (!base || seen.has(key)) return;
+			seen.add(key);
+			lemmas.push(base);
+		};
+		for (const def of data.definitions || []) {
+			add(def.lemma);
+		}
+		add(word);
+		return lemmas;
+	}
+
+	/** Prefer lexical sandhi lines (e.g. bhikkhu+ave) over root analyses (√bhikkh+u+ave). */
+	function pickLexicalConstruction(raw: string | undefined): string | undefined {
+		if (!raw || typeof raw !== "string") return undefined;
+		const lines = raw
+			.split(/\n/)
+			.map((l) => l.trim())
+			.filter(Boolean);
+		const lexical = lines.find((l) => !l.includes("√") && l.includes("+"));
+		if (lexical) return lexical;
+		const anyPlus = lines.find((l) => l.includes("+"));
+		return anyPlus || lines[0];
+	}
+
+	function isUsefulPedPart(part: string): boolean {
+		const p = part.replace(/^√/u, "").trim();
+		if (p.length < 3) return false;
+		if (PED_PART_BLOCKLIST.has(p.toLowerCase())) return false;
+		if (/[;,]/.test(p)) return false;
+		return true;
+	}
+
+	function extractConstructionParts(data: any): string[] {
+		const line = pickLexicalConstruction(
+			data?.definitions?.[0]?.construction,
+		);
+		if (!line || !line.includes("+")) return [];
+		return line
+			.split(/\s*\+\s*/)
+			.map((p: string) => p.replace(/^√/u, "").trim())
+			.filter(isUsefulPedPart);
+	}
+
+	function createPedBodiesHtml(
+		entries: Array<{ word: string; html: string }>,
+		linkify: (html: string) => string,
+	): string {
+		const blocks = entries
+			.map(
+				(entry) => `
+			<div class="ped-entry-block">
+				<div class="ped-entry-headword">${escapeHtml(entry.word)}</div>
+				<div class="ped-entry">${linkify(entry.html)}</div>
+			</div>
+		`,
+			)
+			.join("");
+		return `
+			<div class="ped-content">
+				${blocks}
+				<div class="ped-attribution">Pali-English Dictionary (Rhys Davids &amp; Stede), PTS · CC BY-NC 3.0</div>
+			</div>
+		`;
+	}
+
+	function applyDictPanelPreference(
+		root: Element | null | undefined,
+		panel: "dpd" | "ped",
+		hasPed: boolean,
+	) {
+		if (!root) return;
+		const active = hasPed && panel === "ped" ? "ped" : "dpd";
+		root.querySelectorAll("[data-dict-panel]").forEach((t) => {
+			const on = t.getAttribute("data-dict-panel") === active;
+			t.classList.toggle("active", on);
+			t.setAttribute("aria-selected", on ? "true" : "false");
+		});
+		root.querySelectorAll("[data-dict-panel-body]").forEach((body) =>
+			body.classList.toggle(
+				"hidden",
+				body.getAttribute("data-dict-panel-body") !== active,
+			),
+		);
+	}
+
+	function wrapDictShell(
+		headerHtml: string,
+		dpdBodyHtml: string,
+		pedBodyHtml: string | null,
+	): string {
+		const showBack = dictionaryLookupStack.length > 0;
+		const hasPed = !!pedBodyHtml;
+		const activePanel =
+			hasPed && preferredDictPanel === "ped" ? "ped" : "dpd";
+		const pedTab = hasPed
+			? `<button type="button" class="dict-panel-tab${activePanel === "ped" ? " active" : ""}" role="tab" aria-selected="${activePanel === "ped" ? "true" : "false"}" data-dict-panel="ped">PED</button>`
+			: "";
+		const pedBody = hasPed
+			? `<div class="dict-panel-body${activePanel === "ped" ? "" : " hidden"}" data-dict-panel-body="ped" role="tabpanel">${pedBodyHtml}</div>`
+			: "";
+		const backBtn = showBack
+			? `<button type="button" class="dict-back-btn" data-dict-back aria-label="Back to previous word" title="Back to previous word">
+					<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+						<path d="M9.78 3.22a.75.75 0 0 1 0 1.06L6.06 8l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0z"/>
+					</svg>
+				</button>`
+			: "";
+		return `
+			<div class="dict-shell">
+				<div class="dict-chrome">
+					<div class="dict-panel-tabs" role="tablist" aria-label="Dictionary">
+						<button type="button" class="dict-panel-tab${activePanel === "dpd" ? " active" : ""}" role="tab" aria-selected="${activePanel === "dpd" ? "true" : "false"}" data-dict-panel="dpd">DPD</button>
+						${pedTab}
+					</div>
+					<div class="dict-chrome-main">
+						${backBtn}
+						${headerHtml}
+					</div>
+				</div>
+				<div class="dict-scroll">
+					<div class="dict-panel-body${activePanel === "dpd" ? "" : " hidden"}" data-dict-panel-body="dpd" role="tabpanel">${dpdBodyHtml}</div>
+					${pedBody}
+				</div>
+			</div>
+		`;
+	}
+
+	function goBackDictionaryLookup() {
+		const prev = dictionaryLookupStack.pop();
+		if (!prev) return;
+		// Nested restore — do not push current onto the stack again; keep preferredDictPanel
+		showDictionaryPopover(prev, false, { nested: false, restoring: true });
+	}
+
+	async function resolvePedEntries(
+		view: DictView,
+		pedHeadword: typeof import("../utils/pedLookup").lookupPedHeadword,
+	): Promise<Array<{ word: string; html: string }>> {
+		const pedEntries: Array<{ word: string; html: string }> = [];
+		const seen = new Set<string>();
+		const add = (hit: { word: string; html: string } | null) => {
+			if (!hit || seen.has(hit.word)) return;
+			// Reject single-letter / blocked PED headwords even if looked up
+			if (!isUsefulPedPart(hit.word) && hit.word.length < 3) return;
+			if (PED_PART_BLOCKLIST.has(hit.word.toLowerCase())) return;
+			seen.add(hit.word);
+			pedEntries.push(hit);
+		};
+
+		// Compounds: show each lexical part in construction order (atthaṁ + gama → both)
+		if (view.constructionParts.length >= 2) {
+			for (const part of view.constructionParts) {
+				add(await pedHeadword(part));
+			}
+		}
+
+		// DPD lemmas (covers simplex words and any extra senses)
+		for (const lemma of view.lemmas) {
+			add(await pedHeadword(lemma));
+		}
+
+		// Fallback: single useful construction part when lemmas missed
+		if (pedEntries.length === 0) {
+			for (const part of view.constructionParts) {
+				add(await pedHeadword(part));
+			}
+		}
+
+		return pedEntries;
+	}
+
 	async function showDictionaryPopover(
 		word: string,
 		enableNavigation: boolean = false,
+		opts: {
+			nested?: boolean;
+			restoring?: boolean;
+			/** Keep DPD/PED choice (Prev/Next). Falls back to DPD if PED is missing. */
+			preservePanel?: boolean;
+		} = {},
 	) {
 		if (!bottomPopover) return;
+		const lookupGeneration = ++dictionaryLookupGeneration;
 
-		// Show loading state
+		if (opts.nested && currentDictionaryWord) {
+			dictionaryLookupStack.push(currentDictionaryWord);
+		} else if (enableNavigation && !opts.restoring) {
+			// Clear sandhi drill-down; reset panel only for a fresh page click
+			dictionaryLookupStack.length = 0;
+			if (!opts.preservePanel) {
+				preferredDictPanel = "dpd";
+			}
+		}
+		currentDictionaryWord = word;
+
 		bottomPopover.show(
 			`
 			<div class="loading-spinner">
@@ -564,13 +872,56 @@ import "../styles/bottomDrawer.css";
 			const data = await lookup(word);
 
 			if (data && data.definitions && data.definitions.length > 0) {
-				const content = createTooltipContent(word, data);
-				bottomPopover.show(content, "dictionary");
-
+				const view = buildDictView(word, data);
+				bottomPopover.show(
+					wrapDictShell(view.headerHtml, view.dpdBodyHtml, null),
+					"dictionary",
+				);
 				if (enableNavigation) addNavigationControls();
+
+				void (async () => {
+					try {
+						const {
+							lookupPedHeadword: pedHeadword,
+							linkifyPedHtml: linkify,
+						} = await loadPedLookup();
+
+						const pedEntries = await resolvePedEntries(
+							view,
+							pedHeadword,
+						);
+
+						if (
+							pedEntries.length === 0 ||
+							!bottomPopover.isOpen() ||
+							lookupGeneration !== dictionaryLookupGeneration
+						) {
+							return;
+						}
+
+						bottomPopover.show(
+							wrapDictShell(
+								view.headerHtml,
+								view.dpdBodyHtml,
+								createPedBodiesHtml(pedEntries, linkify),
+							),
+							"dictionary",
+						);
+						applyDictPanelPreference(
+							bottomPopover
+								.getPopoverElement()
+								?.querySelector(".dict-shell"),
+							preferredDictPanel,
+							true,
+						);
+						if (enableNavigation) addNavigationControls();
+					} catch (pedError) {
+						console.warn("PED lookup skipped:", pedError);
+					}
+				})();
 			} else {
 				bottomPopover.show(
-					`<div><span style="font-family: 'Gentium Plus', serif;">${word}</span>: No definition found</div>`,
+					`<div><span style="font-family: 'Gentium Plus', serif;">${escapeHtml(word)}</span>: No definition found</div>`,
 					"dictionary",
 				);
 			}
@@ -580,28 +931,40 @@ import "../styles/bottomDrawer.css";
 		}
 	}
 
-	function createTooltipContent(word: string, data: any) {
+	function buildDictView(word: string, data: any): DictView {
 		const { definitions } = data;
-
-		// Check if this is a compound word by looking for constituent patterns in meanings
-		const isCompound = definitions.some((def: any) => {
-			const matches =
-				def.meaning && /^[^\s]+\s+\d+\.\s/.test(def.meaning);
-			return matches;
-		});
-
+		const isCompound = definitions.some(
+			(def: any) =>
+				def.meaning && /^[^\s]+\s+\d+\.\s/.test(def.meaning),
+		);
 		if (isCompound) {
-			return createCompoundTooltipContent(word, data);
+			return buildCompoundDictView(word, data);
 		}
-
-		// Use the same clean style for regular words
-		return createUnifiedTooltipContent(word, data);
+		return buildUnifiedDictView(word, data);
 	}
 
-	function createUnifiedTooltipContent(word: string, data: any) {
+	function buildSharedHeaderHtml(
+		word: string,
+		construction: string | undefined,
+		pos: string | undefined,
+	): string {
+		const displayConstruction = pickLexicalConstruction(construction);
+		return `
+			<div class="title dict-shared-title">
+				<span class="dict-headword">${escapeHtml(word)}</span>
+				${
+					displayConstruction
+						? `<span>${formatConstructionLinks(displayConstruction, word)}</span>`
+						: ""
+				}
+				${pos ? `<span><span class="grammar">${escapeHtml(pos)}</span></span>` : ""}
+			</div>
+		`;
+	}
+
+	function buildUnifiedDictView(word: string, data: any): DictView {
 		const { definitions } = data;
 
-		// Group definitions by base lemma (e.g. "sakka 1" → "sakka", "vutta 1.1" → "vutta", "sakkāya" → "sakkāya")
 		const groupMap = new Map<string, any[]>();
 		definitions.forEach((def: any) => {
 			const baseLemma = def.lemma
@@ -611,9 +974,7 @@ import "../styles/bottomDrawer.css";
 			groupMap.get(baseLemma)!.push(def);
 		});
 
-		// Helpers for prefix scoring
 		const normalize = (s: string) => s.toLowerCase().normalize("NFC");
-		// Strip Pali/Latin diacritics: NFD decompose then remove combining marks
 		const stripDiacritics = (s: string) =>
 			s
 				.normalize("NFD")
@@ -627,8 +988,6 @@ import "../styles/bottomDrawer.css";
 		const normWord = normalize(word);
 		const strippedWord = stripDiacritics(word);
 
-		// Sort by: 1st key = diacritic-stripped prefix length (catches hoti≈hotīti),
-		//          2nd key = exact prefix length as tie-breaker (sakkāya > sakka for sakkāyañca)
 		const sortedGroups = Array.from(groupMap.entries()).sort(([a], [b]) => {
 			const strippedA = commonPrefixLen(stripDiacritics(a), strippedWord);
 			const strippedB = commonPrefixLen(stripDiacritics(b), strippedWord);
@@ -639,8 +998,6 @@ import "../styles/bottomDrawer.css";
 			);
 		});
 
-		// Split into primary (≥60% stripped prefix match) and secondary (<60%) groups.
-		// Always keep at least the best match in primary.
 		const primary: [string, any[]][] = [];
 		const secondary: [string, any[]][] = [];
 		for (const [lemma, defs] of sortedGroups) {
@@ -659,14 +1016,15 @@ import "../styles/bottomDrawer.css";
 
 		const isSingleGroup = primary.length === 1 && secondary.length === 0;
 		const topDef = (primary[0] ?? secondary[0])[1][0];
+		const showPos = !isSingleGroup;
 
 		const renderGroup = (
 			[lemma, defs]: [string, any[]],
-			showPos: boolean,
+			showGroupPos: boolean,
 		) => `
 			<div class="constituent-group">
 				<div class="constituent-header">
-					${lemma}${defs[0].pos && showPos ? `<span class="constituent-pos"> ${defs[0].pos}</span>` : ""}:
+					${escapeHtml(lemma)}${defs[0].pos && showGroupPos ? `<span class="constituent-pos"> ${escapeHtml(defs[0].pos)}</span>` : ""}:
 				</div>
 				<div class="constituent-meanings">
 					${defs
@@ -680,23 +1038,16 @@ import "../styles/bottomDrawer.css";
 			</div>
 		`;
 
-		const showPos = !isSingleGroup;
+		const construction =
+			isSingleGroup && topDef.construction
+				? topDef.construction
+				: undefined;
+		const pos =
+			isSingleGroup && topDef.pos ? topDef.pos : undefined;
 
-		return `
-			<div class="tooltip-content">
-				<div class="title">
-					<span>${word}</span>
-					${
-						isSingleGroup && topDef.construction
-							? `<span><span class="construction">${topDef.construction.replace(/\n/g, " ; ")}</span></span>`
-							: ""
-					}
-					${
-						isSingleGroup && topDef.pos
-							? `<span><span class="grammar">${topDef.pos}</span></span>`
-							: ""
-					}
-				</div>
+		return {
+			headerHtml: buildSharedHeaderHtml(word, construction, pos),
+			dpdBodyHtml: `
 				<div class="dpd-content lemma-groups">
 					${primary.map((g) => renderGroup(g, showPos)).join("")}
 					${
@@ -710,14 +1061,65 @@ import "../styles/bottomDrawer.css";
 							: ""
 					}
 				</div>
-			</div>
-		`;
+			`,
+			constructionParts: extractConstructionParts(data),
+			lemmas: extractLemmaCandidates(word, data),
+		};
 	}
 
-	function createCompoundTooltipContent(word: string, data: any) {
-		const { definitions } = data;
+	/** True when a construction part is essentially the looked-up word (no nested lookup). */
+	function isNearLookupWord(part: string, word: string): boolean {
+		const strip = (s: string) =>
+			s
+				.normalize("NFD")
+				.replace(/[\u0300-\u036f]/g, "")
+				.toLowerCase();
+		const a = strip(part);
+		const b = strip(word);
+		if (!a || !b) return true;
+		if (a === b) return true;
+		const n = Math.min(a.length, b.length);
+		let i = 0;
+		while (i < n && a[i] === b[i]) i++;
+		return i / Math.max(a.length, b.length) >= 0.85;
+	}
 
-		// Group definitions by constituent
+	/**
+	 * Top-row sandhi only: split "buddha+sāsana" / "imaṃ + atthaṁ" into tappable
+	 * parts. Lemma/constituent headers in the meanings body stay plain text.
+	 */
+	function formatConstructionLinks(
+		construction: string,
+		lookupWord: string,
+	): string {
+		const flat = construction.replace(/\n/g, " ; ").trim();
+		if (!flat.includes("+")) {
+			return `<span class="construction">${escapeHtml(flat)}</span>`;
+		}
+		const parts = flat
+			.split(/\s*\+\s*/)
+			.map((p) => p.trim())
+			.filter(Boolean);
+		if (parts.length < 2) {
+			return `<span class="construction">${escapeHtml(flat)}</span>`;
+		}
+		const linked = parts
+			.map((part) => {
+				const clean = part.replace(/^√/u, "").trim();
+				if (
+					!isUsefulPedPart(clean) ||
+					isNearLookupWord(clean, lookupWord)
+				) {
+					return `<span class="construction-part">${escapeHtml(clean || part)}</span>`;
+				}
+				return `<button type="button" class="construction-part lookup-word-btn" data-lookup-word="${escapeHtml(clean)}" title="Look up ${escapeHtml(clean)}">${escapeHtml(clean)}</button>`;
+			})
+			.join('<span class="construction-sep"> + </span>');
+		return `<span class="construction">${linked}</span>`;
+	}
+
+	function buildCompoundDictView(word: string, data: any): DictView {
+		const { definitions } = data;
 		const constituents = new Map();
 
 		definitions.forEach((def: any) => {
@@ -733,28 +1135,18 @@ import "../styles/bottomDrawer.css";
 			}
 		});
 
-		return `
-			<div class="tooltip-content">
-				<div class="title">
-					<span>${word}</span>
-					${
-						definitions[0].construction
-							? `
-						<span>
-							<span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
-						</span>`
-							: ""
-					}
-					<span>
-						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-					</span>
-				</div>
+		const construction = definitions[0]?.construction;
+		const pos = definitions[0]?.pos;
+
+		return {
+			headerHtml: buildSharedHeaderHtml(word, construction, pos),
+			dpdBodyHtml: `
 				<div class="dpd-content compound-content">
 					${Array.from(constituents.entries())
 						.map(
 							([constituent, meanings]) => `
 						<div class="constituent-group">
-							<div class="constituent-header">${constituent}:</div>
+							<div class="constituent-header">${escapeHtml(constituent)}:</div>
 							<div class="constituent-meanings">
 								${meanings
 									.map(
@@ -769,8 +1161,10 @@ import "../styles/bottomDrawer.css";
 						)
 						.join("")}
 				</div>
-			</div>
-		`;
+			`,
+			constructionParts: extractConstructionParts(data),
+			lemmas: extractLemmaCandidates(word, data),
+		};
 	}
 
 	document.addEventListener("DOMContentLoaded", () => {

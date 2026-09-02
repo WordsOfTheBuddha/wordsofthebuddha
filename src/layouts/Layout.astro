@@ -41,6 +41,11 @@ import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
 import { debug, type TmPaliParagraph } from "../utils/contentParser";
 import discoursePlainCopyInline from "../utils/discoursePlainCopyInline.js?raw";
+import { getPtsDisplay } from "../utils/ptsReferences";
+import {
+	formatVerseRangeLabel,
+	getVerseRangeForSlug,
+} from "../utils/verseRanges";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -166,16 +171,24 @@ const refInitScript = `(function () {
 
 const hasDescription = String(description ?? "").trim().length > 0;
 const breadcrumbsHidden = hideBreadcrumbsForPath(fp || Astro.url.pathname);
+/** Same PTS label as collection PostCards — helps verify PED citation landings. */
+const ptsDisplay = id ? getPtsDisplay(id) : "";
+/** Snp/Dhp verse span in description chrome (not in-text numbering). */
+const verseRange = id ? getVerseRangeForSlug(id) : null;
+const verseLabel = verseRange ? formatVerseRangeLabel(verseRange) : "";
+/** Description box renders for prose and/or citation chrome. */
+const hasDescriptionBox =
+	hasDescription || Boolean(ptsDisplay) || Boolean(verseLabel);
 
 const pageTitleText = String(title ?? "").trim();
 const showPageTitle = pageTitleText.length > 0 || showFilter;
 
 /** Extra space before the page title when there is no breadcrumb strip and no layout description box. */
 const sparseLayoutTitleTop =
-	showPageTitle && breadcrumbsHidden && !hasDescription;
+	showPageTitle && breadcrumbsHidden && !hasDescriptionBox;
 
 const titleNeedsBreadcrumbSpacing =
-	showPageTitle && !breadcrumbsHidden && !hasDescription;
+	showPageTitle && !breadcrumbsHidden && !hasDescriptionBox;
 
 /** Anthology discourse pages use seoDescription only; tighten gap before BookCard. */
 const isAnthologyPage = Boolean(fp?.includes("anthologies"));
@@ -520,7 +533,15 @@ const structuredData = buildStructuredData({
 					}
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					<PlaylistChip />
-					{(<Description description={description} />)}
+					{
+						(
+							<Description
+								description={description}
+								volpage={ptsDisplay || undefined}
+								verseLabel={verseLabel || undefined}
+							/>
+						)
+					}
 					{
 						(showPali ||
 							showReadLater ||

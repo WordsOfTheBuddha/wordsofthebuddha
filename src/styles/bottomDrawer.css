@@ -60,6 +60,15 @@ html.dark .bottom-popover {
 	flex: 1;
 	overflow-y: auto;
 	padding-bottom: 1rem;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Dictionary shell owns scrolling so DPD/PED chrome stays fixed */
+.popover-body:has(.dict-shell) {
+	overflow: hidden;
+	padding-bottom: 0;
 }
 
 /* Custom scrollbar for popover to match page scrollbars */
@@ -315,6 +324,231 @@ html.dark .tooltip-content .title {
 	color: var(--primary-color);
 	margin-bottom: 0.25rem;
 	font-family: "Gentium Plus", serif;
+}
+
+/* Top-row sandhi parts only (meanings-body headers are not clickable). */
+button.construction-part.lookup-word-btn {
+	appearance: none;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	color: var(--link-color);
+	cursor: pointer;
+	text-align: left;
+	border-radius: 2px;
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--link-color) 40%, transparent);
+	text-underline-offset: 0.15em;
+}
+
+button.construction-part.lookup-word-btn:hover {
+	text-decoration-color: var(--link-color);
+}
+
+.construction-sep {
+	opacity: 0.7;
+}
+
+/* Dictionary shell: fixed chrome (tabs + shared title); only definitions scroll */
+.dict-shell {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+}
+
+.dict-chrome {
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.65rem;
+	padding-bottom: 0.45rem;
+	margin-bottom: 0.35rem;
+	border-bottom: 1px solid var(--auth-input-border);
+}
+
+.dict-panel-tabs {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 0.1rem;
+	flex-shrink: 0;
+}
+
+.dict-panel-tab {
+	appearance: none;
+	border: none;
+	outline: none;
+	background: transparent;
+	color: var(--text-muted);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.06em;
+	padding: 0.1rem 0;
+	border-radius: 0;
+	cursor: pointer;
+	opacity: 0.75;
+	line-height: 1.2;
+	transition:
+		color 0.15s ease,
+		opacity 0.15s ease;
+}
+
+.dict-panel-tab:hover {
+	color: var(--link-color);
+	opacity: 1;
+}
+
+.dict-panel-tab.active {
+	background: transparent;
+	border: none;
+	color: var(--link-color);
+	opacity: 1;
+	font-weight: 600;
+}
+
+.dict-panel-tab:focus-visible {
+	outline: 1px solid var(--link-color);
+	outline-offset: 2px;
+}
+
+.dict-chrome-main {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.4rem;
+	min-width: 0;
+	flex: 1;
+}
+
+.dict-back-btn {
+	appearance: none;
+	border: none;
+	background: transparent;
+	color: var(--link-color);
+	cursor: pointer;
+	padding: 0.15rem;
+	margin: 0;
+	border-radius: 0.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	opacity: 0.9;
+}
+
+.dict-back-btn:hover {
+	background-color: var(--background-row-hover);
+	opacity: 1;
+}
+
+.dict-shared-title {
+	margin-bottom: 0;
+	border-bottom: none;
+	padding-bottom: 0;
+	flex: 1;
+	min-width: 0;
+}
+
+.dict-shared-title .dict-headword {
+	margin-right: 0.15rem;
+}
+
+.dict-scroll {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	padding-bottom: 1rem;
+	padding-right: 0.25rem;
+}
+
+.dict-scroll::-webkit-scrollbar {
+	width: 6px;
+}
+
+.dict-scroll::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.05);
+}
+
+.dict-scroll::-webkit-scrollbar-thumb {
+	background: #c1c1c1;
+	border-radius: 3px;
+}
+
+.dict-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: #c1c1c1 rgba(0, 0, 0, 0.05);
+}
+
+.dict-panel-body.hidden {
+	display: none;
+}
+
+.ped-content .ped-entry-block + .ped-entry-block {
+	margin-top: 0.85rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--auth-input-border);
+}
+
+.ped-content .ped-entry-headword {
+	font-family: "Gentium Plus", serif;
+	font-weight: 500;
+	color: var(--primary-color);
+	margin-bottom: 0.35rem;
+	font-size: 1.05rem;
+}
+
+.ped-content .ped-entry {
+	font-size: 0.95rem;
+	line-height: 1.55;
+	color: var(--text-color);
+}
+
+.ped-content .ped-entry p {
+	margin: 0 0 0.5rem;
+}
+
+.ped-content .ped-entry ol,
+.ped-content .ped-entry ul {
+	margin: 0 0 0.5rem 1.1rem;
+	padding: 0;
+}
+
+.ped-content .ped-entry .grammar {
+	color: var(--secondary-color);
+	margin-left: 0;
+	font-size: 0.9rem;
+}
+
+.ped-content .ped-entry .ped-ref-link,
+.ped-content .ped-entry a.ped-ref-link {
+	color: var(--link-color);
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* Subtle cue that PED refs leave the page (new tab) */
+.ped-content .ped-entry a.ped-ref-link::after {
+	content: "↗";
+	display: inline-block;
+	margin-left: 0.15em;
+	font-size: 0.75em;
+	opacity: 0.65;
+	text-decoration: none;
+}
+
+.ped-attribution {
+	margin-top: 0.75rem;
+	padding-top: 0.5rem;
+	border-top: 1px solid var(--auth-input-border);
+	font-size: 0.7rem;
+	color: var(--text-muted);
+	line-height: 1.4;
 }
 
 .constituent-pos {

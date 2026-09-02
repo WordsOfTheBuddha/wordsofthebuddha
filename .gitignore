@@ -80,3 +80,4 @@ public/content-images/*
 
 # audio-output
 public/audio/*
+tmp/

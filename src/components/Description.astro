@@ -1,35 +1,106 @@
 ---
-const { description } = Astro.props;
+const { description, volpage, verseLabel } = Astro.props as {
+	description?: string;
+	/** Site-wide PTS label, e.g. "PTS 4.152–4.155" (same as PostCard). */
+	volpage?: string;
+	/** Verse chrome, e.g. "vv. 143–152". */
+	verseLabel?: string;
+};
+
+const hasDescription = Boolean(String(description ?? "").trim());
+const hasVolpage = Boolean(String(volpage ?? "").trim());
+const hasVerse = Boolean(String(verseLabel ?? "").trim());
+const hasCitationChrome = hasVolpage || hasVerse;
 ---
 
 {
-	description && (
-		<div class="my-2 mt-4 p-4 rounded-lg border border-[var(--border-color)] w-[fit-content]">
-			<p
-				class="my-0 text-lg"
-				set:html={description?.replace(
-					/\[([^\]]+)\]\(([^)]+)\)/g,
-					'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
-				)}
-			/>
+	(hasDescription || hasCitationChrome) && (
+		<div
+			class:list={[
+				"description-box my-2 mt-4 p-4 rounded-lg border border-[var(--border-color)] w-full",
+				hasDescription &&
+					hasCitationChrome &&
+					"description-box--with-volpage",
+			]}
+		>
+			{
+				hasDescription ? (
+					<p
+						class="description-text my-0 text-lg"
+						set:html={description?.replace(
+							/\[([^\]]+)\]\(([^)]+)\)/g,
+							'<a href="$2" class="text-blue-600 hover:underline">$1</a>',
+						)}
+					/>
+				) : null
+			}
+			{
+				hasCitationChrome && (
+					<span
+						class="description-volpage text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums"
+						title={[volpage, verseLabel].filter(Boolean).join(" · ")}
+					>
+						{
+							[
+								volpage,
+								verseLabel,
+							]
+								.filter(Boolean)
+								.join(" · ")
+						}
+					</span>
+				)
+			}
 		</div>
 	)
 }
 
 <style>
+	/* Match PostCard: overlay citation chrome bottom-right — minimal extra height. */
+	.description-box--with-volpage {
+		position: relative;
+		padding-bottom: 1.35rem;
+	}
+
+	.description-box--with-volpage > .description-text {
+		margin-bottom: 0;
+	}
+
+	.description-box--with-volpage > .description-volpage {
+		position: absolute;
+		right: 1rem;
+		bottom: 0.55rem;
+		line-height: 1.15;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.02em;
+	}
+
+	/* Citation-only (rare): keep the box compact */
+	.description-box:not(.description-box--with-volpage) > .description-volpage {
+		display: block;
+		line-height: 1.15;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.02em;
+	}
+
 	@media print {
-		div {
+		.description-box {
 			border: 1px solid #333 !important;
 			margin: 0.5rem 0 !important;
 			padding: 0.75rem !important;
 			background: transparent !important;
 		}
 
-		p {
+		.description-text {
 			color: #333 !important;
 			font-size: 12pt !important;
 			margin: 0 !important;
 			line-height: 1.5 !important;
+		}
+
+		.description-volpage {
+			color: #555 !important;
+			font-size: 9pt !important;
 		}
 
 		a {
