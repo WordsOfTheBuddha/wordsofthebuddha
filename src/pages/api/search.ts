@@ -84,6 +84,7 @@ import {
 	calculatePhraseProximityBoost,
 	getCleanQueryString,
 	getParsedSearchTerms,
+	textContainsStrictWord,
 	type MatchType,
 	type ScoredResult,
 } from "../../utils/searchRanking";
@@ -194,6 +195,9 @@ export const GET: APIRoute = async ({ url }) => {
 
 		// Use the search query (without ^prefix terms) for actual matching
 		const effectiveQuery = searchQuery || normalizedQuery;
+		const exactLiteralTerms = getParsedSearchTerms(effectiveQuery)
+			.filter((t) => t.exact && !t.isStopword)
+			.map((t) => t.term);
 		const queryLower =
 			getCleanQueryString(effectiveQuery) ||
 			effectiveQuery.toLowerCase().trim();
@@ -261,6 +265,23 @@ export const GET: APIRoute = async ({ url }) => {
 
 			categoryResults.forEach((result) => {
 				const item = result.item;
+				const searchableFields = [
+					item.title || "",
+					item.slug || "",
+					item.description || "",
+					...(item.synonyms || []),
+					...(item.pali || []),
+				];
+				// Quoted/`'term` must appear as a literal whole word (diacritic-exact)
+				if (
+					exactLiteralTerms.length > 0 &&
+					!exactLiteralTerms.every((term) =>
+						textContainsStrictWord(searchableFields.join(" "), term),
+					)
+				) {
+					return;
+				}
+
 				const searchCfg =
 					item.type === "person"
 						? PERSON_SEARCH_CONFIG
@@ -270,13 +291,6 @@ export const GET: APIRoute = async ({ url }) => {
 					return getMatchTypeUtil(text, q, searchCfg);
 				}
 
-				const searchableFields = [
-					item.title || "",
-					item.slug || "",
-					item.description || "",
-					...(item.synonyms || []),
-					...(item.pali || []),
-				];
 				const combinedText = searchableFields.join(" ").toLowerCase();
 
 				// Strip annotation text before counting matches

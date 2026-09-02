@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	categoryMatchesAllNonStopwordTerms,
 	countCategoryNonStopwordTermMatches,
+	formatSearchResultsQueryLabel,
 	getCategoryCombinedSearchText,
 	getNonStopwordTerms,
 	rankResultsWithDiversity,
@@ -10,7 +11,9 @@ import {
 	slugMatchesQuery,
 	sortPtsMatchResults,
 	supplementCategoryFuseResults,
+	textContainsStrictWord,
 	tokenizeQuery,
+	wordMatchesStrict,
 	type ScoredResult,
 } from "./searchRanking";
 
@@ -218,5 +221,51 @@ describe("reference-only penalty", () => {
 			SCORE.DISCOURSE_PREFIX_TITLE - SCORE.DISCOURSE_REFERENCE_ONLY_PENALTY;
 		assert.ok(similarRef < SCORE.CATEGORY_EXACT_TITLE);
 		assert.ok(similarRef < SCORE.CATEGORY_WORD_EXACT_TITLE);
+	});
+});
+
+describe("exact quote matching (diacritic-exact, no suffix)", () => {
+	it("requires matching Pāli diacritics", () => {
+		assert.equal(textContainsStrictWord("sammāsati hoti", "sammāsati"), true);
+		assert.equal(textContainsStrictWord("sammāsati hoti", "sammasati"), false);
+		assert.equal(textContainsStrictWord("sammasati hoti", "sammāsati"), false);
+		assert.equal(wordMatchesStrict("sammāsati", "sammasati"), false);
+		assert.equal(wordMatchesStrict("sammāsati", "sammāsati"), true);
+	});
+
+	it("is case-insensitive but keeps diacritics", () => {
+		assert.equal(textContainsStrictWord("Sammāsati hoti", "sammāsati"), true);
+		assert.equal(textContainsStrictWord("SAMMĀSATI", "sammāsati"), true);
+	});
+
+	it("matches whole words only (no inflection suffix)", () => {
+		assert.equal(textContainsStrictWord("sati paccupaṭṭhitā", "sati"), true);
+		assert.equal(textContainsStrictWord("satimaṁ kalaṁ", "sati"), false);
+		assert.equal(textContainsStrictWord("satisfaction", "sati"), false);
+		assert.equal(wordMatchesStrict("satima", "sati"), false);
+	});
+
+	it("treats NFC and NFD forms of the same word as equal", () => {
+		const nfd = "sammāsati".normalize("NFD");
+		assert.equal(textContainsStrictWord(`here ${nfd} now`, "sammāsati"), true);
+		assert.equal(wordMatchesStrict(nfd, "sammāsati"), true);
+	});
+});
+
+describe("formatSearchResultsQueryLabel", () => {
+	it("shows the query as typed without adding quotes", () => {
+		assert.equal(formatSearchResultsQueryLabel("sammasati"), "sammasati");
+		assert.equal(
+			formatSearchResultsQueryLabel('"sammasati"'),
+			'"sammasati"',
+		);
+		assert.equal(
+			formatSearchResultsQueryLabel("'sammāsati"),
+			"'sammāsati",
+		);
+		assert.equal(
+			formatSearchResultsQueryLabel("  right view  "),
+			"right view",
+		);
 	});
 });

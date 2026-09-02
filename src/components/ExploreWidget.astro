@@ -331,7 +331,7 @@ const isSearchOnly = mode === "search-only";
 							<li><code class="not-prose">quest</code> — finds “quest” (fuzzy)</li>
 							<li><code class="not-prose">^SN</code> or <code class="not-prose">^AN</code> — only in that collection (e.g. SN, AN, MN, DHP)</li>
 							<li><code class="not-prose">!word</code> — exclude discourses containing <em>word</em></li>
-							<li><code class="not-prose">'jhana</code> or <code class="not-prose">"jhana"</code> — exact word “jhana” (short suffixes OK, e.g. <code class="not-prose">'sati</code> matches “satima” but not “cessation” or “satisfaction”)</li>
+							<li><code class="not-prose">'sammāsati</code> or <code class="not-prose">"sammāsati"</code> — exact whole word, diacritic-exact (matches “sammāsati”, not “sammasati” or “sammāsatima”)</li>
 							<li><code class="not-prose">"letting go"</code> — exact phrase (each word exact)</li>
 							<li><code class="not-prose">illusion | ignorance</code> — either word</li>
 							<li><code class="not-prose">akuppa cetovimutti</code> or <code class="not-prose">animmita</code> — Pali terms (fuzzy)</li>
@@ -1256,7 +1256,7 @@ const isSearchOnly = mode === "search-only";
 		getParsedSearchTerms,
 		getCleanQueryString,
 		textContainsStrictWord,
-		STRICT_WORD_MAX_SUFFIX,
+		formatSearchResultsQueryLabel,
 	} from "../utils/searchRanking";
 	import { normalizeSearchQuery, queryHasContentField } from "../utils/fuseQueryParser";
 
@@ -1389,6 +1389,9 @@ const isSearchOnly = mode === "search-only";
 			const parsedTerms = getParsedSearchTerms(
 				effectiveQuery || normalizedQuery,
 			);
+			const exactLiteralTerms = parsedTerms
+				.filter((t) => t.exact && !t.isStopword)
+				.map((t) => t.term);
 			const queryLower =
 				getCleanQueryString(effectiveQuery || normalizedQuery) ||
 				(effectiveQuery || normalizedQuery).toLowerCase().trim();
@@ -1398,6 +1401,27 @@ const isSearchOnly = mode === "search-only";
 			const maxEditDistance = getMaxAllowedEditDistance(queryLength);
 			const canPrefix = allowPrefixMatch(queryLength);
 			const canInfix = allowInfixMatch(queryLength);
+
+			/** Quoted/`'term` must appear as a literal whole word in category fields. */
+			function categoryMatchesExactLiterals(item: {
+				title?: string;
+				slug?: string;
+				description?: string;
+				synonyms?: string[];
+				pali?: string[];
+			}): boolean {
+				if (exactLiteralTerms.length === 0) return true;
+				const fields = [
+					item.title || "",
+					item.slug || "",
+					item.description || "",
+					...(item.synonyms || []),
+					...(item.pali || []),
+				].join(" ");
+				return exactLiteralTerms.every((term) =>
+					textContainsStrictWord(fields, term),
+				);
+			}
 
 			// Discourse path uses default prefix/infix gates only
 			function getMatchType(text: string, query: string): MatchType {
@@ -1432,6 +1456,8 @@ const isSearchOnly = mode === "search-only";
 
 				categoryResults.forEach((result) => {
 					const item = result.item;
+					if (!categoryMatchesExactLiterals(item)) return;
+
 					const fuseScore = result.score ?? 0.5;
 					const searchCfg =
 						item.type === "person"
@@ -2465,13 +2491,24 @@ const isSearchOnly = mode === "search-only";
 
 		// Highlight first occurrence of each term only
 		for (const { term, exact } of sortedTerms) {
-			const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+			const source = exact ? term.normalize("NFC") : term;
+			const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-			// Build case-insensitive pattern with diacritic support
+			// Exact: case-insensitive, diacritic-exact. Fuzzy: expand vowel/consonant diacritics.
 			let pattern = "";
 			for (const char of escaped) {
 				const lower = char.toLowerCase();
-				if ("aeiou".includes(lower)) {
+				if (exact) {
+					if (/\p{L}/u.test(char)) {
+						const upper = char.toUpperCase();
+						pattern +=
+							lower === upper
+								? char
+								: `[${lower}${upper}]`;
+					} else {
+						pattern += char;
+					}
+				} else if ("aeiou".includes(lower)) {
 					const vowelPatterns: Record<string, string> = {
 						'a': '[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄ]',
 						'e': '[eEéÉèÈêÊëËēĒĕĔėĖ]',
@@ -2488,9 +2525,9 @@ const isSearchOnly = mode === "search-only";
 			}
 
 			try {
-				// Exact-word mode: whole word + short suffix only (no infix in "cessation")
+				// Exact-word mode: literal whole word only (no suffix, diacritic-exact)
 				const boundaryPattern = exact
-					? `(?<=^|${NOT_UL})(${pattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}})(?=${NOT_UL}|$)`
+					? `(?<=^|${NOT_UL})(${pattern})(?=${NOT_UL}|$)`
 					: term.length < 4
 						? `\\b(${pattern})\\b`
 						: `(${pattern})`;
@@ -2531,7 +2568,7 @@ const isSearchOnly = mode === "search-only";
 
 		const total = results.length;
 		searchResultsCount.classList.remove("hidden");
-		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for "${query}"`;
+		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for ${formatSearchResultsQueryLabel(query)}`;
 		syncSearchInsideControls();
 
 		// Create renderer with highlighting function for search results

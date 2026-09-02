@@ -17,7 +17,6 @@ import {
 	calculatePhraseProximity,
 	stripAnnotations,
 	textContainsStrictWord,
-	STRICT_WORD_MAX_SUFFIX,
 } from "../../utils/searchRanking";
 import {
 	getPtsDisplay,
@@ -300,6 +299,28 @@ const UL = "\\p{L}\\p{N}"; // Unicode letters + numbers
 const NOT_UL = `[^${UL}]`; // non-letter, non-number
 
 /**
+ * Case-insensitive, diacritic-exact pattern for quoted/`'term` highlighting.
+ * Preserves Pāli diacritics (ā stays ā); only folds letter case.
+ */
+function createExactLiteralPattern(term: string): string {
+	let pattern = "";
+	for (const char of term.normalize("NFC")) {
+		if (/\p{L}/u.test(char)) {
+			const lower = char.toLowerCase();
+			const upper = char.toUpperCase();
+			if (lower === upper) {
+				pattern += escapeRegExp(char);
+			} else {
+				pattern += `[${escapeRegExp(lower)}${escapeRegExp(upper)}]`;
+			}
+		} else {
+			pattern += escapeRegExp(char);
+		}
+	}
+	return pattern;
+}
+
+/**
  * Replace the best occurrence of a term in text with a <mark> tag.
  * Prefers whole-word matches (with Pali inflection tolerance) over infix matches.
  * Uses \p{L} boundaries so Pali diacritic consonants (ṭ, ñ, ṇ…) are treated as letters.
@@ -313,10 +334,10 @@ function highlightBestMatch(
 ): { result: string; matched: boolean } {
 	const markOpen = `<mark class="${markClass} rounded" ${MARK_STYLE}>`;
 
-	// For exact operations, match whole word with short inflection suffix (e.g. sati → satima)
+	// Exact quotes: literal whole word only (diacritic-exact, no suffix)
 	if (operation === "exact") {
 		const regex = new RegExp(
-			`(?<=^|${NOT_UL})(${infixPattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}})(?=${NOT_UL}|$)`,
+			`(?<=^|${NOT_UL})(${infixPattern})(?=${NOT_UL}|$)`,
 			"u",
 		);
 		if (regex.test(text)) {
@@ -396,6 +417,11 @@ function createHighlightPattern(
 	context: string = "", // For startsWith/endsWith checks
 	paliMode = false,
 ): string {
+	// Exact quotes keep diacritics; other ops stay diacritic-insensitive.
+	if (operation === "exact") {
+		return createExactLiteralPattern(term);
+	}
+
 	const normalized = normalizeText(term);
 
 	// Build case-insensitive pattern character by character
@@ -424,8 +450,6 @@ function createHighlightPattern(
 		case "doesNotEndWith":
 		case "negation":
 			return "";
-		case "exact":
-			return `${diacriticPattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}}`;
 		case "startsWith":
 			// For highlighting, we should only highlight if it's at start of paragraph
 			return `^[^\\S\\r\\n]*${diacriticPattern}`; // Match start of content with optional whitespace
@@ -469,8 +493,9 @@ function findBestMatchingParagraph(
 	const termMatchers = normalizedTerms.map((term, index) => {
 		const highlightTerm = termsToHighlight[index];
 		const originalTerm = queryTerms[index];
+		// Exact ops need the original term (diacritics preserved); others normalize inside.
 		const pattern = createHighlightPattern(
-			term,
+			highlightTerm.operation === "exact" ? originalTerm : term,
 			highlightTerm.operation,
 			"",
 			paliMode,
@@ -507,6 +532,8 @@ function findBestMatchingParagraph(
 		// Strip annotations before matching - they contain text that shouldn't affect term matching
 		const strippedParagraph = stripAnnotations(paragraphLower);
 		const normalizedParagraph = normalizeText(strippedParagraph);
+		// Exact quotes match against NFC text (diacritics preserved)
+		const literalParagraph = strippedParagraph.normalize("NFC");
 		const paragraphEnd = currentLength + paragraph.length;
 		const paragraphMatches: [number, number][] = [];
 
@@ -552,21 +579,22 @@ function findBestMatchingParagraph(
 				const termIsStopword = matcher.isStopword;
 				if (!matcher.boundaryRegex || !matcher.globalRegex) return; // Skip negated terms
 
+				const haystack =
+					highlightTerm.operation === "exact"
+						? literalParagraph
+						: normalizedParagraph;
+
 				let matches = 0;
 				if (
 					highlightTerm.operation === "startsWith" ||
 					highlightTerm.operation === "endsWith"
 				) {
 					// For start/end, check against full paragraph
-					matches = matcher.boundaryRegex.test(normalizedParagraph)
-						? 1
-						: 0;
+					matches = matcher.boundaryRegex.test(haystack) ? 1 : 0;
 				} else {
 					// For exact/fuzzy, find all matches
 					matcher.globalRegex.lastIndex = 0;
-					matches = (
-						normalizedParagraph.match(matcher.globalRegex) || []
-					).length;
+					matches = (haystack.match(matcher.globalRegex) || []).length;
 				}
 
 				termMatches[originalTerm] = {
@@ -915,19 +943,24 @@ function findBestMatchingParagraph(
 	return result;
 }
 
-function termMatchesInNormalizedText(
-	normalizedText: string,
+function termMatchesInText(
+	text: string,
 	term: string,
 	operation: HighlightTerm["operation"],
+	/** Pre-normalized (diacritics stripped) form of text, when available */
+	normalizedText?: string,
 ): boolean {
-	const t = normalizeText(term.toLowerCase());
 	if (operation === "exact") {
-		return textContainsStrictWord(normalizedText, term);
+		return textContainsStrictWord(text, term);
 	}
-	if (normalizedText.includes(t)) return true;
+	const haystack =
+		normalizedText ??
+		normalizeText(stripAnnotations(text.toLowerCase()));
+	const t = normalizeText(term.toLowerCase());
+	if (haystack.includes(t)) return true;
 	if (/[aeiou]$/.test(t)) {
 		const stem = t.slice(0, -1);
-		return new RegExp(`${stem}[aeiou]`, "i").test(normalizedText);
+		return new RegExp(`${stem}[aeiou]`, "i").test(haystack);
 	}
 	return false;
 }
@@ -939,11 +972,7 @@ function isPaliOnlyContentMatch(
 	normalizedMap: Map<string, { content: string; contentPali: string }>,
 ): boolean {
 	const norm = normalizedMap.get(item.slug);
-	if (!norm?.contentPali) return false;
-
-	const englishNorm = normalizeText(
-		stripAnnotations((item.content || "").toLowerCase()),
-	);
+	if (!norm?.contentPali && !item.contentPali) return false;
 
 	const activeTerms = highlightTerms.filter(
 		(ht) =>
@@ -954,15 +983,17 @@ function isPaliOnlyContentMatch(
 	if (activeTerms.length === 0) return false;
 
 	return activeTerms.every((ht) => {
-		const inPali = termMatchesInNormalizedText(
-			norm.contentPali,
+		const inPali = termMatchesInText(
+			item.contentPali || "",
 			ht.term,
 			ht.operation,
+			norm?.contentPali,
 		);
-		const inEnglish = termMatchesInNormalizedText(
-			englishNorm,
+		const inEnglish = termMatchesInText(
+			item.content || "",
 			ht.term,
 			ht.operation,
+			norm?.content,
 		);
 		return inPali && !inEnglish;
 	});
@@ -1002,9 +1033,10 @@ function contentTextForSlug(
  * Whether a document's content satisfies contentConditions (include/exclude).
  * Used when the query has content: or contentPali: terms or generic negations
  * that are applied as a post-filter because Fuse only indexes slug/title/description.
+ * Strict (`'term`) groups match the original text so diacritics are preserved.
  */
 function docMatchesContentConditions(
-	slug: string,
+	doc: SearchData,
 	contentConditions: ContentConditions,
 	normalizedMap: Map<string, { content: string; contentPali: string }>,
 ): boolean {
@@ -1014,9 +1046,9 @@ function docMatchesContentConditions(
 	) {
 		return true;
 	}
-	if (!slug || typeof slug !== "string") return false;
-	const text = contentTextForSlug(slug, normalizedMap);
-	const normalizedText = text; // map already stores normalized content
+	if (!doc.slug || typeof doc.slug !== "string") return false;
+	const normalizedText = contentTextForSlug(doc.slug, normalizedMap);
+	const originalContent = `${doc.content || ""} ${doc.contentPali || ""}`;
 
 	for (const term of contentConditions.exclude) {
 		const t = normalizeText(term);
@@ -1025,7 +1057,7 @@ function docMatchesContentConditions(
 	for (const group of contentConditions.include) {
 		const hasOne = group.terms.some((term) => {
 			if (group.strict) {
-				return textContainsStrictWord(text, term);
+				return textContainsStrictWord(originalContent, term);
 			}
 			return normalizedText.includes(normalizeText(term));
 		});
@@ -1035,13 +1067,13 @@ function docMatchesContentConditions(
 }
 
 /**
- * Post-filter Fuse results for `'term` exact-word queries. Fuse treats `'term` as
- * a substring match, so we require strict word boundaries (short suffix allowed).
+ * Post-filter Fuse results for `'term` / `"term"` exact-word queries.
+ * Fuse is diacritic-insensitive, so we re-check against original fields:
+ * case-insensitive, diacritic-exact, whole word only (no suffix).
  */
 function docMatchesExactHighlightTerms(
 	doc: SearchData,
 	highlightTerms: HighlightTerm[],
-	normalizedMap: Map<string, { content: string; contentPali: string }>,
 ): boolean {
 	const exactTerms = highlightTerms.filter(
 		(ht) =>
@@ -1052,8 +1084,7 @@ function docMatchesExactHighlightTerms(
 	);
 	if (exactTerms.length === 0) return true;
 
-	const contentText = contentTextForSlug(doc.slug, normalizedMap);
-	const norm = normalizedMap.get(doc.slug);
+	const originalContent = `${doc.content || ""} ${doc.contentPali || ""}`;
 
 	return exactTerms.every((ht) => {
 		const term = ht.term;
@@ -1066,9 +1097,9 @@ function docMatchesExactHighlightTerms(
 				case "description":
 					return textContainsStrictWord(doc.description || "", term);
 				case "content":
-					return textContainsStrictWord(norm?.content || "", term);
+					return textContainsStrictWord(doc.content || "", term);
 				case "contentPali":
-					return textContainsStrictWord(norm?.contentPali || "", term);
+					return textContainsStrictWord(doc.contentPali || "", term);
 				default:
 					return false;
 			}
@@ -1078,7 +1109,7 @@ function docMatchesExactHighlightTerms(
 			doc.slug || "",
 			doc.title || "",
 			doc.description || "",
-			contentText,
+			originalContent,
 		];
 		return fields.some((fieldText) =>
 			textContainsStrictWord(fieldText, term),
@@ -1434,10 +1465,13 @@ async function performSearchInner(
 			const matchesAll = contentHighlightTerms.every((ht, i) => {
 				const term = contentTerms[i];
 				const regex = contentRegexes[i];
-				const combined = `${normalized.content} ${normalized.contentPali}`;
 
 				if (ht.operation === "exact") {
-					return textContainsStrictWord(combined, ht.term);
+					// Diacritic-exact: match original content, not the stripped map
+					return textContainsStrictWord(
+						`${doc.content || ""} ${doc.contentPali || ""}`,
+						ht.term,
+					);
 				}
 
 				// Plain includes first (fast path), then Pali stem regex for vowel-ending terms
@@ -1491,7 +1525,7 @@ async function performSearchInner(
 		}
 		searchResults = allDocs
 			.filter((doc) =>
-				docMatchesContentConditions(doc.slug, contentConditions, normalizedMap),
+				docMatchesContentConditions(doc, contentConditions, normalizedMap),
 			)
 			.map((doc) => ({
 				item: doc,
@@ -1504,7 +1538,7 @@ async function performSearchInner(
 		if (hasContentConditions) {
 			searchResults = searchResults.filter((r) =>
 				docMatchesContentConditions(
-					r.item.slug,
+					r.item,
 					contentConditions,
 					normalizedMap,
 				),
@@ -1515,11 +1549,7 @@ async function performSearchInner(
 		);
 		if (hasExactTerms) {
 			searchResults = searchResults.filter((r) =>
-				docMatchesExactHighlightTerms(
-					r.item,
-					highlightTerms,
-					normalizedMap,
-				),
+				docMatchesExactHighlightTerms(r.item, highlightTerms),
 			);
 		}
 	}

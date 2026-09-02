@@ -706,7 +706,10 @@ export function stripSearchOperators(term: string): string {
 
 export interface ParsedSearchTerm {
 	term: string;
-	/** True for `'term` or `"term"` (phrase quotes) exact-word mode */
+	/**
+	 * True for `'term` or `"term"` exact-word mode:
+	 * case-insensitive, diacritic-exact, whole word only (no suffix).
+	 */
 	exact: boolean;
 	isStopword: boolean;
 }
@@ -1712,40 +1715,47 @@ export function textContainsWholeWordNormalized(
 	return regex.test(normalizedText);
 }
 
-/** Max extra characters after a query prefix for strict/exact-word search (`'term`). */
-export const STRICT_WORD_MAX_SUFFIX = 2;
+/**
+ * Max extra characters after a query prefix for strict/exact-word search (`'term` / `"term"`).
+ * Exact quotes are fully literal (whole word only), so this is 0.
+ */
+export const STRICT_WORD_MAX_SUFFIX = 0;
+
+/** Lowercase + NFC — keeps Pāli diacritics (ā ≠ a) while folding case and composition. */
+function normalizeExactLiteral(text: string): string {
+	return text.toLowerCase().normalize("NFC");
+}
 
 /**
- * True when `word` equals `query` or starts with `query` with at most
- * {@link STRICT_WORD_MAX_SUFFIX} trailing characters (e.g. sati → satima).
- * Diacritic-insensitive.
+ * True when `word` equals `query` as a literal whole word.
+ * Case-insensitive; diacritic-exact (sammasati ≠ sammāsati). No suffix flexibility.
  */
 export function wordMatchesStrict(
 	word: string,
 	query: string,
 	maxSuffix: number = STRICT_WORD_MAX_SUFFIX,
 ): boolean {
-	const normalizedWord = normalizeDiacritics(word.toLowerCase());
-	const normalizedQuery = normalizeDiacritics(query.toLowerCase());
+	const normalizedWord = normalizeExactLiteral(word);
+	const normalizedQuery = normalizeExactLiteral(query);
+	if (!normalizedQuery) return false;
 	if (normalizedWord === normalizedQuery) return true;
+	if (maxSuffix <= 0) return false;
 	if (!normalizedWord.startsWith(normalizedQuery)) return false;
 	return normalizedWord.length - normalizedQuery.length <= maxSuffix;
 }
 
 /**
- * Check if text contains `query` as a strict word: not as an infix inside a longer
- * word, but as a whole word or with a short inflection suffix (0–2 chars).
- * Used for `'term` exact-word search. Diacritic-insensitive.
+ * Check if text contains `query` as a literal whole word (not an infix).
+ * Used for `'term` / `"term"` exact-word search.
+ * Case-insensitive; diacritic-exact (sammasati ≠ sammāsati). No suffix by default.
  */
 export function textContainsStrictWord(
 	text: string,
 	query: string,
 	maxSuffix: number = STRICT_WORD_MAX_SUFFIX,
 ): boolean {
-	const normalizedText = normalizeDiacritics(
-		stripAnnotations(text).toLowerCase(),
-	);
-	const normalizedQuery = normalizeDiacritics(query.toLowerCase());
+	const normalizedText = normalizeExactLiteral(stripAnnotations(text));
+	const normalizedQuery = normalizeExactLiteral(query);
 	if (!normalizedQuery) return false;
 
 	const escaped = escapeRegExpForSearch(normalizedQuery);
@@ -1754,6 +1764,14 @@ export function textContainsStrictWord(
 		"u",
 	);
 	return regex.test(normalizedText);
+}
+
+/**
+ * Format a query for the “Found N results for …” line.
+ * Shows the query as typed — never adds wrapping quotes.
+ */
+export function formatSearchResultsQueryLabel(query: string): string {
+	return query.trim();
 }
 
 /** Match a single term; exact mode uses strict word boundaries (no infix). */
