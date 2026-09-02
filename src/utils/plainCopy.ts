@@ -80,48 +80,49 @@ function normalizeCopiedPlainText(text: string): string {
 		.trim();
 }
 
-/** WebKit `intersectsNode` can return false for valid selections; use contains/comparePoint too. */
+/**
+ * True when `node`'s content actually overlaps the range.
+ *
+ * Do not use `Range.intersectsNode()` or `element.contains(end)` here.
+ * A paragraph selection commonly ends at the next block — `(p2, 0)` after
+ * triple-click or dragging to the end — and those APIs treat that as
+ * intersecting p2, so Cmd+C copied the following paragraph in full.
+ * `compareBoundaryPoints` is exclusive at the end, so a zero-width touch
+ * does not count. `intersectsNode` false-negatives are also avoided
+ * because this path does not call it.
+ */
 function rangeIntersectsNode(range: Range, node: Node): boolean {
 	if (!node) return false;
+
+	const doc = ownerDocumentOf(node);
+	const nodeRange = doc.createRange();
 	try {
-		if (range.intersectsNode(node)) return true;
-	} catch {
-		/* WebKit false negatives */
-	}
-
-	const start = range.startContainer;
-	const end = range.endContainer;
-	if (node === start || node === end) return true;
-
-	if (node.nodeType === Node.ELEMENT_NODE) {
-		const el = node as Element;
-		if (el.contains(start) || el.contains(end)) return true;
-	}
-	if (start.nodeType === Node.ELEMENT_NODE && (start as Element).contains(node)) {
-		return true;
-	}
-	if (end.nodeType === Node.ELEMENT_NODE && (end as Element).contains(node)) {
-		return true;
-	}
-
-	try {
-		const endOffset =
-			node.nodeType === Node.TEXT_NODE
-				? (node as Text).data.length
-				: node.childNodes.length;
-		if (range.comparePoint(node, 0) === 0) return true;
-		if (range.comparePoint(node, endOffset) === 0) return true;
-		if (
-			range.comparePoint(node, 0) < 0 &&
-			range.comparePoint(node, endOffset) > 0
+		if (node.nodeType === Node.TEXT_NODE) {
+			if ((node as Text).data.length === 0) return false;
+			nodeRange.selectNodeContents(node);
+		} else if (
+			node.nodeType === Node.ELEMENT_NODE &&
+			(node as Element).tagName.toLowerCase() === "br"
 		) {
-			return true;
+			try {
+				nodeRange.selectNode(node);
+			} catch {
+				nodeRange.selectNodeContents(node);
+			}
+		} else {
+			nodeRange.selectNodeContents(node);
 		}
-	} catch {
-		/* ignore */
-	}
 
-	return false;
+		// Overlap: range.start < node.end && range.end > node.start.
+		// WHATWG: END_TO_START is this.start vs source.end;
+		// START_TO_END is this.end vs source.start.
+		return (
+			range.compareBoundaryPoints(Range.END_TO_START, nodeRange) < 0 &&
+			range.compareBoundaryPoints(Range.START_TO_END, nodeRange) > 0
+		);
+	} catch {
+		return false;
+	}
 }
 
 const DISCOURSE_ROOT_SELECTOR =

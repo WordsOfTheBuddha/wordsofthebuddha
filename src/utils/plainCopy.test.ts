@@ -351,6 +351,51 @@ describe("getPlainTextFromRange", () => {
 		}
 	});
 
+	it("does not copy the next paragraph when the range ends at its start", () => {
+		const { document } = installDom(`
+			<article class="md-content">
+				<p class="english-paragraph" id="1"><span class="paragraph-num" aria-hidden="true">¶ 1</span>paragraph one</p>
+				<p class="english-paragraph" id="2"><span class="paragraph-num" aria-hidden="true">¶ 2</span>paragraph two</p>
+				<p class="english-paragraph" id="3"><span class="paragraph-num" aria-hidden="true">¶ 3</span>paragraph three</p>
+			</article>
+		`);
+		const [p1, p2] = document.querySelectorAll(".english-paragraph");
+		const t1 = [...p1.childNodes].find(
+			(n): n is Text =>
+				n.nodeType === Node.TEXT_NODE && !!(n as Text).data.trim(),
+		)!;
+
+		const endAtNextBlock = document.createRange();
+		endAtNextBlock.setStart(p1, 0);
+		endAtNextBlock.setEnd(p2, 0);
+		assert.equal(getPlainTextFromRange(endAtNextBlock), "paragraph one");
+
+		const textToNextBlock = document.createRange();
+		textToNextBlock.setStart(t1, 0);
+		textToNextBlock.setEnd(p2, 0);
+		assert.equal(getPlainTextFromRange(textToNextBlock), "paragraph one");
+
+		const wrapped = document.createRange();
+		wrapped.selectNode(p1);
+		assert.equal(getPlainTextFromRange(wrapped), "paragraph one");
+	});
+
+	it("copies only the selected prefix when the range overshoots into the next paragraph", () => {
+		const { document } = installDom(`
+			<article class="md-content">
+				<p class="english-paragraph">paragraph one</p>
+				<p class="english-paragraph">paragraph two</p>
+			</article>
+		`);
+		const [p1, p2] = document.querySelectorAll(".english-paragraph");
+		const t1 = p1.firstChild as Text;
+		const t2 = p2.firstChild as Text;
+		const range = document.createRange();
+		range.setStart(t1, 0);
+		range.setEnd(t2, 4);
+		assert.equal(getPlainTextFromRange(range), "paragraph one\n\npara");
+	});
+
 	it("does not glue minified </p><p> siblings from a text-node selection", () => {
 		const { document } = installDom(
 			`<article class="md-content"><p class="english-paragraph">Anāthapiṇḍika’s Park.</p><p class="english-paragraph">Then, when the night had advanced</p><p class="english-paragraph">Unselected third.</p></article>`,
@@ -545,6 +590,43 @@ describe("copy event handler", () => {
 			stored["text/plain"],
 			"paragraph one text\n\nparagraph two text",
 		);
+	});
+
+	it("copy event does not include the next paragraph when the range ends at its start", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<article class="md-content">
+				<p class="english-paragraph" id="1"><span class="paragraph-num" aria-hidden="true">¶ 1</span>paragraph one</p>
+				<p class="english-paragraph" id="2"><span class="paragraph-num" aria-hidden="true">¶ 2</span>paragraph two</p>
+			</article>
+		`);
+		installDiscoursePlainCopy();
+
+		const [p1, p2] = document.querySelectorAll(".english-paragraph");
+		const range = document.createRange();
+		range.setStart(p1, 0);
+		range.setEnd(p2, 0);
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+
+		assert.equal(event.defaultPrevented, true);
+		assert.equal(stored["text/plain"], "paragraph one");
 	});
 
 	it("inline handler extracts text before preventDefault", () => {
@@ -882,6 +964,50 @@ describe("copy event handler", () => {
 		assert.equal(event.defaultPrevented, false);
 		assert.equal(stored["text/plain"], undefined);
 		assert.equal(written.text, "");
+	});
+
+	it("inline copy does not include the next paragraph when the range ends at its start", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<article class="md-content">
+				<p class="english-paragraph" id="1"><span class="paragraph-num" aria-hidden="true">¶ 1</span>paragraph one</p>
+				<p class="english-paragraph" id="2"><span class="paragraph-num" aria-hidden="true">¶ 2</span>paragraph two</p>
+			</article>
+		`);
+		const inlineSrc = readFileSync(
+			path.join(
+				path.dirname(fileURLToPath(import.meta.url)),
+				"discoursePlainCopyInline.js",
+			),
+			"utf8",
+		);
+		(window as unknown as { eval: (code: string) => void }).eval(inlineSrc);
+
+		const [p1, p2] = document.querySelectorAll(".english-paragraph");
+		const range = document.createRange();
+		range.setStart(p1, 0);
+		range.setEnd(p2, 0);
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+
+		assert.equal(event.defaultPrevented, true);
+		assert.equal(stored["text/plain"], "paragraph one");
 	});
 
 	it("inline handler joins paragraphs when intersectsNode is broken (WebKit)", () => {

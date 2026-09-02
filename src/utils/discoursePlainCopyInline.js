@@ -3,7 +3,9 @@
  * Safari gets preventDefault + setData on the same turn. Walks live
  * `.english-paragraph` / `.pali-paragraph` blocks intersecting the selection
  * (cloneContents unwraps mid-<p> selections and glues them). Joins blocks
- * with \n\n. Calls window.__suttaPlainCopyPrepare when the module has loaded.
+ * with \n\n. A range that ends at the next block's start (p2, 0) must not
+ * include that next paragraph. Calls window.__suttaPlainCopyPrepare when
+ * the module has loaded.
  *
  * Primary path: `copy` capture (Edit menu and Cmd+C). preventDefault +
  * setData("text/plain") + clipboard.writeText. Skip real form controls only;
@@ -65,31 +67,36 @@
 		}
 
 		function __suttaRangeIntersectsNode(range, node) {
-			if (!range || !node) return true;
+			if (!range || !node) return false;
 			try {
-				if (range.intersectsNode(node)) return true;
-			} catch (err) {}
-			var start = range.startContainer;
-			var end = range.endContainer;
-			if (node === start || node === end) return true;
-			if (node.nodeType === 1) {
-				if (node.contains(start) || node.contains(end)) return true;
-			}
-			if (start.nodeType === 1 && start.contains(node)) return true;
-			if (end.nodeType === 1 && end.contains(node)) return true;
-			try {
-				var endOffset =
-					node.nodeType === 3 ? node.data.length : node.childNodes.length;
-				if (range.comparePoint(node, 0) === 0) return true;
-				if (range.comparePoint(node, endOffset) === 0) return true;
-				if (
-					range.comparePoint(node, 0) < 0 &&
-					range.comparePoint(node, endOffset) > 0
-				) {
-					return true;
+				var nodeRange = document.createRange();
+				if (node.nodeType === 3) {
+					if (!node.data || !node.data.length) return false;
+					nodeRange.selectNodeContents(node);
+				} else if (node.nodeType === 1 && node.tagName === "BR") {
+					try {
+						nodeRange.selectNode(node);
+					} catch (selectBrErr) {
+						nodeRange.selectNodeContents(node);
+					}
+				} else {
+					nodeRange.selectNodeContents(node);
 				}
-			} catch (err2) {}
-			return false;
+				var END_TO_START =
+					typeof Range !== "undefined" && Range.END_TO_START != null
+						? Range.END_TO_START
+						: 3;
+				var START_TO_END =
+					typeof Range !== "undefined" && Range.START_TO_END != null
+						? Range.START_TO_END
+						: 1;
+				return (
+					range.compareBoundaryPoints(END_TO_START, nodeRange) < 0 &&
+					range.compareBoundaryPoints(START_TO_END, nodeRange) > 0
+				);
+			} catch (err) {
+				return false;
+			}
 		}
 
 		function __suttaSliceTextForRange(textNode, range) {
