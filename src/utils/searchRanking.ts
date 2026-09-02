@@ -180,16 +180,119 @@ export function normalizeSlugForMatching(input: string): string {
 }
 
 const DISCOURSE_ID_QUERY = /^[a-z]{2,5}\d[\d.\-]*$/;
+const NUMERAL_DISCOURSE_ID_QUERY = /^\d[\d.\-]*$/;
 
-/** Compact form: "MN 10" → "mn10", "AN 6.12" → "an6.12". Null if not ID-shaped. */
+/** Compact form: "MN 10" → "mn10", "AN 6.12" → "an6.12", "36.3" → "36.3". Null if not ID-shaped. */
 export function compactDiscourseIdQuery(raw: string): string | null {
 	const compact = raw.trim().toLowerCase().replace(/\s+/g, "");
-	if (!DISCOURSE_ID_QUERY.test(compact)) return null;
+	if (
+		!DISCOURSE_ID_QUERY.test(compact) &&
+		!NUMERAL_DISCOURSE_ID_QUERY.test(compact)
+	) {
+		return null;
+	}
 	return compact;
 }
 
 export function isDiscourseIdQuery(raw: string): boolean {
 	return compactDiscourseIdQuery(raw) !== null;
+}
+
+/** True when the compact ID includes collection letters (mn10), not just numerals (36.3). */
+export function isPrefixedDiscourseId(compact: string): boolean {
+	return DISCOURSE_ID_QUERY.test(compact);
+}
+
+/** Numeric tail of a slug: sn36.3 → "36.3", mn10 → "10". */
+export function discourseNumericId(slug: string): string | null {
+	const m = /^[a-z]+(\d[\d.\-]*)$/i.exec(slug);
+	return m?.[1] ?? null;
+}
+
+/**
+ * ID string to match against a compact query: full slug for `sn36.3`,
+ * numeric tail for `36.3`.
+ */
+export function discourseIdKey(slug: string, compact: string): string | null {
+	if (isPrefixedDiscourseId(compact)) return slug;
+	return discourseNumericId(slug);
+}
+
+function discourseCollectionPrefix(slug: string): string | null {
+	const m = /^([a-z]+)/i.exec(slug);
+	return m?.[1]?.toLowerCase() ?? null;
+}
+
+function parseHierarchicalParts(
+	num: string,
+): { major: number; minor: number } | null {
+	if (!num || !/^\d+(?:\.\d+)*$/.test(num)) return null;
+	const parts = num.split(".");
+	return {
+		major: Number.parseInt(parts[0]!, 10),
+		minor: parts[1] ? Number.parseInt(parts[1], 10) : 0,
+	};
+}
+
+/**
+ * Parse a range numeric id: "1.1-10" → start 1.1 / end 1.10; "100-115" → 100 / 115.
+ */
+export function parseDiscourseIdRange(
+	numericId: string,
+): { start: string; end: string } | null {
+	const m = /^(\d+(?:\.\d+)*)-(\d+)$/.exec(numericId);
+	if (!m) return null;
+	const start = m[1]!;
+	const endPart = m[2]!;
+	const end = start.includes(".")
+		? `${start.slice(0, start.lastIndexOf("."))}.${endPart}`
+		: endPart;
+	return { start, end };
+}
+
+/** True when `queryNumeric` falls inside a range id like 1.1-10 (inclusive). */
+export function isNumericInDiscourseRange(
+	queryNumeric: string,
+	rangeNumericId: string,
+): boolean {
+	const range = parseDiscourseIdRange(rangeNumericId);
+	if (!range) return false;
+	const num = parseHierarchicalParts(queryNumeric);
+	const start = parseHierarchicalParts(range.start);
+	const end = parseHierarchicalParts(range.end);
+	if (!num || !start || !end) return false;
+	const atOrAfterStart =
+		num.major > start.major ||
+		(num.major === start.major && num.minor >= start.minor);
+	const atOrBeforeEnd =
+		num.major < end.major ||
+		(num.major === end.major && num.minor <= end.minor);
+	return atOrAfterStart && atOrBeforeEnd;
+}
+
+/**
+ * Range file containment: an1.1-10 matches queries 1.1, 1.8, 1.10, an1.8.
+ * Prefixed queries stay within that collection.
+ */
+export function isDiscourseRangeContainment(
+	slug: string,
+	compact: string,
+): boolean {
+	const slugNumeric = discourseNumericId(slug);
+	if (!slugNumeric?.includes("-")) return false;
+
+	const queryNumeric = isPrefixedDiscourseId(compact)
+		? discourseNumericId(compact)
+		: compact;
+	if (!queryNumeric || queryNumeric.includes("-")) return false;
+
+	if (isPrefixedDiscourseId(compact)) {
+		const slugCollection = discourseCollectionPrefix(slug);
+		const queryCollection = discourseCollectionPrefix(compact);
+		if (!slugCollection || slugCollection !== queryCollection) return false;
+	}
+
+	return isNumericInDiscourseRange(queryNumeric, slugNumeric);
 }
 
 /**
@@ -227,9 +330,14 @@ export function slugMatchesQuery(
 
 	const compactQuery = compactDiscourseIdQuery(query);
 	if (compactQuery) {
-		return isDiscourseIdPrefix(normalizedSlug, compactQuery)
-			? "prefix"
-			: "none";
+		const id = discourseIdKey(normalizedSlug, compactQuery);
+		if (!id) return "none";
+		if (id === compactQuery) return "exact";
+		// Range files contain the queried sutta (an1.1-10 ↔ 1.8).
+		if (isDiscourseRangeContainment(normalizedSlug, compactQuery)) {
+			return "exact";
+		}
+		return isDiscourseIdPrefix(id, compactQuery) ? "prefix" : "none";
 	}
 
 	if (normalizedSlug.startsWith(normalizedQuery)) {

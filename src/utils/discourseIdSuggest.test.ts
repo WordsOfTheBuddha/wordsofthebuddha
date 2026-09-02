@@ -22,9 +22,20 @@ const entries: DiscourseSuggestEntry[] = [
 	{ slug: "an6.12", title: "Sāraṇīyasutta", referenceOnly: true },
 	{ slug: "an60", title: "Fake", referenceOnly: false },
 	{ slug: "dn1", title: "Brahmajālasutta - The Prime Net", referenceOnly: true },
+	{ slug: "dn10", title: "Subhasutta", referenceOnly: false },
 	{ slug: "iti4", title: "Kodhasutta - Anger", referenceOnly: false },
 	{ slug: "iti40", title: "Vijjāsutta", referenceOnly: false },
 	{ slug: "iti41", title: "Paññāsutta", referenceOnly: false },
+	{ slug: "sn4.41", title: "Somadattasutta", referenceOnly: false },
+	{ slug: "an4.41", title: "Samādhibhāvanāsutta - Accomplishment in Wise Attention", referenceOnly: false },
+	{ slug: "sn10.1", title: "Indakasutta", referenceOnly: false },
+	{ slug: "sn1.1", title: "Oghataraṇa sutta - Crossing the Flood", referenceOnly: false },
+	{ slug: "sn1.10", title: "Arañña sutta - Wilderness", referenceOnly: false },
+	{ slug: "an1.1-10", title: "Cittapariyādāna vagga", referenceOnly: false },
+	{ slug: "sn36.3", title: "Pahāna sutta - Abandoned", referenceOnly: false },
+	{ slug: "sn36.31", title: "Nirāmisasutta", referenceOnly: false },
+	{ slug: "ud1.1", title: "Bodhisutta", referenceOnly: false },
+	{ slug: "snp1.1", title: "Uragasutta", referenceOnly: false },
 ];
 
 describe("compactDiscourseIdQuery", () => {
@@ -33,6 +44,9 @@ describe("compactDiscourseIdQuery", () => {
 		assert.equal(compactDiscourseIdQuery("an6"), "an6");
 		assert.equal(compactDiscourseIdQuery("AN 6.12"), "an6.12");
 		assert.equal(compactDiscourseIdQuery("sn12.2"), "sn12.2");
+		assert.equal(compactDiscourseIdQuery("36.3"), "36.3");
+		assert.equal(compactDiscourseIdQuery("36. 3"), "36.3");
+		assert.equal(compactDiscourseIdQuery("10"), "10");
 	});
 
 	it("rejects terms and collection-only input", () => {
@@ -40,6 +54,7 @@ describe("compactDiscourseIdQuery", () => {
 		assert.equal(compactDiscourseIdQuery("an"), null);
 		assert.equal(compactDiscourseIdQuery("radical attention"), null);
 		assert.equal(isDiscourseIdQuery("MN 10"), true);
+		assert.equal(isDiscourseIdQuery("36.3"), true);
 		assert.equal(isDiscourseIdQuery("yoniso"), false);
 	});
 });
@@ -100,7 +115,6 @@ describe("suggestDiscourses", () => {
 	it("does not treat AN 1 as a prefix of AN 10.*", () => {
 		const withAn1: DiscourseSuggestEntry[] = [
 			...entries,
-			{ slug: "an1.1-10", title: "Cittapariyādāna vagga", referenceOnly: false },
 			{ slug: "an10.1", title: "Saddhāsutta", referenceOnly: false },
 		];
 		const hits = suggestDiscourses(withAn1, "AN1");
@@ -114,6 +128,63 @@ describe("suggestDiscourses", () => {
 		assert.equal(hits[0]?.referenceOnly, true);
 		assert.equal(hits[0]?.href, "/dn1");
 	});
+
+	it("matches numeral-only IDs across collections, exact first", () => {
+		const hits = suggestDiscourses(entries, "36.3");
+		assert.deepEqual(
+			hits.map((hit) => hit.slug),
+			["sn36.3", "sn36.31"],
+		);
+		assert.equal(hits[0]?.exact, true);
+		assert.equal(hits[0]?.idLabel, "SN 36.3");
+		assert.equal(hits[1]?.exact, false);
+	});
+
+	it("lists every collection that shares a dotted number", () => {
+		const hits = suggestDiscourses(entries, "4.41");
+		assert.deepEqual(
+			hits.map((hit) => hit.slug),
+			["sn4.41", "an4.41"],
+		);
+		assert.equal(hits.every((hit) => hit.exact), true);
+	});
+
+	it("pins exact undotted numbers before other collections' chapter listings", () => {
+		const hits = suggestDiscourses(entries, "10");
+		assert.equal(hits[0]?.slug, "mn10");
+		assert.equal(hits[0]?.exact, true);
+		assert.ok(hits.some((hit) => hit.slug === "sn10.1"));
+		assert.ok(!hits.some((hit) => hit.slug === "mn100"));
+	});
+
+	it("surfaces range files after exacts and before last-segment growth", () => {
+		const hits = suggestDiscourses(entries, "1.1");
+		assert.deepEqual(
+			hits.map((hit) => hit.slug),
+			["sn1.1", "snp1.1", "ud1.1", "an1.1-10", "sn1.10"],
+		);
+		assert.equal(hits.find((hit) => hit.slug === "an1.1-10")?.exact, true);
+		assert.equal(hits.find((hit) => hit.slug === "sn1.10")?.exact, false);
+	});
+
+	it("matches in-between and end boundary values inside a range file", () => {
+		assert.deepEqual(
+			suggestDiscourses(entries, "1.8").map((hit) => hit.slug),
+			["an1.1-10"],
+		);
+		assert.deepEqual(
+			suggestDiscourses(entries, "1.10").map((hit) => hit.slug),
+			["sn1.10", "an1.1-10"],
+		);
+		assert.deepEqual(
+			suggestDiscourses(entries, "an1.8").map((hit) => hit.slug),
+			["an1.1-10"],
+		);
+		assert.deepEqual(
+			suggestDiscourses(entries, "an1.10").map((hit) => hit.slug),
+			["an1.1-10"],
+		);
+	});
 });
 
 describe("uniqueExactDiscourse", () => {
@@ -122,6 +193,17 @@ describe("uniqueExactDiscourse", () => {
 		assert.equal(hit?.slug, "mn10");
 		assert.equal(hit?.idLabel, "MN 10");
 		assert.equal(hit?.shortTitle, "Establishments of Mindfulness");
+	});
+
+	it("returns the unique numeral hit when only one collection has that number", () => {
+		const hit = uniqueExactDiscourse(entries, "36.3");
+		assert.equal(hit?.slug, "sn36.3");
+		assert.equal(hit?.idLabel, "SN 36.3");
+	});
+
+	it("returns null when more than one collection has that numeral", () => {
+		assert.equal(uniqueExactDiscourse(entries, "4.41"), null);
+		assert.equal(uniqueExactDiscourse(entries, "10"), null);
 	});
 
 	it("returns null for a prefix-only query", () => {

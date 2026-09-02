@@ -1,14 +1,21 @@
 import { compareDiscourseIds, formatDiscourseTitle } from "./discourseSort";
 import {
 	compactDiscourseIdQuery,
+	discourseIdKey,
 	isDiscourseIdPrefix,
+	isDiscourseRangeContainment,
+	isPrefixedDiscourseId,
 	normalizeForComparison,
 } from "./searchRanking";
 
 export {
 	compactDiscourseIdQuery,
+	discourseIdKey,
+	discourseNumericId,
 	isDiscourseIdPrefix,
 	isDiscourseIdQuery,
+	isDiscourseRangeContainment,
+	isPrefixedDiscourseId,
 } from "./searchRanking";
 
 export interface DiscourseSuggestEntry {
@@ -87,6 +94,7 @@ function nativeFirst(a: DiscourseSuggestEntry, b: DiscourseSuggestEntry): number
 /**
  * Suggest-only: mn1 → mn10, iti4 → iti40. Remainder must be digits so
  * an1 does not pull in an10.1. Ranking still uses isDiscourseIdPrefix.
+ * Also used on numeric tails so `10` can continue to `100`.
  */
 export function isUndottedNumberContinuation(slug: string, compact: string): boolean {
 	if (slug === compact || !slug.startsWith(compact)) return false;
@@ -168,6 +176,12 @@ function suggestByTitle(
 	return ranked.slice(0, limit).map(({ entry, rank }) => toHit(entry, rank === 0));
 }
 
+/**
+ * ID queries (`mn10`, `36.3`) match slugs; everything else matches titles.
+ * Numeral-only IDs use the same exact / range-containment / dotted-prefix /
+ * digit-continuation rules against each slug's numeric tail, so `36.3` finds
+ * SN 36.3 and `1.8` finds AN 1.1–10.
+ */
 export function suggestDiscourses(
 	entries: readonly DiscourseSuggestEntry[],
 	raw: string,
@@ -179,23 +193,31 @@ export function suggestDiscourses(
 	}
 
 	const exact: DiscourseSuggestEntry[] = [];
+	const inRange: DiscourseSuggestEntry[] = [];
 	const dottedPrefix: DiscourseSuggestEntry[] = [];
 	const digitPrefix: DiscourseSuggestEntry[] = [];
 	for (const entry of entries) {
-		if (entry.slug === compact) exact.push(entry);
-		else if (isDiscourseIdPrefix(entry.slug, compact)) dottedPrefix.push(entry);
-		else if (isUndottedNumberContinuation(entry.slug, compact)) {
+		const id = discourseIdKey(entry.slug, compact);
+		if (!id) continue;
+		if (id === compact) exact.push(entry);
+		else if (isDiscourseRangeContainment(entry.slug, compact)) {
+			inRange.push(entry);
+		} else if (isDiscourseIdPrefix(id, compact)) dottedPrefix.push(entry);
+		else if (isUndottedNumberContinuation(id, compact)) {
 			digitPrefix.push(entry);
 		}
 	}
 
 	exact.sort(nativeFirst);
+	inRange.sort(nativeFirst);
 	const prefix = (dottedPrefix.length > 0 ? dottedPrefix : digitPrefix).sort(
 		nativeFirst,
 	);
 
 	return [
 		...exact.map((entry) => toHit(entry, true)),
+		// Range files are near-exact: the queried sutta lives in that file.
+		...inRange.map((entry) => toHit(entry, true)),
 		...prefix.map((entry) => toHit(entry, false)),
 	].slice(0, limit);
 }
@@ -207,8 +229,12 @@ export function uniqueExactDiscourse(
 ): DiscourseSuggestHit | null {
 	const compact = compactDiscourseIdQuery(raw);
 	if (!compact) return null;
-	const exact = entries.filter((entry) => entry.slug === compact);
+	const exact = entries.filter(
+		(entry) => discourseIdKey(entry.slug, compact) === compact,
+	);
 	if (exact.length === 0) return null;
 	exact.sort(nativeFirst);
+	// Numeral queries (36.3, 10) only auto-navigate when one collection has that number.
+	if (!isPrefixedDiscourseId(compact) && exact.length > 1) return null;
 	return toHit(exact[0]!, true);
 }

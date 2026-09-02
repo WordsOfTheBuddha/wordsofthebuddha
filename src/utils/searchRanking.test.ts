@@ -118,6 +118,24 @@ describe("slugMatchesQuery numeric ID tokens", () => {
 		assert.equal(slugMatchesQuery("an60", "an6"), "none");
 		assert.equal(slugMatchesQuery("an6.2", "an6.1"), "none");
 	});
+
+	it("matches numeral-only IDs against the numeric tail", () => {
+		assert.equal(slugMatchesQuery("sn36.3", "36.3"), "exact");
+		assert.equal(slugMatchesQuery("sn36.31", "36.3"), "prefix");
+		assert.equal(slugMatchesQuery("mn10", "10"), "exact");
+		assert.equal(slugMatchesQuery("sn10.1", "10"), "prefix");
+		assert.equal(slugMatchesQuery("mn100", "10"), "none");
+		assert.equal(slugMatchesQuery("an4.41", "4.41"), "exact");
+	});
+
+	it("treats range discourse files as exact for values inside the span", () => {
+		assert.equal(slugMatchesQuery("an1.1-10", "1.1"), "exact");
+		assert.equal(slugMatchesQuery("an1.1-10", "1.8"), "exact");
+		assert.equal(slugMatchesQuery("an1.1-10", "1.10"), "exact");
+		assert.equal(slugMatchesQuery("an1.1-10", "an1.8"), "exact");
+		assert.equal(slugMatchesQuery("an1.1-10", "1.11"), "none");
+		assert.equal(slugMatchesQuery("an1.1-10", "sn1.8"), "none");
+	});
 });
 
 describe("tokenizeQuery discourse IDs", () => {
@@ -126,6 +144,9 @@ describe("tokenizeQuery discourse IDs", () => {
 			{ term: "mn10", isStopword: false },
 		]);
 		assert.deepEqual(getNonStopwordTerms("mn 10"), ["mn10"]);
+		assert.deepEqual(tokenizeQuery("36. 3"), [
+			{ term: "36.3", isStopword: false },
+		]);
 	});
 
 	it("does not collapse non-ID phrases", () => {
