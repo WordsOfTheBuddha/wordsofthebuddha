@@ -3,15 +3,10 @@ export const prerender = true;
 
 import Layout from "../layouts/Layout.astro";
 import DonateWidget from "../components/DonateWidget.astro";
-import { supportCosts, supportCostsYear } from "../data/support";
+import { supportAreas } from "../data/support";
 import { getSupportImpact } from "../data/analytics";
 import { thanksPeople, thanksPlaces } from "../data/thanks";
 import { transformId } from "../utils/transformId";
-
-function formatUsd(n: number): string {
-	if (n === 0) return "—";
-	return n % 1 === 0 ? `$${n.toFixed(0)}` : `$${n.toFixed(2)}`;
-}
 
 const FALLBACK_GIFT_EXCERPT =
 	"There are these five kinds of gifts of a true person. What five? 1.) One gives a gift out of faith; 2.) One gives a gift respectfully; 3.) One gives a gift at a suitable time; 4.) One gives a gift unreservedly; 5.) One gives a gift without injuring oneself or another.";
@@ -26,46 +21,44 @@ const supportImpact = await getSupportImpact();
 	fp="/support"
 	title="Support"
 	seoTitle="Support — Words of the Buddha"
-	seoDescription="Gifts support the free, public-domain translations on Words of the Buddha — tools, hosting, and the work of keeping the discourses available."
+	seoDescription="Support Words of the Buddha. Nothing is expected; whatever you can give helps keep the public-domain translations, audio, and study tools freely available to everyone."
 	showAuth={false}
 >
 	<div class="support-page not-prose w-full">
 		<section class="support-give" aria-labelledby="page-title">
 			<div class="support-give-lead flex flex-col gap-5">
 				<p class="support-intro m-0 text-[1.05rem] leading-relaxed">
-					Words of the Buddha translations are free and in the public domain.
+					Words of the Buddha translations are in the public domain and freely
+					available to everyone, along with the audio, Pāli lookup, Ask, and
+					the other study tools built around them.
+				</p>
+				<p class="support-intro m-0 text-[1.05rem] leading-relaxed">
+					Nothing is expected. Whatever you are able to give is appreciated,
+					and helps keep it that way.
 				</p>
 
 				<DonateWidget />
 			</div>
 
-			<div class="support-costs not-prose mt-10" aria-labelledby="support-costs-heading">
+			<div class="support-areas not-prose mt-10" aria-labelledby="support-areas-heading">
 				<h2
-					id="support-costs-heading"
+					id="support-areas-heading"
 					class="mt-0 mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100"
 				>
-					Where gifts go
+					Where support goes
 				</h2>
-				<p class="support-costs-lede m-0 mb-3 text-[1.05rem] font-normal leading-relaxed">
-					Typical monthly costs in {supportCostsYear}. Right now, gifts go toward updating translations and making them accessible.
-				</p>
-				<div class="support-costs-list flex w-full flex-col border-b border-[var(--surface-border)]">
+				<div class="support-areas-list flex w-full flex-col border-b border-[var(--surface-border)]">
 					{
-						supportCosts.map((row) => (
-							<div class="support-costs-row grid w-full grid-cols-[minmax(0,1fr)_4.5rem] items-start gap-x-4 border-t border-[var(--surface-border)] py-2.5">
-								<div class="support-costs-copy min-w-0">
-									<div class="support-costs-item font-medium leading-snug">
-										{row.item}
+						supportAreas.map((row) => (
+							<div class="support-areas-row w-full border-t border-[var(--surface-border)] py-2.5">
+								<div class="support-areas-item font-medium leading-snug">
+									{row.item}
+								</div>
+								{row.note && (
+									<div class="support-areas-note mt-0.5 text-sm leading-snug">
+										{row.note}
 									</div>
-									{row.note && (
-										<div class="support-costs-note mt-0.5 text-sm leading-snug">
-											{row.note}
-										</div>
-									)}
-								</div>
-								<div class="support-costs-amount w-[4.5rem] shrink-0 pt-0.5 text-right tabular-nums whitespace-nowrap">
-									{row.tentative ? "*" : formatUsd(row.monthlyUsd)}
-								</div>
+								)}
 							</div>
 						))
 					}
@@ -207,7 +200,6 @@ const supportImpact = await getSupportImpact();
 	}
 
 	.support-page.not-prose .support-intro,
-	.support-page.not-prose .support-costs-lede,
 	.support-page.not-prose .support-other-lede {
 		font-size: 1.05rem;
 		font-weight: 400;
@@ -265,7 +257,7 @@ const supportImpact = await getSupportImpact();
 	}
 
 	/* Section titles one step below Layout Title h1 (text-2xl / 1.5rem bold). */
-	.support-page.not-prose .support-costs h2,
+	.support-page.not-prose .support-areas h2,
 	.support-page.not-prose .support-other h2,
 	.support-page.not-prose .support-quiet h2 {
 		margin: 0 0 0.5rem;
@@ -275,15 +267,11 @@ const supportImpact = await getSupportImpact();
 		color: inherit;
 	}
 
-	.support-page.not-prose .support-costs-lede {
-		margin: 0 0 0.75rem;
-	}
-
-	.support-page.not-prose .support-costs-item {
+	.support-page.not-prose .support-areas-item {
 		font-weight: 500;
 	}
 
-	.support-page.not-prose .support-costs-note {
+	.support-page.not-prose .support-areas-note {
 		font-size: 0.875rem;
 		font-weight: 400;
 		color: var(--text-muted);
@@ -291,20 +279,6 @@ const supportImpact = await getSupportImpact();
 
 	.support-page.not-prose .support-other a {
 		color: var(--link-color);
-	}
-
-	.support-page.not-prose .support-costs-row {
-		display: grid !important;
-		grid-template-columns: minmax(0, 1fr) 4.5rem !important;
-		column-gap: 1rem;
-		align-items: start;
-		width: 100%;
-	}
-
-	.support-page.not-prose .support-costs-amount {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
-		white-space: nowrap;
 	}
 
 	.support-page.not-prose .support-sutta blockquote {

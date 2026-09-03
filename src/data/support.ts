@@ -1,32 +1,27 @@
 export type SupportFrequency = "once" | "monthly";
 
-export type SupportCostRow = {
+export type SupportArea = {
 	item: string;
-	monthlyUsd: number;
 	note: string;
-	/** Unknown or not yet settled — shown as * without a dollar figure. */
-	tentative?: boolean;
 };
 
-/** Typical monthly costs, 2026. Edit when they change. */
-export const supportCostsYear = 2026;
-
-export const supportCosts: SupportCostRow[] = [
+/** What support goes toward. No amounts — categories only. Edit as the work changes. */
+export const supportAreas: SupportArea[] = [
 	{
-		item: "Hosting",
-		monthlyUsd: 25,
-		note: "Website hosting and domain, wordsofthebuddha.org",
+		item: "Translations",
+		note: "Translating new discourses, revising existing ones, and adding notes",
 	},
 	{
-		item: "Translation tools and site development",
-		monthlyUsd: 60,
-		note: "Includes editor and coding tools used to prepare discourses and develop the site",
+		item: "Audio",
+		note: "Recording and preparing narration for listen mode",
 	},
 	{
-		item: "AI assistance",
-		monthlyUsd: 0,
-		tentative: true,
-		note: "Tentative / not yet known — used for audio and live intelligence.",
+		item: "Study tools",
+		note: "Pāli lookup, Ask, search, highlights, and exports",
+	},
+	{
+		item: "Hosting and development",
+		note: "Keeping the site running, fast, and available offline",
 	},
 ];
 
