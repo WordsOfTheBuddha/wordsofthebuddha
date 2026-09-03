@@ -51,9 +51,9 @@ const MAX_QUESTION = 500;
 const MAX_LOOKING = 160;
 const MAX_QUERY = 100;
 const MAX_QUERIES = 6;
-const MAX_SLUGS = 12;
+const MAX_SLUGS = 50;
 const MAX_REASONING = 6000;
-const MAX_SUMMARY = 700;
+const MAX_SUMMARY = 2000;
 const MAX_EMAIL = 120;
 const MAX_USER_REVIEW = 2000;
 

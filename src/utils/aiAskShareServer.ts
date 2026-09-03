@@ -69,6 +69,8 @@ export async function publishAskShare(options: {
 	results: AiAskShareSnapshot["results"];
 	model: string;
 	requestId?: string;
+	/** Conversation through the shared turn (oldest → newest). */
+	thread?: AiAskShareSnapshot["thread"];
 	user?: UserRecord | null;
 }): Promise<{ slug: string; path: string; created: boolean }> {
 	const draft = sanitizeAskShareSnapshot({
@@ -86,6 +88,9 @@ export async function publishAskShare(options: {
 		model: options.model,
 		requestId: options.requestId,
 		createdAt: Date.now(),
+		...(options.thread && options.thread.length > 1
+			? { thread: options.thread }
+			: {}),
 	});
 	if (!draft) {
 		throw new Error("Invalid share snapshot.");
@@ -98,7 +103,23 @@ export async function publishAskShare(options: {
 		draft.slug,
 		draft.question,
 	);
+	const incomingThreadLen = draft.thread?.length || 1;
+	const existingThreadLen = existing?.thread?.length || 1;
 	if (existing) {
+		// Re-sharing the same question with a fuller conversation should upgrade
+		// the public snapshot (e.g. turn 2 share that includes turn 1).
+		if (incomingThreadLen > existingThreadLen) {
+			await shareRef(slug).set(
+				{
+					...draft,
+					slug,
+					createdAt: existing.createdAt,
+					updatedAt: FieldValue.serverTimestamp(),
+					...(options.user ? { createdBy: options.user.uid } : {}),
+				},
+				{ merge: true },
+			);
+		}
 		return { slug, path: askSharePath(slug), created: false };
 	}
 

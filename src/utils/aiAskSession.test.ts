@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	AI_ASK_SESSION_LIMIT,
+	askHistoryEntriesForRestore,
 	clearActiveAskThread,
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
@@ -102,6 +103,46 @@ describe("sanitizeAskHistoryEntry saved", () => {
 	});
 });
 
+describe("ask conversation thread snapshots", () => {
+	it("round-trips a multi-turn thread on a history entry", () => {
+		const root = entry("What is mindfulness?", 1);
+		const follow = entry("What about the second one?", 2, {
+			saved: true,
+			thread: [root, entry("What about the second one?", 2)],
+		});
+		const clean = sanitizeAskHistoryEntry(follow);
+		assert.equal(clean?.saved, true);
+		assert.equal(clean?.thread?.length, 2);
+		assert.equal(clean?.thread?.[0]?.question, "What is mindfulness?");
+		assert.equal(
+			clean?.thread?.[1]?.question,
+			"What about the second one?",
+		);
+		// Nested thread must not nest further.
+		assert.equal(clean?.thread?.[1]?.thread, undefined);
+	});
+
+	it("restores the full conversation from a pinned follow-up", () => {
+		const root = entry("What is mindfulness?", 1);
+		const follow = entry("What about the second one?", 2, {
+			thread: [root, entry("What about the second one?", 2)],
+		});
+		const restored = askHistoryEntriesForRestore(follow);
+		assert.deepEqual(
+			restored.map((item) => item.question),
+			["What is mindfulness?", "What about the second one?"],
+		);
+	});
+
+	it("restores a solo Ask when no thread snapshot exists", () => {
+		const solo = entry("What is anger?", 1);
+		assert.deepEqual(
+			askHistoryEntriesForRestore(solo).map((item) => item.question),
+			["What is anger?"],
+		);
+	});
+});
+
 describe("findAiAskSessionEntry", () => {
 	it("finds a prior question case-insensitively", () => {
 		const entries = [entry("Is there a self?")];
@@ -136,6 +177,31 @@ describe("sanitizeAskHistoryEntry", () => {
 			}),
 			null,
 		);
+	});
+
+	it("keeps a wide research set and paragraph briefing", () => {
+		const results = Array.from({ length: 50 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+			title: `Discourse ${index + 1}`,
+			description: "",
+			contentSnippet: null,
+			referenceOnly: false,
+			href: `/mn${index + 1}`,
+		}));
+		const clean = sanitizeAskHistoryEntry({
+			question: "research satipatthana",
+			lookingFor: "satipatthana",
+			queries: ["sati"],
+			fallbackQueries: [],
+			offTopic: false,
+			results,
+			summary: "First point.\n\nSecond point.",
+			model: "test",
+			reasoning: "",
+			at: 1,
+		});
+		assert.equal(clean?.results.length, 50);
+		assert.equal(clean?.summary, "First point.\n\nSecond point.");
 	});
 });
 

@@ -1,4 +1,7 @@
+import type { AiAskPersonHit } from "./aiAskPersons";
+import { sanitizeAskPersonHits } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
+import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export interface AiAskSessionEntry {
 	/** Display wording (typo-corrected when available). */
@@ -10,6 +13,8 @@ export interface AiAskSessionEntry {
 	fallbackQueries: string[];
 	offTopic: boolean;
 	results: AiDiscourseHit[];
+	/** Exact-match person pages shown with the answer. */
+	persons?: AiAskPersonHit[];
 	model: string;
 	reasoning: string;
 	/** How the result set aligns with the question (from Gemini rerank). */
@@ -23,6 +28,13 @@ export interface AiAskSessionEntry {
 	feedback?: "up" | "down";
 	/** Signed-in favorite — prefer keeping these when trimming history. */
 	saved?: boolean;
+	/** Candidate pool size when this answer was ranked (for “Crunched N” UI). */
+	candidateCount?: number;
+	/**
+	 * Full conversation snapshot (oldest → newest) when this Ask was part of a
+	 * multi-turn thread. Nested entries do not carry their own `thread`.
+	 */
+	thread?: AiAskSessionEntry[];
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -30,15 +42,18 @@ const SESSION_KEY = "ai-ask-session-v1";
 const ACTIVE_THREAD_KEY = "ai-ask-active-thread-v1";
 /** Rolling history for signed-in (and local) Ask sessions. */
 export const AI_ASK_SESSION_LIMIT = 20;
-const ACTIVE_THREAD_TURN_LIMIT = 6;
+export const AI_ASK_THREAD_TURN_LIMIT = 6;
+const ACTIVE_THREAD_TURN_LIMIT = AI_ASK_THREAD_TURN_LIMIT;
 
 const MAX_QUESTION = 500;
 const MAX_LOOKING = 280;
 const MAX_QUERY = 100;
 const MAX_QUERIES = 6;
 const MAX_REASONING = 4000;
-const MAX_SUMMARY = 1200;
-const MAX_RESULTS = 8;
+/** Match Ask briefing cap (adaptive up to AI_RERANK_SUMMARY_MAX). */
+const MAX_SUMMARY = 4800;
+/** Match Ask display cap (adaptive up to AI_RERANK_MAX_LIMIT). */
+const MAX_RESULTS = 50;
 const MAX_SNIPPET = 280;
 const MAX_TITLE = 160;
 const MAX_DESCRIPTION = 280;
@@ -72,8 +87,10 @@ function migrateSessionStorageOnce(storage: Storage): void {
 
 export function sanitizeAskHistoryEntry(
 	raw: unknown,
+	options?: { allowThread?: boolean },
 ): AiAskSessionEntry | null {
 	if (!raw || typeof raw !== "object") return null;
+	const allowThread = options?.allowThread !== false;
 	const record = raw as Record<string, unknown>;
 	const question = clip(typeof record.question === "string" ? record.question : "", MAX_QUESTION);
 	if (!question) return null;
@@ -128,6 +145,16 @@ export function sanitizeAskHistoryEntry(
 			? Math.max(0, Math.round(record.at))
 			: Date.now();
 
+	const thread =
+		allowThread && Array.isArray(record.thread)
+			? record.thread
+					.map((item) =>
+						sanitizeAskHistoryEntry(item, { allowThread: false }),
+					)
+					.filter((item): item is AiAskSessionEntry => Boolean(item))
+					.slice(0, AI_ASK_THREAD_TURN_LIMIT)
+			: [];
+
 	return {
 		question,
 		...(originalQuestion ? { originalQuestion } : {}),
@@ -145,11 +172,15 @@ export function sanitizeAskHistoryEntry(
 			MAX_REASONING,
 		),
 		...(typeof record.summary === "string" && record.summary.trim()
-			? { summary: clip(record.summary, MAX_SUMMARY) }
+			? { summary: normalizeAskSummaryProse(record.summary, MAX_SUMMARY) }
 			: {}),
 		...(typeof record.shareSlug === "string" && record.shareSlug.trim()
 			? { shareSlug: clip(record.shareSlug.toLowerCase(), 48) }
 			: {}),
+		...(() => {
+			const persons = sanitizeAskPersonHits(record.persons);
+			return persons.length > 0 ? { persons } : {};
+		})(),
 		at,
 		...(typeof record.requestId === "string" && record.requestId.trim()
 			? { requestId: clip(record.requestId, 80) }
@@ -158,7 +189,26 @@ export function sanitizeAskHistoryEntry(
 			? { feedback: record.feedback }
 			: {}),
 		saved: record.saved === true,
+		...(typeof record.candidateCount === "number" &&
+		Number.isFinite(record.candidateCount) &&
+		record.candidateCount > 0
+			? { candidateCount: Math.min(2000, Math.floor(record.candidateCount)) }
+			: {}),
+		...(thread.length > 1 ? { thread } : {}),
 	};
+}
+
+/** Entries to restore into the Ask UI (full thread when a snapshot exists). */
+export function askHistoryEntriesForRestore(
+	entry: AiAskSessionEntry | null | undefined,
+): AiAskSessionEntry[] {
+	const clean = entry ? sanitizeAskHistoryEntry(entry) : null;
+	if (!clean) return [];
+	if (clean.thread && clean.thread.length > 1) {
+		return clean.thread;
+	}
+	const { thread: _thread, ...solo } = clean;
+	return [solo];
 }
 
 /**

@@ -82,6 +82,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	const user = await verifyUser(session, { cookies });
 
 	try {
+		const thread = Array.isArray(body.thread) ? body.thread : undefined;
 		const published = await publishAskShare({
 			preferredSlug:
 				typeof body.shareSlug === "string" ? body.shareSlug : undefined,
@@ -103,6 +104,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			model: typeof body.model === "string" ? body.model : "",
 			requestId:
 				typeof body.requestId === "string" ? body.requestId : undefined,
+			...(thread ? { thread } : {}),
 			user,
 		});
 		const share = sanitizeAskShareSnapshot({
@@ -116,6 +118,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			model: body.model,
 			requestId: body.requestId,
 			createdAt: Date.now(),
+			...(thread ? { thread } : {}),
 		});
 		return new Response(
 			JSON.stringify({

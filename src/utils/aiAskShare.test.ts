@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	askSharePath,
+	askShareTurnsForRestore,
 	deriveAskShareSlug,
 	normalizeAskShareSlug,
 	resolveAskShareSlug,
@@ -81,5 +82,54 @@ describe("sanitizeAskShareSnapshot", () => {
 		assert.ok(snap);
 		assert.equal(snap?.slug, "mindfulness-of-the-body");
 		assert.equal(askSharePath(snap!.slug), "/ask/mindfulness-of-the-body");
+	});
+
+	it("round-trips a multi-turn conversation prefix", () => {
+		const hit = {
+			slug: "mn10",
+			title: "Satipatthana",
+			description: "",
+			contentSnippet: null,
+			referenceOnly: false,
+			href: "/mn10",
+		};
+		const snap = sanitizeAskShareSnapshot({
+			slug: "faith-and-dhamma-followers",
+			question: "What about the second one?",
+			lookingFor: "follow-up",
+			queries: ["sekha"],
+			results: [hit],
+			summary: "Continuing…",
+			model: "test",
+			createdAt: 1,
+			thread: [
+				{
+					question: "Are faith-followers sekhas?",
+					lookingFor: "sekha",
+					queries: ["saddhanusari"],
+					results: [hit],
+					summary: "First answer…",
+					model: "test",
+					candidateCount: 120,
+				},
+				{
+					question: "What about the second one?",
+					lookingFor: "follow-up",
+					queries: ["sekha"],
+					results: [hit],
+					summary: "Continuing…",
+					model: "test",
+					candidateCount: 80,
+				},
+			],
+		});
+		assert.ok(snap);
+		assert.equal(snap?.thread?.length, 2);
+		const restored = askShareTurnsForRestore(snap!);
+		assert.deepEqual(
+			restored.map((turn) => turn.question),
+			["Are faith-followers sekhas?", "What about the second one?"],
+		);
+		assert.equal(restored[0]?.candidateCount, 120);
 	});
 });

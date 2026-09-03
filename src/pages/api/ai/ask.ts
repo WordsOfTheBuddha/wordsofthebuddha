@@ -1,15 +1,24 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
-import { rewriteAskQuestion } from "../../../utils/aiAskRewrite";
+import {
+	formatPlannerRoutingLine,
+	rewriteAskQuestion,
+} from "../../../utils/aiAskRewrite";
 import { resolveAskShareSlug } from "../../../utils/aiAskShare";
 import { consumeAskQuota } from "../../../utils/aiAskQuotaServer";
+import { resolveAskPersonHits } from "../../../utils/aiAskPersons";
 import {
 	AI_SEARCH_CANDIDATE_LIMIT,
+	queriesForResultSlugs,
 	searchDiscoursesForQueries,
 } from "../../../utils/aiDiscourseSearch";
-import { rerankDiscourseHitsWithGemini } from "../../../utils/aiResultRerank";
 import {
+	rerankDiscourseHits,
+	resolveAskResultLimit,
+} from "../../../utils/aiResultRerank";
+import {
+	clipAiHistorySummary,
 	clipAiQuestion,
 	type AiRewriteHistoryTurn,
 } from "../../../utils/aiQueryRewrite";
@@ -46,18 +55,25 @@ function parseHistory(raw: unknown): AiRewriteHistoryTurn[] {
 					.filter(Boolean)
 					.slice(0, 4)
 			: [];
+		// Follow-ups (“more like this”, “not already shown”) need every shown
+		// slug, and a research turn can now show up to 50.
 		const resultSlugs = Array.isArray(record.resultSlugs)
 			? record.resultSlugs
 					.filter((slug): slug is string => typeof slug === "string")
 					.map((slug) => slug.replace(/\s+/g, " ").trim().toLowerCase())
 					.filter(Boolean)
-					.slice(0, 12)
+					.slice(0, 50)
 			: [];
+		const summary =
+			typeof record.summary === "string"
+				? clipAiHistorySummary(record.summary)
+				: "";
 		turns.push({
 			question,
 			lookingFor,
 			queries,
 			...(resultSlugs.length > 0 ? { resultSlugs } : {}),
+			...(summary ? { summary } : {}),
 		});
 	}
 	return turns;
@@ -197,11 +213,24 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				// Gemini has no reasoning stream — don’t invent status text for
 				// “How it searched”. OpenRouter deltas already stream when present.
 				let reasoning = rewrite.reasoning;
+				const routing = rewrite.routing;
+				if (import.meta.env.DEV) {
+					console.info(formatPlannerRoutingLine(routing));
+				}
 				let shareSlug = resolveAskShareSlug(
 					plan.shareSlug,
 					plan.lookingFor,
 					plan.correctedQuestion || question,
 				);
+				const persons = plan.offTopic
+					? []
+					: resolveAskPersonHits({
+							correctedQuestion: plan.correctedQuestion,
+							lookingFor: plan.lookingFor,
+							queries: plan.queries,
+							fallbackQueries: plan.fallbackQueries,
+							personSlugs: plan.personSlugs,
+						});
 				send({
 					type: "plan",
 					requestId,
@@ -212,6 +241,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					offTopic: plan.offTopic,
 					degraded: plan.degraded === true,
 					shareSlug,
+					persons,
+					...(rewrite.plannerNote ? { plannerNote: rewrite.plannerNote } : {}),
+					// DEV only — which planner models were tried / used.
+					...(import.meta.env.DEV ? { routing } : {}),
 				});
 				if (plan.offTopic || plan.queries.length === 0) {
 					await persistAsk({
@@ -235,23 +268,43 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 						offTopic: plan.offTopic,
 						degraded: plan.degraded === true,
 						shareSlug,
+						persons,
 						results: [],
 						model: usedModel,
 						quota,
+						...(import.meta.env.DEV ? { routing } : {}),
 					});
 					send({ type: "done" });
 					return;
 				}
 				send({ type: "status", phase: "search", requestId });
-				const candidates = await searchDiscoursesForQueries(
+				const searched = await searchDiscoursesForQueries(
 					plan.queries,
 					plan.fallbackQueries,
 					{ mergeLimit: AI_SEARCH_CANDIDATE_LIMIT },
 				);
-				send({ type: "status", phase: "rerank", requestId });
-				const ranked = await rerankDiscourseHitsWithGemini({
+				const candidates = searched.hits;
+				const showCount = resolveAskResultLimit(
+					plan.correctedQuestion || question,
+				);
+				send({
+					type: "status",
+					phase: "rerank",
+					requestId,
+					candidateCount: candidates.length,
+					showCount,
+				});
+				const ranked = await rerankDiscourseHits({
 					question: plan.correctedQuestion || question,
 					candidates,
+					fallbackQueries: plan.fallbackQueries,
+					history,
+					limit: showCount,
+					openRouterModel: model,
+					// The planning model is the stronger one; hand its read of the
+					// question to the rescorer instead of making it start cold.
+					guidance: plan.rankingGuidance,
+					planningNotes: reasoning,
 				});
 				const results = ranked.results;
 				const summary = ranked.summary || "";
@@ -262,15 +315,39 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 						plan.correctedQuestion || question,
 					);
 				}
-				if (ranked.usedGemini) {
+				if (ranked.reranked) {
 					// Track rerank in the model label; don’t pollute “How it searched”.
-					usedModel = `${usedModel} + ${ranked.model || "gemini-rerank"}`;
+					const rerankLabel =
+						ranked.provider === "openrouter"
+							? ranked.model || "openrouter-rerank"
+							: ranked.model || "gemini-rerank";
+					usedModel = `${usedModel} + ${rerankLabel}`;
 				}
+				const resultSlugs = results.map((hit) => hit.slug);
+				// Rescorer can drop useless “Also tried” chips; else keep fallbacks
+				// that actually surfaced a final result slug.
+				const usefulFallbacks = ranked.usefulFallbackQueriesSpecified
+					? ranked.usefulFallbackQueries
+					: queriesForResultSlugs(
+							plan.fallbackQueries,
+							searched.batches,
+							resultSlugs,
+						);
+				// Same rule for the primary chips: a search that found nothing the
+				// rescorer kept (e.g. a stray “AN 8.41”) shouldn’t be shown as if it
+				// explained the answer. Keep the full plan when nothing qualifies.
+				const contributingQueries = queriesForResultSlugs(
+					plan.queries,
+					searched.batches,
+					resultSlugs,
+				);
+				const shownQueries =
+					contributingQueries.length > 0 ? contributingQueries : plan.queries;
 				await persistAsk({
 					displayQuestion: plan.correctedQuestion,
 					lookingFor: plan.lookingFor,
 					queries: plan.queries,
-					fallbackQueries: plan.fallbackQueries,
+					fallbackQueries: usefulFallbacks,
 					offTopic: plan.offTopic,
 					results,
 					model: usedModel,
@@ -283,16 +360,38 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					question: plan.correctedQuestion,
 					correctedQuestion: plan.correctedQuestion,
 					lookingFor: plan.lookingFor,
-					queries: plan.queries,
-					fallbackQueries: plan.fallbackQueries,
+					queries: shownQueries,
+					fallbackQueries: usefulFallbacks,
 					offTopic: plan.offTopic,
 					degraded: plan.degraded === true,
-					reranked: ranked.usedGemini,
+					reranked: ranked.reranked,
 					summary,
 					shareSlug,
+					persons,
 					results,
+					candidateCount:
+						ranked.candidateCount > 0
+							? ranked.candidateCount
+							: candidates.length,
+					showCount: results.length,
 					model: usedModel,
 					quota,
+					...(import.meta.env.DEV
+						? {
+								routing: {
+									...routing,
+									degraded: plan.degraded === true,
+									...(ranked.reranked
+										? {
+												reranker:
+													ranked.provider === "openrouter"
+														? ranked.model || "openrouter-rerank"
+														: ranked.model || "gemini-rerank",
+											}
+										: {}),
+								},
+							}
+						: {}),
 				});
 				send({ type: "done" });
 			} catch (error) {

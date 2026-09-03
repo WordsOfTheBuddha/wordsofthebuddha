@@ -84,3 +84,12 @@ export async function syncUserAskHistory(
 	const merged = mergeAskHistoryEntries(localEntries, remote);
 	return replaceUserAskHistory(user, merged);
 }
+
+export async function removeUserAskHistoryByQuestions(
+	user: UserRecord,
+	questions: readonly string[],
+): Promise<AiAskSessionEntry[]> {
+	const current = await loadUserAskHistory(user);
+	const next = removeAskHistoryEntriesByQuestions(current, questions);
+	return replaceUserAskHistory(user, next);
+}

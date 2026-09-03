@@ -30,7 +30,7 @@ const ENOUGH_HITS = 3;
 const MAX_SEARCH_CALLS = 12;
 /**
  * Wide pool for Gemini rescoring. Search overfits easily; send a large
- * candidate set and let the reranker pick the best 10–20.
+ * candidate set and let the reranker pick the best 10–50.
  */
 export const AI_SEARCH_CANDIDATE_LIMIT = 500;
 
@@ -110,6 +110,60 @@ async function searchBatchesConcurrently(
 	);
 }
 
+export interface AiDiscourseSearchBatch {
+	query: string;
+	slugs: string[];
+}
+
+export interface AiDiscourseSearchResult {
+	hits: AiDiscourseHit[];
+	/** Normalized batches used for merge (for fallback contribution checks). */
+	batches: AiDiscourseSearchBatch[];
+}
+
+/**
+ * Queries (primary or fallback) whose search actually surfaced at least one
+ * of the final result slugs — so chips for dead-end searches can be dropped.
+ * Returned in the caller’s order using the caller’s original spelling.
+ */
+export function queriesForResultSlugs(
+	queries: readonly string[],
+	batches: readonly AiDiscourseSearchBatch[],
+	resultSlugs: readonly string[],
+): string[] {
+	const wanted = new Set(
+		resultSlugs.map((slug) => slug.trim().toLowerCase()).filter(Boolean),
+	);
+	if (wanted.size === 0) return [];
+	const contributing = new Set<string>();
+	for (const batch of batches) {
+		if (batch.slugs.some((slug) => wanted.has(slug.toLowerCase()))) {
+			contributing.add(batch.query.toLowerCase());
+		}
+	}
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const raw of queries) {
+		const key = normalizeAiSearchQuery(raw).toLowerCase();
+		if (!key || seen.has(key) || !contributing.has(key)) continue;
+		seen.add(key);
+		out.push(raw);
+	}
+	return out;
+}
+
+/** @deprecated use queriesForResultSlugs */
+export const fallbackQueriesForResultSlugs = queriesForResultSlugs;
+
+function toSearchBatches(
+	batches: readonly { query: string; hits: SearchResult[] }[],
+): AiDiscourseSearchBatch[] {
+	return batches.map((batch) => ({
+		query: batch.query,
+		slugs: batch.hits.map((hit) => hit.slug).filter(Boolean),
+	}));
+}
+
 /**
  * Search all rewrite queries (and usually fallbacks) then merge.
  * For large mergeLimit (Gemini pool), runs queries concurrently and pulls
@@ -119,7 +173,7 @@ export async function searchDiscoursesForQueries(
 	queries: readonly string[],
 	fallbackQueries: readonly string[] = [],
 	options: { mergeLimit?: number } = {},
-): Promise<AiDiscourseHit[]> {
+): Promise<AiDiscourseSearchResult> {
 	const mergeLimit = options.mergeLimit ?? AI_SEARCH_CANDIDATE_LIMIT;
 	const wide = mergeLimit >= 100;
 	const perQueryLimit = wide ? PER_QUERY_LIMIT_WIDE : PER_QUERY_LIMIT_NARROW;
@@ -131,7 +185,10 @@ export async function searchDiscoursesForQueries(
 			...uniqueQueries(queries).map(relaxSearchQuery),
 		]);
 		const batches = await searchBatchesConcurrently(pool, perQueryLimit);
-		return mergeDiscourseHits(batches, mergeLimit).map(toAiDiscourseHit);
+		return {
+			hits: mergeDiscourseHits(batches, mergeLimit).map(toAiDiscourseHit),
+			batches: toSearchBatches(batches),
+		};
 	}
 
 	const batches: {
@@ -171,5 +228,9 @@ export async function searchDiscoursesForQueries(
 			stopWhenMerged: 8,
 		});
 	}
-	return mergeDiscourseHits(batches, mergeLimit).map(toAiDiscourseHit);
+	const final = mergeDiscourseHits(batches, mergeLimit);
+	return {
+		hits: final.map(toAiDiscourseHit),
+		batches: toSearchBatches(batches),
+	};
 }

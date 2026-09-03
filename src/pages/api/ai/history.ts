@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 import { verifyUser } from "../../../middleware/auth";
 import {
 	loadUserAskHistory,
+	removeUserAskHistoryByQuestions,
 	syncUserAskHistory,
 	upsertUserAskHistoryEntry,
 } from "../../../utils/aiAskHistoryServer";
@@ -50,6 +51,30 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	if (body.action === "sync") {
 		const local = sanitizeAskHistoryEntries(body.entries);
 		const entries = await syncUserAskHistory(user, local);
+		return new Response(
+			JSON.stringify({ success: true, signedIn: true, entries }),
+			{ status: 200, headers: { "Content-Type": "application/json" } },
+		);
+	}
+
+	if (body.action === "delete") {
+		const questions = Array.isArray(body.questions)
+			? body.questions.filter(
+					(item): item is string => typeof item === "string",
+				)
+			: typeof body.question === "string"
+				? [body.question]
+				: [];
+		if (questions.length === 0) {
+			return new Response(
+				JSON.stringify({
+					success: false,
+					error: "A question is required to delete.",
+				}),
+				{ status: 400, headers: { "Content-Type": "application/json" } },
+			);
+		}
+		const entries = await removeUserAskHistoryByQuestions(user, questions);
 		return new Response(
 			JSON.stringify({ success: true, signedIn: true, entries }),
 			{ status: 200, headers: { "Content-Type": "application/json" } },

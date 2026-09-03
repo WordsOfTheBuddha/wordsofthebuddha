@@ -168,13 +168,13 @@ const examples = [
 	</form>
 
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
-		<label class="sr-only" for="ai-follow-input">Ask a follow-up</label>
+		<label class="sr-only" for="ai-follow-input">Follow up in this conversation</label>
 		<div class="ai-box">
 			<textarea
 				id="ai-follow-input"
 				data-ai-follow-input
 				rows="2"
-				placeholder="Ask a follow-up"
+				placeholder="Follow up in this conversation"
 				enterkeyhint="enter"
 			></textarea>
 			<button
@@ -312,7 +312,8 @@ const examples = [
 			root,
 			showModelPicker: root.dataset.showPicker === "1",
 			defaultModel:
-				root.dataset.defaultModel || "z-ai/glm-5.2:free",
+				root.dataset.defaultModel ||
+					"nvidia/nemotron-3-ultra-550b-a55b:free",
 			shareMode: root.dataset.shareMode === "1",
 			shareSnapshot: root.dataset.shareSnapshot || "",
 		});

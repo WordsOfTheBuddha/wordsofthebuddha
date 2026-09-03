@@ -1,8 +1,9 @@
 /**
  * Gemini Developer API helpers (server only). Key must never reach the browser.
  *
- * Free-tier RPD varies by model and account (often ~1,000/day for Flash /
- * Flash-Lite). Check Google AI Studio for the live quota on your project.
+ * Free-tier RPD varies by model and account (often ~500/day for Flash-Lite).
+ * Rerank falls back to OpenRouter when Gemini hits quota. Check Google AI
+ * Studio for the live quota on your project.
  */
 
 /**
@@ -138,18 +139,39 @@ export async function geminiGenerate(options: {
 	};
 }
 
-/** True when OpenRouter (or similar) failures should try Gemini rewrite. */
-export function shouldFallbackRewriteToGemini(error: unknown): boolean {
-	const status =
-		typeof error === "object" &&
+function errorStatus(error: unknown): number {
+	return typeof error === "object" &&
 		error &&
 		"status" in error &&
 		typeof (error as { status?: unknown }).status === "number"
-			? (error as { status: number }).status
-			: 0;
+		? (error as { status: number }).status
+		: 0;
+}
+
+function errorMessage(error: unknown): string {
+	return error instanceof Error ? error.message : String(error || "");
+}
+
+/** True when OpenRouter (or similar) failures should try Gemini rewrite. */
+export function shouldFallbackRewriteToGemini(error: unknown): boolean {
+	const status = errorStatus(error);
 	if (status === 429 || status === 502 || status === 503 || status === 408) {
 		return true;
 	}
-	const message = error instanceof Error ? error.message : String(error || "");
-	return /rate.?limit|timeout|temporar|unavailable|overloaded/i.test(message);
+	return /rate.?limit|timeout|temporar|unavailable|overloaded/i.test(
+		errorMessage(error),
+	);
+}
+
+/**
+ * True when Gemini rerank should fall back to OpenRouter — daily RPD quota,
+ * rate limits, and short outages.
+ */
+export function shouldFallbackRerankToOpenRouter(error: unknown): boolean {
+	const status = errorStatus(error);
+	if (status === 429 || status === 503 || status === 502) return true;
+	const message = errorMessage(error);
+	return /RESOURCE_EXHAUSTED|quota|rate.?limit|too many requests|temporar|unavailable|overloaded/i.test(
+		message,
+	);
 }

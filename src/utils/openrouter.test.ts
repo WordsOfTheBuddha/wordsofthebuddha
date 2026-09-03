@@ -10,7 +10,45 @@ import {
 	resolveRequestedOpenRouterModel,
 	selectFreeOpenRouterModels,
 	shouldShowAiModelPicker,
+	splitThinkTags,
+	streamDeltaReasoning,
 } from "./openrouter";
+
+describe("streamDeltaReasoning", () => {
+	it("reads the normalized field first and never doubles up", () => {
+		assert.equal(
+			streamDeltaReasoning({
+				reasoning: "a",
+				reasoning_details: [{ type: "reasoning.text", text: "a" }],
+			}),
+			"a",
+		);
+	});
+
+	it("falls back to reasoning_content, then reasoning_details text", () => {
+		assert.equal(streamDeltaReasoning({ reasoning_content: "b" }), "b");
+		assert.equal(
+			streamDeltaReasoning({
+				reasoning_details: [
+					{ type: "reasoning.text", text: "c" },
+					{ type: "reasoning.encrypted", data: "zzz" },
+					{ type: "reasoning.summary", summary: "d" },
+				],
+			}),
+			"cd",
+		);
+		assert.equal(streamDeltaReasoning({ content: "x" }), "");
+	});
+});
+
+describe("splitThinkTags", () => {
+	it("moves <think> blocks out of content", () => {
+		const split = splitThinkTags('<think>plan it</think>\n{"a":1}');
+		assert.equal(split.reasoning, "plan it");
+		assert.equal(split.content, '{"a":1}');
+		assert.deepEqual(splitThinkTags('{"a":1}'), { content: '{"a":1}', reasoning: "" });
+	});
+});
 
 describe("isAllowedFreeModelId", () => {
 	it("allows :free models and the free router", () => {
@@ -50,7 +88,7 @@ describe("shouldShowAiModelPicker", () => {
 });
 
 describe("selectFreeOpenRouterModels", () => {
-	it("returns only the curated shortlist including Nemotron", () => {
+	it("returns only the curated shortlist (no Gemma)", () => {
 		const models = selectFreeOpenRouterModels([
 			{
 				id: "openai/gpt-4o",
@@ -63,6 +101,11 @@ describe("selectFreeOpenRouterModels", () => {
 				pricing: { prompt: "0", completion: "0" },
 			},
 			{
+				id: "google/gemma-4-31b-it:free",
+				name: "Gemma 4 31B (free)",
+				pricing: { prompt: "0", completion: "0" },
+			},
+			{
 				id: "z-ai/glm-5.2:free",
 				name: "GLM 5.2 (free)",
 				pricing: { prompt: "0", completion: "0" },
@@ -70,13 +113,23 @@ describe("selectFreeOpenRouterModels", () => {
 			},
 		]);
 		assert.equal(models.length, CURATED_ASK_MODELS.length);
-		assert.equal(DEFAULT_OPENROUTER_MODEL, "z-ai/glm-5.2:free");
-		assert.ok(
-			models.some(
-				(model) => model.id === "nvidia/nemotron-3-ultra-550b-a55b:free",
-			),
+		assert.equal(
+			DEFAULT_OPENROUTER_MODEL,
+			"nvidia/nemotron-3-ultra-550b-a55b:free",
 		);
-		assert.ok(models.some((model) => model.id === "z-ai/glm-5.2:free"));
+		assert.deepEqual(
+			models.map((model) => model.id),
+			[
+				"nvidia/nemotron-3-ultra-550b-a55b:free",
+				"minimax/minimax-m3:free",
+				"z-ai/glm-5.2:free",
+				"nvidia/nemotron-3.5-lightning:free",
+			],
+		);
+		assert.equal(
+			models.some((model) => model.id === "google/gemma-4-31b-it:free"),
+			false,
+		);
 		assert.equal(
 			models.some((model) => model.id === "qwen/qwen3-8b:free"),
 			false,

@@ -8,28 +8,42 @@ export interface OpenRouterFreeModel {
 	contextLength: number;
 }
 
-/** Curated free models offered in the Ask picker (limited top choices). */
+/**
+ * Curated free models offered in the Ask picker (limited top choices).
+ * Order is display preference — stronger models first.
+ */
 export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
+	{
+		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
+		name: "NVIDIA: Nemotron 3 Ultra",
+		contextLength: 0,
+	},
+	{
+		id: "minimax/minimax-m3:free",
+		name: "MiniMax: M3",
+		contextLength: 0,
+	},
 	{
 		id: "z-ai/glm-5.2:free",
 		name: "Z.ai: GLM 5.2",
 		contextLength: 0,
 	},
 	{
-		id: "google/gemma-4-31b-it:free",
-		name: "Google: Gemma 4 31B",
+		id: "nvidia/nemotron-3.5-lightning:free",
+		name: "NVIDIA: Nemotron 3.5 Lightning",
 		contextLength: 0,
 	},
-	{
-		id: "thinkingmachines/inkling:free",
-		name: "Thinking Machines: Inkling",
-		contextLength: 0,
-	},
-	{
-		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
-		name: "NVIDIA: Nemotron 3 Ultra",
-		contextLength: 0,
-	},
+] as const;
+
+/**
+ * OpenRouter planner fallback order after the requested/default model fails.
+ * Prefer stronger models before lighter ones. Gemini is tried only after this.
+ */
+export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
+	"nvidia/nemotron-3-ultra-550b-a55b:free",
+	"minimax/minimax-m3:free",
+	"z-ai/glm-5.2:free",
+	"nvidia/nemotron-3.5-lightning:free",
 ] as const;
 
 export const DEFAULT_OPENROUTER_MODEL = CURATED_ASK_MODELS[0].id;
@@ -51,6 +65,17 @@ export interface OpenRouterChatResult {
 	reasoning: string;
 	model: string;
 }
+
+/** OpenRouter `reasoning.effort` values we use for Ask. */
+export type OpenRouterReasoningEffort = "low" | "medium" | "high";
+
+/** Default for non-planner chat (e.g. OpenRouter rerank fallback). */
+export const DEFAULT_OPENROUTER_REASONING_EFFORT: OpenRouterReasoningEffort =
+	"low";
+/** Planner rewrite — more thinking before the JSON chips. */
+export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
+/** Planner needs room for medium reasoning + the JSON object. */
+export const ASK_PLANNER_MAX_TOKENS = 8192;
 
 function env(name: string): string | undefined {
 	const meta = (
@@ -94,9 +119,9 @@ export function getConfiguredOpenRouterModel(): string {
 }
 
 /**
- * Model preselected in the picker. The curated list’s first entry (GLM 5.2) is
- * the product default. OPENROUTER_MODEL is only used when the picker is hidden
- * (stale process env often overrides `.env` and would otherwise win here).
+ * Model preselected in the picker. The curated list’s first entry (Nemotron 3
+ * Ultra) is the product default. OPENROUTER_MODEL is only used when the picker
+ * is hidden (stale process env often overrides `.env` and would otherwise win).
  */
 export function getAskPickerDefaultModel(): string {
 	if (!shouldShowAiModelPicker()) return getConfiguredOpenRouterModel();
@@ -243,6 +268,9 @@ export async function openRouterChat(options: {
 	model: string;
 	messages: OpenRouterChatMessage[];
 	maxTokens?: number;
+	reasoningEffort?: OpenRouterReasoningEffort;
+	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
+	jsonMode?: boolean;
 	signal?: AbortSignal;
 }): Promise<OpenRouterChatResult> {
 	const model = resolveRequestedOpenRouterModel(options.model);
@@ -254,7 +282,13 @@ export async function openRouterChat(options: {
 			messages: options.messages,
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
-			reasoning: { effort: "low", exclude: false },
+			reasoning: {
+				effort: options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				exclude: false,
+			},
+			...(options.jsonMode
+				? { response_format: { type: "json_object" } }
+				: {}),
 		}),
 		signal: options.signal,
 	});
@@ -302,10 +336,54 @@ export interface OpenRouterStreamChunk {
 	model?: string;
 }
 
+/**
+ * Reasoning text from a stream delta. OpenRouter normalizes to `reasoning`,
+ * but some providers only send `reasoning_content` or `reasoning_details[]`.
+ * Never combine them — they carry the same text.
+ */
+export function streamDeltaReasoning(delta: unknown): string {
+	if (!delta || typeof delta !== "object") return "";
+	const record = delta as Record<string, unknown>;
+	const direct = messageText(record.reasoning);
+	if (direct) return direct;
+	const legacy = messageText(record.reasoning_content);
+	if (legacy) return legacy;
+	if (Array.isArray(record.reasoning_details)) {
+		return record.reasoning_details
+			.map((item) => {
+				if (!item || typeof item !== "object") return "";
+				const detail = item as { type?: unknown; text?: unknown; summary?: unknown };
+				if (typeof detail.type === "string" && !/^reasoning\.(text|summary)/.test(detail.type)) {
+					return "";
+				}
+				return messageText(detail.text) || messageText(detail.summary);
+			})
+			.join("");
+	}
+	return "";
+}
+
+/**
+ * Some models ignore the reasoning field and think inside `<think>` tags in
+ * the content stream instead. Split those out so the thinking is still shown.
+ */
+export function splitThinkTags(content: string): { content: string; reasoning: string } {
+	if (!/<think\b/i.test(content)) return { content, reasoning: "" };
+	const parts: string[] = [];
+	const stripped = content.replace(/<think\b[^>]*>([\s\S]*?)(?:<\/think>|$)/gi, (_m, inner: string) => {
+		parts.push(inner.trim());
+		return "";
+	});
+	return { content: stripped.trim(), reasoning: parts.filter(Boolean).join("\n\n") };
+}
+
 export async function* openRouterChatStream(options: {
 	model: string;
 	messages: OpenRouterChatMessage[];
 	maxTokens?: number;
+	reasoningEffort?: OpenRouterReasoningEffort;
+	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
+	jsonMode?: boolean;
 	signal?: AbortSignal;
 }): AsyncGenerator<OpenRouterStreamChunk> {
 	const model = resolveRequestedOpenRouterModel(options.model);
@@ -319,7 +397,13 @@ export async function* openRouterChatStream(options: {
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
 			stream: true,
-			reasoning: { effort: "low", exclude: false },
+			reasoning: {
+				effort: options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				exclude: false,
+			},
+			...(options.jsonMode
+				? { response_format: { type: "json_object" } }
+				: {}),
 		}),
 	});
 	if (!response.ok) {
@@ -365,7 +449,7 @@ export async function* openRouterChatStream(options: {
 				continue;
 			}
 			const delta = payload.choices?.[0]?.delta;
-			const reasoning = messageText(delta?.reasoning);
+			const reasoning = streamDeltaReasoning(delta);
 			const content = messageText(delta?.content);
 			if (reasoning) yield { reasoning };
 			if (content) yield { content };

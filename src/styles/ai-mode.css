@@ -428,6 +428,199 @@
 	margin: 0 0 0.75rem;
 }
 
+.ai-result-meta {
+	margin: 0 0 0.75rem;
+	color: var(--text-muted);
+	font-size: 0.9rem;
+	line-height: 1.4;
+}
+
+.ai-process {
+	list-style: none;
+	margin: 0 0 0.85rem;
+	padding: 0.7rem 0.9rem;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.85rem;
+	background: color-mix(in srgb, var(--surface-elevated) 92%, var(--primary-color) 8%);
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.ai-process li {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	margin: 0;
+	font-size: 0.9rem;
+	line-height: 1.4;
+	color: var(--text-muted);
+}
+
+.ai-process li.is-done,
+.ai-process li.is-active {
+	color: var(--text-color);
+}
+
+.ai-process li.is-active {
+	font-weight: 600;
+}
+
+.ai-process li.is-todo {
+	opacity: 0.55;
+}
+
+.ai-process-mark {
+	flex: 0 0 auto;
+	width: 1rem;
+	text-align: center;
+	font-size: 0.75rem;
+	line-height: 1.45;
+	color: var(--primary-color);
+}
+
+.ai-process li.is-todo .ai-process-mark {
+	color: var(--text-muted);
+}
+
+/* Model thinking, shown as a row between “Understood” and “Searched”. */
+.ai-process li.ai-process-thinking {
+	color: var(--text-muted);
+	font-size: 0.85rem;
+	line-height: 1.45;
+}
+
+.ai-process-thinking-body {
+	min-width: 0;
+	flex: 1;
+	padding-left: 0.45rem;
+	border-left: 2px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.ai-process-thinking-body p,
+.ai-process-thinking-body ul,
+.ai-process-thinking-body ol {
+	margin: 0 0 0.45em;
+	overflow-wrap: anywhere;
+}
+
+.ai-process-thinking-body ul,
+.ai-process-thinking-body ol {
+	padding-left: 1.2em;
+}
+
+.ai-process-thinking-body ul {
+	list-style: disc;
+}
+
+.ai-process-thinking-body ol {
+	list-style: decimal;
+}
+
+.ai-process-thinking-body li {
+	margin: 0.1em 0;
+}
+
+.ai-process-thinking-body code {
+	font-size: 0.9em;
+	padding: 0 0.25em;
+	border-radius: 0.3em;
+	background: color-mix(in srgb, var(--surface-border) 60%, transparent);
+}
+
+.ai-process-thinking-text > :last-child {
+	margin-bottom: 0;
+}
+
+.ai-process-thinking-note {
+	color: var(--text-color);
+	font-style: italic;
+}
+
+.ai-process li.ai-process-dev {
+	opacity: 1;
+	margin-top: 0.2rem;
+	padding-top: 0.35rem;
+	border-top: 1px dashed color-mix(in srgb, var(--surface-border) 80%, transparent);
+}
+
+.ai-dev-routing {
+	margin: 0;
+	font-size: 0.78rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	color: var(--text-muted);
+	line-height: 1.35;
+	overflow-wrap: anywhere;
+}
+
+.ai-process-thinking.is-clamped .ai-process-thinking-text {
+	max-height: calc(6 * 1.45em);
+	overflow: hidden;
+	-webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
+	mask-image: linear-gradient(to bottom, #000 65%, transparent);
+}
+
+.ai-process-thinking.is-live .ai-process-thinking-text > :last-child::after {
+	content: "▍";
+	margin-left: 0.1em;
+	color: var(--primary-color);
+	animation: ai-caret 1s steps(2, start) infinite;
+}
+
+@keyframes ai-caret {
+	to {
+		visibility: hidden;
+	}
+}
+
+.ai-process-thinking-toggle {
+	margin-top: 0.3rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--link-color);
+	font: inherit;
+	font-size: 0.82rem;
+	cursor: pointer;
+}
+
+.ai-process-thinking-toggle:hover {
+	text-decoration: underline;
+}
+
+.ai-results-caption {
+	margin: 0.25rem 0 0.6rem;
+	color: var(--text-muted);
+	font-size: 0.85rem;
+	letter-spacing: 0.01em;
+}
+
+.ai-search-details {
+	margin: 0.85rem 0 0;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.75rem;
+	padding: 0.35rem 0.75rem 0.55rem;
+	background: var(--surface-elevated);
+}
+
+.ai-search-details > summary {
+	cursor: pointer;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	padding: 0.25rem 0;
+}
+
+.ai-search-details[open] > summary {
+	margin-bottom: 0.45rem;
+	color: var(--text-color);
+}
+
+.ai-search-details .ai-queries,
+.ai-search-details .ai-fallbacks {
+	margin-bottom: 0.35rem;
+}
+
 .ai-summary {
 	margin: 0 0 1rem;
 	padding: 0.85rem 1rem;
@@ -437,6 +630,25 @@
 	color: var(--text-color);
 	font-size: 0.95rem;
 	line-height: 1.55;
+}
+
+.ai-summary p {
+	margin: 0 0 0.75em;
+}
+
+.ai-summary p:last-child {
+	margin-bottom: 0;
+}
+
+.ai-summary .ai-summary-ref {
+	color: var(--link-color);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--link-color) 45%, transparent);
+	text-underline-offset: 0.14em;
+}
+
+.ai-summary .ai-summary-ref:hover {
+	color: var(--link-hover-color, var(--link-color));
 }
 
 .ai-empty-hits p {
@@ -454,6 +666,28 @@
 
 .ai-error {
 	color: var(--warning-heading, #b45309);
+}
+
+.ai-error-actions {
+	margin: 0.75rem 0 0;
+}
+
+.ai-error-retry {
+	appearance: none;
+	border: 1px solid var(--surface-border);
+	background: var(--surface-elevated);
+	color: var(--text-color);
+	border-radius: 999px;
+	padding: 0.4rem 0.9rem;
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.ai-error-retry:hover {
+	border-color: var(--primary-color);
+	color: var(--primary-color);
 }
 
 .ai-queries {
@@ -489,6 +723,63 @@
 
 .ai-hits {
 	margin-top: 0.25rem;
+}
+
+.ai-persons {
+	margin-top: 0.25rem;
+}
+
+.ai-person-card-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	min-width: 0;
+}
+
+.ai-person-kicker {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.ai-person-badge {
+	display: inline-flex;
+	align-items: center;
+	border-radius: 999px;
+	padding: 0.1rem 0.5rem;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--primary-color);
+	border: 1px solid color-mix(in srgb, var(--primary-color) 45%, var(--surface-border));
+	background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-elevated));
+}
+
+.ai-person-title {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 600;
+	line-height: 1.35;
+	color: var(--text-color);
+}
+
+.ai-person-desc {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.45;
+	color: var(--text-color);
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.ai-person-ids {
+	margin: 0;
+	font-size: 0.78rem;
+	line-height: 1.35;
+	color: var(--text-muted);
 }
 
 /* Match Search discourse cards (ExploreWidget `.search-discourse-card`). */
@@ -557,18 +848,15 @@
 	flex-direction: column;
 	align-items: stretch;
 	gap: 0.35rem;
+	width: 100%;
 	text-align: left;
-	background: var(--surface-elevated);
-	border: 1px solid var(--surface-border);
+	background: transparent;
+	border: 0;
 	color: var(--text-color);
 	border-radius: 0.75rem;
-	padding: 0.65rem 0.9rem;
+	padding: 0.65rem 2.5rem 0.65rem 0.9rem;
 	font-size: 0.95rem;
 	cursor: pointer;
-}
-
-.ai-history-item:hover {
-	border-color: var(--primary-color);
 }
 
 .ai-history-top {
@@ -591,6 +879,20 @@
 	color: var(--text-muted);
 	font-size: 0.78rem;
 	line-height: 1.35;
+}
+
+.ai-history-thread,
+.ai-history-root {
+	display: block;
+	font-size: 0.78rem;
+	line-height: 1.35;
+	color: var(--text-muted);
+	margin-top: 0.15rem;
+}
+
+.ai-history-thread {
+	font-weight: 600;
+	color: color-mix(in srgb, var(--primary-color) 70%, var(--text-muted));
 }
 
 .ai-history-when {
@@ -682,25 +984,6 @@
 	100% {
 		background-position: -100% 0;
 	}
-}
-
-.ai-reasoning {
-	margin: 0 0 0.85rem;
-	color: var(--text-muted);
-	font-size: 0.9rem;
-}
-
-.ai-reasoning summary {
-	cursor: pointer;
-	color: var(--text-muted);
-}
-
-.ai-reasoning p {
-	white-space: pre-wrap;
-	margin: 0.5rem 0 0;
-	max-height: 8rem;
-	overflow: auto;
-	line-height: 1.45;
 }
 
 .ai-mode.is-listening .ai-box textarea {
@@ -802,6 +1085,156 @@
 	background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-elevated));
 }
 
+.ai-delete-link {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	padding: 0.2rem 0.15rem;
+	margin: 0;
+	font: inherit;
+	font-size: 0.85rem;
+	color: var(--text-muted);
+	opacity: 0.75;
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 0.14em;
+}
+
+.ai-delete-link:hover {
+	opacity: 1;
+	color: var(--text-muted);
+}
+
+.ai-history-card {
+	position: relative;
+	display: block;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.75rem;
+	background: var(--surface-elevated);
+	overflow: visible;
+}
+
+.ai-history-card:hover,
+.ai-history-card:focus-within {
+	border-color: var(--primary-color);
+}
+
+.ai-history-card.is-pinned {
+	border-color: color-mix(in srgb, var(--primary-color) 45%, var(--surface-border));
+}
+
+.ai-history-card .ai-history-item {
+	min-width: 0;
+}
+
+.ai-history-menu {
+	position: absolute;
+	top: 0.4rem;
+	right: 0.4rem;
+	z-index: 2;
+}
+
+.ai-history-menu-btn {
+	appearance: none;
+	border: 0;
+	background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
+	color: var(--text-muted);
+	border-radius: 999px;
+	width: 2rem;
+	height: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+/* Hover-capable pointers: keep ⋯ inside the card, visible on hover/focus. */
+@media (hover: hover) and (pointer: fine) {
+	.ai-history-menu-btn {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.ai-history-card:hover .ai-history-menu-btn,
+	.ai-history-card:focus-within .ai-history-menu-btn,
+	.ai-history-menu-btn[aria-expanded="true"] {
+		opacity: 1;
+		pointer-events: auto;
+	}
+}
+
+.ai-history-menu-btn:hover,
+.ai-history-menu-btn[aria-expanded="true"] {
+	color: var(--text-color);
+	background: color-mix(in srgb, var(--surface-elevated) 70%, var(--primary-color) 8%);
+}
+
+.ai-history-menu-panel {
+	position: absolute;
+	top: calc(100% + 0.2rem);
+	right: 0;
+	z-index: 5;
+	min-width: 9.5rem;
+	padding: 0.3rem;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.7rem;
+	background: var(--surface-elevated);
+	box-shadow: 0 10px 24px rgb(0 0 0 / 0.18);
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.ai-history-more {
+	appearance: none;
+	display: block;
+	width: 100%;
+	margin-top: 0.45rem;
+	border: 1px dashed var(--surface-border);
+	background: transparent;
+	color: var(--text-muted);
+	border-radius: 0.75rem;
+	padding: 0.55rem 0.9rem;
+	font: inherit;
+	font-size: 0.88rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.ai-history-more:hover {
+	color: var(--text-color);
+	border-color: var(--primary-color);
+}
+
+.ai-history-menu-panel[hidden] {
+	display: none;
+}
+
+.ai-history-menu-panel button {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--text-color);
+	text-align: left;
+	font: inherit;
+	font-size: 0.85rem;
+	padding: 0.45rem 0.65rem;
+	border-radius: 0.45rem;
+	cursor: pointer;
+}
+
+.ai-history-menu-panel button:hover {
+	background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
+.ai-history-menu-panel button.is-danger {
+	color: var(--text-muted);
+}
+
+.ai-history-menu-panel button.is-danger:hover {
+	color: var(--text-color);
+}
+
 .ai-history-heading {
 	display: flex;
 	flex-wrap: wrap;
@@ -851,6 +1284,7 @@
 	margin-top: 0;
 }
 
+.ai-history-card.is-pinned .ai-history-q,
 .ai-history-item.is-pinned .ai-history-q {
 	font-weight: 600;
 }

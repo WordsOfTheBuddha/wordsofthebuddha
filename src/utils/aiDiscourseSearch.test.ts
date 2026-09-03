@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { mergeDiscourseHits } from "./aiDiscourseHits";
 import {
+	AI_SEARCH_CANDIDATE_LIMIT,
+	fallbackQueriesForResultSlugs,
+	queriesForResultSlugs,
+} from "./aiDiscourseSearch";
+import {
 	isPrefixedAiDiscourseIdQuery,
 	isWeakAiSearchQuery,
 	normalizeAiSearchQuery,
@@ -19,9 +24,53 @@ function hit(slug: string): { slug: string; title: string; description: string; 
 }
 
 describe("AI_SEARCH_CANDIDATE_LIMIT", () => {
-	it("is wide enough for Gemini rerank pools", async () => {
-		const { AI_SEARCH_CANDIDATE_LIMIT } = await import("./aiDiscourseSearch");
+	it("is wide enough for Gemini rerank pools", () => {
 		assert.ok(AI_SEARCH_CANDIDATE_LIMIT >= 500);
+	});
+});
+
+describe("fallbackQueriesForResultSlugs", () => {
+	it("keeps only fallbacks that surfaced a final result", () => {
+		assert.deepEqual(
+			fallbackQueriesForResultSlugs(
+				["self after death", "anatta", "empty miss"],
+				[
+					{ query: "self", slugs: ["mn72"] },
+					{ query: "self after death", slugs: ["mn72", "sn44.10"] },
+					{ query: "anatta", slugs: ["mn22"] },
+					{ query: "empty miss", slugs: ["dn1"] },
+				],
+				["mn72", "sn44.10"],
+			),
+			["self after death"],
+		);
+	});
+
+	it("returns empty when no fallback contributed", () => {
+		assert.deepEqual(
+			fallbackQueriesForResultSlugs(
+				["broader"],
+				[{ query: "broader", slugs: ["dn1"] }],
+				["mn10"],
+			),
+			[],
+		);
+	});
+
+	it("drops a primary ID chip whose hit the rescorer rejected", () => {
+		assert.deepEqual(
+			queriesForResultSlugs(
+				["householder", "^AN samadhibhavana", "AN 8.41", "DN 31"],
+				[
+					{ query: "householder", slugs: ["dn31", "an8.54"] },
+					{ query: "^an samadhibhavana", slugs: ["an4.41"] },
+					{ query: "an8.41", slugs: ["an8.41"] },
+					{ query: "dn31", slugs: ["dn31"] },
+				],
+				["dn31", "an8.54", "an4.41"],
+			),
+			["householder", "^AN samadhibhavana", "DN 31"],
+		);
 	});
 });
 

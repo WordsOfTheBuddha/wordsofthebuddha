@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import qualities from "../data/qualities.json";
 import topicMappings from "../data/topicMappings.json";
+import { askPersonHintEntries } from "./aiAskPersons";
 import { buildAiLibraryHints } from "./aiLibraryHints";
 
 interface AiDiscourseCatalogFile {
@@ -46,6 +47,7 @@ export function getAiLibraryHintsText(): string {
 	cachedHints = buildAiLibraryHints({
 		topicTitles,
 		qualityTitles,
+		personEntries: askPersonHintEntries(),
 		discourseCatalogBlock: loadDiscourseCatalogBlock(),
 	});
 	return cachedHints;

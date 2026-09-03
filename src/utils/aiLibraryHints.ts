@@ -44,10 +44,13 @@ const PALI_ENGLISH: readonly [string, string][] = [
 export function buildAiLibraryHints(options?: {
 	topicTitles?: readonly string[];
 	qualityTitles?: readonly string[];
+	/** slug=title pairs for person pages (exact figures in the library). */
+	personEntries?: readonly { slug: string; title: string }[];
 	discourseCatalogBlock?: string;
 }): string {
 	const topics = (options?.topicTitles || []).slice(0, 40);
 	const qualities = (options?.qualityTitles || []).slice(0, 60);
+	const persons = (options?.personEntries || []).slice(0, 160);
 	const pali = PALI_ENGLISH.map(([p, e]) => `${p}=${e}`).join("; ");
 	const lines = [
 		"Library vocabulary (prefer these when relevant; do not invent sutta IDs):",
@@ -59,8 +62,15 @@ export function buildAiLibraryHints(options?: {
 	if (qualities.length > 0) {
 		lines.push(`Quality pages include: ${qualities.join("; ")}`);
 	}
+	if (persons.length > 0) {
+		lines.push(
+			`Person pages (slug=title; use these exact slugs in personSlugs when the question is clearly about that figure): ${persons
+				.map((entry) => `${entry.slug}=${entry.title}`)
+				.join("; ")}`,
+		);
+	}
 	lines.push(
-		"Default search already matches titles, descriptions, IDs, and topics/qualities/similes. Body text needs content:… or the user enabling full-text search; prefer short topical queries first.",
+		"Default search already matches titles, descriptions, IDs, and topics/qualities/similes/persons. Body text needs content:… or the user enabling full-text search; prefer short topical queries first.",
 	);
 	const catalog = (options?.discourseCatalogBlock || "").trim();
 	if (catalog) {
