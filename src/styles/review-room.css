@@ -42,7 +42,7 @@
 }
 
 #dashboard-container .tab-pill.active,
-#dashboard-container #library-menu-btn.active {
+#dashboard-container #more-menu-btn.active {
 	color: var(--primary-color);
 	border-color: var(--primary-color);
 	background-color: color-mix(in srgb, var(--primary-color) 12%, transparent);
@@ -52,21 +52,22 @@
 	width: 100%;
 }
 
-#dashboard-container .library-pill {
+/* Desktop-only pills; on mobile they live in the More menu. */
+#dashboard-container .menu-pill {
 	display: none;
 }
 
 @media (min-width: 768px) {
-	#dashboard-container .library-pill {
+	#dashboard-container .menu-pill {
 		display: inline-flex;
 	}
 
-	#dashboard-container .library-menu {
+	#dashboard-container .more-menu {
 		display: none !important;
 	}
 }
 
-#dashboard-container .library-menu-panel {
+#dashboard-container .more-menu-panel {
 	position: absolute;
 	top: calc(100% + 0.35rem);
 	right: 0;
@@ -83,23 +84,23 @@
 
 /* Author `display` must not override the HTML `hidden` attribute
    (Tailwind’s `[hidden]` rule loses to this selector’s specificity). */
-#dashboard-container .library-menu-panel[hidden] {
+#dashboard-container .more-menu-panel[hidden] {
 	display: none;
 }
 
-#dashboard-container .library-menu-panel:not([hidden]) {
+#dashboard-container .more-menu-panel:not([hidden]) {
 	display: flex;
 }
 
-#dashboard-container #library-menu-chevron {
+#dashboard-container #more-menu-chevron {
 	transition: transform 0.15s ease;
 }
 
-#dashboard-container #library-menu-btn[aria-expanded="true"] #library-menu-chevron {
+#dashboard-container #more-menu-btn[aria-expanded="true"] #more-menu-chevron {
 	transform: rotate(180deg);
 }
 
-#dashboard-container .library-menu-item {
+#dashboard-container .more-menu-item {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -114,16 +115,16 @@
 	cursor: pointer;
 }
 
-#dashboard-container .library-menu-item:hover,
-#dashboard-container .library-menu-item.active {
+#dashboard-container .more-menu-item:hover,
+#dashboard-container .more-menu-item.active {
 	background: rgba(128, 128, 128, 0.12);
 }
 
-#dashboard-container .library-menu-item.active {
+#dashboard-container .more-menu-item.active {
 	color: var(--primary-color);
 }
 
-#dashboard-container .overview {
+#dashboard-container .overview-stats {
 	max-width: 36rem;
 	margin-left: auto;
 	margin-right: auto;
@@ -146,6 +147,12 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
+}
+
+@media (min-width: 640px) {
+	#dashboard-container .overview-aggregates.is-triple {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
 }
 
 #dashboard-container .stat-tile {

@@ -11,6 +11,7 @@ import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
 import CheckSolid from "../assets/check.svg?raw";
 import QuestionIcon from "../assets/question-mark-circle.svg?raw";
+import OverviewIcon from "../assets/unified-view.svg?raw";
 import ChevronDown from "../assets/chevron-down.svg?raw";
 import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
@@ -41,6 +42,8 @@ import {
 	loadUserLearningActivity,
 	mergeUserLearningActivity,
 } from "../utils/learningActivityServer";
+import { formatListenStat } from "../utils/listenActivity";
+import { loadUserListenActivity } from "../utils/listenActivityServer";
 
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
 
@@ -69,6 +72,8 @@ let askEntries: AiAskSessionEntry[] = [];
 let coverage: CanonCoverage = { rows: [], totalRead: 0, totalAvailable: 0 };
 let learningDays = 0;
 let learningDayStrip: LearningDayDot[] = [];
+let listenTotalSeconds = 0;
+let listenStat: { value: string; label: string } | null = null;
 let readPagesMap: Record<string, number> = {};
 let oldestReadLater: {
 	slug: string;
@@ -85,6 +90,7 @@ try {
 		readDoc,
 		askHistory,
 		loadedLearningSummary,
+		loadedListenSummary,
 	] = await Promise.all([
 		fetch(`${Astro.url.origin}/api/highlights/list`, {
 			headers: {
@@ -116,8 +122,15 @@ try {
 			days: {} as Record<string, true>,
 			dayCount: 0,
 		})),
+		// One summary doc for listen minutes.
+		loadUserListenActivity(user).catch(() => ({
+			bySlug: {} as Record<string, number>,
+			totalSeconds: 0,
+		})),
 	]);
 	let learningSummary = loadedLearningSummary;
+	listenTotalSeconds = loadedListenSummary.totalSeconds;
+	listenStat = formatListenStat(listenTotalSeconds);
 
 	// Process highlights
 	const { highlights: validHighlightsData } = await highlightsResponse.json();
@@ -273,7 +286,7 @@ try {
 					<EmailVerifyBanner email={user.email} />
 				)
 			}
-			<!-- Tabs: on mobile, library tabs (Read Later / Saves / Read) sit in a menu -->
+			<!-- Tabs: mobile keeps Overview + Asks; other sections sit in a menu -->
 			<div
 				class="sticky top-0 z-10 bg-[var(--background-color)] dark:bg-[var(--surface-elevated)] py-2 mb-4"
 			>
@@ -282,6 +295,18 @@ try {
 						class="pills-scroll flex flex-wrap justify-center gap-2 sm:gap-3 py-1"
 						aria-label="Tabs"
 					>
+						<a
+							href="#overview"
+							class="tab-pill flex-shrink-0 active"
+							data-tab="overview"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={OverviewIcon} />
+								Overview
+							</span>
+						</a>
 						<a
 							href="#asks"
 							class="tab-pill flex-shrink-0"
@@ -295,8 +320,44 @@ try {
 							</span>
 						</a>
 						<a
+							href="#readlater"
+							class="tab-pill flex-shrink-0 menu-pill"
+							data-tab="readlater"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={ClockSolid} />
+								Read Later
+							</span>
+						</a>
+						<a
+							href="#saves"
+							class="tab-pill flex-shrink-0 menu-pill"
+							data-tab="saves"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={SaveSolid} />
+								Saves
+							</span>
+						</a>
+						<a
+							href="#read"
+							class="tab-pill flex-shrink-0 menu-pill"
+							data-tab="read"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={CheckSolid} />
+								Read
+							</span>
+						</a>
+						<a
 							href="#highlights"
-							class="tab-pill flex-shrink-0"
+							class="tab-pill flex-shrink-0 menu-pill"
 							data-tab="highlights"
 						>
 							<span
@@ -309,85 +370,45 @@ try {
 								Highlights
 							</span>
 						</a>
-						<a
-							href="#readlater"
-							class="tab-pill flex-shrink-0 library-pill"
-							data-tab="readlater"
-							data-library-tab
-						>
-							<span
-								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-							>
-								<span class="w-4 h-4" set:html={ClockSolid} />
-								Read Later
-							</span>
-						</a>
-						<a
-							href="#saves"
-							class="tab-pill flex-shrink-0 library-pill"
-							data-tab="saves"
-							data-library-tab
-						>
-							<span
-								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-							>
-								<span class="w-4 h-4" set:html={SaveSolid} />
-								Saves
-							</span>
-						</a>
-						<a
-							href="#read"
-							class="tab-pill flex-shrink-0 library-pill"
-							data-tab="read"
-							data-library-tab
-						>
-							<span
-								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-							>
-								<span class="w-4 h-4" set:html={CheckSolid} />
-								Read
-							</span>
-						</a>
-						<div class="library-menu md:hidden relative flex-shrink-0">
+						<div class="more-menu md:hidden relative flex-shrink-0">
 							<button
 								type="button"
-								id="library-menu-btn"
+								id="more-menu-btn"
 								class="tab-pill"
 								aria-haspopup="menu"
 								aria-expanded="false"
-								aria-controls="library-menu"
-								aria-label="Library tabs"
+								aria-controls="more-menu"
+								aria-label="More tabs"
 							>
 								<span
-									id="library-menu-face"
+									id="more-menu-face"
 									class="inline-flex items-center gap-1 text-sm"
 								>
 									<span
-										id="library-menu-icon"
+										id="more-menu-icon"
 										class="w-4 h-4"
 										set:html={ClockSolid}
 									/>
-									<span id="library-menu-label">Read Later</span>
+									<span id="more-menu-label">Read Later</span>
 								</span>
 								<span
-									id="library-menu-chevron"
+									id="more-menu-chevron"
 									class="w-3.5 h-3.5 opacity-70"
 									set:html={ChevronDown}
 								/>
 							</button>
 							<div
-								id="library-menu"
-								class="library-menu-panel"
+								id="more-menu"
+								class="more-menu-panel"
 								role="menu"
 								hidden
 							>
 								<button
 									type="button"
 									role="menuitem"
-									class="library-menu-item"
+									class="more-menu-item"
 									data-tab="readlater"
-									data-library-option
-									data-library-icon="readlater"
+									data-more-option
 								>
 									<span class="w-4 h-4" set:html={ClockSolid} />
 									Read Later
@@ -395,10 +416,9 @@ try {
 								<button
 									type="button"
 									role="menuitem"
-									class="library-menu-item"
+									class="more-menu-item"
 									data-tab="saves"
-									data-library-option
-									data-library-icon="saves"
+									data-more-option
 								>
 									<span class="w-4 h-4" set:html={SaveSolid} />
 									Saves
@@ -406,13 +426,22 @@ try {
 								<button
 									type="button"
 									role="menuitem"
-									class="library-menu-item"
+									class="more-menu-item"
 									data-tab="read"
-									data-library-option
-									data-library-icon="read"
+									data-more-option
 								>
 									<span class="w-4 h-4" set:html={CheckSolid} />
 									Read
+								</button>
+								<button
+									type="button"
+									role="menuitem"
+									class="more-menu-item"
+									data-tab="highlights"
+									data-more-option
+								>
+									<span class="w-4 h-4" set:html={HighlightIcon} />
+									Highlights
 								</button>
 							</div>
 						</div>
@@ -420,47 +449,36 @@ try {
 				</div>
 			</div>
 
-			<!-- Greeting + overview (shown when no tab is selected) -->
-			<div id="home-view">
+			<!-- Overview (default tab): greeting + reading stats -->
+			<div id="overview" class="tab-content">
 				<div
 					id="greeting"
 					class="text-xl sm:text-2xl font-light mt-6 mb-6 text-center text-gradient-accent"
 				>
 				</div>
 
-				<section class="overview" aria-label="Your reading">
+				<section class="overview-stats" aria-label="Your reading">
 					{
-						(coverage.totalRead > 0 || learningDays > 0) && (
+						(coverage.totalRead > 0 ||
+							learningDays > 0 ||
+							listenStat) && (
 							<div
 								class:list={[
 									"overview-aggregates",
 									{
 										"is-single":
 											(coverage.totalRead > 0 ? 1 : 0) +
-												(learningDays > 0 ? 1 : 0) ===
+												(learningDays > 0 ? 1 : 0) +
+												(listenStat ? 1 : 0) ===
 											1,
+										"is-triple":
+											(coverage.totalRead > 0 ? 1 : 0) +
+												(learningDays > 0 ? 1 : 0) +
+												(listenStat ? 1 : 0) >=
+											3,
 									},
 								]}
 							>
-								{coverage.totalRead > 0 && (
-									<div
-										id="discourses-read-tile"
-										class="stat-tile"
-									>
-										<span
-											class="stat-value"
-											id="discourses-read-value"
-											data-discourses-read={
-												coverage.totalRead
-											}
-										>
-											{coverage.totalRead}
-										</span>
-										<span class="stat-label">
-											discourses read
-										</span>
-									</div>
-								)}
 								{learningDays > 0 && (
 									<div
 										id="learning-days-tile"
@@ -494,6 +512,47 @@ try {
 												</span>
 											))}
 										</div>
+									</div>
+								)}
+								{coverage.totalRead > 0 && (
+									<div
+										id="discourses-read-tile"
+										class="stat-tile"
+									>
+										<span
+											class="stat-value"
+											id="discourses-read-value"
+											data-discourses-read={
+												coverage.totalRead
+											}
+										>
+											{coverage.totalRead}
+										</span>
+										<span class="stat-label">
+											discourses read
+										</span>
+									</div>
+								)}
+								{listenStat && (
+									<div
+										id="listen-minutes-tile"
+										class="stat-tile"
+									>
+										<span
+											class="stat-value"
+											id="listen-minutes-value"
+											data-listen-seconds={
+												listenTotalSeconds
+											}
+										>
+											{listenStat.value}
+										</span>
+										<span
+											class="stat-label"
+											id="listen-minutes-label"
+										>
+											{listenStat.label}
+										</span>
 									</div>
 								)}
 							</div>
@@ -805,6 +864,7 @@ try {
 	set:html={JSON.stringify({
 		userDisplayName,
 		readPagesMap,
+		listenTotalSeconds,
 		askCount: askEntries.length,
 		askKeys: askEntries.map((entry) =>
 			entry.question.replace(/\s+/g, " ").trim().toLowerCase(),
@@ -815,6 +875,11 @@ try {
 <script>
 	import { syncLearningDaysFromReadPages } from "../utils/learningActivityClient";
 	import { recentLearningDayStrip } from "../utils/learningActivity";
+	import { formatListenStat } from "../utils/listenActivity";
+	import {
+		flushListenActivity,
+		flushOfflineReadPages,
+	} from "../utils/listenActivityClient";
 	import {
 		normalizeAskQuestionKey,
 		readAiAskSession,
@@ -822,12 +887,15 @@ try {
 		writeAiAskSession,
 	} from "../utils/aiAskSession";
 
-	const LIBRARY_TABS = new Set(["readlater", "saves", "read"]);
-	const DEFAULT_LIBRARY_TAB = "readlater";
-	const LIBRARY_LABELS = {
+	const DEFAULT_TAB = "overview";
+	/** Tabs that collapse into the mobile More menu. */
+	const MORE_TABS = new Set(["readlater", "saves", "read", "highlights"]);
+	const DEFAULT_MORE_TAB = "readlater";
+	const MORE_LABELS = {
 		readlater: "Read Later",
 		saves: "Saves",
 		read: "Read",
+		highlights: "Highlights",
 	};
 	const ASK_SYNC_FLAG = "review-room-ask-history-synced";
 
@@ -849,11 +917,13 @@ try {
 	let boot: {
 		userDisplayName: string;
 		readPagesMap: Record<string, unknown>;
+		listenTotalSeconds: number;
 		askCount: number;
 		askKeys: string[];
 	} = {
 		userDisplayName: "there",
 		readPagesMap: {},
+		listenTotalSeconds: 0,
 		askCount: 0,
 		askKeys: [],
 	};
@@ -862,12 +932,62 @@ try {
 			boot = {
 				askCount: 0,
 				askKeys: [],
+				listenTotalSeconds: 0,
 				...JSON.parse(rawData),
 			};
 		}
 	} catch {
 		/* keep defaults */
 	}
+
+	function syncOverviewAggregateLayout(): void {
+		const aggregates = document.querySelector(".overview-aggregates");
+		if (!aggregates) return;
+		const count = aggregates.querySelectorAll(".stat-tile").length;
+		aggregates.classList.toggle("is-single", count === 1);
+		aggregates.classList.toggle("is-triple", count >= 3);
+	}
+
+	function renderListenStatTile(totalSeconds: number): void {
+		const display = formatListenStat(totalSeconds);
+		if (!display) return;
+		const valueEl = document.getElementById("listen-minutes-value");
+		const labelEl = document.getElementById("listen-minutes-label");
+		if (valueEl && labelEl) {
+			valueEl.textContent = display.value;
+			valueEl.dataset.listenSeconds = String(totalSeconds);
+			labelEl.textContent = display.label;
+			syncOverviewAggregateLayout();
+			return;
+		}
+		const section = document.querySelector(".overview-stats");
+		if (!section) return;
+		let aggregates = section.querySelector(".overview-aggregates");
+		if (!aggregates) {
+			aggregates = document.createElement("div");
+			aggregates.className = "overview-aggregates";
+			const byCollection = section.querySelector(".overview-card");
+			if (byCollection) section.insertBefore(aggregates, byCollection);
+			else section.prepend(aggregates);
+		}
+		const tile = document.createElement("div");
+		tile.id = "listen-minutes-tile";
+		tile.className = "stat-tile";
+		tile.innerHTML = `<span class="stat-value" id="listen-minutes-value" data-listen-seconds="${totalSeconds}">${display.value}</span><span class="stat-label" id="listen-minutes-label">${display.label}</span>`;
+		aggregates.appendChild(tile);
+		syncOverviewAggregateLayout();
+	}
+
+	// Merge anonymous / offline listen minutes + any listen-completed reads.
+	void Promise.all([flushListenActivity(), flushOfflineReadPages()]).then(
+		([result]) => {
+			const seconds = Math.max(
+				boot.listenTotalSeconds || 0,
+				result?.totalSeconds || 0,
+			);
+			renderListenStatTile(seconds);
+		},
+	);
 
 	// Backfill from mark-as-read timestamps in the reader's local timezone,
 	// then merge any anonymous / offline learning days into the account.
@@ -884,7 +1004,7 @@ try {
 			return;
 		}
 		// First paint had 0 days — insert the days tile now that sign-in day counted.
-		const section = document.querySelector(".overview");
+		const section = document.querySelector(".overview-stats");
 		if (!section) return;
 		let aggregates = section.querySelector(".overview-aggregates");
 		if (!aggregates) {
@@ -898,13 +1018,17 @@ try {
 		tile.id = "learning-days-tile";
 		tile.className = "stat-tile";
 		tile.innerHTML = `<span class="stat-value" id="learning-days-value" data-learning-days="${result.dayCount}">${result.dayCount}</span><span class="stat-label">days reading</span><div id="learning-day-strip" class="learning-day-strip" aria-label="Reading activity over the last 28 days" title="Filled days are days you read"></div>`;
-		aggregates.appendChild(tile);
+		// Days reading leads; insert before discourses read / listen when present.
+		const readTile = document.getElementById("discourses-read-tile");
+		const listenTile = document.getElementById("listen-minutes-tile");
+		if (readTile) aggregates.insertBefore(tile, readTile);
+		else if (listenTile) aggregates.insertBefore(tile, listenTile);
+		else aggregates.appendChild(tile);
 		renderLearningDayStrip(
 			document.getElementById("learning-day-strip"),
 			result.days,
 		);
-		const readTile = document.getElementById("discourses-read-tile");
-		aggregates.classList.toggle("is-single", !readTile);
+		syncOverviewAggregateLayout();
 	});
 
 	// Ask history lives in localStorage and Firestore. Review Room only SSR-reads
@@ -959,49 +1083,49 @@ try {
 
 	const tabLinks = document.querySelectorAll(".tab-pill[data-tab]");
 	const tabContents = document.querySelectorAll(".tab-content");
-	const greetingContainer = document.getElementById("home-view");
-	const libraryMenuBtn = document.getElementById("library-menu-btn");
-	const libraryMenu = document.getElementById("library-menu");
-	const libraryMenuLabel = document.getElementById("library-menu-label");
-	const libraryMenuIcon = document.getElementById("library-menu-icon");
-	const libraryOptions = document.querySelectorAll("[data-library-option]");
-	const libraryIconHtml = {
+	const moreMenuBtn = document.getElementById("more-menu-btn");
+	const moreMenu = document.getElementById("more-menu");
+	const moreMenuLabel = document.getElementById("more-menu-label");
+	const moreMenuIcon = document.getElementById("more-menu-icon");
+	const moreOptions = document.querySelectorAll("[data-more-option]");
+	const moreIconHtml = {
 		readlater: "",
 		saves: "",
 		read: "",
+		highlights: "",
 	};
-	libraryOptions.forEach((option) => {
+	moreOptions.forEach((option) => {
 		const tabId = option.getAttribute("data-tab");
 		const icon = option.querySelector(".w-4");
-		if (tabId && icon && tabId in libraryIconHtml) {
-			libraryIconHtml[tabId] = icon.innerHTML;
+		if (tabId && icon && tabId in moreIconHtml) {
+			moreIconHtml[tabId] = icon.innerHTML;
 		}
 	});
 
-	function closeLibraryMenu() {
-		if (!libraryMenu || !libraryMenuBtn) return;
-		libraryMenu.hidden = true;
-		libraryMenuBtn.setAttribute("aria-expanded", "false");
+	function closeMoreMenu() {
+		if (!moreMenu || !moreMenuBtn) return;
+		moreMenu.hidden = true;
+		moreMenuBtn.setAttribute("aria-expanded", "false");
 	}
 
-	function openLibraryMenu() {
-		if (!libraryMenu || !libraryMenuBtn) return;
-		libraryMenu.hidden = false;
-		libraryMenuBtn.setAttribute("aria-expanded", "true");
+	function openMoreMenu() {
+		if (!moreMenu || !moreMenuBtn) return;
+		moreMenu.hidden = false;
+		moreMenuBtn.setAttribute("aria-expanded", "true");
 	}
 
-	function syncLibraryMenu(activeTabId) {
-		const isLibrary = LIBRARY_TABS.has(activeTabId);
-		const faceTab = isLibrary ? activeTabId : DEFAULT_LIBRARY_TAB;
-		libraryMenuBtn?.classList.toggle("active", isLibrary);
-		if (libraryMenuLabel) {
-			libraryMenuLabel.textContent =
-				LIBRARY_LABELS[faceTab] || LIBRARY_LABELS[DEFAULT_LIBRARY_TAB];
+	function syncMoreMenu(activeTabId) {
+		const isMore = MORE_TABS.has(activeTabId);
+		const faceTab = isMore ? activeTabId : DEFAULT_MORE_TAB;
+		moreMenuBtn?.classList.toggle("active", isMore);
+		if (moreMenuLabel) {
+			moreMenuLabel.textContent =
+				MORE_LABELS[faceTab] || MORE_LABELS[DEFAULT_MORE_TAB];
 		}
-		if (libraryMenuIcon && libraryIconHtml[faceTab]) {
-			libraryMenuIcon.innerHTML = libraryIconHtml[faceTab];
+		if (moreMenuIcon && moreIconHtml[faceTab]) {
+			moreMenuIcon.innerHTML = moreIconHtml[faceTab];
 		}
-		libraryOptions.forEach((option) => {
+		moreOptions.forEach((option) => {
 			option.classList.toggle(
 				"active",
 				option.getAttribute("data-tab") === activeTabId,
@@ -1009,74 +1133,57 @@ try {
 		});
 	}
 
-	function showGreeting() {
-		tabContents.forEach((content) => content.classList.add("hidden"));
-		tabLinks.forEach((link) => link.classList.remove("active"));
-		libraryOptions.forEach((option) => option.classList.remove("active"));
-		greetingContainer?.classList.remove("hidden");
-		syncLibraryMenu("");
-		closeLibraryMenu();
-		history.replaceState(
-			null,
-			"",
-			window.location.pathname + window.location.search,
-		);
-	}
-
 	function showTabContent(tabId) {
-		if (!tabId) {
-			showGreeting();
-			return;
-		}
-
-		const targetContent = document.getElementById(tabId);
+		const nextTab = tabId && document.getElementById(tabId) ? tabId : DEFAULT_TAB;
+		const targetContent = document.getElementById(nextTab);
 		const targetLink = document.querySelector(
-			`.tab-pill[data-tab="${tabId}"]`,
+			`.tab-pill[data-tab="${nextTab}"]`,
 		);
-		if (!targetContent || !targetLink) {
-			showGreeting();
-			return;
-		}
+		if (!targetContent || !targetLink) return;
 
 		tabContents.forEach((content) => content.classList.add("hidden"));
 		tabLinks.forEach((link) => link.classList.remove("active"));
-		greetingContainer?.classList.add("hidden");
 		targetContent.classList.remove("hidden");
 		targetLink.classList.add("active");
-		syncLibraryMenu(tabId);
-		closeLibraryMenu();
-		history.replaceState(null, "", `#${tabId}`);
+		syncMoreMenu(nextTab);
+		closeMoreMenu();
+
+		const url =
+			nextTab === DEFAULT_TAB
+				? window.location.pathname + window.location.search
+				: `#${nextTab}`;
+		history.replaceState(null, "", url);
 	}
 
 	tabLinks.forEach((link) => {
 		link.addEventListener("click", (e) => {
 			e.preventDefault();
 			const tabId = link.getAttribute("data-tab");
-			const isAlreadyActive = link.classList.contains("active");
-			if (isAlreadyActive) showGreeting();
-			else showTabContent(tabId);
+			if (link.classList.contains("active")) {
+				// Already here — Overview is the way home; no toggle-off.
+				closeMoreMenu();
+				return;
+			}
+			showTabContent(tabId);
 		});
 	});
 
-	libraryMenuBtn?.addEventListener("click", (e) => {
+	moreMenuBtn?.addEventListener("click", (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (!libraryMenu) return;
-		if (libraryMenu.hidden) openLibraryMenu();
-		else closeLibraryMenu();
+		if (!moreMenu) return;
+		if (moreMenu.hidden) openMoreMenu();
+		else closeMoreMenu();
 	});
 
-	libraryOptions.forEach((option) => {
+	moreOptions.forEach((option) => {
 		option.addEventListener("click", (e) => {
 			e.preventDefault();
 			e.stopPropagation();
 			const tabId = option.getAttribute("data-tab");
 			const pill = document.querySelector(`.tab-pill[data-tab="${tabId}"]`);
-			const isAlreadyActive = pill?.classList.contains("active");
-			// Already on this library tab: just dismiss the menu (don't kick
-			// back to the greeting — the pill toggle handles that on desktop).
-			if (isAlreadyActive) {
-				closeLibraryMenu();
+			if (pill?.classList.contains("active")) {
+				closeMoreMenu();
 				return;
 			}
 			showTabContent(tabId);
@@ -1084,13 +1191,13 @@ try {
 	});
 
 	document.addEventListener("click", (e) => {
-		const menuRoot = document.querySelector(".library-menu");
+		const menuRoot = document.querySelector(".more-menu");
 		if (!menuRoot || !(e.target instanceof Node)) return;
-		if (!menuRoot.contains(e.target)) closeLibraryMenu();
+		if (!menuRoot.contains(e.target)) closeMoreMenu();
 	});
 
 	document.addEventListener("keydown", (e) => {
-		if (e.key === "Escape") closeLibraryMenu();
+		if (e.key === "Escape") closeMoreMenu();
 	});
 
 	document.querySelectorAll("[data-tab-link]").forEach((link) => {
@@ -1102,8 +1209,11 @@ try {
 
 	function handleInitialLoad() {
 		const hash = window.location.hash.slice(1);
-		if (hash && document.getElementById(hash)) showTabContent(hash);
-		else showGreeting();
+		if (hash && hash !== DEFAULT_TAB && document.getElementById(hash)) {
+			showTabContent(hash);
+		} else {
+			showTabContent(DEFAULT_TAB);
+		}
 	}
 
 	window.addEventListener("popstate", handleInitialLoad);

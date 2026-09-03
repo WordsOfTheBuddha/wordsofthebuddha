@@ -129,6 +129,10 @@ if (Astro.cookies.has("__session")) {
 		noteLearningEngagement,
 		flushLearningActivity,
 	} from "../utils/learningActivityClient";
+	import {
+		flushListenActivity,
+		flushOfflineReadPages,
+	} from "../utils/listenActivityClient";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") ||
@@ -311,7 +315,11 @@ if (Astro.cookies.has("__session")) {
 				// First signed-in day counts; merge any anonymous / offline days.
 				try {
 					noteLearningEngagement();
-					await flushLearningActivity();
+					await Promise.all([
+						flushLearningActivity(),
+						flushListenActivity(),
+						flushOfflineReadPages(),
+					]);
 				} catch {
 					/* best-effort; Review Room will retry */
 				}

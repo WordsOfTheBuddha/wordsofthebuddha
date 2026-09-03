@@ -46,8 +46,9 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 				logged in and we store account-related data in our database
 				(e.g., your user ID and the content you choose to save such as
 				highlights, saved items, or read-later lists). We may also store
-				which calendar days you spent reading discourses (see below). We
-				do not require an account to read content.
+				which calendar days you spent reading or listening to discourses,
+				and how many minutes of audio you have listened to (see below).
+				We do not require an account to read content.
 			</li>
 		</ul>
 
@@ -68,10 +69,10 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 					>layout</code
 				>), and font size (<code>fontSize</code>) in your browser. We
 				also keep a small on-device buffer of days you engaged with
-				discourses (so progress is not lost while signed out or
-				offline); when you sign in, that buffer can be merged into your
-				account. You can clear local storage at any time from your
-				browser settings.
+				discourses and minutes of audio you listened to (so progress is
+				not lost while signed out or offline); when you sign in, those
+				buffers can be merged into your account. You can clear local
+				storage at any time from your browser settings.
 			</li>
 		</ul>
 
@@ -85,8 +86,9 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 			stored in our database and associated with your account. If you read
 			discourses while signed in (or sync after signing in), we may store
 			a count of calendar days on which you spent time with a discourse —
-			enough engagement to count as reading, not every page view — so your
-			Review Room can show “Reading on N days.”
+			enough engagement to count as reading or listening, not every page
+			view — and a total of audio minutes listened, so your Review Room
+			can show days reading and time listened.
 		</p>
 
 		<h3>Analytics and performance</h3>

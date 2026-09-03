@@ -38,6 +38,7 @@ import { listenDisplayWords } from "./listenDisplayWords";
 import { audioTitles } from "../data/audioTitles.generated";
 import { audioDurations } from "../data/audioDurations.generated";
 import type { Playlist, PlaylistEntry } from "../data/playlists.generated";
+import { createListenTrackingSession } from "./listenActivityClient";
 
 export type ListenInitialData = {
 	slug: string;
@@ -478,6 +479,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	// narrowing without per-use non-null assertions.
 	const audio: HTMLAudioElement = audioEl;
 	const playButton: HTMLElement = playBtn;
+	const listenTracking = createListenTrackingSession();
 
 	const initialPp = parseParagraphRangeParam(
 		new URLSearchParams(location.search).get("pp"),
@@ -1454,6 +1456,14 @@ export function initListenMode(initial: ListenInitialData): void {
 		// listener back where they were, not at 0.
 		clearTransitionState();
 		rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
+		// Flush listen stats for the outgoing track before swapping.
+		listenTracking.onTrackBoundary({
+			slug: current.slug,
+			currentTime: audio.currentTime,
+			duration: audio.duration || manifest?.duration || 0,
+			hasParagraphRange: Boolean(current.pp),
+		});
+		listenTracking.resetCursor();
 		current = {
 			...current,
 			slug,
@@ -2441,6 +2451,13 @@ export function initListenMode(initial: ListenInitialData): void {
 	audio.addEventListener("ended", () => {
 		pauseAfterParagraphIdx = -1;
 		setPlayIcon(false);
+		listenTracking.onTrackBoundary({
+			slug: current.slug,
+			currentTime: audio.currentTime || audio.duration || 0,
+			duration: audio.duration || manifest?.duration || 0,
+			hasParagraphRange: Boolean(current.pp),
+			ended: true,
+		});
 		if (autoplay && neighbours.next) {
 			if (document.visibilityState !== "visible") {
 				void advanceTo(neighbours.next, {
@@ -2466,6 +2483,13 @@ export function initListenMode(initial: ListenInitialData): void {
 	audio.addEventListener("timeupdate", () => {
 		checkSingleParagraphPause();
 		checkSubsetEndPause();
+		listenTracking.onTimeUpdate({
+			slug: current.slug,
+			currentTime: audio.currentTime,
+			duration: audio.duration || manifest?.duration || 0,
+			hasParagraphRange: Boolean(current.pp),
+			paused: audio.paused,
+		});
 		if (audio.duration) {
 			const pct = (audio.currentTime / audio.duration) * 100;
 			if (!seek.matches(":active")) seek.value = String(pct);
@@ -2496,6 +2520,16 @@ export function initListenMode(initial: ListenInitialData): void {
 		drawWaveformCanvas();
 	});
 
+	window.addEventListener("pagehide", () => {
+		listenTracking.onTrackBoundary({
+			slug: current.slug,
+			currentTime: audio.currentTime,
+			duration: audio.duration || manifest?.duration || 0,
+			hasParagraphRange: Boolean(current.pp),
+		});
+		listenTracking.flush();
+	});
+
 	// ── Boot ────────────────────────────────────────────────────────────
 	bindMediaSessionActions();
 	renderQueueTitle();
@@ -2523,6 +2557,13 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (st?.listen && href !== current.href) {
 			clearTransitionState();
 			rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
+			listenTracking.onTrackBoundary({
+				slug: current.slug,
+				currentTime: audio.currentTime,
+				duration: audio.duration || manifest?.duration || 0,
+				hasParagraphRange: Boolean(current.pp),
+			});
+			listenTracking.resetCursor();
 			const wasPlaying = !audio.paused;
 			current = {
 				...current,
