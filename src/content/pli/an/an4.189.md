@@ -1,9 +1,10 @@
 ---
+title: Sacchikaraṇīya sutta - Things to Be Realized
+description: "The eight liberations are to be realized with the body, past lives are to be realized through mindfulness, the passing away and reappearance of beings is to be realized through the eye, and the wearing away of the taints is to be realized through wisdom."
+qualities: wisdom, mindfulness, direct knowledge, liberation, collectedness
+theme: wisdom, inspiration
 slug: an4.189
-source: suttacentral/bilara-data
-title: Sacchikaraṇīyasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Cattārome, bhikkhave, sacchikaraṇīyā dhammā. Katame cattāro?
@@ -19,5 +20,3 @@ Katame ca, bhikkhave, dhammā cakkhunā sacchikaraṇīyā? Sattānaṁ cutūpap
 Katame ca, bhikkhave, dhammā paññāya sacchikaraṇīyā? Āsavānaṁ khayo, bhikkhave, paññāya sacchikaraṇīyo.
 
 Ime kho, bhikkhave, cattāro sacchikaraṇīyā dhammā”ti.
-
-Navamaṁ.
