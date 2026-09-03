@@ -5,19 +5,30 @@ import SearchIcon from "../assets/search.svg?raw"; // Add this import
 import NavSearch from "./NavSearch.astro";
 
 interface Props {
-	showAuth?: boolean;
+	/** `true` shows the user menu or a Sign in CTA. `"signed-in"` shows the menu only when authenticated. */
+	showAuth?: boolean | "signed-in";
 	showSearch?: boolean;
 	showBrand?: boolean;
 }
 
 const { showAuth = false, showSearch = true, showBrand = true } = Astro.props;
-const currentPath = Astro.url.pathname;
+const authEnabled = Boolean(showAuth);
+const hideGuestAuth = showAuth === "signed-in";
+/** Path + query so Ask (`/search?mode=ai`) survives sign-in / sign-out. */
+const currentPath = `${Astro.url.pathname}${Astro.url.search}`;
+const pathOnly = Astro.url.pathname;
 const isInReviewSection =
-	currentPath === "/review-room" || currentPath === "/profile";
+	pathOnly === "/review-room" || pathOnly === "/profile";
 
-// Try SSR user when available (for SSR routes); static routes will show placeholder and hydrate on client
+// Try SSR user when available (for SSR routes); static routes will show placeholder and hydrate on client.
+// Skip cookie lookup for signed-in-only pages: home is CDN-cached, so personalizing HTML
+// would leak the first visitor's name; discover is prerendered anyway.
 let user: any = null;
-if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
+if (
+	authEnabled &&
+	!hideGuestAuth &&
+	Astro.request.headers.get("x-astro-prerender") !== "1"
+) {
 	const sessionCookie = Astro.cookies.get("__session")?.value;
 	if (sessionCookie) {
 		try {
@@ -65,7 +76,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 			)
 		}
 		{
-			showAuth &&
+			authEnabled &&
 				(user ? (
 					<div
 						class="relative"
@@ -131,13 +142,22 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 					</div>
 				) : (
 					// Placeholder that will be hydrated on static pages
-					<div id="nav-auth-slot" data-state="signed-out">
-						<a
-							href={`/signin?returnTo=${encodeURIComponent(currentPath)}`}
-							class="px-3 py-1 text-sm border rounded-md font-medium text-[var(--auth-button-bg)] border-[var(--auth-button-bg)] hover:bg-[var(--auth-button-bg)] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
-						>
-							Sign in
-						</a>
+					<div
+						id="nav-auth-slot"
+						class="relative"
+						data-state="signed-out"
+						data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
+					>
+						{
+							!hideGuestAuth && (
+								<a
+									href={`/signin?returnTo=${encodeURIComponent(currentPath)}`}
+									class="px-3 py-1 text-sm border rounded-md font-medium text-[var(--auth-button-bg)] border-[var(--auth-button-bg)] hover:bg-[var(--auth-button-bg)] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
+								>
+									Sign in
+								</a>
+							)
+						}
 					</div>
 				))
 		}
@@ -217,6 +237,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 			if (data?.signedIn && data.user?.displayName) {
 				// Replace slot with signed-in UI
 				slot.setAttribute("data-state", "signed-in");
+				slot.classList.add("relative");
 				slot.innerHTML = `
 					<button type="button" id="user-menu-button" class="flex items-center gap-2 px-1 py-1 text-sm font-medium text-[var(--text-color)] hover:text-[var(--link-hover-color)] focus:outline-none">
 						<span>${data.user.displayName}</span>
@@ -230,7 +251,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 							<a href="/review-room" class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Review Room</a>
 							<a href="/profile" class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Profile</a>
 							<form action="/api/auth/signout" method="post">
-								<input type="hidden" name="returnTo" value="${location.pathname}" />
+								<input type="hidden" name="returnTo" value="${location.pathname}${location.search}" />
 								<button type="submit" class="block w-full text-left px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Sign out</button>
 							</form>
 						</div>
