@@ -2,9 +2,16 @@
 import SaveOutline from "../assets/save-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
+import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
 
-// Get slug for API calls
-const slug = Astro.url.pathname.replace(/^\/+/, "");
+interface Props {
+	slug?: string;
+}
+
+const props = Astro.props as Props;
+const slug = normalizeDiscourseSlug(
+	props.slug || Astro.url.pathname.replace(/^\/+/, ""),
+);
 
 // Initial state will be determined by client-side JS
 const isSaved = false;
@@ -30,13 +37,16 @@ const userId = null;
 </div>
 
 <script>
+	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+
 	const btn = document.getElementById("saveButton");
 	const outline = document.getElementById("saveIcon");
 	const check = document.getElementById("saveCheckIcon");
 	const saveLabel = document.getElementById("saveLabel");
 	const prompt = document.getElementById("saveSignInPrompt");
-	const slug =
-		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, "");
+	const slug = normalizeDiscourseSlug(
+		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
+	);
 
 	// Local storage key for offline mode
 	const SAVED_ITEMS_KEY = "offlineSavedItems";

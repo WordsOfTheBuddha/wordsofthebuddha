@@ -5,12 +5,12 @@ import { db } from "../service/firebase/server";
 import Layout from "../layouts/Layout.astro";
 import EmailVerifyBanner from "../components/EmailVerifyBanner.astro";
 import PostCard from "../components/PostCard.astro";
+import "../styles/review-room.css";
 import ClockSolid from "../assets/clock-solid.svg?raw";
 import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
 import CheckSolid from "../assets/check.svg?raw";
 import QuestionIcon from "../assets/question-mark-circle.svg?raw";
-import MenuIcon from "../assets/list-bullet.svg?raw";
 import ChevronDown from "../assets/chevron-down.svg?raw";
 import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
@@ -266,7 +266,7 @@ try {
 ---
 
 <Layout showAuth={true}>
-	<div class="py-4 px-4 sm:px-6 lg:px-8">
+	<div class="not-prose py-4 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
 			{
 				!user.emailVerified && (
@@ -356,15 +356,21 @@ try {
 								aria-haspopup="menu"
 								aria-expanded="false"
 								aria-controls="library-menu"
+								aria-label="Library tabs"
 							>
 								<span
 									id="library-menu-face"
 									class="inline-flex items-center gap-1 text-sm"
 								>
-									<span class="w-4 h-4" set:html={MenuIcon} />
-									<span id="library-menu-label">Library</span>
+									<span
+										id="library-menu-icon"
+										class="w-4 h-4"
+										set:html={ClockSolid}
+									/>
+									<span id="library-menu-label">Read Later</span>
 								</span>
 								<span
+									id="library-menu-chevron"
 									class="w-3.5 h-3.5 opacity-70"
 									set:html={ChevronDown}
 								/>
@@ -381,6 +387,7 @@ try {
 									class="library-menu-item"
 									data-tab="readlater"
 									data-library-option
+									data-library-icon="readlater"
 								>
 									<span class="w-4 h-4" set:html={ClockSolid} />
 									Read Later
@@ -391,6 +398,7 @@ try {
 									class="library-menu-item"
 									data-tab="saves"
 									data-library-option
+									data-library-icon="saves"
 								>
 									<span class="w-4 h-4" set:html={SaveSolid} />
 									Saves
@@ -401,6 +409,7 @@ try {
 									class="library-menu-item"
 									data-tab="read"
 									data-library-option
+									data-library-icon="read"
 								>
 									<span class="w-4 h-4" set:html={CheckSolid} />
 									Read
@@ -480,7 +489,9 @@ try {
 														{ active: dot.active },
 													]}
 													title={dot.key}
-												/>
+													aria-hidden="true"
+												>
+												</span>
 											))}
 										</div>
 									</div>
@@ -788,397 +799,6 @@ try {
 	</div>
 </Layout>
 
-<style>
-	.tab-pill {
-		@apply inline-flex items-center gap-1 px-3 py-1.5 sm:px-4 sm:py-2 text-sm rounded-full transition-all duration-300;
-		@apply border border-gray-300 dark:border-gray-700;
-		color: var(--text-color);
-		background-color: transparent;
-		&:hover {
-			@apply bg-gray-100 dark:bg-gray-800;
-		}
-	}
-
-	.tab-pill.active {
-		color: var(--primary-color);
-		border-color: var(--primary-color);
-		background-color: color-mix(
-			in srgb,
-			var(--primary-color) 12%,
-			transparent
-		);
-	}
-
-	.pills-scroll-container {
-		@apply w-full;
-	}
-
-	.highlight-page {
-		@apply relative flex flex-col w-full p-5 rounded-lg;
-		@apply bg-[var(--surface-paper)];
-		@apply text-gray-800 dark:text-gray-200;
-		@apply transition-all duration-200;
-		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
-		@apply hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)];
-		@apply opacity-50 hover:opacity-80;
-		max-height: 400px;
-		overflow-y: auto;
-	}
-
-	.highlight-content {
-		@apply mt-4 space-y-4 overflow-y-auto text-sm;
-		max-height: 300px;
-	}
-
-	.highlight-content mark {
-		@apply bg-opacity-50;
-	}
-
-	.highlight-page h1 {
-		@apply text-xl font-semibold mb-2;
-	}
-
-	.highlight-page a {
-		color: var(--link-color);
-		text-decoration: none;
-		&:hover {
-			color: var(--link-hover-color);
-			text-decoration: underline;
-		}
-	}
-
-	.highlight-date {
-		@apply text-xs text-gray-500 dark:text-gray-400 my-0 text-right;
-	}
-
-	mark {
-		@apply rounded px-0.5;
-	}
-
-	.highlight-yellow {
-		@apply bg-yellow-200 bg-opacity-50;
-	}
-	.highlight-pink {
-		@apply bg-pink-200 bg-opacity-50;
-	}
-	.highlight-green {
-		@apply bg-green-200 bg-opacity-50;
-	}
-	.highlight-blue {
-		@apply bg-blue-200 bg-opacity-50;
-	}
-
-	#dashboard-container {
-		scroll-margin-top: 1rem;
-	}
-
-	.library-pill {
-		display: none;
-	}
-
-	@media (min-width: 768px) {
-		.library-pill {
-			display: inline-flex;
-		}
-
-		.library-menu {
-			display: none !important;
-		}
-	}
-
-	.library-menu-panel {
-		position: absolute;
-		top: calc(100% + 0.35rem);
-		right: 0;
-		z-index: 20;
-		min-width: 10.5rem;
-		padding: 0.35rem;
-		border-radius: 0.75rem;
-		border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.35));
-		background: var(--surface-paper, var(--background-color));
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-		display: flex;
-		flex-direction: column;
-		gap: 0.15rem;
-	}
-
-	.library-menu-item {
-		@apply inline-flex items-center gap-2 w-full text-left text-sm px-3 py-2 rounded-lg;
-		color: var(--text-color);
-		background: transparent;
-		border: none;
-		cursor: pointer;
-	}
-
-	.library-menu-item:hover,
-	.library-menu-item.active {
-		background: rgba(128, 128, 128, 0.12);
-	}
-
-	.library-menu-item.active {
-		color: var(--primary-color);
-	}
-
-	#library-menu-btn.active {
-		color: var(--primary-color);
-		border-color: var(--primary-color);
-		background-color: color-mix(
-			in srgb,
-			var(--primary-color) 12%,
-			transparent
-		);
-	}
-
-	.overview {
-		@apply max-w-xl mx-auto px-2 space-y-4;
-	}
-
-	.overview-aggregates {
-		@apply grid grid-cols-2 gap-3;
-	}
-
-	.overview-aggregates.is-single {
-		@apply grid-cols-1 max-w-xs mx-auto w-full;
-	}
-
-	.stat-tile {
-		@apply flex flex-col items-center justify-center text-center p-4 rounded-lg;
-		@apply bg-[var(--surface-paper)];
-		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
-	}
-
-	.stat-tile.muted .stat-value {
-		opacity: 0.45;
-	}
-
-	.stat-value {
-		@apply text-3xl sm:text-4xl font-semibold tabular-nums leading-none;
-		color: var(--text-color);
-	}
-
-	.stat-label {
-		@apply mt-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400;
-	}
-
-	.learning-day-strip {
-		@apply flex flex-wrap justify-center gap-[3px] mt-3 max-w-[11rem];
-	}
-
-	.learning-day-dot {
-		width: 0.45rem;
-		height: 0.45rem;
-		border-radius: 2px;
-		background: rgba(128, 128, 128, 0.22);
-	}
-
-	.learning-day-dot.active {
-		background: color-mix(in srgb, var(--primary-color) 82%, #6ee7b7 18%);
-		box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-color) 35%, transparent);
-	}
-
-	.overview-card {
-		@apply p-5 rounded-lg;
-		@apply bg-[var(--surface-paper)];
-		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
-	}
-
-	.overview-head {
-		@apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3;
-	}
-
-	.overview-head h2 {
-		@apply text-base font-semibold m-0;
-		color: var(--text-color);
-	}
-
-	.overview-empty-in-card {
-		@apply mt-1;
-	}
-
-	.overview-later {
-		@apply space-y-1;
-	}
-
-	.coverage-list {
-		@apply list-none m-0 p-0 space-y-2.5;
-	}
-
-	.coverage-row {
-		@apply grid items-center gap-x-3 gap-y-1 text-sm no-underline;
-		grid-template-columns: minmax(0, 1fr) 3.5rem auto;
-		color: var(--text-color);
-	}
-
-	@media (min-width: 640px) {
-		.coverage-row {
-			grid-template-columns: minmax(0, 1fr) 4.5rem auto;
-		}
-	}
-
-	.coverage-row:hover .coverage-label,
-	.coverage-row:hover .coverage-name {
-		color: var(--link-hover-color);
-	}
-
-	.coverage-id {
-		@apply min-w-0 flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2;
-	}
-
-	.coverage-label {
-		@apply font-semibold tracking-wide shrink-0;
-		color: var(--link-color);
-	}
-
-	.coverage-name {
-		@apply hidden sm:inline text-xs text-gray-500 dark:text-gray-400 truncate;
-	}
-
-	.coverage-bar {
-		@apply block h-1 rounded-full overflow-hidden;
-		background-color: rgba(128, 128, 128, 0.2);
-	}
-
-	.coverage-fill {
-		@apply block h-full rounded-full;
-		background-color: var(--layout-active-color, var(--link-color));
-	}
-
-	.coverage-count {
-		@apply text-xs tabular-nums whitespace-nowrap text-right;
-	}
-
-	.coverage-total {
-		@apply text-gray-500 dark:text-gray-400;
-	}
-
-	.overview-empty,
-	.overview-line {
-		@apply text-sm text-center text-gray-500 dark:text-gray-400 m-0;
-	}
-
-	.overview-line a {
-		color: var(--link-color);
-		text-decoration: none;
-		&:hover {
-			color: var(--link-hover-color);
-			text-decoration: underline;
-		}
-	}
-
-	.ask-panel {
-		@apply max-w-3xl mx-auto;
-	}
-
-	.ask-new-btn {
-		@apply inline-flex items-center mb-3 px-3 py-1.5 text-sm no-underline rounded-full transition-colors;
-		color: var(--primary-color);
-		border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
-		background: color-mix(in srgb, var(--primary-color) 8%, transparent);
-	}
-
-	.ask-new-btn:hover {
-		border-color: var(--primary-color);
-		background: color-mix(in srgb, var(--primary-color) 14%, transparent);
-	}
-
-	.ask-empty {
-		@apply text-center py-8 text-gray-500 m-0;
-	}
-
-	.ask-history-heading {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 0.35rem 0.75rem;
-		margin-bottom: 0.55rem;
-	}
-
-	.ask-history-label {
-		margin: 0;
-		font-size: 0.8rem;
-		color: var(--text-muted, #9ca3af);
-	}
-
-	.ask-history-hint {
-		margin: 0;
-		font-size: 0.78rem;
-		color: var(--text-muted, #9ca3af);
-	}
-
-	.ask-history-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.ask-row {
-		@apply block p-4 rounded-xl no-underline;
-		@apply bg-[var(--surface-paper)];
-		border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.28));
-		color: var(--text-color);
-		transition: border-color 0.15s ease;
-	}
-
-	.ask-row:hover {
-		border-color: var(--primary-color);
-	}
-
-	.ask-row-head {
-		@apply flex items-start justify-between gap-3;
-	}
-
-	.ask-row-q {
-		@apply m-0 text-base;
-		color: var(--text-color);
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	}
-
-	.ask-row.is-pinned .ask-row-q {
-		@apply font-semibold;
-	}
-
-	.ask-row-meta {
-		@apply inline-flex items-center gap-2 flex-shrink-0 whitespace-nowrap;
-		margin-top: 0.15rem;
-	}
-
-	.ask-row-pin {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--primary-color);
-		line-height: 0;
-	}
-
-	.ask-row-pin svg {
-		display: block;
-		width: 0.95rem;
-		height: 0.95rem;
-	}
-
-	.ask-row-when {
-		color: var(--text-muted, #9ca3af);
-		font-size: 0.78rem;
-	}
-
-	.ask-row-summary {
-		@apply mt-2 mb-0 text-sm line-clamp-2;
-		color: var(--text-color);
-		opacity: 0.85;
-	}
-
-	.ask-row-results {
-		@apply mt-1.5 mb-0;
-		color: var(--text-muted, #9ca3af);
-		font-size: 0.78rem;
-		line-height: 1.35;
-	}
-</style>
-
 <script
 	type="application/json"
 	id="review-room-data"
@@ -1203,6 +823,7 @@ try {
 	} from "../utils/aiAskSession";
 
 	const LIBRARY_TABS = new Set(["readlater", "saves", "read"]);
+	const DEFAULT_LIBRARY_TAB = "readlater";
 	const LIBRARY_LABELS = {
 		readlater: "Read Later",
 		saves: "Saves",
@@ -1212,14 +833,14 @@ try {
 
 	function renderLearningDayStrip(
 		container: HTMLElement | null,
-		days: Record<string, true>,
+		days: Record<string, true> | null | undefined,
 	): void {
 		if (!container) return;
-		const strip = recentLearningDayStrip(days, 28);
+		const strip = recentLearningDayStrip(days || {}, 28);
 		container.innerHTML = strip
 			.map(
 				(dot) =>
-					`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}"></span>`,
+					`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}" aria-hidden="true"></span>`,
 			)
 			.join("");
 	}
@@ -1342,7 +963,20 @@ try {
 	const libraryMenuBtn = document.getElementById("library-menu-btn");
 	const libraryMenu = document.getElementById("library-menu");
 	const libraryMenuLabel = document.getElementById("library-menu-label");
+	const libraryMenuIcon = document.getElementById("library-menu-icon");
 	const libraryOptions = document.querySelectorAll("[data-library-option]");
+	const libraryIconHtml = {
+		readlater: "",
+		saves: "",
+		read: "",
+	};
+	libraryOptions.forEach((option) => {
+		const tabId = option.getAttribute("data-tab");
+		const icon = option.querySelector(".w-4");
+		if (tabId && icon && tabId in libraryIconHtml) {
+			libraryIconHtml[tabId] = icon.innerHTML;
+		}
+	});
 
 	function closeLibraryMenu() {
 		if (!libraryMenu || !libraryMenuBtn) return;
@@ -1358,11 +992,14 @@ try {
 
 	function syncLibraryMenu(activeTabId) {
 		const isLibrary = LIBRARY_TABS.has(activeTabId);
+		const faceTab = isLibrary ? activeTabId : DEFAULT_LIBRARY_TAB;
 		libraryMenuBtn?.classList.toggle("active", isLibrary);
 		if (libraryMenuLabel) {
-			libraryMenuLabel.textContent = isLibrary
-				? LIBRARY_LABELS[activeTabId] || "Library"
-				: "Library";
+			libraryMenuLabel.textContent =
+				LIBRARY_LABELS[faceTab] || LIBRARY_LABELS[DEFAULT_LIBRARY_TAB];
+		}
+		if (libraryMenuIcon && libraryIconHtml[faceTab]) {
+			libraryMenuIcon.innerHTML = libraryIconHtml[faceTab];
 		}
 		libraryOptions.forEach((option) => {
 			option.classList.toggle(
@@ -1436,8 +1073,13 @@ try {
 			const tabId = option.getAttribute("data-tab");
 			const pill = document.querySelector(`.tab-pill[data-tab="${tabId}"]`);
 			const isAlreadyActive = pill?.classList.contains("active");
-			if (isAlreadyActive) showGreeting();
-			else showTabContent(tabId);
+			// Already on this library tab: just dismiss the menu (don't kick
+			// back to the greeting — the pill toggle handles that on desktop).
+			if (isAlreadyActive) {
+				closeLibraryMenu();
+				return;
+			}
+			showTabContent(tabId);
 		});
 	});
 
@@ -1445,6 +1087,10 @@ try {
 		const menuRoot = document.querySelector(".library-menu");
 		if (!menuRoot || !(e.target instanceof Node)) return;
 		if (!menuRoot.contains(e.target)) closeLibraryMenu();
+	});
+
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") closeLibraryMenu();
 	});
 
 	document.querySelectorAll("[data-tab-link]").forEach((link) => {

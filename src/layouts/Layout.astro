@@ -574,8 +574,20 @@ const structuredData = buildStructuredData({
 										)}
 									</div>
 									<div class="flex items-center gap-1">
-										{showReadLater && <ReadLaterButton />}
-										{showSave && <SaveButton />}
+										{showReadLater && (
+											<ReadLaterButton
+												slug={canonicalRawPath
+													.replace(/^\/+/, "")
+													.split("?")[0]}
+											/>
+										)}
+										{showSave && (
+											<SaveButton
+												slug={canonicalRawPath
+													.replace(/^\/+/, "")
+													.split("?")[0]}
+											/>
+										)}
 									</div>
 								</div>
 							</>
@@ -625,7 +637,11 @@ const structuredData = buildStructuredData({
 					{
 						showRead && (
 							<div class="flex justify-end mt-6 mb-4">
-								<ReadButton />
+								<ReadButton
+									slug={canonicalRawPath
+										.replace(/^\/+/, "")
+										.split("?")[0]}
+								/>
 							</div>
 						)
 					}

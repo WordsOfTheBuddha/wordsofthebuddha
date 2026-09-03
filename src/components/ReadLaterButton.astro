@@ -2,9 +2,16 @@
 import ClockOutline from "../assets/clock-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
+import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
 
-// Get slug for API calls
-const slug = Astro.url.pathname.replace(/^\/+/, "");
+interface Props {
+	slug?: string;
+}
+
+const props = Astro.props as Props;
+const slug = normalizeDiscourseSlug(
+	props.slug || Astro.url.pathname.replace(/^\/+/, ""),
+);
 
 // Initial state will be determined by client-side JS
 const userId = null;
@@ -32,13 +39,16 @@ const userId = null;
 </div>
 
 <script>
+	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+
 	const btn = document.getElementById("readLaterButton");
 	const outline = document.getElementById("readLaterIcon");
 	const check = document.getElementById("readLaterCheckIcon");
 	const readLaterLabel = document.getElementById("readLaterLabel");
 	const prompt = document.getElementById("readLaterSignInPrompt");
-	const slug =
-		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, "");
+	const slug = normalizeDiscourseSlug(
+		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
+	);
 
 	// Local storage key for offline mode
 	const READ_LATER_ITEMS_KEY = "offlineReadLaterItems";

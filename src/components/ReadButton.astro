@@ -2,9 +2,17 @@
 import Check from "../assets/check.svg?raw";
 import CheckDashed from "../assets/check-dashed.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
+import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
 
-// Get slug for API calls
-const slug = Astro.url.pathname.replace(/^\/+/, "");
+interface Props {
+	/** Public discourse slug; prefer canonical path over rewrite URLs. */
+	slug?: string;
+}
+
+const props = Astro.props as Props;
+const slug = normalizeDiscourseSlug(
+	props.slug || Astro.url.pathname.replace(/^\/+/, ""),
+);
 
 // Initial state will be determined by client-side JS
 const hasRead = false;
@@ -43,14 +51,18 @@ const userId = null;
 </div>
 
 <script>
+	import { initDiscourseLearningActivity } from "../utils/learningActivityClient";
+	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+
 	const btn = document.getElementById("readButton");
 	const check = document.getElementById("readCheckIcon");
 	const dashedCheck = document.getElementById("readCheckDashedIcon");
 	const readLabel = document.getElementById("readLabel");
 	const prompt = document.getElementById("readSignInPrompt");
 	const pingIndicator = document.getElementById("pingIndicator");
-	const slug =
-		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, "");
+	const slug = normalizeDiscourseSlug(
+		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
+	);
 
 	// Local storage key for offline mode
 	const READ_ITEMS_KEY = "offlineReadItems";
@@ -192,10 +204,12 @@ const userId = null;
 	}
 
 	async function markAsReadFromVoicePlayback() {
-		const pageSlug = window.location.pathname.replace(/^\/+/, "");
 		const readBtn = document.getElementById("readButton");
 		const checkEl = document.getElementById("readCheckIcon");
 		if (!readBtn || !checkEl) return;
+		const pageSlug = normalizeDiscourseSlug(
+			readBtn.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
+		);
 		let retries = 0;
 		while (readBtn.dataset.loading === "true" && retries < 40) {
 			await new Promise((r) => setTimeout(r, 100));
@@ -226,9 +240,13 @@ const userId = null;
 	}
 
 	function handleVoicePlaybackComplete(e) {
-		const slugFromEvent = e.detail && e.detail.slug;
-		const pathSlug = window.location.pathname.replace(/^\/+/, "");
-		if (slugFromEvent !== pathSlug) return;
+		const slugFromEvent = normalizeDiscourseSlug(
+			(e.detail && e.detail.slug) || "",
+		);
+		const pathSlug = normalizeDiscourseSlug(
+			btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
+		);
+		if (!slugFromEvent || slugFromEvent !== pathSlug) return;
 		void markAsReadFromVoicePlayback();
 	}
 
@@ -276,6 +294,8 @@ const userId = null;
 	if (btn) {
 		// Check status when page loads
 		checkReadStatus();
+		// Passive learning-day tracking (local buffer; merges when signed in).
+		initDiscourseLearningActivity();
 
 		btn.addEventListener("click", async () => {
 			userInteractedWithReadButton = true; // Set flag on first interaction
