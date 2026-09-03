@@ -15,8 +15,8 @@
 	--drawer-height: 30vh;
 	--drawer-height-dict: 34vh;
 	/* Desktop / web: more room for PED entries */
-	--drawer-height-desktop: min(45vh, 380px);
-	--drawer-height-dict-desktop: min(50vh, 420px);
+	--drawer-height-desktop: min(45vh, 340px);
+	--drawer-height-dict-desktop: min(46vh, 340px);
 	--link-hint-height: 1rem;
 	--link-hint-font-size: 0.65rem;
 	--link-hint-dict-height: 0.85rem;
