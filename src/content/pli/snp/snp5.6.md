@@ -6,6 +6,7 @@ theme: inspiration, wisdom, principle
 slug: snp5.6
 character: Venerable Upasīva
 commentary: "[1] Per the commentary to the Suttanipāta, the venerable Upasīva was one who naturally gained the attainment of the base of nothingness but he did not know it as a support. When the Buddha says, “Perceiving nothingness,” he is showing him to use that as a support to rely on."
+priority: 1.2
 ---
 
 “Eko ahaṁ sakka mahantamoghaṁ,
