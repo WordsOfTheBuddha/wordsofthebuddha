@@ -22,9 +22,12 @@ export const COLLECTION_LINK_HINT_ROOT_IDS = [
 
 export const COLLECTION_LINK_HINTS_ROOT_ID = "collection-link-hints-root";
 
+export type LinkHintKind = "navigate" | "click";
+
 export type LinkHintAssignment = {
 	label: string;
-	link: HTMLAnchorElement;
+	element: HTMLElement;
+	kind: LinkHintKind;
 };
 
 export function isLinkHintModifierHeld(
@@ -74,7 +77,7 @@ export function isElementInViewport(
 	);
 }
 
-function hasHiddenAncestor(el: Element | null): boolean {
+export function hasHiddenAncestor(el: Element | null): boolean {
 	let node: Element | null = el;
 	while (node) {
 		if (node.classList.contains("hidden")) return true;
@@ -82,6 +85,20 @@ function hasHiddenAncestor(el: Element | null): boolean {
 		node = node.parentElement;
 	}
 	return false;
+}
+
+function isHintableElement(el: HTMLElement): boolean {
+	if (hasHiddenAncestor(el)) return false;
+	if (!isElementVisible(el)) return false;
+	if (!isElementInViewport(el)) return false;
+	return true;
+}
+
+function sortByVisualOrder(a: Element, b: Element): number {
+	const ar = a.getBoundingClientRect();
+	const br = b.getBoundingClientRect();
+	if (Math.abs(ar.top - br.top) > 4) return ar.top - br.top;
+	return ar.left - br.left;
 }
 
 function isGridAcceptingHints(grid: HTMLElement): boolean {
@@ -100,6 +117,76 @@ function isGridAcceptingHints(grid: HTMLElement): boolean {
 	return true;
 }
 
+export function getVisibleDictionaryShell(
+	root: ParentNode = document,
+): HTMLElement | null {
+	const popover = root.querySelector<HTMLElement>(".bottom-popover.visible");
+	if (!popover) return null;
+	const shell = popover.querySelector<HTMLElement>(".dict-shell");
+	if (!shell || !isElementVisible(shell)) return null;
+	return shell;
+}
+
+/**
+ * DPD/PED tabs (when both exist) plus multi-chip PED headword switchers.
+ * Only meaningful while the dictionary drawer is open.
+ */
+export function collectDictionaryHintTargets(
+	root: ParentNode = document,
+): HTMLElement[] {
+	const shell = getVisibleDictionaryShell(root);
+	if (!shell) return [];
+
+	const targets: HTMLElement[] = [];
+
+	const tabs = (
+		[...shell.querySelectorAll<HTMLElement>("[data-dict-panel]")] as HTMLElement[]
+	)
+		.filter(isHintableElement)
+		.sort((a, b) => {
+			const order = (panel: string | null) =>
+				panel === "dpd" ? 0 : panel === "ped" ? 1 : 9;
+			return (
+				order(a.getAttribute("data-dict-panel")) -
+				order(b.getAttribute("data-dict-panel"))
+			);
+		});
+	// Rotation only matters when both dictionaries are available.
+	if (tabs.length >= 2) targets.push(...tabs);
+
+	if (shell.getAttribute("data-dict-active") === "ped") {
+		const fallbackChips = (
+			[
+				...shell.querySelectorAll<HTMLElement>(
+					".ped-part-chips [data-ped-part]",
+				),
+			] as HTMLElement[]
+		)
+			.filter(isHintableElement)
+			.sort(sortByVisualOrder);
+
+		const constructionChips = (
+			[
+				...shell.querySelectorAll<HTMLElement>(
+					".construction--ped-switcher [data-ped-part]",
+				),
+			] as HTMLElement[]
+		)
+			.filter(isHintableElement)
+			.sort(sortByVisualOrder);
+
+		const chips =
+			fallbackChips.length >= 2
+				? fallbackChips
+				: constructionChips.length >= 2
+					? constructionChips
+					: [];
+		targets.push(...chips);
+	}
+
+	return targets.slice(0, LINK_HINT_LABELS.length);
+}
+
 export function collectViewportCollectionPostLinks(
 	root: ParentNode = document,
 ): HTMLAnchorElement[] {
@@ -116,23 +203,33 @@ export function collectViewportCollectionPostLinks(
 		});
 	}
 
-	links.sort((a, b) => {
-		const ar = a.getBoundingClientRect();
-		const br = b.getBoundingClientRect();
-		if (Math.abs(ar.top - br.top) > 4) return ar.top - br.top;
-		return ar.left - br.left;
-	});
-
+	links.sort(sortByVisualOrder);
 	return links.slice(0, LINK_HINT_LABELS.length);
 }
 
 export function assignLinkHintLabels(
-	links: HTMLAnchorElement[],
+	elements: HTMLElement[],
+	kind: LinkHintKind,
 ): LinkHintAssignment[] {
-	return links.map((link, index) => ({
+	return elements.map((element, index) => ({
 		label: LINK_HINT_LABELS[index]!,
-		link,
+		element,
+		kind,
 	}));
+}
+
+/** Dictionary chrome wins while the drawer is open; otherwise collection cards. */
+export function collectActiveLinkHintAssignments(
+	root: ParentNode = document,
+): LinkHintAssignment[] {
+	const dictionary = collectDictionaryHintTargets(root);
+	if (dictionary.length > 0) {
+		return assignLinkHintLabels(dictionary, "click");
+	}
+	return assignLinkHintLabels(
+		collectViewportCollectionPostLinks(root),
+		"navigate",
+	);
 }
 
 function dialogBlocksLinkHints(): boolean {
@@ -156,28 +253,65 @@ function clearHintsUi(): void {
 	document.documentElement.removeAttribute("data-collection-link-hints");
 }
 
+function positionHintBadge(
+	badge: HTMLElement,
+	element: HTMLElement,
+	root: HTMLElement,
+): void {
+	const rect = element.getBoundingClientRect();
+	const isDictTab = element.hasAttribute("data-dict-panel");
+	const isDictChip = element.hasAttribute("data-ped-part");
+
+	if (isDictTab || isDictChip) {
+		// Sit in the gutter just left of the control — never over its label.
+		badge.classList.add(
+			isDictTab
+				? "collection-link-hint--dict-tab"
+				: "collection-link-hint--dict-chip",
+		);
+		badge.style.visibility = "hidden";
+		root.appendChild(badge);
+		const badgeRect = badge.getBoundingClientRect();
+		const gap = 8;
+		badge.style.left = `${Math.max(4, rect.left - gap - badgeRect.width)}px`;
+		badge.style.top = `${rect.top + (rect.height - badgeRect.height) / 2}px`;
+		badge.style.transform = "";
+		badge.style.visibility = "";
+		return;
+	}
+
+	badge.style.top = `${Math.max(4, rect.top + 4)}px`;
+	badge.style.left = `${Math.max(4, rect.left - 2)}px`;
+	badge.style.transform = "";
+	root.appendChild(badge);
+}
+
 function renderHints(assignments: LinkHintAssignment[]): void {
 	const root = ensureHintsRoot();
 	root.replaceChildren();
-	for (const { label, link } of assignments) {
-		const rect = link.getBoundingClientRect();
+
+	if (assignments.length === 0) {
+		document.documentElement.removeAttribute("data-collection-link-hints");
+		return;
+	}
+
+	// Apply spacing CSS before measuring so left-of-label badges track the
+	// padded chip/tab positions rather than the pre-hint layout.
+	document.documentElement.setAttribute("data-collection-link-hints", "1");
+	void document.body.offsetWidth;
+
+	for (const { label, element } of assignments) {
 		const badge = document.createElement("span");
 		badge.className = "collection-link-hint";
 		badge.textContent = label;
-		badge.style.top = `${Math.max(4, rect.top + 4)}px`;
-		badge.style.left = `${Math.max(4, rect.left - 2)}px`;
-		root.appendChild(badge);
-	}
-	if (assignments.length > 0) {
-		document.documentElement.setAttribute("data-collection-link-hints", "1");
-	} else {
-		document.documentElement.removeAttribute("data-collection-link-hints");
+		positionHintBadge(badge, element, root);
 	}
 }
 
 /**
- * Hold ⌘ (Mac) / Alt (elsewhere) to show numbered shortcuts on viewport-visible
- * collection/discourse cards; press the label key while held to open the link.
+ * Hold ⌘ (Mac) / Alt (elsewhere) to show numbered shortcuts on:
+ * - dictionary DPD/PED tabs + multi-chip PED switchers (when drawer is open)
+ * - otherwise viewport-visible collection/discourse cards
  */
 export function installCollectionLinkHints(): void {
 	const w = window as unknown as { __collectionLinkHints?: boolean };
@@ -196,7 +330,7 @@ export function installCollectionLinkHints(): void {
 
 	const refresh = () => {
 		if (!active) return;
-		assignments = assignLinkHintLabels(collectViewportCollectionPostLinks());
+		assignments = collectActiveLinkHintAssignments();
 		if (assignments.length === 0) {
 			clearHintsUi();
 			return;
@@ -222,10 +356,23 @@ export function installCollectionLinkHints(): void {
 	const activate = (label: string): boolean => {
 		const hit = assignments.find((entry) => entry.label === label);
 		if (!hit) return false;
-		const href = hit.link.getAttribute("href");
-		if (!href) return false;
-		hide();
-		window.location.assign(href);
+
+		if (hit.kind === "navigate") {
+			const href =
+				hit.element instanceof HTMLAnchorElement
+					? hit.element.getAttribute("href")
+					: null;
+			if (!href) return false;
+			hide();
+			window.location.assign(href);
+			return true;
+		}
+
+		hit.element.click();
+		// Keep hints up while the modifier is held so tab→chip rotation can continue.
+		requestAnimationFrame(() => {
+			if (active) refresh();
+		});
 		return true;
 	};
 

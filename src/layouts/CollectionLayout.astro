@@ -678,45 +678,6 @@ html[data-collection-view="discourses"] #view-discourses {
 	<ScrollToTop />
 
 	<style>
-		/* Global: badges are injected on document.body at runtime. */
-		:global(.collection-link-hints) {
-			position: fixed;
-			inset: 0;
-			pointer-events: none;
-			z-index: 80;
-		}
-		:global(.collection-link-hint) {
-			position: fixed;
-			min-width: 1.35rem;
-			height: 1.35rem;
-			padding: 0 0.35rem;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: 0.35rem;
-			font-size: 0.75rem;
-			font-weight: 700;
-			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-				monospace;
-			line-height: 1;
-			letter-spacing: 0.02em;
-			color: #fff;
-			background: var(--primary-color, #5b4a3f);
-			box-shadow:
-				0 0 0 1px color-mix(in srgb, var(--surface-paper, #fff) 70%, transparent),
-				0 2px 8px rgba(0, 0, 0, 0.22);
-		}
-		:global(html.dark .collection-link-hint) {
-			color: var(--secondary-color, #f5f0e8);
-			background: color-mix(
-				in srgb,
-				var(--secondary-color, #c4a574) 28%,
-				var(--surface-elevated, #1e1a16)
-			);
-			box-shadow:
-				0 0 0 1px color-mix(in srgb, var(--secondary-color, #c4a574) 45%, transparent),
-				0 2px 10px rgba(0, 0, 0, 0.45);
-		}
 		.bg-primary {
 			background-color: var(--primary-color);
 		}

@@ -7,6 +7,7 @@ import "../styles/bottomDrawer.css";
 <script>
 	import { cleanPaliWordForLookup } from "../utils/cleanPaliWord";
 	import { replaceGlossMarkup } from "../utils/glossDisplay";
+	import { installCollectionLinkHints } from "../utils/collectionLinkHints";
 
 	// The ms-dpd dictionary chunk is ~1.5MB; import it on first lookup rather than
 	// as a static dependency of every page load.
@@ -821,6 +822,23 @@ import "../styles/bottomDrawer.css";
 		};
 	}
 
+	function resetDictionaryScroll(root: Element | null | undefined) {
+		if (!root) return;
+		const scrollers = [
+			root.querySelector(".dict-scroll"),
+			root.closest(".popover-body"),
+		];
+		const toTop = () => {
+			for (const el of scrollers) {
+				if (el instanceof HTMLElement) el.scrollTop = 0;
+			}
+		};
+		toTop();
+		// After panel show/hide, layout can clamp scrollTop to the bottom of
+		// the newly visible body — reset again on the next frame.
+		requestAnimationFrame(toTop);
+	}
+
 	function applyPedPartPreference(
 		root: Element | null | undefined,
 		partIndex: string,
@@ -837,7 +855,7 @@ import "../styles/bottomDrawer.css";
 				body.getAttribute("data-ped-part-body") !== partIndex,
 			);
 		});
-		root.querySelector(".dict-scroll")?.scrollTo?.({ top: 0 });
+		resetDictionaryScroll(root);
 	}
 
 	function applyDictPanelPreference(
@@ -880,6 +898,7 @@ import "../styles/bottomDrawer.css";
 				el.classList.remove("active");
 				el.setAttribute("aria-selected", "false");
 			});
+			resetDictionaryScroll(root);
 		}
 	}
 
@@ -1363,6 +1382,8 @@ import "../styles/bottomDrawer.css";
 			pos,
 		};
 	}
+
+	installCollectionLinkHints();
 
 	document.addEventListener("DOMContentLoaded", () => {
 		replaceTooltips(document.body);

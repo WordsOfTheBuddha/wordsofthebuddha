@@ -4,6 +4,8 @@ import { JSDOM } from "jsdom";
 import {
 	LINK_HINT_LABELS,
 	assignLinkHintLabels,
+	collectActiveLinkHintAssignments,
+	collectDictionaryHintTargets,
 	collectViewportCollectionPostLinks,
 	isElementInViewport,
 	isLinkHintModifierHeld,
@@ -143,16 +145,17 @@ describe("isElementInViewport", () => {
 });
 
 describe("assignLinkHintLabels", () => {
-	it("maps links to 1–9 then letters", () => {
+	it("maps elements to 1–9 then letters with a kind", () => {
 		const dom = new JSDOM("<!doctype html><a></a><a></a><a></a>");
 		const links = [
 			...dom.window.document.querySelectorAll("a"),
 		] as HTMLAnchorElement[];
-		const assigned = assignLinkHintLabels(links);
+		const assigned = assignLinkHintLabels(links, "navigate");
 		assert.deepEqual(
 			assigned.map((entry) => entry.label),
 			["1", "2", "3"],
 		);
+		assert.equal(assigned[0]?.kind, "navigate");
 	});
 });
 
@@ -235,6 +238,198 @@ describe("collectViewportCollectionPostLinks", () => {
 			const links = collectViewportCollectionPostLinks(document);
 			assert.equal(links.length, 1);
 			assert.equal(links[0]?.getAttribute("href"), "/mn");
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+		}
+	});
+});
+
+function stubVisibleGeometry(dom: JSDOM, elements: Element[]) {
+	const { HTMLElement } = dom.window;
+	for (const [index, el] of elements.entries()) {
+		(el as HTMLElement).getBoundingClientRect = () =>
+			({
+				top: 20,
+				left: 20 + index * 80,
+				bottom: 60,
+				right: 90 + index * 80,
+				width: 70,
+				height: 40,
+				x: 20 + index * 80,
+				y: 20,
+				toJSON() {},
+			}) as DOMRect;
+	}
+	Object.defineProperty(HTMLElement.prototype, "getClientRects", {
+		configurable: true,
+		value() {
+			return [{}, {}, {}];
+		},
+	});
+	dom.window.getComputedStyle = ((el: Element) => {
+		const display =
+			el.classList.contains("hidden") || el.closest?.(".hidden")
+				? "none"
+				: "block";
+		return {
+			display,
+			visibility: "visible",
+			getPropertyValue(prop: string) {
+				if (prop === "display") return display;
+				if (prop === "visibility") return "visible";
+				return "";
+			},
+		} as CSSStyleDeclaration;
+	}) as typeof getComputedStyle;
+}
+
+describe("collectDictionaryHintTargets", () => {
+	it("returns DPD/PED tabs and PED chips when the drawer is open on PED", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div class="bottom-popover visible">
+					<div class="dict-shell" data-dict-active="ped">
+						<button data-dict-panel="dpd">DPD</button>
+						<button data-dict-panel="ped">PED</button>
+						<div class="ped-part-chips">
+							<button data-ped-part="0">sam</button>
+							<button data-ped-part="1">mod</button>
+							<button data-ped-part="2">aniya</button>
+						</div>
+					</div>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		const elements = [
+			...document.querySelectorAll("[data-dict-panel], [data-ped-part]"),
+			document.querySelector(".dict-shell")!,
+			document.querySelector(".bottom-popover")!,
+		];
+		stubVisibleGeometry(dom, elements);
+
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		try {
+			const targets = collectDictionaryHintTargets(document);
+			assert.deepEqual(
+				targets.map((el) => el.textContent?.trim()),
+				["DPD", "PED", "sam", "mod", "aniya"],
+			);
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+		}
+	});
+
+	it("omits chip hints when only one chip exists, and skips chips on DPD", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div class="bottom-popover visible">
+					<div class="dict-shell" data-dict-active="dpd">
+						<button data-dict-panel="dpd">DPD</button>
+						<button data-dict-panel="ped">PED</button>
+						<div class="ped-part-chips hidden">
+							<button data-ped-part="0">only</button>
+						</div>
+					</div>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		stubVisibleGeometry(dom, [
+			...document.querySelectorAll("[data-dict-panel]"),
+			document.querySelector(".dict-shell")!,
+			document.querySelector(".bottom-popover")!,
+		]);
+
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		try {
+			const targets = collectDictionaryHintTargets(document);
+			assert.deepEqual(
+				targets.map((el) => el.textContent?.trim()),
+				["DPD", "PED"],
+			);
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+		}
+	});
+
+	it("uses construction PED switcher chips when fallback chips are absent", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div class="bottom-popover visible">
+					<div class="dict-shell" data-dict-active="ped">
+						<button data-dict-panel="dpd">DPD</button>
+						<button data-dict-panel="ped">PED</button>
+						<span class="construction construction--ped-switcher">
+							<button class="construction-part--ped" data-ped-part="0" data-lookup-word="nāma">nāma</button>
+							<button class="construction-part--ped" data-ped-part="1" data-lookup-word="rūpa">rūpa</button>
+						</span>
+					</div>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		stubVisibleGeometry(dom, [
+			...document.querySelectorAll("[data-dict-panel], [data-ped-part]"),
+			document.querySelector(".dict-shell")!,
+			document.querySelector(".bottom-popover")!,
+		]);
+
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		try {
+			const targets = collectDictionaryHintTargets(document);
+			assert.deepEqual(
+				targets.map((el) => el.textContent?.trim()),
+				["DPD", "PED", "nāma", "rūpa"],
+			);
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+		}
+	});
+});
+
+describe("collectActiveLinkHintAssignments", () => {
+	it("prefers dictionary chrome over collection cards while the drawer is open", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div id="collections-grid">
+					<article class="post-item"><a class="post-link" href="/mn">MN</a></article>
+				</div>
+				<div class="bottom-popover visible">
+					<div class="dict-shell" data-dict-active="dpd">
+						<button data-dict-panel="dpd">DPD</button>
+						<button data-dict-panel="ped">PED</button>
+					</div>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		stubVisibleGeometry(dom, [
+			...document.querySelectorAll(
+				"a.post-link, [data-dict-panel], .dict-shell, .bottom-popover, #collections-grid",
+			),
+		]);
+
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		try {
+			const assigned = collectActiveLinkHintAssignments(document);
+			assert.deepEqual(
+				assigned.map((entry) => entry.element.textContent?.trim()),
+				["DPD", "PED"],
+			);
+			assert.equal(assigned[0]?.kind, "click");
 		} finally {
 			globalThis.window = previousWindow;
 			globalThis.document = previousDocument;
