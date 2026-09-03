@@ -5,6 +5,15 @@ interface ImportMetaEnv {
 	readonly PUBLIC_POLAR_CHECKOUT_LINK?: string;
 	readonly PUBLIC_POLAR_PRODUCT_ID_ONCE?: string;
 	readonly PUBLIC_POLAR_PRODUCT_ID_MONTHLY?: string;
+	readonly OPENROUTER_API_KEY?: string;
+	readonly OPENROUTER_MODEL?: string;
+	readonly OPENROUTER_HTTP_REFERER?: string;
+	readonly OPENROUTER_SITE_NAME?: string;
+	readonly GEMINI_API_KEY?: string;
+	readonly GEMINI_MODEL?: string;
+	readonly GEMINI_RERANK_MODEL?: string;
+	readonly PUBLIC_AI_SHOW_MODEL_PICKER?: string;
+	readonly ASK_ADMIN_EMAILS?: string;
 	readonly VERCEL_TOKEN?: string;
 	readonly VERCEL_ACCESS_TOKEN?: string;
 	readonly VERCEL_PROJECT_ID?: string;

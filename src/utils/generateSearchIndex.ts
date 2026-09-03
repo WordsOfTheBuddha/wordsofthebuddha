@@ -34,6 +34,7 @@ const BLACKLISTED_SLUGS = new Set([
 	"privacy", // Legal pages
 	"public-domain",
 	"review-room", // User-specific pages
+	"admin", // Private admin surfaces
 	"sitemap.xml", // Technical pages
 	"robots.txt",
 ]);

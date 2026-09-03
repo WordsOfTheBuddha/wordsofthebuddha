@@ -34,7 +34,9 @@ const { id, feature } = Astro.props;
 			const links = document.querySelectorAll("a[data-return-path]");
 			links.forEach((link) => {
 				(link as HTMLAnchorElement).href =
-					`/signin?returnTo=${encodeURIComponent(window.location.pathname)}`;
+					`/signin?returnTo=${encodeURIComponent(
+						`${window.location.pathname}${window.location.search}`,
+					)}`;
 			});
 		</script>
 	</div>

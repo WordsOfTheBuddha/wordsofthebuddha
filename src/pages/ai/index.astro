@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+
+const question = Astro.url.searchParams.get("q");
+const params = new URLSearchParams();
+params.set("mode", "ai");
+if (question?.trim()) params.set("q", question.trim());
+return Astro.redirect(`/search?${params.toString()}`);
+---

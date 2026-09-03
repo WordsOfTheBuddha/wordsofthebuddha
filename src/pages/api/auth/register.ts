@@ -1,19 +1,17 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
+import { FieldValue } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import { app, isFirebaseInitialized } from "../../../service/firebase/server";
+import {
+	app,
+	db,
+	isFirebaseInitialized,
+} from "../../../service/firebase/server";
+import { safeAuthReturnUrl } from "../../../utils/authReturnTo";
+import { parseSignupIntentFields } from "../../../utils/signupIntent";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
-	// Debug request information
-	console.log("Request Method:", request.method);
-	console.log(
-		"Request Headers:",
-		Object.fromEntries(request.headers.entries())
-	);
-
-	// Check if Firebase is properly configured
 	if (!isFirebaseInitialized || !app) {
-		console.log("Firebase not configured for registration");
 		return new Response(
 			"Registration service is not available. Please check server configuration.",
 			{
@@ -21,62 +19,67 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 				headers: {
 					"Content-Type": "text/plain",
 				},
-			}
+			},
 		);
 	}
 
-	// Debug raw body
 	const rawBody = await request.text();
-	console.log("Raw Body:", rawBody);
-
-	// Parse the body back into a request for further processing
-	const newRequest = new Request(request.url, {
-		method: request.method,
-		headers: request.headers,
-		body: rawBody,
-	});
-
-	const auth = getAuth(app);
-	let formData;
-
-	try {
-		// Try parsing as URLSearchParams first since we logged the raw body
-		const params = new URLSearchParams(rawBody);
-		formData = new FormData();
-		for (const [key, value] of params) {
-			formData.append(key, value);
-			console.log("Form field:", key, "=", value);
-		}
-	} catch (error) {
-		console.error("Error parsing form data:", error);
-		return new Response("Error parsing request data", { status: 400 });
+	const params = new URLSearchParams(rawBody);
+	const formData = new FormData();
+	for (const [key, value] of params) {
+		formData.append(key, value);
 	}
 
+	const auth = getAuth(app);
 	const email = formData.get("email")?.toString();
 	const password = formData.get("password")?.toString();
 	const name = formData.get("name")?.toString();
 	const returnTo = formData.get("returnTo")?.toString();
+	const { intent, note } = parseSignupIntentFields({
+		intent: formData.get("intent")?.toString(),
+		note: formData.get("intentNote")?.toString(),
+	});
 
 	if (!email || !password || !name) {
 		return new Response("Missing form data", { status: 400 });
 	}
 
 	try {
-		await auth.createUser({
+		const user = await auth.createUser({
 			email,
 			password,
 			displayName: name,
 		});
-	} catch (error: any) {
+
+		if (db && (intent || note)) {
+			await db
+				.collection("users")
+				.doc(user.uid)
+				.set(
+					{
+						...(intent ? { signupIntent: intent } : {}),
+						...(note ? { signupIntentNote: note } : {}),
+						signupIntentAt: FieldValue.serverTimestamp(),
+					},
+					{ merge: true },
+				);
+		}
+	} catch (error: unknown) {
+		const message =
+			error && typeof error === "object" && "message" in error
+				? String((error as { message?: unknown }).message)
+				: "Something went wrong";
 		console.error("Error creating user:", error);
-		return new Response(error.message || "Something went wrong", {
+		return new Response(message || "Something went wrong", {
 			status: 400,
 		});
 	}
 
-	// Ensure redirect path is safe and ASCII-encoded for the Location header
-	const safePath = returnTo
-		? new URL(returnTo, request.url).pathname
-		: "/signin";
-	return redirect(safePath);
+	// Account exists but session isn’t created here — send them to sign in.
+	// After sign-in we email a verification link (required for full Ask quota).
+	const returnUrl = safeAuthReturnUrl(returnTo, request.url);
+	const returnPath = `${returnUrl.pathname}${returnUrl.search}`;
+	return redirect(
+		`/signin?returnTo=${encodeURIComponent(returnPath)}&verify=1`,
+	);
 };

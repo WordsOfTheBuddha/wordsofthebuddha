@@ -1,6 +1,10 @@
 ---
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
+import {
+	SIGNUP_INTENT_NOTE_MAX,
+	SIGNUP_INTENT_OPTIONS,
+} from "../utils/signupIntent";
 
 const firebaseReady = Boolean(
 	(import.meta.env.FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID) &&
@@ -89,6 +93,43 @@ if (!firebaseReady) {
 							required
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
+					</div>
+					<div>
+						<label
+							for="intent"
+							class="block text-sm font-medium text-[var(--text-color)]"
+						>
+							What brings you here?
+							<span class="font-normal text-[var(--text-muted)]"
+								>(optional)</span
+							>
+						</label>
+						<select
+							name="intent"
+							id="intent"
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent text-[var(--text-color)]"
+						>
+							<option value="">Choose one…</option>
+							{
+								SIGNUP_INTENT_OPTIONS.map((option) => (
+									<option value={option.id}>{option.label}</option>
+								))
+							}
+						</select>
+						<label
+							for="intentNote"
+							class="sr-only"
+						>
+							Anything you’d like to add
+						</label>
+						<textarea
+							name="intentNote"
+							id="intentNote"
+							rows="2"
+							maxlength={SIGNUP_INTENT_NOTE_MAX}
+							placeholder="Optional note (e.g. a practice interest)"
+							class="mt-2 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent text-[var(--text-color)] text-sm"
+						></textarea>
 					</div>
 				</div>
 

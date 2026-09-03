@@ -57,13 +57,25 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 		kind: "page",
 		title: "Support",
 		href: "/support",
-		aliases: ["give", "gift", "donate"],
+		aliases: ["give", "gift", "donate", "donation", "giving"],
 	},
 	{
 		kind: "page",
 		title: "Discover",
 		href: "/discover",
 		aliases: ["explore"],
+	},
+	{
+		kind: "page",
+		title: "Recently Added",
+		href: "/recent",
+		aliases: ["recent", "recently added", "latest discourses", "new translations"],
+	},
+	{
+		kind: "page",
+		title: "Ask the discourses",
+		href: "/search?mode=ai",
+		aliases: ["ask", "ai mode", "ask a question"],
 	},
 	{
 		kind: "page",

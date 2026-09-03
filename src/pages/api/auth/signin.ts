@@ -5,6 +5,7 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { Timestamp } from "firebase-admin/firestore";
 import type { Note } from "../../../types/notes";
+import { safeAuthReturnUrl } from "../../../utils/authReturnTo";
 
 const SESSION_COOKIE_TIMEOUT = 40000; // Increase timeout to 40 seconds
 
@@ -143,15 +144,14 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		});
 		console.log(`[${opId}] Session cookie set`);
 
-		// Build redirect URL
+		// Build redirect URL (keep query so Ask can return to /search?mode=ai)
 		const url = new URL(request.url);
-		const returnTo = url.searchParams.get("returnTo");
-		const baseRedirectPath = returnTo
-			? new URL(returnTo, request.url).pathname
-			: "/review-room";
-		const redirectUrl = new URL(baseRedirectPath, request.url);
+		const redirectUrl = safeAuthReturnUrl(
+			url.searchParams.get("returnTo"),
+			request.url,
+		);
 
-		redirectUrl.searchParams.append("load-preferences", "true");
+		redirectUrl.searchParams.set("load-preferences", "true");
 		if (showPali) {
 			redirectUrl.searchParams.set("pli", "true");
 		}

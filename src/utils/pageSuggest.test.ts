@@ -405,6 +405,30 @@ describe("composeNavSuggestions", () => {
 		assert.equal(offline[0]?.hit.href, "/offline");
 	});
 
+	it("shows Ask the discourses on ask and ai mode aliases", () => {
+		for (const query of ["ask", "ai mode"]) {
+			const items = composeNavSuggestions(
+				query,
+				[],
+				SITE_PAGE_SUGGESTIONS,
+			);
+			assert.equal(items[0]?.type, "page", query);
+			assert.equal(items[0]?.hit.href, "/search?mode=ai", query);
+		}
+	});
+
+	it("shows Recently Added on recent and latest discourses aliases", () => {
+		for (const query of ["recent", "latest discourses"]) {
+			const items = composeNavSuggestions(
+				query,
+				[],
+				SITE_PAGE_SUGGESTIONS,
+			);
+			assert.equal(items[0]?.type, "page", query);
+			assert.equal(items[0]?.hit.href, "/recent", query);
+		}
+	});
+
 	it("does not prefix-match catalog or site pages at 4 characters", () => {
 		assert.deepEqual(composeNavSuggestions("supp", [], pages), []);
 		assert.deepEqual(composeNavSuggestions("crav", [], pages), []);
@@ -486,6 +510,14 @@ describe("composeNavSuggestions", () => {
 		);
 		assert.equal(items.length, 1);
 		assert.equal(items[0]?.type, "discourse");
+
+		const numerals = composeNavSuggestions(
+			"36.3",
+			[discourse("sn36.3", "Abandoned", true)],
+			pages,
+		);
+		assert.equal(numerals.length, 1);
+		assert.equal(numerals[0]?.type, "discourse");
 	});
 
 	it("does not treat a pali alias as an exact catalog hit unless the query is exact", () => {

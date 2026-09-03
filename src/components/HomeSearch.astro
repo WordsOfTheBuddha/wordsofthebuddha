@@ -4,6 +4,7 @@
  */
 import SearchIcon from "../assets/search.svg?raw";
 import "../styles/search-gateway.css";
+import "../styles/ai-mode.css";
 
 const starterChips = [
 	{ label: "MN 10", href: "/mn10" },
@@ -13,6 +14,10 @@ const starterChips = [
 ---
 
 <div class="home-search search-gateway not-prose text-left w-full max-w-[600px] mx-auto" data-home-search>
+	<nav class="ai-mode-switch home-search-mode-switch" aria-label="Mode">
+		<a href="/" class="is-active" aria-current="page">Search</a>
+		<a href="/search?mode=ai">Ask</a>
+	</nav>
 	<form
 		id="home-search-form"
 		action="/search"
@@ -79,6 +84,10 @@ const starterChips = [
 </div>
 
 <style>
+	.home-search-mode-switch {
+		margin: 0 auto 0.85rem;
+	}
+
 	.home-search-sr-only {
 		position: absolute;
 		width: 1px;

@@ -1,15 +1,14 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
+import { safeAuthReturnUrl } from "../../../utils/authReturnTo";
 
 export const POST: APIRoute = async ({ request, redirect, cookies }) => {
-    cookies.delete("__session", {
-        path: "/",
-    });
+	cookies.delete("__session", {
+		path: "/",
+	});
 
-    const formData = await request.formData();
-    const returnTo = formData.get("returnTo")?.toString() || "/";
-
-    // Only allow redirects to local paths
-    const returnPath = new URL(returnTo, request.url).pathname;
-    return redirect(returnPath);
+	const formData = await request.formData();
+	const returnTo = formData.get("returnTo")?.toString() || "/";
+	const returnUrl = safeAuthReturnUrl(returnTo, request.url, "/");
+	return redirect(`${returnUrl.pathname}${returnUrl.search}`);
 };

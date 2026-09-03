@@ -77,3 +77,16 @@ export async function verifyUser(
 export function clearUserCache(uid: string): void {
 	userCache.delete(uid);
 }
+
+/**
+ * Ask quota depends on emailVerified. Refresh when the cached record is still
+ * unverified so a just-clicked email link unlocks the signed-in bucket.
+ */
+export async function verifyUserForAskQuota(
+	sessionCookie: string | undefined,
+	options: VerifyUserOptions = {},
+): Promise<UserRecord | null> {
+	const user = await verifyUser(sessionCookie, options);
+	if (!user || user.emailVerified) return user;
+	return verifyUser(sessionCookie, { ...options, forceRefresh: true });
+}

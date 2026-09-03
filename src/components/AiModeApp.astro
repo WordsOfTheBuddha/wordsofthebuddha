@@ -1,0 +1,320 @@
+---
+import {
+	curatedAskModelLabel,
+	getAskPickerDefaultModel,
+	getConfiguredOpenRouterModel,
+	shouldShowAiModelPicker,
+} from "../utils/openrouter";
+import "../styles/ai-mode.css";
+
+interface Props {
+	/** When false, the page owns the title + Search/Ask switch. */
+	showTitle?: boolean;
+	showKicker?: boolean;
+	/** Public shared Ask snapshot (read-only UI). */
+	shareMode?: boolean;
+	shareSnapshot?: string;
+}
+
+const {
+	showTitle = true,
+	showKicker = false,
+	shareMode = false,
+	shareSnapshot = "",
+} = Astro.props;
+const showModelPicker = !shareMode && shouldShowAiModelPicker();
+const defaultModel = showModelPicker
+	? getAskPickerDefaultModel()
+	: getConfiguredOpenRouterModel();
+const examples = [
+	"Is there a self that continues after death?",
+	"Which overlooked discourses show mindfulness applied in daily life?",
+	"Where does the Buddha answer a series of questions on a full-moon night?",
+] as const;
+---
+
+<div
+	class:list={["ai-mode", shareMode && "ai-mode-share"]}
+	data-ai-mode
+	data-default-model={defaultModel}
+	data-show-picker={showModelPicker ? "1" : "0"}
+	data-share-mode={shareMode ? "1" : "0"}
+	data-share-snapshot={shareMode ? shareSnapshot : undefined}
+>
+	{
+		showTitle && (
+			<header class="ai-top">
+				<h1 class="ai-title text-gradient-accent">Ask</h1>
+				{
+					showKicker && (
+						<nav class="ai-mode-switch" aria-label="Mode">
+							<a href="/search">Search</a>
+							<span class="is-active">Ask</span>
+						</nav>
+					)
+				}
+				{
+					showModelPicker && (
+						<div class="ai-model-picker">
+							<label>
+								<span class="sr-only">Free model</span>
+								<select data-ai-model>
+									<option value={defaultModel} selected>
+										{curatedAskModelLabel(defaultModel)}
+									</option>
+								</select>
+							</label>
+							<span class="ai-model-id" data-ai-model-id>{defaultModel}</span>
+						</div>
+					)
+				}
+			</header>
+		)
+	}
+	{
+		!showTitle && showModelPicker && (
+			<div class="ai-model-picker-row">
+				<div class="ai-model-picker">
+					<label>
+						<span class="sr-only">Free model</span>
+						<select data-ai-model>
+							<option value={defaultModel} selected>
+								{curatedAskModelLabel(defaultModel)}
+							</option>
+						</select>
+					</label>
+					<span class="ai-model-id" data-ai-model-id>{defaultModel}</span>
+				</div>
+			</div>
+		)
+	}
+	{
+		!showModelPicker && (
+			<input type="hidden" data-ai-model value={defaultModel} />
+		)
+	}
+
+	<div class="ai-empty ai-shell" data-ai-empty>
+		{
+			!showTitle && (
+				<p class="ai-limits-note ai-limits-note-empty">
+					Experimental AI search · limited free Asks
+				</p>
+			)
+		}
+		{
+			showTitle && (
+				<p class="ai-limits-note">
+					Experimental AI search · limited free Asks
+				</p>
+			)
+		}
+	</div>
+
+	<div class="ai-history" data-ai-history hidden></div>
+
+	<div class="ai-thread ai-shell" data-ai-thread></div>
+
+	<form class="ai-composer ai-shell" data-ai-form data-ai-composer>
+		<label class="sr-only" for="ai-input">Ask a question</label>
+		<div class="ai-box">
+			<textarea
+				id="ai-input"
+				data-ai-input
+				rows="2"
+				placeholder="Ask a question about the discourses…"
+				enterkeyhint="enter"
+			></textarea>
+			<button
+				type="button"
+				class="ai-icon-btn"
+				data-ai-mic
+				aria-label="Voice input"
+				aria-pressed="false"
+				title="Speak"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+				</svg>
+			</button>
+			<button
+				type="submit"
+				class="ai-send"
+				aria-label="Ask"
+				title="Send (⌘Enter or Ctrl+Enter)"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
+				</svg>
+			</button>
+		</div>
+		<div class="ai-examples">
+			{
+				examples.map((example) => (
+					<button type="button" data-ai-example={example}>
+						{example}
+					</button>
+				))
+			}
+		</div>
+		<p class="ai-limits-note ai-limits-note-composer">
+			Experimental AI search · limited free Asks
+		</p>
+		<div class="ai-meta-row">
+			<span class="ai-meta-spacer" aria-hidden="true"></span>
+			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
+		</div>
+		<p class="ai-status" data-ai-status hidden></p>
+	</form>
+
+	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
+		<label class="sr-only" for="ai-follow-input">Ask a follow-up</label>
+		<div class="ai-box">
+			<textarea
+				id="ai-follow-input"
+				data-ai-follow-input
+				rows="2"
+				placeholder="Ask a follow-up"
+				enterkeyhint="enter"
+			></textarea>
+			<button
+				type="button"
+				class="ai-icon-btn"
+				data-ai-mic
+				aria-label="Voice follow-up"
+				aria-pressed="false"
+				title="Speak"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+				</svg>
+			</button>
+			<button
+				type="submit"
+				class="ai-send"
+				aria-label="Ask follow-up"
+				title="Send (⌘Enter or Ctrl+Enter)"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
+				</svg>
+			</button>
+		</div>
+		<div class="ai-meta-row">
+			<button type="button" class="ai-new" data-ai-new>
+				New question
+			</button>
+			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
+		</div>
+		<p class="ai-status" data-ai-status hidden></p>
+	</form>
+
+	<div class="ai-dialog" data-ai-quota-dialog hidden>
+		<div class="ai-dialog-sheet" role="dialog" aria-modal="true" aria-labelledby="ai-quota-title">
+			<button type="button" class="ai-dialog-close" data-ai-quota-close aria-label="Close">×</button>
+			<div data-ai-quota-panel="signin">
+				<h2 id="ai-quota-title" class="ai-dialog-title" data-ai-quota-signin-title>
+					You’ve used today’s free Asks
+				</h2>
+				<p class="ai-dialog-body" data-ai-quota-signin-body>
+					Create a free account for more Asks today. You’ll also keep recent
+					questions across devices, and can pin ones to refer to later.
+				</p>
+				<div class="ai-dialog-actions">
+					<a class="ai-dialog-primary" data-ai-quota-register href="/register">
+						Create an account
+					</a>
+					<a class="ai-dialog-secondary" data-ai-quota-signin href="/signin">
+						Sign in
+					</a>
+					<button type="button" class="ai-dialog-tertiary" data-ai-quota-close>
+						Not now
+					</button>
+				</div>
+			</div>
+			<div data-ai-quota-panel="tomorrow" hidden>
+				<h2 class="ai-dialog-title">You’ve used today’s Asks</h2>
+				<p class="ai-dialog-body">Come back tomorrow for a fresh set of Asks.</p>
+				<div class="ai-dialog-actions">
+					<button type="button" class="ai-dialog-primary" data-ai-quota-close>OK</button>
+				</div>
+			</div>
+			<div data-ai-quota-panel="verify" hidden>
+				<h2 class="ai-dialog-title">Verify your email for more Asks</h2>
+				<p class="ai-dialog-body">
+					You’re signed in, but your email isn’t verified yet. Check your inbox
+					and spam for the link — verified accounts get the full daily Ask
+					allowance.
+				</p>
+				<p class="ai-dialog-body" data-ai-quota-verify-status hidden></p>
+				<div class="ai-dialog-actions">
+					<button type="button" class="ai-dialog-primary" data-ai-quota-resend-verify>
+						Resend email
+					</button>
+					<button type="button" class="ai-dialog-secondary" data-ai-quota-refresh-verify>
+						I’ve verified
+					</button>
+					<button type="button" class="ai-dialog-tertiary" data-ai-quota-close>
+						Not now
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ai-dialog" data-ai-feedback-dialog hidden>
+		<div class="ai-dialog-sheet" role="dialog" aria-modal="true" aria-labelledby="ai-feedback-title">
+			<button type="button" class="ai-dialog-close" data-ai-feedback-close aria-label="Close">×</button>
+			<h2 id="ai-feedback-title" class="ai-dialog-title">Help us improve Ask</h2>
+			<p class="ai-dialog-body">
+				Share a short note about how it’s working for you, and get <strong>5 more Asks today</strong>.
+				A sentence is enough.
+			</p>
+			<label class="sr-only" for="ai-user-review">Your feedback</label>
+			<textarea
+				id="ai-user-review"
+				class="ai-feedback-text"
+				data-ai-feedback-text
+				rows="4"
+				minlength="30"
+				placeholder="What worked well? What felt off?"
+			></textarea>
+			<p class="ai-feedback-hint" data-ai-feedback-hint>At least 30 characters.</p>
+			<p class="ai-feedback-error" data-ai-feedback-error hidden></p>
+			<div class="ai-dialog-actions">
+				<button type="button" class="ai-dialog-primary" data-ai-feedback-submit>Share feedback</button>
+				<button type="button" class="ai-dialog-secondary" data-ai-feedback-dismiss>Not now</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+</style>
+
+<script>
+	import { attachAiMode } from "../utils/aiModeClient";
+
+	const root = document.querySelector("[data-ai-mode]") as HTMLElement | null;
+	if (root) {
+		attachAiMode({
+			root,
+			showModelPicker: root.dataset.showPicker === "1",
+			defaultModel:
+				root.dataset.defaultModel || "z-ai/glm-5.2:free",
+			shareMode: root.dataset.shareMode === "1",
+			shareSnapshot: root.dataset.shareSnapshot || "",
+		});
+	}
+</script>

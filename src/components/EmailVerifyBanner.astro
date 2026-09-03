@@ -1,0 +1,105 @@
+---
+interface Props {
+	email?: string | null;
+}
+
+const { email = null } = Astro.props;
+---
+
+<aside
+	class="mb-5 flex flex-wrap items-start justify-between gap-3 rounded-lg border border-[color-mix(in_srgb,var(--primary-color)_40%,var(--surface-border))] bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--auth-card-bg))] px-4 py-3.5 text-[var(--text-color)] shadow-sm"
+	data-email-verify-banner
+	role="status"
+>
+	<div class="min-w-[16rem] flex-1">
+		<p class="m-0 mb-1 text-[0.98rem] font-bold leading-snug">
+			Verify your email
+		</p>
+		<p class="m-0 text-sm leading-relaxed text-[var(--text-color)] opacity-90">
+			{
+				email
+					? `We sent a link to ${email}. Verify to unlock the full daily Ask allowance and keep your account secure.`
+					: "Check your inbox (and spam) for a verification link. Verify to unlock the full daily Ask allowance and keep your account secure."
+			}
+		</p>
+		<p
+			class="mt-2 mb-0 hidden text-sm leading-relaxed"
+			data-email-verify-status
+		></p>
+	</div>
+	<div class="flex flex-wrap items-center gap-2">
+		<button
+			type="button"
+			class="inline-flex items-center justify-center rounded-md border border-[var(--primary-color)] bg-[var(--primary-color)] px-3.5 py-2 text-sm font-semibold text-white hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:ring-offset-2 focus:ring-offset-[var(--background-color)]"
+			data-email-verify-resend
+		>
+			Resend email
+		</button>
+		<button
+			type="button"
+			class="inline-flex items-center justify-center rounded-md border border-[var(--surface-border)] bg-transparent px-3.5 py-2 text-sm font-semibold text-[var(--text-color)] hover:bg-[var(--auth-input-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:ring-offset-2 focus:ring-offset-[var(--background-color)]"
+			data-email-verify-refresh
+		>
+			I’ve verified
+		</button>
+	</div>
+</aside>
+
+<script>
+	import { resendVerificationEmail } from "../utils/emailVerificationClient";
+	import { verificationSentStatus } from "../utils/emailVerificationCopy";
+
+	const root = document.querySelector<HTMLElement>("[data-email-verify-banner]");
+	if (root) {
+		const status = root.querySelector<HTMLElement>("[data-email-verify-status]");
+		const resend = root.querySelector<HTMLButtonElement>("[data-email-verify-resend]");
+		const refresh = root.querySelector<HTMLButtonElement>("[data-email-verify-refresh]");
+
+		const setStatus = (text: string): void => {
+			if (!status) return;
+			status.textContent = text;
+			status.classList.toggle("hidden", !text);
+		};
+
+		resend?.addEventListener("click", async () => {
+			resend.disabled = true;
+			setStatus("Sending…");
+			const result = await resendVerificationEmail();
+			if (result.alreadyVerified) {
+				setStatus("Email already verified — refreshing…");
+				window.location.reload();
+				return;
+			}
+			if (!result.ok) {
+				setStatus(result.error || "Could not resend.");
+				resend.disabled = false;
+				return;
+			}
+			setStatus(verificationSentStatus(result.email));
+			resend.disabled = false;
+		});
+
+		refresh?.addEventListener("click", async () => {
+			refresh.disabled = true;
+			setStatus("Checking…");
+			try {
+				const response = await fetch("/api/auth/me?fresh=1", {
+					credentials: "same-origin",
+				});
+				const data = (await response.json()) as {
+					signedIn?: boolean;
+					user?: { emailVerified?: boolean };
+				};
+				if (data.signedIn && data.user?.emailVerified) {
+					window.location.reload();
+					return;
+				}
+				setStatus("Not verified yet — open the link in your email, then try again.");
+			} catch {
+				setStatus("Could not check verification status.");
+			} finally {
+				refresh.disabled = false;
+			}
+		});
+	}
+</script>

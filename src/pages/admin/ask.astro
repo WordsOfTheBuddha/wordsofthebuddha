@@ -1,0 +1,675 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import { verifyUser } from "../../middleware/auth";
+import { db, isFirebaseInitialized } from "../../service/firebase/server";
+import { isAskAdminEmail } from "../../utils/aiAskAdmin";
+import {
+	askAdminHref,
+	filterAskAdminRows,
+	filterAskUserReviewRows,
+	loadAskTelemetryInbox,
+	parseAskAdminQuery,
+	summarizeAskAdminRows,
+	type AskAdminQuery,
+	type AskAdminRow,
+	type AskAdminUserReviewRow,
+} from "../../utils/aiAskTelemetryQuery";
+import { formatDiscourseTitle } from "../../utils/discourseSort";
+
+const session = Astro.cookies.get("__session")?.value;
+const user = await verifyUser(session, { cookies: Astro.cookies });
+const email = user?.email || null;
+
+if (!user || !isAskAdminEmail(email)) {
+	if (!user) {
+		return Astro.redirect(`/signin?returnTo=${encodeURIComponent("/admin/ask")}`);
+	}
+	return new Response("Forbidden", { status: 403, statusText: "Forbidden" });
+}
+
+const query = parseAskAdminQuery(Astro.url.searchParams);
+let rows: AskAdminRow[] = [];
+let userReviews: AskAdminUserReviewRow[] = [];
+let loadError = "";
+if (!isFirebaseInitialized || !db) {
+	loadError = "Firebase Admin is not configured, so Ask telemetry cannot be loaded.";
+} else {
+	try {
+		const inbox = await loadAskTelemetryInbox(db, 400);
+		rows = inbox.rows;
+		userReviews = inbox.userReviews;
+	} catch (error) {
+		console.error("[admin/ask]", error);
+		loadError =
+			"Could not load askTelemetry. If this is the first time, wait for a few Asks, or create a Firestore index on createdAt.";
+	}
+}
+
+const summary = summarizeAskAdminRows(rows, userReviews);
+const visible = filterAskAdminRows(rows, query);
+const visibleNotes = filterAskUserReviewRows(userReviews, query.since);
+
+function relativeTime(iso: string | null): string {
+	if (!iso) return "—";
+	const ms = Date.now() - new Date(iso).getTime();
+	if (!Number.isFinite(ms) || ms < 0) return iso.slice(0, 16).replace("T", " ");
+	const mins = Math.round(ms / 60000);
+	if (mins < 1) return "just now";
+	if (mins < 60) return `${mins}m ago`;
+	const hours = Math.round(mins / 60);
+	if (hours < 48) return `${hours}h ago`;
+	const days = Math.round(hours / 24);
+	return `${days}d ago`;
+}
+
+function shortModel(model: string): string {
+	if (!model) return "";
+	const base = model.replace(/:free$/i, "");
+	const leaf = base.split("/").pop() || base;
+	return leaf.length > 36 ? `${leaf.slice(0, 34)}…` : leaf;
+}
+
+function hrefFor(patch: Partial<AskAdminQuery>): string {
+	return askAdminHref({ ...query, ...patch });
+}
+---
+
+<Layout
+	title="Ask inbox"
+	seoTitle="Ask inbox"
+	robots="noindex, nofollow"
+	showAuth={true}
+	showSearch={false}
+>
+	<main class="admin-ask container mx-auto px-3 sm:px-4 py-6 max-w-3xl" data-admin-ask>
+		<header class="admin-ask-header">
+			<h1 class="admin-ask-title">Ask inbox</h1>
+			<p class="admin-ask-lead">
+				Review questions, model thinking, search chips, and result discourses. Mark items
+				reviewed to clear them from the default inbox. Written notes are the +5 Ask
+				feedback submissions.
+			</p>
+			<p class="admin-ask-meta">Signed in as {email}</p>
+		</header>
+
+		{
+			loadError ? (
+				<p class="admin-ask-error">{loadError}</p>
+			) : (
+				<>
+					<section class="admin-ask-stats" aria-label="Summary">
+						<div class="admin-ask-stat">
+							<strong>{summary.needsReview}</strong>
+							<span>Needs review</span>
+						</div>
+						<div class="admin-ask-stat">
+							<strong>{summary.down}</strong>
+							<span>Not helpful</span>
+						</div>
+						<div class="admin-ask-stat">
+							<strong>{summary.up}</strong>
+							<span>Helpful</span>
+						</div>
+						<div class="admin-ask-stat">
+							<strong>{summary.totalAsks}</strong>
+							<span>Loaded asks</span>
+						</div>
+						<div class="admin-ask-stat">
+							<strong>{summary.userReviews}</strong>
+							<span>Written notes</span>
+						</div>
+					</section>
+
+					<section class="admin-ask-toolbar" aria-label="Filters">
+						<nav class="admin-ask-filters" aria-label="Inbox view">
+							<a
+								class:list={["admin-ask-filter", query.view === "asks" && "is-active"]}
+								href={hrefFor({ view: "asks" })}
+							>
+								Asks
+							</a>
+							<a
+								class:list={["admin-ask-filter", query.view === "notes" && "is-active"]}
+								href={hrefFor({ view: "notes" })}
+							>
+								Written notes
+							</a>
+						</nav>
+						{
+							query.view === "asks" && (
+								<nav class="admin-ask-filters" aria-label="Review status">
+									<a
+										class:list={["admin-ask-filter", query.status === "needs" && "is-active"]}
+										href={hrefFor({ status: "needs" })}
+									>
+										Needs review
+									</a>
+									<a
+										class:list={["admin-ask-filter", query.status === "reviewed" && "is-active"]}
+										href={hrefFor({ status: "reviewed" })}
+									>
+										Reviewed
+									</a>
+									<a
+										class:list={["admin-ask-filter", query.status === "all" && "is-active"]}
+										href={hrefFor({ status: "all" })}
+									>
+										All status
+									</a>
+								</nav>
+							)
+						}
+						{
+							query.view === "asks" && (
+								<nav class="admin-ask-filters" aria-label="Rating">
+									<a
+										class:list={["admin-ask-filter", query.rating === "all" && "is-active"]}
+										href={hrefFor({ rating: "all" })}
+									>
+										Any rating
+									</a>
+									<a
+										class:list={["admin-ask-filter", query.rating === "down" && "is-active"]}
+										href={hrefFor({ rating: "down" })}
+									>
+										👎
+									</a>
+									<a
+										class:list={["admin-ask-filter", query.rating === "up" && "is-active"]}
+										href={hrefFor({ rating: "up" })}
+									>
+										👍
+									</a>
+									<a
+										class:list={["admin-ask-filter", query.rating === "none" && "is-active"]}
+										href={hrefFor({ rating: "none" })}
+									>
+										No rating
+									</a>
+								</nav>
+							)
+						}
+						<nav class="admin-ask-filters" aria-label="Date range">
+							<a
+								class:list={["admin-ask-filter", query.since === "24h" && "is-active"]}
+								href={hrefFor({ since: "24h" })}
+							>
+								24h
+							</a>
+							<a
+								class:list={["admin-ask-filter", query.since === "7d" && "is-active"]}
+								href={hrefFor({ since: "7d" })}
+							>
+								7d
+							</a>
+							<a
+								class:list={["admin-ask-filter", query.since === "30d" && "is-active"]}
+								href={hrefFor({ since: "30d" })}
+							>
+								30d
+							</a>
+							<a
+								class:list={["admin-ask-filter", query.since === "all" && "is-active"]}
+								href={hrefFor({ since: "all" })}
+							>
+								All time
+							</a>
+						</nav>
+					</section>
+
+					<p class="admin-ask-count">
+						{query.view === "notes" ? visibleNotes.length : visible.length} shown
+						{query.view === "asks" && query.status === "needs" ? " · inbox" : ""}
+						{query.view === "notes" ? " · written notes" : ""}
+						{query.since !== "all" ? ` · ${query.since}` : ""}
+					</p>
+
+					{
+						query.view === "notes" ? (
+							visibleNotes.length === 0 ? (
+								<p class="admin-ask-empty">
+									No written notes in this range. Notes appear when a signed-in user
+									submits the halfway “Help us improve Ask” prompt.
+								</p>
+							) : (
+								<ul class="admin-ask-list">
+									{visibleNotes.map((note) => (
+										<li class="admin-ask-card">
+											<div class="admin-ask-card-top">
+												<p class="admin-ask-question">
+													{note.email || "Signed-in user"}
+												</p>
+												<div class="admin-ask-badges">
+													<span class="admin-ask-badge is-reviewed">+5 Asks</span>
+													<span class="admin-ask-when" title={note.createdAt || ""}>
+														{relativeTime(note.createdAt)}
+													</span>
+												</div>
+											</div>
+											<p class="admin-ask-summary">{note.text}</p>
+											<p class="admin-ask-foot">
+												{note.day ? `Day ${note.day}` : ""}
+												{note.uid ? ` · ${note.uid.slice(0, 8)}…` : ""}
+											</p>
+										</li>
+									))}
+								</ul>
+							)
+						) : visible.length === 0 ? (
+							<p class="admin-ask-empty">
+								Nothing in this view. Try All status, widen the date range, or wait for new Asks.
+							</p>
+						) : (
+							<ul class="admin-ask-list">
+								{visible.map((row) => (
+									<li class="admin-ask-card" data-request-id={row.requestId}>
+										<div class="admin-ask-card-top">
+											<p class="admin-ask-question">{row.question || "(empty question)"}</p>
+											<div class="admin-ask-badges">
+												{
+													row.rating === "up" ? (
+														<span class="admin-ask-badge is-up">👍</span>
+													) : row.rating === "down" ? (
+														<span class="admin-ask-badge is-down">👎</span>
+													) : (
+														<span class="admin-ask-badge">Unrated</span>
+													)
+												}
+												{
+													row.reviewed ? (
+														<span class="admin-ask-badge is-reviewed">Reviewed</span>
+													) : (
+														<span class="admin-ask-badge is-needs">Needs review</span>
+													)
+												}
+												<span class="admin-ask-when" title={row.askedAt || ""}>
+													{relativeTime(row.askedAt)}
+												</span>
+											</div>
+										</div>
+										{
+											row.lookingFor && (
+												<p class="admin-ask-looking">{row.lookingFor}</p>
+											)
+										}
+										{
+											row.summary && (
+												<p class="admin-ask-summary">{row.summary}</p>
+											)
+										}
+										{
+											row.model && (
+												<p class="admin-ask-model" title={row.model}>
+													{shortModel(row.model)}
+												</p>
+											)
+										}
+										{
+											row.reasoning ? (
+												<details class="admin-ask-reasoning">
+													<summary>Model thinking</summary>
+													<pre>{row.reasoning}</pre>
+												</details>
+											) : (
+												<p class="admin-ask-no-reasoning">No model thinking stored for this ask.</p>
+											)
+										}
+										{
+											row.queries.length > 0 && (
+												<div class="admin-ask-chips">
+													{row.queries.map((q) => (
+														<a class="admin-ask-chip" href={`/search?q=${encodeURIComponent(q)}`}>
+															{q}
+														</a>
+													))}
+												</div>
+											)
+										}
+										{
+											row.fallbackQueries.length > 0 && (
+												<div class="admin-ask-chips is-fallback">
+													<span class="admin-ask-fallback-label">Also tried</span>
+													{row.fallbackQueries.map((q) => (
+														<a class="admin-ask-chip" href={`/search?q=${encodeURIComponent(q)}`}>
+															{q}
+														</a>
+													))}
+												</div>
+											)
+										}
+										{
+											row.resultSlugs.length > 0 ? (
+												<ol class="admin-ask-results">
+													{row.resultSlugs.map((slug) => (
+														<li>
+															<a href={`/${slug}`}>{formatDiscourseTitle(slug)}</a>
+														</li>
+													))}
+												</ol>
+											) : (
+												<p class="admin-ask-empty-results">No discourse results</p>
+											)
+										}
+										<div class="admin-ask-card-actions">
+											<p class="admin-ask-foot">
+												{row.resultCount} result{row.resultCount === 1 ? "" : "s"}
+												{row.ms ? ` · ${Math.round(row.ms / 100) / 10}s` : ""}
+												{row.offTopic ? " · off-topic" : ""}
+												{row.reviewed && row.reviewedBy
+													? ` · reviewed by ${row.reviewedBy}`
+													: ""}
+											</p>
+											<button
+												type="button"
+												class="admin-ask-review-btn"
+												data-admin-review
+												data-reviewed={row.reviewed ? "1" : "0"}
+												data-request-id={row.requestId}
+											>
+												{row.reviewed ? "Back to inbox" : "Mark reviewed"}
+											</button>
+										</div>
+									</li>
+								))}
+							</ul>
+						)
+					}
+				</>
+			)
+		}
+	</main>
+</Layout>
+
+<script>
+	const root = document.querySelector("[data-admin-ask]");
+	if (root) {
+		root.querySelectorAll("[data-admin-review]").forEach((button) => {
+			button.addEventListener("click", async () => {
+				const el = button as HTMLButtonElement;
+				const requestId = el.getAttribute("data-request-id") || "";
+				const currentlyReviewed = el.getAttribute("data-reviewed") === "1";
+				if (!requestId || el.disabled) return;
+				el.disabled = true;
+				try {
+					const response = await fetch("/api/ai/admin/review", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							requestId,
+							reviewed: !currentlyReviewed,
+						}),
+					});
+					if (!response.ok) {
+						el.disabled = false;
+						return;
+					}
+					const card = el.closest(".admin-ask-card");
+					const params = new URLSearchParams(window.location.search);
+					const status = params.get("status") || "needs";
+					if (status === "needs" && !currentlyReviewed) {
+						card?.remove();
+						return;
+					}
+					window.location.reload();
+				} catch {
+					el.disabled = false;
+				}
+			});
+		});
+	}
+</script>
+
+<style>
+	.admin-ask-header {
+		margin-bottom: 1.25rem;
+	}
+	.admin-ask-title {
+		font-family: Spectral, serif;
+		font-size: clamp(1.6rem, 3vw, 2rem);
+		font-weight: 700;
+		margin: 0 0 0.35rem;
+	}
+	.admin-ask-lead,
+	.admin-ask-meta,
+	.admin-ask-error,
+	.admin-ask-empty,
+	.admin-ask-looking,
+	.admin-ask-empty-results,
+	.admin-ask-foot,
+	.admin-ask-count,
+	.admin-ask-model,
+	.admin-ask-no-reasoning {
+		color: var(--text-muted);
+		margin: 0.25rem 0 0;
+	}
+	.admin-ask-summary {
+		margin: 0.55rem 0 0;
+		padding: 0.65rem 0.75rem;
+		border: 1px solid var(--surface-border);
+		border-radius: 0.65rem;
+		font-size: 0.9rem;
+		line-height: 1.45;
+		color: var(--text-color);
+	}
+	.admin-ask-count {
+		font-size: 0.85rem;
+		margin: 0 0 0.85rem;
+	}
+	.admin-ask-error {
+		color: var(--warning-heading, #b45309);
+		margin-top: 1rem;
+	}
+	.admin-ask-stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(5.6rem, 1fr));
+		gap: 0.6rem;
+		margin: 1.25rem 0;
+	}
+	.admin-ask-stat {
+		border: 1px solid var(--surface-border);
+		background: var(--surface-elevated);
+		border-radius: 0.75rem;
+		padding: 0.75rem 0.65rem;
+		text-align: center;
+	}
+	.admin-ask-stat strong {
+		display: block;
+		font-size: 1.25rem;
+	}
+	.admin-ask-stat span {
+		color: var(--text-muted);
+		font-size: 0.75rem;
+	}
+	.admin-ask-toolbar {
+		display: grid;
+		gap: 0.55rem;
+		margin-bottom: 0.75rem;
+	}
+	.admin-ask-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem;
+	}
+	.admin-ask-filter {
+		text-decoration: none;
+		color: var(--text-muted);
+		border: 1px solid var(--surface-border);
+		border-radius: 999px;
+		padding: 0.3rem 0.75rem;
+		font-size: 0.85rem;
+		background: var(--surface-elevated);
+	}
+	.admin-ask-filter.is-active {
+		color: var(--text-color);
+		border-color: var(--primary-color);
+		font-weight: 600;
+	}
+	.admin-ask-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.85rem;
+	}
+	.admin-ask-card {
+		border: 1px solid var(--surface-border);
+		background: var(--surface-elevated);
+		border-radius: 0.9rem;
+		padding: 1rem 1.05rem;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+	}
+	.admin-ask-card-top {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.75rem;
+		align-items: flex-start;
+	}
+	.admin-ask-question {
+		font-family: Spectral, serif;
+		font-size: 1.15rem;
+		font-weight: 600;
+		margin: 0;
+		line-height: 1.35;
+	}
+	.admin-ask-badges {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.3rem;
+		flex-shrink: 0;
+	}
+	.admin-ask-badge {
+		font-size: 0.75rem;
+		border: 1px solid var(--surface-border);
+		border-radius: 999px;
+		padding: 0.15rem 0.55rem;
+		white-space: nowrap;
+	}
+	.admin-ask-badge.is-up {
+		border-color: color-mix(in srgb, #16a34a 45%, var(--surface-border));
+		color: #16a34a;
+	}
+	.admin-ask-badge.is-down {
+		border-color: color-mix(in srgb, #dc2626 45%, var(--surface-border));
+		color: #dc2626;
+	}
+	.admin-ask-badge.is-reviewed {
+		border-color: color-mix(in srgb, #2563eb 45%, var(--surface-border));
+		color: #2563eb;
+	}
+	.admin-ask-badge.is-needs {
+		border-color: color-mix(in srgb, #d97706 45%, var(--surface-border));
+		color: #d97706;
+	}
+	.admin-ask-when {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+	.admin-ask-model {
+		font-size: 0.78rem;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	}
+	.admin-ask-reasoning {
+		margin: 0.65rem 0 0;
+		border: 1px solid var(--surface-border);
+		border-radius: 0.65rem;
+		padding: 0.45rem 0.65rem;
+		background: color-mix(in srgb, var(--surface-elevated) 85%, #000 4%);
+	}
+	.admin-ask-reasoning summary {
+		cursor: pointer;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		user-select: none;
+	}
+	.admin-ask-reasoning pre {
+		margin: 0.55rem 0 0.15rem;
+		white-space: pre-wrap;
+		word-break: break-word;
+		font-size: 0.8rem;
+		line-height: 1.45;
+		color: var(--text-color);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	}
+	.admin-ask-no-reasoning {
+		font-size: 0.8rem;
+		margin-top: 0.55rem;
+	}
+	.admin-ask-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-top: 0.65rem;
+		align-items: center;
+	}
+	.admin-ask-chips.is-fallback {
+		margin-top: 0.4rem;
+	}
+	.admin-ask-fallback-label {
+		font-size: 0.72rem;
+		color: var(--text-muted);
+		margin-right: 0.15rem;
+	}
+	.admin-ask-chip {
+		font-size: 0.78rem;
+		color: var(--link-color);
+		border: 1px solid var(--surface-border);
+		border-radius: 999px;
+		padding: 0.12rem 0.55rem;
+		text-decoration: none;
+	}
+	.admin-ask-results {
+		margin: 0.7rem 0 0;
+		padding-left: 1.1rem;
+		color: var(--text-color);
+	}
+	.admin-ask-results a {
+		color: var(--link-color);
+		text-decoration: none;
+	}
+	.admin-ask-results a:hover {
+		text-decoration: underline;
+	}
+	.admin-ask-card-actions {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.75rem;
+		margin-top: 0.75rem;
+		flex-wrap: wrap;
+	}
+	.admin-ask-foot {
+		font-size: 0.78rem;
+		margin: 0;
+	}
+	.admin-ask-review-btn {
+		border: 1px solid var(--surface-border);
+		background: var(--surface-elevated);
+		border-radius: 999px;
+		padding: 0.35rem 0.85rem;
+		font-size: 0.82rem;
+		cursor: pointer;
+		color: var(--text-color);
+	}
+	.admin-ask-review-btn:hover:not(:disabled) {
+		border-color: var(--primary-color);
+	}
+	.admin-ask-review-btn:disabled {
+		opacity: 0.55;
+		cursor: default;
+	}
+	@media (max-width: 640px) {
+		.admin-ask-stats {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		.admin-ask-card-top {
+			flex-direction: column;
+		}
+		.admin-ask-badges {
+			flex-direction: row;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+	}
+</style>

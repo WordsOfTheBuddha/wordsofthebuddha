@@ -45,8 +45,9 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 				If you choose to sign in, we create a session cookie to keep you
 				logged in and we store account-related data in our database
 				(e.g., your user ID and the content you choose to save such as
-				highlights, saved items, or read-later lists). We do not require
-				an account to read content.
+				highlights, saved items, or read-later lists). We may also store
+				which calendar days you spent reading discourses (see below). We
+				do not require an account to read content.
 			</li>
 		</ul>
 
@@ -65,8 +66,12 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 				theme (<code>theme</code>), Pāli mode (<code>paliMode</code>),
 				Pāli word lookup preference (<code>paliLookup</code>), layout (<code
 					>layout</code
-				>), and font size (<code>fontSize</code>) in your browser. You
-				can clear these at any time from your browser settings.
+				>), and font size (<code>fontSize</code>) in your browser. We
+				also keep a small on-device buffer of days you engaged with
+				discourses (so progress is not lost while signed out or
+				offline); when you sign in, that buffer can be merged into your
+				account. You can clear local storage at any time from your
+				browser settings.
 			</li>
 		</ul>
 
@@ -77,7 +82,11 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 			authorize requests. We may store your email address and a unique
 			user ID provided by the authentication service. If you use features
 			like “Save,” “Read later,” or “Highlights,” the data you create is
-			stored in our database and associated with your account.
+			stored in our database and associated with your account. If you read
+			discourses while signed in (or sync after signing in), we may store
+			a count of calendar days on which you spent time with a discourse —
+			enough engagement to count as reading, not every page view — so your
+			Review Room can show “Reading on N days.”
 		</p>
 
 		<h3>Analytics and performance</h3>
@@ -86,6 +95,13 @@ const effectiveDate = new Date().toLocaleDateString(undefined, {
 			Vercel Analytics and Speed Insights) to understand site usage and
 			performance. These services typically focus on aggregated and
 			de-identified metrics to help improve the site.
+		</p>
+		<p>
+			If you use <strong>Ask</strong>, we may store the question text, the
+			search queries generated for it, which discourse results were
+			returned, and optional thumbs-up/down feedback you submit. This is
+			used only to improve Ask quality. Feedback is optional and not
+			required to use the feature.
 		</p>
 
 		<h3>Offline use and caching</h3>

@@ -1,29 +1,55 @@
 ---
 export const prerender = false;
 import { getEntry } from "astro:content";
-import { app, db } from "../service/firebase/server";
+import { db } from "../service/firebase/server";
 import Layout from "../layouts/Layout.astro";
+import EmailVerifyBanner from "../components/EmailVerifyBanner.astro";
 import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
 import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
 import CheckSolid from "../assets/check.svg?raw";
+import QuestionIcon from "../assets/question-mark-circle.svg?raw";
+import MenuIcon from "../assets/list-bullet.svg?raw";
+import ChevronDown from "../assets/chevron-down.svg?raw";
 import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
 import { verifyUser } from "../middleware/auth";
+import { loadUserAskHistory } from "../utils/aiAskHistoryServer";
+import {
+	formatAskRelativeTime,
+	type AiAskSessionEntry,
+} from "../utils/aiAskSession";
+import { openAskHistoryHref, searchAskHref } from "../utils/aiAskHref";
+import { getReferenceSujatoEntry } from "../utils/getContentEntry";
+import {
+	buildReadableCatalog,
+	computeCanonCoverage,
+	formatMinutesAgo,
+	normalizeDiscourseSlug,
+	oldestPending,
+	orderAsksForReview,
+	type CanonCoverage,
+} from "../utils/reviewRoomStats";
+import {
+	learningDaysFromReadMinutes,
+	mergeLearningDays,
+	recentLearningDayStrip,
+	type LearningDayDot,
+} from "../utils/learningActivity";
+import {
+	loadUserLearningActivity,
+	mergeUserLearningActivity,
+} from "../utils/learningActivityServer";
 
-type VerifiedUser = {
-	uid: string;
-	displayName?: string | null;
-	email?: string | null;
-};
+const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
 
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
 
-const user = (await verifyUser(sessionCookie, { cookies: Astro.cookies }).catch(
+const user = await verifyUser(sessionCookie, { cookies: Astro.cookies }).catch(
 	() => null
-)) as VerifiedUser | null;
+);
 
 if (!user) {
 	return Astro.redirect("/signin");
@@ -39,44 +65,124 @@ let validHighlights: any[] = [];
 let validReadLaterEntries: any[] = [];
 let validSavedEntries: any[] = [];
 let validReadEntries: any[] = [];
+let askEntries: AiAskSessionEntry[] = [];
+let coverage: CanonCoverage = { rows: [], totalRead: 0, totalAvailable: 0 };
+let learningDays = 0;
+let learningDayStrip: LearningDayDot[] = [];
+let readPagesMap: Record<string, number> = {};
+let oldestReadLater: {
+	slug: string;
+	title: string;
+	waiting: string;
+} | null = null;
 
 try {
 	// Fetch highlights API, and the single 'pages' documents for readLater, saves, and read
-	const [highlightsResponse, readLaterDoc, savedDoc, readDoc] =
-		await Promise.all([
-			fetch(`${Astro.url.origin}/api/highlights/list`, {
-				headers: {
-					cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
-				},
-			}),
-			db
-				.collection("users")
-				.doc(user.uid)
-				.collection("readLater")
-				.doc("pages") // Fetch single doc
-				.get(),
-			db
-				.collection("users")
-				.doc(user.uid)
-				.collection("saves")
-				.doc("pages") // Fetch single doc
-				.get(),
-			db
-				.collection("users")
-				.doc(user.uid)
-				.collection("read")
-				.doc("pages")
-				.get(),
-		]);
+	const [
+		highlightsResponse,
+		readLaterDoc,
+		savedDoc,
+		readDoc,
+		askHistory,
+		loadedLearningSummary,
+	] = await Promise.all([
+		fetch(`${Astro.url.origin}/api/highlights/list`, {
+			headers: {
+				cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
+			},
+		}),
+		db
+			.collection("users")
+			.doc(user.uid)
+			.collection("readLater")
+			.doc("pages") // Fetch single doc
+			.get(),
+		db
+			.collection("users")
+			.doc(user.uid)
+			.collection("saves")
+			.doc("pages") // Fetch single doc
+			.get(),
+		db
+			.collection("users")
+			.doc(user.uid)
+			.collection("read")
+			.doc("pages")
+			.get(),
+		// One capped doc (max 20 entries).
+		loadUserAskHistory(user).catch(() => [] as AiAskSessionEntry[]),
+		// One summary doc for learning days.
+		loadUserLearningActivity(user).catch(() => ({
+			days: {} as Record<string, true>,
+			dayCount: 0,
+		})),
+	]);
+	let learningSummary = loadedLearningSummary;
 
 	// Process highlights
 	const { highlights: validHighlightsData } = await highlightsResponse.json();
 	validHighlights = validHighlightsData;
 
+	askEntries = orderAsksForReview(askHistory);
+
+	// Progress through each collection — readable union (site + reference).
+	readPagesMap = readDoc.exists ? readDoc.data()?.pages || {} : {};
+	coverage = computeCanonCoverage(
+		Object.keys(readPagesMap),
+		buildReadableCatalog(),
+	);
+
+	// Backfill from mark-as-read + credit today (signed-in day counts as day 1).
+	// Browser visit also reseeds with the reader's local timezone.
+	const todayUtc = new Date().toISOString().slice(0, 10);
+	const readDayBackfill = learningDaysFromReadMinutes(
+		readPagesMap,
+		(ms) => new Date(ms).toISOString().slice(0, 10),
+	);
+	const mergedLearningDays = mergeLearningDays(
+		mergeLearningDays(learningSummary.days, readDayBackfill),
+		{ [todayUtc]: true },
+	);
+	if (
+		Object.keys(mergedLearningDays).length >
+		Object.keys(learningSummary.days).length
+	) {
+		learningSummary = await mergeUserLearningActivity(
+			user,
+			mergedLearningDays,
+		).catch(() => ({
+			days: mergedLearningDays,
+			dayCount: Object.keys(mergedLearningDays).length,
+		}));
+	}
+	learningDays = learningSummary.dayCount;
+	learningDayStrip = recentLearningDayStrip(learningSummary.days, 28);
+
 	// Process readLater entries from the 'pages' document
 	if (readLaterDoc.exists && readLaterDoc.data()?.pages) {
 		const readLaterPages = readLaterDoc.data()?.pages || {};
 		const readLaterSlugs = Object.keys(readLaterPages);
+
+		const oldest = oldestPending(readLaterPages);
+		if (oldest) {
+			const slug = normalizeDiscourseSlug(oldest.slug);
+			const entry =
+				(await getEntry("all", slug).catch(() => null)) ||
+				(await getReferenceSujatoEntry(slug).catch(() => null));
+			if (entry) {
+				oldestReadLater = {
+					slug,
+					title: entry.data.title || "",
+					waiting: formatMinutesAgo(oldest.minutes),
+				};
+			} else {
+				oldestReadLater = {
+					slug,
+					title: "",
+					waiting: formatMinutesAgo(oldest.minutes),
+				};
+			}
+		}
 
 		const readLaterEntries = await Promise.all(
 			readLaterSlugs.map(async (slug) => {
@@ -162,20 +268,32 @@ try {
 <Layout showAuth={true}>
 	<div class="py-4 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
-			<!-- Tab Navigation as Pills - Mobile scrolling, tablet+ center alignment -->
+			{
+				!user.emailVerified && (
+					<EmailVerifyBanner email={user.email} />
+				)
+			}
+			<!-- Tabs: on mobile, library tabs (Read Later / Saves / Read) sit in a menu -->
 			<div
 				class="sticky top-0 z-10 bg-[var(--background-color)] dark:bg-[var(--surface-elevated)] py-2 mb-4"
 			>
-				<!-- Scrollable container with fade indicators for mobile only -->
 				<div class="pills-scroll-container relative">
-					<div
-						class="pills-scroll-fade-left absolute left-0 top-0 h-full w-8 pointer-events-none md:hidden"
-					>
-					</div>
 					<nav
-						class="pills-scroll flex gap-2 sm:gap-4 overflow-x-auto py-1 md:justify-center md:flex-wrap scrollbar-hide"
+						class="pills-scroll flex flex-wrap justify-center gap-2 sm:gap-3 py-1"
 						aria-label="Tabs"
 					>
+						<a
+							href="#asks"
+							class="tab-pill flex-shrink-0"
+							data-tab="asks"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={QuestionIcon} />
+								Asks
+							</span>
+						</a>
 						<a
 							href="#highlights"
 							class="tab-pill flex-shrink-0"
@@ -192,21 +310,23 @@ try {
 							</span>
 						</a>
 						<a
-							href="#read"
-							class="tab-pill flex-shrink-0"
-							data-tab="read"
+							href="#readlater"
+							class="tab-pill flex-shrink-0 library-pill"
+							data-tab="readlater"
+							data-library-tab
 						>
 							<span
 								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
 							>
-								<span class="w-4 h-4" set:html={CheckSolid} />
-								Read
+								<span class="w-4 h-4" set:html={ClockSolid} />
+								Read Later
 							</span>
 						</a>
 						<a
 							href="#saves"
-							class="tab-pill flex-shrink-0"
+							class="tab-pill flex-shrink-0 library-pill"
 							data-tab="saves"
+							data-library-tab
 						>
 							<span
 								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
@@ -216,34 +336,309 @@ try {
 							</span>
 						</a>
 						<a
-							href="#readlater"
-							class="tab-pill flex-shrink-0"
-							data-tab="readlater"
+							href="#read"
+							class="tab-pill flex-shrink-0 library-pill"
+							data-tab="read"
+							data-library-tab
 						>
 							<span
 								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
 							>
-								<span class="w-4 h-4" set:html={ClockSolid} />
-								Read Later
+								<span class="w-4 h-4" set:html={CheckSolid} />
+								Read
 							</span>
 						</a>
+						<div class="library-menu md:hidden relative flex-shrink-0">
+							<button
+								type="button"
+								id="library-menu-btn"
+								class="tab-pill"
+								aria-haspopup="menu"
+								aria-expanded="false"
+								aria-controls="library-menu"
+							>
+								<span
+									id="library-menu-face"
+									class="inline-flex items-center gap-1 text-sm"
+								>
+									<span class="w-4 h-4" set:html={MenuIcon} />
+									<span id="library-menu-label">Library</span>
+								</span>
+								<span
+									class="w-3.5 h-3.5 opacity-70"
+									set:html={ChevronDown}
+								/>
+							</button>
+							<div
+								id="library-menu"
+								class="library-menu-panel"
+								role="menu"
+								hidden
+							>
+								<button
+									type="button"
+									role="menuitem"
+									class="library-menu-item"
+									data-tab="readlater"
+									data-library-option
+								>
+									<span class="w-4 h-4" set:html={ClockSolid} />
+									Read Later
+								</button>
+								<button
+									type="button"
+									role="menuitem"
+									class="library-menu-item"
+									data-tab="saves"
+									data-library-option
+								>
+									<span class="w-4 h-4" set:html={SaveSolid} />
+									Saves
+								</button>
+								<button
+									type="button"
+									role="menuitem"
+									class="library-menu-item"
+									data-tab="read"
+									data-library-option
+								>
+									<span class="w-4 h-4" set:html={CheckSolid} />
+									Read
+								</button>
+							</div>
+						</div>
 					</nav>
-					<div
-						class="pills-scroll-fade-right absolute right-0 top-0 h-full w-8 pointer-events-none md:hidden"
-					>
-					</div>
 				</div>
 			</div>
 
-			<!-- Greeting Message -->
-			<div
-				id="greeting"
-				class="text-xl sm:text-2xl font-light mt-6 mb-6 text-center text-gradient-accent"
-			>
+			<!-- Greeting + overview (shown when no tab is selected) -->
+			<div id="home-view">
+				<div
+					id="greeting"
+					class="text-xl sm:text-2xl font-light mt-6 mb-6 text-center text-gradient-accent"
+				>
+				</div>
+
+				<section class="overview" aria-label="Your reading">
+					{
+						(coverage.totalRead > 0 || learningDays > 0) && (
+							<div
+								class:list={[
+									"overview-aggregates",
+									{
+										"is-single":
+											(coverage.totalRead > 0 ? 1 : 0) +
+												(learningDays > 0 ? 1 : 0) ===
+											1,
+									},
+								]}
+							>
+								{coverage.totalRead > 0 && (
+									<div
+										id="discourses-read-tile"
+										class="stat-tile"
+									>
+										<span
+											class="stat-value"
+											id="discourses-read-value"
+											data-discourses-read={
+												coverage.totalRead
+											}
+										>
+											{coverage.totalRead}
+										</span>
+										<span class="stat-label">
+											discourses read
+										</span>
+									</div>
+								)}
+								{learningDays > 0 && (
+									<div
+										id="learning-days-tile"
+										class="stat-tile"
+									>
+										<span
+											class="stat-value"
+											id="learning-days-value"
+											data-learning-days={learningDays}
+										>
+											{learningDays}
+										</span>
+										<span class="stat-label">
+											days reading
+										</span>
+										<div
+											id="learning-day-strip"
+											class="learning-day-strip"
+											aria-label="Reading activity over the last 28 days"
+											title="Filled days are days you read"
+										>
+											{learningDayStrip.map((dot) => (
+												<span
+													class:list={[
+														"learning-day-dot",
+														{ active: dot.active },
+													]}
+													title={dot.key}
+												/>
+											))}
+										</div>
+									</div>
+								)}
+							</div>
+						)
+					}
+
+					<div class="overview-card">
+						<div class="overview-head">
+							<h2>By collection</h2>
+						</div>
+						{
+							coverage.rows.length > 0 ? (
+								<ul class="coverage-list">
+									{coverage.rows.map((row) => (
+										<li>
+											<a
+												href={row.href}
+												class="coverage-row"
+												title={`${row.title}: ${row.read} of ${row.total} readable`}
+											>
+												<span class="coverage-id">
+													<span class="coverage-label">
+														{row.label}
+													</span>
+													<span class="coverage-name">
+														{row.title}
+													</span>
+												</span>
+												<span class="coverage-bar">
+													<span
+														class="coverage-fill"
+														style={`width:${row.percent}%`}
+													/>
+												</span>
+												<span class="coverage-count">
+													{row.read}
+													<span class="coverage-total">
+														{" "}
+														/ {row.total}
+													</span>
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p class="overview-empty overview-empty-in-card">
+									Mark discourses as read and your progress through
+									each collection will appear here.
+								</p>
+							)
+						}
+					</div>
+					{
+						validReadLaterEntries.length > 0 && (
+							<div class="overview-later">
+								<p class="overview-line">
+									<a href="#readlater" data-tab-link="readlater">
+										{validReadLaterEntries.length === 1
+											? "1 discourse waiting in Read Later"
+											: `${validReadLaterEntries.length} discourses waiting in Read Later`}
+									</a>
+								</p>
+								{oldestReadLater && (
+									<p class="overview-line">
+										Longest waiting:{" "}
+										<a href={`/${oldestReadLater.slug}`}>
+											{transformId(oldestReadLater.slug)}
+											{oldestReadLater.title
+												? ` ${oldestReadLater.title}`
+												: ""}
+										</a>
+										{oldestReadLater.waiting
+											? `, added ${oldestReadLater.waiting}.`
+											: "."}
+									</p>
+								)}
+							</div>
+						)
+					}
+				</section>
 			</div>
 
 			<!-- Tab Content Area -->
 			<div id="tab-content-area" class="px-2">
+				<div id="asks" class="tab-content hidden">
+					<div class="mt-4 ask-panel">
+						<a href={searchAskHref()} class="ask-new-btn">
+							Ask a new question
+						</a>
+						{
+							askEntries.length === 0 ? (
+								<p class="ask-empty">No asks yet.</p>
+							) : (
+								<>
+									<div class="ask-history-heading">
+										<p class="ask-history-label">Recent Asks</p>
+										<p class="ask-history-hint">
+											Older ones drop off · pin to keep
+										</p>
+									</div>
+									<div class="ask-history-list">
+										{askEntries.map((entry) => (
+											<a
+												href={openAskHistoryHref(
+													entry.question
+												)}
+												class:list={[
+													"ask-row",
+													{ "is-pinned": entry.saved },
+												]}
+											>
+												<div class="ask-row-head">
+													<p class="ask-row-q">
+														{entry.question}
+													</p>
+													<span class="ask-row-meta">
+														{entry.saved && (
+															<span
+																class="ask-row-pin"
+																title="Pinned"
+																aria-label="Pinned"
+																set:html={
+																	PIN_ICON_SVG
+																}
+															/>
+														)}
+														<span class="ask-row-when">
+															{formatAskRelativeTime(
+																entry.at
+															)}
+														</span>
+													</span>
+												</div>
+												{entry.summary && (
+													<p class="ask-row-summary">
+														{entry.summary}
+													</p>
+												)}
+												<p class="ask-row-results">
+													{entry.results
+														.slice(0, 6)
+														.map((hit) =>
+															transformId(hit.slug)
+														)
+														.join(" · ")}
+												</p>
+											</a>
+										))}
+									</div>
+								</>
+							)
+						}
+					</div>
+				</div>
+
 				<div id="highlights" class="tab-content hidden">
 					<div class="mt-4 space-y-4">
 						{
@@ -405,67 +800,17 @@ try {
 	}
 
 	.tab-pill.active {
-		color: var(--layout-active-color);
-		border-color: var(--layout-active-color);
-		background-color: var(--layout-active-bg, transparent);
+		color: var(--primary-color);
+		border-color: var(--primary-color);
+		background-color: color-mix(
+			in srgb,
+			var(--primary-color) 12%,
+			transparent
+		);
 	}
 
-	/* Pill scrolling styles - only apply scrolling behavior on mobile */
-	.pills-scroll {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-		padding-bottom: 4px;
-
-		/* On medium screens and up, return to standard flex layout */
-		@media (min-width: 768px) {
-			overflow-x: visible;
-		}
-	}
-
-	.pills-scroll::-webkit-scrollbar {
-		display: none;
-	}
-
-	/* Horizontal scroll container */
 	.pills-scroll-container {
 		@apply w-full;
-	}
-
-	/* Fade indicators for scrollable content */
-	.pills-scroll-fade-left {
-		background: linear-gradient(
-			to right,
-			var(--bg-color, #ffffff) 20%,
-			rgba(255, 255, 255, 0) 100%
-		);
-		opacity: 0; /* Start hidden */
-	}
-
-	.pills-scroll-fade-right {
-		background: linear-gradient(
-			to left,
-			var(--bg-color, #ffffff) 20%,
-			rgba(255, 255, 255, 0) 100%
-		);
-	}
-
-	/* Dark mode support for fade indicators */
-	@media (prefers-color-scheme: dark) {
-		.pills-scroll-fade-left {
-			background: linear-gradient(
-				to right,
-				var(--dark-bg-color, #1a202c) 20%,
-				rgba(26, 32, 44, 0) 100%
-			);
-		}
-
-		.pills-scroll-fade-right {
-			background: linear-gradient(
-				to left,
-				var(--dark-bg-color, #1a202c) 20%,
-				rgba(26, 32, 44, 0) 100%
-			);
-		}
 	}
 
 	.highlight-page {
@@ -526,10 +871,457 @@ try {
 	#dashboard-container {
 		scroll-margin-top: 1rem;
 	}
+
+	.library-pill {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.library-pill {
+			display: inline-flex;
+		}
+
+		.library-menu {
+			display: none !important;
+		}
+	}
+
+	.library-menu-panel {
+		position: absolute;
+		top: calc(100% + 0.35rem);
+		right: 0;
+		z-index: 20;
+		min-width: 10.5rem;
+		padding: 0.35rem;
+		border-radius: 0.75rem;
+		border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.35));
+		background: var(--surface-paper, var(--background-color));
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.library-menu-item {
+		@apply inline-flex items-center gap-2 w-full text-left text-sm px-3 py-2 rounded-lg;
+		color: var(--text-color);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
+	.library-menu-item:hover,
+	.library-menu-item.active {
+		background: rgba(128, 128, 128, 0.12);
+	}
+
+	.library-menu-item.active {
+		color: var(--primary-color);
+	}
+
+	#library-menu-btn.active {
+		color: var(--primary-color);
+		border-color: var(--primary-color);
+		background-color: color-mix(
+			in srgb,
+			var(--primary-color) 12%,
+			transparent
+		);
+	}
+
+	.overview {
+		@apply max-w-xl mx-auto px-2 space-y-4;
+	}
+
+	.overview-aggregates {
+		@apply grid grid-cols-2 gap-3;
+	}
+
+	.overview-aggregates.is-single {
+		@apply grid-cols-1 max-w-xs mx-auto w-full;
+	}
+
+	.stat-tile {
+		@apply flex flex-col items-center justify-center text-center p-4 rounded-lg;
+		@apply bg-[var(--surface-paper)];
+		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
+	}
+
+	.stat-tile.muted .stat-value {
+		opacity: 0.45;
+	}
+
+	.stat-value {
+		@apply text-3xl sm:text-4xl font-semibold tabular-nums leading-none;
+		color: var(--text-color);
+	}
+
+	.stat-label {
+		@apply mt-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400;
+	}
+
+	.learning-day-strip {
+		@apply flex flex-wrap justify-center gap-[3px] mt-3 max-w-[11rem];
+	}
+
+	.learning-day-dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 2px;
+		background: rgba(128, 128, 128, 0.22);
+	}
+
+	.learning-day-dot.active {
+		background: color-mix(in srgb, var(--primary-color) 82%, #6ee7b7 18%);
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-color) 35%, transparent);
+	}
+
+	.overview-card {
+		@apply p-5 rounded-lg;
+		@apply bg-[var(--surface-paper)];
+		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
+	}
+
+	.overview-head {
+		@apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3;
+	}
+
+	.overview-head h2 {
+		@apply text-base font-semibold m-0;
+		color: var(--text-color);
+	}
+
+	.overview-empty-in-card {
+		@apply mt-1;
+	}
+
+	.overview-later {
+		@apply space-y-1;
+	}
+
+	.coverage-list {
+		@apply list-none m-0 p-0 space-y-2.5;
+	}
+
+	.coverage-row {
+		@apply grid items-center gap-x-3 gap-y-1 text-sm no-underline;
+		grid-template-columns: minmax(0, 1fr) 3.5rem auto;
+		color: var(--text-color);
+	}
+
+	@media (min-width: 640px) {
+		.coverage-row {
+			grid-template-columns: minmax(0, 1fr) 4.5rem auto;
+		}
+	}
+
+	.coverage-row:hover .coverage-label,
+	.coverage-row:hover .coverage-name {
+		color: var(--link-hover-color);
+	}
+
+	.coverage-id {
+		@apply min-w-0 flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2;
+	}
+
+	.coverage-label {
+		@apply font-semibold tracking-wide shrink-0;
+		color: var(--link-color);
+	}
+
+	.coverage-name {
+		@apply hidden sm:inline text-xs text-gray-500 dark:text-gray-400 truncate;
+	}
+
+	.coverage-bar {
+		@apply block h-1 rounded-full overflow-hidden;
+		background-color: rgba(128, 128, 128, 0.2);
+	}
+
+	.coverage-fill {
+		@apply block h-full rounded-full;
+		background-color: var(--layout-active-color, var(--link-color));
+	}
+
+	.coverage-count {
+		@apply text-xs tabular-nums whitespace-nowrap text-right;
+	}
+
+	.coverage-total {
+		@apply text-gray-500 dark:text-gray-400;
+	}
+
+	.overview-empty,
+	.overview-line {
+		@apply text-sm text-center text-gray-500 dark:text-gray-400 m-0;
+	}
+
+	.overview-line a {
+		color: var(--link-color);
+		text-decoration: none;
+		&:hover {
+			color: var(--link-hover-color);
+			text-decoration: underline;
+		}
+	}
+
+	.ask-panel {
+		@apply max-w-3xl mx-auto;
+	}
+
+	.ask-new-btn {
+		@apply inline-flex items-center mb-3 px-3 py-1.5 text-sm no-underline rounded-full transition-colors;
+		color: var(--primary-color);
+		border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
+		background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+	}
+
+	.ask-new-btn:hover {
+		border-color: var(--primary-color);
+		background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+	}
+
+	.ask-empty {
+		@apply text-center py-8 text-gray-500 m-0;
+	}
+
+	.ask-history-heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.35rem 0.75rem;
+		margin-bottom: 0.55rem;
+	}
+
+	.ask-history-label {
+		margin: 0;
+		font-size: 0.8rem;
+		color: var(--text-muted, #9ca3af);
+	}
+
+	.ask-history-hint {
+		margin: 0;
+		font-size: 0.78rem;
+		color: var(--text-muted, #9ca3af);
+	}
+
+	.ask-history-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.ask-row {
+		@apply block p-4 rounded-xl no-underline;
+		@apply bg-[var(--surface-paper)];
+		border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.28));
+		color: var(--text-color);
+		transition: border-color 0.15s ease;
+	}
+
+	.ask-row:hover {
+		border-color: var(--primary-color);
+	}
+
+	.ask-row-head {
+		@apply flex items-start justify-between gap-3;
+	}
+
+	.ask-row-q {
+		@apply m-0 text-base;
+		color: var(--text-color);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.ask-row.is-pinned .ask-row-q {
+		@apply font-semibold;
+	}
+
+	.ask-row-meta {
+		@apply inline-flex items-center gap-2 flex-shrink-0 whitespace-nowrap;
+		margin-top: 0.15rem;
+	}
+
+	.ask-row-pin {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--primary-color);
+		line-height: 0;
+	}
+
+	.ask-row-pin svg {
+		display: block;
+		width: 0.95rem;
+		height: 0.95rem;
+	}
+
+	.ask-row-when {
+		color: var(--text-muted, #9ca3af);
+		font-size: 0.78rem;
+	}
+
+	.ask-row-summary {
+		@apply mt-2 mb-0 text-sm line-clamp-2;
+		color: var(--text-color);
+		opacity: 0.85;
+	}
+
+	.ask-row-results {
+		@apply mt-1.5 mb-0;
+		color: var(--text-muted, #9ca3af);
+		font-size: 0.78rem;
+		line-height: 1.35;
+	}
 </style>
 
-<script define:vars={{ userDisplayName }}>
-	// Greeting Script
+<script
+	type="application/json"
+	id="review-room-data"
+	set:html={JSON.stringify({
+		userDisplayName,
+		readPagesMap,
+		askCount: askEntries.length,
+		askKeys: askEntries.map((entry) =>
+			entry.question.replace(/\s+/g, " ").trim().toLowerCase(),
+		),
+	}).replace(/</g, "\\u003c")}
+/>
+
+<script>
+	import { syncLearningDaysFromReadPages } from "../utils/learningActivityClient";
+	import { recentLearningDayStrip } from "../utils/learningActivity";
+	import {
+		normalizeAskQuestionKey,
+		readAiAskSession,
+		sanitizeAskHistoryEntries,
+		writeAiAskSession,
+	} from "../utils/aiAskSession";
+
+	const LIBRARY_TABS = new Set(["readlater", "saves", "read"]);
+	const LIBRARY_LABELS = {
+		readlater: "Read Later",
+		saves: "Saves",
+		read: "Read",
+	};
+	const ASK_SYNC_FLAG = "review-room-ask-history-synced";
+
+	function renderLearningDayStrip(
+		container: HTMLElement | null,
+		days: Record<string, true>,
+	): void {
+		if (!container) return;
+		const strip = recentLearningDayStrip(days, 28);
+		container.innerHTML = strip
+			.map(
+				(dot) =>
+					`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}"></span>`,
+			)
+			.join("");
+	}
+
+	const rawData = document.getElementById("review-room-data")?.textContent;
+	let boot: {
+		userDisplayName: string;
+		readPagesMap: Record<string, unknown>;
+		askCount: number;
+		askKeys: string[];
+	} = {
+		userDisplayName: "there",
+		readPagesMap: {},
+		askCount: 0,
+		askKeys: [],
+	};
+	try {
+		if (rawData) {
+			boot = {
+				askCount: 0,
+				askKeys: [],
+				...JSON.parse(rawData),
+			};
+		}
+	} catch {
+		/* keep defaults */
+	}
+
+	// Backfill from mark-as-read timestamps in the reader's local timezone,
+	// then merge any anonymous / offline learning days into the account.
+	void syncLearningDaysFromReadPages(boot.readPagesMap).then((result) => {
+		if (!result?.signedIn || result.dayCount <= 0) return;
+		const valueEl = document.getElementById("learning-days-value");
+		if (valueEl) {
+			valueEl.textContent = String(result.dayCount);
+			valueEl.dataset.learningDays = String(result.dayCount);
+			renderLearningDayStrip(
+				document.getElementById("learning-day-strip"),
+				result.days,
+			);
+			return;
+		}
+		// First paint had 0 days — insert the days tile now that sign-in day counted.
+		const section = document.querySelector(".overview");
+		if (!section) return;
+		let aggregates = section.querySelector(".overview-aggregates");
+		if (!aggregates) {
+			aggregates = document.createElement("div");
+			aggregates.className = "overview-aggregates is-single";
+			const byCollection = section.querySelector(".overview-card");
+			if (byCollection) section.insertBefore(aggregates, byCollection);
+			else section.prepend(aggregates);
+		}
+		const tile = document.createElement("div");
+		tile.id = "learning-days-tile";
+		tile.className = "stat-tile";
+		tile.innerHTML = `<span class="stat-value" id="learning-days-value" data-learning-days="${result.dayCount}">${result.dayCount}</span><span class="stat-label">days reading</span><div id="learning-day-strip" class="learning-day-strip" aria-label="Reading activity over the last 28 days" title="Filled days are days you read"></div>`;
+		aggregates.appendChild(tile);
+		renderLearningDayStrip(
+			document.getElementById("learning-day-strip"),
+			result.days,
+		);
+		const readTile = document.getElementById("discourses-read-tile");
+		aggregates.classList.toggle("is-single", !readTile);
+	});
+
+	// Ask history lives in localStorage and Firestore. Review Room only SSR-reads
+	// Firestore, so merge local Asks into the account when the tab looks empty
+	// or behind (common after a quick ask, or switching Gmail-dot accounts).
+	void (async () => {
+		try {
+			if (sessionStorage.getItem(ASK_SYNC_FLAG) === "1") return;
+			const local = readAiAskSession();
+			if (local.length === 0) return;
+			const response = await fetch("/api/ai/history", {
+				method: "POST",
+				credentials: "same-origin",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "sync", entries: local }),
+			});
+			const data = (await response.json()) as {
+				success?: boolean;
+				entries?: unknown[];
+			};
+			if (!response.ok || !data.success || !Array.isArray(data.entries)) {
+				return;
+			}
+			const merged = sanitizeAskHistoryEntries(data.entries);
+			writeAiAskSession(merged);
+			sessionStorage.setItem(ASK_SYNC_FLAG, "1");
+			const known = new Set(boot.askKeys);
+			const missingOnPage = merged.some(
+				(entry) => !known.has(normalizeAskQuestionKey(entry.question)),
+			);
+			if (missingOnPage || merged.length !== boot.askCount) {
+				window.location.reload();
+			}
+		} catch {
+			/* keep SSR asks */
+		}
+	})();
+
 	const greetingEl = document.getElementById("greeting");
 	if (greetingEl) {
 		const hour = new Date().getHours();
@@ -541,155 +1333,133 @@ try {
 		} else {
 			timeOfDayGreeting = "Good evening";
 		}
-		const displayName = userDisplayName || "there";
-		greetingEl.textContent = `${timeOfDayGreeting}, ${displayName}.`;
+		greetingEl.textContent = `${timeOfDayGreeting}, ${boot.userDisplayName || "there"}.`;
 	}
 
-	// Tab Script - Simplified Direct Approach
-	const tabLinks = document.querySelectorAll(".tab-pill");
+	const tabLinks = document.querySelectorAll(".tab-pill[data-tab]");
 	const tabContents = document.querySelectorAll(".tab-content");
-	const greetingContainer = document.getElementById("greeting");
-	const pillsScroll = document.querySelector(".pills-scroll");
-	const fadeLeft = document.querySelector(".pills-scroll-fade-left");
-	const fadeRight = document.querySelector(".pills-scroll-fade-right");
+	const greetingContainer = document.getElementById("home-view");
+	const libraryMenuBtn = document.getElementById("library-menu-btn");
+	const libraryMenu = document.getElementById("library-menu");
+	const libraryMenuLabel = document.getElementById("library-menu-label");
+	const libraryOptions = document.querySelectorAll("[data-library-option]");
 
-	// Simple function to directly show greeting and hide all tabs
-	function showGreeting() {
-		// Hide all tabs first
-		tabContents.forEach((content) => content.classList.add("hidden"));
-
-		// Deactivate all pills
-		tabLinks.forEach((link) => link.classList.remove("active"));
-
-		// Show greeting
-		greetingContainer?.classList.remove("hidden");
-
-		// Update URL without hash
-		const currentPath = window.location.pathname + window.location.search;
-		history.replaceState(null, "", currentPath);
+	function closeLibraryMenu() {
+		if (!libraryMenu || !libraryMenuBtn) return;
+		libraryMenu.hidden = true;
+		libraryMenuBtn.setAttribute("aria-expanded", "false");
 	}
 
-	// Simple function to directly show a specific tab and hide greeting
+	function openLibraryMenu() {
+		if (!libraryMenu || !libraryMenuBtn) return;
+		libraryMenu.hidden = false;
+		libraryMenuBtn.setAttribute("aria-expanded", "true");
+	}
+
+	function syncLibraryMenu(activeTabId) {
+		const isLibrary = LIBRARY_TABS.has(activeTabId);
+		libraryMenuBtn?.classList.toggle("active", isLibrary);
+		if (libraryMenuLabel) {
+			libraryMenuLabel.textContent = isLibrary
+				? LIBRARY_LABELS[activeTabId] || "Library"
+				: "Library";
+		}
+		libraryOptions.forEach((option) => {
+			option.classList.toggle(
+				"active",
+				option.getAttribute("data-tab") === activeTabId,
+			);
+		});
+	}
+
+	function showGreeting() {
+		tabContents.forEach((content) => content.classList.add("hidden"));
+		tabLinks.forEach((link) => link.classList.remove("active"));
+		libraryOptions.forEach((option) => option.classList.remove("active"));
+		greetingContainer?.classList.remove("hidden");
+		syncLibraryMenu("");
+		closeLibraryMenu();
+		history.replaceState(
+			null,
+			"",
+			window.location.pathname + window.location.search,
+		);
+	}
+
 	function showTabContent(tabId) {
 		if (!tabId) {
 			showGreeting();
 			return;
 		}
 
-		// Get target elements
 		const targetContent = document.getElementById(tabId);
-		const targetLink = document.querySelector(`[data-tab="${tabId}"]`);
-
-		// Ensure elements exist
+		const targetLink = document.querySelector(
+			`.tab-pill[data-tab="${tabId}"]`,
+		);
 		if (!targetContent || !targetLink) {
 			showGreeting();
 			return;
 		}
 
-		// Hide all content and deactivate all pills first
 		tabContents.forEach((content) => content.classList.add("hidden"));
 		tabLinks.forEach((link) => link.classList.remove("active"));
-
-		// Hide greeting
 		greetingContainer?.classList.add("hidden");
-
-		// Show target tab
 		targetContent.classList.remove("hidden");
 		targetLink.classList.add("active");
-
-		// Update URL with hash
+		syncLibraryMenu(tabId);
+		closeLibraryMenu();
 		history.replaceState(null, "", `#${tabId}`);
-
-		// Scroll the active pill into view - helps on mobile
-		if (pillsScroll && targetLink) {
-			// Scroll the tab into view with some padding
-			const padding = 40;
-			const scrollContainer = pillsScroll;
-			const scrollLeft = targetLink.offsetLeft - padding;
-
-			// Use smooth scrolling for a nicer experience
-			scrollContainer.scrollTo({
-				left: scrollLeft,
-				behavior: "smooth",
-			});
-		}
 	}
 
-	// Handle click events on tabs
 	tabLinks.forEach((link) => {
-		link.addEventListener(
-			"click",
-			function (e) {
-				// Stop event from propagating to other handlers
-				e.preventDefault();
-				e.stopPropagation();
-
-				const tabId = this.getAttribute("data-tab");
-				const isAlreadyActive = this.classList.contains("active");
-
-				if (isAlreadyActive) {
-					// Force removal of active state right away
-					this.classList.remove("active");
-					// Show greeting view
-					setTimeout(() => showGreeting(), 0);
-				} else {
-					// Show the tab content (after any other handlers)
-					setTimeout(() => showTabContent(tabId), 0);
-				}
-
-				// Return false to prevent default and bubbling
-				return false;
-			},
-			true
-		); // Use capture phase to ensure our handler runs first
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			const tabId = link.getAttribute("data-tab");
+			const isAlreadyActive = link.classList.contains("active");
+			if (isAlreadyActive) showGreeting();
+			else showTabContent(tabId);
+		});
 	});
 
-	// Handle scroll indicators for pill container - only affects mobile
-	function updateScrollFadeIndicators() {
-		if (!pillsScroll || !fadeLeft || !fadeRight) return;
+	libraryMenuBtn?.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (!libraryMenu) return;
+		if (libraryMenu.hidden) openLibraryMenu();
+		else closeLibraryMenu();
+	});
 
-		// Only update indicators on mobile screens
-		if (window.innerWidth >= 768) {
-			fadeLeft.style.opacity = "0";
-			fadeRight.style.opacity = "0";
-			return;
-		}
+	libraryOptions.forEach((option) => {
+		option.addEventListener("click", (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			const tabId = option.getAttribute("data-tab");
+			const pill = document.querySelector(`.tab-pill[data-tab="${tabId}"]`);
+			const isAlreadyActive = pill?.classList.contains("active");
+			if (isAlreadyActive) showGreeting();
+			else showTabContent(tabId);
+		});
+	});
 
-		// Show/hide left fade based on scroll position
-		fadeLeft.style.opacity = pillsScroll.scrollLeft > 10 ? "1" : "0";
+	document.addEventListener("click", (e) => {
+		const menuRoot = document.querySelector(".library-menu");
+		if (!menuRoot || !(e.target instanceof Node)) return;
+		if (!menuRoot.contains(e.target)) closeLibraryMenu();
+	});
 
-		// Show/hide right fade based on whether there's more content to scroll
-		const isScrolledToEnd =
-			pillsScroll.scrollWidth - pillsScroll.scrollLeft <=
-			pillsScroll.clientWidth + 10;
-		fadeRight.style.opacity = isScrolledToEnd ? "0" : "1";
-	}
+	document.querySelectorAll("[data-tab-link]").forEach((link) => {
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			showTabContent(link.getAttribute("data-tab-link"));
+		});
+	});
 
-	// Set up scroll handling for pill container
-	if (pillsScroll) {
-		pillsScroll.addEventListener("scroll", updateScrollFadeIndicators);
-		// Initial check for fade indicators
-		setTimeout(updateScrollFadeIndicators, 100);
-
-		// Update when window resizes
-		window.addEventListener("resize", updateScrollFadeIndicators);
-	}
-
-	// Handle initial page load based on URL hash
 	function handleInitialLoad() {
 		const hash = window.location.hash.slice(1);
-
-		if (hash && document.getElementById(hash)) {
-			showTabContent(hash);
-		} else {
-			showGreeting();
-		}
+		if (hash && document.getElementById(hash)) showTabContent(hash);
+		else showGreeting();
 	}
 
-	// Set up event listeners
-	window.addEventListener("load", handleInitialLoad);
 	window.addEventListener("popstate", handleInitialLoad);
-
-	// Call this once on script execution to set the initial state
-	setTimeout(handleInitialLoad, 0);
+	handleInitialLoad();
 </script>

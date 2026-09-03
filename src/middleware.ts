@@ -112,9 +112,29 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	if (
 		pathname.startsWith("/discourse-ssr/") ||
 		pathname.startsWith("/discourse-dynamic/") ||
-		pathname.startsWith("/discourse-sujato/")
+		pathname.startsWith("/discourse-sujato/") ||
+		pathname.startsWith("/shared-ask/")
 	) {
 		return withNoindexIfNeeded(context.url, await next());
+	}
+
+	// Bare /ask → Ask mode (same as /ai).
+	if (pathname === "/ask" || pathname === "/ask/") {
+		return context.redirect("/search?mode=ai");
+	}
+
+	// Public share URLs are /ask/:slug. The root [...id] catch-all steals nested
+	// paths and drops Vite CSS, so rewrite to a dedicated SSR segment.
+	if (pathname.startsWith("/ask/")) {
+		const slug = pathname.slice("/ask/".length).replace(/\/+$/, "");
+		if (slug && !slug.includes("/")) {
+			return withNoindexIfNeeded(
+				context.url,
+				await context.rewrite(
+					rewriteURL(`/shared-ask/${slug}`, context.url),
+				),
+			);
+		}
 	}
 
 	const sujatoMatch = pathname.match(SUJATO_REFERENCE_ROUTE);

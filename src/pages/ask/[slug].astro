@@ -1,0 +1,39 @@
+---
+/**
+ * Public /ask/:slug entry. Middleware also rewrites here → /shared-ask/:slug so
+ * styles load even when the catch-all would otherwise win.
+ */
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import AskShareView from "../../components/AskShareView.astro";
+import { loadAskShare } from "../../utils/aiAskShareServer";
+import { normalizeAskShareSlug } from "../../utils/aiAskShare";
+import "../../styles/global.css";
+import "../../styles/ai-mode.css";
+import "../../styles/content.css";
+
+const rawSlug = Astro.params.slug || "";
+const slug = normalizeAskShareSlug(rawSlug);
+const share = slug ? await loadAskShare(slug) : null;
+
+if (!share) {
+	return Astro.redirect("/search?mode=ai");
+}
+
+const seoTitle = `${share.question.slice(0, 80)} · Ask`;
+const seoDescription = (
+	share.summary ||
+	share.lookingFor ||
+	"Shared Ask results from the discourses of the Buddha."
+).slice(0, 160);
+---
+
+<Layout
+	title=""
+	seoTitle={seoTitle}
+	seoDescription={seoDescription}
+	showAuth={true}
+	showSearch={false}
+>
+	<AskShareView share={share} />
+</Layout>

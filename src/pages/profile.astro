@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
+import EmailVerifyBanner from "../components/EmailVerifyBanner.astro";
 import { db } from "../service/firebase/server";
 import type { UserRecord } from "firebase-admin/auth";
 import { verifyUser } from "../middleware/auth";
@@ -50,6 +51,7 @@ if (!user) {
 <Layout showAuth={true}>
 	<div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
 		<div class="space-y-8">
+			{!user.emailVerified && <EmailVerifyBanner email={user.email} />}
 			<div class="bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg">
 				<div class="flex justify-between items-center mb-6">
 					<h2 class="text-2xl font-semibold text-[var(--text-color)]">

@@ -20,6 +20,10 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 	"/simile",
 	"/topic",
 	"/discover",
+	"/recent",
+	"/ai",
+	"/ask",
+	"/admin/ask",
 	"/explorer",
 	"/offline",
 	"/privacy",
@@ -33,5 +37,11 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 
 /** Matches `Breadcrumbs.astro` — routes that skip the breadcrumb strip. */
 export function hideBreadcrumbsForPath(path: string): boolean {
-	return HIDE_BREADCRUMBS_PATHS.has(normalizePathForBreadcrumbs(path));
+	const normalized = normalizePathForBreadcrumbs(path);
+	if (HIDE_BREADCRUMBS_PATHS.has(normalized)) return true;
+	// Shared Ask pages: /ask/:slug and internal /shared-ask/:slug
+	if (normalized.startsWith("/ask/") || normalized.startsWith("/shared-ask/")) {
+		return true;
+	}
+	return false;
 }

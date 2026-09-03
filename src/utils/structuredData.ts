@@ -1,4 +1,5 @@
 import { buildBreadcrumbTrail } from "./breadcrumbTrail";
+import { hideBreadcrumbsForPath } from "./breadcrumbVisibility";
 import { directoryStructure } from "../data/directoryStructure";
 
 const SITE_NAME = "Words of the Buddha";
@@ -69,6 +70,10 @@ function breadcrumbNode(
 	input: StructuredDataInput,
 ): JsonLdNode | null {
 	const path = input.breadcrumbPath || input.urlPathname;
+	// Keep JSON-LD in sync with the visible trail (hidden on Ask/search/etc.).
+	if (hideBreadcrumbsForPath(path) || hideBreadcrumbsForPath(input.urlPathname)) {
+		return null;
+	}
 	const trail = buildBreadcrumbTrail(path, input.urlPathname);
 	if (trail.length < 2) return null;
 

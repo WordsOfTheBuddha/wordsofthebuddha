@@ -6,6 +6,8 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import BottomDrawer from "../components/BottomDrawer.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
+import AiModeApp from "../components/AiModeApp.astro";
+import "../styles/ai-mode.css";
 
 Astro.response.headers.set(
 	"Cache-Control",
@@ -17,11 +19,50 @@ Astro.response.headers.set(
 	title=""
 	seoTitle="Search the Discourses - Words of the Buddha"
 	seoDescription="Search the discourses of the Buddha by phrase, Pāli term, topic, or reference across the Majjhima, Saṁyutta, Aṅguttara, and Dīgha Nikāyas, the Dhammapada, and more."
-	showAuth={false}
+	showAuth={true}
 	showSearch={false}
 >
-	<main class="container mx-auto px-3 sm:px-4 pt-0">
-		<ExploreWidget mode="search-only" title="" />
+	<main class="container mx-auto px-3 sm:px-4 pt-2" data-search-ask>
+		<header class="search-ask-top">
+			<h1 class="ai-title text-gradient-accent" data-search-ask-title>Search</h1>
+			<nav class="ai-mode-switch" aria-label="Mode">
+				<a data-search-mode-link="search" href="/search">Search</a>
+				<a data-search-mode-link="ask" href="/search?mode=ai">Ask</a>
+			</nav>
+		</header>
+		<div data-mode-search>
+			<ExploreWidget mode="search-only" title="" />
+		</div>
+		<div data-mode-ask hidden>
+			<AiModeApp showTitle={false} />
+		</div>
+		<script is:inline>
+			(function () {
+				var params = new URLSearchParams(location.search);
+				var ask = params.get("mode") === "ai";
+				var searchPane = document.querySelector("[data-mode-search]");
+				var askPane = document.querySelector("[data-mode-ask]");
+				var title = document.querySelector("[data-search-ask-title]");
+				if (searchPane) searchPane.hidden = ask;
+				if (askPane) askPane.hidden = !ask;
+				if (title) title.textContent = ask ? "Ask" : "Search";
+				document.querySelectorAll("[data-search-mode-link]").forEach(function (link) {
+					var mode = link.getAttribute("data-search-mode-link");
+					var next = new URL(location.href);
+					if (mode === "ask") {
+						next.searchParams.set("mode", "ai");
+						// Do not carry a keyword `q` into Ask — that would spend credits.
+						next.searchParams.delete("q");
+					} else {
+						next.searchParams.delete("mode");
+					}
+					link.setAttribute("href", next.pathname + next.search);
+					link.classList.toggle("is-active", (mode === "ask") === ask);
+					if ((mode === "ask") === ask) link.setAttribute("aria-current", "page");
+					else link.removeAttribute("aria-current");
+				});
+			})();
+		</script>
 	</main>
 
 	<BottomDrawer />

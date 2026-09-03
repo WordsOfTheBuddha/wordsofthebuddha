@@ -3,12 +3,16 @@ export const prerender = false;
 import { app, isFirebaseInitialized } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
+import { safeAuthReturnUrl } from "../utils/authReturnTo";
 
 /* Check if Firebase is initialized */
 if (!isFirebaseInitialized || !app) {
 	// Redirect to home page with error message
 	return Astro.redirect("/?auth-unavailable=true");
 }
+
+const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
+const showVerifyHint = Astro.url.searchParams.get("verify") === "1";
 
 /* Check if the user is authenticated */
 const auth = getAuth(app);
@@ -18,7 +22,7 @@ if (Astro.cookies.has("__session")) {
 	try {
 		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 		if (decodedCookie) {
-			return Astro.redirect("/review-room");
+			return Astro.redirect(safeAuthReturnUrl(returnTo, Astro.url.href).toString());
 		}
 	} catch (error) {
 		// Session cookie is invalid or expired - delete it
@@ -26,8 +30,6 @@ if (Astro.cookies.has("__session")) {
 		Astro.cookies.delete("__session", { path: "/" });
 	}
 }
-
-const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 ---
 
 <Layout>
@@ -50,6 +52,14 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 						Create an account
 					</a>
 				</p>
+				{
+					showVerifyHint && (
+						<p class="mt-4 text-sm text-center text-[var(--text-color)] bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md px-3 py-2">
+							Account created. Sign in and we’ll email a verification
+							link — verify to unlock the full daily Ask allowance.
+						</p>
+					)
+				}
 			</div>
 			<form class="mt-8 space-y-6" id="signin-form" novalidate>
 				<div class="rounded-md shadow-sm space-y-4">
@@ -111,9 +121,14 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 	import {
 		getAuth,
 		inMemoryPersistence,
+		sendEmailVerification,
 		signInWithEmailAndPassword,
 	} from "firebase/auth";
 	import { app } from "../service/firebase/client";
+	import {
+		noteLearningEngagement,
+		flushLearningActivity,
+	} from "../utils/learningActivityClient";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") ||
@@ -218,6 +233,33 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 			console.log(
 				"[Auth-Client] Firebase signin successful, getting token"
 			);
+			if (!signInResult.user.emailVerified) {
+				try {
+					await sendEmailVerification(signInResult.user, {
+						url: new URL(returnTo, window.location.origin).toString(),
+						handleCodeInApp: false,
+					});
+				} catch (verifyError: unknown) {
+					const code =
+						verifyError &&
+						typeof verifyError === "object" &&
+						"code" in verifyError
+							? String((verifyError as { code?: unknown }).code)
+							: "";
+					console.warn(
+						"[Auth-Client] sendEmailVerification failed:",
+						code,
+						verifyError,
+					);
+					// Rate-limit is common after creating several accounts quickly.
+					if (code.includes("too-many-requests")) {
+						showError(
+							passwordError,
+							"Signed in, but a verification email was already sent recently. Check inbox/spam, or wait a few minutes and use Resend.",
+						);
+					}
+				}
+			}
 			const idToken = await signInResult.user.getIdToken();
 
 			// Shorter timeout for backend call since it's timing out
@@ -266,6 +308,13 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 				console.log(
 					`[Auth-Client] Total signin took ${Date.now() - startTime}ms`
 				);
+				// First signed-in day counts; merge any anonymous / offline days.
+				try {
+					noteLearningEngagement();
+					await flushLearningActivity();
+				} catch {
+					/* best-effort; Review Room will retry */
+				}
 				window.location.assign(response.url);
 			}
 		} catch (error: any) {

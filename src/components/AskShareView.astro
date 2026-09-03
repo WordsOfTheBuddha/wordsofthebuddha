@@ -1,0 +1,30 @@
+---
+import AiModeApp from "./AiModeApp.astro";
+import type { AiAskShareSnapshot } from "../utils/aiAskShare";
+import "../styles/ai-mode.css";
+
+interface Props {
+	share: AiAskShareSnapshot;
+}
+
+const { share } = Astro.props;
+---
+
+<main class="container mx-auto px-3 sm:px-4 pt-2">
+	<header class="search-ask-top">
+		<h1 class="ai-title text-gradient-accent">Ask</h1>
+		<nav class="ai-mode-switch" aria-label="Mode">
+			<a href="/search">Search</a>
+			<a class="is-active" href="/search?mode=ai" aria-current="page">Ask</a>
+		</nav>
+		<p class="ai-share-banner">
+			Shared Ask · ask a follow-up below, or{" "}
+			<a href="/search?mode=ai">ask your own question</a>
+		</p>
+	</header>
+	<AiModeApp
+		showTitle={false}
+		shareMode={true}
+		shareSnapshot={JSON.stringify(share)}
+	/>
+</main>
