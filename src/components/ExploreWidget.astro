@@ -490,11 +490,13 @@ const isSearchOnly = mode === "search-only";
 		color: var(--text-muted);
 	}
 
-	/* Discourse card in search results */
-	.explore-widget .search-discourse-card {
+	/* Discourse card in search results (shared with Ask mode) */
+	.explore-widget .search-discourse-card,
+	.ai-mode .search-discourse-card {
 		@apply relative flex flex-col w-full p-5 mt-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md;
 	}
-	.explore-widget .search-discourse-card:hover {
+	.explore-widget .search-discourse-card:hover,
+	.ai-mode .search-discourse-card:hover {
 		@apply shadow-lg;
 	}
 
@@ -504,15 +506,18 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	/* ID formatting in search results */
-	.explore-widget #search-results .id {
+	.explore-widget #search-results .id,
+	.ai-mode .search-discourse-card .id {
 		display: inline;
 	}
 	@media (min-width: 640px) {
-		.explore-widget #search-results .id {
+		.explore-widget #search-results .id,
+		.ai-mode .search-discourse-card .id {
 			font-size: 1.1rem;
 		}
 	}
-	.explore-widget #search-results .text-text {
+	.explore-widget #search-results .text-text,
+	.ai-mode .search-discourse-card .text-text {
 		color: var(--text-color);
 		margin: 0.5rem 0;
 	}
@@ -825,6 +830,12 @@ const isSearchOnly = mode === "search-only";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		const queryFromUrl = urlParams.get("q");
+		const askMode = urlParams.get("mode") === "ai";
+
+		if (askMode) {
+			if (loadingEl) loadingEl.classList.add("hidden");
+			return;
+		}
 
 		if (queryFromUrl) {
 			if (!isSearchOnly) switchToSearchMode();

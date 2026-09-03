@@ -17,6 +17,8 @@ interface Props {
 	/** When set, shows a collection count badge (hidden at 0; client can reveal via See Refs). */
 	count?: number;
 	titleTag?: string;
+	/** New vs updated marker for the recent feed. */
+	badge?: "new" | "updated";
 	variant?: "default" | "reference";
 	/** PTS citation, e.g. "PTS 4.152–4.155" */
 	volpage?: string;
@@ -36,13 +38,25 @@ const {
 	id,
 	href,
 	lastUpdated,
-	dateLabel = "Last updated on",
+	dateLabel,
 	clamp = 3,
 	count = undefined,
 	titleTag,
+	badge,
 	variant = "default",
 	volpage,
 } = Astro.props;
+
+const resolvedDateLabel =
+	dateLabel ??
+	(badge === "new"
+		? "Added"
+		: badge === "updated"
+			? "Updated"
+			: "Last updated on");
+const resolvedTitleTag =
+	titleTag ??
+	(badge === "new" ? "New" : badge === "updated" ? "Updated" : undefined);
 
 const hasAudio = audioSlugs.has(id);
 // Sub-collection cards pass `count`; skip viz there. Convention-based
@@ -91,9 +105,17 @@ const descriptionHtml = description?.replace(
 					></a
 				>
 				{
-					!isReference && titleTag && (
-						<span class="post-card-title-tag inline-flex px-2 py-0.5 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap align-middle">
-							{titleTag}
+					!isReference && resolvedTitleTag && (
+						<span
+							class:list={[
+								"post-card-title-tag inline-flex px-2 py-0.5 text-xs rounded-full font-normal whitespace-nowrap align-middle",
+								badge === "new" && "post-card-badge--new",
+								badge === "updated" && "post-card-badge--updated",
+								!badge &&
+									"bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300",
+							]}
+						>
+							{resolvedTitleTag}
 						</span>
 					)
 				}
@@ -197,7 +219,7 @@ const descriptionHtml = description?.replace(
 				]}
 			>
 				<p class="text-[var(--text-muted)] text-xs my-0">
-					{dateLabel} {formatDate(lastUpdated)}
+					{resolvedDateLabel} {formatDate(lastUpdated)}
 				</p>
 				{
 					volpage && (
@@ -274,6 +296,14 @@ const descriptionHtml = description?.replace(
 		flex-shrink: 0;
 		margin-left: 0.25rem;
 		vertical-align: middle;
+	}
+	.post-card-badge--new {
+		background: color-mix(in srgb, var(--primary-color) 16%, transparent);
+		color: var(--primary-color);
+	}
+	.post-card-badge--updated {
+		background: color-mix(in srgb, var(--text-muted) 16%, transparent);
+		color: var(--text-muted);
 	}
 	/* First-line metrics match `.id` so icons sit in the title’s em-square. */
 	.post-card-media {

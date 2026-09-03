@@ -5,7 +5,9 @@ import { routes } from "../utils/routes";
 import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
-import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
+import {
+	resolveCatchAllDiscoursePage,
+} from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
 import {
 	parsePostSlugFromGlobPath,
@@ -27,6 +29,26 @@ const rootPostEntries = Object.entries(rootPostModules).map(
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
+if ((originalId || "").replace(/\/+$/, "") === "ai") {
+	const question = Astro.url.searchParams.get("q");
+	const params = new URLSearchParams();
+	params.set("mode", "ai");
+	if (question?.trim()) params.set("q", question.trim());
+	return Astro.redirect(`/search?${params.toString()}`);
+}
+
+// /ask/:slug and /shared-ask/:slug are dedicated routes (middleware rewrites the
+// public URL). Never soft-404 them into discourse search.
+if (
+	originalId?.startsWith("ask/") ||
+	originalId?.startsWith("shared-ask/")
+) {
+	const raw = originalId.replace(/^(?:shared-)?ask\//, "").replace(/\/+$/, "");
+	if (raw && !raw.includes("/")) {
+		return Astro.rewrite(`/shared-ask/${raw}`);
+	}
+	return Astro.redirect("/search?mode=ai");
+}
 
 // Non-prerendered /on/:slug variants miss the static /on/ page (unknown slugs,
 // or spaced forms like /on/sun%20and%20shade). Canonicalize, stem-match, or

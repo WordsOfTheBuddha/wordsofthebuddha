@@ -16,8 +16,8 @@ const NATIVE_JSON = "search-index.json";
 const META_JSON = "search-meta.json";
 const REFERENCE_JSON = "reference-search-index.json";
 
-const isDevSsr = import.meta.env.DEV && import.meta.env.SSR;
-const isSsr = import.meta.env.SSR;
+const isDevSsr = Boolean(import.meta.env?.DEV && import.meta.env?.SSR);
+const isSsr = Boolean(import.meta.env?.SSR);
 
 let nativeCache: SearchIndexDoc[] | null = null;
 let nativeHasContent = false;

@@ -36,6 +36,7 @@ const STATIC_PAGES = [
 	"/",
 	"/search",
 	"/discover",
+	"/recent",
 	"/anthologies",
 	"/buddha-quotes",
 	"/qualities",

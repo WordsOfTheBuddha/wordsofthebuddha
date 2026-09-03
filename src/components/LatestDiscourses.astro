@@ -1,9 +1,15 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import path from "path";
 import PostCard from "./PostCard.astro";
-import { getLastModified } from "../utils/getLastModified";
+import { getGitTimestamps } from "../utils/getLastModified";
 import { getPtsDisplay } from "../utils/ptsReferences";
+import {
+	buildRecentFeeds,
+	collectionFromEnglishPath,
+	DEFAULT_RECENT_FILTERS,
+	filterRecentDiscourses,
+	isEnglishDiscoursePath,
+} from "../utils/recentDiscourses";
 
 interface Props {
 	n?: number;
@@ -12,35 +18,45 @@ interface Props {
 const { n = 5 } = Astro.props;
 
 const allDiscourses = await getCollection("all");
-const discourseFiles = allDiscourses
+const records = allDiscourses
 	.filter(
 		(discourse: CollectionEntry<"all">) =>
-			discourse.id !== "index" &&
-			!discourse.filePath?.includes("src/content/en/books/") &&
+			Boolean(discourse.filePath) &&
+			isEnglishDiscoursePath(discourse.filePath ?? "") &&
 			discourse.data.description,
 	)
-	.map((discourse: CollectionEntry<"all">) => ({
-		...discourse,
-		lastModified: getLastModified(discourse.filePath ?? ""),
-	}));
+	.map((discourse: CollectionEntry<"all">) => {
+		const { added, modified } = getGitTimestamps(discourse.filePath ?? "");
+		return {
+			slug: discourse.data.slug,
+			title: discourse.data.title,
+			description: discourse.data.description ?? "",
+			collection: collectionFromEnglishPath(
+				discourse.filePath ?? "",
+				discourse.data.slug,
+			),
+			added,
+			modified,
+			volpage: getPtsDisplay(discourse.data.slug) || undefined,
+		};
+	});
 
-const latestDiscourses = discourseFiles
-	.sort(
-		(a: (typeof discourseFiles)[0], b: (typeof discourseFiles)[0]) =>
-			b.lastModified.getTime() - a.lastModified.getTime(),
-	)
-	.slice(0, n);
+const latestDiscourses = filterRecentDiscourses(
+	buildRecentFeeds(records),
+	DEFAULT_RECENT_FILTERS,
+).slice(0, n);
 ---
 
 <div class="px-2">
 	{
-		latestDiscourses.map((discourse: (typeof discourseFiles)[0]) => (
+		latestDiscourses.map((discourse) => (
 			<PostCard
-				title={discourse.data.title}
-				description={discourse.data.description}
-				id={discourse.data.slug}
-				volpage={getPtsDisplay(discourse.data.slug)}
-				lastUpdated={discourse.lastModified}
+				title={discourse.title}
+				description={discourse.description}
+				id={discourse.slug}
+				volpage={discourse.volpage}
+				lastUpdated={discourse.added}
+				badge="new"
 			/>
 		))
 	}
