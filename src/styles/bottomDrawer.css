@@ -11,10 +11,12 @@
   --link-hint-gutter           left space reserved for each dict number
 */
 :root {
-	--drawer-height: 26vh;
-	--drawer-height-dict: 30vh;
-	--drawer-height-desktop: min(38vh, 320px);
-	--drawer-height-dict-desktop: min(40vh, 360px);
+	/* Tooltips stay compact; dictionary gets a small mobile bump. */
+	--drawer-height: 30vh;
+	--drawer-height-dict: 34vh;
+	/* Desktop / web: more room for PED entries */
+	--drawer-height-desktop: min(45vh, 380px);
+	--drawer-height-dict-desktop: min(50vh, 420px);
 	--link-hint-height: 1rem;
 	--link-hint-font-size: 0.65rem;
 	--link-hint-dict-height: 0.85rem;
