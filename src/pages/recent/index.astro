@@ -1,0 +1,419 @@
+---
+export const prerender = true;
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { getGitTimestamps } from "../../utils/getLastModified";
+import { getPtsDisplay } from "../../utils/ptsReferences";
+import {
+	buildRecentFeeds,
+	collectionChipLabel,
+	filterRecentDiscourses,
+	isEnglishDiscoursePath,
+	collectionFromEnglishPath,
+	parseRecentFilters,
+	recentSummary,
+	RECENT_COLLECTIONS,
+	type RecentDiscourseItem,
+} from "../../utils/recentDiscourses";
+
+const allDiscourses = await getCollection("all");
+const records = allDiscourses
+	.filter(
+		(discourse: CollectionEntry<"all">) =>
+			Boolean(discourse.filePath) &&
+			isEnglishDiscoursePath(discourse.filePath ?? ""),
+	)
+	.map((discourse: CollectionEntry<"all">) => {
+		const { added, modified } = getGitTimestamps(discourse.filePath ?? "");
+		return {
+			slug: discourse.data.slug,
+			title: discourse.data.title,
+			description: discourse.data.description ?? "",
+			collection: collectionFromEnglishPath(
+				discourse.filePath ?? "",
+				discourse.data.slug,
+			),
+			added,
+			modified,
+			volpage: getPtsDisplay(discourse.data.slug) || undefined,
+		};
+	});
+
+const feed = buildRecentFeeds(records);
+const initialFilters = parseRecentFilters(Astro.url.searchParams);
+const initialItems = filterRecentDiscourses(feed, initialFilters);
+const initialVisible = new Set(
+	initialItems.map((item) => `${item.kind}:${item.slug}`),
+);
+const collectionsInFeed = RECENT_COLLECTIONS.filter((collection) =>
+	feed.some((item) => item.collection === collection),
+);
+const initialSummary = recentSummary(initialItems.length, initialFilters);
+
+function cardDate(item: RecentDiscourseItem): string {
+	return item.kind === "new" ? item.added : item.modified;
+}
+---
+
+<Layout
+	seoTitle="Recently Added Discourses - Words of the Buddha"
+	seoDescription="A feed of newly translated suttas and recently updated discourses from the Pāli canon, with filters by collection and recency."
+	showAuth={false}
+>
+	<main class="container mx-auto px-3 sm:px-4 pt-8 pb-16">
+		<section class="max-w-4xl mx-auto px-1 mb-8">
+			<h1
+				class="text-2xl sm:text-4xl font-bold tracking-tight mb-3 text-gradient-accent"
+				style="font-family:'Spectral', serif;"
+			>
+				Recently added
+			</h1>
+			<p class="text-base sm:text-lg mb-0" style="color:var(--text-muted);">
+				New English translations in the last weeks, distinct from
+				revisions of discourses that were already here.
+			</p>
+		</section>
+
+		<section
+			class="max-w-4xl mx-auto px-1"
+			id="recent-feed"
+			data-filters={JSON.stringify(initialFilters)}
+		>
+			<div class="recent-toolbar" role="search">
+				<div class="recent-filter-row">
+					<p class="recent-filter-label" id="recent-kind-label">Show</p>
+					<div
+						class="recent-chips"
+						role="group"
+						aria-labelledby="recent-kind-label"
+					>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="kind"
+							data-value="new"
+							aria-pressed={initialFilters.kind === "new"}
+						>
+							Newly added
+						</button>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="kind"
+							data-value="updated"
+							aria-pressed={initialFilters.kind === "updated"}
+						>
+							Updated
+						</button>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="kind"
+							data-value="all"
+							aria-pressed={initialFilters.kind === "all"}
+						>
+							All
+						</button>
+					</div>
+				</div>
+				<div class="recent-filter-row">
+					<p class="recent-filter-label" id="recent-range-label">When</p>
+					<div
+						class="recent-chips"
+						role="group"
+						aria-labelledby="recent-range-label"
+					>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="range"
+							data-value="20"
+							aria-pressed={initialFilters.range === "20"}
+						>
+							Last 20
+						</button>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="range"
+							data-value="30d"
+							aria-pressed={initialFilters.range === "30d"}
+						>
+							30 days
+						</button>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="range"
+							data-value="90d"
+							aria-pressed={initialFilters.range === "90d"}
+						>
+							90 days
+						</button>
+					</div>
+				</div>
+				<div class="recent-filter-row">
+					<p class="recent-filter-label" id="recent-col-label">
+						Collection
+					</p>
+					<div
+						class="recent-chips recent-chips--wrap"
+						role="group"
+						aria-labelledby="recent-col-label"
+					>
+						<button
+							type="button"
+							class="recent-chip"
+							data-filter="collection"
+							data-value="all"
+							aria-pressed={initialFilters.collection === "all"}
+						>
+							All
+						</button>
+						{
+							collectionsInFeed.map((collection) => (
+								<button
+									type="button"
+									class="recent-chip"
+									data-filter="collection"
+									data-value={collection}
+									aria-pressed={
+										initialFilters.collection === collection
+									}
+								>
+									{collectionChipLabel(collection)}
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+
+			<p class="recent-summary" id="recent-summary" aria-live="polite">
+				{initialSummary}
+			</p>
+
+			<div id="recent-list">
+				{
+					feed.map((item) => (
+						<div
+							class="recent-card-wrap"
+							data-recent-item
+							data-kind={item.kind}
+							data-collection={item.collection}
+							data-added={item.added}
+							data-modified={item.modified}
+							data-slug={item.slug}
+							hidden={!initialVisible.has(`${item.kind}:${item.slug}`)}
+						>
+							<PostCard
+								title={item.title}
+								description={item.description}
+								id={item.slug}
+								volpage={item.volpage}
+								lastUpdated={cardDate(item)}
+								badge={item.kind}
+							/>
+						</div>
+					))
+				}
+			</div>
+
+			<p
+				class="recent-empty"
+				id="recent-empty"
+				hidden={initialItems.length > 0}
+			>
+				No discourses match these filters.
+			</p>
+		</section>
+	</main>
+</Layout>
+
+<script>
+	import {
+		DEFAULT_RECENT_FILTERS,
+		filterRecentDiscourses,
+		parseRecentFilters,
+		recentSummary,
+		type RecentDiscourseItem,
+		type RecentFilters,
+	} from "../../utils/recentDiscourses";
+
+	function itemKey(kind: string, slug: string): string {
+		return `${kind}:${slug}`;
+	}
+
+	function applyFilters(root: HTMLElement, filters: RecentFilters) {
+		const cards = [
+			...root.querySelectorAll<HTMLElement>("[data-recent-item]"),
+		];
+		const items: RecentDiscourseItem[] = cards.map((card) => ({
+			slug: card.dataset.slug ?? "",
+			title: "",
+			description: "",
+			collection: card.dataset.collection ?? "",
+			kind: card.dataset.kind === "updated" ? "updated" : "new",
+			added: card.dataset.added ?? "",
+			modified: card.dataset.modified ?? "",
+		}));
+		const visible = filterRecentDiscourses(items, filters);
+		const visibleKeys = new Set(
+			visible.map((item) => itemKey(item.kind, item.slug)),
+		);
+		const list = root.querySelector("#recent-list");
+		for (const card of cards) {
+			card.hidden = !visibleKeys.has(
+				itemKey(card.dataset.kind ?? "", card.dataset.slug ?? ""),
+			);
+		}
+		if (list) {
+			for (const item of visible) {
+				const card = cards.find(
+					(el) =>
+						itemKey(el.dataset.kind ?? "", el.dataset.slug ?? "") ===
+						itemKey(item.kind, item.slug),
+				);
+				if (card) list.appendChild(card);
+			}
+		}
+		const summary = root.querySelector("#recent-summary");
+		if (summary) summary.textContent = recentSummary(visible.length, filters);
+		const empty = root.querySelector("#recent-empty");
+		if (empty) empty.toggleAttribute("hidden", visible.length > 0);
+
+		root.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach(
+			(button) => {
+				const key = button.dataset.filter as keyof RecentFilters | undefined;
+				if (!key) return;
+				button.setAttribute(
+					"aria-pressed",
+					String(filters[key] === button.dataset.value),
+				);
+			},
+		);
+		root.dataset.filters = JSON.stringify(filters);
+	}
+
+	function writeUrl(filters: RecentFilters) {
+		const params = new URLSearchParams();
+		if (filters.kind !== DEFAULT_RECENT_FILTERS.kind)
+			params.set("kind", filters.kind);
+		if (filters.range !== DEFAULT_RECENT_FILTERS.range)
+			params.set("range", filters.range);
+		if (filters.collection !== DEFAULT_RECENT_FILTERS.collection)
+			params.set("col", filters.collection);
+		const qs = params.toString();
+		const next = qs
+			? `${window.location.pathname}?${qs}`
+			: window.location.pathname;
+		window.history.replaceState({}, "", next);
+	}
+
+	function init() {
+		const root = document.getElementById("recent-feed");
+		if (!root) return;
+		const filters = parseRecentFilters(
+			new URL(window.location.href).searchParams,
+		);
+		applyFilters(root, filters);
+		if (root.dataset.bound === "1") return;
+		root.dataset.bound = "1";
+
+		root.addEventListener("click", (event) => {
+			const button = (event.target as HTMLElement | null)?.closest(
+				"[data-filter]",
+			) as HTMLButtonElement | null;
+			if (!button || !root.contains(button)) return;
+			const key = button.dataset.filter as keyof RecentFilters | undefined;
+			const value = button.dataset.value;
+			if (!key || !value) return;
+			const next = {
+				...parseRecentFilters(new URL(window.location.href).searchParams),
+				[key]: value,
+			} as RecentFilters;
+			writeUrl(next);
+			applyFilters(root, next);
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", init);
+	document.addEventListener("astro:page-load", init);
+</script>
+
+<style>
+	.recent-toolbar {
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		margin-bottom: 1.25rem;
+	}
+	.recent-filter-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+	@media (min-width: 640px) {
+		.recent-filter-row {
+			flex-direction: row;
+			align-items: center;
+			gap: 0.85rem;
+		}
+	}
+	.recent-filter-label {
+		margin: 0;
+		min-width: 6.5rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+	.recent-chips {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: 0.45rem;
+		overflow-x: auto;
+		padding-bottom: 0.15rem;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.recent-chips::-webkit-scrollbar {
+		display: none;
+	}
+	.recent-chips--wrap {
+		flex-wrap: wrap;
+		overflow: visible;
+	}
+	.recent-chip {
+		flex: 0 0 auto;
+		padding: 0.35rem 0.8rem;
+		border-radius: 9999px;
+		border: 1px solid var(--surface-border);
+		background: transparent;
+		color: var(--surface-ink);
+		font-size: 0.875rem;
+		line-height: 1.3;
+		cursor: pointer;
+	}
+	.recent-chip:hover {
+		background: color-mix(in srgb, var(--surface-ink) 6%, transparent);
+	}
+	.recent-chip[aria-pressed="true"] {
+		background: var(--primary-color);
+		border-color: transparent;
+		color: #fff;
+	}
+	.recent-summary {
+		margin: 0 0 0.25rem;
+		font-size: 0.9rem;
+		color: var(--text-muted);
+	}
+	.recent-empty {
+		margin-top: 2rem;
+		color: var(--text-muted);
+	}
+	.recent-card-wrap[hidden] {
+		display: none;
+	}
+</style>
