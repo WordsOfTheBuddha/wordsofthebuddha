@@ -20,7 +20,16 @@ export const COLLECTION_LINK_HINT_ROOT_IDS = [
 	"discourses-grid",
 ] as const;
 
+/** Extra discourse-list roots beyond collection grids (topics reuse #discourses-grid). */
+export const DISCOURSE_HINT_LINK_SELECTORS = [
+	"#drawer-disc-cards a.post-link",
+	"a.search-discourse-card[data-search-result]",
+] as const;
+
 export const COLLECTION_LINK_HINTS_ROOT_ID = "collection-link-hints-root";
+
+/** How long hints stay armed after ⌘/Alt is released. */
+export const LINK_HINT_STICKY_MS = 3000;
 
 export type LinkHintKind = "navigate" | "click";
 
@@ -55,6 +64,24 @@ export function resolveLinkHintLabelKey(
 	if (/^[1-9]$/.test(key)) return key;
 	if (/^[a-z]$/.test(key)) return key;
 	return null;
+}
+
+/**
+ * Bare 1–9 / a–z while hints are armed (no ⌘/Alt/Ctrl) — avoids browser
+ * tab-switch chords like ⌘1–⌘9.
+ */
+export function shouldHandleLinkHintActivationKey(
+	event: Pick<
+		KeyboardEvent,
+		"key" | "metaKey" | "altKey" | "ctrlKey" | "defaultPrevented"
+	>,
+	active: boolean,
+	activeElement: Element | null,
+): string | null {
+	if (!active || event.defaultPrevented) return null;
+	if (event.metaKey || event.altKey || event.ctrlKey) return null;
+	if (isEditableTarget(activeElement)) return null;
+	return resolveLinkHintLabelKey(event);
 }
 
 export function isElementInViewport(
@@ -187,19 +214,42 @@ export function collectDictionaryHintTargets(
 	return targets.slice(0, LINK_HINT_LABELS.length);
 }
 
+function pushHintableLink(
+	links: HTMLAnchorElement[],
+	seen: Set<HTMLAnchorElement>,
+	link: HTMLAnchorElement,
+): void {
+	if (seen.has(link)) return;
+	if (hasHiddenAncestor(link)) return;
+	if (!isElementVisible(link)) return;
+	if (!isElementInViewport(link)) return;
+	seen.add(link);
+	links.push(link);
+}
+
+/**
+ * Viewport-visible discourse/collection cards: collection grids, topic
+ * discourse lists, quality-drawer discourses, and search/ask result cards.
+ */
 export function collectViewportCollectionPostLinks(
 	root: ParentNode = document,
 ): HTMLAnchorElement[] {
 	const links: HTMLAnchorElement[] = [];
+	const seen = new Set<HTMLAnchorElement>();
+
 	for (const id of COLLECTION_LINK_HINT_ROOT_IDS) {
 		const grid = root.querySelector<HTMLElement>(`#${id}`);
 		if (!grid || !isGridAcceptingHints(grid)) continue;
 		grid.querySelectorAll<HTMLAnchorElement>("a.post-link").forEach((link) => {
 			const item = link.closest(".post-item");
 			if (!item || hasHiddenAncestor(item)) return;
-			if (!isElementVisible(link)) return;
-			if (!isElementInViewport(link)) return;
-			links.push(link);
+			pushHintableLink(links, seen, link);
+		});
+	}
+
+	for (const selector of DISCOURSE_HINT_LINK_SELECTORS) {
+		root.querySelectorAll<HTMLAnchorElement>(selector).forEach((link) => {
+			pushHintableLink(links, seen, link);
 		});
 	}
 
@@ -258,28 +308,46 @@ function positionHintBadge(
 	element: HTMLElement,
 	root: HTMLElement,
 ): void {
-	const rect = element.getBoundingClientRect();
 	const isDictTab = element.hasAttribute("data-dict-panel");
 	const isDictChip = element.hasAttribute("data-ped-part");
+	const isPostLink = element.classList.contains("post-link");
+	const isSearchCard = element.classList.contains("search-discourse-card");
 
-	if (isDictTab || isDictChip) {
-		// Sit in the gutter just left of the control — never over its label.
+	if (isDictTab || isDictChip || isPostLink || isSearchCard) {
 		badge.classList.add(
 			isDictTab
 				? "collection-link-hint--dict-tab"
-				: "collection-link-hint--dict-chip",
+				: isDictChip
+					? "collection-link-hint--dict-chip"
+					: "collection-link-hint--card",
 		);
 		badge.style.visibility = "hidden";
 		root.appendChild(badge);
 		const badgeRect = badge.getBoundingClientRect();
-		const gap = 8;
-		badge.style.left = `${Math.max(4, rect.left - gap - badgeRect.width)}px`;
-		badge.style.top = `${rect.top + (rect.height - badgeRect.height) / 2}px`;
+		const gap = isPostLink || isSearchCard ? 6 : 8;
+
+		// Align to the title text when possible; keep badges inside card padding
+		// so we don't cover "SN 44.1…" / "SNP 3.9…" or shift layout.
+		const titleEl = isSearchCard
+			? (element.querySelector("h2, .id") as HTMLElement | null) ?? element
+			: element;
+		const titleRect = titleEl.getBoundingClientRect();
+		let left = titleRect.left - gap - badgeRect.width;
+		if (isPostLink || isSearchCard) {
+			const card =
+				element.closest(".post-item") ??
+				(isSearchCard ? element : null);
+			const cardLeft = card?.getBoundingClientRect().left ?? 0;
+			left = Math.max(cardLeft + 4, left);
+		}
+		badge.style.left = `${Math.max(4, left)}px`;
+		badge.style.top = `${titleRect.top + (titleRect.height - badgeRect.height) / 2}px`;
 		badge.style.transform = "";
 		badge.style.visibility = "";
 		return;
 	}
 
+	const rect = element.getBoundingClientRect();
 	badge.style.top = `${Math.max(4, rect.top + 4)}px`;
 	badge.style.left = `${Math.max(4, rect.left - 2)}px`;
 	badge.style.transform = "";
@@ -309,9 +377,13 @@ function renderHints(assignments: LinkHintAssignment[]): void {
 }
 
 /**
- * Hold ⌘ (Mac) / Alt (elsewhere) to show numbered shortcuts on:
+ * Hold ⌘ (Mac) / Alt (elsewhere) to arm numbered shortcuts on:
  * - dictionary DPD/PED tabs + multi-chip PED switchers (when drawer is open)
- * - otherwise viewport-visible collection/discourse cards
+ * - otherwise viewport-visible discourse lists (collections, topics, qualities
+ *   drawer, search, and ask)
+ *
+ * Activation is bare 1–9 / a–z after the modifier is released (sticky window),
+ * so ⌘1–⌘9 keep working as browser tab switches. Esc or timeout dismisses.
  */
 export function installCollectionLinkHints(): void {
 	const w = window as unknown as { __collectionLinkHints?: boolean };
@@ -319,13 +391,32 @@ export function installCollectionLinkHints(): void {
 	w.__collectionLinkHints = true;
 
 	let active = false;
+	let modifierDown = false;
 	let assignments: LinkHintAssignment[] = [];
 	let scrollRaf = 0;
+	let stickyTimer: ReturnType<typeof setTimeout> | null = null;
+
+	const clearStickyTimer = () => {
+		if (stickyTimer != null) {
+			clearTimeout(stickyTimer);
+			stickyTimer = null;
+		}
+	};
 
 	const hide = () => {
 		active = false;
+		modifierDown = false;
 		assignments = [];
+		clearStickyTimer();
 		clearHintsUi();
+	};
+
+	const armStickyTimer = () => {
+		clearStickyTimer();
+		stickyTimer = setTimeout(() => {
+			stickyTimer = null;
+			if (active && !modifierDown) hide();
+		}, LINK_HINT_STICKY_MS);
 	};
 
 	const refresh = () => {
@@ -342,6 +433,7 @@ export function installCollectionLinkHints(): void {
 		if (dialogBlocksLinkHints()) return;
 		if (isEditableTarget(document.activeElement)) return;
 		active = true;
+		clearStickyTimer();
 		refresh();
 	};
 
@@ -369,9 +461,12 @@ export function installCollectionLinkHints(): void {
 		}
 
 		hit.element.click();
-		// Keep hints up while the modifier is held so tab→chip rotation can continue.
+		// Keep hints armed so DPD/PED / chip rotation can continue; refresh
+		// labels and restart the sticky window.
 		requestAnimationFrame(() => {
-			if (active) refresh();
+			if (!active) return;
+			refresh();
+			if (!modifierDown) armStickyTimer();
 		});
 		return true;
 	};
@@ -386,17 +481,32 @@ export function installCollectionLinkHints(): void {
 					!dialogBlocksLinkHints() &&
 					!isEditableTarget(document.activeElement)
 				) {
+					modifierDown = true;
 					show();
 				}
 				return;
 			}
 
-			if (!isLinkHintModifierHeld(event, isMac)) return;
+			if (active && event.key === "Escape") {
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				hide();
+				return;
+			}
 
-			const label = resolveLinkHintLabelKey(event);
-			if (!label) return;
+			// Never activate under ⌘/Alt — that fights browser tab shortcuts.
+			const label = shouldHandleLinkHintActivationKey(
+				event,
+				active,
+				document.activeElement,
+			);
+			if (!label) {
+				if (active && isEditableTarget(document.activeElement)) {
+					hide();
+				}
+				return;
+			}
 
-			if (!active) show();
 			if (activate(label)) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -408,10 +518,9 @@ export function installCollectionLinkHints(): void {
 	document.addEventListener(
 		"keyup",
 		(event) => {
-			if (!active) return;
-			if (isLinkHintModifierKey(event, isApplePlatform())) {
-				hide();
-			}
+			if (!isLinkHintModifierKey(event, isApplePlatform())) return;
+			modifierDown = false;
+			if (active) armStickyTimer();
 		},
 		true,
 	);

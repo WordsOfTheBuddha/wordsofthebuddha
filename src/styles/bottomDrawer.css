@@ -784,7 +784,8 @@ button.construction-part.lookup-word-btn:hover {
 }
 
 .collection-link-hint--dict-tab,
-.collection-link-hint--dict-chip {
+.collection-link-hint--dict-chip,
+.collection-link-hint--card {
 	min-width: var(--link-hint-dict-height);
 	height: var(--link-hint-dict-height);
 	padding: 0 0.22rem;

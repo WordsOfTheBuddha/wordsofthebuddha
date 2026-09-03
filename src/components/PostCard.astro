@@ -54,7 +54,9 @@ const vizHref = `/${id}?viz=1`;
 const isReference = variant === "reference";
 const cardHref = href ?? `/${id}`;
 const cardClamp = isReference ? 2 : clamp;
-const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
+// Keep reference cards on the same horizontal padding as normal cards so
+// ⌘/Alt link-hint badges can sit in the left gutter without overlapping the id.
+const cardPadding = isReference ? "p-5 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 const inlineVolpage = Boolean(volpage && !lastUpdated);
 const descriptionHtml = description?.replace(
 	/\[([^\]]+)\]\(([^)]+)\)/g,

@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import {
 	LINK_HINT_LABELS,
+	LINK_HINT_STICKY_MS,
 	assignLinkHintLabels,
 	collectActiveLinkHintAssignments,
 	collectDictionaryHintTargets,
@@ -11,6 +12,7 @@ import {
 	isLinkHintModifierHeld,
 	isLinkHintModifierKey,
 	resolveLinkHintLabelKey,
+	shouldHandleLinkHintActivationKey,
 } from "./collectionLinkHints";
 
 function key(
@@ -106,6 +108,52 @@ describe("resolveLinkHintLabelKey", () => {
 	});
 });
 
+describe("LINK_HINT_STICKY_MS", () => {
+	it("keeps hints armed for a few seconds after modifier release", () => {
+		assert.equal(LINK_HINT_STICKY_MS, 3000);
+	});
+});
+
+describe("shouldHandleLinkHintActivationKey", () => {
+	it("accepts bare digits only while hints are armed", () => {
+		assert.equal(
+			shouldHandleLinkHintActivationKey(key({ key: "1" }), true, null),
+			"1",
+		);
+		assert.equal(
+			shouldHandleLinkHintActivationKey(key({ key: "1" }), false, null),
+			null,
+		);
+	});
+
+	it("rejects ⌘/Alt/Ctrl chords so browser shortcuts stay free", () => {
+		assert.equal(
+			shouldHandleLinkHintActivationKey(
+				key({ key: "1", metaKey: true }),
+				true,
+				null,
+			),
+			null,
+		);
+		assert.equal(
+			shouldHandleLinkHintActivationKey(
+				key({ key: "2", altKey: true }),
+				true,
+				null,
+			),
+			null,
+		);
+		assert.equal(
+			shouldHandleLinkHintActivationKey(
+				key({ key: "a", ctrlKey: true }),
+				true,
+				null,
+			),
+			null,
+		);
+	});
+});
+
 describe("isElementInViewport", () => {
 	it("detects overlap with the viewport box", () => {
 		const dom = new JSDOM("<!doctype html><div id='t'></div>");
@@ -160,74 +208,46 @@ describe("assignLinkHintLabels", () => {
 });
 
 describe("collectViewportCollectionPostLinks", () => {
-	it("returns visible viewport post-links from collection grids only", () => {
+	it("returns visible viewport post-links from collection grids and search cards", () => {
 		const dom = new JSDOM(`<!doctype html>
 			<html><body>
 				<div id="collections-grid">
 					<article class="post-item"><a class="post-link" href="/mn">MN</a></article>
 					<article class="post-item hidden"><a class="post-link" href="/sn">SN</a></article>
 				</div>
+				<div id="drawer-disc-cards">
+					<article class="post-item"><a class="post-link" href="/an1.1">AN 1.1</a></article>
+				</div>
+				<a class="search-discourse-card" data-search-result href="/dn22">DN 22</a>
 				<div id="other"><a class="post-link" href="/x">X</a></div>
 			</body></html>`);
-		const { document, HTMLElement } = dom.window;
+		const { document } = dom.window;
 
-		// jsdom has no layout; stub visibility + geometry for the visible card.
 		const visible = document.querySelector(
 			"#collections-grid .post-item:not(.hidden) a.post-link",
 		) as HTMLAnchorElement;
 		const hidden = document.querySelector(
 			"#collections-grid .post-item.hidden a.post-link",
 		) as HTMLAnchorElement;
+		const qualityDisc = document.querySelector(
+			"#drawer-disc-cards a.post-link",
+		) as HTMLAnchorElement;
+		const searchCard = document.querySelector(
+			"a.search-discourse-card",
+		) as HTMLAnchorElement;
 		const outside = document.querySelector(
 			"#other a.post-link",
 		) as HTMLAnchorElement;
 
-		for (const link of [visible, hidden, outside]) {
-			link.getBoundingClientRect = () =>
-				({
-					top: 20,
-					left: 20,
-					bottom: 60,
-					right: 120,
-					width: 100,
-					height: 40,
-					x: 20,
-					y: 20,
-					toJSON() {},
-				}) as DOMRect;
-		}
-
-		Object.defineProperty(HTMLElement.prototype, "getClientRects", {
-			configurable: true,
-			value() {
-				return [{}, {}, {}];
-			},
-		});
-		const styleProto = dom.window.CSSStyleDeclaration.prototype;
-		const originalGetProperty = styleProto.getPropertyValue;
-		styleProto.getPropertyValue = function (prop: string) {
-			if (prop === "display") return "block";
-			if (prop === "visibility") return "visible";
-			return originalGetProperty.call(this, prop);
-		};
-
-		// Patch getComputedStyle used by isElementVisible.
-		dom.window.getComputedStyle = ((el: Element) => {
-			const display =
-				el.classList.contains("hidden") ||
-				el.closest?.(".hidden")
-					? "none"
-					: "block";
-			return {
-				display,
-				visibility: "visible",
-				getPropertyValue(prop: string) {
-					if (prop === "display") return display;
-					if (prop === "visibility") return "visible";
-					return "";
-				},
-			} as CSSStyleDeclaration;
-		}) as typeof getComputedStyle;
+		stubVisibleGeometry(dom, [
+			visible,
+			hidden,
+			qualityDisc,
+			searchCard,
+			outside,
+			document.querySelector("#collections-grid")!,
+			document.querySelector("#drawer-disc-cards")!,
+		]);
 
 		const previousWindow = globalThis.window;
 		const previousDocument = globalThis.document;
@@ -236,8 +256,10 @@ describe("collectViewportCollectionPostLinks", () => {
 
 		try {
 			const links = collectViewportCollectionPostLinks(document);
-			assert.equal(links.length, 1);
-			assert.equal(links[0]?.getAttribute("href"), "/mn");
+			assert.deepEqual(
+				links.map((link) => link.getAttribute("href")),
+				["/mn", "/an1.1", "/dn22"],
+			);
 		} finally {
 			globalThis.window = previousWindow;
 			globalThis.document = previousDocument;

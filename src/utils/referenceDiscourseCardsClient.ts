@@ -94,7 +94,7 @@ function renderReferenceCard(entry: {
 		: "";
 	const card = document.createElement("div");
 	card.className =
-		"post-item post-item--reference not-prose relative flex flex-col w-full p-3 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
+		"post-item post-item--reference not-prose relative flex flex-col w-full p-5 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
 	card.dataset.slug = entry.slug;
 	card.innerHTML = `
 			<div class="flex items-start justify-between">
