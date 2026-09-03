@@ -16,6 +16,7 @@ import {
 	type AskAdminUserReviewRow,
 } from "../../utils/aiAskTelemetryQuery";
 import { formatDiscourseTitle } from "../../utils/discourseSort";
+import { readIndexFromDisk } from "../../utils/loadSearchIndexData.server";
 
 const session = Astro.cookies.get("__session")?.value;
 const user = await verifyUser(session, { cookies: Astro.cookies });
@@ -50,6 +51,21 @@ const summary = summarizeAskAdminRows(rows, userReviews);
 const visible = filterAskAdminRows(rows, query);
 const visibleNotes = filterAskUserReviewRows(userReviews, query.since);
 
+type DiscourseMeta = { title: string; description: string };
+const discourseMeta = new Map<string, DiscourseMeta>();
+try {
+	const metaDocs = (await readIndexFromDisk("search-meta.json")) || [];
+	for (const doc of metaDocs) {
+		if (!doc?.slug) continue;
+		discourseMeta.set(doc.slug, {
+			title: typeof doc.title === "string" ? doc.title : "",
+			description: typeof doc.description === "string" ? doc.description : "",
+		});
+	}
+} catch (error) {
+	console.warn("[admin/ask] search-meta lookup unavailable", error);
+}
+
 function relativeTime(iso: string | null): string {
 	if (!iso) return "—";
 	const ms = Date.now() - new Date(iso).getTime();
@@ -73,24 +89,44 @@ function shortModel(model: string): string {
 function hrefFor(patch: Partial<AskAdminQuery>): string {
 	return askAdminHref({ ...query, ...patch });
 }
+
+function discourseFor(slug: string): { id: string; title: string; description: string } {
+	const meta = discourseMeta.get(slug);
+	return {
+		id: formatDiscourseTitle(slug),
+		title: meta?.title || formatDiscourseTitle(slug),
+		description: meta?.description || "",
+	};
+}
 ---
 
 <Layout
-	title="Ask inbox"
+	title=""
 	seoTitle="Ask inbox"
 	robots="noindex, nofollow"
 	showAuth={true}
 	showSearch={false}
 >
-	<main class="admin-ask container mx-auto px-3 sm:px-4 py-6 max-w-3xl" data-admin-ask>
+	<main
+		class="admin-ask container mx-auto px-3 sm:px-4 py-6 max-w-3xl"
+		data-admin-ask
+		data-status={query.status}
+		data-view={query.view}
+	>
 		<header class="admin-ask-header">
-			<h1 class="admin-ask-title">Ask inbox</h1>
+			<div class="admin-ask-heading">
+				<h1 class="admin-ask-title">Ask inbox</h1>
+				{
+					email && (
+						<p class="admin-ask-meta" title={`Signed in as ${email}`}>
+							{email}
+						</p>
+					)
+				}
+			</div>
 			<p class="admin-ask-lead">
-				Review questions, model thinking, search chips, and result discourses. Mark items
-				reviewed to clear them from the default inbox. Written notes are the +5 Ask
-				feedback submissions.
+				Mark reviewed to clear the default inbox. Written notes are +5 Ask feedback.
 			</p>
-			<p class="admin-ask-meta">Signed in as {email}</p>
 		</header>
 
 		{
@@ -100,126 +136,126 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 				<>
 					<section class="admin-ask-stats" aria-label="Summary">
 						<div class="admin-ask-stat">
-							<strong>{summary.needsReview}</strong>
+							<strong data-stat="needsReview">{summary.needsReview}</strong>
 							<span>Needs review</span>
 						</div>
 						<div class="admin-ask-stat">
-							<strong>{summary.down}</strong>
+							<strong data-stat="down">{summary.down}</strong>
 							<span>Not helpful</span>
 						</div>
 						<div class="admin-ask-stat">
-							<strong>{summary.up}</strong>
+							<strong data-stat="up">{summary.up}</strong>
 							<span>Helpful</span>
 						</div>
 						<div class="admin-ask-stat">
-							<strong>{summary.totalAsks}</strong>
+							<strong data-stat="totalAsks">{summary.totalAsks}</strong>
 							<span>Loaded asks</span>
 						</div>
 						<div class="admin-ask-stat">
-							<strong>{summary.userReviews}</strong>
+							<strong data-stat="userReviews">{summary.userReviews}</strong>
 							<span>Written notes</span>
 						</div>
 					</section>
 
 					<section class="admin-ask-toolbar" aria-label="Filters">
-						<nav class="admin-ask-filters" aria-label="Inbox view">
-							<a
-								class:list={["admin-ask-filter", query.view === "asks" && "is-active"]}
-								href={hrefFor({ view: "asks" })}
-							>
-								Asks
-							</a>
-							<a
-								class:list={["admin-ask-filter", query.view === "notes" && "is-active"]}
-								href={hrefFor({ view: "notes" })}
-							>
-								Written notes
-							</a>
-						</nav>
+						<div class="admin-ask-toolbar-row">
+							<nav class="admin-ask-filters" aria-label="Inbox view">
+								<a
+									class:list={["admin-ask-filter", query.view === "asks" && "is-active"]}
+									href={hrefFor({ view: "asks" })}
+								>
+									Asks
+								</a>
+								<a
+									class:list={["admin-ask-filter", query.view === "notes" && "is-active"]}
+									href={hrefFor({ view: "notes" })}
+								>
+									Written notes
+								</a>
+							</nav>
+							<label class="admin-ask-select">
+								<span class="sr-only">Date range</span>
+								<select data-admin-nav aria-label="Date range">
+									<option value={hrefFor({ since: "24h" })} selected={query.since === "24h"}>
+										Last 24 hours
+									</option>
+									<option value={hrefFor({ since: "7d" })} selected={query.since === "7d"}>
+										Last 7 days
+									</option>
+									<option value={hrefFor({ since: "30d" })} selected={query.since === "30d"}>
+										Last 30 days
+									</option>
+									<option value={hrefFor({ since: "all" })} selected={query.since === "all"}>
+										All time
+									</option>
+								</select>
+							</label>
+						</div>
 						{
 							query.view === "asks" && (
-								<nav class="admin-ask-filters" aria-label="Review status">
-									<a
-										class:list={["admin-ask-filter", query.status === "needs" && "is-active"]}
-										href={hrefFor({ status: "needs" })}
-									>
-										Needs review
-									</a>
-									<a
-										class:list={["admin-ask-filter", query.status === "reviewed" && "is-active"]}
-										href={hrefFor({ status: "reviewed" })}
-									>
-										Reviewed
-									</a>
-									<a
-										class:list={["admin-ask-filter", query.status === "all" && "is-active"]}
-										href={hrefFor({ status: "all" })}
-									>
-										All status
-									</a>
-								</nav>
+								<div class="admin-ask-toolbar-row">
+									<label class="admin-ask-select">
+										<span class="sr-only">Review status</span>
+										<select data-admin-nav aria-label="Review status">
+											<option
+												value={hrefFor({ status: "needs" })}
+												selected={query.status === "needs"}
+											>
+												Needs review
+											</option>
+											<option
+												value={hrefFor({ status: "reviewed" })}
+												selected={query.status === "reviewed"}
+											>
+												Reviewed
+											</option>
+											<option
+												value={hrefFor({ status: "all" })}
+												selected={query.status === "all"}
+											>
+												All status
+											</option>
+										</select>
+									</label>
+									<label class="admin-ask-select">
+										<span class="sr-only">Rating</span>
+										<select data-admin-nav aria-label="Rating">
+											<option
+												value={hrefFor({ rating: "all" })}
+												selected={query.rating === "all"}
+											>
+												Any rating
+											</option>
+											<option
+												value={hrefFor({ rating: "down" })}
+												selected={query.rating === "down"}
+											>
+												Not helpful
+											</option>
+											<option
+												value={hrefFor({ rating: "up" })}
+												selected={query.rating === "up"}
+											>
+												Helpful
+											</option>
+											<option
+												value={hrefFor({ rating: "none" })}
+												selected={query.rating === "none"}
+											>
+												No rating
+											</option>
+										</select>
+									</label>
+								</div>
 							)
 						}
-						{
-							query.view === "asks" && (
-								<nav class="admin-ask-filters" aria-label="Rating">
-									<a
-										class:list={["admin-ask-filter", query.rating === "all" && "is-active"]}
-										href={hrefFor({ rating: "all" })}
-									>
-										Any rating
-									</a>
-									<a
-										class:list={["admin-ask-filter", query.rating === "down" && "is-active"]}
-										href={hrefFor({ rating: "down" })}
-									>
-										👎
-									</a>
-									<a
-										class:list={["admin-ask-filter", query.rating === "up" && "is-active"]}
-										href={hrefFor({ rating: "up" })}
-									>
-										👍
-									</a>
-									<a
-										class:list={["admin-ask-filter", query.rating === "none" && "is-active"]}
-										href={hrefFor({ rating: "none" })}
-									>
-										No rating
-									</a>
-								</nav>
-							)
-						}
-						<nav class="admin-ask-filters" aria-label="Date range">
-							<a
-								class:list={["admin-ask-filter", query.since === "24h" && "is-active"]}
-								href={hrefFor({ since: "24h" })}
-							>
-								24h
-							</a>
-							<a
-								class:list={["admin-ask-filter", query.since === "7d" && "is-active"]}
-								href={hrefFor({ since: "7d" })}
-							>
-								7d
-							</a>
-							<a
-								class:list={["admin-ask-filter", query.since === "30d" && "is-active"]}
-								href={hrefFor({ since: "30d" })}
-							>
-								30d
-							</a>
-							<a
-								class:list={["admin-ask-filter", query.since === "all" && "is-active"]}
-								href={hrefFor({ since: "all" })}
-							>
-								All time
-							</a>
-						</nav>
 					</section>
 
-					<p class="admin-ask-count">
-						{query.view === "notes" ? visibleNotes.length : visible.length} shown
+					<p class="admin-ask-count" data-admin-count>
+						<span data-shown-count>
+							{query.view === "notes" ? visibleNotes.length : visible.length}
+						</span>{" "}
+						shown
 						{query.view === "asks" && query.status === "needs" ? " · inbox" : ""}
 						{query.view === "notes" ? " · written notes" : ""}
 						{query.since !== "all" ? ` · ${query.since}` : ""}
@@ -306,13 +342,11 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 											)
 										}
 										{
-											row.reasoning ? (
+											row.reasoning && (
 												<details class="admin-ask-reasoning">
 													<summary>Model thinking</summary>
 													<pre>{row.reasoning}</pre>
 												</details>
-											) : (
-												<p class="admin-ask-no-reasoning">No model thinking stored for this ask.</p>
 											)
 										}
 										{
@@ -340,19 +374,34 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 										}
 										{
 											row.resultSlugs.length > 0 ? (
-												<ol class="admin-ask-results">
-													{row.resultSlugs.map((slug) => (
-														<li>
-															<a href={`/${slug}`}>{formatDiscourseTitle(slug)}</a>
-														</li>
-													))}
-												</ol>
+												<ul class="admin-ask-results">
+													{row.resultSlugs.map((slug) => {
+														const discourse = discourseFor(slug);
+														return (
+															<li>
+																<a
+																	class="admin-ask-result"
+																	href={`/${slug}`}
+																	aria-label={`${discourse.id}: ${discourse.title}`}
+																>
+																	<span class="admin-ask-result-id">{discourse.id}</span>
+																	<span class="admin-ask-result-popover" role="tooltip">
+																		<strong>{discourse.title}</strong>
+																		{discourse.description && (
+																			<span>{discourse.description}</span>
+																		)}
+																	</span>
+																</a>
+															</li>
+														);
+													})}
+												</ul>
 											) : (
 												<p class="admin-ask-empty-results">No discourse results</p>
 											)
 										}
 										<div class="admin-ask-card-actions">
-											<p class="admin-ask-foot">
+											<p class="admin-ask-foot" data-admin-foot>
 												{row.resultCount} result{row.resultCount === 1 ? "" : "s"}
 												{row.ms ? ` · ${Math.round(row.ms / 100) / 10}s` : ""}
 												{row.offTopic ? " · off-topic" : ""}
@@ -384,11 +433,54 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 <script>
 	const root = document.querySelector("[data-admin-ask]");
 	if (root) {
+		const statusFilter = root.getAttribute("data-status") || "needs";
+
+		root.querySelectorAll("[data-admin-nav]").forEach((select) => {
+			select.addEventListener("change", () => {
+				const el = select as HTMLSelectElement;
+				if (el.value) window.location.assign(el.value);
+			});
+		});
+
+		function readStat(name: string): number {
+			const el = root.querySelector(`[data-stat="${name}"]`);
+			const n = Number(el?.textContent || "0");
+			return Number.isFinite(n) ? n : 0;
+		}
+
+		function writeStat(name: string, value: number): void {
+			const el = root.querySelector(`[data-stat="${name}"]`);
+			if (el) el.textContent = String(Math.max(0, value));
+		}
+
+		function adjustShown(delta: number): void {
+			const el = root.querySelector("[data-shown-count]");
+			if (!el) return;
+			const next = Math.max(0, Number(el.textContent || "0") + delta);
+			el.textContent = String(next);
+		}
+
+		function setCardReviewed(card: Element, reviewed: boolean): void {
+			const badge = card.querySelector(".admin-ask-badge.is-needs, .admin-ask-badge.is-reviewed");
+			if (badge) {
+				badge.classList.toggle("is-needs", !reviewed);
+				badge.classList.toggle("is-reviewed", reviewed);
+				badge.textContent = reviewed ? "Reviewed" : "Needs review";
+			}
+			const button = card.querySelector("[data-admin-review]") as HTMLButtonElement | null;
+			if (button) {
+				button.setAttribute("data-reviewed", reviewed ? "1" : "0");
+				button.textContent = reviewed ? "Back to inbox" : "Mark reviewed";
+				button.disabled = false;
+			}
+		}
+
 		root.querySelectorAll("[data-admin-review]").forEach((button) => {
 			button.addEventListener("click", async () => {
 				const el = button as HTMLButtonElement;
 				const requestId = el.getAttribute("data-request-id") || "";
 				const currentlyReviewed = el.getAttribute("data-reviewed") === "1";
+				const nextReviewed = !currentlyReviewed;
 				if (!requestId || el.disabled) return;
 				el.disabled = true;
 				try {
@@ -397,7 +489,7 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							requestId,
-							reviewed: !currentlyReviewed,
+							reviewed: nextReviewed,
 						}),
 					});
 					if (!response.ok) {
@@ -405,13 +497,20 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 						return;
 					}
 					const card = el.closest(".admin-ask-card");
-					const params = new URLSearchParams(window.location.search);
-					const status = params.get("status") || "needs";
-					if (status === "needs" && !currentlyReviewed) {
-						card?.remove();
+					writeStat(
+						"needsReview",
+						readStat("needsReview") + (nextReviewed ? -1 : 1),
+					);
+
+					const leaveInbox = statusFilter === "needs" && nextReviewed;
+					const leaveReviewed = statusFilter === "reviewed" && !nextReviewed;
+					if ((leaveInbox || leaveReviewed) && card) {
+						card.remove();
+						adjustShown(-1);
 						return;
 					}
-					window.location.reload();
+					if (card) setCardReviewed(card, nextReviewed);
+					else el.disabled = false;
 				} catch {
 					el.disabled = false;
 				}
@@ -421,14 +520,32 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 </script>
 
 <style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
 	.admin-ask-header {
-		margin-bottom: 1.25rem;
+		margin-bottom: 1rem;
+	}
+	.admin-ask-heading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.75rem;
+		flex-wrap: wrap;
 	}
 	.admin-ask-title {
 		font-family: Spectral, serif;
 		font-size: clamp(1.6rem, 3vw, 2rem);
 		font-weight: 700;
-		margin: 0 0 0.35rem;
+		margin: 0;
 	}
 	.admin-ask-lead,
 	.admin-ask-meta,
@@ -438,10 +555,24 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 	.admin-ask-empty-results,
 	.admin-ask-foot,
 	.admin-ask-count,
-	.admin-ask-model,
-	.admin-ask-no-reasoning {
+	.admin-ask-model {
 		color: var(--text-muted);
 		margin: 0.25rem 0 0;
+	}
+	.admin-ask-lead {
+		margin-top: 0.35rem;
+		font-size: 0.92rem;
+		line-height: 1.4;
+		max-width: 36rem;
+	}
+	.admin-ask-meta {
+		margin: 0;
+		font-size: 0.75rem;
+		opacity: 0.75;
+		max-width: 16rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.admin-ask-summary {
 		margin: 0.55rem 0 0;
@@ -464,7 +595,7 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(5.6rem, 1fr));
 		gap: 0.6rem;
-		margin: 1.25rem 0;
+		margin: 1rem 0;
 	}
 	.admin-ask-stat {
 		border: 1px solid var(--surface-border);
@@ -483,13 +614,20 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 	}
 	.admin-ask-toolbar {
 		display: grid;
-		gap: 0.55rem;
+		gap: 0.5rem;
 		margin-bottom: 0.75rem;
+	}
+	.admin-ask-toolbar-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		justify-content: space-between;
 	}
 	.admin-ask-filters {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.45rem;
+		gap: 0.4rem;
 	}
 	.admin-ask-filter {
 		text-decoration: none;
@@ -505,6 +643,24 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 		border-color: var(--primary-color);
 		font-weight: 600;
 	}
+	.admin-ask-select {
+		display: inline-flex;
+		min-width: 9.5rem;
+	}
+	.admin-ask-select select {
+		width: 100%;
+		appearance: none;
+		border: 1px solid var(--surface-border);
+		border-radius: 999px;
+		padding: 0.3rem 1.8rem 0.3rem 0.75rem;
+		font-size: 0.85rem;
+		color: var(--text-color);
+		background:
+			linear-gradient(45deg, transparent 50%, var(--text-muted) 50%) calc(100% - 14px) calc(50% - 2px) / 5px 5px no-repeat,
+			linear-gradient(135deg, var(--text-muted) 50%, transparent 50%) calc(100% - 9px) calc(50% - 2px) / 5px 5px no-repeat,
+			var(--surface-elevated);
+		cursor: pointer;
+	}
 	.admin-ask-list {
 		list-style: none;
 		padding: 0;
@@ -518,6 +674,7 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 		border-radius: 0.9rem;
 		padding: 1rem 1.05rem;
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+		overflow: visible;
 	}
 	.admin-ask-card-top {
 		display: flex;
@@ -592,10 +749,6 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 		color: var(--text-color);
 		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 	}
-	.admin-ask-no-reasoning {
-		font-size: 0.8rem;
-		margin-top: 0.55rem;
-	}
 	.admin-ask-chips {
 		display: flex;
 		flex-wrap: wrap;
@@ -620,16 +773,68 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 		text-decoration: none;
 	}
 	.admin-ask-results {
+		list-style: none;
 		margin: 0.7rem 0 0;
-		padding-left: 1.1rem;
-		color: var(--text-color);
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		column-gap: 0.35rem;
+		row-gap: 0.12rem;
 	}
-	.admin-ask-results a {
-		color: var(--link-color);
+	.admin-ask-results > li {
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+	}
+	.admin-ask-result {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		line-height: 1.2;
 		text-decoration: none;
+		color: var(--link-color);
+		border: 1px solid var(--surface-border);
+		border-radius: 999px;
+		padding: 0.15rem 0.55rem;
+		font-size: 0.78rem;
+		background: color-mix(in srgb, var(--surface-elevated) 92%, #000 4%);
 	}
-	.admin-ask-results a:hover {
-		text-decoration: underline;
+	.admin-ask-result:hover,
+	.admin-ask-result:focus-visible {
+		border-color: var(--primary-color);
+		outline: none;
+	}
+	.admin-ask-result-popover {
+		display: none;
+		position: absolute;
+		left: 0;
+		bottom: calc(100% + 0.4rem);
+		z-index: 30;
+		width: min(18rem, 70vw);
+		padding: 0.55rem 0.65rem;
+		border: 1px solid var(--surface-border);
+		border-radius: 0.65rem;
+		background: var(--surface-elevated);
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+		color: var(--text-color);
+		pointer-events: none;
+	}
+	.admin-ask-result-popover strong {
+		display: block;
+		font-size: 0.82rem;
+		line-height: 1.3;
+		margin-bottom: 0.2rem;
+	}
+	.admin-ask-result-popover span {
+		display: block;
+		font-size: 0.75rem;
+		line-height: 1.4;
+		color: var(--text-muted);
+	}
+	.admin-ask-result:hover .admin-ask-result-popover,
+	.admin-ask-result:focus-visible .admin-ask-result-popover {
+		display: block;
 	}
 	.admin-ask-card-actions {
 		display: flex;
@@ -670,6 +875,16 @@ function hrefFor(patch: Partial<AskAdminQuery>): string {
 			flex-direction: row;
 			align-items: center;
 			flex-wrap: wrap;
+		}
+		.admin-ask-toolbar-row {
+			justify-content: flex-start;
+		}
+		.admin-ask-select {
+			flex: 1 1 9rem;
+		}
+		.admin-ask-result-popover {
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 </style>
