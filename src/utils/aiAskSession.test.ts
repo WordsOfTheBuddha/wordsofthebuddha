@@ -4,6 +4,11 @@ import {
 	AI_ASK_SESSION_LIMIT,
 	askHistoryEntriesForRestore,
 	clearActiveAskThread,
+	clearAskResumeFromDiscourse,
+	clearAskThreadResumeIntent,
+	markAskResumeFromDiscourse,
+	shouldRestoreActiveAskThread,
+	shouldResumeAskFromDiscourse,
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
 	mergeAskHistoryEntries,
@@ -230,6 +235,53 @@ describe("formatAskRelativeTime", () => {
 		assert.equal(formatAskRelativeTime(now - 30_000, now), "just now");
 		assert.equal(formatAskRelativeTime(now - 5 * 60_000, now), "5m ago");
 		assert.equal(formatAskRelativeTime(now - 3 * 60 * 60_000, now), "3h ago");
+	});
+});
+
+describe("Ask resume from discourse", () => {
+	it("tracks resume intent in sessionStorage", () => {
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+			removeItem: (key: string) => {
+				store.delete(key);
+			},
+		} as Storage;
+		assert.equal(shouldResumeAskFromDiscourse(storage), false);
+		markAskResumeFromDiscourse(storage);
+		assert.equal(shouldResumeAskFromDiscourse(storage), true);
+		clearAskResumeFromDiscourse(storage);
+		assert.equal(shouldResumeAskFromDiscourse(storage), false);
+	});
+
+	it("clears thread and resume intent together", () => {
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+			removeItem: (key: string) => {
+				store.delete(key);
+			},
+		} as Storage;
+		writeActiveAskThread([entry("mindfulness", 1)], storage);
+		markAskResumeFromDiscourse(storage);
+		clearAskThreadResumeIntent(storage);
+		assert.deepEqual(readActiveAskThread(storage), []);
+		assert.equal(shouldResumeAskFromDiscourse(storage), false);
+	});
+});
+
+describe("shouldRestoreActiveAskThread", () => {
+	it("restores only on Back from a discourse or reload", () => {
+		assert.equal(shouldRestoreActiveAskThread("back_forward", true), true);
+		assert.equal(shouldRestoreActiveAskThread("back_forward", false), false);
+		assert.equal(shouldRestoreActiveAskThread("reload", false), true);
+		assert.equal(shouldRestoreActiveAskThread("navigate", true), false);
 	});
 });
 

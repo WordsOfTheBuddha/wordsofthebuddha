@@ -11,14 +11,18 @@ import {
 } from "./aiAskShare";
 import {
 	askHistoryEntriesForRestore,
-	clearActiveAskThread,
+	clearAskResumeFromDiscourse,
+	clearAskThreadResumeIntent,
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
+	markAskResumeFromDiscourse,
 	mergeAskHistoryEntries,
 	normalizeAskQuestionKey,
 	readActiveAskThread,
 	readAiAskSession,
 	removeAskHistoryEntriesByQuestions,
+	shouldRestoreActiveAskThread,
+	shouldResumeAskFromDiscourse,
 	upsertAiAskSessionEntry,
 	writeActiveAskThread,
 	writeAiAskSession,
@@ -1057,6 +1061,38 @@ export function attachAiMode(options: {
 		writeActiveAskThread(entries);
 	}
 
+	function navigationEntryType(): PerformanceNavigationTiming["type"] | "" {
+		const entry = performance.getEntriesByType(
+			"navigation",
+		)[0] as PerformanceNavigationTiming | undefined;
+		return entry?.type || "";
+	}
+
+	function restoreActiveThreadFromStorage(): void {
+		const active = readActiveAskThread();
+		if (active.length === 0) return;
+		turns = active.map((entry) => {
+			const turn = sessionEntryToTurn(entry);
+			turn.fromCache = false;
+			return turn;
+		});
+		syncLayout();
+	}
+
+	function leaveAskHome(): void {
+		clearAskThreadResumeIntent();
+		turns = [];
+		setStatus("");
+		syncLayout();
+		input.focus();
+	}
+
+	function markLeavingAskForDiscourse(): void {
+		if (shareMode || turns.length === 0) return;
+		markAskResumeFromDiscourse();
+		persistActiveThread();
+	}
+
 	/** Conversation snapshot up to this turn (for pin/history restore). */
 	function threadSnapshotForTurn(turn: AiAskTurn): AiAskSessionEntry[] {
 		const index = turns.indexOf(turn);
@@ -1075,6 +1111,7 @@ export function attachAiMode(options: {
 	function openHistoryEntry(entry: AiAskSessionEntry): void {
 		const restored = askHistoryEntriesForRestore(entry);
 		if (restored.length === 0) return;
+		clearAskResumeFromDiscourse();
 		turns = restored.map((item, index) => {
 			const turn = sessionEntryToTurn(item);
 			// Multi-turn restore is a conversation resume, not a silent cache hit.
@@ -1270,9 +1307,8 @@ export function attachAiMode(options: {
 		sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys);
 		writeAiAskSession(sessionEntries);
 		if (clearOpen) {
-			turns = [];
-			clearActiveAskThread();
-			setStatus("");
+			leaveAskHome();
+			return;
 		}
 		renderHistory();
 		syncLayout();
@@ -2219,11 +2255,7 @@ export function attachAiMode(options: {
 					window.location.assign(ASK_HOME_HREF);
 					return;
 				}
-				turns = [];
-				clearActiveAskThread();
-				setStatus("");
-				syncLayout();
-				input.focus();
+				leaveAskHome();
 			});
 		});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-share]").forEach((button) => {
@@ -2395,6 +2427,10 @@ export function attachAiMode(options: {
 			typeof replaceTurnIndex === "number" &&
 			replaceTurnIndex >= 0 &&
 			replaceTurnIndex < turns.length;
+
+		if (!replacing && turns.length === 0) {
+			clearAskResumeFromDiscourse();
+		}
 
 		// Follow-ups must always hit the model (diversity / refinement).
 		// Only the first turn of a thread may restore a prior session answer.
@@ -2820,14 +2856,30 @@ export function attachAiMode(options: {
 				window.location.assign(ASK_HOME_HREF);
 				return;
 			}
-			turns = [];
 			pendingReplaceQuestions = null;
-			clearActiveAskThread();
-			setStatus("");
-			syncLayout();
-			input.focus();
+			leaveAskHome();
 		});
 	});
+
+	thread.addEventListener(
+		"click",
+		(event) => {
+			if (shareMode || turns.length === 0) return;
+			const anchor = (event.target as Element | null)?.closest("a[href]");
+			if (!anchor || !thread.contains(anchor)) return;
+			const href = (anchor.getAttribute("href") || "").trim();
+			if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+			if (href.startsWith("/search")) return;
+			try {
+				const url = new URL(href, window.location.origin);
+				if (url.origin !== window.location.origin) return;
+			} catch {
+				return;
+			}
+			markLeavingAskForDiscourse();
+		},
+		true,
+	);
 
 	quotaDialog?.querySelectorAll("[data-ai-quota-close]").forEach((el) => {
 		el.addEventListener("click", () => closeQuotaDialog());
@@ -2929,17 +2981,16 @@ export function attachAiMode(options: {
 			fitTextarea(input);
 		}
 	} else if (!shareMode && turns.length === 0) {
-		// Restore the open thread after Back from a discourse (sessionStorage).
-		// Prefer this over auto-publishing every Ask to /ask/:slug.
 		const active = readActiveAskThread();
-		if (active.length > 0) {
-			turns = active.map((entry) => {
-				const turn = sessionEntryToTurn(entry);
-				// Resume — not a silent cache hit from the history list.
-				turn.fromCache = false;
-				return turn;
-			});
-			syncLayout();
+		const navType = navigationEntryType();
+		const resumeFromDiscourse = shouldResumeAskFromDiscourse();
+		if (
+			active.length > 0 &&
+			shouldRestoreActiveAskThread(navType, resumeFromDiscourse)
+		) {
+			restoreActiveThreadFromStorage();
+		} else if (active.length > 0 && navType === "navigate") {
+			clearAskThreadResumeIntent();
 		}
 	}
 

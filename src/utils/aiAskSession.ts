@@ -447,3 +447,56 @@ export function clearActiveAskThread(
 		/* ignore */
 	}
 }
+
+/** Set when the reader leaves an open Ask for a discourse hit (expect Back). */
+const ASK_RESUME_FROM_DISCOURSE_KEY = "ai-ask-resume-from-discourse-v1";
+
+export function markAskResumeFromDiscourse(
+	storage: Storage | null | undefined = sessionStorageOrNull(),
+): void {
+	if (!storage) return;
+	try {
+		storage.setItem(ASK_RESUME_FROM_DISCOURSE_KEY, "1");
+	} catch {
+		/* quota / private mode */
+	}
+}
+
+export function shouldResumeAskFromDiscourse(
+	storage: Storage | null | undefined = sessionStorageOrNull(),
+): boolean {
+	if (!storage) return false;
+	return storage.getItem(ASK_RESUME_FROM_DISCOURSE_KEY) === "1";
+}
+
+export function clearAskResumeFromDiscourse(
+	storage: Storage | null | undefined = sessionStorageOrNull(),
+): void {
+	if (!storage) return;
+	try {
+		storage.removeItem(ASK_RESUME_FROM_DISCOURSE_KEY);
+	} catch {
+		/* ignore */
+	}
+}
+
+/** Drop both the in-tab thread and any pending Back-from-discourse resume. */
+export function clearAskThreadResumeIntent(
+	storage: Storage | null | undefined = sessionStorageOrNull(),
+): void {
+	clearActiveAskThread(storage);
+	clearAskResumeFromDiscourse(storage);
+}
+
+/**
+ * Restore the open Ask thread only when the reader is returning to it — not
+ * when they open Ask fresh via nav (New question, Back, navbar, etc.).
+ */
+export function shouldRestoreActiveAskThread(
+	navigationType: string,
+	resumeFromDiscourse: boolean,
+): boolean {
+	if (navigationType === "back_forward") return resumeFromDiscourse;
+	if (navigationType === "reload") return true;
+	return false;
+}
