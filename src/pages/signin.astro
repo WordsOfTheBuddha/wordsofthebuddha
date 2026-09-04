@@ -124,6 +124,7 @@ if (Astro.cookies.has("__session")) {
 		flushListenActivity,
 		flushOfflineReadPages,
 	} from "../utils/listenActivityClient";
+	import { writeNavAuthCache } from "../utils/navAuthClient";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") ||
@@ -314,6 +315,11 @@ if (Astro.cookies.has("__session")) {
 				} catch {
 					/* best-effort; Review Room will retry */
 				}
+				const displayName =
+					signInResult.user.displayName ||
+					signInResult.user.email ||
+					"User";
+				writeNavAuthCache({ signedIn: true, displayName });
 				window.location.assign(response.url);
 			}
 		} catch (error: any) {

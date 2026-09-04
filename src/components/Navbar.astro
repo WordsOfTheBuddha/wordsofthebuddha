@@ -20,9 +20,10 @@ const pathOnly = Astro.url.pathname;
 const isInReviewSection =
 	pathOnly === "/review-room" || pathOnly === "/profile";
 
-// Try SSR user when available (for SSR routes); static routes will show placeholder and hydrate on client.
-// Skip cookie lookup for signed-in-only pages: home is CDN-cached, so personalizing HTML
-// would leak the first visitor's name; discover is prerendered anyway.
+// Resolve the user only on per-request SSR. Prerendered HTML is shared (and
+// home is CDN-cached), so personalizing it would leak the first visitor's name.
+// If this pass did not produce a user, ship an empty slot — never a guest
+// Register button. Client hydration via /api/auth/me paints the real control.
 let user: any = null;
 if (
 	authEnabled &&
@@ -36,6 +37,7 @@ if (
 		} catch (e) {}
 	}
 }
+const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 ---
 
 <nav
@@ -82,6 +84,8 @@ if (
 						class="relative"
 						id="nav-auth-slot"
 						data-state="signed-in"
+						data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
+						data-register-href={registerHref}
 					>
 						<button
 							type="button"
@@ -141,23 +145,14 @@ if (
 						</div>
 					</div>
 				) : (
-					// Placeholder that will be hydrated on static pages
 					<div
 						id="nav-auth-slot"
 						class="relative"
-						data-state="signed-out"
+						data-state="pending"
 						data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
+						data-register-href={registerHref}
+						aria-busy="true"
 					>
-						{
-							!hideGuestAuth && (
-								<a
-									href={`/register?returnTo=${encodeURIComponent(currentPath)}`}
-									class="px-3 py-1 text-sm border rounded-md font-medium text-white bg-[var(--auth-button-bg)] border-[var(--auth-button-bg)] hover:bg-[var(--auth-button-hover)] hover:border-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
-								>
-									Register
-								</a>
-							)
-						}
 					</div>
 				))
 		}
@@ -193,73 +188,101 @@ if (
 	nav.nav-minimal :global(.nav-search-link--subtle:hover) {
 		color: var(--text-color);
 	}
+
+	#nav-auth-slot[data-state="pending"] {
+		min-width: 5.5rem;
+		min-height: 2rem;
+	}
 </style>
 
 <script>
 	import { installSearchFocusShortcut } from "../utils/searchFocusShortcut";
+	import {
+		clearNavAuthCache,
+		readNavAuthCache,
+		renderNavAuthSlot,
+		seedNavAuthCacheFromSlot,
+		writeNavAuthCache,
+		type NavAuthCache,
+	} from "../utils/navAuthClient";
 
 	installSearchFocusShortcut();
 
-	// Menu wiring (works for both SSR and client-hydrated DOM)
 	function wireMenu() {
 		const userMenuButton = document.getElementById("user-menu-button");
 		const userMenu = document.getElementById("user-menu");
+		if (!userMenuButton || !userMenu) return;
+		if (userMenuButton.dataset.wired === "1") return;
+		userMenuButton.dataset.wired = "1";
 		let isMenuOpen = false;
-		if (userMenuButton && userMenu) {
-			userMenuButton.addEventListener("click", (e) => {
-				e.stopPropagation();
-				isMenuOpen = !isMenuOpen;
-				userMenu.classList.toggle("hidden");
-			});
-			document.addEventListener("click", (e) => {
-				if (isMenuOpen && !userMenu.contains(e.target as Node)) {
-					isMenuOpen = false;
-					userMenu.classList.add("hidden");
-				}
-			});
-		}
+		userMenuButton.addEventListener("click", (e) => {
+			e.stopPropagation();
+			isMenuOpen = !isMenuOpen;
+			userMenu.classList.toggle("hidden");
+		});
+		document.addEventListener("click", (e) => {
+			if (isMenuOpen && !userMenu.contains(e.target as Node)) {
+				isMenuOpen = false;
+				userMenu.classList.add("hidden");
+			}
+		});
 	}
 
-	wireMenu();
+	function slotOptions(slot: HTMLElement) {
+		return {
+			registerHref: slot.getAttribute("data-register-href") || "/register",
+			returnTo: `${location.pathname}${location.search}`,
+			hideGuestCta: slot.getAttribute("data-guest-cta") === "hidden",
+		};
+	}
 
-	// Client-side hydration: fetch auth state on static pages and swap placeholder if needed
-	(async () => {
-		const slot = document.getElementById("nav-auth-slot");
-		if (!slot) return;
-		const state = slot.getAttribute("data-state");
-		if (state === "signed-in") return; // Already SSR'd
-		try {
-			const res = await fetch("/api/auth/me", {
-				credentials: "same-origin",
-			});
-			if (!res.ok) return;
-			const data = await res.json();
-			if (data?.signedIn && data.user?.displayName) {
-				// Replace slot with signed-in UI
-				slot.setAttribute("data-state", "signed-in");
-				slot.classList.add("relative");
-				slot.innerHTML = `
-					<button type="button" id="user-menu-button" class="flex items-center gap-2 px-1 py-1 text-sm font-medium text-[var(--text-color)] hover:text-[var(--link-hover-color)] focus:outline-none">
-						<span>${data.user.displayName}</span>
-						<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-							<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-					</button>
-					<div id="user-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--auth-card-bg)] ring-1 ring-black ring-opacity-5">
-						<div class="py-1">
-							<a href="/discover" class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Discover</a>
-							<a href="/review-room" class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Review Room</a>
-							<a href="/profile" class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Profile</a>
-							<form action="/api/auth/signout" method="post">
-								<input type="hidden" name="returnTo" value="${location.pathname}${location.search}" />
-								<button type="submit" class="block w-full text-left px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]">Sign out</button>
-							</form>
-						</div>
-					</div>`;
-				wireMenu();
+	function applyAuth(slot: HTMLElement, state: NavAuthCache) {
+		renderNavAuthSlot(slot, state, slotOptions(slot));
+		writeNavAuthCache(state);
+		if (state.signedIn) wireMenu();
+	}
+
+	const slot = document.getElementById("nav-auth-slot");
+	if (slot) {
+		const alreadySignedIn = slot.getAttribute("data-state") === "signed-in";
+		seedNavAuthCacheFromSlot(slot);
+		slot.addEventListener("submit", (event) => {
+			const form = event.target;
+			if (
+				form instanceof HTMLFormElement &&
+				form.getAttribute("action") === "/api/auth/signout"
+			) {
+				clearNavAuthCache();
 			}
-		} catch (e) {
-			/* ignore */
+		});
+
+		if (alreadySignedIn) {
+			wireMenu();
+		} else {
+			const cached = readNavAuthCache();
+			// Only paint a cached signed-in menu before /api/auth/me. A cached
+			// guest Register button would flash again right after sign-in.
+			if (cached?.signedIn) applyAuth(slot, cached);
+
+			(async () => {
+				try {
+					const res = await fetch("/api/auth/me", {
+						credentials: "same-origin",
+					});
+					if (!res.ok) return;
+					const data = await res.json();
+					if (data?.signedIn && data.user?.displayName) {
+						applyAuth(slot, {
+							signedIn: true,
+							displayName: data.user.displayName,
+						});
+						return;
+					}
+					applyAuth(slot, { signedIn: false });
+				} catch {
+					/* keep cache / empty pending slot */
+				}
+			})();
 		}
-	})();
+	}
 </script>
