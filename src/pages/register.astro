@@ -15,33 +15,65 @@ const firebaseReady = Boolean(
 if (!firebaseReady) {
 	return Astro.redirect("/?auth-unavailable=true");
 }
+
+const benefitTickClass =
+	"inline-flex h-[1.15rem] w-[1.15rem] shrink-0 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--primary-color)_18%,transparent)] text-[var(--primary-color)] [font-family:ui-sans-serif,system-ui,sans-serif]";
 ---
 
 <Layout>
 	<div class="flex items-baseline justify-center py-8 px-4 sm:px-6 lg:px-8">
 		<div
-			class="max-w-md w-full space-y-8 bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg"
+			class="not-prose max-w-md w-full space-y-8 bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg"
 		>
 			<div>
 				<h1
 					class="mt-6 text-center text-3xl font-bold text-[var(--text-color)]"
 				>
-					Create Account
+					Create Free Account
 				</h1>
-				<p class="mt-2 text-center text-sm text-[var(--text-color)]">
-					Already have an account?&nbsp;
-					<a
-						id="signin-link"
-						href="/signin"
-						class="font-medium text-[var(--link-color)] hover:text-[var(--link-hover-color)]"
+				<div
+					class="mt-6 border-b border-[var(--auth-input-border)] pb-5"
+				>
+					<ul
+						class="mx-auto flex w-fit max-w-full list-none flex-col gap-3 p-0"
+						aria-label="What a free account gives you"
 					>
-						Sign in
-					</a>
-				</p>
+					<li
+						class="m-0 flex list-none items-center gap-3 p-0 text-[0.95rem] leading-snug text-[color-mix(in_srgb,var(--text-color)_82%,transparent)]"
+					>
+						<span class={benefitTickClass} aria-hidden="true"
+							><span class="block -translate-y-px text-[0.7rem] font-bold leading-none"
+								>✓</span
+							></span
+						>
+						Study tools to aid learning
+					</li>
+					<li
+						class="m-0 flex list-none items-center gap-3 p-0 text-[0.95rem] leading-snug text-[color-mix(in_srgb,var(--text-color)_82%,transparent)]"
+					>
+						<span class={benefitTickClass} aria-hidden="true"
+							><span class="block -translate-y-px text-[0.7rem] font-bold leading-none"
+								>✓</span
+							></span
+						>
+						Learning stats
+					</li>
+					<li
+						class="m-0 flex list-none items-center gap-3 p-0 text-[0.95rem] leading-snug text-[color-mix(in_srgb,var(--text-color)_82%,transparent)]"
+					>
+						<span class={benefitTickClass} aria-hidden="true"
+							><span class="block -translate-y-px text-[0.7rem] font-bold leading-none"
+								>✓</span
+							></span
+						>
+						More daily AI Asks
+					</li>
+					</ul>
+				</div>
 			</div>
 
 			<form
-				class="mt-8 space-y-6"
+				class="mt-6 space-y-6"
 				action="/api/auth/register"
 				method="post"
 				enctype="application/x-www-form-urlencoded"
@@ -99,7 +131,7 @@ if (!firebaseReady) {
 							for="intent"
 							class="block text-sm font-medium text-[var(--text-color)]"
 						>
-							What brings you here?
+							What brings you here?&nbsp;
 							<span class="font-normal text-[var(--text-muted)]"
 								>(optional)</span
 							>
@@ -167,12 +199,6 @@ if (!firebaseReady) {
 		"returnTo",
 	) as HTMLInputElement | null;
 	if (returnToInput) returnToInput.value = returnTo;
-	const signinLink = document.getElementById(
-		"signin-link",
-	) as HTMLAnchorElement | null;
-	if (signinLink) {
-		signinLink.href = `/signin?returnTo=${encodeURIComponent(returnTo)}`;
-	}
 
 	function validateEmail(email: string): {
 		isValid: boolean;

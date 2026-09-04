@@ -3,8 +3,12 @@ import { describe, it } from "node:test";
 import {
 	applyLearningFlush,
 	countLearningDays,
+	groupLearningDayStrip,
+	learningDayStripForDisplay,
+	LEARNING_DAY_STRIP_LENGTH,
 	learningDaysFromReadMinutes,
 	learningDaysLabel,
+	learningDaysStatLabel,
 	localDayKey,
 	mergeLearningDays,
 	recentLearningDayStrip,
@@ -119,8 +123,9 @@ describe("sanitizeLearningActivity", () => {
 describe("learningDaysLabel", () => {
 	it("uses singular and plural forms", () => {
 		assert.equal(learningDaysLabel(0), "");
-		assert.equal(learningDaysLabel(1), "Reading on 1 day");
-		assert.equal(learningDaysLabel(12), "Reading on 12 days");
+		assert.equal(learningDaysLabel(1), "Learning on 1 day");
+		assert.equal(learningDaysLabel(12), "Learning on 12 days");
+		assert.equal(learningDaysStatLabel(), "days learning");
 	});
 });
 
@@ -138,6 +143,55 @@ describe("recentLearningDayStrip", () => {
 			strip.filter((dot) => dot.active).map((dot) => dot.key),
 			["2026-09-01", "2026-09-03"],
 		);
+	});
+
+	it("defaults to 30 days grouped into even rows of 10", () => {
+		const strip = recentLearningDayStrip({}, undefined, "2026-09-03");
+		assert.equal(strip.length, LEARNING_DAY_STRIP_LENGTH);
+		const rows = groupLearningDayStrip(strip);
+		assert.equal(rows.length, 3);
+		assert.ok(rows.every((row) => row.length === 10));
+		assert.equal(rows[0]?.[0]?.key, "2026-08-05");
+		assert.equal(rows[2]?.[9]?.key, "2026-09-03");
+	});
+});
+
+describe("learningDayStripForDisplay", () => {
+	it("left-aligns a suffix streak (new or returning reader)", () => {
+		const strip = recentLearningDayStrip(
+			{ "2026-09-02": true, "2026-09-03": true },
+			7,
+			"2026-09-03",
+		);
+		const display = learningDayStripForDisplay(strip);
+		assert.equal(display[0]?.active, true);
+		assert.equal(display[1]?.active, true);
+		assert.equal(display[0]?.key, "2026-09-02");
+		assert.equal(display[1]?.key, "2026-09-03");
+		assert.ok(display.slice(2).every((dot) => !dot.active));
+	});
+
+	it("keeps chronological gaps when activity is not a trailing suffix", () => {
+		const strip = recentLearningDayStrip(
+			{ "2026-09-01": true, "2026-09-03": true },
+			7,
+			"2026-09-03",
+		);
+		const display = learningDayStripForDisplay(strip);
+		assert.deepEqual(
+			display.filter((dot) => dot.active).map((dot) => dot.key),
+			["2026-09-01", "2026-09-03"],
+		);
+	});
+
+	it("does not shift when the streak already starts at the beginning", () => {
+		const strip = recentLearningDayStrip(
+			{ "2026-08-28": true, "2026-08-30": true },
+			7,
+			"2026-09-03",
+		);
+		const display = learningDayStripForDisplay(strip);
+		assert.deepEqual(display, strip);
 	});
 });
 

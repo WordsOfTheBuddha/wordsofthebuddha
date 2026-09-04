@@ -1284,11 +1284,6 @@
 	margin-top: 0;
 }
 
-.ai-history-card.is-pinned .ai-history-q,
-.ai-history-item.is-pinned .ai-history-q {
-	font-weight: 600;
-}
-
 .ai-feedback {
 	display: flex;
 	align-items: center;

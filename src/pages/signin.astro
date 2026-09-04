@@ -35,7 +35,7 @@ if (Astro.cookies.has("__session")) {
 <Layout>
 	<div class="flex items-baseline justify-center py-8 px-4 sm:px-6 lg:px-8">
 		<div
-			class="max-w-md w-full space-y-8 bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg"
+			class="not-prose max-w-md w-full space-y-8 bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg"
 		>
 			<div>
 				<h1
@@ -43,15 +43,6 @@ if (Astro.cookies.has("__session")) {
 				>
 					Sign in
 				</h1>
-				<p class="mt-2 text-center text-sm text-[var(--text-color)]">
-					New here?&nbsp;
-					<a
-						href=`/register?returnTo=${encodeURIComponent(returnTo)}`
-						class="font-medium text-[var(--link-color)] hover:text-[var(--link-hover-color)]"
-					>
-						Create an account
-					</a>
-				</p>
 				{
 					showVerifyHint && (
 						<p class="mt-4 text-sm text-center text-[var(--text-color)] bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md px-3 py-2">

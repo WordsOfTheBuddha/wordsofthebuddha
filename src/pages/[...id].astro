@@ -126,6 +126,25 @@ const SYSTEM_REQUEST_PATTERNS = [
 const ASSET_EXT_REGEX =
 	/\.(?:js|css|json|png|jpg|jpeg|svg|ico|gif|webp|avif|woff2?|ttf|otf|map|xml|webmanifest)$/i;
 
+/** Real app pages. Never soft-404 these into /search?q=… if routing misses. */
+const APP_TOP_LEVEL_SLUGS = new Set([
+	"register",
+	"signin",
+	"profile",
+	"review-room",
+	"search",
+	"discover",
+	"offline",
+	"privacy",
+	"public-domain",
+	"support",
+	"success",
+	"recent",
+	"explorer",
+	"dashboard",
+	"admin",
+]);
+
 const isSystemRequest =
 	!id ||
 	SYSTEM_REQUEST_PATTERNS.some((pattern) => originalId?.includes(pattern)) ||
@@ -134,6 +153,10 @@ const isSystemRequest =
 
 if (isSystemRequest) {
 	return new Response(null, { status: 404 });
+}
+
+if (id && !id.includes("/") && APP_TOP_LEVEL_SLUGS.has(id)) {
+	return Astro.rewrite("/404");
 }
 
 // Bare quality/topic/simile/person slugs used to soft-404 into /search?q=…

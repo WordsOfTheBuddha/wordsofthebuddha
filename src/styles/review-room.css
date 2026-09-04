@@ -149,9 +149,43 @@
 	width: 100%;
 }
 
+#dashboard-container .overview-aggregates.is-triple {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.5rem;
+}
+
+@media (max-width: 639px) {
+	#dashboard-container .overview-aggregates.is-triple .stat-tile {
+		padding: 0.75rem 0.375rem;
+	}
+
+	#dashboard-container .overview-aggregates.is-triple .stat-value {
+		font-size: 1.5rem;
+	}
+
+	#dashboard-container .overview-aggregates.is-triple .stat-label {
+		font-size: 0.625rem;
+		line-height: 1.25;
+	}
+
+	#dashboard-container .overview-aggregates.is-triple .learning-day-strip {
+		gap: 4px;
+		margin-top: 0.5rem;
+	}
+
+	#dashboard-container .overview-aggregates.is-triple .learning-day-row {
+		gap: 2px;
+	}
+
+	#dashboard-container .overview-aggregates.is-triple .learning-day-dot {
+		width: 0.375rem;
+		height: 0.375rem;
+	}
+}
+
 @media (min-width: 640px) {
 	#dashboard-container .overview-aggregates.is-triple {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.75rem;
 	}
 }
 
@@ -203,11 +237,15 @@
 
 #dashboard-container .learning-day-strip {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 3px;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
 	margin-top: 0.75rem;
-	max-width: 12rem;
+}
+
+#dashboard-container .learning-day-row {
+	display: flex;
+	gap: 3px;
 }
 
 #dashboard-container .learning-day-dot {
@@ -274,18 +312,15 @@
 #dashboard-container .coverage-row {
 	display: grid;
 	align-items: center;
-	column-gap: 0.75rem;
-	row-gap: 0.25rem;
+	column-gap: 0.5rem;
+	row-gap: 0.375rem;
 	font-size: 0.875rem;
 	text-decoration: none;
-	grid-template-columns: minmax(0, 1fr) 3.5rem auto;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	grid-template-areas:
+		"label name count"
+		"bar bar bar";
 	color: var(--text-color);
-}
-
-@media (min-width: 640px) {
-	#dashboard-container .coverage-row {
-		grid-template-columns: minmax(0, 1fr) 4.5rem auto;
-	}
 }
 
 #dashboard-container .coverage-row:hover .coverage-label,
@@ -294,21 +329,11 @@
 }
 
 #dashboard-container .coverage-id {
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 0;
-}
-
-@media (min-width: 640px) {
-	#dashboard-container .coverage-id {
-		flex-direction: row;
-		align-items: baseline;
-		gap: 0.5rem;
-	}
+	display: contents;
 }
 
 #dashboard-container .coverage-label {
+	grid-area: label;
 	font-weight: 600;
 	letter-spacing: 0.025em;
 	flex-shrink: 0;
@@ -316,30 +341,76 @@
 }
 
 #dashboard-container .coverage-name {
-	display: none;
-	font-size: 0.75rem;
-	color: #6b7280;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.dark #dashboard-container .coverage-name {
-	color: #9ca3af;
-}
-
-@media (min-width: 640px) {
-	#dashboard-container .coverage-name {
-		display: inline;
-	}
+	grid-area: name;
+	display: block;
+	min-width: 0;
+	font-size: 0.8125rem;
+	line-height: 1.35;
+	color: var(--text-color);
+	white-space: normal;
 }
 
 #dashboard-container .coverage-bar {
+	grid-area: bar;
 	display: block;
-	height: 0.25rem;
+	height: 0.3125rem;
 	border-radius: 9999px;
 	overflow: hidden;
 	background-color: rgba(128, 128, 128, 0.2);
+}
+
+#dashboard-container .coverage-count {
+	grid-area: count;
+	align-self: start;
+	padding-top: 0.125rem;
+}
+
+@media (max-width: 639px) {
+	#dashboard-container .coverage-list {
+		gap: 0.75rem;
+	}
+
+	#dashboard-container .coverage-label {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.375rem;
+		background: color-mix(in srgb, var(--link-color) 14%, transparent);
+		border: 1px solid color-mix(in srgb, var(--link-color) 28%, transparent);
+		text-align: center;
+		min-width: 2.75rem;
+	}
+}
+
+@media (min-width: 640px) {
+	#dashboard-container .coverage-row {
+		grid-template-columns: 2.75rem minmax(0, 1fr) 4.5rem auto;
+		grid-template-areas: "label name bar count";
+		column-gap: 0.75rem;
+		row-gap: 0.25rem;
+	}
+
+	#dashboard-container .coverage-name {
+		font-size: 0.75rem;
+		line-height: 1.25;
+		color: #6b7280;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	#dashboard-container .coverage-bar {
+		height: 0.25rem;
+	}
+
+	#dashboard-container .coverage-count {
+		align-self: center;
+		padding-top: 0;
+	}
+
+	.dark #dashboard-container .coverage-name {
+		color: #9ca3af;
+	}
 }
 
 #dashboard-container .coverage-fill {
@@ -476,7 +547,7 @@
 }
 
 #dashboard-container .ask-row.is-pinned .ask-row-q {
-	font-weight: 600;
+	font-weight: inherit;
 }
 
 #dashboard-container .ask-row-meta {

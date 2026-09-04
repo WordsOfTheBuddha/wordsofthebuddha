@@ -54,7 +54,7 @@ describe("discoursesReadLabel", () => {
 });
 
 describe("computeCanonCoverage", () => {
-	it("counts read discourses per collection in canon order", () => {
+	it("counts read discourses per collection in Review Room order", () => {
 		const coverage = computeCanonCoverage(
 			["sn12.1", "mn10", "mn1"],
 			catalog,
@@ -62,14 +62,17 @@ describe("computeCanonCoverage", () => {
 		assert.deepEqual(
 			coverage.rows.map((row) => [row.label, row.read, row.total]),
 			[
+				["Dhp", 0, 3],
+				["DN", 0, 2],
 				["MN", 2, 3],
 				["SN", 1, 1],
 			],
 		);
-		assert.equal(coverage.rows[0]?.href, "/mn");
-		assert.equal(coverage.rows[0]?.title, "Middle Length Discourses");
-		assert.equal(coverage.rows[0]?.percent, 67);
-		assert.equal(coverage.rows[1]?.percent, 100);
+		assert.equal(coverage.rows[2]?.href, "/mn");
+		assert.equal(coverage.rows[2]?.title, "Middle Length Discourses");
+		assert.equal(coverage.rows[2]?.percent, 67);
+		assert.equal(coverage.rows[3]?.percent, 100);
+		assert.equal(coverage.rows[0]?.percent, 0);
 		assert.equal(coverage.totalRead, 3);
 		assert.equal(coverage.totalAvailable, 9);
 	});
@@ -89,7 +92,9 @@ describe("computeCanonCoverage", () => {
 		);
 		assert.equal(coverage.totalRead, 1);
 		assert.deepEqual(
-			coverage.rows.map((row) => row.collection),
+			coverage.rows
+				.filter((row) => row.read > 0)
+				.map((row) => row.collection),
 			["dn"],
 		);
 	});
@@ -100,12 +105,21 @@ describe("computeCanonCoverage", () => {
 			collection: "an",
 		}));
 		const coverage = computeCanonCoverage(["an1"], big);
-		assert.equal(coverage.rows[0]?.percent, 1);
+		const anRow = coverage.rows.find((row) => row.collection === "an");
+		assert.equal(anRow?.percent, 1);
 	});
 
-	it("returns no rows when nothing is read", () => {
+	it("lists every readable collection, including those with no reads yet", () => {
 		const coverage = computeCanonCoverage([], catalog);
-		assert.deepEqual(coverage.rows, []);
+		assert.deepEqual(
+			coverage.rows.map((row) => [row.collection, row.read, row.total]),
+			[
+				["dhp", 0, 3],
+				["dn", 0, 2],
+				["mn", 0, 3],
+				["sn", 0, 1],
+			],
+		);
 		assert.equal(coverage.totalRead, 0);
 		assert.equal(coverage.totalAvailable, 9);
 	});

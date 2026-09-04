@@ -6,17 +6,17 @@ import { routes } from "./routes";
 import { expandSlugToDiscourseIds } from "./slugDiscourseCount";
 import { keyMap } from "./transformId";
 
-/** Traditional order of the collections as they appear on the site. */
+/** Review Room “By collection” order (smaller books first, then nikāyas). */
 export const CANON_COLLECTION_ORDER = [
+	"dhp",
+	"iti",
+	"ud",
 	"dn",
 	"mn",
 	"sn",
 	"an",
-	"kp",
-	"dhp",
-	"ud",
-	"iti",
 	"snp",
+	"kp",
 ] as const;
 
 export type CatalogDiscourse = {
@@ -106,7 +106,7 @@ export type CoverageRow = {
 };
 
 export type CanonCoverage = {
-	/** Only collections with at least one read discourse, in canon order. */
+	/** Every readable collection on the site, in Review Room order. */
 	rows: CoverageRow[];
 	/** Read discourses that exist in the catalog (stale or non-discourse slugs are ignored). */
 	totalRead: number;
@@ -115,13 +115,6 @@ export type CanonCoverage = {
 
 const MINUTE_MS = 60_000;
 const DAY_MS = 24 * 60 * MINUTE_MS;
-
-function collectionRank(collection: string): number {
-	const index = (CANON_COLLECTION_ORDER as readonly string[]).indexOf(
-		collection,
-	);
-	return index === -1 ? CANON_COLLECTION_ORDER.length : index;
-}
 
 /**
  * How far the reader has got through each collection available on the site.
@@ -151,13 +144,20 @@ export function computeCanonCoverage(
 		readByCollection.get(collection)!.add(slug);
 	}
 
-	const rows: CoverageRow[] = [];
 	let totalRead = 0;
-	for (const [collection, readSet] of readByCollection) {
+	for (const readSet of readByCollection.values()) {
+		totalRead += readSet.size;
+	}
+
+	const rows: CoverageRow[] = [];
+	for (const collection of CANON_COLLECTION_ORDER) {
 		const total = totals.get(collection)?.size ?? 0;
-		const read = readSet.size;
-		if (read === 0 || total === 0) continue;
-		totalRead += read;
+		if (total === 0) continue;
+		const read = readByCollection.get(collection)?.size ?? 0;
+		const percent =
+			read > 0
+				? Math.min(100, Math.max(1, Math.round((read / total) * 100)))
+				: 0;
 		rows.push({
 			collection,
 			label: collectionChipLabel(collection),
@@ -165,13 +165,9 @@ export function computeCanonCoverage(
 			href: `/${collection}`,
 			read,
 			total,
-			percent: Math.min(100, Math.max(1, Math.round((read / total) * 100))),
+			percent,
 		});
 	}
-	rows.sort((a, b) => {
-		const rank = collectionRank(a.collection) - collectionRank(b.collection);
-		return rank !== 0 ? rank : a.collection.localeCompare(b.collection);
-	});
 
 	let totalAvailable = 0;
 	for (const set of totals.values()) totalAvailable += set.size;

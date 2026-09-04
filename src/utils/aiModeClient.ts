@@ -784,10 +784,17 @@ export function attachAiMode(options: {
 	function applyQuota(next: AiAskQuotaView | null | undefined): void {
 		if (!next) return;
 		quota = next;
+		// Guests aren’t shown a countdown — the quota dialog handles the limit
+		// when it’s reached, and the register CTA carries the pitch.
+		if (!next.signedIn) {
+			meterEls.forEach((el) => {
+				el.textContent = "";
+				el.hidden = true;
+			});
+			return;
+		}
 		const unit = next.remaining === 1 ? "Ask" : "Asks";
-		let label = next.signedIn
-			? `${next.remaining} ${unit} left today`
-			: `${next.remaining} free ${unit} left today`;
+		let label = `${next.remaining} ${unit} left today`;
 		if (next.needsEmailVerification) {
 			label = `${label} · verify email for more`;
 		}

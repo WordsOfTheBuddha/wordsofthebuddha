@@ -33,7 +33,11 @@ import {
 	type CanonCoverage,
 } from "../utils/reviewRoomStats";
 import {
+	groupLearningDayStrip,
+	learningDayStripForDisplay,
+	LEARNING_DAY_STRIP_LENGTH,
 	learningDaysFromReadMinutes,
+	learningDaysStatLabel,
 	mergeLearningDays,
 	recentLearningDayStrip,
 	type LearningDayDot,
@@ -169,7 +173,9 @@ try {
 		}));
 	}
 	learningDays = learningSummary.dayCount;
-	learningDayStrip = recentLearningDayStrip(learningSummary.days, 28);
+	learningDayStrip = learningDayStripForDisplay(
+		recentLearningDayStrip(learningSummary.days),
+	);
 
 	// Process readLater entries from the 'pages' document
 	if (readLaterDoc.exists && readLaterDoc.data()?.pages) {
@@ -492,24 +498,28 @@ try {
 											{learningDays}
 										</span>
 										<span class="stat-label">
-											days reading
+											{learningDaysStatLabel()}
 										</span>
 										<div
 											id="learning-day-strip"
 											class="learning-day-strip"
-											aria-label="Reading activity over the last 28 days"
-											title="Filled days are days you read"
+											aria-label={`Learning activity over the last ${LEARNING_DAY_STRIP_LENGTH} days`}
+											title="Filled days are days you engaged with the teachings"
 										>
-											{learningDayStrip.map((dot) => (
-												<span
-													class:list={[
-														"learning-day-dot",
-														{ active: dot.active },
-													]}
-													title={dot.key}
-													aria-hidden="true"
-												>
-												</span>
+											{groupLearningDayStrip(learningDayStrip).map((row) => (
+												<div class="learning-day-row">
+													{row.map((dot) => (
+														<span
+															class:list={[
+																"learning-day-dot",
+																{ active: dot.active },
+															]}
+															title={dot.key}
+															aria-hidden="true"
+														>
+														</span>
+													))}
+												</div>
 											))}
 										</div>
 									</div>
@@ -874,7 +884,13 @@ try {
 
 <script>
 	import { syncLearningDaysFromReadPages } from "../utils/learningActivityClient";
-	import { recentLearningDayStrip } from "../utils/learningActivity";
+	import {
+		groupLearningDayStrip,
+		learningDayStripForDisplay,
+		learningDaysStatLabel,
+		LEARNING_DAY_STRIP_LENGTH,
+		recentLearningDayStrip,
+	} from "../utils/learningActivity";
 	import { formatListenStat } from "../utils/listenActivity";
 	import {
 		flushListenActivity,
@@ -904,11 +920,18 @@ try {
 		days: Record<string, true> | null | undefined,
 	): void {
 		if (!container) return;
-		const strip = recentLearningDayStrip(days || {}, 28);
-		container.innerHTML = strip
+		const strip = learningDayStripForDisplay(
+			recentLearningDayStrip(days || {}),
+		);
+		container.innerHTML = groupLearningDayStrip(strip)
 			.map(
-				(dot) =>
-					`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}" aria-hidden="true"></span>`,
+				(row) =>
+					`<div class="learning-day-row">${row
+						.map(
+							(dot) =>
+								`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}" aria-hidden="true"></span>`,
+						)
+						.join("")}</div>`,
 			)
 			.join("");
 	}
@@ -1017,7 +1040,7 @@ try {
 		const tile = document.createElement("div");
 		tile.id = "learning-days-tile";
 		tile.className = "stat-tile";
-		tile.innerHTML = `<span class="stat-value" id="learning-days-value" data-learning-days="${result.dayCount}">${result.dayCount}</span><span class="stat-label">days reading</span><div id="learning-day-strip" class="learning-day-strip" aria-label="Reading activity over the last 28 days" title="Filled days are days you read"></div>`;
+		tile.innerHTML = `<span class="stat-value" id="learning-days-value" data-learning-days="${result.dayCount}">${result.dayCount}</span><span class="stat-label">${learningDaysStatLabel()}</span><div id="learning-day-strip" class="learning-day-strip" aria-label="Learning activity over the last ${LEARNING_DAY_STRIP_LENGTH} days" title="Filled days are days you engaged with the teachings"></div>`;
 		// Days reading leads; insert before discourses read / listen when present.
 		const readTile = document.getElementById("discourses-read-tile");
 		const listenTile = document.getElementById("listen-minutes-tile");

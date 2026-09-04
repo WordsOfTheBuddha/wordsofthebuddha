@@ -70,7 +70,7 @@
 		"@astrojs/vercel": "11.0.8",
 		"@aws-sdk/client-s3": "^3.750.0",
 		"@resvg/resvg-js": "^2.6.2",
-		"@sc-voice/ms-dpd": "^2.55.0",
+		"@sc-voice/ms-dpd": "^2.54.0",
 		"@sparticuz/chromium-min": "143.0.4",
 		"@vercel/analytics": "^1.4.1",
 		"@vercel/speed-insights": "^1.1.0",

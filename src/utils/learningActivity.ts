@@ -144,8 +144,13 @@ export function shouldFlushLearningActivity(
 
 export function learningDaysLabel(dayCount: number): string {
 	if (dayCount <= 0) return "";
-	if (dayCount === 1) return "Reading on 1 day";
-	return `Reading on ${dayCount} days`;
+	if (dayCount === 1) return "Learning on 1 day";
+	return `Learning on ${dayCount} days`;
+}
+
+/** Short label under the Review Room learning-days stat (pairs with a count). */
+export function learningDaysStatLabel(): string {
+	return "days learning";
 }
 
 export type LearningDayDot = {
@@ -163,13 +168,17 @@ export function shiftLocalDayKey(dayKey: string, delta: number): string | null {
 	return localDayKey(date);
 }
 
+/** Dashboard activity grid: 30 days in even rows of 10. */
+export const LEARNING_DAY_STRIP_LENGTH = 30;
+export const LEARNING_DAY_STRIP_ROW = 10;
+
 /**
  * Oldest → newest strip of the last `length` local calendar days.
- * Used for a quiet GitHub-style activity row on the dashboard.
+ * Used for a quiet GitHub-style activity grid on the dashboard.
  */
 export function recentLearningDayStrip(
 	days: Record<string, true> | null | undefined,
-	length = 28,
+	length = LEARNING_DAY_STRIP_LENGTH,
 	endDay: string = localDayKey(),
 ): LearningDayDot[] {
 	const end = sanitizeDayKey(endDay) || localDayKey();
@@ -181,6 +190,45 @@ export function recentLearningDayStrip(
 		out.push({ key, active: Boolean(days?.[key]) });
 	}
 	return out;
+}
+
+/** Split the strip into even rows (10 days each by default). */
+export function groupLearningDayStrip(
+	dots: readonly LearningDayDot[],
+	rowSize = LEARNING_DAY_STRIP_ROW,
+): LearningDayDot[][] {
+	const size = Math.max(1, Math.floor(rowSize));
+	const rows: LearningDayDot[][] = [];
+	for (let i = 0; i < dots.length; i += size) {
+		rows.push(dots.slice(i, i + size));
+	}
+	return rows;
+}
+
+/**
+ * Dashboard grid display: chronological last-N days, but when every active day
+ * sits in a contiguous block at the end (new reader or returning after a gap),
+ * left-align that block so the streak starts top-left instead of bottom-right.
+ */
+export function learningDayStripForDisplay(
+	dots: readonly LearningDayDot[],
+): LearningDayDot[] {
+	if (dots.length === 0) return [];
+	const activeIndices: number[] = [];
+	for (let i = 0; i < dots.length; i++) {
+		if (dots[i]?.active) activeIndices.push(i);
+	}
+	if (activeIndices.length === 0) return [...dots];
+
+	const first = activeIndices[0]!;
+	const last = activeIndices[activeIndices.length - 1]!;
+	const contiguous = last - first + 1 === activeIndices.length;
+	const suffix = first > 0 && contiguous && last === dots.length - 1;
+	if (!suffix) return [...dots];
+
+	const active = dots.filter((dot) => dot.active);
+	const inactive = dots.filter((dot) => !dot.active);
+	return [...active, ...inactive];
 }
 
 const MINUTE_MS = 60_000;
