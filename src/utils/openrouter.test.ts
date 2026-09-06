@@ -81,9 +81,42 @@ describe("resolveRequestedOpenRouterModel", () => {
 });
 
 describe("shouldShowAiModelPicker", () => {
-	it("defaults to showing the free-model picker", async () => {
-		const { shouldShowAiModelPicker } = await import("./openrouter");
-		assert.equal(shouldShowAiModelPicker(), true);
+	const FLAG = "PUBLIC_AI_SHOW_MODEL_PICKER";
+
+	function withFlag(value: string | undefined, fn: () => void) {
+		const prev = process.env[FLAG];
+		try {
+			if (value === undefined) delete process.env[FLAG];
+			else process.env[FLAG] = value;
+			fn();
+		} finally {
+			if (prev === undefined) delete process.env[FLAG];
+			else process.env[FLAG] = prev;
+		}
+	}
+
+	it("defaults to hiding the free-model picker", () => {
+		withFlag(undefined, () => {
+			assert.equal(shouldShowAiModelPicker(), false);
+		});
+	});
+
+	it("shows when PUBLIC_AI_SHOW_MODEL_PICKER is 1 or true", () => {
+		withFlag("1", () => {
+			assert.equal(shouldShowAiModelPicker(), true);
+		});
+		withFlag("true", () => {
+			assert.equal(shouldShowAiModelPicker(), true);
+		});
+	});
+
+	it("stays hidden when PUBLIC_AI_SHOW_MODEL_PICKER is 0 or false", () => {
+		withFlag("0", () => {
+			assert.equal(shouldShowAiModelPicker(), false);
+		});
+		withFlag("false", () => {
+			assert.equal(shouldShowAiModelPicker(), false);
+		});
 	});
 });
 

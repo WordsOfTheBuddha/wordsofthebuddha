@@ -14,23 +14,18 @@ export interface OpenRouterFreeModel {
  */
 export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 	{
-		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
-		name: "NVIDIA: Nemotron 3 Ultra",
-		contextLength: 0,
-	},
-	{
 		id: "minimax/minimax-m3:free",
 		name: "MiniMax: M3",
 		contextLength: 0,
 	},
 	{
-		id: "z-ai/glm-5.2:free",
-		name: "Z.ai: GLM 5.2",
+		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
+		name: "NVIDIA: Nemotron 3 Ultra",
 		contextLength: 0,
 	},
 	{
-		id: "nvidia/nemotron-3.5-lightning:free",
-		name: "NVIDIA: Nemotron 3.5 Lightning",
+		id: "z-ai/glm-5.2:free",
+		name: "Z.ai: GLM 5.2",
 		contextLength: 0,
 	},
 ] as const;
@@ -40,10 +35,9 @@ export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
  * Prefer stronger models before lighter ones. Gemini is tried only after this.
  */
 export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
-	"nvidia/nemotron-3-ultra-550b-a55b:free",
 	"minimax/minimax-m3:free",
+	"nvidia/nemotron-3-ultra-550b-a55b:free",
 	"z-ai/glm-5.2:free",
-	"nvidia/nemotron-3.5-lightning:free",
 ] as const;
 
 export const DEFAULT_OPENROUTER_MODEL = CURATED_ASK_MODELS[0].id;
@@ -145,14 +139,14 @@ export function resolveRequestedOpenRouterModel(
 }
 
 /**
- * Show the free-model picker. Set PUBLIC_AI_SHOW_MODEL_PICKER=0 (or false)
- * to hide it everywhere, including `astro dev`. Set =1 to force it on.
+ * Hidden by default. Set PUBLIC_AI_SHOW_MODEL_PICKER=1 (or true) in `.env`
+ * to show the curated free-model picker. Set =0 / false to keep it hidden.
  */
 export function shouldShowAiModelPicker(): boolean {
 	const flag = (env("PUBLIC_AI_SHOW_MODEL_PICKER") || "").toLowerCase();
 	if (flag === "0" || flag === "false") return false;
 	if (flag === "1" || flag === "true") return true;
-	return true;
+	return false;
 }
 
 interface OpenRouterCatalogModel {
