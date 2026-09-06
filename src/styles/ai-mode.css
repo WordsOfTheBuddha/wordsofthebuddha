@@ -908,11 +908,6 @@
 	position: sticky;
 	bottom: 0;
 	padding: 0.75rem 0 1rem;
-	background: linear-gradient(
-		to top,
-		var(--background-color) 70%,
-		transparent
-	);
 }
 
 .ai-new {
@@ -920,7 +915,7 @@
 	border: 0;
 	color: var(--link-color);
 	cursor: pointer;
-	padding: 0;
+	padding: 0 0.8rem;
 	font-size: inherit;
 }
 
