@@ -1,5 +1,8 @@
 ---
 slug: an5.176
+character:
+  - Venerable Sāriputta
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Pītisutta
 edition: ms

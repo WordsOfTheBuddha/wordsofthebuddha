@@ -1,5 +1,6 @@
 ---
 slug: an4.183
+character: Brahmin Vassakāra
 source: suttacentral/bilara-data
 title: Sutasutta
 edition: ms

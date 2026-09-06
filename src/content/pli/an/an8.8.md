@@ -1,5 +1,8 @@
 ---
 slug: an8.8
+character:
+  - "Sakka, lord of the gods"
+  - Venerable Uttara
 source: suttacentral/bilara-data
 title: Uttaravipattisutta
 edition: ms

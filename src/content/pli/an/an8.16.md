@@ -1,5 +1,6 @@
 ---
 slug: an8.16
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Dūteyyasutta
 edition: ms

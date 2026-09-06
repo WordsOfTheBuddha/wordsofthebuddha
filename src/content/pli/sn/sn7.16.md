@@ -1,5 +1,6 @@
 ---
 slug: sn7.16
+character: Brahmin Paccanīkasāta
 source: suttacentral/bilara-data
 title: Paccanīkasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: snp3.6
+character: Wanderer Sabhiya
 source: suttacentral/bilara-data
 title: Sabhiyasutta
 edition: ms

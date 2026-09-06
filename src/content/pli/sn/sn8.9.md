@@ -1,5 +1,8 @@
 ---
 slug: sn8.9
+character:
+  - Venerable Vaṅgīsa
+  - Venerable Aññāsikoṇḍañña
 source: suttacentral/bilara-data
 title: Koṇḍaññasutta
 edition: ms

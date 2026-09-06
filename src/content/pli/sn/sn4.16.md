@@ -1,5 +1,6 @@
 ---
 slug: sn4.16
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Pattasutta
 edition: ms

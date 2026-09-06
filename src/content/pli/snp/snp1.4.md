@@ -1,5 +1,6 @@
 ---
 slug: snp1.4
+character: Brahmin Kasibhāradvāja
 source: suttacentral/bilara-data
 title: Kasibhāradvājasutta
 edition: ms

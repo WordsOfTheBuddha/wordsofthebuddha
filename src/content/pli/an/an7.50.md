@@ -1,5 +1,6 @@
 ---
 slug: an7.50
+character: Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 title: Methunasutta
 edition: ms

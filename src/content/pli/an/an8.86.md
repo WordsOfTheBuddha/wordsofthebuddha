@@ -1,5 +1,6 @@
 ---
 slug: an8.86
+character: Venerable Nāgita
 source: suttacentral/bilara-data
 title: Yasasutta
 edition: ms

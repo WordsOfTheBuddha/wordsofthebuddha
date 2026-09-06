@@ -1,5 +1,6 @@
 ---
 slug: an5.132
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Dutiyacakkānuvattanasutta
 edition: ms

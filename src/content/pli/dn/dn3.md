@@ -1,5 +1,6 @@
 ---
 slug: dn3
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Ambaṭṭhasutta
 edition: ms

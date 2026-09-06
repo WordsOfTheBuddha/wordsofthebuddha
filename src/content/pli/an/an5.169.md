@@ -1,5 +1,8 @@
 ---
 slug: an5.169
+character:
+  - Venerable Ānanda
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Khippanisantisutta
 edition: ms

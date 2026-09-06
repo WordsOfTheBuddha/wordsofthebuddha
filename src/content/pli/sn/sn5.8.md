@@ -1,5 +1,9 @@
 ---
 slug: sn5.8
+character:
+  - Māra the Evil One
+  - Bhikkhunī Sīsupacālā
+  - Bhikkhunī Māro Pāpimā Sīsupacālā
 source: suttacentral/bilara-data
 title: Sīsupacālāsutta
 edition: ms

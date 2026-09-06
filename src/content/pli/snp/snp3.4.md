@@ -1,5 +1,6 @@
 ---
 slug: snp3.4
+character: Brahmin Sundarikabhāradvāja
 source: suttacentral/bilara-data
 title: Pūraḷāsa (sundarikabhāradvāja) sutta
 edition: ms

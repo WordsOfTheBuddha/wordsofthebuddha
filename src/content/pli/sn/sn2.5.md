@@ -1,5 +1,6 @@
 ---
 slug: sn2.5
+character: Deity Dāmali
 source: suttacentral/bilara-data
 title: Dāmalisutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn4.1
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Tapokammasutta
 edition: ms

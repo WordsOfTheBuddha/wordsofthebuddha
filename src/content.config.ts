@@ -12,6 +12,7 @@ const baseSchema = z.object({
 	topic: z.string().optional(),
 	commentary: z.union([z.string(), z.array(z.string())]).optional(),
 	priority: z.number().optional(),
+	character: z.union([z.string(), z.array(z.string())]).optional(),
 	// Content image (optional)
 	// - image: custom path override (default: src/assets/content-images/{id}.{ext})
 	// - imageCaption: caption with optional credit, e.g. "A lotus flower · Generated with ChatGPT"

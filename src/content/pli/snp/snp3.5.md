@@ -1,5 +1,6 @@
 ---
 slug: snp3.5
+character: Young Brahmin Māgha
 source: suttacentral/bilara-data
 title: Māghasutta
 edition: ms

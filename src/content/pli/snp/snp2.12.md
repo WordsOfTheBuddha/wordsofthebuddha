@@ -1,5 +1,8 @@
 ---
 slug: snp2.12
+character:
+  - Venerable Vaṅgīsa
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Nigrodhakappa (vaṅgīsa) sutta
 edition: ms

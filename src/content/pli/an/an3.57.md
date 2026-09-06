@@ -1,5 +1,6 @@
 ---
 slug: an3.57
+character: Wanderer Vacchagotta
 source: suttacentral/bilara-data
 title: Vacchagottasutta
 edition: ms

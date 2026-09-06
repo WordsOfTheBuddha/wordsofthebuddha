@@ -1,5 +1,6 @@
 ---
 slug: sn9.5
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

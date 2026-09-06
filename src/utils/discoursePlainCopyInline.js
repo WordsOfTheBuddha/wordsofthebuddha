@@ -53,6 +53,9 @@
 		function __suttaShouldIncludeBlock(el) {
 			if (!__suttaIsCopyBlock(el)) return false;
 			if (el.getAttribute("aria-hidden") === "true") return false;
+			if (el.closest && el.closest(".popover-content")) {
+				return false;
+			}
 			if (el.classList && el.classList.contains("english-pair-spacer")) {
 				return false;
 			}
@@ -159,7 +162,7 @@
 							try {
 								if (
 									el.matches(
-										"button, script, style, .tm-lookup-btn, .listen-para-actions, .english-pair-spacer, .paragraph-num",
+										"button, script, style, .tm-lookup-btn, .listen-para-actions, .english-pair-spacer, .paragraph-num, .popover-content, .person-class-chip",
 									)
 								) {
 									return NodeFilter.FILTER_REJECT;
@@ -249,6 +252,7 @@
 			var el = node.nodeType === 1 ? node : node.parentElement;
 			if (!el || !el.closest) return false;
 			if (el.closest(".tm-popover-overlay, .bottom-popover")) return false;
+			if (el.closest(".person-item, #person-class-filters")) return false;
 			return !!el.closest(
 				".md-content, .listen-stage, .split-panel, .split-wrapper, .interleaved-article, #panel1, #panel2, #highlight-root, .english-paragraph, .pali-paragraph, .listen-paragraph",
 			);
@@ -318,6 +322,70 @@
 			return false;
 		}
 
+		function __suttaPersonHeadingLine(item) {
+			var fromAttr = (item.getAttribute("data-copy-heading") || "").trim();
+			if (fromAttr) return fromAttr;
+			var heading = item.querySelector("h3");
+			return ((heading && heading.textContent) || "")
+				.replace(/\s+/g, " ")
+				.trim();
+		}
+
+		function __suttaNodeIsPersonIndex(node) {
+			var el = __suttaElementFromNode(node);
+			return !!(el && el.closest && el.closest(".person-item"));
+		}
+
+		function __suttaSelectionIsPersonIndex(sel, target) {
+			if (__suttaNodeIsPersonIndex(sel && sel.anchorNode)) return true;
+			if (__suttaNodeIsPersonIndex(sel && sel.focusNode)) return true;
+			if (__suttaNodeIsPersonIndex(target)) return true;
+			try {
+				if (
+					sel &&
+					sel.rangeCount &&
+					__suttaNodeIsPersonIndex(sel.getRangeAt(0).commonAncestorContainer)
+				) {
+					return true;
+				}
+			} catch (err) {}
+			return false;
+		}
+
+		function __suttaPersonCopyLines(range) {
+			var ancestor = range.commonAncestorContainer;
+			var ancestorEl =
+				ancestor.nodeType === 1 ? ancestor : ancestor.parentElement;
+			if (!ancestorEl || !ancestorEl.closest) return null;
+			if (ancestorEl.closest(".popover-content")) {
+				var popover = ancestorEl.closest(".popover-content");
+				var popoverLine = popover.getAttribute("data-copy-line") || "";
+				var item = ancestorEl.closest(".person-item");
+				var name = item ? __suttaPersonHeadingLine(item) : "";
+				if (name && popoverLine) return [name, popoverLine];
+				if (name) return [name];
+				if (popoverLine) return [popoverLine];
+				return null;
+			}
+			var inside = ancestorEl.closest(".person-item");
+			if (!inside) return null;
+			var heading = __suttaPersonHeadingLine(inside);
+			var rows = inside.querySelectorAll(
+				".person-discourses > [data-copy-line]",
+			);
+			var selected = [];
+			for (var i = 0; i < rows.length; i++) {
+				if (__suttaRangeIntersectsNode(range, rows[i])) {
+					var line = rows[i].getAttribute("data-copy-line") || "";
+					if (line) selected.push(line);
+				}
+			}
+			var lines = [];
+			if (heading) lines.push(heading);
+			for (var j = 0; j < selected.length; j++) lines.push(selected[j]);
+			return lines.length ? lines : null;
+		}
+
 		function __suttaExtractSelectionPlain(sel, eventLike) {
 			var text = "";
 			try {
@@ -348,6 +416,24 @@
 					return;
 				}
 				if (!sel || !sel.rangeCount || sel.isCollapsed) return;
+				if (__suttaSelectionIsPersonIndex(sel, event.target)) {
+					var personText = "";
+					try {
+						if (typeof window.__suttaPersonCopyPrepare === "function") {
+							personText = window.__suttaPersonCopyPrepare() || "";
+						}
+					} catch (personPrepErr) {}
+					if (!personText) {
+						try {
+							var personLines = __suttaPersonCopyLines(sel.getRangeAt(0));
+							personText = personLines ? personLines.join("\n") : "";
+						} catch (personLinesErr) {}
+					}
+					if (personText) {
+						__suttaWritePlainClipboard(event, personText);
+					}
+					return;
+				}
 				if (!__suttaIsDiscourseCopy(sel, event.target)) return;
 
 				var text = __suttaExtractSelectionPlain(sel, event);

@@ -1,5 +1,9 @@
 ---
 slug: an5.100
+character:
+  - Venerable Mahāmoggallāna
+  - Devadatta
+  - Deity Kakudha
 source: suttacentral/bilara-data
 title: Kakudhatherasutta
 edition: ms

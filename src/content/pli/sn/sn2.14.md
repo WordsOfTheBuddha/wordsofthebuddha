@@ -1,5 +1,6 @@
 ---
 slug: sn2.14
+character: Deity Nandana
 source: suttacentral/bilara-data
 title: Nandanasutta
 edition: ms

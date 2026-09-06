@@ -1,5 +1,6 @@
 ---
 slug: sn7.19
+character: Brahmin Mātuposaka
 source: suttacentral/bilara-data
 title: Mātuposakasutta
 edition: ms

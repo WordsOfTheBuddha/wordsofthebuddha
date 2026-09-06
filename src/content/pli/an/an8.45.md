@@ -1,5 +1,6 @@
 ---
 slug: an8.45
+character: Laywoman Bojjhā
 source: suttacentral/bilara-data
 title: Bojjhasutta
 edition: ms

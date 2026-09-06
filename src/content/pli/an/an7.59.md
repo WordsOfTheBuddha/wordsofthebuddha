@@ -1,5 +1,6 @@
 ---
 slug: an7.59
+character: Venerable Kimila
 source: suttacentral/bilara-data
 title: Kimilasutta
 edition: ms

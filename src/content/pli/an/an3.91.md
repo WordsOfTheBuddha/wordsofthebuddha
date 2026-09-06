@@ -1,5 +1,6 @@
 ---
 slug: an3.91
+character: Venerable Kassapagotta
 source: suttacentral/bilara-data
 title: Saṅkavāsutta
 edition: ms

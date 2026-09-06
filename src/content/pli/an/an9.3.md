@@ -1,5 +1,6 @@
 ---
 slug: an9.3
+character: Venerable Meghiya
 source: suttacentral/bilara-data
 title: Meghiyasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an7.22
+character:
+  - King Ajātasattu
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Vassakārasutta
 edition: ms

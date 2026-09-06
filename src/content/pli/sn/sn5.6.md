@@ -1,5 +1,9 @@
 ---
 slug: sn5.6
+character:
+  - Māra the Evil One
+  - Bhikkhunī Cālā
+  - Bhikkhunī Māro Pāpimā Cālā
 source: suttacentral/bilara-data
 title: Cālāsutta
 edition: ms

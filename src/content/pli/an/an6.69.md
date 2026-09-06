@@ -1,5 +1,6 @@
 ---
 slug: an6.69
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Devatāsutta
 edition: ms

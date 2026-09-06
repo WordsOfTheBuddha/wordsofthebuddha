@@ -1,5 +1,9 @@
 ---
 slug: sn5.2
+character:
+  - Māra the Evil One
+  - Bhikkhunī Somā
+  - Bhikkhunī Māro Pāpimā Somāya
 source: suttacentral/bilara-data
 title: Somāsutta
 edition: ms

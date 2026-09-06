@@ -1,5 +1,6 @@
 ---
 slug: sn7.17
+character: Brahmin Navakammikabhāradvāja
 source: suttacentral/bilara-data
 title: Navakammikasutta
 edition: ms

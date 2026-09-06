@@ -230,6 +230,14 @@ describe("stylesheet regression", () => {
 				setDataIdx > preventIdx,
 			"inline copy handler must extract live blocks, then preventDefault, then setData",
 		);
+		assert.ok(
+			inlineCopy.includes("__suttaSelectionIsPersonIndex"),
+			"inline copy handler must intercept /person index selections",
+		);
+		assert.ok(
+			inlineCopy.includes("data-copy-heading"),
+			"inline copy handler must copy the person card title",
+		);
 		const layoutSrc = readFileSync(
 			path.join(repoSrc, "..", "layouts", "Layout.astro"),
 			"utf8",

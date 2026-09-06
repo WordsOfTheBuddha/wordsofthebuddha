@@ -1,5 +1,6 @@
 ---
 slug: sn2.24
+character: Ghaṭikāra the Potter
 source: suttacentral/bilara-data
 title: Ghaṭīkārasutta
 edition: ms

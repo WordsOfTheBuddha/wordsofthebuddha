@@ -1,5 +1,6 @@
 ---
 slug: an5.164
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sājīvasutta
 edition: ms

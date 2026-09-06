@@ -1,5 +1,9 @@
 ---
 slug: sn5.7
+character:
+  - Māra the Evil One
+  - Bhikkhunī Upacālā
+  - Bhikkhunī Māro Pāpimā Upacālā
 source: suttacentral/bilara-data
 title: Upacālāsutta
 edition: ms

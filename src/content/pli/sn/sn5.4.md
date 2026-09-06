@@ -1,5 +1,9 @@
 ---
 slug: sn5.4
+character:
+  - Māra the Evil One
+  - Bhikkhunī Vijayā
+  - Bhikkhunī Māro Pāpimā Vijayāya
 source: suttacentral/bilara-data
 title: Vijayāsutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an9.41
+character:
+  - Venerable Ānanda
+  - Householder Tapussa
 source: suttacentral/bilara-data
 title: Tapussasutta
 edition: ms

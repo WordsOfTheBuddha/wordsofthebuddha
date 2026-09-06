@@ -1,5 +1,6 @@
 ---
 slug: an4.60
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Gihisāmīcisutta
 edition: ms

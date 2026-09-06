@@ -1,10 +1,11 @@
 ---
 title: Anāthapiṇḍika sutta - Anāthapiṇḍika
-description: Anāthapiṇḍika, after passing away, appears as a young deity and recites verses to the Buddha on the value of thoroughly examining the Dhamma.
+description: Household Anāthapiṇḍika, after passing away, appears as a young deity and recites verses to the Buddha on the value of thoroughly examining the Dhamma.
 qualities: ethical conduct, wisdom, learning, examination, tranquility
 theme: inspiration
 slug: sn2.20
-character: Anāthapiṇḍika
+character: Deity Anāthapiṇḍika
+priority: 1.1
 ---
 
 Ekamantaṁ ṭhito kho anāthapiṇḍiko devaputto bhagavato santike imā gāthāyo abhāsi:

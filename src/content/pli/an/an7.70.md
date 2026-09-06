@@ -1,5 +1,6 @@
 ---
 slug: an7.70
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sakkaccasutta
 edition: ms

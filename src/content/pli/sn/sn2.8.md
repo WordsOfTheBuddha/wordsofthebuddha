@@ -1,5 +1,8 @@
 ---
 slug: sn2.8
+character:
+  - Deity Tāyana
+  - Deity Nāma
 source: suttacentral/bilara-data
 title: Tāyanasutta
 edition: ms

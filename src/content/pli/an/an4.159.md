@@ -1,5 +1,6 @@
 ---
 slug: an4.159
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Bhikkhunīsutta
 edition: ms

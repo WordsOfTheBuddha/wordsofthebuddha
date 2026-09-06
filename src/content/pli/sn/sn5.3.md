@@ -1,5 +1,9 @@
 ---
 slug: sn5.3
+character:
+  - Māra the Evil One
+  - Bhikkhunī Kisāgotamī
+  - Bhikkhunī Māro Pāpimā Kisāgotamiyā
 source: suttacentral/bilara-data
 title: Kisāgotamīsutta
 edition: ms

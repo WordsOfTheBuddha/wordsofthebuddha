@@ -1,5 +1,6 @@
 ---
 slug: an7.42
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Paṭhamaniddasasutta
 edition: ms

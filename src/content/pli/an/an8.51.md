@@ -1,5 +1,8 @@
 ---
 slug: an8.51
+character:
+  - Venerable Ānanda
+  - Mahāpajāpati Gotamī
 source: suttacentral/bilara-data
 title: Gotamīsutta
 edition: ms

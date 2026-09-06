@@ -4,7 +4,7 @@ description: The Blessed One teaches Visākhā on the nature of attachment and s
 qualities: affection, attachment, sorrow, sorrow-free
 theme: inspiration, wisdom
 slug: ud8.8
-character: Visākhā
+character: Laywoman Visākhā Migāramātā
 priority: 1.1
 ---
 

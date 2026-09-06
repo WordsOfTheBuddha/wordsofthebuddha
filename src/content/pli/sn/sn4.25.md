@@ -1,5 +1,6 @@
 ---
 slug: sn4.25
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Māradhītusutta
 edition: ms

@@ -5,7 +5,8 @@ qualities: non-harm, spiritual life, right intention, not taking what is not giv
 theme: training guideline
 slug: mn8
 simile: one stuck in mud
-character: Venerable Mahā Cunda
+character: Venerable Mahācunda
+priority: 1.8
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

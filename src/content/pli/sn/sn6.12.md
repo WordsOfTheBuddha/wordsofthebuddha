@@ -1,5 +1,8 @@
 ---
 slug: sn6.12
+character:
+  - Brahmā Sahampati
+  - Devadatta
 source: suttacentral/bilara-data
 title: Devadattasutta
 edition: ms

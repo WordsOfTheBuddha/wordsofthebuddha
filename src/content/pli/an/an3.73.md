@@ -1,5 +1,9 @@
 ---
 slug: an3.73
+character:
+  - Venerable Ānanda
+  - "Sakka, lord of the gods"
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 title: Mahānāmasakkasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: an5.168
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sīlasutta
 edition: ms

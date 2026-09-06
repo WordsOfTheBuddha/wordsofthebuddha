@@ -1,5 +1,6 @@
 ---
 slug: sn1.48
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Jetavanasutta
 edition: ms

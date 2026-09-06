@@ -1,5 +1,8 @@
 ---
 slug: an7.47
+character:
+  - Venerable Ānanda
+  - Brahmin Uggatasarīra
 source: suttacentral/bilara-data
 title: Dutiyaaggisutta
 edition: ms

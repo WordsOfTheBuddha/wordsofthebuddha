@@ -1,5 +1,8 @@
 ---
 slug: an5.159
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Udāyīsutta
 edition: ms

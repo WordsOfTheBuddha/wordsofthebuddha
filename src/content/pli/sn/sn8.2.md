@@ -1,5 +1,8 @@
 ---
 slug: sn8.2
+character:
+  - Venerable Vaṅgīsa
+  - Venerable Nigrodhakappa
 source: suttacentral/bilara-data
 title: Aratīsutta
 edition: ms

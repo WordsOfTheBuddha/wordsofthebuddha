@@ -1,5 +1,6 @@
 ---
 slug: an6.46
+character: Venerable Mahācunda
 source: suttacentral/bilara-data
 title: Mahācundasutta
 edition: ms

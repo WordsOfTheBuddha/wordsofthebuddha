@@ -1,5 +1,6 @@
 ---
 slug: an4.17
+character: Deity Moon
 source: suttacentral/bilara-data
 title: Paṭhamaagatisutta
 edition: ms

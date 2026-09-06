@@ -1,5 +1,6 @@
 ---
 slug: sn3.7
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Aḍḍakaraṇasutta
 edition: ms

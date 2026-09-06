@@ -1,5 +1,9 @@
 ---
 slug: sn2.29
+character:
+  - Venerable Ānanda
+  - Venerable Sāriputta
+  - Deity Susima
 source: suttacentral/bilara-data
 title: Susimasutta
 edition: ms

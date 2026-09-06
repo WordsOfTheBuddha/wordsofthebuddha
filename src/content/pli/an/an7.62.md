@@ -1,5 +1,7 @@
 ---
 slug: an7.62
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Mettasutta
 edition: ms

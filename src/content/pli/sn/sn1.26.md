@@ -1,5 +1,8 @@
 ---
 slug: sn1.26
+character:
+  - Deity Moon
+  - Deity Sun
 source: suttacentral/bilara-data
 title: Pajjotasutta
 edition: ms

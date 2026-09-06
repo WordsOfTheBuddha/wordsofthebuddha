@@ -482,6 +482,14 @@ describe("composeNavSuggestions", () => {
 		assert.equal(items[1]?.hit.href, "/simile");
 	});
 
+	it("shows the persons index for person, persons, and character queries", () => {
+		for (const query of ["person", "persons", "character", "characters"]) {
+			const items = composeNavSuggestions(query, [], SITE_PAGE_SUGGESTIONS);
+			assert.equal(items[0]?.type, "page", query);
+			assert.equal(items[0]?.hit.href, "/person", query);
+		}
+	});
+
 	it("shows the qualities index for topic and topics queries", () => {
 		const topics = composeNavSuggestions(
 			"topics",

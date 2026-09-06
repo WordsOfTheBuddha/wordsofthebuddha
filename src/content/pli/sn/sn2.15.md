@@ -1,5 +1,6 @@
 ---
 slug: sn2.15
+character: Deity Candana
 source: suttacentral/bilara-data
 title: Candanasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: an5.180
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Gavesīsutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn6.1
+character: Brahmā Sahampati
 source: suttacentral/bilara-data
 title: Brahmāyācanasutta
 edition: ms

@@ -5,19 +5,37 @@ import { generateContentTagHtml } from "../utils/ContentTagUtils";
 import { marked } from "marked";
 
 interface Props {
-	itemId: string;
-	class?: string;
+	itemId?: string;
+	title?: string;
+	context?: string;
 	href?: string;
+	class?: string;
+	/** Discourse-level preview: description only, wider layout, no link. */
+	variant?: "entity" | "description";
+	/** Plain text to copy instead of the popover body. */
+	copyLine?: string;
 }
 
-const { itemId, class: className, href } = Astro.props;
+const {
+	itemId,
+	title: titleProp,
+	context: contextProp,
+	href,
+	class: className,
+	variant = "entity",
+	copyLine,
+} = Astro.props;
+
+const descriptionOnly = variant === "description";
 
 // --- Data Resolution ---
-const topicData = topicMappings[itemId as keyof typeof topicMappings];
-const qData = (qualities.qualities as any)[itemId];
+const topicData = itemId
+	? topicMappings[itemId as keyof typeof topicMappings]
+	: undefined;
+const qData = itemId ? (qualities.qualities as any)[itemId] : undefined;
 
-let title = "";
-let context = "";
+let title = titleProp?.trim() || "";
+let context = contextProp?.trim() || "";
 let synonyms: string[] = [];
 let pali: string[] = [];
 let types: (
@@ -28,7 +46,7 @@ let types: (
 )[] = [];
 
 // Check if it's a topic
-if (topicData) {
+if (!title && topicData) {
 	title = topicData.title;
 	context = topicData.description;
 	synonyms = topicData.synonyms || [];
@@ -37,7 +55,7 @@ if (topicData) {
 }
 
 // Check if it's also a quality (can be both topic and quality)
-if (qData) {
+if (itemId && qData) {
 	if (!title) {
 		title = itemId.charAt(0).toUpperCase() + itemId.slice(1);
 	}
@@ -77,51 +95,77 @@ if (qData) {
 
 const contextHtml = context ? await marked.parseInline(context) : "";
 const badgeHtmlArray = types.map((type) =>
-	generateContentTagHtml(type, { tooltipPos: "bottom" })
+	generateContentTagHtml(type, { tooltipPos: "bottom" }),
 );
+const showPopover = descriptionOnly ? Boolean(context) : Boolean(title);
 ---
 
 {
-	title ? (
-		<div class:list={["entity-popover-wrapper", className]}>
+	showPopover ? (
+		<div
+			class:list={[
+				"entity-popover-wrapper",
+				descriptionOnly && "entity-popover-wrapper--description",
+				className,
+			]}
+		>
 			<div class="popover-trigger" tabindex="0">
 				<slot />
 			</div>
 
-			<div class="popover-content">
-				<div class="popover-header">
-					<h3 class="popover-title">{title}</h3>
-					<div class="popover-badges">
-						{badgeHtmlArray.map((badgeHtml) => (
-							<div class="popover-badge" set:html={badgeHtml} />
-						))}
+			<div
+				class:list={[
+					"popover-content",
+					descriptionOnly && "popover-content--description",
+				]}
+				data-popover-variant={variant}
+				data-copy-line={copyLine}
+				aria-hidden={descriptionOnly ? "true" : undefined}
+			>
+				{descriptionOnly ? (
+					<div class="popover-contentarea">
+						<p
+							class="popover-context popover-context--solo"
+							set:html={contextHtml}
+						/>
 					</div>
-				</div>
-
-				<div class="popover-contentarea">
-					{context && (
-						<p class="popover-context" set:html={contextHtml} />
-					)}
-
-					{synonyms.length > 0 && (
-						<div class="popover-section">
-							<span class="label">Also known as: </span>
-							<span class="value">{synonyms.join(", ")}</span>
+				) : (
+					<>
+						<div class="popover-header">
+							<h3 class="popover-title">{title}</h3>
+							<div class="popover-badges">
+								{badgeHtmlArray.map((badgeHtml) => (
+									<div class="popover-badge" set:html={badgeHtml} />
+								))}
+							</div>
 						</div>
-					)}
 
-					{pali.length > 0 && (
-						<div class="popover-section">
-							<span class="label">Pāli: </span>
-							<span class="value pali">{pali.join(", ")}</span>
+						<div class="popover-contentarea">
+							{context && (
+								<p class="popover-context" set:html={contextHtml} />
+							)}
+
+							{synonyms.length > 0 && (
+								<div class="popover-section">
+									<span class="label">Also known as: </span>
+									<span class="value">{synonyms.join(", ")}</span>
+								</div>
+							)}
+
+							{pali.length > 0 && (
+								<div class="popover-section">
+									<span class="label">Pāli: </span>
+									<span class="value pali">{pali.join(", ")}</span>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
 
-				{href && (
-					<a href={href} class="popover-link">
-						View all discourses →
-					</a>
+						{href && (
+							<a href={href} class="popover-link">
+								View all discourses →
+							</a>
+						)}
+					</>
 				)}
 
 				<div class="popover-arrow" />
@@ -162,6 +206,8 @@ const badgeHtmlArray = types.map((type) =>
 			0 10px 15px -3px rgba(0, 0, 0, 0.1),
 			0 4px 6px -2px rgba(0, 0, 0, 0.05);
 		z-index: 50;
+		user-select: none;
+		-webkit-user-select: none;
 
 		/* Flex layout for header/body/footer structure */
 		display: flex;
@@ -185,6 +231,21 @@ const badgeHtmlArray = types.map((type) =>
 
 		/* Dynamic max-height set by JS */
 		max-height: var(--popover-max-height, 400px);
+	}
+
+	.popover-content--description {
+		width: min(42rem, calc(100vw - 2rem));
+		max-width: min(42rem, calc(100vw - 2rem));
+		padding: 0.875rem 1rem;
+		pointer-events: none;
+		user-select: none;
+		-webkit-user-select: none;
+	}
+
+	.popover-context--solo {
+		margin-bottom: 0;
+		font-size: 0.9375rem;
+		line-height: 1.55;
 	}
 
 	/* Scrollable body section */
@@ -467,7 +528,9 @@ const badgeHtmlArray = types.map((type) =>
 			const updatePosition = () => {
 				clearCloseTimer();
 				const triggerRect = trigger.getBoundingClientRect();
-				const contentWidth = content.offsetWidth || 360;
+				const contentWidth =
+					content.offsetWidth ||
+					(content.dataset.popoverVariant === "description" ? 560 : 360);
 
 				// Vertical Check
 				const spaceAbove = triggerRect.top;
@@ -521,22 +584,24 @@ const badgeHtmlArray = types.map((type) =>
 					content.style.removeProperty("--x-offset");
 				}
 
-				portalContent();
-				content.classList.add("is-fixed", "is-shown");
-				const left = Math.max(
-					10,
-					Math.min(
-						centerX - halfWidth + xOffset,
-						viewportWidth - contentWidth - 10,
-					),
-				);
-				const gap = 10;
-				const contentHeight = content.offsetHeight;
-				const top = shouldOpenDown
-					? triggerRect.bottom + gap
-					: Math.max(10, triggerRect.top - contentHeight - gap);
-				content.style.setProperty("--popover-left", `${left}px`);
-				content.style.setProperty("--popover-top", `${top}px`);
+				if (content.dataset.popoverVariant !== "description") {
+					portalContent();
+					content.classList.add("is-fixed", "is-shown");
+					const left = Math.max(
+						10,
+						Math.min(
+							centerX - halfWidth + xOffset,
+							viewportWidth - contentWidth - 10,
+						),
+					);
+					const gap = 10;
+					const contentHeight = content.offsetHeight;
+					const top = shouldOpenDown
+						? triggerRect.bottom + gap
+						: Math.max(10, triggerRect.top - contentHeight - gap);
+					content.style.setProperty("--popover-left", `${left}px`);
+					content.style.setProperty("--popover-top", `${top}px`);
+				}
 			};
 
 			// Touch handling: toggle popover on tap

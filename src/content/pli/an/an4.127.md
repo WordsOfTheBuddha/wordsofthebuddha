@@ -1,5 +1,8 @@
 ---
 slug: an4.127
+character:
+  - Deity Moon
+  - Deity Sun
 source: suttacentral/bilara-data
 title: Paṭhamatathāgataacchariyasutta
 edition: ms

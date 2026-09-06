@@ -1,103 +1,34 @@
 import * as fs from "fs";
 import * as path from "path";
 import { globSync } from "glob";
-import { readFileSync } from "fs";
 import matter from "gray-matter";
+import {
+	buildPersonAliasCatalog,
+	canonicalSlugForPerson,
+	isAnonymousPersonLabel,
+	normalizePersonParts,
+	resolvePersonLabel,
+	sanitizePersonLabel,
+	stripDiacritics,
+	stripPersonPrefixes,
+	type PersonAliasCatalog,
+} from "./personIdentity";
+import { isFalseCharacterLabel } from "./referenceCharacterTag";
 import { toChicagoTitleCase } from "./toChicagoTitleCase";
 
 type CurationEntry = {
 	sortLetter?: string;
+	extraSortLetters?: string[];
 	title?: string;
 	description?: string;
 };
 
-const PREFIX_RES = [
-	/^venerable\s+/i,
-	/^ven\.\s*/i,
-	/^bhikkhu\s+/i,
-	/^bhikkhunī\s+/i,
-	/^householder\s+/i,
-	/^layman\s+/i,
-	/^laywoman\s+/i,
-	/^lay\s+disciple\s+/i,
-	/^wanderer\s+/i,
-	/^the\s+/i,
-];
-
-function stripDiacritics(s: string): string {
-	return s.normalize("NFD").replace(/\p{M}/gu, "");
-}
-
-/** Strip stray list/typography quotes often pasted into comma-separated person lists. */
-function sanitizePersonLabel(raw: string): string {
-	let s = raw.trim();
-	s = s.replace(/^[\s"'“”‘’]+/u, "").replace(/[\s"'“”‘’]+$/u, "");
-	return s.trim();
-}
-
-/** Split on commas only outside balanced ASCII double-quotes (for names like "Sakka, lord of the gods"). */
-function splitCommaOutsideDoubleQuotes(input: string): string[] {
-	let depth = 0;
-	let start = 0;
-	const out: string[] = [];
-	for (let i = 0; i < input.length; i++) {
-		const c = input[i];
-		if (c === '"') depth ^= 1;
-		if (c === "," && depth === 0) {
-			out.push(input.slice(start, i));
-			start = i + 1;
-		}
-	}
-	out.push(input.slice(start));
-	return out.map((p) => p.trim()).filter(Boolean);
-}
-
-/**
- * One entry per person: supports YAML string, YAML array, `;` between names,
- * comma-split when unambiguous, or comma+quotes for embedded commas.
- */
-function normalizePersonParts(value: unknown): string[] {
-	if (value == null) return [];
-	if (Array.isArray(value)) {
-		return value.map((v) => sanitizePersonLabel(String(v))).filter(Boolean);
-	}
-	const s = String(value).trim();
-	if (!s) return [];
-	if (s.includes(";")) {
-		return s.split(";").map(sanitizePersonLabel).filter(Boolean);
-	}
-	if (s.includes('"')) {
-		return splitCommaOutsideDoubleQuotes(s).map(sanitizePersonLabel).filter(Boolean);
-	}
-	return s.split(",").map(sanitizePersonLabel).filter(Boolean);
-}
-
-/** URL-safe slug from a normalized string. */
-function slugifySegment(raw: string): string {
-	return stripDiacritics(raw)
-		.toLowerCase()
-		.trim()
-		.replace(/\s+/g, "-")
-		.replace(/[^a-z0-9-]/g, "");
-}
-
-function stripPrefixes(label: string): string {
-	let s = label.trim();
-	for (const re of PREFIX_RES) {
-		s = s.replace(re, "");
-	}
-	return s.trim();
-}
-
-/**
- * Stable identity for /on/:slug — strip honorifics before slugifying so
- * "Sāriputta" and "Venerable Sāriputta" merge into one person card.
- */
-function canonicalSlugForPerson(raw: string): string {
-	const cleaned = sanitizePersonLabel(raw);
-	const core = stripPrefixes(cleaned);
-	return slugifySegment(core || cleaned);
-}
+type DiscourseRef = {
+	id: string;
+	title: string;
+	description: string;
+	collection: string;
+};
 
 function computeSortLetter(
 	raw: string,
@@ -109,7 +40,7 @@ function computeSortLetter(
 		return entry.sortLetter.trim().toUpperCase();
 	}
 	const cleaned = sanitizePersonLabel(raw);
-	const core = stripPrefixes(cleaned);
+	const core = stripPersonPrefixes(cleaned);
 	const firstWord = core.split(/\s+/)[0] || cleaned;
 	const ch = stripDiacritics(firstWord).charAt(0).toUpperCase();
 	if (/[A-Z]/.test(ch)) return ch;
@@ -127,85 +58,230 @@ function formatDisplayTitle(
 	return toChicagoTitleCase(sanitizePersonLabel(raw).replace(/\s+/g, " "));
 }
 
-export async function generatePersonMappings() {
-	const curationPath = path.join(
-		process.cwd(),
-		"src/data/personCurations.json",
-	);
-	const curation: Record<string, CurationEntry> = JSON.parse(
-		readFileSync(curationPath, "utf8"),
-	);
+/** `Vacchagottasutta` → `Vacchagotta sutta`; keep an already-spaced heading. */
+export function paliTitleToSuttaHeading(paliTitle: string): string {
+	const t = paliTitle.trim();
+	if (!t) return "";
+	if (/\s-\s/.test(t)) return t.split(" - ")[0]?.trim() || t;
+	if (/\bsutta\b/i.test(t)) return t;
+	return t.replace(/(sutta(?:ṁ|ṃ)?)$/i, " sutta").replace(/\s+/g, " ").trim();
+}
 
-	/** letter -> slug -> aggregate */
-	const byLetter: Record<
+/** Combine the Pali heading with the Sujato English title when there is no EN file. */
+export function formatReferenceDiscourseTitle(
+	paliTitle: string,
+	sujatoTitle: string,
+): string {
+	const paliHeading = paliTitleToSuttaHeading(paliTitle);
+	const english = sujatoTitle.trim();
+	if (paliHeading && english) {
+		if (paliHeading.toLowerCase() === english.toLowerCase()) return paliHeading;
+		if (/\bsutta\b/i.test(english) && english.includes(" - ")) return english;
+		return `${paliHeading} - ${english}`;
+	}
+	return paliHeading || english || paliTitle || sujatoTitle;
+}
+
+type PersonBucket = Record<
+	string,
+	Record<
 		string,
-		Record<
-			string,
-			{
-				title: string;
-				description?: string | undefined;
-				discourses: Map<
-					string,
-					{ id: string; title: string; description: string; collection: string }
-				>;
+		{
+			title: string;
+			description?: string | undefined;
+			discourses: Map<string, DiscourseRef>;
+		}
+	>
+>;
+
+function addPersonDiscourse(
+	byLetter: PersonBucket,
+	raw: string,
+	catalog: PersonAliasCatalog,
+	curation: Record<string, CurationEntry>,
+	discourse: DiscourseRef,
+): void {
+	const resolved = resolvePersonLabel(raw, catalog).label;
+	if (isAnonymousPersonLabel(resolved) || isFalseCharacterLabel(resolved)) {
+		return;
+	}
+	const slug = canonicalSlugForPerson(resolved, catalog);
+	if (!slug) return;
+
+	const letter = computeSortLetter(resolved, slug, curation);
+	const bucketLetter = /^[A-Z]$/.test(letter) ? letter : "Z";
+
+	if (!byLetter[bucketLetter]) byLetter[bucketLetter] = {};
+	if (!byLetter[bucketLetter][slug]) {
+		const cur = curation[slug];
+		byLetter[bucketLetter][slug] = {
+			title: formatDisplayTitle(resolved, curation, slug),
+			description: cur?.description?.trim(),
+			discourses: new Map(),
+		};
+	} else {
+		const entry = byLetter[bucketLetter][slug];
+		const cur = curation[slug];
+		if (!cur?.title) {
+			const candidate = formatDisplayTitle(resolved, curation, slug);
+			if (candidate.length > entry.title.length) {
+				entry.title = candidate;
 			}
-		>
-	> = {};
+		}
+	}
 
-	const contentFiles = globSync("src/content/en/**/*.mdx");
+	const entry = byLetter[bucketLetter][slug];
+	if (!entry.discourses.has(discourse.id)) {
+		entry.discourses.set(discourse.id, discourse);
+	}
 
-	for (const filePath of contentFiles) {
+	const extraLetters = (curation[slug]?.extraSortLetters || [])
+		.map((letter) => letter.trim().toUpperCase())
+		.filter((letter) => /^[A-Z]$/.test(letter) && letter !== bucketLetter);
+	for (const extra of extraLetters) {
+		if (!byLetter[extra]) byLetter[extra] = {};
+		byLetter[extra][slug] = entry;
+	}
+}
+
+function discourseMetaFromFile(
+	root: string,
+	id: string,
+	collection: string,
+	fallbackTitle: string,
+	fallbackDescription: string,
+): DiscourseRef {
+	const enPath = path.join(root, "src/content/en", collection, `${id}.mdx`);
+	if (fs.existsSync(enPath)) {
+		const { data } = matter(fs.readFileSync(enPath, "utf8"));
+		return {
+			id,
+			title: String(data.title || fallbackTitle),
+			description: String(data.description || fallbackDescription || ""),
+			collection,
+		};
+	}
+	const sujatoPath = path.join(
+		root,
+		"src/content/references/sujato",
+		collection,
+		`${id}.md`,
+	);
+	if (fs.existsSync(sujatoPath)) {
+		const { data } = matter(fs.readFileSync(sujatoPath, "utf8"));
+		return {
+			id,
+			title: formatReferenceDiscourseTitle(
+				fallbackTitle,
+				String(data.title || ""),
+			),
+			description: String(data.description || fallbackDescription || ""),
+			collection,
+		};
+	}
+	return {
+		id,
+		title: fallbackTitle,
+		description: fallbackDescription || "",
+		collection,
+	};
+}
+
+export async function generatePersonMappings(root = process.cwd()) {
+	const curationPath = path.join(root, "src/data/personCurations.json");
+	const curation: Record<string, CurationEntry> = JSON.parse(
+		fs.readFileSync(curationPath, "utf8"),
+	);
+
+	const byLetter: PersonBucket = {};
+	const enFiles = globSync("src/content/en/**/*.mdx", { cwd: root, absolute: true });
+	const catalogLabels: string[] = [];
+
+	type EnRow = {
+		parts: string[];
+		id: string;
+		title: string;
+		description: string;
+		collection: string;
+	};
+	const enRows: EnRow[] = [];
+
+	for (const filePath of enFiles) {
 		try {
-			const content = readFileSync(filePath, "utf8");
-			const { data } = matter(content);
+			const { data } = matter(fs.readFileSync(filePath, "utf8"));
 			if (!data.character) continue;
-
-			const pathParts = filePath.split("/");
-			const collection = pathParts[pathParts.length - 2];
-
 			const parts = normalizePersonParts(data.character);
-
-			for (const raw of parts) {
-				const slug = canonicalSlugForPerson(raw);
-				if (!slug) continue;
-
-				const letter = computeSortLetter(raw, slug, curation);
-				const bucketLetter = /^[A-Z]$/.test(letter) ? letter : "Z";
-
-				if (!byLetter[bucketLetter]) byLetter[bucketLetter] = {};
-				if (!byLetter[bucketLetter][slug]) {
-					const cur = curation[slug];
-					const title = formatDisplayTitle(raw, curation, slug);
-					const description = cur?.description?.trim();
-					byLetter[bucketLetter][slug] = {
-						title,
-						description,
-						discourses: new Map(),
-					};
-				} else {
-					const entry = byLetter[bucketLetter][slug];
-					const cur = curation[slug];
-					if (!cur?.title) {
-						const candidate = formatDisplayTitle(raw, curation, slug);
-						if (candidate.length > entry.title.length) {
-							entry.title = candidate;
-						}
-					}
-				}
-
-				const entry = byLetter[bucketLetter][slug];
-				const id = data.slug as string;
-				if (!entry.discourses.has(id)) {
-					entry.discourses.set(id, {
-						id,
-						title: data.title as string,
-						description: (data.description as string) || "",
-						collection,
-					});
-				}
-			}
+			if (parts.length === 0) continue;
+			catalogLabels.push(...parts);
+			const pathParts = filePath.split(path.sep);
+			enRows.push({
+				parts,
+				id: data.slug as string,
+				title: data.title as string,
+				description: (data.description as string) || "",
+				collection: pathParts[pathParts.length - 2] || "",
+			});
 		} catch (err) {
 			console.error(`Error processing file ${filePath}:`, err);
+		}
+	}
+
+	type PaliRow = {
+		parts: string[];
+		id: string;
+		collection: string;
+		fallbackTitle: string;
+	};
+	const paliRows: PaliRow[] = [];
+	const paliFiles = globSync("src/content/pli/**/*.md", {
+		cwd: root,
+		absolute: true,
+	});
+	for (const filePath of paliFiles) {
+		try {
+			const { data } = matter(fs.readFileSync(filePath, "utf8"));
+			if (!data.character) continue;
+			const parts = normalizePersonParts(data.character);
+			if (parts.length === 0) continue;
+			catalogLabels.push(...parts);
+			const pathParts = filePath.split(path.sep);
+			const collection = pathParts[pathParts.length - 2] || "";
+			const id = String(data.slug || "");
+			if (!id) continue;
+			paliRows.push({
+				parts,
+				id,
+				collection,
+				fallbackTitle: String(data.title || id),
+			});
+		} catch (err) {
+			console.error(`Error processing file ${filePath}:`, err);
+		}
+	}
+
+	const catalog = buildPersonAliasCatalog(catalogLabels);
+
+	for (const row of enRows) {
+		for (const raw of row.parts) {
+			addPersonDiscourse(byLetter, raw, catalog, curation, {
+				id: row.id,
+				title: row.title,
+				description: row.description,
+				collection: row.collection,
+			});
+		}
+	}
+
+	for (const row of paliRows) {
+		const meta = discourseMetaFromFile(
+			root,
+			row.id,
+			row.collection,
+			row.fallbackTitle,
+			"",
+		);
+		for (const raw of row.parts) {
+			addPersonDiscourse(byLetter, raw, catalog, curation, meta);
 		}
 	}
 
@@ -216,12 +292,7 @@ export async function generatePersonMappings() {
 			{
 				title: string;
 				description?: string;
-				discourses: Array<{
-					id: string;
-					title: string;
-					description: string;
-					collection: string;
-				}>;
+				discourses: DiscourseRef[];
 			}
 		>
 	> = {};
@@ -240,11 +311,18 @@ export async function generatePersonMappings() {
 	}
 
 	fs.writeFileSync(
-		path.join(process.cwd(), "src/data/personMappings.json"),
+		path.join(root, "src/data/personMappings.json"),
 		JSON.stringify(out, null, 2),
 	);
 
 	console.log(`person-mappings: wrote personMappings.json`);
 }
 
-generatePersonMappings().catch(console.error);
+function isMain(): boolean {
+	const invoked = process.argv[1]?.replace(/\\/g, "/");
+	return Boolean(invoked?.endsWith("generatePersonMappings.ts"));
+}
+
+if (isMain()) {
+	generatePersonMappings().catch(console.error);
+}

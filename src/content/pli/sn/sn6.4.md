@@ -1,5 +1,6 @@
 ---
 slug: sn6.4
+character: Baka the Brahmā
 source: suttacentral/bilara-data
 title: Bakabrahmasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn2.13
+character: Deity Dīghalaṭṭhi
 source: suttacentral/bilara-data
 title: Dīghalaṭṭhisutta
 edition: ms

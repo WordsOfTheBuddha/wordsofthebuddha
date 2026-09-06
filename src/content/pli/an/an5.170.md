@@ -1,5 +1,8 @@
 ---
 slug: an5.170
+character:
+  - Venerable Ānanda
+  - Venerable Bhaddaji
 source: suttacentral/bilara-data
 title: Bhaddajisutta
 edition: ms

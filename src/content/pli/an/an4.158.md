@@ -1,5 +1,6 @@
 ---
 slug: an4.158
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Parihānisutta
 edition: ms

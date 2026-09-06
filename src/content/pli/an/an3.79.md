@@ -1,5 +1,6 @@
 ---
 slug: an3.79
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Gandhajātasutta
 edition: ms

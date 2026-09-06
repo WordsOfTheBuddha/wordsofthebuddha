@@ -1,5 +1,6 @@
 ---
 slug: an8.44
+character: Young Brahmin Vāseṭṭha
 source: suttacentral/bilara-data
 title: Vāseṭṭhasutta
 edition: ms

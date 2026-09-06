@@ -1,5 +1,6 @@
 ---
 slug: sn3.19
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Paṭhamaaputtakasutta
 edition: ms

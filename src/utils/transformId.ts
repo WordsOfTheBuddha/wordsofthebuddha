@@ -23,6 +23,14 @@ export const transformId = (id: string) => {
 
 	id = keyMap[id] || id;
 
+	// Handle dotted collection ranges like "an8.91-117"
+	const dottedRangePattern = /^([a-zA-Z]+)(\d+)\.(\d+)-(\d+)$/;
+	const dottedRangeMatch = id.match(dottedRangePattern);
+	if (dottedRangeMatch) {
+		const [, chars, book, start, end] = dottedRangeMatch;
+		return `${chars.toUpperCase()} ${book}.${start}–${end}`;
+	}
+
 	// Handle range-based collection IDs like "sn1-11", "mn1-50", "iti1-27"
 	const rangePattern = /^([a-zA-Z]+)(\d+)-(\d+)$/;
 	const rangeMatch = id.match(rangePattern);

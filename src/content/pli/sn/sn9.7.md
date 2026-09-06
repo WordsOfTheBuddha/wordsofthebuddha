@@ -1,5 +1,6 @@
 ---
 slug: sn9.7
+character: Venerable Nāgadatta
 source: suttacentral/bilara-data
 title: Nāgadattasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: dn6
+character: Venerable Nāgita
 source: suttacentral/bilara-data
 title: Mahālisutta
 edition: ms

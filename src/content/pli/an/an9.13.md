@@ -1,5 +1,8 @@
 ---
 slug: an9.13
+character:
+  - Venerable Sāriputta
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 title: Koṭṭhikasutta
 edition: ms

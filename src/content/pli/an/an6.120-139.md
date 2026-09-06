@@ -1,5 +1,14 @@
 ---
 slug: an6.120-139
+character:
+  - Citta the householder
+  - Layman Isidatta
+  - Layman Purāṇa
+  - Householder Ugga of Vesāli
+  - "Sakka, lord of the gods"
+  - Householder Anāthapiṇḍika
+  - Mahānāma the Sakyan
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: Bhallikādisutta
 edition: ms

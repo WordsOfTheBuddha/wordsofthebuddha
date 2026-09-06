@@ -1,5 +1,6 @@
 ---
 slug: an8.24
+character: Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: Dutiyahatthakasutta
 edition: ms

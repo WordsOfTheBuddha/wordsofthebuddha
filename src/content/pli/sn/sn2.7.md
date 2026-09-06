@@ -1,5 +1,6 @@
 ---
 slug: sn2.7
+character: Deity Pañcālacaṇḍa
 source: suttacentral/bilara-data
 title: Pañcālacaṇḍasutta
 edition: ms

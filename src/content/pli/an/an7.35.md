@@ -1,5 +1,6 @@
 ---
 slug: an7.35
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Dutiyasovacassatāsutta
 edition: ms

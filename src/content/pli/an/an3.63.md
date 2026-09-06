@@ -5,6 +5,8 @@ qualities: loving-kindness, compassion, appreciative joy, equanimity, jhana, giv
 theme: inspiration, wisdom, cultivating discernment
 slug: an3.63
 simile: luxurious and lofty bed
+character: Brahmin Vacchagotta of Venāgapura
+priority: 1.4
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ yena venāgapuraṁ nāma kosalānaṁ brāhmaṇagāmo tadavasari. Assosuṁ kho venāgapurikā brāhmaṇagahapatikā:

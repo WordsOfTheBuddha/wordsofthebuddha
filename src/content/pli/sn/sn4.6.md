@@ -1,5 +1,6 @@
 ---
 slug: sn4.6
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Sappasutta
 edition: ms

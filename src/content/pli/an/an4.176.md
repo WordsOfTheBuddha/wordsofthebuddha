@@ -1,5 +1,10 @@
 ---
 slug: an4.176
+character:
+  - Laywoman Nandamātā
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: Āyācanasutta
 edition: ms

@@ -1,5 +1,9 @@
 ---
 slug: snp3.9
+character:
+  - Young Brahmin Vāseṭṭha
+  - Young Brahmin Bhāradvāja
+  - Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 title: Vāseṭṭhasutta
 edition: ms

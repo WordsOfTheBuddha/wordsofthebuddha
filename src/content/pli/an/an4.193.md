@@ -1,5 +1,6 @@
 ---
 slug: an4.193
+character: Bhaddiya the Licchavi
 source: suttacentral/bilara-data
 title: Bhaddiyasutta
 edition: ms

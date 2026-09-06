@@ -1,5 +1,6 @@
 ---
 slug: an6.54
+character: Venerable Dhammika
 source: suttacentral/bilara-data
 title: Dhammikasutta
 edition: ms

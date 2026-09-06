@@ -1,5 +1,6 @@
 ---
 slug: an4.15
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Paññattisutta
 edition: ms

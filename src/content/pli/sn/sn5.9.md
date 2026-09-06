@@ -1,5 +1,9 @@
 ---
 slug: sn5.9
+character:
+  - Māra the Evil One
+  - Bhikkhunī Selā
+  - Bhikkhunī Māro Pāpimā Selāya
 source: suttacentral/bilara-data
 title: Selāsutta
 edition: ms

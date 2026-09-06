@@ -1,5 +1,6 @@
 ---
 slug: an5.32
+character: Princess Cundī
 source: suttacentral/bilara-data
 title: Cundīsutta
 edition: ms

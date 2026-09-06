@@ -1,5 +1,8 @@
 ---
 slug: sn4.22
+character:
+  - Māra the Evil One
+  - Venerable Samiddhi
 source: suttacentral/bilara-data
 title: Samiddhisutta
 edition: ms

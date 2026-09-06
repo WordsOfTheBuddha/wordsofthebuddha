@@ -1,5 +1,6 @@
 ---
 slug: an8.47
+character: Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 title: Dutiyavisākhāsutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: sn8.6
+character:
+  - Venerable Sāriputta
+  - Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Sāriputtasutta
 edition: ms

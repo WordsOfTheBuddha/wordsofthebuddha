@@ -1,5 +1,8 @@
 ---
 slug: an9.42
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Sambādhasutta
 edition: ms

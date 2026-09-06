@@ -1,5 +1,6 @@
 ---
 slug: sn7.14
+character: Brahmin Naṁ
 source: suttacentral/bilara-data
 title: Mahāsālasutta
 edition: ms

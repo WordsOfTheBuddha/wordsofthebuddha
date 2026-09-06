@@ -1,5 +1,7 @@
 ---
 slug: an4.48
+character:
+  - "Venerable Visākha, Pañcālī's Son"
 source: suttacentral/bilara-data
 title: Visākhasutta
 edition: ms

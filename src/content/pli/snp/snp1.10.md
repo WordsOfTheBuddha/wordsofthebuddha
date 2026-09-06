@@ -1,5 +1,6 @@
 ---
 slug: snp1.10
+character: Spirit Āḷavaka
 source: suttacentral/bilara-data
 title: Āḷavakasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: an3.78
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Sīlabbatasutta
 edition: ms

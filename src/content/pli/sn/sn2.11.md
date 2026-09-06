@@ -1,5 +1,6 @@
 ---
 slug: sn2.11
+character: Deity Moon
 source: suttacentral/bilara-data
 title: Candimasasutta
 edition: ms

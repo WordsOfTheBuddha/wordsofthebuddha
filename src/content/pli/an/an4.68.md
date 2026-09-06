@@ -1,5 +1,6 @@
 ---
 slug: an4.68
+character: Devadatta
 source: suttacentral/bilara-data
 title: Devadattasutta
 edition: ms

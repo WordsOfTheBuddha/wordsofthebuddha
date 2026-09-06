@@ -1,5 +1,6 @@
 ---
 slug: an4.177
+character: Venerable Rāhula
 source: suttacentral/bilara-data
 title: Rāhulasutta
 edition: ms

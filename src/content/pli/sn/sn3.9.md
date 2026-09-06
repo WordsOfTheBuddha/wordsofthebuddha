@@ -1,5 +1,6 @@
 ---
 slug: sn3.9
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Yaññasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn7.9
+character: Brahmin Sundarikabhāradvāja
 source: suttacentral/bilara-data
 title: Sundarikasutta
 edition: ms

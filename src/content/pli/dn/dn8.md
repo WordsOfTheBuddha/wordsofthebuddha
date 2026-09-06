@@ -1,5 +1,6 @@
 ---
 slug: dn8
+character: Naked Ascetic Kassapa
 source: suttacentral/bilara-data
 title: Mahāsīhanādasutta
 edition: ms

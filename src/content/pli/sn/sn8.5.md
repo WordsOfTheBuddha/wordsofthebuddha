@@ -1,5 +1,6 @@
 ---
 slug: sn8.5
+character: Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Subhāsitasutta
 edition: ms

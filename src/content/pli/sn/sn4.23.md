@@ -1,5 +1,8 @@
 ---
 slug: sn4.23
+character:
+  - Māra the Evil One
+  - Venerable Godhika
 source: suttacentral/bilara-data
 title: Godhikasutta
 edition: ms

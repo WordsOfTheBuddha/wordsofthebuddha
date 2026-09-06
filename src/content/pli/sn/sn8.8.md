@@ -1,5 +1,6 @@
 ---
 slug: sn8.8
+character: Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Parosahassasutta
 edition: ms

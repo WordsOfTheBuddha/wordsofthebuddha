@@ -1,5 +1,6 @@
 ---
 slug: sn9.3
+character: Venerable Kassapagotta
 source: suttacentral/bilara-data
 title: Kassapagottasutta
 edition: ms

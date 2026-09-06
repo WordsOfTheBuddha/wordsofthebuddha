@@ -1,5 +1,6 @@
 ---
 slug: snp2.14
+character: Lay follower Dhammika
 source: suttacentral/bilara-data
 title: Dhammikasutta
 edition: ms

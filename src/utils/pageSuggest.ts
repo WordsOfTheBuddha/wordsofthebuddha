@@ -104,6 +104,12 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 	},
 	{
 		kind: "page",
+		title: "Persons",
+		href: "/person",
+		aliases: ["person", "persons", "character", "characters"],
+	},
+	{
+		kind: "page",
 		title: "Qualities",
 		href: "/qualities",
 		aliases: ["topic", "topics", "quality", "mental qualities"],

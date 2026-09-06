@@ -1,5 +1,6 @@
 ---
 slug: an6.52
+character: Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 title: Khattiyasutta
 edition: ms

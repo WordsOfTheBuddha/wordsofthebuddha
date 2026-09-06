@@ -4,7 +4,7 @@ description: Can one reach the world’s end by traveling? Recalling a past life
 qualities: wisdom, suffering, ending
 theme: wisdom
 slug: sn2.26
-character: Rohitassa
+character: Deity Rohitassa
 similar: an4.45
 ---
 

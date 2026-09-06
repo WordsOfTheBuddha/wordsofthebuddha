@@ -15,6 +15,7 @@ import {
 	beginCopySanitization,
 	endCopySanitization,
 	isEditableCopyTarget,
+	selectionIsDiscourseText,
 } from "./plainCopy";
 
 function installDom(html: string): { document: Document; window: Window } {
@@ -1163,6 +1164,98 @@ describe("shouldSkipCopyElement", () => {
 		assert.equal(
 			shouldSkipCopyElement(document.querySelector("em") as HTMLElement),
 			false,
+		);
+	});
+});
+
+describe("person index copy isolation", () => {
+	it("does not treat /person index selections as discourse copy", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<div class="person-item" data-copy-heading="Venerable Udena Bhikkhu">
+				<h3><a>Venerable Udena</a><span> Bhikkhu</span></h3>
+				<div class="person-discourses">
+					<div data-copy-line="MN 94 - Ghoṭamukha sutta - With Ghoṭamukha">
+						<a>MN 94 - Ghoṭamukha sutta - With Ghoṭamukha</a>
+						<p class="popover-context">Venerable Udena answers the brahmin Ghoṭamukha</p>
+					</div>
+				</div>
+			</div>
+		`);
+		installDiscoursePlainCopy();
+		const item = document.querySelector(".person-item")!;
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(selectAll(item));
+		assert.equal(selectionIsDiscourseText(selection), false);
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+		assert.equal(event.defaultPrevented, false);
+		assert.equal(stored["text/plain"], undefined);
+	});
+
+	it("inline copy includes the card title with the selected sutta", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<div class="person-item" data-copy-heading="Venerable Udena Bhikkhu">
+				<h3><a>Venerable Udena</a><span class="person-class-label"> Bhikkhu</span></h3>
+				<div class="person-discourses">
+					<div data-copy-line="MN 94 - Ghoṭamukha sutta - With Ghoṭamukha">
+						<a id="mn94">MN 94 - Ghoṭamukha sutta - With Ghoṭamukha</a>
+					</div>
+				</div>
+			</div>
+		`);
+		assert.equal(typeof window.__suttaPersonCopyPrepare, "undefined");
+		const inlineSrc = readFileSync(
+			path.join(
+				path.dirname(fileURLToPath(import.meta.url)),
+				"discoursePlainCopyInline.js",
+			),
+			"utf8",
+		);
+		(window as unknown as { eval: (code: string) => void }).eval(inlineSrc);
+
+		const heading = document.querySelector("h3")!;
+		const link = document.getElementById("mn94")!;
+		const range = document.createRange();
+		range.setStart(heading, 0);
+		range.setEnd(link, link.childNodes.length);
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+		assert.equal(event.defaultPrevented, true);
+		assert.equal(
+			stored["text/plain"],
+			"Venerable Udena Bhikkhu\nMN 94 - Ghoṭamukha sutta - With Ghoṭamukha",
 		);
 	});
 });

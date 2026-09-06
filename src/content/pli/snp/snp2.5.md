@@ -7,6 +7,10 @@ slug: snp2.5
 simile: māluvā creeper
 commentary:
     - "[1]  In ancient times, village children would sometimes catch a crow, tie a string to its leg, and relentlessly toss it into the air just to watch it flap and struggle."
+character:
+  - Spirit Sūciloma
+  - Spirit Khara
+priority: 1.4
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā gayāyaṁ viharati ṭaṅkitamañce sūcilomassa yakkhassa bhavane. Tena kho pana samayena kharo ca yakkho sūcilomo ca yakkho bhagavato avidūre atikkamanti. Atha kho kharo yakkho sūcilomaṁ yakkhaṁ etadavoca: “eso samaṇo”ti.

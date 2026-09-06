@@ -1,5 +1,6 @@
 ---
 slug: an4.197
+character: Queen Mallikā
 source: suttacentral/bilara-data
 title: Mallikādevīsutta
 edition: ms

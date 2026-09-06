@@ -1,5 +1,6 @@
 ---
 slug: an4.111
+character: Kesi Assadammasārathi
 source: suttacentral/bilara-data
 title: Kesisutta
 edition: ms

@@ -1,5 +1,10 @@
 ---
 slug: sn6.5
+character:
+  - Venerable Mahākassapa
+  - Venerable Mahāmoggallāna
+  - Venerable Anuruddha
+  - Venerable Mahākappina
 source: suttacentral/bilara-data
 title: Aññatarabrahmasutta
 edition: ms

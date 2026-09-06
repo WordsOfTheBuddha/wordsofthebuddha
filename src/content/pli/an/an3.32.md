@@ -1,5 +1,6 @@
 ---
 slug: an3.32
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

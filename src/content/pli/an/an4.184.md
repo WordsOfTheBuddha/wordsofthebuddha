@@ -1,5 +1,6 @@
 ---
 slug: an4.184
+character: Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 title: Abhayasutta
 edition: ms

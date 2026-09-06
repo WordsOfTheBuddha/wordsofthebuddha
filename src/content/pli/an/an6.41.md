@@ -1,5 +1,6 @@
 ---
 slug: an6.41
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Dārukkhandhasutta
 edition: ms

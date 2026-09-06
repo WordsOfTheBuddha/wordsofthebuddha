@@ -16,8 +16,10 @@
  * The module listener is a backup.
  */
 
+import { preparePersonIndexCopy } from "./personIndexCopy";
+
 export const COPY_CHROME_SELECTOR =
-	"button, script, style, .tm-lookup-btn, .listen-para-actions, .english-pair-spacer, .paragraph-num";
+	"button, script, style, .tm-lookup-btn, .listen-para-actions, .english-pair-spacer, .paragraph-num, .popover-content, .person-class-chip";
 
 const COPY_BLOCK_SELECTOR =
 	"p, h1, h2, h3, h4, h5, h6, li, blockquote, pre, .english-paragraph, .pali-paragraph, .listen-paragraph";
@@ -67,6 +69,7 @@ function isCopyBlock(el: HTMLElement): boolean {
 function shouldIncludeCopyBlock(el: HTMLElement): boolean {
 	if (!isCopyBlock(el)) return false;
 	if (el.getAttribute("aria-hidden") === "true") return false;
+	if (el.closest(".popover-content")) return false;
 	if (el.classList.contains("english-pair-spacer")) return false;
 	if (shouldSkipPali(el)) return false;
 	return true;
@@ -191,6 +194,9 @@ function extractBlockPlainText(block: HTMLElement, range: Range): string {
 				if (node.nodeType === Node.ELEMENT_NODE) {
 					const el = node as HTMLElement;
 					if (shouldSkipCopyElement(el)) {
+						return NodeFilter.FILTER_REJECT;
+					}
+					if (el.closest(".popover-content")) {
 						return NodeFilter.FILTER_REJECT;
 					}
 					if (el.tagName.toLowerCase() === "br") {
@@ -333,6 +339,9 @@ export function selectionIsDiscourseText(selection: Selection): boolean {
 		if (el.closest(".tm-popover-overlay, .bottom-popover, .highlight-menu")) {
 			return false;
 		}
+		if (el.closest(".person-item, #person-class-filters")) {
+			return false;
+		}
 		return !!el.closest(discourseSelector);
 	};
 
@@ -416,6 +425,7 @@ export function installDiscoursePlainCopy(): void {
 	if (typeof window !== "undefined") {
 		window.__suttaPlainCopy = onCopy;
 		window.__suttaPlainCopyPrepare = preparePlainCopy;
+		window.__suttaPersonCopyPrepare = preparePersonIndexCopy;
 	}
 	document.addEventListener("copy", onCopy, true);
 	if (typeof window !== "undefined") {
@@ -430,6 +440,7 @@ export function resetDiscoursePlainCopyForTests(): void {
 	if (typeof window !== "undefined") {
 		delete window.__suttaPlainCopy;
 		delete window.__suttaPlainCopyPrepare;
+		delete window.__suttaPersonCopyPrepare;
 	}
 }
 
@@ -437,5 +448,6 @@ declare global {
 	interface Window {
 		__suttaPlainCopy?: (e: ClipboardEvent) => void;
 		__suttaPlainCopyPrepare?: (e: ClipboardEvent) => string | null;
+		__suttaPersonCopyPrepare?: () => string | null;
 	}
 }

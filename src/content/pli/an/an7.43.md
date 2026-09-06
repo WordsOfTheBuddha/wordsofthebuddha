@@ -1,5 +1,6 @@
 ---
 slug: an7.43
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Dutiyaniddasasutta
 edition: ms

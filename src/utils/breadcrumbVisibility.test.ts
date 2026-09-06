@@ -9,5 +9,7 @@ describe("hideBreadcrumbsForPath", () => {
 		assert.equal(hideBreadcrumbsForPath("/ask/mindfulness-of-the-body"), true);
 		assert.equal(hideBreadcrumbsForPath("/shared-ask/auspiciousness-and-full-moon"), true);
 		assert.equal(hideBreadcrumbsForPath("/mn10"), false);
+		assert.equal(hideBreadcrumbsForPath("/person"), true);
+		assert.equal(hideBreadcrumbsForPath("/on/sariputta"), false);
 	});
 });

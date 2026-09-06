@@ -1,5 +1,8 @@
 ---
 slug: an9.14
+character:
+  - Venerable Sāriputta
+  - Venerable Samiddhi
 source: suttacentral/bilara-data
 title: Samiddhisutta
 edition: ms

@@ -40,4 +40,15 @@ describe("buildBreadcrumbTrail", () => {
 		assert.equal(trail.at(-1)?.path, "/dn22");
 		assert.equal(trail.length, 4);
 	});
+
+	it("nests person pages under Discover > Persons", () => {
+		const trail = buildBreadcrumbTrail("on/sariputta", "/on/sariputta");
+		assert.deepEqual(
+			trail.map((crumb) => crumb.path),
+			["/discover", "/person", "/on/sariputta"],
+		);
+		assert.equal(trail[1]?.label, "Persons");
+		assert.ok(trail[2]?.label);
+		assert.notEqual(trail[2]?.label, "Persons");
+	});
 });

@@ -1,5 +1,8 @@
 ---
 slug: sn6.9
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Turūbrahmasutta
 edition: ms

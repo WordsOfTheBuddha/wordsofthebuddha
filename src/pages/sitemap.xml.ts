@@ -41,6 +41,7 @@ const STATIC_PAGES = [
 	"/buddha-quotes",
 	"/qualities",
 	"/simile",
+	"/person",
 	"/explorer",
 	"/privacy",
 	"/public-domain",

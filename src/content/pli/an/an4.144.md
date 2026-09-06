@@ -1,5 +1,6 @@
 ---
 slug: an4.144
+character: Deity Moon
 source: suttacentral/bilara-data
 title: Obhāsasutta
 edition: ms

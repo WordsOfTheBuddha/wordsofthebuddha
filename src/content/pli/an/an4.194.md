@@ -1,5 +1,6 @@
 ---
 slug: an4.194
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Sāmugiyasutta
 edition: ms

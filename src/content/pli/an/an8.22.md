@@ -4,6 +4,8 @@ description: Ugga, the householder of Hatthigāma is endowed with eight wonderfu
 fetter: doubt
 tags: confidence, Buddha, Dhamma, Sangha, virtues, wealth, possessions, fame, an, an8
 slug: an8.22
+character: Householder Ugga of Hatthigāma
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā vajjīsu viharati hatthigāme. Tatra kho bhagavā bhikkhū āmantesi: “aṭṭhahi, bhikkhave, acchariyehi abbhutehi dhammehi samannāgataṁ uggaṁ gahapatiṁ hatthigāmakaṁ dhārethā”ti.

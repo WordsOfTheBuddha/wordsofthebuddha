@@ -1,0 +1,42 @@
+---
+export const prerender = false;
+import personMappings from "../../data/personMappings.json";
+import {
+	canonicalOnSlug,
+	createSlugVariants,
+	matchesSlugValue,
+} from "../../utils/discover-data";
+
+interface PersonMap {
+	[letter: string]: {
+		[slug: string]: { title?: string };
+	};
+}
+
+const typedPersonMappings = personMappings as unknown as PersonMap;
+
+const { id } = Astro.params;
+if (!id) {
+	return Astro.redirect("/person");
+}
+
+const slugVariants = new Set(createSlugVariants(decodeURIComponent(id)));
+let personMatch = "";
+
+Object.values(typedPersonMappings).forEach((group) => {
+	Object.entries(group).forEach(([slug, person]) => {
+		if (
+			matchesSlugValue(slug, slugVariants) ||
+			matchesSlugValue(person.title || "", slugVariants)
+		) {
+			personMatch = slug;
+		}
+	});
+});
+
+if (!personMatch) {
+	return Astro.redirect("/person");
+}
+
+return Astro.redirect(`/on/${canonicalOnSlug(personMatch)}`, 301);
+---

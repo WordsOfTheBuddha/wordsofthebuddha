@@ -1,5 +1,8 @@
 ---
 slug: an8.20
+character:
+  - Venerable Ānanda
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Uposathasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: sn3.14
+character:
+  - King Pasenadi of Kosala
+  - King Ajātasattu
 source: suttacentral/bilara-data
 title: Paṭhamasaṅgāmasutta
 edition: ms

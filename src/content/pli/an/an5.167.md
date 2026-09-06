@@ -1,5 +1,6 @@
 ---
 slug: an5.167
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Codanāsutta
 edition: ms

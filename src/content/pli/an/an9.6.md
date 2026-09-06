@@ -1,5 +1,6 @@
 ---
 slug: an9.6
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sevanāsutta
 edition: ms

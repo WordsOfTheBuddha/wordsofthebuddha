@@ -1,0 +1,460 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import EntityPopover from "../../components/EntityPopover.astro";
+import personMappings from "../../data/personMappings.json";
+import { canonicalOnSlug } from "../../utils/discover-data";
+import { transformId } from "../../utils/transformId";
+import {
+	PERSON_FILTER_CLASSES,
+	personFilterClasses,
+	stripPersonPrefixes,
+	type PersonFilterClass,
+} from "../../utils/personIdentity";
+import {
+	DISCOURSE_LIST_PREVIEW_COUNT,
+	discourseShowMoreLabel,
+} from "../../utils/discourseListPreview";
+import { referenceOnlyRouteSet } from "../../utils/referenceOnlyRoutes";
+
+export const prerender = false;
+
+interface Discourse {
+	id: string;
+	title: string;
+	description: string;
+	collection: string;
+}
+
+interface PersonEntry {
+	title: string;
+	description?: string;
+	discourses: Discourse[];
+}
+
+interface PersonMap {
+	[letter: string]: {
+		[slug: string]: PersonEntry;
+	};
+}
+
+const typedPersonMappings = personMappings as unknown as PersonMap;
+
+function groupByFirstLetter(
+	items: PersonMap,
+): Record<
+	string,
+	Array<{ slug: string; title: string; personClasses: PersonFilterClass[] }>
+> {
+	const result: Record<
+		string,
+		Array<{ slug: string; title: string; personClasses: PersonFilterClass[] }>
+	> = {};
+
+	Object.entries(items).forEach(([letter, people]) => {
+		const bucket = letter.toUpperCase();
+		if (!result[bucket]) result[bucket] = [];
+		Object.entries(people).forEach(([slug, person]) => {
+			result[bucket].push({
+				slug,
+				title: person.title,
+				personClasses: personFilterClasses(person.title),
+			});
+		});
+	});
+
+	return result;
+}
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const personsByLetter = groupByFirstLetter(typedPersonMappings);
+const classCounts = new Map<PersonFilterClass, number>();
+const countedSlugs = new Set<string>();
+for (const people of Object.values(personsByLetter)) {
+	for (const person of people) {
+		if (person.personClasses.length === 0) continue;
+		if (countedSlugs.has(person.slug)) continue;
+		countedSlugs.add(person.slug);
+		for (const key of person.personClasses) {
+			classCounts.set(key, (classCounts.get(key) || 0) + 1);
+		}
+	}
+}
+const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
+	classCounts.has(name),
+).map((name) => ({ name, count: classCounts.get(name) || 0 }));
+---
+
+<Layout
+	seoTitle="Persons - Words of the Buddha"
+	seoDescription="An index of people who appear in the discourses — disciples, wanderers, kings, and householders — linked to the suttas in which each appears."
+	showAuth={true}
+>
+	<main class="container mx-auto py-8">
+		<div class="flex justify-between items-baseline mb-4 border-b pb-2">
+			<h3 class="text-2xl font-bold flex-grow mr-4">
+				Discover Discourses by Person
+			</h3>
+			<div class="relative">
+				<input
+					type="text"
+					id="person-filter"
+					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+					placeholder="Filter persons..."
+				/>
+			</div>
+		</div>
+		<div class="mb-8 flex flex-wrap gap-2">
+			{
+				alphabet.map((letter) => {
+					const hasPeople =
+						personsByLetter[letter] &&
+						personsByLetter[letter].length > 0;
+
+					return (
+						<a
+							href={hasPeople ? `#${letter}` : "#"}
+							class={`w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
+								hasPeople
+									? "text-[var(--primary-color)] hover:opacity-80 border border-[var(--primary-color)]"
+									: "text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-default"
+							}`}
+						>
+							{letter}
+						</a>
+					);
+				})
+			}
+		</div>
+		{
+			classFilters.length > 0 && (
+				<div
+					id="person-class-filters"
+					class="mb-8 flex flex-wrap gap-2"
+					role="group"
+					aria-label="Filter by kind of person"
+				>
+					{classFilters.map((item) => (
+						<button
+							type="button"
+							class="person-class-chip px-3 py-1 text-sm rounded-md border border-gray-300 dark:border-gray-700 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] transition-colors"
+							data-person-class={item.name}
+							aria-pressed="false"
+						>
+							{item.name}
+							<span class="text-gray-500 dark:text-gray-400">
+								{" "}
+								({item.count})
+							</span>
+						</button>
+					))}
+				</div>
+			)
+		}
+
+		<div class="space-y-8">
+			{
+				alphabet.map((letter) => {
+					if (
+						!personsByLetter[letter] ||
+						personsByLetter[letter].length === 0
+					)
+						return null;
+
+					return (
+						<div id={letter} class="scroll-mt-16 letter-section">
+							<h2 class="text-2xl font-bold mb-4 border-b pb-2">
+								{letter}
+							</h2>
+							<div class="space-y-4">
+								{personsByLetter[letter]
+									.sort((a, b) =>
+										stripPersonPrefixes(a.title).localeCompare(
+											stripPersonPrefixes(b.title),
+											undefined,
+											{
+												sensitivity: "base",
+											},
+										),
+									)
+									.map((person) => {
+										const entry =
+											typedPersonMappings[letter]?.[
+												person.slug
+											] ||
+											typedPersonMappings[letter.toLowerCase()]?.[
+												person.slug
+											];
+										const discourses = entry?.discourses || [];
+										const sortedDiscourses = [
+											...discourses,
+										].sort((a, b) =>
+											a.id.localeCompare(b.id, undefined, {
+												numeric: true,
+												sensitivity: "base",
+											}),
+										);
+
+										const copyLines = [
+											person.title,
+											...sortedDiscourses.map(
+												(discourse) =>
+													`${transformId(discourse.id)} - ${discourse.title}`,
+											),
+										];
+
+										return (
+											<div
+												class="person-item mb-4"
+												data-person-classes={person.personClasses.join("|")}
+												data-copy-heading={[
+													person.title,
+													...person.personClasses,
+												].join(" ")}
+												data-copy-lines={JSON.stringify(
+													copyLines,
+												)}
+											>
+												<h3 class="text-lg font-semibold flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+													<a
+														href={`/on/${canonicalOnSlug(person.slug)}`}
+														class="hover:text-[var(--primary-color)]"
+													>
+														{person.title}
+													</a>
+													{
+														person.personClasses.map((personClass) => (
+															<span
+																class="person-class-label text-sm font-normal text-gray-500 dark:text-gray-400"
+															>
+																{personClass}
+															</span>
+														))
+													}
+												</h3>
+												<div class="person-discourses ml-5 mt-1 space-y-1">
+													{sortedDiscourses.map(
+														(discourse, index) => {
+															const discourseLine = `${transformId(discourse.id)} - ${discourse.title}`;
+															const extra =
+																index >=
+																DISCOURSE_LIST_PREVIEW_COUNT;
+															return (
+															<div
+																data-copy-line={discourseLine}
+																class:list={[
+																	extra &&
+																		"person-discourse-extra hidden",
+																]}
+															>
+																<EntityPopover
+																	variant="description"
+																	copyLine={discourseLine}
+																	context={
+																		discourse.description
+																	}
+																>
+																	<a
+																		href={`/${discourse.id}`}
+																		class="hover:text-[var(--primary-color)]"
+																	>
+																		{discourseLine}
+																	</a>
+																</EntityPopover>
+																{
+																	referenceOnlyRouteSet.has(
+																		discourse.id,
+																	) && (
+																		<span
+																			class="post-card-ref-badge"
+																			title="Reference translation"
+																		>
+																			Ref
+																		</span>
+																	)
+																}
+															</div>
+															);
+														},
+													)}
+													{
+														sortedDiscourses.length >
+															DISCOURSE_LIST_PREVIEW_COUNT && (
+															<button
+																type="button"
+																class="person-discourses-more mt-1 text-sm text-[var(--primary-color)] hover:text-[var(--link-hover-color)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 rounded"
+																data-extra={
+																	sortedDiscourses.length -
+																	DISCOURSE_LIST_PREVIEW_COUNT
+																}
+															>
+																{discourseShowMoreLabel(
+																	sortedDiscourses.length,
+																)}
+															</button>
+														)
+													}
+												</div>
+											</div>
+										);
+									})}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<script>
+	import {
+		plainLinesFromPersonSelection,
+		writePersonIndexClipboard,
+	} from "../../utils/personIndexCopy";
+	import {
+		DISCOURSE_LIST_PREVIEW_COUNT,
+		discourseShowMoreLabel,
+	} from "../../utils/discourseListPreview";
+
+	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+		anchor.addEventListener(
+			"click",
+			function (this: HTMLAnchorElement, e: Event) {
+				const href = this.getAttribute("href");
+				if (href === "#") return;
+
+				e.preventDefault();
+				const target = document.querySelector(href as string);
+				if (target) {
+					target.scrollIntoView({
+						behavior: "smooth",
+					});
+				}
+			},
+		);
+	});
+
+	const filterInput = document.getElementById(
+		"person-filter",
+	) as HTMLInputElement;
+	const personItems = document.querySelectorAll(".person-item");
+	const letterSections = document.querySelectorAll(".letter-section");
+	const classChips = document.querySelectorAll(".person-class-chip");
+	const selectedClasses = new Set<string>();
+
+	function foldFilterText(value: string): string {
+		return value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+	}
+
+	function applyPersonFilters() {
+		const filter = foldFilterText(filterInput?.value || "");
+
+		personItems.forEach((item) => {
+			const content = foldFilterText(item.textContent || "");
+			const personClasses = (item.getAttribute("data-person-classes") || "")
+				.split("|")
+				.filter(Boolean);
+			const matchesText = !filter || content.includes(filter);
+			const matchesClass =
+				selectedClasses.size === 0 ||
+				personClasses.some((personClass) => selectedClasses.has(personClass));
+			item.classList.toggle("hidden", !(matchesText && matchesClass));
+		});
+
+		letterSections.forEach((section) => {
+			const visiblePeople = section.querySelectorAll(
+				".person-item:not(.hidden)",
+			);
+			section.classList.toggle("hidden", visiblePeople.length === 0);
+		});
+	}
+
+	filterInput?.addEventListener("input", applyPersonFilters);
+
+	classChips.forEach((chip) => {
+		chip.addEventListener("click", () => {
+			const name = chip.getAttribute("data-person-class") || "";
+			const on = !selectedClasses.has(name);
+			if (on) selectedClasses.add(name);
+			else selectedClasses.delete(name);
+			chip.setAttribute("aria-pressed", on ? "true" : "false");
+			chip.classList.toggle("is-active", on);
+			applyPersonFilters();
+		});
+	});
+
+	document.addEventListener("selectstart", () => {
+		document.documentElement.classList.add("selecting-person");
+		document
+			.querySelectorAll(".popover-content--description")
+			.forEach((el) => {
+				el.classList.remove("is-shown", "is-fixed");
+			});
+	});
+
+	document.addEventListener("selectionchange", () => {
+		const selection = window.getSelection();
+		if (!selection || selection.isCollapsed) {
+			document.documentElement.classList.remove("selecting-person");
+		}
+	});
+
+	function onPersonCopy(event: ClipboardEvent) {
+		if (event.defaultPrevented) return;
+		const selection = window.getSelection();
+		if (!selection || selection.isCollapsed || !selection.rangeCount) {
+			return;
+		}
+		const lines = plainLinesFromPersonSelection(selection.getRangeAt(0));
+		if (!lines) return;
+		document.documentElement.classList.add("selecting-person");
+		writePersonIndexClipboard(event, lines);
+	}
+
+	document.addEventListener("copy", onPersonCopy, true);
+	window.addEventListener("copy", onPersonCopy, true);
+
+	document.querySelectorAll(".person-discourses-more").forEach((button) => {
+		button.addEventListener("click", () => {
+			const list = button.closest(".person-discourses");
+			if (!list) return;
+			const expanded = list.classList.toggle("is-expanded");
+			list.querySelectorAll(".person-discourse-extra").forEach((row) => {
+				row.classList.toggle("hidden", !expanded);
+			});
+			const extra = Number(button.getAttribute("data-extra") || "0");
+			button.textContent = expanded
+				? "[- Show Less]"
+				: discourseShowMoreLabel(
+						DISCOURSE_LIST_PREVIEW_COUNT + extra,
+					);
+		});
+	});
+</script>
+
+<style>
+	.letter-section.hidden {
+		display: none;
+	}
+
+	.person-class-chip.is-active {
+		border-color: var(--primary-color);
+		color: var(--primary-color);
+	}
+
+	:global(html.selecting-person) .popover-content--description {
+		visibility: hidden !important;
+		opacity: 0 !important;
+		display: none !important;
+	}
+
+	.person-item,
+	.person-discourses,
+	.person-discourses .popover-trigger {
+		user-select: text;
+		-webkit-user-select: text;
+	}
+</style>

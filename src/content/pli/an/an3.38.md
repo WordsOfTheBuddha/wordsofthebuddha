@@ -1,5 +1,7 @@
 ---
 slug: an3.38
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Dutiyacatumahārājasutta
 edition: ms

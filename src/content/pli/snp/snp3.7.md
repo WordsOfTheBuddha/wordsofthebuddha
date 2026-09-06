@@ -1,5 +1,6 @@
 ---
 slug: snp3.7
+character: Keṇiya Jaṭila
 source: suttacentral/bilara-data
 title: Selasutta
 edition: ms

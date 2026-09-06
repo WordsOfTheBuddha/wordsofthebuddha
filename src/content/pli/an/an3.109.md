@@ -1,5 +1,6 @@
 ---
 slug: an3.109
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Arakkhitasutta
 edition: ms

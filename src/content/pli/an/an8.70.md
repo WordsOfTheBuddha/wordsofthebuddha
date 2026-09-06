@@ -1,5 +1,6 @@
 ---
 slug: an8.70
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Bhūmicālasutta
 edition: ms

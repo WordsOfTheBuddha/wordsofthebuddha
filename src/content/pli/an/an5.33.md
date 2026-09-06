@@ -1,5 +1,7 @@
 ---
 slug: an5.33
+character:
+  - "Uggaha, Meṇḍaka's grandson"
 source: suttacentral/bilara-data
 title: Uggahasutta
 edition: ms

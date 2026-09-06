@@ -1,5 +1,6 @@
 ---
 slug: an7.56
+character: Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Tissabrahmāsutta
 edition: ms

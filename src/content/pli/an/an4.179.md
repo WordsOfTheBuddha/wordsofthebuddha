@@ -1,5 +1,8 @@
 ---
 slug: an4.179
+character:
+  - Venerable Ānanda
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Nibbānasutta
 edition: ms

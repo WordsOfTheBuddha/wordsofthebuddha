@@ -1,5 +1,6 @@
 ---
 slug: sn2.22
+character: Deity Khema
 source: suttacentral/bilara-data
 title: Khemasutta
 edition: ms

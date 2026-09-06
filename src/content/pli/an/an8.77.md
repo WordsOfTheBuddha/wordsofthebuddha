@@ -1,5 +1,6 @@
 ---
 slug: an8.77
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Icchāsutta
 edition: ms

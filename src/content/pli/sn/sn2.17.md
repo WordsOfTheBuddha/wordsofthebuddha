@@ -1,5 +1,6 @@
 ---
 slug: sn2.17
+character: Deity Subrahmā
 source: suttacentral/bilara-data
 title: Subrahmasutta
 edition: ms

@@ -7,5 +7,94 @@
 	"brahma-sahampati": {
 		"sortLetter": "S",
 		"title": "Brahmā Sahampati"
+	},
+	"ghatikara": {
+		"sortLetter": "G",
+		"title": "Ghaṭikāra the Potter"
+	},
+	"hatthaka-of-alavi": {
+		"sortLetter": "H",
+		"title": "Householder Hatthaka of Āḷavi"
+	},
+	"young-householder-singalaka": {
+		"sortLetter": "S",
+		"title": "Young Householder Siṅgālaka"
+	},
+	"singalaka": {
+		"sortLetter": "S",
+		"title": "Young Householder Siṅgālaka"
+	},
+	"prince-bodhi": {
+		"sortLetter": "B",
+		"title": "Prince Bodhi"
+	},
+	"annasikondanna": {
+		"sortLetter": "A",
+		"extraSortLetters": ["K"],
+		"title": "Venerable Aññāsikoṇḍañña"
+	},
+	"layman-isidatta": {
+		"sortLetter": "I",
+		"title": "Layman Isidatta"
+	},
+	"layman-purana": {
+		"sortLetter": "P",
+		"title": "Layman Purāṇa"
+	},
+	"uggaha-mendakas-grandson": {
+		"sortLetter": "U",
+		"title": "Uggaha, Meṇḍaka’s grandson"
+	},
+	"migasala": {
+		"sortLetter": "M",
+		"title": "Laywoman Migasālā"
+	},
+	"visakha-migaramata": {
+		"sortLetter": "V",
+		"title": "Laywoman Visākhā Migāramātā"
+	},
+	"nakulamata": {
+		"sortLetter": "N",
+		"title": "Laywoman Nakulamātā"
+	},
+	"nandamata": {
+		"sortLetter": "N",
+		"title": "Laywoman Nandamātā"
+	},
+	"suppavasa": {
+		"sortLetter": "S",
+		"title": "Laywoman Suppavāsā"
+	},
+	"samavati": {
+		"sortLetter": "S",
+		"title": "Laywoman Sāmāvatī"
+	},
+	"dhananjani": {
+		"sortLetter": "D",
+		"title": "Laywoman Dhanañjānī"
+	},
+	"brahmin-dhananjani": {
+		"sortLetter": "D",
+		"title": "Brahmin Dhanañjāni"
+	},
+	"siha": {
+		"sortLetter": "S",
+		"title": "General Sīha"
+	},
+	"sona": {
+		"sortLetter": "S",
+		"title": "Householder Soṇa"
+	},
+	"verahaccani": {
+		"sortLetter": "V",
+		"title": "Brahmin woman Verahaccāni"
+	},
+	"vasettha": {
+		"sortLetter": "V",
+		"title": "Young Brahmin Vāseṭṭha"
+	},
+	"bharadvaja": {
+		"sortLetter": "B",
+		"title": "Young Brahmin Bhāradvāja"
 	}
 }

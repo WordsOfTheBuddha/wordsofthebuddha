@@ -1,5 +1,8 @@
 ---
 slug: an9.37
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

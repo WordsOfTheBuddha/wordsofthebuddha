@@ -1,5 +1,6 @@
 ---
 slug: an5.34
+character: General Sīha
 source: suttacentral/bilara-data
 title: Sīhasenāpatisutta
 edition: ms

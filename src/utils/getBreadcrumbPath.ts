@@ -2,6 +2,7 @@ import { directoryStructure } from "../data/directoryStructure";
 import { transformId } from "../utils/transformId";
 import { keyMap } from "./transformId";
 import { vaggaSectionHref } from "./vaggaSections";
+import { findContentBySlug } from "./discover-data";
 
 export interface BreadcrumbItem {
 	label: string;
@@ -58,8 +59,22 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		return path;
 	}
 
-	// Don't add a prefix for "on" paths
+	// Don't add a prefix for "on" paths unless this is a person page.
 	if (idPath[0] === "on") {
+		const onSlug = idPath[1];
+		if (onSlug) {
+			const { item, type } = findContentBySlug(onSlug);
+			if (type === "person" && item) {
+				path.push({
+					label: "Persons",
+					path: "/person",
+				});
+				path.push({
+					label: item.title,
+					path: `/on/${onSlug}`,
+				});
+			}
+		}
 		return path;
 	}
 

@@ -1,5 +1,10 @@
 ---
 slug: sn6.10
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Brahmā Sahampati
+  - Kokālika
 source: suttacentral/bilara-data
 title: Kokālikasutta
 edition: ms

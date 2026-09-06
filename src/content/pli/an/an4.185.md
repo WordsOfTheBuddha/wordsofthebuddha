@@ -1,5 +1,6 @@
 ---
 slug: an4.185
+character: Wanderer Sakuludāyī
 source: suttacentral/bilara-data
 title: Brāhmaṇasaccasutta
 edition: ms

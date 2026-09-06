@@ -1,5 +1,6 @@
 ---
 slug: an6.47
+character: Wanderer Moḷiyasīvaka
 source: suttacentral/bilara-data
 title: Paṭhamasandiṭṭhikasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: sn6.13
+character:
+  - "Sakka, lord of the gods"
+  - Brahmā Sahampati
 source: suttacentral/bilara-data
 title: Andhakavindasutta
 edition: ms

@@ -4,7 +4,7 @@ description: Monks mistake venerable Bhaddiya’s exclamation of “bliss” for
 qualities: without fear, sorrow-free, contentment, happiness
 theme: inspiration, wisdom
 slug: ud2.10
-character: Venerable Bhaddiya
+character: "Venerable Bhaddiya, son of Kāḷīgodhā"
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā anupiyāyaṁ viharati ambavane. Tena kho pana samayena āyasmā bhaddiyo kāḷīgodhāya putto araññagatopi rukkhamūlagatopi suññāgāragatopi abhikkhaṇaṁ udānaṁ udānesi: “aho sukhaṁ, aho sukhan”ti.

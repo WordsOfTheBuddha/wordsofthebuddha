@@ -1,5 +1,6 @@
 ---
 slug: an6.59
+character: Householder Dārukammika
 source: suttacentral/bilara-data
 title: Dārukammikasutta
 edition: ms

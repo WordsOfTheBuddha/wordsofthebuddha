@@ -1,5 +1,8 @@
 ---
 slug: sn8.4
+character:
+  - Venerable Ānanda
+  - Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

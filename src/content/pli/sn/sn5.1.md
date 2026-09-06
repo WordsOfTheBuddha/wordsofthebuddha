@@ -1,5 +1,9 @@
 ---
 slug: sn5.1
+character:
+  - Māra the Evil One
+  - Bhikkhunī Āḷavikā
+  - Bhikkhunī Māro Pāpimā Āḷavikāya
 source: suttacentral/bilara-data
 title: Āḷavikāsutta
 edition: ms

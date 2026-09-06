@@ -4,6 +4,8 @@ description: Ugga, the householder of Vesāli is endowed with eight wonderful an
 fetter: doubt
 tags: confidence, Buddha, Dhamma, Sangha, virtues, wealth, possessions, fame, an, an8
 slug: an8.21
+character: Householder Ugga of Vesāli
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Tatra kho bhagavā bhikkhū āmantesi: “aṭṭhahi, bhikkhave, acchariyehi abbhutehi dhammehi samannāgataṁ uggaṁ gahapatiṁ vesālikaṁ dhārethā”ti.

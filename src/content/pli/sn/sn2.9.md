@@ -1,5 +1,8 @@
 ---
 slug: sn2.9
+character:
+  - Deity Moon
+  - "Vepacitti, lord of the asuras"
 source: suttacentral/bilara-data
 title: Candimasutta
 edition: ms

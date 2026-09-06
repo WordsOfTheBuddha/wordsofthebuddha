@@ -1,5 +1,6 @@
 ---
 slug: an4.58
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Sudattasutta
 edition: ms

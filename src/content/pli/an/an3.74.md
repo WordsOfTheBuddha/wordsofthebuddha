@@ -1,5 +1,6 @@
 ---
 slug: an3.74
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Nigaṇṭhasutta
 edition: ms

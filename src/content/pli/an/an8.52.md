@@ -1,5 +1,6 @@
 ---
 slug: an8.52
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Ovādasutta
 edition: ms

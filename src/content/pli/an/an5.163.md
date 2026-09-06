@@ -1,5 +1,6 @@
 ---
 slug: an5.163
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sākacchasutta
 edition: ms

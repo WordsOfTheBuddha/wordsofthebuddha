@@ -1,5 +1,9 @@
 ---
 slug: sn3.16
+character:
+  - King Pasenadi of Kosala
+  - Queen Mallikā
+  - Rājā Pasenadi Kosala
 source: suttacentral/bilara-data
 title: Mallikāsutta
 edition: ms

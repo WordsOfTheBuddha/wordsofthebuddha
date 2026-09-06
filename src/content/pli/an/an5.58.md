@@ -1,5 +1,6 @@
 ---
 slug: an5.58
+character: Mahānāma the Sakyan
 source: suttacentral/bilara-data
 title: Licchavikumārakasutta
 edition: ms

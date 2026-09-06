@@ -1,5 +1,6 @@
 ---
 slug: sn2.25
+character: Deity Jantu
 source: suttacentral/bilara-data
 title: Jantusutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an3.130
+character:
+  - Venerable Sāriputta
+  - Venerable Anuruddha
 source: suttacentral/bilara-data
 title: Dutiyaanuruddhasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn8.3
+character: Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Pesalasutta
 edition: ms

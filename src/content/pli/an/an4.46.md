@@ -1,5 +1,6 @@
 ---
 slug: an4.46
+character: Deity Rohitassa
 source: suttacentral/bilara-data
 title: Dutiyarohitassasutta
 edition: ms

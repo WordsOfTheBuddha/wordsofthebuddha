@@ -1,5 +1,6 @@
 ---
 slug: an4.76
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Kusinārasutta
 edition: ms

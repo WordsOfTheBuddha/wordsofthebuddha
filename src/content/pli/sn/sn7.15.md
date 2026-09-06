@@ -1,5 +1,6 @@
 ---
 slug: sn7.15
+character: Brahmin Mānatthaddha
 source: suttacentral/bilara-data
 title: Mānatthaddhasutta
 edition: ms

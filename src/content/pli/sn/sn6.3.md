@@ -1,5 +1,8 @@
 ---
 slug: sn6.3
+character:
+  - Brahmā Sahampati
+  - Venerable Brahmadeva
 source: suttacentral/bilara-data
 title: Brahmadevasutta
 edition: ms

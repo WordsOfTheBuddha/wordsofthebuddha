@@ -1,5 +1,6 @@
 ---
 slug: an4.39
+character: Brahmin Ujjaya
 source: suttacentral/bilara-data
 title: Ujjayasutta
 edition: ms

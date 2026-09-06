@@ -1,5 +1,6 @@
 ---
 slug: dn4
+character: Brahmin Soṇadaṇḍa
 source: suttacentral/bilara-data
 title: Soṇadaṇḍasutta
 edition: ms

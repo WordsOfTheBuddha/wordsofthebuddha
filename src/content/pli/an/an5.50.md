@@ -1,5 +1,6 @@
 ---
 slug: an5.50
+character: Venerable Nārada
 source: suttacentral/bilara-data
 title: Nāradasutta
 edition: ms

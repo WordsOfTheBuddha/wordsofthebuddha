@@ -1,5 +1,8 @@
 ---
 slug: an4.175
+character:
+  - Venerable Sāriputta
+  - Venerable Upavāṇa
 source: suttacentral/bilara-data
 title: Upavāṇasutta
 edition: ms

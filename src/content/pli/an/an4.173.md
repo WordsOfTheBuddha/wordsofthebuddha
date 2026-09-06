@@ -1,5 +1,8 @@
 ---
 slug: an4.173
+character:
+  - Venerable Sāriputta
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 title: Mahākoṭṭhikasutta
 edition: ms

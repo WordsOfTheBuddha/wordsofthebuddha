@@ -1,5 +1,6 @@
 ---
 slug: snp1.7
+character: Brahmin Bhāradvāja the Fire-Worshiper
 source: suttacentral/bilara-data
 title: Vasalasutta
 edition: ms

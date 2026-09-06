@@ -1,5 +1,6 @@
 ---
 slug: an8.11
+character: Brahmin Verañja
 source: suttacentral/bilara-data
 title: Verañjasutta
 edition: ms

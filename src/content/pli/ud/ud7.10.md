@@ -4,7 +4,7 @@ description: After King Udena's palace burns down and five hundred women headed 
 qualities: delusion, immaturity, perceiving gratification, with nothing
 theme: inspiration, wisdom
 slug: ud7.10
-character: Sāmāvatī
+character: Laywoman Sāmāvatī
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme. Tena kho pana samayena rañño utenassa uyyānagatassa antepuraṁ daḍḍhaṁ hoti, pañca ca itthisatāni kālaṅkatāni honti sāmāvatīpamukhāni.

@@ -1,5 +1,6 @@
 ---
 slug: an4.257
+character: Venerable Mālukyaputta
 source: suttacentral/bilara-data
 title: Mālukyaputtasutta
 edition: ms

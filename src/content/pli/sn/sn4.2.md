@@ -1,5 +1,6 @@
 ---
 slug: sn4.2
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Hatthirājavaṇṇasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: an5.44
+character: Householder Ugga of Vesāli
 source: suttacentral/bilara-data
 title: Manāpadāyīsutta
 edition: ms

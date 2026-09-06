@@ -1,5 +1,6 @@
 ---
 slug: an6.34
+character: Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Mahāmoggallānasutta
 edition: ms

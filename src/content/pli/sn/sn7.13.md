@@ -1,5 +1,8 @@
 ---
 slug: sn7.13
+character:
+  - Venerable Upavāṇa
+  - Brahmin Devahita
 source: suttacentral/bilara-data
 title: Devahitasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an4.188
+character:
+  - King Ajātasattu
+  - Upaka Maṇḍikāputta
 source: suttacentral/bilara-data
 title: Upakasutta
 edition: ms

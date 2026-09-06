@@ -1,5 +1,9 @@
 ---
 slug: an6.37
+character:
+  - Laywoman Nandamātā
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Chaḷaṅgadānasutta
 edition: ms

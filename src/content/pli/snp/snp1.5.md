@@ -1,5 +1,6 @@
 ---
 slug: snp1.5
+character: Cunda the smith
 source: suttacentral/bilara-data
 title: Cundasutta
 edition: ms

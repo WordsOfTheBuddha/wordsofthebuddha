@@ -1,5 +1,8 @@
 ---
 slug: an6.56
+character:
+  - Venerable Ānanda
+  - Venerable Phagguna
 source: suttacentral/bilara-data
 title: Phaggunasutta
 edition: ms

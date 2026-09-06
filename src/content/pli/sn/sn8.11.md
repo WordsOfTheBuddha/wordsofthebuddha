@@ -1,5 +1,8 @@
 ---
 slug: sn8.11
+character:
+  - Deity Moon
+  - Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Gaggarāsutta
 edition: ms

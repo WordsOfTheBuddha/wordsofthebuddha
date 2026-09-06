@@ -1,5 +1,8 @@
 ---
 slug: an5.179
+character:
+  - Venerable Sāriputta
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Gihisutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: sn2.23
+character: Deity Serī
 source: suttacentral/bilara-data
 title: Serīsutta
 edition: ms

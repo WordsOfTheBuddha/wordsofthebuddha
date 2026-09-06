@@ -1,5 +1,6 @@
 ---
 slug: sn3.10
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Bandhanasutta
 edition: ms

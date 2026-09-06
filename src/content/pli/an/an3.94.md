@@ -1,5 +1,6 @@
 ---
 slug: an3.94
+character: Deity Sun
 source: suttacentral/bilara-data
 title: Saradasutta
 edition: ms

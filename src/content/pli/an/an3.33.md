@@ -1,5 +1,6 @@
 ---
 slug: an3.33
+character: Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Sāriputtasutta
 edition: ms

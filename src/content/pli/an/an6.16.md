@@ -1,5 +1,9 @@
 ---
 slug: an6.16
+character:
+  - Housewife Nakulamātā
+  - "Sakka, lord of the gods"
+  - Householder Nakulamātā Gahapatānī Nakulapitara
 source: suttacentral/bilara-data
 title: Nakulapitusutta
 edition: ms

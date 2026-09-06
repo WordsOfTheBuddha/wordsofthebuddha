@@ -4,7 +4,7 @@ description: Observing Aññāsi Koṇḍañña reviewing his liberation from cr
 qualities: ending, craving, examination
 theme: inspiration
 slug: ud7.6
-character: Aññāsi Koṇḍañña
+character: Venerable Aññāsikoṇḍañña
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena āyasmā aññāsikoṇḍañño bhagavato avidūre nisinno hoti pallaṅkaṁ ābhujitvā ujuṁ kāyaṁ paṇidhāya taṇhāsaṅkhayavimuttiṁ paccavekkhamāno.

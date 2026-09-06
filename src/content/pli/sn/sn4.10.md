@@ -1,5 +1,8 @@
 ---
 slug: sn4.10
+character:
+  - Māra the Evil One
+  - Māro Pāpimā
 source: suttacentral/bilara-data
 title: Dutiyaāyusutta
 edition: ms

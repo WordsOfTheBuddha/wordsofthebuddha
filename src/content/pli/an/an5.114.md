@@ -1,5 +1,6 @@
 ---
 slug: an5.114
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Andhakavindasutta
 edition: ms

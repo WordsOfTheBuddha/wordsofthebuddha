@@ -1,5 +1,6 @@
 ---
 slug: an8.48
+character: Housewife Nakulamātā
 source: suttacentral/bilara-data
 title: Nakulamātāsutta
 edition: ms

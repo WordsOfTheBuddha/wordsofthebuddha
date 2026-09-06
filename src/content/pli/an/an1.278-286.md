@@ -1,5 +1,7 @@
 ---
 slug: an1.278-286
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: 22. Dutiyavagga
 edition: ms

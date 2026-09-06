@@ -1,5 +1,6 @@
 ---
 slug: an4.174
+character: Venerable Ānanda
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

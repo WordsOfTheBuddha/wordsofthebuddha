@@ -1,5 +1,8 @@
 ---
 slug: sn2.10
+character:
+  - Deity Sun
+  - "Vepacitti, lord of the asuras"
 source: suttacentral/bilara-data
 title: Sūriyasutta
 edition: ms

@@ -1,5 +1,6 @@
 ---
 slug: an4.30
+character: Wanderer Sakuludāyī
 source: suttacentral/bilara-data
 title: Paribbājakasutta
 edition: ms

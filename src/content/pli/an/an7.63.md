@@ -1,5 +1,6 @@
 ---
 slug: an7.63
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Bhariyāsutta
 edition: ms

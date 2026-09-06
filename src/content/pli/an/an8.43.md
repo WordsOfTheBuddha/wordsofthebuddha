@@ -1,5 +1,6 @@
 ---
 slug: an8.43
+character: Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 title: Visākhāsutta
 edition: ms

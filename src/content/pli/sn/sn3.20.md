@@ -1,5 +1,6 @@
 ---
 slug: sn3.20
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Dutiyaaputtakasutta
 edition: ms

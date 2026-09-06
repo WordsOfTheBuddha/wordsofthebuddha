@@ -1,5 +1,6 @@
 ---
 slug: sn8.1
+character: Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Nikkhantasutta
 edition: ms

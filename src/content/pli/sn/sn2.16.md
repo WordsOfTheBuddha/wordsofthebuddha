@@ -1,5 +1,6 @@
 ---
 slug: sn2.16
+character: Deity Vāsudatta
 source: suttacentral/bilara-data
 title: Vāsudattasutta
 edition: ms

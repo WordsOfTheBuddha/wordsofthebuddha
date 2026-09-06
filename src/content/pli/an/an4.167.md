@@ -1,5 +1,8 @@
 ---
 slug: an4.167
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 title: Mahāmoggallānasutta
 edition: ms

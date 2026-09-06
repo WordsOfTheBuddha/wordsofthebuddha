@@ -1,5 +1,6 @@
 ---
 slug: sn2.6
+character: Deity Kāmada
 source: suttacentral/bilara-data
 title: Kāmadasutta
 edition: ms

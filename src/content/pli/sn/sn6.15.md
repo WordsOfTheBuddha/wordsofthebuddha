@@ -1,5 +1,8 @@
 ---
 slug: sn6.15
+character:
+  - "Sakka, lord of the gods"
+  - Brahmā Sahampati
 source: suttacentral/bilara-data
 title: Parinibbānasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: sn8.10
+character:
+  - Venerable Mahāmoggallāna
+  - Venerable Vaṅgīsa
 source: suttacentral/bilara-data
 title: Moggallānasutta
 edition: ms

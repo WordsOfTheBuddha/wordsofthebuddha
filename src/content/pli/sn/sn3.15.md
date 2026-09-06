@@ -1,5 +1,8 @@
 ---
 slug: sn3.15
+character:
+  - King Pasenadi of Kosala
+  - King Ajātasattu
 source: suttacentral/bilara-data
 title: Dutiyasaṅgāmasutta
 edition: ms

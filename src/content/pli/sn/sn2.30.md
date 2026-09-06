@@ -1,5 +1,13 @@
 ---
 slug: sn2.30
+character:
+  - Māra the Evil One
+  - Deity Sahali
+  - Deity Nīko
+  - Deity Ākoṭaka
+  - Deity Vegabbhari
+  - Deity Māro Pāpimā Begabbhariṁ
+  - Deity Asama
 source: suttacentral/bilara-data
 title: Nānātitthiyasāvakasutta
 edition: ms

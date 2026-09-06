@@ -1,5 +1,6 @@
 ---
 slug: an3.110
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Byāpannasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an4.195
+character:
+  - Venerable Mahāmoggallāna
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Vappasutta
 edition: ms

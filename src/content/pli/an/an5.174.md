@@ -1,5 +1,6 @@
 ---
 slug: an5.174
+character: Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Verasutta
 edition: ms

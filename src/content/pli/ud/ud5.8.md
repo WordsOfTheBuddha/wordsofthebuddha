@@ -6,7 +6,7 @@ theme: inspiration
 slug: ud5.8
 character:
   - Devadatta
-  - venerable Ānanda
+  - Venerable Ānanda
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tena kho pana samayena āyasmā ānando tadahuposathe pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya rājagahaṁ piṇḍāya pāvisi.

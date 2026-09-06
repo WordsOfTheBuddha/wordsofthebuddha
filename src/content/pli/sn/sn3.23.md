@@ -1,5 +1,6 @@
 ---
 slug: sn3.23
+character: King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Lokasutta
 edition: ms

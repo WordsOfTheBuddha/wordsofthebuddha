@@ -1,5 +1,7 @@
 ---
 slug: snp3.11
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Nālakasutta
 edition: ms

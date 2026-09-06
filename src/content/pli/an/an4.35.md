@@ -1,5 +1,6 @@
 ---
 slug: an4.35
+character: Brahmin Vassakāra
 source: suttacentral/bilara-data
 title: Vassakārasutta
 edition: ms

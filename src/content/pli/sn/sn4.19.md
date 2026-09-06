@@ -1,5 +1,6 @@
 ---
 slug: sn4.19
+character: Māra the Evil One
 source: suttacentral/bilara-data
 title: Kassakasutta
 edition: ms

@@ -1,5 +1,7 @@
 ---
 slug: an9.35
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Gāvīupamāsutta
 edition: ms

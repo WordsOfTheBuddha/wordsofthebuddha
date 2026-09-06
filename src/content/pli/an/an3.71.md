@@ -1,5 +1,8 @@
 ---
 slug: an3.71
+character:
+  - Venerable Ānanda
+  - Wanderer Channa
 source: suttacentral/bilara-data
 title: Channasutta
 edition: ms

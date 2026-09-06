@@ -1,5 +1,6 @@
 ---
 slug: sn2.12
+character: Deity Veṇḍu
 source: suttacentral/bilara-data
 title: Veṇḍusutta
 edition: ms

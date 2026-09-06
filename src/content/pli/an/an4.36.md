@@ -1,5 +1,6 @@
 ---
 slug: an4.36
+character: Brahmin Doṇa
 source: suttacentral/bilara-data
 title: Doṇasutta
 edition: ms

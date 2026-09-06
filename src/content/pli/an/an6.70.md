@@ -1,5 +1,6 @@
 ---
 slug: an6.70
+character: Deity Sun
 source: suttacentral/bilara-data
 title: Samādhisutta
 edition: ms

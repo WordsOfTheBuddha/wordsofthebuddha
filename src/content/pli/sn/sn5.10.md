@@ -1,5 +1,9 @@
 ---
 slug: sn5.10
+character:
+  - Māra the Evil One
+  - Bhikkhunī Vajirā
+  - Bhikkhunī Māro Pāpimā Vajirāya
 source: suttacentral/bilara-data
 title: Vajirāsutta
 edition: ms

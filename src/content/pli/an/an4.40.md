@@ -1,5 +1,6 @@
 ---
 slug: an4.40
+character: Brahmin Udāyī
 source: suttacentral/bilara-data
 title: Udāyīsutta
 edition: ms

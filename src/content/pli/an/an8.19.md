@@ -1,5 +1,6 @@
 ---
 slug: an8.19
+character: Pahārāda Asurinda
 source: suttacentral/bilara-data
 title: Pahārādasutta
 edition: ms

@@ -1,5 +1,8 @@
 ---
 slug: an3.60
+character:
+  - Brahmin Saṅgārava
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Saṅgāravasutta
 edition: ms

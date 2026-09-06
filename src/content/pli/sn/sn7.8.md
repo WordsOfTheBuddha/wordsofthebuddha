@@ -1,5 +1,6 @@
 ---
 slug: sn7.8
+character: Brahmin Bhāradvāja the Fire-Worshiper
 source: suttacentral/bilara-data
 title: Aggikasutta
 edition: ms
