@@ -1,5 +1,7 @@
 // Search index is loaded from generated/*.json.gz in the Vercel function
 // (uncompressed JSON exceeds the 250 MB limit) or from the static CDN.
+// Derived Fuse / normalized-body maps must inflate through shareInflight —
+// overlapping Ask searches used to each copy the corpus and OOM Vercel.
 import {
 	loadNativeSearchIndex,
 	loadReferenceSearchIndex,
@@ -26,6 +28,11 @@ import {
 	parsePtsQuery,
 } from "../../utils/ptsReferences";
 import Fuse from "fuse.js";
+import {
+	createInflightSlot,
+	resetInflightSlot,
+	shareInflight,
+} from "../../utils/shareInflight";
 
 function volpageForSlug(slug: string, fallback?: string): string | undefined {
 	return getPtsDisplay(slug) || fallback || undefined;
@@ -67,19 +74,18 @@ export interface SearchPerfStats {
 	snippets?: number;
 }
 
-let fuseIndex: Fuse<SearchData> | null = null;
-let mergedFuseIndex: Fuse<SearchData> | null = null;
+type NormalizedContentMap = Map<
+	string,
+	{ content: string; contentPali: string }
+>;
+
+const fuseIndexSlot = createInflightSlot<Fuse<SearchData>>();
+const mergedFuseIndexSlot = createInflightSlot<Fuse<SearchData>>();
 let referenceSearchData: SearchData[] | null = null;
 
 // Pre-normalized content for fast content scanning (built once, reused across searches)
-let normalizedContentMap: Map<
-	string,
-	{ content: string; contentPali: string }
-> | null = null;
-let mergedNormalizedContentMap: Map<
-	string,
-	{ content: string; contentPali: string }
-> | null = null;
+const normalizedContentMapSlot = createInflightSlot<NormalizedContentMap>();
+const mergedNormalizedContentMapSlot = createInflightSlot<NormalizedContentMap>();
 
 function buildNormalizedContentMap(
 	data: SearchData[],
@@ -99,10 +105,10 @@ function buildNormalizedContentMap(
 let nativeSearchData: SearchData[] | null = null;
 
 function invalidateDerivedSearchCaches(): void {
-	fuseIndex = null;
-	mergedFuseIndex = null;
-	normalizedContentMap = null;
-	mergedNormalizedContentMap = null;
+	resetInflightSlot(fuseIndexSlot);
+	resetInflightSlot(mergedFuseIndexSlot);
+	resetInflightSlot(normalizedContentMapSlot);
+	resetInflightSlot(mergedNormalizedContentMapSlot);
 }
 
 export {
@@ -121,8 +127,11 @@ async function ensureNativeSearchData(
 		if (doc.content == null) doc.content = "";
 	}
 	if (nativeSearchData !== fresh) {
+		const hadPrevious = nativeSearchData !== null;
 		nativeSearchData = fresh;
-		invalidateDerivedSearchCaches();
+		// First fill must not reset in-flight Fuse / body maps; only a real
+		// replacement (dev reload, meta → full content) should.
+		if (hadPrevious) invalidateDerivedSearchCaches();
 	}
 	return nativeSearchData;
 }
@@ -147,8 +156,9 @@ async function buildMergedNormalizedContentMap(): Promise<
 async function loadReferenceSearchData(): Promise<SearchData[]> {
 	const fresh = (await loadReferenceSearchIndex()) as unknown as SearchData[];
 	if (referenceSearchData !== fresh) {
+		const hadPrevious = referenceSearchData !== null;
 		referenceSearchData = fresh;
-		invalidateDerivedSearchCaches();
+		if (hadPrevious) invalidateDerivedSearchCaches();
 	}
 	return referenceSearchData;
 }
@@ -163,15 +173,25 @@ export async function ensureReferenceSearchIndexLoaded(): Promise<SearchData[]> 
  * Reuses the cache built for content scanning so API scoring doesn't
  * re-normalize full document texts on every request.
  */
+async function getNativeNormalizedContentMap(): Promise<NormalizedContentMap> {
+	return shareInflight(normalizedContentMapSlot, buildNativeNormalizedContentMap);
+}
+
+async function getMergedNormalizedContentMap(): Promise<NormalizedContentMap> {
+	return shareInflight(
+		mergedNormalizedContentMapSlot,
+		buildMergedNormalizedContentMap,
+	);
+}
+
 export async function getNormalizedContentMap(
 	includeReferences = false,
 ): Promise<Map<string, { content: string; contentPali: string }>> {
 	if (includeReferences) {
 		await loadReferenceSearchData();
-		return (mergedNormalizedContentMap ??=
-			await buildMergedNormalizedContentMap());
+		return getMergedNormalizedContentMap();
 	}
-	return (normalizedContentMap ??= await buildNativeNormalizedContentMap());
+	return getNativeNormalizedContentMap();
 }
 
 const FUSE_OPTIONS = {
@@ -222,20 +242,23 @@ async function getSearchIndex(
 		console.log("[search] index filtered to prefix(es)", slugPrefixFilter, "→", dataToIndex.length, "docs");
 	}
 
-	if (!useFilter && !searchData && fuseIndex) {
-		return fuseIndex;
-	}
-	if (!useFilter && useMergedCache && mergedFuseIndex) {
-		return mergedFuseIndex;
+	if (useFilter) {
+		return new Fuse(dataToIndex, FUSE_OPTIONS);
 	}
 
-	const fuse = new Fuse(dataToIndex, FUSE_OPTIONS);
-	if (!useFilter && !searchData) {
-		fuseIndex = fuse;
-	} else if (!useFilter && useMergedCache) {
-		mergedFuseIndex = fuse;
+	if (!searchData && !useMergedCache) {
+		return shareInflight(
+			fuseIndexSlot,
+			() => new Fuse(dataToIndex, FUSE_OPTIONS),
+		);
 	}
-	return fuse;
+	if (useMergedCache) {
+		return shareInflight(
+			mergedFuseIndexSlot,
+			() => new Fuse(dataToIndex, FUSE_OPTIONS),
+		);
+	}
+	return new Fuse(dataToIndex, FUSE_OPTIONS);
 }
 
 export interface SearchOptions {
@@ -1310,9 +1333,8 @@ async function performSearchInner(
 	const normalizedMap = !useContent
 		? emptyNormalizedMap
 		: includeReferences
-			? (mergedNormalizedContentMap ??=
-					await buildMergedNormalizedContentMap())
-			: (normalizedContentMap ??= await buildNativeNormalizedContentMap());
+			? await getMergedNormalizedContentMap()
+			: await getNativeNormalizedContentMap();
 
 	const fuse = await getSearchIndex(
 		slugPrefixFilter,

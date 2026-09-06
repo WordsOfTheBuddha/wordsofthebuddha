@@ -1,4 +1,6 @@
 import {
+	ensureReferenceSearchIndexLoaded,
+	getNormalizedContentMap,
 	getSearchDocBySlug,
 	performSearch,
 	type SearchResult,
@@ -28,6 +30,12 @@ const PER_QUERY_LIMIT_WIDE = 200;
 const PER_QUERY_LIMIT_NARROW = 12;
 const ENOUGH_HITS = 3;
 const MAX_SEARCH_CALLS = 12;
+/**
+ * Cap overlapping full-corpus searches. Ask used to Promise.all() every
+ * query; on a cold Vercel instance that rebuilt Fuse + normalized body maps
+ * ~12× and the function was killed for memory.
+ */
+const SEARCH_CONCURRENCY = 3;
 /**
  * Wide pool for Gemini rescoring. Search overfits easily; send a large
  * candidate set and let the reranker pick the best 10–50.
@@ -97,17 +105,35 @@ export async function searchHitsForAiQuery(
 	return hits.slice(0, Math.max(1, limit));
 }
 
+async function mapPool<T, R>(
+	items: readonly T[],
+	concurrency: number,
+	mapper: (item: T) => Promise<R>,
+): Promise<R[]> {
+	if (items.length === 0) return [];
+	const results: R[] = new Array(items.length);
+	let next = 0;
+	async function worker() {
+		while (next < items.length) {
+			const index = next;
+			next += 1;
+			results[index] = await mapper(items[index]);
+		}
+	}
+	const workers = Math.min(Math.max(1, concurrency), items.length);
+	await Promise.all(Array.from({ length: workers }, () => worker()));
+	return results;
+}
+
 async function searchBatchesConcurrently(
 	queries: readonly string[],
 	perQueryLimit: number,
 ): Promise<{ query: string; hits: SearchResult[] }[]> {
 	const list = uniqueQueries(queries).slice(0, MAX_SEARCH_CALLS);
-	return Promise.all(
-		list.map(async (query) => ({
-			query,
-			hits: await searchHitsForAiQuery(query, perQueryLimit),
-		})),
-	);
+	return mapPool(list, SEARCH_CONCURRENCY, async (query) => ({
+		query,
+		hits: await searchHitsForAiQuery(query, perQueryLimit),
+	}));
 }
 
 export interface AiDiscourseSearchBatch {
@@ -179,6 +205,10 @@ export async function searchDiscoursesForQueries(
 	const perQueryLimit = wide ? PER_QUERY_LIMIT_WIDE : PER_QUERY_LIMIT_NARROW;
 
 	if (wide) {
+		// Inflate shared indexes once before fan-out. Overlapping first searches
+		// used to each copy ~27 MB of body text into normalized maps.
+		await ensureReferenceSearchIndexLoaded();
+		await getNormalizedContentMap(true);
 		const pool = uniqueQueries([
 			...queries,
 			...fallbackQueries,
