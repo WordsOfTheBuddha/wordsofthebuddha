@@ -1,6 +1,5 @@
 ---
 export const prerender = true; // Allow use in static pages; we'll hydrate auth on the client
-import { verifyUser } from "../middleware/auth";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
 import NavSearch from "./NavSearch.astro";
 
@@ -20,23 +19,9 @@ const pathOnly = Astro.url.pathname;
 const isInReviewSection =
 	pathOnly === "/review-room" || pathOnly === "/profile";
 
-// Resolve the user only on per-request SSR. Prerendered HTML is shared (and
-// home is CDN-cached), so personalizing it would leak the first visitor's name.
-// If this pass did not produce a user, ship an empty slot — never a guest
-// Register button. Client hydration via /api/auth/me paints the real control.
-let user: any = null;
-if (
-	authEnabled &&
-	!hideGuestAuth &&
-	Astro.request.headers.get("x-astro-prerender") !== "1"
-) {
-	const sessionCookie = Astro.cookies.get("__session")?.value;
-	if (sessionCookie) {
-		try {
-			user = await verifyUser(sessionCookie);
-		} catch (e) {}
-	}
-}
+// Never personalize HTML with a session lookup. That was a Firebase
+// revocation round-trip on every SSR discourse TTFB. Ship an empty slot —
+// never a guest Register button. Client hydration paints the real control.
 const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 ---
 
@@ -78,83 +63,16 @@ const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 			)
 		}
 		{
-			authEnabled &&
-				(user ? (
-					<div
-						class="relative"
-						id="nav-auth-slot"
-						data-state="signed-in"
-						data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
-						data-register-href={registerHref}
-					>
-						<button
-							type="button"
-							id="user-menu-button"
-							class="flex items-center gap-2 px-1 py-1 text-sm font-medium text-[var(--text-color)] hover:text-[var(--link-hover-color)] focus:outline-none"
-						>
-							<span>{user.displayName}</span>
-							<svg
-								class="w-4 h-4"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-						</button>
-						<div
-							id="user-menu"
-							class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--auth-card-bg)] ring-1 ring-black ring-opacity-5"
-						>
-							<div class="py-1">
-								<a
-									href="/discover"
-									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
-								>
-									Discover
-								</a>
-								<a
-									href="/review-room"
-									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
-								>
-									Review Room
-								</a>
-								<a
-									href="/profile"
-									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
-								>
-									Profile
-								</a>
-								<form action="/api/auth/signout" method="post">
-									<input
-										type="hidden"
-										name="returnTo"
-										value={currentPath}
-									/>
-									<button
-										type="submit"
-										class="block w-full text-left px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
-									>
-										Sign out
-									</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				) : (
-					<div
-						id="nav-auth-slot"
-						class="relative"
-						data-state="pending"
-						data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
-						data-register-href={registerHref}
-						aria-busy="true"
-					>
-					</div>
-				))
+			authEnabled && (
+				<div
+					id="nav-auth-slot"
+					class="relative"
+					data-state="pending"
+					data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
+					data-register-href={registerHref}
+					aria-busy="true"
+				/>
+			)
 		}
 	</div>
 </nav>
@@ -205,6 +123,7 @@ const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 		writeNavAuthCache,
 		type NavAuthCache,
 	} from "../utils/navAuthClient";
+	import { loadPageUserState } from "../utils/pageUserStateClient";
 
 	installSearchFocusShortcut();
 
@@ -260,18 +179,15 @@ const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 			wireMenu();
 		} else {
 			const cached = readNavAuthCache();
-			// Only paint a cached signed-in menu before /api/auth/me. A cached
+			// Only paint a cached signed-in menu before page-state. A cached
 			// guest Register button would flash again right after sign-in.
 			if (cached?.signedIn) applyAuth(slot, cached);
 
 			(async () => {
 				try {
-					const res = await fetch("/api/auth/me", {
-						credentials: "same-origin",
-					});
-					if (!res.ok) return;
-					const data = await res.json();
-					if (data?.signedIn && data.user?.displayName) {
+					const data = await loadPageUserState();
+					if (!data) return;
+					if (data.signedIn && data.user?.displayName) {
 						applyAuth(slot, {
 							signedIn: true,
 							displayName: data.user.displayName,

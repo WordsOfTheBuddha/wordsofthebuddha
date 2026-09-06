@@ -1,4 +1,5 @@
 import { getDomPath, scanPageForHighlights } from "../utils/dom";
+import { highlightSlugFromUrl } from "../utils/highlightSlug";
 
 export interface HighlightInfo {
 	text: string;
@@ -97,14 +98,12 @@ export async function fetchHighlights(
 			highlighterReady: !!highlighter,
 		});
 
-		if (data.highlights?.rangyHash && highlighter) {
-			console.log(`[highlight] Deserializing highlights`);
-			highlighter.deserialize(data.highlights.rangyHash);
-		}
+		applyFetchedHighlights(highlighter, data.highlights);
 	} catch (error) {
 		console.error("[highlight] Error fetching highlights:", error);
 	}
 }
+
 function extractHighlightedText(container: Element): string {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(container.outerHTML, "text/html");
@@ -154,18 +153,16 @@ function formatHighlightSegments(highlights: HighlightInfo[]): string {
 	return segments.join(" ... ");
 }
 
-function getSlug(): string {
-	const url = new URL(window.location.href);
-	const basePath = url.pathname;
-	const pliParam = url.searchParams.get("pli");
-	const layoutParam = url.searchParams.get("layout");
-	const params = new URLSearchParams();
-	if (pliParam) params.append("pli", "true");
-	if (layoutParam) {
-		params.append("layout", layoutParam);
-	} else if (pliParam) {
-		params.append("layout", "interleaved");
+export function applyFetchedHighlights(
+	highlighter: Highlighter | null,
+	highlights: { rangyHash?: string } | null | undefined,
+): void {
+	if (highlights?.rangyHash && highlighter) {
+		console.log(`[highlight] Deserializing highlights`);
+		highlighter.deserialize(highlights.rangyHash);
 	}
-	const queryString = params.toString();
-	return queryString ? `${basePath}?${queryString}` : basePath;
+}
+
+function getSlug(): string {
+	return highlightSlugFromUrl(window.location.href);
 }

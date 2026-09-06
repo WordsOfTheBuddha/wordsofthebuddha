@@ -52,6 +52,7 @@ const userId = null;
 
 <script>
 	import { initDiscourseLearningActivity } from "../utils/learningActivityClient";
+	import { loadPageUserState } from "../utils/pageUserStateClient";
 	import {
 		isSlugFullyRead,
 		markReadPages,
@@ -153,30 +154,21 @@ const userId = null;
 			let initialStateIsRead = cachedState; // Assume cached state initially
 
 			try {
-				const response = await fetch(`/api/read/${slug}`, {
-					method: "GET",
-					headers: { "Content-Type": "application/json" },
-				});
-
-				if (response.ok) {
-					const data = await response.json();
-					initialStateIsRead = data.hasRead; // Update with server state
-					// Update button state based on server data
+				const data = await loadPageUserState();
+				if (data) {
+					initialStateIsRead = data.hasRead;
 					updateState(data.hasRead);
-					// Update authentication status
 					btn?.setAttribute(
 						"data-authenticated",
-						data.isAuthenticated.toString()
+						data.signedIn.toString()
 					);
 					if (data.hasRead) {
 						updateOfflineReadState(true);
 					}
 				} else {
-					// If API fails, use cached state
 					updateState(cachedState);
 				}
 			} catch (error) {
-				// Network error - offline mode
 				console.log("Using offline mode for read status");
 				updateState(cachedState);
 			}

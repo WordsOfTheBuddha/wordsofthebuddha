@@ -1,6 +1,5 @@
 ---
 import CopyButton from "./CopyButton.astro";
-import { verifyUser } from "../middleware/auth";
 import Eraser from "../assets/eraser.svg?raw";
 import "../styles/highlight.css";
 
@@ -49,20 +48,9 @@ const isHighlightingDisabled =
 	isHome ||
 	HIGHLIGHT_BLACKLIST.some((path) => currentPath.startsWith(path));
 
-// Skip Firebase session verification when highlights are off. `verifySessionCookie(..., true)`
-// is a network round-trip and was adding TTFB on /search, /register, /signin, etc.
-let isAuthenticated = false;
-if (!isHighlightingDisabled) {
-	try {
-		const sessionCookie = Astro.cookies.get("__session")?.value;
-		if (sessionCookie) {
-			const user = await verifyUser(sessionCookie);
-			isAuthenticated = !!user;
-		}
-	} catch {
-		// Invalid cookie
-	}
-}
+// Never verify the session while rendering HTML. That was a Firebase
+// revocation round-trip on SSR discourse TTFB. Client hydration sets this.
+const isAuthenticated = false;
 
 const { title, description } = Astro.props;
 ---
@@ -107,6 +95,7 @@ const { title, description } = Astro.props;
 
 <script>
 	import { withoutParagraphNumberMarkers } from "../utils/paragraphNumbers";
+	import { loadPageUserState } from "../utils/pageUserStateClient";
 
 	// Remove duplicate interface definitions since they're now in rangy.d.ts
 	declare global {
@@ -243,7 +232,15 @@ const { title, description } = Astro.props;
 			if (!highlighter) return;
 			if (rootElement!.dataset.highlightsLoaded === "true") return;
 			try {
-				await highlightService!.fetchHighlights(highlighter);
+				const state = await loadPageUserState();
+				if (state) {
+					highlightService!.applyFetchedHighlights(
+						highlighter,
+						state.highlights,
+					);
+				} else {
+					await highlightService!.fetchHighlights(highlighter);
+				}
 				rootElement!.dataset.highlightsLoaded = "true";
 			} catch (e) {
 				console.warn("[highlight] restore failed", e);
@@ -264,14 +261,9 @@ const { title, description } = Astro.props;
 			if (!rootElement) return;
 			// Already authenticated or tried
 			if (rootElement.dataset.authenticated === "true") return;
-			const res = await fetch("/api/auth/me", {
-				credentials: "same-origin",
-			});
-			if (!res.ok) return;
-			const data = await res.json();
+			const data = await loadPageUserState();
 			if (data?.signedIn) {
 				rootElement.dataset.authenticated = "true";
-				// Now that we're authenticated, attempt restoration
 				scheduleRestore();
 			}
 		} catch (e) {
@@ -636,6 +628,7 @@ const { title, description } = Astro.props;
 		rootElement = document.getElementById("highlight-root");
 		menu = document.getElementById("highlight-menu") as HTMLDivElement;
 		if (rootElement?.dataset.highlightDisabled === "true") return;
+		void loadPageUserState();
 
 		try {
 			const [selectionHandlerModule, highlightServiceModule] =

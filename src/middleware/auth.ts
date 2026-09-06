@@ -1,45 +1,55 @@
 import { getAuth, type UserRecord } from "firebase-admin/auth";
 import type { AstroCookies } from "astro";
 import { app, isFirebaseInitialized } from "../service/firebase/server";
+import { shouldCheckSessionRevoked } from "../utils/authVerifyPolicy";
 
-const userCache = new Map<string, { user: any; timestamp: number }>();
+const userCache = new Map<string, { user: UserRecord; timestamp: number }>();
 const CACHE_TTL = 120 * 60 * 1000; // 120 minutes TTL
-const AUTH_GET_USER_TIMEOUT = 10000; // 10 seconds
+
+/** Last revocation-list check for this exact session cookie (this isolate). */
+const sessionRevokeAt = new Map<string, { uid: string; checkedAt: number }>();
+const inflightVerify = new Map<string, Promise<UserRecord | null>>();
 
 interface VerifyUserOptions {
 	forceRefresh?: boolean;
 	cookies?: AstroCookies;
 }
 
-/* Centralized session verification */
-export async function verifyUser(
-	sessionCookie: string | undefined,
-	options: VerifyUserOptions = {},
+async function verifyUserOnce(
+	sessionCookie: string,
+	options: VerifyUserOptions,
 ): Promise<UserRecord | null> {
 	const { forceRefresh = false, cookies } = options;
 
-	if (!sessionCookie) {
-		return null;
-	}
-
 	try {
-		// Check if Firebase is properly initialized
 		if (!isFirebaseInitialized || !app) {
 			console.warn("Firebase is not initialized - cannot verify user");
 			return null;
 		}
 
 		const auth = getAuth(app);
+		const now = Date.now();
+		const sessionMeta = sessionRevokeAt.get(sessionCookie);
+		const checkRevoked = shouldCheckSessionRevoked(
+			sessionMeta?.checkedAt,
+			now,
+			forceRefresh,
+		);
+
 		const decodedCookie = await auth.verifySessionCookie(
 			sessionCookie,
-			true,
+			checkRevoked,
 		);
 		const uid = decodedCookie.uid;
 
-		// Check if we have a valid cached user and not forcing refresh
-		const cachedData = userCache.get(uid);
-		const now = Date.now();
+		if (checkRevoked || !sessionMeta) {
+			sessionRevokeAt.set(sessionCookie, {
+				uid,
+				checkedAt: now,
+			});
+		}
 
+		const cachedData = userCache.get(uid);
 		if (
 			!forceRefresh &&
 			cachedData &&
@@ -48,10 +58,7 @@ export async function verifyUser(
 			return cachedData.user;
 		}
 
-		// If no valid cache or forced refresh, get fresh data
 		const freshUserData = await auth.getUser(uid);
-
-		// Update cache with new data
 		userCache.set(uid, {
 			user: freshUserData,
 			timestamp: now,
@@ -59,7 +66,7 @@ export async function verifyUser(
 
 		return freshUserData;
 	} catch (error: any) {
-		// Clear the stale cookie if session expired
+		sessionRevokeAt.delete(sessionCookie);
 		if (
 			error?.errorInfo?.code === "auth/session-cookie-expired" &&
 			cookies
@@ -73,9 +80,32 @@ export async function verifyUser(
 	}
 }
 
+/* Centralized session verification */
+export async function verifyUser(
+	sessionCookie: string | undefined,
+	options: VerifyUserOptions = {},
+): Promise<UserRecord | null> {
+	if (!sessionCookie) {
+		return null;
+	}
+
+	const inflightKey = `${options.forceRefresh ? "1" : "0"}:${sessionCookie}`;
+	const existing = inflightVerify.get(inflightKey);
+	if (existing) return existing;
+
+	const pending = verifyUserOnce(sessionCookie, options).finally(() => {
+		inflightVerify.delete(inflightKey);
+	});
+	inflightVerify.set(inflightKey, pending);
+	return pending;
+}
+
 // Function to clear cache for specific user (can be called after profile update)
 export function clearUserCache(uid: string): void {
 	userCache.delete(uid);
+	for (const [cookie, meta] of sessionRevokeAt) {
+		if (meta.uid === uid) sessionRevokeAt.delete(cookie);
+	}
 }
 
 /**
