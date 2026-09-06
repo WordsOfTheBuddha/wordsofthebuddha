@@ -5,6 +5,7 @@ import personMappings from "../data/personMappings.json";
 import qualities from "../data/qualities.json";
 import { toChicagoTitleCase } from "./toChicagoTitleCase";
 import type { UnifiedContentItem } from "../types/discover";
+import { referenceOnlyRouteSet } from "./referenceOnlyRoutes";
 
 type Kind = "topics" | "qualities" | "similes" | "persons";
 
@@ -420,6 +421,8 @@ export function buildAllContent(
 											collection: x.collection,
 											isFeatured: false,
 											priority: undefined,
+											referenceOnly:
+												referenceOnlyRouteSet.has(x.id),
 										}),
 									),
 								},

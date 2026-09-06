@@ -2,6 +2,7 @@ import {
 	deleteRefParam,
 	getRefParamFromUrl,
 	setRefParam,
+	setRefParamOff,
 	urlHasRefParam,
 } from "./urlRefParam";
 
@@ -31,19 +32,25 @@ export function resolveRefMode(
 /**
  * Sync an explicit URL ref param to localStorage; when absent, apply stored
  * ref mode to the URL (mirrors pli/layout link param behavior).
+ * `defaultOnIfUnset` shows refs when the URL and storage are both silent
+ * (Pali-only person pages).
  */
-export function initRefModeFromUrl(): boolean {
+export function initRefModeFromUrl(
+	options: { defaultOnIfUnset?: boolean } = {},
+): boolean {
 	const url = new URL(window.location.href);
 	const fromUrl = getRefParamFromUrl(url.searchParams);
 
 	if (fromUrl !== null) {
 		setStoredRefMode(fromUrl);
-	} else if (getStoredRefMode()) {
+		return fromUrl;
+	}
+	if (getStoredRefMode()) {
 		setRefParam(url);
 		window.history.replaceState({}, "", url);
+		return true;
 	}
-
-	return resolveRefMode(url.searchParams);
+	return options.defaultOnIfUnset === true;
 }
 
-export { deleteRefParam, setRefParam, urlHasRefParam };
+export { deleteRefParam, setRefParam, setRefParamOff, urlHasRefParam };

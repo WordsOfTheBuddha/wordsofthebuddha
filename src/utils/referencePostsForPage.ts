@@ -3,6 +3,7 @@ import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { discourseBookPrefix } from "./discourseNeighbors";
 import { canonicalOnSlug } from "./discover-data";
 import { getPtsDisplay } from "./ptsReferences";
+import { referenceOnlyRouteSet } from "./referenceOnlyRoutes";
 
 export type ReferencePostData = {
 	slug: string;
@@ -72,6 +73,76 @@ export function getReferencePostsForTag(
 			(entry) => entryHasTag(entry, tagSlug) && !excluded.has(entry.slug),
 		),
 	);
+}
+
+type PersonOnPageDiscourse = {
+	id: string;
+	title: string;
+	description?: string;
+};
+
+function toPersonReferencePost(
+	discourse: PersonOnPageDiscourse,
+): ReferencePostData {
+	const volpage = getPtsDisplay(discourse.id);
+	return {
+		slug: discourse.id,
+		title: discourse.title,
+		description: discourse.description || "",
+		...(volpage ? { volpage } : {}),
+	};
+}
+
+/**
+ * Person `/on` pages union EN + Pali character tags. EN-mapped discourses
+ * stay on the default list; reference-only (no EN MDX) go behind See Refs
+ * and are marked `Ref`. Pali-only people still default the refs visible so
+ * the page is not empty until a click.
+ */
+export function splitPersonOnPageDiscourses(
+	discourses: PersonOnPageDiscourse[],
+): {
+	curated: PersonOnPageDiscourse[];
+	referencePosts: ReferencePostData[];
+} {
+	const curated = discourses.filter(
+		(discourse) => !referenceOnlyRouteSet.has(discourse.id),
+	);
+	const refs = discourses.filter((discourse) =>
+		referenceOnlyRouteSet.has(discourse.id),
+	);
+	return {
+		curated,
+		referencePosts: refs.map(toPersonReferencePost),
+	};
+}
+
+/** Pali-only person pages: show reference discourses until the reader turns refs off. */
+export function personPageShowsRefsByDefault(
+	curatedCount: number,
+	referenceCount: number,
+): boolean {
+	return curatedCount === 0 && referenceCount > 0;
+}
+
+/**
+ * PDF export: Pali-only person lists are the default selection (still
+ * tagged as references on the page). Mixed lists keep refs behind Include Ref.
+ */
+export function personOnPagePdfSplit(discourses: PersonOnPageDiscourse[]): {
+	curated: PersonOnPageDiscourse[];
+	referencePosts: ReferencePostData[];
+} {
+	const split = splitPersonOnPageDiscourses(discourses);
+	if (
+		personPageShowsRefsByDefault(
+			split.curated.length,
+			split.referencePosts.length,
+		)
+	) {
+		return { curated: discourses, referencePosts: [] };
+	}
+	return split;
 }
 
 /** Reference-only discourses scoped to book-level prefixes of listed discourse ids. */

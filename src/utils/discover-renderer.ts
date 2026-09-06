@@ -4,6 +4,10 @@ import {
 	getContentTypeFromApiData,
 	qualityListIncludes,
 } from "./ContentTagUtils";
+import {
+	DISCOURSE_LIST_PREVIEW_COUNT,
+	discourseShowMoreLabel,
+} from "./discourseListPreview";
 import qualities from "../data/qualities.json";
 import topicMappings from "../data/topicMappings.json";
 import "../styles/topicTag.css";
@@ -411,7 +415,7 @@ export class DiscoverRenderer {
 	): string {
 		const discoursesToShow = isExpanded
 			? item.discourses
-			: item.discourses.slice(0, 3);
+			: item.discourses.slice(0, DISCOURSE_LIST_PREVIEW_COUNT);
 		const showDescriptions = isExpanded;
 
 		const scrollContainer = isExpanded
@@ -469,6 +473,9 @@ export class DiscoverRenderer {
 		const voiceIcon = (window as any).__audioSlugs?.has(discourse.id)
 			? `<span class="voice-listen-icon voice-listen-action ml-1 align-middle" role="link" tabindex="0" aria-label="Listen" title="Listen" onclick="event.preventDefault();event.stopPropagation();window.location.href='${listenHref}'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();window.location.href='${listenHref}'}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:0.875rem;height:0.875rem"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z"/></svg></span>`
 			: "";
+		const referenceBadge = discourse.referenceOnly
+			? `<span class="post-card-ref-badge" title="Reference translation">Ref</span>`
+			: "";
 
 		/* One block link so ID, title, note, and description all go to the discourse (not the card’s /on/… target). */
 		return `
@@ -478,6 +485,7 @@ export class DiscoverRenderer {
 		>
 			<span class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium">${idLabel}</span>
 			<span class="text-[var(--text-color)]"> ${discourse.title}</span>
+			${referenceBadge}
 			${voiceIcon}
 			${noteBlock}
 			${descriptionBlock}
@@ -516,10 +524,6 @@ export class DiscoverRenderer {
 			return "[- Show Less]";
 		}
 
-		return discourseCount <= 3
-			? "[+ Show More]"
-			: `[+ ${discourseCount - 3} ${
-					discourseCount - 3 === 1 ? "discourse" : "discourses"
-				} - Show More]`;
+		return discourseShowMoreLabel(discourseCount);
 	}
 }

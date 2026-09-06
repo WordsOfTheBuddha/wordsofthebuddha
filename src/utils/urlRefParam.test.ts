@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	getRefParamFromUrl,
+	setRefParamOff,
 	urlHasRefParam,
 } from "./urlRefParam";
 
@@ -40,5 +41,12 @@ describe("urlRefParam", () => {
 		assert.equal(urlHasRefParam(params), true);
 		assert.equal(getRefParamFromUrl(params), true);
 		assert.equal(urlHasRefParam(new URLSearchParams("ref=false")), false);
+	});
+
+	it("setRefParamOff writes an explicit ref=false", () => {
+		const url = new URL("https://example.test/on/assaji?ref=true");
+		setRefParamOff(url);
+		assert.equal(url.searchParams.get("ref"), "false");
+		assert.equal(getRefParamFromUrl(url.searchParams), false);
 	});
 });

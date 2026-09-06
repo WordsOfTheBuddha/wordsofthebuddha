@@ -21,10 +21,14 @@ import {
 import { qualityListIncludes } from "../../utils/ContentTagUtils";
 import {
 	getReferencePostsForTag,
+	personOnPagePdfSplit,
+	personPageShowsRefsByDefault,
+	splitPersonOnPageDiscourses,
 } from "../../utils/referencePostsForPage";
 import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
 import { discourseHasSvgAssetForExport } from "../../utils/contentImage";
 import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClient";
+import { shouldShowOnPageChrome } from "../../utils/discourseListPreview";
 import { urlHasRefParam } from "../../utils/urlRefParam";
 import { getPtsDisplay } from "../../utils/ptsReferences";
 
@@ -113,21 +117,45 @@ const primaryDiscourses =
 		? allDiscourses.filter((d: any) => d.isFeatured)
 		: [];
 
-const additionalDiscourses =
+const additionalDiscoursesBase =
 	contentType === "topic"
 		? allDiscourses.filter((d: any) => !d.isFeatured)
 		: allDiscourses;
 
+let additionalDiscourses = additionalDiscoursesBase;
+
 const displayTitle = content.title;
 
 const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
-const referencePostsForPage =
+let referencePostsForPage =
 	contentType === "quality" || contentType === "topic"
 		? getReferencePostsForTag(slug, enSlugsOnPage)
 		: [];
-const curatedDiscourseCount = allDiscourses.length;
+
+if (contentType === "person") {
+	const split = splitPersonOnPageDiscourses(
+		allDiscourses.map((d: { id: string; title: string; description?: string }) => ({
+			id: d.id,
+			title: d.title,
+			description: d.description,
+		})),
+	);
+	additionalDiscourses = split.curated;
+	referencePostsForPage = split.referencePosts;
+}
+
+const curatedDiscourseCount =
+	contentType === "person"
+		? additionalDiscourses.length
+		: allDiscourses.length;
 const referenceDiscourseCount = referencePostsForPage.length;
-const refModeOnPage = urlHasRefParam(Astro.url.searchParams);
+const personRefsDefaultOn =
+	contentType === "person" &&
+	personPageShowsRefsByDefault(
+		curatedDiscourseCount,
+		referenceDiscourseCount,
+	);
+const refModeOnPage = urlHasRefParam(Astro.url.searchParams) || personRefsDefaultOn;
 const displayDiscourseCount = refModeOnPage
 	? curatedDiscourseCount + referenceDiscourseCount
 	: curatedDiscourseCount;
@@ -137,28 +165,71 @@ const showDiscoursesList =
 	additionalDiscourses.length > 0 || hasReferenceOnlyDiscourses;
 
 const isTagPage = contentType === "topic" || contentType === "quality";
+const chromeDiscourseCount = curatedDiscourseCount + referenceDiscourseCount;
 const showOnPageChrome =
-	isTagPage &&
-	(primaryDiscourses.length > 0 || showDiscoursesList);
+	(isTagPage || contentType === "person") &&
+	(primaryDiscourses.length > 0 || showDiscoursesList) &&
+	shouldShowOnPageChrome(chromeDiscourseCount);
 
-const onPagePdfExportTree = isTagPage
+const personPdfSplit =
+	contentType === "person"
+		? personOnPagePdfSplit(
+				allDiscourses.map(
+					(d: { id: string; title: string; description?: string }) => ({
+						id: d.id,
+						title: d.title,
+						description: d.description,
+					}),
+				),
+			)
+		: null;
+const onPageExportDiscourses = personPdfSplit
+	? personPdfSplit.curated
+	: allDiscourses;
+const onPagePdfReferencePosts = personPdfSplit
+	? personPdfSplit.referencePosts
+	: referencePostsForPage;
+const ssrReferencePosts = personRefsDefaultOn ? referencePostsForPage : [];
+const listedNativeDiscourses = additionalDiscourses.map(
+	(d: { id: string; title: string; description?: string }) => ({
+		id: d.id,
+		title: d.title,
+		description: d.description,
+		volpage: getPtsDisplay(d.id),
+		variant: "default" as const,
+	}),
+);
+const listedReferenceDiscourses = ssrReferencePosts.map((post) => ({
+	id: post.slug,
+	title: post.title,
+	description: post.description,
+	volpage: post.volpage,
+	variant: "reference" as const,
+}));
+const listedDiscourses = [
+	...listedNativeDiscourses,
+	...listedReferenceDiscourses,
+];
+const onPagePdfExportTree = showOnPageChrome
 	? buildOnPagePdfExportTree(
 			slug,
 			displayTitle,
-			allDiscourses.map(
+			onPageExportDiscourses.map(
 				(d: { id: string; title: string; description?: string }) => ({
 					id: d.id,
 					title: d.title,
 					description: d.description,
 				}),
 			),
-			referencePostsForPage,
+			onPagePdfReferencePosts,
 		)
 	: null;
-const onPageExportApiPath = isTagPage ? `/api/export/on/${slug}` : undefined;
+const onPageExportApiPath = showOnPageChrome
+	? `/api/export/on/${slug}`
+	: undefined;
 const onPagePreviewHasSvgViz =
-	isTagPage &&
-	allDiscourses.some((d: { id: string }) =>
+	showOnPageChrome &&
+	onPageExportDiscourses.some((d: { id: string }) =>
 		discourseHasSvgAssetForExport(d.id),
 	);
 const onPagePdfScopeSummary = onPagePdfExportTree
@@ -184,9 +255,10 @@ const showDiscourseSectionHeading =
 	seoTitle={`${displayTitle} - Words of the Buddha`}
 	seoDescription={content.description}
 	showAuth={true}
+	fp={`/on/${canonicalSlug}`}
 >
 	<main class="container mx-auto py-8">
-		<div class:list={["relative", isTagPage ? "mb-8" : "mb-4"]}>
+		<div class:list={["relative", showOnPageChrome ? "mb-8" : "mb-4"]}>
 			<div
 				class:list={[
 					"post-item relative flex flex-col w-full rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md",
@@ -579,6 +651,7 @@ const showDiscourseSectionHeading =
 					pageSlug={slug}
 					hasReferenceOnlyDiscourses={hasReferenceOnlyDiscourses}
 					showPrintPdf={!!onPagePdfExportTree}
+					defaultRefOnIfUnset={personRefsDefaultOn}
 				>
 					{primaryDiscourses.length > 0 ? (
 						<section class="on-discourse-section space-y-6">
@@ -598,7 +671,7 @@ const showDiscourseSectionHeading =
 							</div>
 						</section>
 					) : null}
-					{additionalDiscourses.length > 0 ||
+					{listedDiscourses.length > 0 ||
 					(hasReferenceOnlyDiscourses &&
 						primaryDiscourses.length === 0) ? (
 						<section class="on-discourse-section space-y-4">
@@ -608,12 +681,13 @@ const showDiscourseSectionHeading =
 									: "Discourses"}
 							</h2>
 							<div class="space-y-4">
-								{additionalDiscourses.map((discourse: any) => (
+								{listedDiscourses.map((discourse) => (
 									<PostCard
 										title={discourse.title}
 										description={discourse.description}
 										id={discourse.id}
-										volpage={getPtsDisplay(discourse.id)}
+										volpage={discourse.volpage}
+										variant={discourse.variant}
 									/>
 								))}
 							</div>
@@ -624,7 +698,7 @@ const showDiscourseSectionHeading =
 		}
 
 		{
-			!isTagPage && showDiscoursesList && (
+			!showOnPageChrome && showDiscoursesList && (
 				<div class="space-y-3">
 					{
 						(showDiscourseSectionHeading ||
@@ -633,7 +707,8 @@ const showDiscourseSectionHeading =
 								{
 									showDiscourseSectionHeading && (
 										<h2 class="text-xl font-medium my-0">
-											{additionalDiscourses.length === 1
+											{listedDiscourses.length === 1 &&
+											!hasReferenceOnlyDiscourses
 												? "Discourse"
 												: "Discourses"}
 										</h2>
@@ -646,7 +721,7 @@ const showDiscourseSectionHeading =
 											id="toggle-ref"
 											aria-pressed="false"
 											class:list={[
-												"toggle-ref shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]",
+												"toggle-ref filter-toolbar-btn shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]",
 												!showDiscourseSectionHeading &&
 													"ml-auto",
 											]}
@@ -665,13 +740,15 @@ const showDiscourseSectionHeading =
 					<div
 						id="discourses-grid"
 						class="flex flex-col gap-6 on-page-discourses [&_.post-item]:!mt-0 [&_.post-item]:!mb-0"
+						data-default-ref-on={personRefsDefaultOn ? "true" : undefined}
 					>
-						{additionalDiscourses.map((discourse: any) => (
+						{listedDiscourses.map((discourse) => (
 							<PostCard
 								title={discourse.title}
 								description={discourse.description}
 								id={discourse.id}
-								volpage={getPtsDisplay(discourse.id)}
+								volpage={discourse.volpage}
+								variant={discourse.variant}
 							/>
 						))}
 						<div id="reference-cards-mount" class="hidden"></div>
@@ -681,7 +758,7 @@ const showDiscourseSectionHeading =
 		}
 
 		{
-			isTagPage && onPagePdfExportTree && (
+			showOnPageChrome && onPagePdfExportTree && (
 				<CollectionPdfExportModal
 					collectionSlug={slug}
 					exportApiPath={onPageExportApiPath}
@@ -715,7 +792,8 @@ const showDiscourseSectionHeading =
 		function initOnPageDiscourses() {
 			const grid = document.getElementById("discourses-grid");
 			const refOptions = {
-				onRefModeChange: () => syncOnPageDiscourseCount(),
+				onRefModeChange: (refOn: boolean) =>
+					syncOnPageDiscourseCount(refOn),
 			};
 
 			if (!grid) {

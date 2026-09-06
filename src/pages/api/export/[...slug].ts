@@ -59,7 +59,10 @@ import {
 	type OnPageDiscourse,
 } from "../../../utils/onPagePdfExportTree";
 import { findContentBySlug } from "../../../utils/discover-data";
-import { getReferencePostsForTag } from "../../../utils/referencePostsForPage";
+import {
+	getReferencePostsForTag,
+	personOnPagePdfSplit,
+} from "../../../utils/referencePostsForPage";
 import { normalizeDiscourseIdForContentImages } from "../../../utils/contentImage";
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
@@ -430,12 +433,13 @@ function resolveOnPageExportContext(
 		!content ||
 		(contentType !== "topic" &&
 			contentType !== "quality" &&
-			contentType !== "simile")
+			contentType !== "simile" &&
+			contentType !== "person")
 	) {
 		return {
 			ok: false,
 			response: errorResponse(
-				`'${pageSlug}' is not a known topic, quality, or simile page.`,
+				`'${pageSlug}' is not a known topic, quality, simile, or person page.`,
 				404,
 			),
 		};
@@ -448,12 +452,20 @@ function resolveOnPageExportContext(
 			description: d.description,
 		}),
 	);
-	const enSlugs = new Set(discourses.map((d) => d.id));
-	const referencePosts = getReferencePostsForTag(pageSlug, enSlugs);
+	let exportDiscourses = discourses;
+	let referencePosts = getReferencePostsForTag(
+		pageSlug,
+		new Set(discourses.map((d) => d.id)),
+	);
+	if (contentType === "person") {
+		const split = personOnPagePdfSplit(discourses);
+		exportDiscourses = split.curated;
+		referencePosts = split.referencePosts;
+	}
 	const tree = buildOnPagePdfExportTree(
 		pageSlug,
 		content.title,
-		discourses,
+		exportDiscourses,
 		referencePosts,
 	);
 	if (!tree) {
@@ -479,6 +491,8 @@ function resolveOnPageExportContext(
 		titleKindLabel = "Quality";
 	} else if (contentType === "simile") {
 		titleKindLabel = "Simile";
+	} else if (contentType === "person") {
+		titleKindLabel = "Person";
 	}
 
 	return {

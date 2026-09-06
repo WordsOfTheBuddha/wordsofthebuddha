@@ -43,12 +43,11 @@ export const contentTypeConfigs = {
 			"text-xs bg-blue-200 dark:bg-blue-500 text-gray-600 dark:text-gray-300 rounded-full px-2 py-0.5 whitespace-nowrap",
 	},
 	person: {
-		emoji: "👤",
+		emoji: "",
 		label: "person",
 		tooltip:
 			"A person mentioned in the discourses, often a student or interlocutor of the Buddha.",
-		cssClass:
-			"text-xs border border-purple-300 text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/20 rounded-full px-2 py-0.5 whitespace-nowrap",
+		cssClass: "content-tag-person",
 	},
 };
 
@@ -112,7 +111,8 @@ export function generateContentTagHtml(
 	const config = contentTypeConfigs[contentType];
 	const posAttr = options?.tooltipPos ? options.tooltipPos : "top";
 
-	return `<span class="content-tag ${config.cssClass}" data-tooltip="${config.tooltip}" data-tooltip-pos="${posAttr}">
-    ${config.emoji} ${config.label}
-  </span>`;
+	const emoji = config.emoji ? `${config.emoji} ` : "";
+	const styleAttr =
+		contentType === "person" ? ' style="text-transform: none"' : "";
+	return `<span class="content-tag ${config.cssClass}" data-tooltip="${config.tooltip}" data-tooltip-pos="${posAttr}"${styleAttr}>${emoji}${config.label}</span>`;
 }

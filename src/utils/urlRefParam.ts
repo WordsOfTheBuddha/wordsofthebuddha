@@ -38,3 +38,9 @@ export function setRefParam(url: URL): void {
 	deleteRefParam(url);
 	url.searchParams.set("ref", "true");
 }
+
+/** Persist an explicit off so Pali-only person pages do not re-show refs on reload. */
+export function setRefParamOff(url: URL): void {
+	deleteRefParam(url);
+	url.searchParams.set("ref", "false");
+}

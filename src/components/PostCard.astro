@@ -119,6 +119,16 @@ const descriptionHtml = description?.replace(
 						</span>
 					)
 				}
+				{
+					isReference && (
+						<span
+							class="post-card-ref-badge"
+							title="Reference translation"
+						>
+							Ref
+						</span>
+					)
+				}
 			</span>
 			{
 				(hasAudio || hasViz) && (

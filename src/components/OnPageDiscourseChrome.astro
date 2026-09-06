@@ -6,6 +6,7 @@ interface Props {
 	hasReferenceOnlyDiscourses?: boolean;
 	showPrintPdf?: boolean;
 	discoursesGridClass?: string;
+	defaultRefOnIfUnset?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
 	hasReferenceOnlyDiscourses = false,
 	showPrintPdf = true,
 	discoursesGridClass = "space-y-10",
+	defaultRefOnIfUnset = false,
 } = Astro.props;
 ---
 
@@ -59,6 +61,7 @@ const {
 			id="discourses-grid"
 			class={discoursesGridClass}
 			data-on-page-slug={pageSlug}
+			data-default-ref-on={defaultRefOnIfUnset ? "true" : undefined}
 		>
 			<slot />
 			<div id="reference-cards-mount"></div>

@@ -1605,7 +1605,7 @@ export function attachAiMode(options: {
 			<a href="${escapeHtml(person.href)}" class="ai-person-card search-discourse-card block no-underline text-inherit" data-search-result>
 				<div class="ai-person-card-inner">
 					<div class="ai-person-kicker">
-						<span class="ai-person-badge">Person</span>
+						<span class="ai-person-badge" style="text-transform:none">person</span>
 					</div>
 					<h2 class="ai-person-title">${title}</h2>
 					${description}

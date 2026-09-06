@@ -167,6 +167,25 @@ html.dark #filter-collapsed {
 	z-index: 10;
 }
 
+/* Outline-only person chip, matching AI search person badges. */
+.content-tag.content-tag-person {
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: none !important;
+	color: var(--primary-color);
+	border: 1px solid
+		color-mix(in srgb, var(--primary-color) 45%, var(--surface-border));
+	background: transparent;
+	padding: 0.1rem 0.5rem;
+}
+
+.content-tag.content-tag-person:hover {
+	transform: none;
+	box-shadow: none;
+	background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
 .content-tag:hover {
 	transform: translateY(-1px);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

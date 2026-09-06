@@ -34,9 +34,9 @@ const finalCssClass = cssClass ?? config.cssClass;
 	class={`content-tag ${finalCssClass}`}
 	data-tooltip={finalTooltip}
 	{...tooltipPos ? { "data-tooltip-pos": tooltipPos } : {}}
+	{...contentType === "person" ? { style: "text-transform: none" } : {}}
 >
-	{finalEmoji}
-	{finalLabel}
+	{finalEmoji ? `${finalEmoji} ` : ""}{finalLabel}
 </span>
 
 <script is:inline>

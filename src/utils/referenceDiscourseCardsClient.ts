@@ -1,14 +1,17 @@
 import { collectionLayoutDebugLog } from "./collectionLayoutDebug";
 import {
 	deleteRefParam,
+	getStoredRefMode,
 	initRefModeFromUrl,
-	resolveRefMode,
 	setRefParam,
+	setRefParamOff,
 	setStoredRefMode,
 } from "./refModeClient";
+import { getRefParamFromUrl } from "./urlRefParam";
 import { compareDiscourseIds } from "./discourseSort";
 import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { transformId } from "./transformId";
+import { referenceEntriesToAppend } from "./referenceEntriesToAppend";
 
 export interface ReferenceDiscourseCardsInitOptions {
 	gridId?: string;
@@ -17,7 +20,7 @@ export interface ReferenceDiscourseCardsInitOptions {
 	/** Re-apply client filter after ref cards change (CollectionLayout). */
 	onAfterSync?: () => void;
 	/** Sync collection count badges when ref mode changes (CollectionLayout). */
-	onRefModeChange?: () => void;
+	onRefModeChange?: (refOn: boolean) => void;
 	getActiveFilter?: () => string;
 	applyFilter?: (filter: string) => void;
 	syncRefToggleVisibility?: (visible: boolean) => void;
@@ -104,6 +107,7 @@ function renderReferenceCard(entry: {
 							<a href="${escapeHtml(href)}" class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal" data-base-href="/${escapeHtml(entry.slug)}">
 								${escapeHtml(transformId(entry.slug))}&nbsp;<span style="color:var(--text-color)">${escapeHtml(entry.title)}</span>
 							</a>
+							<span class="post-card-ref-badge" title="Reference translation">Ref</span>
 						</h2>
 					</div>
 				</div>
@@ -237,8 +241,19 @@ export function initReferenceDiscourseCards(
 	const mount = document.getElementById(mountId);
 	if (!mount) return;
 
+	const defaultOnIfUnset = grid.getAttribute("data-default-ref-on") === "true";
+
+	function resolvePageRefMode(
+		params: URLSearchParams = new URLSearchParams(window.location.search),
+	) {
+		const fromUrl = getRefParamFromUrl(params);
+		if (fromUrl !== null) return fromUrl;
+		if (getStoredRefMode()) return true;
+		return defaultOnIfUnset;
+	}
+
 	function updateDiscoursePostLinks() {
-		const refOn = resolveRefMode();
+		const refOn = resolvePageRefMode();
 		const params = discourseLinkParams(refOn);
 		const qs = params.toString();
 		document.querySelectorAll("a.post-link").forEach((link) => {
@@ -259,29 +274,45 @@ export function initReferenceDiscourseCards(
 	}
 
 	function loadReferenceCards() {
-		const existingSlugs = new Set(
-			[...(grid?.querySelectorAll("a.post-link") ?? [])].map(
+		const nativeSlugs = new Set(
+			[
+				...(grid?.querySelectorAll(
+					".post-item:not(.post-item--reference) a.post-link",
+				) ?? []),
+			].map(
 				(a) =>
 					a.getAttribute("data-base-href")?.replace(/^\//, "") || "",
 			),
 		);
-		debugLog("existing EN slugs on page", existingSlugs.size);
+		const shownRefSlugs = new Set(
+			[
+				...(grid?.querySelectorAll(
+					".post-item--reference a.post-link",
+				) ?? []),
+			].map(
+				(a) =>
+					a.getAttribute("data-base-href")?.replace(/^\//, "") || "",
+			),
+		);
+		debugLog("existing slugs on page", {
+			native: nativeSlugs.size,
+			shownRefs: shownRefSlugs.size,
+		});
 
 		const referencePostsData = getReferencePostsData(dataScriptId);
-		const refs = referencePostsData.filter(
-			(entry) => !existingSlugs.has(entry.slug),
+		const refs = referenceEntriesToAppend(
+			referencePostsData,
+			nativeSlugs,
+			shownRefSlugs,
 		);
 		debugLog("refs to append", {
 			total: referencePostsData.length,
 			afterDedup: refs.length,
 		});
 
-		grid
-			?.querySelectorAll(".post-item--reference")
-			.forEach((el) => el.remove());
-
 		if (!refs.length) {
 			debugLog("no reference cards to append");
+			hideEmptyVaggaSections(grid);
 			return;
 		}
 
@@ -326,8 +357,7 @@ export function initReferenceDiscourseCards(
 		});
 	}
 
-	function syncReferenceDiscourseCards() {
-		const refOn = resolveRefMode();
+	function syncReferenceDiscourseCards(refOn = resolvePageRefMode()) {
 		debugLog("syncReferenceDiscourseCards", {
 			refOn,
 			search: window.location.search,
@@ -343,7 +373,7 @@ export function initReferenceDiscourseCards(
 			options.applyFilter(options.getActiveFilter());
 		}
 		options.onAfterSync?.();
-		options.onRefModeChange?.();
+		options.onRefModeChange?.(refOn);
 	}
 
 	function syncRefToggleState(active: boolean) {
@@ -373,25 +403,26 @@ export function initReferenceDiscourseCards(
 		options.syncRefToggleVisibility?.(show);
 	}
 
-	const showRef = initRefModeFromUrl();
+	const showRef = initRefModeFromUrl({ defaultOnIfUnset });
 	syncRefToggleVisibility(true);
 	syncRefToggleState(showRef);
-	syncReferenceDiscourseCards();
+	syncReferenceDiscourseCards(showRef);
 	updateDiscoursePostLinks();
 
 	for (const toggleRef of document.querySelectorAll(".toggle-ref")) {
 		toggleRef.addEventListener("click", (e) => {
 			e.preventDefault();
 			const url = new URL(window.location.href);
-			const wasOn = resolveRefMode(url.searchParams);
+			const wasOn = resolvePageRefMode(url.searchParams);
 			debugLog("toggle clicked", { wasOn });
 
 			if (wasOn) {
-				deleteRefParam(url);
+				if (defaultOnIfUnset) setRefParamOff(url);
+				else deleteRefParam(url);
 				setStoredRefMode(false);
 				syncRefToggleState(false);
 				window.history.replaceState({}, "", url);
-				syncReferenceDiscourseCards();
+				syncReferenceDiscourseCards(false);
 				updateDiscoursePostLinks();
 				return;
 			}
@@ -400,7 +431,7 @@ export function initReferenceDiscourseCards(
 			setStoredRefMode(true);
 			syncRefToggleState(true);
 			window.history.replaceState({}, "", url);
-			syncReferenceDiscourseCards();
+			syncReferenceDiscourseCards(true);
 			updateDiscoursePostLinks();
 		});
 	}

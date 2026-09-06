@@ -403,3 +403,37 @@ p.paragraph-highlight {
 		min-height: 0 !important;
 	}
 }
+
+.post-card-ref-badge {
+	display: inline-block;
+	margin-left: 0.375rem;
+	padding: 0 0.25rem;
+	font-size: 0.65rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.content-tag.content-tag-person,
+.ai-person-badge {
+	text-transform: none !important;
+	letter-spacing: 0.02em;
+}
+
+.toggle-ref.filter-toolbar-btn--active {
+	color: white !important;
+	font-weight: 500;
+	background: var(--primary-color) !important;
+}
+
+html.dark .toggle-ref.filter-toolbar-btn--active {
+	color: var(--secondary-color) !important;
+	background: color-mix(
+		in srgb,
+		var(--secondary-color) 14%,
+		transparent
+	) !important;
+}

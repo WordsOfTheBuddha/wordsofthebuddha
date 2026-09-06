@@ -101,4 +101,18 @@ describe("refModeClient", () => {
 		assert.equal(initRefModeFromUrl(), false);
 		assert.equal(getStoredRefMode(), false);
 	});
+
+	it("initRefModeFromUrl defaultOnIfUnset shows refs when URL and storage are silent", () => {
+		(globalThis as { window?: { location: { href: string }; history: { replaceState: (...args: unknown[]) => void } } }).window = {
+			location: { href: "https://example.test/on/assaji" },
+			history: { replaceState: () => {} },
+		};
+
+		assert.equal(initRefModeFromUrl({ defaultOnIfUnset: true }), true);
+		assert.equal(getStoredRefMode(), false);
+		assert.equal(
+			globalThis.window!.location.href,
+			"https://example.test/on/assaji",
+		);
+	});
 });

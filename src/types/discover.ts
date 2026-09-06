@@ -30,5 +30,7 @@ export interface UnifiedContentItem {
 		priority?: number;
 		// Optional featured flag (primarily for curated topicMappings)
 		isFeatured?: boolean;
+		/** True when this discourse has no native English MDX. */
+		referenceOnly?: boolean;
 	}>;
 }
