@@ -1,4 +1,5 @@
-// Search index is loaded from public/search-index.json (not bundled into serverless).
+// Search index is loaded from generated/*.json (copied into the Vercel
+// function via includeFiles) or from the static CDN as a fallback.
 import {
 	loadNativeSearchIndex,
 	loadReferenceSearchIndex,

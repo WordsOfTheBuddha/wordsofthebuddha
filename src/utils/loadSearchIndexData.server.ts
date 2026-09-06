@@ -3,11 +3,13 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import type { SearchIndexDoc } from "./loadSearchIndexData";
 
-function publicJsonCandidates(filename: string): string[] {
+export function publicJsonCandidates(filename: string): string[] {
 	const cwd = process.cwd();
 	return [
 		path.join(cwd, "generated", filename),
+		path.join(cwd, filename),
 		path.join(cwd, "public", filename),
+		path.join(cwd, "static", filename),
 		path.join(cwd, ".vercel", "output", "static", filename),
 	];
 }

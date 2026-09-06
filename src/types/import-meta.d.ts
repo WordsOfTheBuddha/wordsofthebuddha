@@ -9,6 +9,7 @@ interface ImportMetaEnv {
 	readonly OPENROUTER_MODEL?: string;
 	readonly OPENROUTER_HTTP_REFERER?: string;
 	readonly OPENROUTER_SITE_NAME?: string;
+	readonly SITE?: string;
 	readonly GEMINI_API_KEY?: string;
 	readonly GEMINI_MODEL?: string;
 	readonly GEMINI_RERANK_MODEL?: string;

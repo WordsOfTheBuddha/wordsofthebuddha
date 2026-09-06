@@ -93,14 +93,20 @@ function friendlyAskError(error: unknown): { status: number; message: string } {
 			: 502;
 	const message =
 		error instanceof Error ? error.message : "Ask could not complete.";
+	const searchIndexFailed =
+		/Failed to load (?:search-|reference-search-)|got HTML instead of JSON/i.test(
+			message,
+		);
 	const friendly =
 		status === 429
 			? "The free model is rate-limited right now. Wait a minute, or pick another free model."
 			: status === 401
 				? "The API key was rejected. Check OPENROUTER_API_KEY or GEMINI_API_KEY."
-				: message.includes("timeout")
-					? "The model timed out. Try again, or pick another free model."
-					: "Could not reach the model. Try again shortly.";
+				: searchIndexFailed
+					? "Could not load the discourse library. Try again shortly."
+					: message.includes("timeout")
+						? "The model timed out. Try again, or pick another free model."
+						: "Could not reach the model. Try again shortly.";
 	return { status, message: friendly };
 }
 

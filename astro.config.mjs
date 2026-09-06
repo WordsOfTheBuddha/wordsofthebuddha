@@ -41,6 +41,22 @@ const vercelPdfIncludeContentImages = globSync("public/content-images/**/*", {
 	dot: false,
 });
 
+/**
+ * Ask / `/api/search` load these from disk in SSR. They are also copied to
+ * static output for the browser. Without includeFiles, the function falls
+ * back to fetching `https://$VERCEL_URL/search-index.json`, which returns
+ * HTML (auth wall or the catch-all page) and Ask dies with a JSON parse 502.
+ * `prebuild` writes them before `astro build`.
+ */
+const vercelSearchIndexFiles = globSync(
+	"generated/{search-index,search-meta,reference-search-index}.json",
+	{
+		cwd: __dirname,
+		nodir: true,
+		dot: false,
+	},
+);
+
 const externalLinksOptions = {
 	target: "_blank",
 	rel: ["noopener", "noreferrer"],
@@ -90,11 +106,8 @@ export default defineConfig({
 		// PDF export (/api/export/*) launches headless Chromium; Hobby Fluid Compute
 		// caps serverless functions at 60s.
 		maxDuration: 60,
-		includeFiles: vercelPdfIncludeContentImages,
+		includeFiles: [...vercelPdfIncludeContentImages, ...vercelSearchIndexFiles],
 		excludeFiles: [
-			"generated/search-index.json",
-			"generated/search-meta.json",
-			"generated/reference-search-index.json",
 			"generated/suggestions-index.json",
 			"generated/discourse-suggest-index.json",
 		],

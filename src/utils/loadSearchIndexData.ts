@@ -32,14 +32,52 @@ let referenceCacheMtimeMs = 0;
 let referenceReloadPromise: Promise<void> | null = null;
 let referenceLoadPromise: Promise<SearchIndexDoc[]> | null = null;
 
-function siteOrigin(): string {
-	if (typeof process !== "undefined" && process.env.SITE) {
-		return process.env.SITE.replace(/\/$/, "");
+function withHttpsOrigin(hostOrUrl: string): string {
+	const value = hostOrUrl.trim();
+	if (!value) return "";
+	if (/^https?:\/\//i.test(value)) return value.replace(/\/$/, "");
+	return `https://${value.replace(/^\/+/, "")}`;
+}
+
+/**
+ * Public origin for SSR fallback fetches of `/search-index.json`.
+ * Prefer the configured site / production domain — `VERCEL_URL` is the
+ * `*.vercel.app` deployment host, which often returns an HTML auth page.
+ */
+export function searchIndexOrigin(
+	env: Record<string, string | undefined> = typeof process !== "undefined"
+		? process.env
+		: {},
+	astroSite =
+		typeof import.meta.env?.SITE === "string" ? import.meta.env.SITE : "",
+): string {
+	return (
+		withHttpsOrigin(astroSite) ||
+		withHttpsOrigin(env.SITE || "") ||
+		withHttpsOrigin(env.VERCEL_PROJECT_PRODUCTION_URL || "") ||
+		withHttpsOrigin(env.VERCEL_URL || "") ||
+		"http://localhost:4321"
+	);
+}
+
+export function parseSearchIndexJson(
+	body: string,
+	filename: string,
+	source: string,
+): SearchIndexDoc[] {
+	const trimmed = body.trimStart();
+	if (!trimmed || trimmed.startsWith("<")) {
+		throw new Error(
+			`Failed to load ${filename}: got HTML instead of JSON from ${source}`,
+		);
 	}
-	if (typeof process !== "undefined" && process.env.VERCEL_URL) {
-		return `https://${process.env.VERCEL_URL}`;
+	const parsed = JSON.parse(body) as unknown;
+	if (!Array.isArray(parsed)) {
+		throw new Error(
+			`Failed to load ${filename}: expected an array from ${source}`,
+		);
 	}
-	return "http://localhost:4321";
+	return parsed as SearchIndexDoc[];
 }
 
 function docsHaveBodyContent(docs: SearchIndexDoc[]): boolean {
@@ -55,12 +93,20 @@ async function fetchJson(
 	const base =
 		typeof window !== "undefined"
 			? window.location.origin
-			: siteOrigin();
-	const res = await fetch(`${base}/${filename}`, { signal });
+			: searchIndexOrigin();
+	const url = `${base}/${filename}`;
+	const res = await fetch(url, { signal });
 	if (!res.ok) {
-		throw new Error(`Failed to load ${filename}: ${res.status}`);
+		throw new Error(`Failed to load ${filename}: ${res.status} from ${url}`);
 	}
-	return (await res.json()) as SearchIndexDoc[];
+	const text = await res.text();
+	const contentType = res.headers.get("content-type") || "";
+	if (contentType.includes("text/html") || text.trimStart().startsWith("<")) {
+		throw new Error(
+			`Failed to load ${filename}: got HTML instead of JSON from ${url}`,
+		);
+	}
+	return parseSearchIndexJson(text, filename, url);
 }
 
 async function loadIndex(
