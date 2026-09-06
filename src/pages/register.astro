@@ -180,6 +180,18 @@ const benefitTickClass =
 						Register
 					</button>
 				</div>
+				<p
+					class="text-center text-sm text-[color-mix(in_srgb,var(--text-color)_70%,transparent)]"
+				>
+					Already have an account?{" "}
+					<a
+						id="signin-link"
+						href="/signin"
+						class="font-medium text-[var(--primary-color)] hover:underline"
+					>
+						Sign in
+					</a>
+				</p>
 			</form>
 		</div>
 	</div>
@@ -199,6 +211,13 @@ const benefitTickClass =
 		"returnTo",
 	) as HTMLInputElement | null;
 	if (returnToInput) returnToInput.value = returnTo;
+
+	const signinLink = document.getElementById(
+		"signin-link",
+	) as HTMLAnchorElement | null;
+	if (signinLink) {
+		signinLink.href = `/signin?returnTo=${encodeURIComponent(returnTo)}`;
+	}
 
 	function validateEmail(email: string): {
 		isValid: boolean;

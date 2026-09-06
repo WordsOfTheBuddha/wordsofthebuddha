@@ -104,6 +104,17 @@ if (Astro.cookies.has("__session")) {
 						Sign in
 					</button>
 				</div>
+				<p
+					class="text-center text-sm text-[color-mix(in_srgb,var(--text-color)_70%,transparent)]"
+				>
+					Don’t have an account?{" "}
+					<a
+						href={`/register?returnTo=${encodeURIComponent(returnTo)}`}
+						class="font-medium text-[var(--primary-color)] hover:underline"
+					>
+						Register
+					</a>
+				</p>
 			</form>
 		</div>
 	</div>
