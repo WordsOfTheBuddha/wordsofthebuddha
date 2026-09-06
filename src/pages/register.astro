@@ -148,20 +148,23 @@ const benefitTickClass =
 								))
 							}
 						</select>
-						<label
-							for="intentNote"
-							class="sr-only"
-						>
-							Anything you’d like to add
-						</label>
-						<textarea
-							name="intentNote"
-							id="intentNote"
-							rows="2"
-							maxlength={SIGNUP_INTENT_NOTE_MAX}
-							placeholder="Optional note (e.g. a practice interest)"
-							class="mt-2 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent text-[var(--text-color)] text-sm"
-						></textarea>
+						<div id="intentNoteField" class="hidden">
+							<label
+								for="intentNote"
+								class="sr-only"
+							>
+								Anything you’d like to add
+							</label>
+							<textarea
+								name="intentNote"
+								id="intentNote"
+								rows="2"
+								maxlength={SIGNUP_INTENT_NOTE_MAX}
+								placeholder="Optional note"
+								disabled
+								class="mt-2 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent text-[var(--text-color)] text-sm"
+							></textarea>
+						</div>
 					</div>
 				</div>
 
@@ -218,6 +221,23 @@ const benefitTickClass =
 	if (signinLink) {
 		signinLink.href = `/signin?returnTo=${encodeURIComponent(returnTo)}`;
 	}
+
+	const intentSelect = document.getElementById(
+		"intent",
+	) as HTMLSelectElement | null;
+	const intentNoteField = document.getElementById("intentNoteField");
+	const intentNote = document.getElementById(
+		"intentNote",
+	) as HTMLTextAreaElement | null;
+
+	function syncIntentNoteVisibility() {
+		const showOtherNote = intentSelect?.value === "other";
+		intentNoteField?.classList.toggle("hidden", !showOtherNote);
+		if (intentNote) intentNote.disabled = !showOtherNote;
+	}
+
+	intentSelect?.addEventListener("change", syncIntentNoteVisibility);
+	syncIntentNoteVisibility();
 
 	function validateEmail(email: string): {
 		isValid: boolean;

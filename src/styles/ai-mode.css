@@ -1309,6 +1309,10 @@
 	font-size: 1rem;
 }
 
+.ai-feedback-btn[data-ai-feedback="down"] {
+	padding-top: 2px;
+}
+
 .ai-feedback-btn:not(:disabled) {
 	color: inherit;
 }
