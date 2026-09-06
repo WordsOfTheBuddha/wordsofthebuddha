@@ -138,7 +138,8 @@ describe("formatAskRoutingDevHtml", () => {
 describe("askReasoningIsLong", () => {
 	it("flags many lines or long text", () => {
 		assert.equal(askReasoningIsLong("short"), false);
-		assert.equal(askReasoningIsLong("a\nb\nc\nd\ne\nf\ng"), true);
+		assert.equal(askReasoningIsLong("a\nb\nc\nd\ne"), false);
+		assert.equal(askReasoningIsLong("a\nb\nc\nd\ne\nf"), true);
 		assert.equal(askReasoningIsLong("x".repeat(700)), true);
 	});
 });

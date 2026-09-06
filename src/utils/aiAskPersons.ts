@@ -24,6 +24,17 @@ export interface AiAskPersonHit {
 	href: string;
 }
 
+const GENERIC_PERSON_QUESTION_KEYS = new Set([
+	"buddha",
+	"the buddha",
+	"dhamma",
+	"sangha",
+	"bhikkhu",
+	"bhikkhuni",
+	"brahmin",
+	"yakkha",
+	"deva",
+]);
 const MAX_HINT_PERSONS = 160;
 const MAX_RESULT_PERSONS = 3;
 const MAX_SAMPLE_IDS = 4;
@@ -67,6 +78,10 @@ function stripHonorifics(title: string): string {
 		.trim();
 }
 
+function escapePersonKey(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 /** Distinctive keys that can exactly match a query / lookingFor phrase. */
 export function personMatchKeys(record: AiAskPersonRecord): string[] {
 	const keys = new Set<string>();
@@ -84,6 +99,42 @@ export function personMatchKeys(record: AiAskPersonRecord): string[] {
 	const slugHead = record.slug.split("-")[0] || "";
 	if (slugHead.length >= 3) add(slugHead);
 	return [...keys];
+}
+
+/**
+ * Names safe to look for in the reader's question. Skips short slug-heads that
+ * collide with ordinary Dhamma terms (sati, nāga, …).
+ */
+export function personQuestionKeys(record: AiAskPersonRecord): string[] {
+	const keys = new Set<string>();
+	const add = (raw: string, min = 4) => {
+		const key = normalizePersonMatchKey(raw);
+		if (!key || key.length < min) return;
+		if (GENERIC_PERSON_QUESTION_KEYS.has(key)) return;
+		keys.add(key);
+	};
+	add(record.title);
+	add(stripHonorifics(record.title));
+	const beforeComma = record.title.split(",")[0] || "";
+	add(beforeComma);
+	add(stripHonorifics(beforeComma));
+	add(record.slug.replace(/-/g, " "));
+	const slugHead = record.slug.split("-")[0] || "";
+	if (slugHead.length >= 5) add(slugHead);
+	return [...keys];
+}
+
+/** True when the question text itself names this figure. */
+export function questionNamesPerson(
+	question: string,
+	record: AiAskPersonRecord,
+): boolean {
+	const haystack = normalizePersonMatchKey(question);
+	if (!haystack) return false;
+	return personQuestionKeys(record).some((key) => {
+		const pattern = new RegExp(`(?:^|\\s)${escapePersonKey(key)}(?:\\s|$)`);
+		return pattern.test(haystack);
+	});
 }
 
 function blurbFor(record: AiAskPersonRecord): string {
@@ -167,18 +218,10 @@ export function toAskPersonHit(record: AiAskPersonRecord): AiAskPersonHit {
 	};
 }
 
-function collectProbeKeys(values: readonly string[]): Set<string> {
-	const keys = new Set<string>();
-	for (const value of values) {
-		const key = normalizePersonMatchKey(value);
-		if (key) keys.add(key);
-	}
-	return keys;
-}
-
 /**
- * Exact person matches from model slugs and/or query / lookingFor / short
- * corrected questions that equal a known person key.
+ * Person cards only when the question itself names the figure.
+ * Planner slugs, lookingFor, and query chips are not enough on their own —
+ * those often infer Āḷavaka / Sūciloma / Sakka from a story description.
  */
 export function resolveAskPersonHits(options: {
 	correctedQuestion?: string;
@@ -190,32 +233,21 @@ export function resolveAskPersonHits(options: {
 }): AiAskPersonHit[] {
 	const limit = options.limit ?? MAX_RESULT_PERSONS;
 	const records = loadAskPersonRecords();
+	const question = options.correctedQuestion || "";
 	const matched = new Map<string, AiAskPersonRecord>();
+
+	const consider = (record: AiAskPersonRecord) => {
+		if (matched.has(record.slug)) return;
+		if (!questionNamesPerson(question, record)) return;
+		matched.set(record.slug, record);
+	};
 
 	for (const raw of options.personSlugs || []) {
 		const record = personBySlug(raw);
-		if (record) matched.set(record.slug, record);
+		if (record) consider(record);
 	}
-
-	const probes = collectProbeKeys([
-		options.lookingFor || "",
-		...(options.queries || []),
-		...(options.fallbackQueries || []),
-		// Only treat the corrected question as a probe when it is short (name-like).
-		...(normalizePersonMatchKey(options.correctedQuestion || "").split(/\s+/)
-			.length <= 4
-			? [options.correctedQuestion || ""]
-			: []),
-	]);
-
-	if (probes.size > 0) {
-		for (const record of records) {
-			if (matched.has(record.slug)) continue;
-			const keys = personMatchKeys(record);
-			if (keys.some((key) => probes.has(key))) {
-				matched.set(record.slug, record);
-			}
-		}
+	if (question) {
+		for (const record of records) consider(record);
 	}
 
 	return [...matched.values()]

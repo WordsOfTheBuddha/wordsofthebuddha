@@ -49,6 +49,11 @@ export interface AiRewritePlan {
 	 * treat the question, what to avoid). Written by the planning model.
 	 */
 	rankingGuidance?: string;
+	/**
+	 * How wide the later ranking step should go. `survey` raises the result
+	 * ceiling even when the displayed question dropped words like “extensive”.
+	 */
+	coverage?: "brief" | "survey";
 }
 
 /**
@@ -68,7 +73,7 @@ The search engine already ranks discourses. Your job is NOT to answer, quote, or
 Pipeline context: after your queries run, a separate (smaller) model re-ranks up to ~500 candidate discourses and writes the reader's briefing from their titles and descriptions. It only sees the candidates, the question, and your rankingGuidance — so rankingGuidance is your one chance to steer it.
 
 Return JSON only in the final answer — no markdown fences, no preface, no trailing commentary. Put any chain-of-thought in the reasoning channel (or <think> tags), never as a substitute for the JSON object. Content must be exactly one JSON object:
-{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","rankingGuidance":"1–3 sentences for the ranking step","offTopic":false}
+{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","coverage":"brief","rankingGuidance":"1–3 sentences for the ranking step","offTopic":false}
 
 Search language (this site's real operators — use them when they help):
 - Default matches titles, descriptions, IDs, and topics/qualities/similes/persons (fuzzy).
@@ -91,14 +96,15 @@ Query rules:
 - 1 to 4 primary queries. Each is usually 1–8 tokens, not a full sentence. Never put the whole question into queries[].
 - Prefer short topical English and common Pāli from the library vocabulary / Known discourses list.
 - Prefer queries likely to hit real discourses (known terms, exact Pāli forms with '… when diacritics matter, collection filters only when the person asked for a nikāya).
-- personSlugs: optional. When the question is clearly about a named figure from the Person pages list, include that exact slug (e.g. "ananda", "sakka-lord-of-the-gods"). Also put their common name in queries[]. Leave personSlugs empty when no exact person page applies. Never invent slugs.
+- personSlugs: optional. Include a slug only when the person named that figure in the question (e.g. "Ānanda", "Sakka"). Do not infer a person from a story, a yakkha/spirit, or a teaching topic. Leave personSlugs empty when they did not name anyone. Never invent slugs.
 - If they named a discourse (MN 10, SN 12.2, Dhp 1), include that ID as one query.
 - When citing a specific sutta by name or story, copy the ID only from the Known discourses list below (never invent a nearby number such as SN 22.87 for Puṇṇama).
 - lookingFor may name those IDs, but must not invent IDs absent from the Known discourses list.
 - Broad / practical / “inspired” / “technique” / “how to apply” / “diverse aspects” asks: cover several facets with complementary short queries (classic practice clusters + English synonyms). For mindfulness / sati practice, prefer the Satipaṭṭhāna Saṃyutta and related stems: satipaṭṭhāna, ^SN satipaṭṭhāna, ānāpānasati, kāyagatāsati, sampajañña, sati, sammāsati — plus known IDs (MN 10, MN 118, SN 47.1, SN 47.2, SN 47.35, SN 47.40, SN 47.42, AN 8.63). Do not stop at DN 22 / MN 10 alone when they ask for techniques or other kinds.
 - If they asked for exact wording, a collection, OR/exclude, or a PTS page, encode that with the operators above.
 - fallbackQueries: 1–3 broader backups (plain short words, no operators) if the first queries might miss.
-- rankingGuidance: 1–3 plain sentences addressed to the ranking / briefing step. Say what the person actually wants (practice technique vs doctrine vs a specific story or person vs a survey), which facets or saṃyuttas should be represented, which named IDs are must-haves if present, what to de-prioritize (e.g. reference-only duplicates, tangential verses), and how to frame it when the topic is partly outside the early discourses or is hard/controversial. For hard topics, tell the ranking step to report what the Buddha said, what he refused to declare, and any characteristic reframes in the selected set (e.g. killing anger rather than beings; the undeclared points). Do not answer the question here. Empty string when nothing beyond the obvious applies.
+- coverage: always set this. "survey" when they want a wide, cited, or thorough treatment of a topic — including when they never used those words (gather the discourses on X; what the canon says across the nikāyas; help me study Y properly; map the teaching). "brief" for a named sutta, a specific story, “which discourse”, or an ordinary short question. Classify the intent; do not copy the example’s "brief".
+- rankingGuidance: 1–3 plain sentences addressed to the ranking / briefing step. Say what the person actually wants (practice technique vs doctrine vs a specific story or person vs a survey), which facets or saṃyuttas should be represented, which named IDs are must-haves if present, what to de-prioritize (e.g. reference-only duplicates, tangential verses), and how to frame it when the topic is partly outside the early discourses or is hard/controversial. For hard topics, tell the ranking step to report what the Buddha said, what he refused to declare, and any characteristic reframes in the selected set (e.g. killing anger rather than beings; the undeclared points). When coverage is survey, tell it to keep a broad set and not collapse to a handful of hits. Do not answer the question here. Empty string when nothing beyond the obvious applies.
 - Follow-ups that ask for “other”, “more”, “diverse”, “not included yet”, or an enumeration: invent a fresh complementary query set. Prefer different facets / saṃyuttas / IDs than Earlier turns already returned (see alreadyShown). Do not repeat the same lookingFor or the same primary queries unless the person asked to refine one specific hit.
 - Scope (set offTopic carefully — this is library scope, not a content filter):
   - Related but outside early Buddhist discourses (commentaries, Abhidhamma later layers, other Buddhist schools, popular Buddhist terms not in the nikāyas): keep offTopic false. Search for the closest early-discourse parallels / themes so the later summary can frame what is and is not in the Buddha’s discourses.
@@ -220,6 +226,24 @@ export const MAX_RANKING_GUIDANCE = 600;
 export function clipRankingGuidance(value: unknown): string {
 	if (typeof value !== "string") return "";
 	return value.replace(/\s+/g, " ").trim().slice(0, MAX_RANKING_GUIDANCE);
+}
+
+export function parseAskCoverage(value: unknown): "brief" | "survey" | undefined {
+	if (typeof value !== "string") return undefined;
+	const token = value.replace(/\s+/g, " ").trim().toLowerCase();
+	if (
+		token === "survey" ||
+		token === "expansive" ||
+		token === "broad" ||
+		token === "wide" ||
+		token === "extensive"
+	) {
+		return "survey";
+	}
+	if (token === "brief" || token === "tight" || token === "narrow") {
+		return "brief";
+	}
+	return undefined;
 }
 
 function shortLookingFor(
@@ -397,6 +421,7 @@ export function parseRewritePlan(
 	const rankingGuidance = clipRankingGuidance(
 		record.rankingGuidance ?? record.guidance ?? record.rerankGuidance,
 	);
+	const coverage = parseAskCoverage(record.coverage);
 	return {
 		correctedQuestion,
 		lookingFor,
@@ -406,6 +431,7 @@ export function parseRewritePlan(
 		...(shareSlug ? { shareSlug } : {}),
 		...(personSlugs.length > 0 ? { personSlugs } : {}),
 		...(rankingGuidance ? { rankingGuidance } : {}),
+		...(coverage ? { coverage } : {}),
 		...(degraded ? { degraded: true, degradedReason } : {}),
 	};
 }

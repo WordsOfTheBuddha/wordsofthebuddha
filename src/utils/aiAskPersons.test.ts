@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	normalizePersonMatchKey,
 	personMatchKeys,
+	questionNamesPerson,
 	resolveAskPersonHits,
 	sanitizeAskPersonHits,
 } from "./aiAskPersons";
@@ -47,6 +48,58 @@ describe("resolveAskPersonHits", () => {
 			queries: ["anapanasati", "mindfulness of breathing"],
 		});
 		assert.equal(hits.length, 0);
+	});
+
+	it("does not show a planner person the question never named", () => {
+		const hits = resolveAskPersonHits({
+			personSlugs: ["suciloma"],
+			lookingFor: "yakkha scares the Buddha",
+			queries: ["suciloma", "yakkha", "alavaka"],
+			correctedQuestion:
+				"discourses about two spirits talking with the Buddha trying to scare him",
+		});
+		assert.equal(hits.length, 0);
+	});
+
+	it("does not match a person from query chips or lookingFor alone", () => {
+		const hits = resolveAskPersonHits({
+			lookingFor: "Sakka",
+			queries: ["sakka"],
+			fallbackQueries: ["sakka lord of the gods"],
+			correctedQuestion:
+				"How should one practice mindfulness of breathing in daily life?",
+		});
+		assert.equal(hits.length, 0);
+	});
+});
+
+describe("questionNamesPerson", () => {
+	it("requires the name in the question text", () => {
+		const sakka = {
+			slug: "sakka-lord-of-the-gods",
+			title: "Sakka, Lord of the Gods",
+			description: "",
+			discourseIds: ["dn21"],
+			sampleDescription: "",
+		};
+		assert.equal(questionNamesPerson("Who is Sakka?", sakka), true);
+		assert.equal(
+			questionNamesPerson("two spirits try to scare the Buddha", sakka),
+			false,
+		);
+		assert.equal(
+			questionNamesPerson(
+				"two spirits talking with the Buddha trying to scare him",
+				{
+					slug: "buddha-kassapa",
+					title: "Buddha Kassapa",
+					description: "",
+					discourseIds: [],
+					sampleDescription: "",
+				},
+			),
+			false,
+		);
 	});
 });
 

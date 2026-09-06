@@ -168,7 +168,7 @@ const ASK_REASONING_STATUS_LINE =
  * starts with one of these words (“Queries should target…”) is kept.
  */
 const ASK_REASONING_META_LINE =
-	/^\s*[-*]?\s*"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|usefulFallbackQueries|count|slugs|summary)"?\s*[:=]/i;
+	/^\s*[-*]?\s*"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage|usefulFallbackQueries|count|slugs|summary)"?\s*[:=]/i;
 const ASK_REASONING_FORMAT_LINE =
 	/^\s*(?:```|JSON\s*:?\s*$|Return JSON\b|Output JSON\b|\{|\}|\[|\])/i;
 
@@ -386,11 +386,28 @@ function processStepsHtml(
 	return `<ol class="ai-process" aria-label="How this Ask worked">${items}${footer}</ol>`;
 }
 
+/** Visual lines shown in the clamped “Understood” thinking pane. */
+export const ASK_REASONING_CLAMP_LINES = 5;
+
 /** Approximate count of visual lines a reasoning block would need. */
-export function askReasoningIsLong(text: string, lineLimit = 6): boolean {
+export function askReasoningIsLong(
+	text: string,
+	lineLimit = ASK_REASONING_CLAMP_LINES,
+): boolean {
 	const lines = text.split("\n");
 	if (lines.length > lineLimit) return true;
 	return text.length > lineLimit * 110;
+}
+
+/** Scroll a clamped thinking pane so the latest lines stay visible. */
+export function pinClampedAskThinking(root: ParentNode): void {
+	root
+		.querySelectorAll<HTMLElement>(
+			".ai-process-thinking.is-clamped .ai-process-thinking-text",
+		)
+		.forEach((el) => {
+			el.scrollTop = el.scrollHeight;
+		});
 }
 
 function inlineThinkingHtml(escaped: string): string {
@@ -1923,8 +1940,7 @@ export function attachAiMode(options: {
 		const cacheNote = turn.fromCache
 			? `<p class="ai-cache-note" title="You asked this before, so the saved answer is shown again.">Saved answer from an earlier Ask</p>`
 			: "";
-		// Reasoning streams live under “Understood”; once finished it stays there,
-		// clamped to a few lines with a toggle so the answer isn’t pushed down.
+		// Latest lines stay visible; older reasoning is clipped unless expanded.
 		const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
 		const plannerNote = turn.plannerNote
 			? `<p class="ai-process-thinking-note">${escapeHtml(turn.plannerNote)}</p>`
@@ -1932,11 +1948,10 @@ export function attachAiMode(options: {
 		let thinking = "";
 		if (reasoningText) {
 			const clampable =
-				!turn.pending && !turn.reasoningExpanded && askReasoningIsLong(reasoningText);
-			const toggle =
-				!turn.pending && askReasoningIsLong(reasoningText)
-					? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${turnIndex}" aria-expanded="${turn.reasoningExpanded ? "true" : "false"}">${turn.reasoningExpanded ? "Show less" : "Show all thinking"}</button>`
-					: "";
+				!turn.reasoningExpanded && askReasoningIsLong(reasoningText);
+			const toggle = askReasoningIsLong(reasoningText)
+				? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${turnIndex}" aria-expanded="${turn.reasoningExpanded ? "true" : "false"}">${turn.reasoningExpanded ? "Show less" : "Show all thinking"}</button>`
+				: "";
 			thinking = `<li class="ai-process-thinking${turn.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}" aria-label="Model thinking">
 				<span class="ai-process-mark" aria-hidden="true"></span>
 				<div class="ai-process-thinking-body">
@@ -2300,6 +2315,7 @@ export function attachAiMode(options: {
 					syncLayout();
 				});
 			});
+		if (thread) pinClampedAskThinking(thread);
 		if (!shareMode) renderHistory();
 	}
 

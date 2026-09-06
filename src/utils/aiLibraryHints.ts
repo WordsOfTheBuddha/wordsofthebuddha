@@ -64,7 +64,7 @@ export function buildAiLibraryHints(options?: {
 	}
 	if (persons.length > 0) {
 		lines.push(
-			`Person pages (slug=title; use these exact slugs in personSlugs when the question is clearly about that figure): ${persons
+			`Person pages (slug=title; use these exact slugs in personSlugs only when the question names that figure): ${persons
 				.map((entry) => `${entry.slug}=${entry.title}`)
 				.join("; ")}`,
 		);

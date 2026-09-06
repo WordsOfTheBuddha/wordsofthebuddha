@@ -60,6 +60,18 @@ describe("parseRewritePlan", () => {
 		);
 	});
 
+	it("keeps survey coverage from the planner", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "satipatthana",
+				queries: ["satipaṭṭhāna"],
+				coverage: "survey",
+			}),
+			"search extensively for satipatthana",
+		);
+		assert.equal(plan.coverage, "survey");
+	});
+
 	it("keeps personSlugs from the model plan", () => {
 		const plan = parseRewritePlan(
 			JSON.stringify({
@@ -284,6 +296,7 @@ describe("AI_REWRITE_SYSTEM_PROMPT", () => {
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /shareSlug/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /Satipaṭṭhāna Saṃyutta|SN 47/i);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /alreadyShown/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /Classify the intent/);
 	});
 
 	it("keeps hard ethics in-library and refuses only personal crisis", async () => {

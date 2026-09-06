@@ -127,6 +127,24 @@ describe("applyRerankOrder", () => {
 			["a", "b"],
 		);
 	});
+
+	it("does not pad an ordinary shortlist", () => {
+		const candidates = ["a", "b", "c", "d", "e"].map((slug) => ({ slug }));
+		assert.deepEqual(
+			applyRerankOrder(candidates, ["c", "a"], 10).map((item) => item.slug),
+			["c", "a"],
+		);
+	});
+
+	it("fills a survey to the ceiling after the model’s ranking", () => {
+		const candidates = Array.from({ length: 8 }, (_, index) => ({
+			slug: String.fromCharCode(97 + index),
+		}));
+		assert.deepEqual(
+			applyRerankOrder(candidates, ["c"], 8, 8).map((item) => item.slug),
+			["c", "a", "b", "d", "e", "f", "g", "h"],
+		);
+	});
 });
 
 describe("resolveAskResultLimit", () => {
@@ -152,6 +170,22 @@ describe("resolveAskResultLimit", () => {
 			resolveAskResultLimit("give me 30 discourses on feeling"),
 			AI_RERANK_MAX_LIMIT,
 		);
+		assert.equal(
+			resolveAskResultLimit("do an extensive search on feeling"),
+			AI_RERANK_MAX_LIMIT,
+		);
+		assert.equal(
+			resolveAskResultLimit("what is mindfulness?", "survey"),
+			AI_RERANK_MAX_LIMIT,
+		);
+		assert.equal(
+			resolveAskResultLimit("what is mindfulness?", "brief"),
+			AI_RERANK_DEFAULT_LIMIT,
+		);
+		assert.equal(
+			resolveAskResultLimit("I want to research this topic with citations", "brief"),
+			AI_RERANK_DEFAULT_LIMIT,
+		);
 	});
 });
 
@@ -173,7 +207,7 @@ describe("buildRerankUserPrompt", () => {
 		assert.match(prompt, /Protecting oneself/);
 		assert.match(prompt, /mindfulness technique/);
 		assert.match(prompt, /Target result count: up to 10/);
-		assert.match(prompt, /tight, high-quality set/);
+		assert.match(prompt, /only as many as are needed/);
 		assert.match(prompt, /Fallback searches also tried/);
 		assert.match(prompt, /satipatthana/);
 		assert.doesNotMatch(prompt, /Earlier in this Ask/);
@@ -209,7 +243,7 @@ describe("buildRerankUserPrompt", () => {
 		assert.match(prompt, /satipaṭṭhāna/);
 		assert.match(prompt, /What about the second one\?/);
 		assert.match(prompt, /Target result count: up to 20/);
-		assert.match(prompt, /research-style coverage/);
+		assert.match(prompt, /research \/ be extensive/);
 	});
 
 	it("forwards planning guidance and notes to the rescorer", () => {

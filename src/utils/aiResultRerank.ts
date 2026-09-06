@@ -38,7 +38,7 @@ const RERANK_HISTORY_SHOWN_SLUGS = AI_RERANK_MAX_LIMIT;
  * alone are thin for writing a briefing; snippets are query-relevant passages.
  */
 export const AI_RERANK_SNIPPET_CANDIDATES = 150;
-const RERANK_SNIPPET_CHARS = 170;
+const RERANK_SNIPPET_CHARS = 280;
 /** Tail of the planning model’s reasoning forwarded to the rescorer. */
 export const AI_RERANK_PLANNING_NOTES_MAX = 1200;
 
@@ -48,7 +48,7 @@ export const AI_RERANK_PLANNING_NOTES_MAX = 1200;
  * how many of that ceiling to fill.
  */
 const EXPANSIVE_RESULT_RE =
-	/\b(exhaustiv\w*|comprehensiv\w*|thorough\w*|in detail|detailed|in.?depth|as many as possible|all (relevant |the )?(discourses|suttas|citations)|every (relevant )?(discourse|sutta)|complete (list|survey|treatment)|survey of|list all|show (me )?more|more (discourses|suttas|citations|references|examples)|more than ten|wide (net|range)|full (range|treatment|survey)|broad(er)? (set|survey|overview|coverage)|research\b|citations?\b|collect (all|many)|compile|as many (as you can|discourses|suttas|citations)|lots of (discourses|suttas)|many (discourses|suttas|citations)|everything (on|about)|extensive)\b/i;
+	/\b(exhaustiv\w*|comprehensiv\w*|thorough\w*|in detail|detailed|in.?depth|as many as possible|all (relevant |the )?(discourses|suttas|citations)|every (relevant )?(discourse|sutta)|complete (list|survey|treatment)|survey of|list all|show (me )?more|more (discourses|suttas|citations|references|examples)|more than ten|wide (net|range)|full (range|treatment|survey)|broad(er)? (set|survey|overview|coverage)|research\b|citations?\b|collect (all|many)|compile|as many (as you can|discourses|suttas|citations)|lots of (discourses|suttas)|many (discourses|suttas|citations)|everything (on|about)|extensive(\s+search)?)\b/i;
 
 const EXPLICIT_COUNT_RE =
 	/\b(?:top |at least )?(?:1[5-9]|[2-9]\d|thirty|forty|fifty)\+?\s+(?:relevant )?(?:discourses|suttas|citations|references)\b/i;
@@ -67,7 +67,16 @@ export function clampAskResultLimit(value: number): number {
 	);
 }
 
-export function resolveAskResultLimit(question: string): number {
+/**
+ * Planner `coverage` is the decision. Keyword matching is only used when
+ * the rewrite omitted the field (degraded / no JSON).
+ */
+export function resolveAskResultLimit(
+	question: string,
+	coverage?: "brief" | "survey" | string,
+): number {
+	if (coverage === "survey") return AI_RERANK_MAX_LIMIT;
+	if (coverage === "brief") return AI_RERANK_DEFAULT_LIMIT;
 	const text = question.replace(/\s+/g, " ").trim();
 	if (!text) return AI_RERANK_DEFAULT_LIMIT;
 	return isExpansiveAskQuestion(text)
@@ -83,7 +92,8 @@ You receive a person's question, a result-count ceiling, optional guidance from 
 Rules:
 - Order slugs best-first for answering the person's question (technique / practical application when they asked for that).
 - Only use slugs from the candidate list. Never invent IDs.
-- The Target result count is a ceiling, not a quota. You choose how many slugs to return. Prefer quality over padding: drop weak, tangential, or near-duplicate candidates. Ordinary questions: about 8–12 strong matches is typical. When the ceiling is higher (up to 50) because they asked to research, survey, cite more, or cover a topic exhaustively, return as many distinct strong matches as the question warrants — still never pad.
+- Ordinary questions (target around 10): return only as many as are needed. A specific story, named sutta, or “which discourse” lookup may need 3–6. Do not stretch to 10 for padding.
+- Survey / research / extensive / citations (target 50): this is the intended size, not a loose ceiling. Include every distinct on-topic candidate, best-first, up to the target. Do not stop at a top-10 shortlist. Drop only near-duplicates, reference-only copies of a native hit, and clearly off-topic items. If the pool has 50 relevant discourses, return 50.
 - Prefer native translations over reference-only when both cover the same teaching.
 - Candidates are listed in library-search order (best fused rank first). That order is a hint, not a verdict — read the descriptions and passages.
 - When "Guidance from the planning step" is present, follow it for what to prioritize, which facets to represent, and how to frame the answer. It comes from a stronger model that read the question first. Planning notes (if present) are its raw thinking — use them for intent, ignore any JSON drafting.
@@ -114,7 +124,7 @@ export interface AiRerankPromptOptions {
 }
 
 const PLANNING_NOTES_DRAFT_LINE =
-	/^[{}\[\]]|^```|^"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance)"?\s*:/i;
+	/^[{}\[\]]|^```|^"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage)"?\s*:/i;
 
 export function clipPlanningNotes(
 	value: string | undefined,
@@ -290,8 +300,8 @@ export function buildRerankUserPrompt(
 	const target = clampAskResultLimit(options.limit ?? AI_RERANK_DEFAULT_LIMIT);
 	const coverage =
 		target > AI_RERANK_DEFAULT_LIMIT
-			? `Coverage: they asked for broader / more detailed / research-style coverage. Choose how many discourses to return (ceiling ${target}, not a quota). Write a fuller summary that treats the question.`
-			: `Coverage: prefer a tight, high-quality set around ${target}. Write a real briefing, not a caption.`;
+			? `Coverage: they asked to research / be extensive / cite thoroughly. Return about ${target} distinct on-topic discourses (the full target, not a top-10). Write a fuller summary that treats the question.`
+			: `Coverage: return only as many as are needed (ceiling ${target}). A single-discourse lookup may be 3–6. Write a real briefing, not a caption.`;
 	const guidance = (options.guidance || "").replace(/\s+/g, " ").trim();
 	const guidanceBlock = guidance
 		? `\nGuidance from the planning step: ${guidance}\n`
@@ -319,7 +329,9 @@ export function applyRerankOrder<T extends { slug: string }>(
 	candidates: readonly T[],
 	orderedSlugs: readonly string[],
 	limit = AI_RERANK_DEFAULT_LIMIT,
+	minCount = 0,
 ): T[] {
+	const cap = clampAskResultLimit(limit);
 	const bySlug = new Map(
 		candidates.map((hit) => [hit.slug.toLowerCase(), hit] as const),
 	);
@@ -330,10 +342,18 @@ export function applyRerankOrder<T extends { slug: string }>(
 		if (!hit || seen.has(hit.slug)) continue;
 		seen.add(hit.slug);
 		out.push(hit);
-		if (out.length >= limit) return out;
+		if (out.length >= cap) return out;
 	}
-	if (out.length > 0) return out;
-	return candidates.slice(0, limit);
+	const floor = Math.min(cap, Math.max(0, Math.floor(minCount)));
+	if (out.length === 0) return candidates.slice(0, cap);
+	if (out.length >= floor) return out;
+	for (const hit of candidates) {
+		if (seen.has(hit.slug)) continue;
+		seen.add(hit.slug);
+		out.push(hit);
+		if (out.length >= floor) break;
+	}
+	return out;
 }
 
 export type AiRerankProvider = "gemini" | "openrouter" | "";
@@ -382,8 +402,13 @@ function finishRerank(
 	if (parsed.slugs.length === 0) {
 		return emptyRerank(candidates, target);
 	}
+	// Survey asks: keep the model’s ranking, then fill to the 50 ceiling from
+	// the already-retrieved pool so “research extensively” is not a top-10.
+	// Ordinary asks: keep only what the model selected (4 can be enough).
+	const fillTo =
+		target >= AI_RERANK_MAX_LIMIT ? target : 0;
 	return {
-		results: applyRerankOrder(candidates, parsed.slugs, target),
+		results: applyRerankOrder(candidates, parsed.slugs, target, fillTo),
 		summary: parsed.summary,
 		...(parsed.shareSlug ? { shareSlug: parsed.shareSlug } : {}),
 		candidateCount: candidates.length,

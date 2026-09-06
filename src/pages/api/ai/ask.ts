@@ -285,7 +285,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				);
 				const candidates = searched.hits;
 				const showCount = resolveAskResultLimit(
-					plan.correctedQuestion || question,
+					`${question} ${plan.correctedQuestion || ""}`,
+					plan.coverage,
 				);
 				send({
 					type: "status",

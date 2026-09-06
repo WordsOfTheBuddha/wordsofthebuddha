@@ -554,10 +554,11 @@
 }
 
 .ai-process-thinking.is-clamped .ai-process-thinking-text {
-	max-height: calc(6 * 1.45em);
+	max-height: calc(5 * 1.45em);
 	overflow: hidden;
-	-webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
-	mask-image: linear-gradient(to bottom, #000 65%, transparent);
+	overflow-anchor: none;
+	-webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%);
+	mask-image: linear-gradient(to bottom, transparent, #000 40%);
 }
 
 .ai-process-thinking.is-live .ai-process-thinking-text > :last-child::after {
