@@ -7,6 +7,7 @@ import {
 	isListenComplete,
 	listenProgressDelta,
 	mergeListenBySlug,
+	mergeListenSecondsByDay,
 	recordListenSeconds,
 	sanitizeListenActivity,
 	shouldFlushListenActivity,
@@ -19,13 +20,15 @@ describe("recordListenSeconds", () => {
 			{ bySlug: {}, totalSeconds: 0, pendingSync: false },
 			"mn10",
 			12.8,
+			"2026-09-03",
 		);
 		assert.equal(first.added, 12.8);
 		assert.equal(first.buffer.bySlug.mn10, 12.8);
 		assert.equal(first.buffer.totalSeconds, 12.8);
 		assert.equal(first.buffer.pendingSync, true);
+		assert.equal(first.buffer.secondsByDay?.["2026-09-03"], 12.8);
 
-		const second = recordListenSeconds(first.buffer, "mn10", 5);
+		const second = recordListenSeconds(first.buffer, "mn10", 5, "2026-09-03");
 		assert.equal(second.buffer.bySlug.mn10, 17.8);
 		assert.equal(second.buffer.totalSeconds, 17.8);
 	});
@@ -120,6 +123,7 @@ describe("merge + flush", () => {
 		const after = applyListenFlush(
 			{
 				bySlug: { mn10: 40 },
+				secondsByDay: { "2026-09-03": 40 },
 				totalSeconds: 40,
 				pendingSync: true,
 			},
@@ -131,6 +135,17 @@ describe("merge + flush", () => {
 		assert.equal(after.bySlug.mn10, 40);
 		assert.equal(after.bySlug["sn1.1"], 20);
 		assert.equal(after.totalSeconds, 60);
+		assert.equal(after.secondsByDay?.["2026-09-03"], 40);
+	});
+
+	it("takes the max seconds per day", () => {
+		assert.deepEqual(
+			mergeListenSecondsByDay(
+				{ "2026-09-01": 40, "2026-09-02": 10 },
+				{ "2026-09-01": 25, "2026-09-03": 5 },
+			),
+			{ "2026-09-01": 40, "2026-09-02": 10, "2026-09-03": 5 },
+		);
 	});
 });
 
@@ -174,16 +189,19 @@ describe("formatListenStat", () => {
 	it("hides sub-minute totals and formats hours", () => {
 		assert.equal(formatListenStat(40), null);
 		assert.deepEqual(formatListenStat(60), {
+			kind: "Listened",
 			value: "1",
-			label: "min listened",
+			unit: "minute",
 		});
 		assert.deepEqual(formatListenStat(125 * 60), {
+			kind: "Listened",
 			value: "2h 5m",
-			label: "listened",
+			unit: "",
 		});
 		assert.deepEqual(formatListenStat(120 * 60), {
+			kind: "Listened",
 			value: "2h",
-			label: "listened",
+			unit: "",
 		});
 	});
 });
@@ -192,10 +210,12 @@ describe("sanitizeListenActivity", () => {
 	it("rebuilds total from bySlug", () => {
 		const clean = sanitizeListenActivity({
 			bySlug: { mn10: 30.94, bad: -1 },
+			secondsByDay: { "2026-09-03": 12.4, nope: 9 },
 			totalSeconds: 999,
 			pendingSync: true,
 		});
 		assert.deepEqual(clean.bySlug, { mn10: 30.9 });
+		assert.deepEqual(clean.secondsByDay, { "2026-09-03": 12.4 });
 		assert.equal(clean.totalSeconds, 30.9);
 		assert.equal(clean.pendingSync, true);
 	});

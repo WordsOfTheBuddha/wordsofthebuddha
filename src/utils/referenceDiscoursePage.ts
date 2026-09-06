@@ -43,6 +43,7 @@ export type ReferenceDiscoursePage = {
 		prev: ContentEntryLike | null;
 		next: ContentEntryLike | null;
 		id: string;
+		requestedSlug?: string;
 		showReadLater: boolean;
 		showSave: boolean;
 		showRead: boolean;
@@ -195,6 +196,7 @@ export async function buildReferenceDiscoursePage(
 			prev: refPrev,
 			next: refNext,
 			id,
+			requestedSlug: hrf || id,
 			showReadLater: !subsetFallback,
 			showSave: !subsetFallback,
 			showRead: !subsetFallback,

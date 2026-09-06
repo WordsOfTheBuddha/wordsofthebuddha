@@ -17,6 +17,7 @@ import {
 	noteLearningEngagement,
 } from "./learningActivityClient";
 import { normalizeDiscourseSlug } from "./reviewRoomStats";
+import { isSlugFullyRead, markReadPages } from "./readPages";
 
 const READ_ITEMS_KEY = "offlineReadItems";
 
@@ -92,7 +93,10 @@ export async function flushListenActivity(): Promise<{
 			method: "POST",
 			credentials: "same-origin",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ bySlug: local.bySlug }),
+			body: JSON.stringify({
+				bySlug: local.bySlug,
+				secondsByDay: local.secondsByDay || {},
+			}),
 		});
 		if (response.status === 401) {
 			return {
@@ -105,6 +109,7 @@ export async function flushListenActivity(): Promise<{
 			success?: boolean;
 			signedIn?: boolean;
 			bySlug?: Record<string, number>;
+			secondsByDay?: Record<string, number>;
 			totalSeconds?: number;
 		};
 		if (!data.success || !data.signedIn) {
@@ -116,6 +121,10 @@ export async function flushListenActivity(): Promise<{
 		const remote = {
 			bySlug:
 				data.bySlug && typeof data.bySlug === "object" ? data.bySlug : {},
+			secondsByDay:
+				data.secondsByDay && typeof data.secondsByDay === "object"
+					? data.secondsByDay
+					: {},
 			totalSeconds:
 				typeof data.totalSeconds === "number"
 					? data.totalSeconds
@@ -142,9 +151,13 @@ function writeOfflineRead(slug: string): void {
 			store.getItem(READ_ITEMS_KEY) || '{"pages":{}}',
 		) as { pages?: Record<string, number> };
 		const pages = items.pages && typeof items.pages === "object" ? items.pages : {};
-		if (pages[key]) return;
-		pages[key] = Math.floor(Date.now() / 60000);
-		store.setItem(READ_ITEMS_KEY, JSON.stringify({ ...items, pages }));
+		if (isSlugFullyRead(pages, key)) return;
+		const next = markReadPages(
+			pages,
+			key,
+			Math.floor(Date.now() / 60000),
+		);
+		store.setItem(READ_ITEMS_KEY, JSON.stringify({ ...items, pages: next }));
 	} catch {
 		/* ignore */
 	}

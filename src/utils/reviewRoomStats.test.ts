@@ -31,6 +31,10 @@ describe("normalizeDiscourseSlug", () => {
 			"mn10",
 		);
 		assert.equal(normalizeDiscourseSlug("mn10"), "mn10");
+		assert.equal(
+			normalizeDiscourseSlug("discourse-dynamic/dhp1"),
+			"dhp1",
+		);
 	});
 });
 

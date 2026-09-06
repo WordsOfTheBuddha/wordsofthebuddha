@@ -3,14 +3,23 @@ import { describe, it } from "node:test";
 import {
 	applyLearningFlush,
 	countLearningDays,
+	currentLearningStreak,
+	currentLearningStreakLabel,
+	shouldShowLearningStreak,
+	formatLearningDayDate,
 	groupLearningDayStrip,
+	learningDayDetailLabel,
+	learningDayEmphasis,
 	learningDayStripForDisplay,
 	LEARNING_DAY_STRIP_LENGTH,
 	learningDaysFromReadMinutes,
 	learningDaysLabel,
-	learningDaysStatLabel,
+	learningDaysStatKind,
+	learningDaysStatUnit,
 	localDayKey,
 	mergeLearningDays,
+	overviewLearningDayStrip,
+	readsByDayFromReadMinutes,
 	recentLearningDayStrip,
 	recordLearningDay,
 	sanitizeLearningActivity,
@@ -125,7 +134,8 @@ describe("learningDaysLabel", () => {
 		assert.equal(learningDaysLabel(0), "");
 		assert.equal(learningDaysLabel(1), "Learning on 1 day");
 		assert.equal(learningDaysLabel(12), "Learning on 12 days");
-		assert.equal(learningDaysStatLabel(), "days learning");
+		assert.equal(learningDaysStatKind(), "Learning");
+		assert.equal(learningDaysStatUnit(), "days");
 	});
 });
 
@@ -192,6 +202,137 @@ describe("learningDayStripForDisplay", () => {
 		);
 		const display = learningDayStripForDisplay(strip);
 		assert.deepEqual(display, strip);
+	});
+});
+
+describe("readsByDayFromReadMinutes + emphasis", () => {
+	it("counts discourses per local day", () => {
+		const dayA = Date.UTC(2026, 0, 1, 12) / 60_000;
+		const dayA2 = Date.UTC(2026, 0, 1, 18) / 60_000;
+		const dayB = Date.UTC(2026, 0, 3, 18) / 60_000;
+		const counts = readsByDayFromReadMinutes(
+			{ mn10: dayA, mn11: dayA2, "sn12.1": dayB, bad: "x" },
+			(ms) => new Date(ms).toISOString().slice(0, 10),
+		);
+		assert.equal(counts["2026-01-01"], 2);
+		assert.equal(counts["2026-01-03"], 1);
+	});
+
+	it("counts each discourse once, using the earliest stamp", () => {
+		const first = Date.UTC(2026, 0, 1, 12) / 60_000;
+		const later = Date.UTC(2026, 0, 3, 12) / 60_000;
+		const counts = readsByDayFromReadMinutes(
+			{ mn10: first, "/mn10": later, MN10: later },
+			(ms) => new Date(ms).toISOString().slice(0, 10),
+		);
+		assert.equal(counts["2026-01-01"], 1);
+		assert.equal(counts["2026-01-03"], undefined);
+	});
+
+	it("expands a leftover range key into one count per discourse", () => {
+		const day = Date.UTC(2026, 0, 1, 12) / 60_000;
+		const counts = readsByDayFromReadMinutes(
+			{ "dhp1-3": day, dhp2: day },
+			(ms) => new Date(ms).toISOString().slice(0, 10),
+		);
+		assert.equal(counts["2026-01-01"], 3);
+	});
+
+	it("maps read counts onto emphasis levels", () => {
+		assert.equal(learningDayEmphasis({ active: false, reads: 0 }), "none");
+		assert.equal(learningDayEmphasis({ active: true, reads: 0 }), "some");
+		assert.equal(learningDayEmphasis({ active: true, reads: 2 }), "some");
+		assert.equal(learningDayEmphasis({ active: true, reads: 3 }), "more");
+		assert.equal(learningDayEmphasis({ active: true, reads: 9 }), "more");
+		assert.equal(learningDayEmphasis({ active: true, reads: 10 }), "most");
+	});
+
+	it("formats hover copy with reads and listen minutes", () => {
+		const label = learningDayDetailLabel({
+			key: "2026-09-03",
+			active: true,
+			reads: 6,
+			listenSeconds: 15 * 60,
+		});
+		assert.match(label, /6 discourses read, 15 mins listened/);
+		assert.match(formatLearningDayDate("2026-09-03"), /3 Sep/);
+
+		assert.equal(
+			learningDayDetailLabel({
+				key: "2026-09-03",
+				active: false,
+				reads: 0,
+				listenSeconds: 0,
+			}),
+			"",
+		);
+		assert.match(
+			learningDayDetailLabel({
+				key: "2026-09-03",
+				active: true,
+				reads: 0,
+				listenSeconds: 40,
+			}),
+			/Engaged with the teachings/,
+		);
+	});
+
+	it("attaches activity onto the overview strip", () => {
+		const strip = overviewLearningDayStrip(
+			{ "2026-09-03": true },
+			{ "2026-09-03": 4 },
+			{ "2026-09-03": 120 },
+			"2026-09-03",
+		);
+		const today = strip.find((dot) => dot.key === "2026-09-03");
+		assert.equal(today?.active, true);
+		assert.equal(today?.reads, 4);
+		assert.equal(today?.listenSeconds, 120);
+		assert.equal(learningDayEmphasis(today!), "more");
+	});
+});
+
+describe("currentLearningStreak", () => {
+	it("counts consecutive days ending today", () => {
+		assert.equal(
+			currentLearningStreak(
+				{
+					"2026-09-03": true,
+					"2026-09-04": true,
+					"2026-09-05": true,
+				},
+				"2026-09-05",
+			),
+			3,
+		);
+		assert.equal(currentLearningStreakLabel(3), "3-day streak");
+		assert.equal(currentLearningStreakLabel(1), "1-day streak");
+		assert.equal(shouldShowLearningStreak(1), false);
+		assert.equal(shouldShowLearningStreak(2), true);
+	});
+
+	it("keeps yesterday's streak when today is still empty", () => {
+		assert.equal(
+			currentLearningStreak(
+				{ "2026-09-03": true, "2026-09-04": true },
+				"2026-09-05",
+			),
+			2,
+		);
+	});
+
+	it("breaks on a gap", () => {
+		assert.equal(
+			currentLearningStreak(
+				{ "2026-09-03": true, "2026-09-05": true },
+				"2026-09-05",
+			),
+			1,
+		);
+		assert.equal(
+			currentLearningStreak({ "2026-09-03": true }, "2026-09-05"),
+			0,
+		);
 	});
 });
 

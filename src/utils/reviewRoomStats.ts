@@ -31,7 +31,10 @@ export type CatalogDiscourse = {
 export function normalizeDiscourseSlug(raw: string): string {
 	let slug = raw.replace(/^\/+/, "").split("?")[0].split("#")[0].trim();
 	if (!slug) return "";
-	slug = slug.replace(/^(discourse-ssr|discourse-sujato)\//i, "");
+	slug = slug.replace(
+		/^(discourse-ssr|discourse-sujato|discourse-dynamic)\//i,
+		"",
+	);
 	if (slug.includes("/")) {
 		const last = slug.split("/").filter(Boolean).pop() || slug;
 		if (isDiscourseSlug(last)) slug = last;

@@ -1,7 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUser } from "../../../middleware/auth";
-import { sanitizeBySlug } from "../../../utils/listenActivity";
+import { sanitizeBySlug, sanitizeSecondsByDay } from "../../../utils/listenActivity";
 import {
 	loadUserListenActivity,
 	mergeUserListenActivity,
@@ -17,6 +17,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 				signedIn: false,
 				totalSeconds: 0,
 				bySlug: {},
+				secondsByDay: {},
 			}),
 			{ status: 200, headers: { "Content-Type": "application/json" } },
 		);
@@ -28,6 +29,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 			signedIn: true,
 			totalSeconds: summary.totalSeconds,
 			bySlug: summary.bySlug,
+			secondsByDay: summary.secondsByDay,
 		}),
 		{ status: 200, headers: { "Content-Type": "application/json" } },
 	);
@@ -54,13 +56,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	}
 
 	const bySlug = sanitizeBySlug(body.bySlug);
-	const summary = await mergeUserListenActivity(user, bySlug);
+	const secondsByDay = sanitizeSecondsByDay(body.secondsByDay);
+	const summary = await mergeUserListenActivity(user, bySlug, secondsByDay);
 	return new Response(
 		JSON.stringify({
 			success: true,
 			signedIn: true,
 			totalSeconds: summary.totalSeconds,
 			bySlug: summary.bySlug,
+			secondsByDay: summary.secondsByDay,
 		}),
 		{ status: 200, headers: { "Content-Type": "application/json" } },
 	);

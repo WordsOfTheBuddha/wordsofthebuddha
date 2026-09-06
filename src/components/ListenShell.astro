@@ -10,6 +10,8 @@
  */
 interface Props {
 	slug: string;
+	/** Public URL slug (`dhp2` on `/listen/dhp2`); defaults to the audio file slug. */
+	requestedSlug?: string;
 	displayId: string;
 	title: string;
 	description?: string;
@@ -23,8 +25,10 @@ interface Props {
 	prevDisplayId: string | null;
 }
 const props = Astro.props;
+const requestedSlug = props.requestedSlug || props.slug;
 const initialDataJson = JSON.stringify({
 	slug: props.slug,
+	requestedSlug,
 	displayId: props.displayId,
 	title: props.title,
 	description: props.description ?? null,
@@ -48,7 +52,7 @@ const initialDataJson = JSON.stringify({
 		</div>
 		<a
 			id="listen-mode-switch"
-			href={`/${props.slug}`}
+			href={`/${requestedSlug}`}
 			class="listen-close"
 			aria-label="Close listen mode"
 			title="Close listen mode (Esc)"

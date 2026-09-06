@@ -5,7 +5,7 @@ import SignInPrompt from "./SignInPrompt.astro";
 import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
 
 interface Props {
-	/** Public discourse slug; prefer canonical path over rewrite URLs. */
+	/** Public discourse slug for this page (excerpt URL when present). */
 	slug?: string;
 }
 
@@ -52,6 +52,11 @@ const userId = null;
 
 <script>
 	import { initDiscourseLearningActivity } from "../utils/learningActivityClient";
+	import {
+		isSlugFullyRead,
+		markReadPages,
+		unmarkReadPages,
+	} from "../utils/readPages";
 	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
 
 	const btn = document.getElementById("readButton");
@@ -97,35 +102,46 @@ const userId = null;
 	}
 
 	// Load read state from local storage
-	function getOfflineReadState(): boolean {
+	function readOfflinePages(): Record<string, unknown> {
 		try {
 			const items = JSON.parse(
 				localStorage.getItem(READ_ITEMS_KEY) || '{"pages":{}}'
 			);
-			return Boolean(items.pages[slug]);
-		} catch (e) {
-			return false;
+			return items.pages && typeof items.pages === "object"
+				? items.pages
+				: {};
+		} catch {
+			return {};
 		}
 	}
 
-	// Update local storage for offline mode
-	function updateOfflineReadState(isRead: boolean, pageSlug?: string) {
-		const key = pageSlug ?? slug;
+	function writeOfflinePages(pages: Record<string, number>): void {
 		try {
-			let items = JSON.parse(
+			const items = JSON.parse(
 				localStorage.getItem(READ_ITEMS_KEY) || '{"pages":{}}'
 			);
-
-			if (isRead) {
-				// Store timestamp with minute precision
-				items.pages[key] = Math.floor(Date.now() / 60000);
-			} else {
-				delete items.pages[key];
-			}
-
-			localStorage.setItem(READ_ITEMS_KEY, JSON.stringify(items));
+			localStorage.setItem(
+				READ_ITEMS_KEY,
+				JSON.stringify({ ...items, pages }),
+			);
 		} catch (e) {
 			console.error("Error updating offline read state", e);
+		}
+	}
+
+	function getOfflineReadState(): boolean {
+		return isSlugFullyRead(readOfflinePages(), slug);
+	}
+
+	function updateOfflineReadState(isRead: boolean, pageSlug?: string) {
+		const key = pageSlug ?? slug;
+		const pages = readOfflinePages();
+		if (isRead) {
+			writeOfflinePages(
+				markReadPages(pages, key, Math.floor(Date.now() / 60000)),
+			);
+		} else {
+			writeOfflinePages(unmarkReadPages(pages, key));
 		}
 	}
 
@@ -152,8 +168,9 @@ const userId = null;
 						"data-authenticated",
 						data.isAuthenticated.toString()
 					);
-					// Update offline cache
-					updateOfflineReadState(data.hasRead);
+					if (data.hasRead) {
+						updateOfflineReadState(true);
+					}
 				} else {
 					// If API fails, use cached state
 					updateState(cachedState);

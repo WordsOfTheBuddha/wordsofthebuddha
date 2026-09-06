@@ -42,6 +42,8 @@ import { createListenTrackingSession } from "./listenActivityClient";
 
 export type ListenInitialData = {
 	slug: string;
+	/** Public path slug when it differs from the audio file (`dhp2` vs `dhp1-20`). Close/read URL only; listen stats and mark-on-complete use `slug`. */
+	requestedSlug?: string;
 	displayId: string;
 	title: string;
 	description: string | null;
@@ -484,10 +486,13 @@ export function initListenMode(initial: ListenInitialData): void {
 	const initialPp = parseParagraphRangeParam(
 		new URLSearchParams(location.search).get("pp"),
 	);
+	const requestedSlug = initial.requestedSlug || initial.slug;
 
 	let current: TrackMeta = {
 		slug: initial.slug,
-		href: hrefForTrack(initial.slug, initialPp),
+		href: initialPp
+			? hrefForTrack(initial.slug, initialPp)
+			: requestedSlug,
 		pp: initialPp,
 		title: initial.title,
 		displayId: initial.displayId,
@@ -612,6 +617,15 @@ export function initListenMode(initial: ListenInitialData): void {
 		return buildReadHref(href, { pl: playlist?.id ?? null });
 	}
 
+	function listenProgressFields() {
+		return {
+			slug: current.slug,
+			currentTime: audio.currentTime,
+			duration: audio.duration || manifest?.duration || 0,
+			hasParagraphRange: Boolean(current.pp),
+		};
+	}
+
 	function checkSubsetEndPause(): void {
 		if (subsetEndTime === null || audio.paused) return;
 		if (audio.currentTime >= subsetEndTime - 0.05) {
@@ -676,7 +690,7 @@ export function initListenMode(initial: ListenInitialData): void {
 				p &&
 				findPlaylistEntryIndex(p, {
 					slug: initial.slug,
-					href: current.href,
+					href: initial.slug,
 					pp: current.pp,
 				}) < 0
 			) {
@@ -1457,12 +1471,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		clearTransitionState();
 		rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
 		// Flush listen stats for the outgoing track before swapping.
-		listenTracking.onTrackBoundary({
-			slug: current.slug,
-			currentTime: audio.currentTime,
-			duration: audio.duration || manifest?.duration || 0,
-			hasParagraphRange: Boolean(current.pp),
-		});
+		listenTracking.onTrackBoundary(listenProgressFields());
 		listenTracking.resetCursor();
 		current = {
 			...current,
@@ -1888,7 +1897,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		try {
 			localStorage.removeItem(LS_QUEUE_ORDER_PREFIX + currentQueueKey());
 		} catch {}
-		refreshNeighbours(current.href);
+		refreshNeighbours(current.slug);
 		setQueueLabel();
 		if (queueDrawer && !queueDrawer.hidden) renderQueue();
 	}
@@ -2149,7 +2158,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			// Reorder may have changed the immediate next/prev — refresh
 			// the footer chip label ("Up next · …") and the prev/next
 			// neighbours used by Next/Prev buttons & end-of-track autoplay.
-			refreshNeighbours(current.href);
+			refreshNeighbours(current.slug);
 			setQueueLabel();
 			if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 		});
@@ -2452,10 +2461,8 @@ export function initListenMode(initial: ListenInitialData): void {
 		pauseAfterParagraphIdx = -1;
 		setPlayIcon(false);
 		listenTracking.onTrackBoundary({
-			slug: current.slug,
+			...listenProgressFields(),
 			currentTime: audio.currentTime || audio.duration || 0,
-			duration: audio.duration || manifest?.duration || 0,
-			hasParagraphRange: Boolean(current.pp),
 			ended: true,
 		});
 		if (autoplay && neighbours.next) {
@@ -2484,10 +2491,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		checkSingleParagraphPause();
 		checkSubsetEndPause();
 		listenTracking.onTimeUpdate({
-			slug: current.slug,
-			currentTime: audio.currentTime,
-			duration: audio.duration || manifest?.duration || 0,
-			hasParagraphRange: Boolean(current.pp),
+			...listenProgressFields(),
 			paused: audio.paused,
 		});
 		if (audio.duration) {
@@ -2521,12 +2525,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	});
 
 	window.addEventListener("pagehide", () => {
-		listenTracking.onTrackBoundary({
-			slug: current.slug,
-			currentTime: audio.currentTime,
-			duration: audio.duration || manifest?.duration || 0,
-			hasParagraphRange: Boolean(current.pp),
-		});
+		listenTracking.onTrackBoundary(listenProgressFields());
 		listenTracking.flush();
 	});
 
@@ -2553,31 +2552,27 @@ export function initListenMode(initial: ListenInitialData): void {
 		const pp = parseParagraphRangeParam(
 			new URLSearchParams(location.search).get("pp"),
 		);
-		const href = hrefForTrack(pathSlug, pp);
+		const audioSlug = st?.slug || pathSlug;
+		const href = st?.href || hrefForTrack(pathSlug, pp);
 		if (st?.listen && href !== current.href) {
 			clearTransitionState();
 			rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
-			listenTracking.onTrackBoundary({
-				slug: current.slug,
-				currentTime: audio.currentTime,
-				duration: audio.duration || manifest?.duration || 0,
-				hasParagraphRange: Boolean(current.pp),
-			});
+			listenTracking.onTrackBoundary(listenProgressFields());
 			listenTracking.resetCursor();
 			const wasPlaying = !audio.paused;
 			current = {
 				...current,
-				slug: pathSlug,
+				slug: audioSlug,
 				href,
 				pp,
-				displayId: formatDisplayId(pathSlug),
+				displayId: formatDisplayId(audioSlug),
 			};
 			try {
 				const id = new URLSearchParams(location.search).get("pl");
 				const p = getPlaylist(id);
 				if (
 					p &&
-					findPlaylistEntryIndex(p, { slug: pathSlug, href, pp }) < 0
+					findPlaylistEntryIndex(p, { slug: audioSlug, href, pp }) < 0
 				) {
 					stripPlFromUrl();
 					playlist = null;
@@ -2588,15 +2583,15 @@ export function initListenMode(initial: ListenInitialData): void {
 				playlist = null;
 			}
 			renderQueueTitle();
-			refreshNeighbours(href);
+			refreshNeighbours(audioSlug);
 			setQueueLabel();
 			showTrackPulse({
-				displayId: formatDisplayId(pathSlug),
-				title: titleFor(pathSlug, pathSlug),
+				displayId: formatDisplayId(audioSlug),
+				title: titleFor(audioSlug, audioSlug),
 				description: null,
 			});
 			const resumeAt = sessionPositions.get(href);
-			void loadTrack(pathSlug, {
+			void loadTrack(audioSlug, {
 				autoplayAfterLoad: wasPlaying,
 				resumeAt,
 				description: null,
@@ -2613,7 +2608,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		renderHeader();
 		setMediaSessionMetadata();
 	}
-	refreshNeighbours(current.href);
+	refreshNeighbours(current.slug);
 	setQueueLabel();
 	void loadTrack(current.slug, {
 		autoplayAfterLoad: false,

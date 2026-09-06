@@ -113,6 +113,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		pathname.startsWith("/discourse-ssr/") ||
 		pathname.startsWith("/discourse-dynamic/") ||
 		pathname.startsWith("/discourse-sujato/") ||
+		pathname.startsWith("/listen-dynamic/") ||
 		pathname.startsWith("/shared-ask/")
 	) {
 		return withNoindexIfNeeded(context.url, await next());
@@ -132,6 +133,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
 				context.url,
 				await context.rewrite(
 					rewriteURL(`/shared-ask/${slug}`, context.url),
+				),
+			);
+		}
+	}
+
+	// Prerendered /listen/[discourse] only exists for file slugs. Excerpt URLs
+	// (`/listen/dhp2`) would otherwise fall through to the catch-all search page.
+	if (pathname.startsWith("/listen/")) {
+		const slug = pathname.slice("/listen/".length).replace(/\/+$/, "");
+		if (slug && !slug.includes("/") && !englishRouteSet.has(slug)) {
+			return withNoindexIfNeeded(
+				context.url,
+				await context.rewrite(
+					rewriteURL(`/listen-dynamic/${slug}`, context.url),
 				),
 			);
 		}

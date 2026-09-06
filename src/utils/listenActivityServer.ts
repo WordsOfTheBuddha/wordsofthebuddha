@@ -3,7 +3,9 @@ import type { UserRecord } from "firebase-admin/auth";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
 import {
 	mergeListenBySlug,
+	mergeListenSecondsByDay,
 	sanitizeBySlug,
+	sanitizeSecondsByDay,
 	sumListenSeconds,
 	toListenSummary,
 	type ListenActivitySummary,
@@ -17,20 +19,22 @@ export async function loadUserListenActivity(
 	user: UserRecord,
 ): Promise<ListenActivitySummary> {
 	if (!isFirebaseInitialized || !db) {
-		return { bySlug: {}, totalSeconds: 0 };
+		return { bySlug: {}, secondsByDay: {}, totalSeconds: 0 };
 	}
 	const snap = await listenRef(user.uid).get();
-	if (!snap.exists) return { bySlug: {}, totalSeconds: 0 };
+	if (!snap.exists) return { bySlug: {}, secondsByDay: {}, totalSeconds: 0 };
 	const data = snap.data() as {
 		bySlug?: unknown;
+		secondsByDay?: unknown;
 		totalSeconds?: unknown;
 	};
 	const bySlug = sanitizeBySlug(data.bySlug);
+	const secondsByDay = sanitizeSecondsByDay(data.secondsByDay);
 	const totalSeconds = Math.max(
 		sumListenSeconds(bySlug),
 		typeof data.totalSeconds === "number" ? Math.floor(data.totalSeconds) : 0,
 	);
-	return { bySlug, totalSeconds };
+	return { bySlug, secondsByDay, totalSeconds };
 }
 
 /**
@@ -40,11 +44,13 @@ export async function loadUserListenActivity(
 export async function mergeUserListenActivity(
 	user: UserRecord,
 	localBySlug: Record<string, number>,
+	localSecondsByDay: Record<string, number> = {},
 ): Promise<ListenActivitySummary> {
 	const incoming = sanitizeBySlug(localBySlug);
+	const incomingDays = sanitizeSecondsByDay(localSecondsByDay);
 
 	if (!isFirebaseInitialized || !db) {
-		return toListenSummary(incoming);
+		return toListenSummary(incoming, incomingDays);
 	}
 
 	const ref = listenRef(user.uid);
@@ -52,17 +58,24 @@ export async function mergeUserListenActivity(
 	const remote = snap.exists
 		? sanitizeBySlug((snap.data() as { bySlug?: unknown }).bySlug)
 		: {};
+	const remoteDays = snap.exists
+		? sanitizeSecondsByDay(
+				(snap.data() as { secondsByDay?: unknown }).secondsByDay,
+			)
+		: {};
 	const bySlug = mergeListenBySlug(remote, incoming);
+	const secondsByDay = mergeListenSecondsByDay(remoteDays, incomingDays);
 	const totalSeconds = sumListenSeconds(bySlug);
 
 	await ref.set(
 		{
 			bySlug,
+			secondsByDay,
 			totalSeconds,
 			updatedAt: FieldValue.serverTimestamp(),
 		},
 		{ merge: true },
 	);
 
-	return { bySlug, totalSeconds };
+	return { bySlug, secondsByDay, totalSeconds };
 }

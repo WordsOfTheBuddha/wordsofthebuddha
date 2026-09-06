@@ -50,6 +50,25 @@ if (
 	return Astro.redirect("/search?mode=ai");
 }
 
+// /listen/:slug is a dedicated route. Prerendered listen pages only exist for
+// file slugs (`/listen/dhp1-20`); excerpt URLs (`/listen/dhp2`) used to fall
+// through here and soft-404 into search.
+if (originalId?.startsWith("listen/")) {
+	const raw = originalId.slice("listen/".length).replace(/\/+$/, "");
+	if (raw && !raw.includes("/")) {
+		return Astro.rewrite(`/listen-dynamic/${raw}`);
+	}
+	return new Response(null, { status: 404 });
+}
+
+if (originalId?.startsWith("listen-dynamic/")) {
+	const raw = originalId.slice("listen-dynamic/".length).replace(/\/+$/, "");
+	if (raw && !raw.includes("/")) {
+		return Astro.rewrite(`/listen-dynamic/${raw}`);
+	}
+	return new Response(null, { status: 404 });
+}
+
 // Non-prerendered /on/:slug variants miss the static /on/ page (unknown slugs,
 // or spaced forms like /on/sun%20and%20shade). Canonicalize, stem-match, or
 // send to search — never an empty 404 body (Chrome renders that as a broken host).
@@ -143,6 +162,12 @@ const APP_TOP_LEVEL_SLUGS = new Set([
 	"explorer",
 	"dashboard",
 	"admin",
+	"person",
+	"persons",
+	"character",
+	"characters",
+	"simile",
+	"qualities",
 ]);
 
 const isSystemRequest =
@@ -201,7 +226,11 @@ const {
 } = result;
 ---
 
-<Layout {...suttaProps} canonicalPath={`/${canonicalId}`}>
+<Layout
+	{...suttaProps}
+	canonicalPath={`/${canonicalId}`}
+	requestedSlug={originalId || canonicalId}
+>
 	<MDContent
 		content={mainContent}
 		splitAvailable={splitAvailable}

@@ -1,10 +1,14 @@
 /** Local + remote buffer for minutes spent listening to discourses. */
 
+import { localDayKey, sanitizeDayKey } from "./learningActivity";
+
 export const LISTEN_ACTIVITY_KEY = "listen-activity-v1";
 
 export type ListenActivityBuffer = {
 	/** Seconds of audio progress per discourse slug (audio-time, not wall-clock). */
 	bySlug: Record<string, number>;
+	/** Audio-progress seconds credited to each local calendar day. */
+	secondsByDay?: Record<string, number>;
 	/** Sum of bySlug; kept for cheap reads. */
 	totalSeconds: number;
 	/** True when local has changes not yet acknowledged by the server. */
@@ -15,10 +19,13 @@ export type ListenActivityBuffer = {
 
 export type ListenActivitySummary = {
 	bySlug: Record<string, number>;
+	secondsByDay?: Record<string, number>;
 	totalSeconds: number;
 };
 
 const MAX_SLUGS = 4000;
+/** Keep about a year of daily listen totals for the dashboard grid. */
+const MAX_DAY_SECONDS = 400;
 /** Ignore currentTime jumps larger than this (seek / track swap). */
 export const LISTEN_SEEK_JUMP_S = 2.5;
 /** Count a discourse complete near the end (or on `ended`). */
@@ -27,7 +34,7 @@ export const LISTEN_COMPLETE_RATIO = 0.95;
 export const LISTEN_ENGAGE_SECONDS = 60;
 
 export function emptyListenActivity(): ListenActivityBuffer {
-	return { bySlug: {}, totalSeconds: 0, pendingSync: false };
+	return { bySlug: {}, secondsByDay: {}, totalSeconds: 0, pendingSync: false };
 }
 
 function sanitizeSlug(raw: unknown): string | null {
@@ -57,6 +64,59 @@ export function sanitizeBySlug(raw: unknown): Record<string, number> {
 	return out;
 }
 
+function trimDaySeconds(map: Record<string, number>): Record<string, number> {
+	const keys = Object.keys(map);
+	if (keys.length <= MAX_DAY_SECONDS) return map;
+	keys.sort();
+	const drop = keys.slice(0, keys.length - MAX_DAY_SECONDS);
+	const next = { ...map };
+	for (const key of drop) delete next[key];
+	return next;
+}
+
+export function sanitizeSecondsByDay(raw: unknown): Record<string, number> {
+	const out: Record<string, number> = {};
+	if (!raw || typeof raw !== "object") return out;
+	for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+		const day = sanitizeDayKey(key);
+		const seconds = sanitizeSeconds(value);
+		if (!day || seconds <= 0) continue;
+		out[day] = seconds;
+		if (Object.keys(out).length >= MAX_DAY_SECONDS) break;
+	}
+	return out;
+}
+
+/** Max seconds per day (same merge rule as per-slug lifetime totals). */
+export function mergeListenSecondsByDay(
+	left: Record<string, number> | null | undefined,
+	right: Record<string, number> | null | undefined,
+): Record<string, number> {
+	const out: Record<string, number> = { ...(left || {}) };
+	for (const [key, value] of Object.entries(right || {})) {
+		const day = sanitizeDayKey(key);
+		const seconds = sanitizeSeconds(value);
+		if (!day || seconds <= 0) continue;
+		out[day] = Math.max(out[day] || 0, seconds);
+	}
+	return trimDaySeconds(out);
+}
+
+function addListenSecondsForDay(
+	map: Record<string, number> | null | undefined,
+	day: string,
+	delta: number,
+): Record<string, number> {
+	const key = sanitizeDayKey(day);
+	const seconds = sanitizeSeconds(delta);
+	if (!key || seconds <= 0) return { ...(map || {}) };
+	const current = map || {};
+	return trimDaySeconds({
+		...current,
+		[key]: sanitizeSeconds((current[key] || 0) + seconds),
+	});
+}
+
 export function sumListenSeconds(bySlug: Record<string, number>): number {
 	let total = 0;
 	for (const seconds of Object.values(bySlug)) {
@@ -81,6 +141,7 @@ export function sanitizeListenActivity(raw: unknown): ListenActivityBuffer {
 			: undefined;
 	return {
 		bySlug,
+		secondsByDay: sanitizeSecondsByDay(record.secondsByDay),
 		totalSeconds: totalFromMap > 0 ? totalFromMap : totalSeconds,
 		pendingSync: record.pendingSync === true,
 		...(lastFlushedDay ? { lastFlushedDay } : {}),
@@ -105,9 +166,14 @@ export function mergeListenBySlug(
 
 export function toListenSummary(
 	bySlug: Record<string, number>,
+	secondsByDay?: Record<string, number>,
 ): ListenActivitySummary {
 	const clean = sanitizeBySlug(bySlug);
-	return { bySlug: clean, totalSeconds: sumListenSeconds(clean) };
+	return {
+		bySlug: clean,
+		secondsByDay: sanitizeSecondsByDay(secondsByDay),
+		totalSeconds: sumListenSeconds(clean),
+	};
 }
 
 /**
@@ -119,6 +185,7 @@ export function recordListenSeconds(
 	buffer: ListenActivityBuffer,
 	slug: string,
 	deltaSeconds: number,
+	day: string = localDayKey(),
 ): { buffer: ListenActivityBuffer; added: number } {
 	const key = sanitizeSlug(slug);
 	const delta = sanitizeSeconds(deltaSeconds);
@@ -132,6 +199,7 @@ export function recordListenSeconds(
 		buffer: {
 			...buffer,
 			bySlug,
+			secondsByDay: addListenSecondsForDay(buffer.secondsByDay, day, delta),
 			totalSeconds: sumListenSeconds(bySlug),
 			pendingSync: true,
 		},
@@ -147,6 +215,7 @@ export function ensureMinListenSeconds(
 	buffer: ListenActivityBuffer,
 	slug: string,
 	seconds: number,
+	day: string = localDayKey(),
 ): { buffer: ListenActivityBuffer; raised: boolean } {
 	const key = sanitizeSlug(slug);
 	const min = sanitizeSeconds(seconds);
@@ -154,10 +223,12 @@ export function ensureMinListenSeconds(
 	const prev = buffer.bySlug[key] || 0;
 	if (prev >= min) return { buffer, raised: false };
 	const bySlug = { ...buffer.bySlug, [key]: min };
+	const added = sanitizeSeconds(min - prev);
 	return {
 		buffer: {
 			...buffer,
 			bySlug,
+			secondsByDay: addListenSecondsForDay(buffer.secondsByDay, day, added),
 			totalSeconds: sumListenSeconds(bySlug),
 			pendingSync: true,
 		},
@@ -171,8 +242,13 @@ export function applyListenFlush(
 	flushedDay: string,
 ): ListenActivityBuffer {
 	const bySlug = mergeListenBySlug(local.bySlug, remote.bySlug);
+	const secondsByDay = mergeListenSecondsByDay(
+		local.secondsByDay,
+		remote.secondsByDay,
+	);
 	return {
 		bySlug,
+		secondsByDay,
 		totalSeconds: sumListenSeconds(bySlug),
 		pendingSync: false,
 		lastFlushedDay: flushedDay,
@@ -183,7 +259,11 @@ export function shouldFlushListenActivity(
 	buffer: ListenActivityBuffer,
 	today: string,
 ): boolean {
-	if (buffer.totalSeconds <= 0 && Object.keys(buffer.bySlug).length === 0) {
+	if (
+		buffer.totalSeconds <= 0 &&
+		Object.keys(buffer.bySlug).length === 0 &&
+		Object.keys(buffer.secondsByDay || {}).length === 0
+	) {
 		return false;
 	}
 	if (buffer.pendingSync) return true;
@@ -224,8 +304,9 @@ export function listenProgressDelta(
 }
 
 export type ListenStatDisplay = {
+	kind: string;
 	value: string;
-	label: string;
+	unit: string;
 };
 
 /** Overview tile copy. Null when under one full minute. */
@@ -236,14 +317,16 @@ export function formatListenStat(
 	if (minutes < 1) return null;
 	if (minutes < 60) {
 		return {
+			kind: "Listened",
 			value: String(minutes),
-			label: minutes === 1 ? "min listened" : "mins listened",
+			unit: minutes === 1 ? "minute" : "minutes",
 		};
 	}
 	const hours = Math.floor(minutes / 60);
 	const rem = minutes % 60;
 	return {
+		kind: "Listened",
 		value: rem === 0 ? `${hours}h` : `${hours}h ${rem}m`,
-		label: "listened",
+		unit: "",
 	};
 }

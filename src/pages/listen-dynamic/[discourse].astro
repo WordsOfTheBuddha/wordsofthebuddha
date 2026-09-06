@@ -1,49 +1,38 @@
 ---
 /**
- * Prerendered listen-mode entry per discourse file slug (`/listen/dhp1-20`).
+ * SSR listen-mode for excerpt URLs (`/listen/dhp2`).
  *
- * Excerpt URLs (`/listen/dhp2`) miss these static paths; middleware rewrites
- * them to `/listen-dynamic/[discourse]`, the same pattern as reading-mode
- * `/discourse-dynamic` for `/dhp2`.
- *
- * `audioSlugs` is a build-time hint and can go stale between builds. The
- * runtime `loadVoiceManifestForDiscourse` is the final source of truth. If
- * the manifest 404s the client renders an empty stage but the page loads.
+ * Public URL stays `/listen/{requested}`; this route is an internal rewrite
+ * target so prerendered `listen/[discourse]` (file slugs only) does not 404.
+ * Audio, queue, listen minutes, and mark-on-complete use the parent file
+ * (`dhp1-20`), the same as `/listen/dhp1-20`. Paragraph `?pp=` excerpts still
+ * do not auto-mark read.
  */
-export const prerender = true;
+export const prerender = false;
 import { getEntry } from "astro:content";
 import { routes } from "../../utils/routes";
 import { formatDisplayId, nextAudioSlug, prevAudioSlug } from "../../utils/listenMode";
+import { findRangeParentSlug } from "../../utils/referenceSegmentParser";
 import ListenLayout from "../../layouts/ListenLayout.astro";
 import ListenShell from "../../components/ListenShell.astro";
 
-export async function getStaticPaths() {
-	const entries: { params: { discourse: string } }[] = [];
-	for (const rid of routes) {
-		try {
-			const e = await getEntry("all", rid);
-			if (e) entries.push({ params: { discourse: rid } });
-		} catch {}
-	}
-	return entries;
-}
-
-const { discourse: id } = Astro.params as { discourse?: string };
-if (!id) {
+const { discourse: requestedId } = Astro.params as { discourse?: string };
+if (!requestedId) {
 	return new Response(null, { status: 404 });
 }
 
-const item = await getEntry("all", id);
+const fileSlug = findRangeParentSlug(requestedId, routes) ?? requestedId;
+const item = await getEntry("all", fileSlug);
 if (!item) {
-	return new Response(null, { status: 404 });
+	return Astro.redirect(`/search?q=${encodeURIComponent(requestedId)}`);
 }
 
-const title: string = item.data.title ?? id;
+const title: string = item.data.title ?? fileSlug;
 const description: string | undefined = item.data.description;
-const displayId = formatDisplayId(id);
+const displayId = formatDisplayId(fileSlug);
 
-const nextSlug = nextAudioSlug(id);
-const prevSlug = prevAudioSlug(id);
+const nextSlug = nextAudioSlug(fileSlug);
+const prevSlug = prevAudioSlug(fileSlug);
 
 async function lookupTitle(slug: string | null): Promise<string | null> {
 	if (!slug) return null;
@@ -70,10 +59,10 @@ const nextDescription = await lookupDescription(nextSlug);
 const prevDescription = await lookupDescription(prevSlug);
 ---
 
-<ListenLayout title={title} description={description} displayId={displayId} slug={id}>
+<ListenLayout title={title} description={description} displayId={displayId} slug={fileSlug}>
 	<ListenShell
-		slug={id}
-		requestedSlug={id}
+		slug={fileSlug}
+		requestedSlug={requestedId}
 		displayId={displayId}
 		title={title}
 		description={description}

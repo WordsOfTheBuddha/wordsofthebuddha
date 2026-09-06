@@ -1,5 +1,7 @@
 /** Local + remote buffer for “days spent learning”. */
 
+import { expandSlugToDiscourseIds } from "./slugDiscourseCount";
+
 export const LEARNING_ACTIVITY_KEY = "learning-activity-v1";
 
 export type LearningActivityBuffer = {
@@ -148,15 +150,55 @@ export function learningDaysLabel(dayCount: number): string {
 	return `Learning on ${dayCount} days`;
 }
 
-/** Short label under the Review Room learning-days stat (pairs with a count). */
-export function learningDaysStatLabel(): string {
-	return "days learning";
+/** Category + unit under the Review Room learning-days stat. */
+export function learningDaysStatKind(): string {
+	return "Learning";
+}
+
+export function learningDaysStatUnit(): string {
+	return "days";
+}
+
+/** Consecutive engaged days ending today, or yesterday if today is still empty. */
+export function currentLearningStreak(
+	days: Record<string, true> | null | undefined,
+	today: string = localDayKey(),
+): number {
+	const map = days || {};
+	const todayKey = sanitizeDayKey(today) || localDayKey();
+	let cursor = map[todayKey] ? todayKey : shiftLocalDayKey(todayKey, -1);
+	if (!cursor || !map[cursor]) return 0;
+	let count = 0;
+	while (cursor && map[cursor]) {
+		count += 1;
+		cursor = shiftLocalDayKey(cursor, -1);
+	}
+	return count;
+}
+
+export function currentLearningStreakLabel(dayCount: number): string {
+	if (dayCount <= 0) return "";
+	return dayCount === 1 ? "1-day streak" : `${dayCount}-day streak`;
+}
+
+/** A one-day run is just today (or yesterday); a streak starts at two days. */
+export const LEARNING_STREAK_MIN = 2;
+
+export function shouldShowLearningStreak(dayCount: number): boolean {
+	return dayCount >= LEARNING_STREAK_MIN;
 }
 
 export type LearningDayDot = {
 	key: string;
 	active: boolean;
+	/** Discourses marked as read on this local calendar day. */
+	reads: number;
+	/** Audio-progress seconds credited to this local calendar day. */
+	listenSeconds: number;
 };
+
+/** GitHub-style fill: idle, some activity, busy (>=3 reads), fullest (>=10). */
+export type LearningDayEmphasis = "none" | "some" | "more" | "most";
 
 /** Shift a local calendar day by `delta` days (negative = past). */
 export function shiftLocalDayKey(dayKey: string, delta: number): string | null {
@@ -187,7 +229,12 @@ export function recentLearningDayStrip(
 	for (let offset = startOffset; offset <= 0; offset++) {
 		const key = shiftLocalDayKey(end, offset);
 		if (!key) continue;
-		out.push({ key, active: Boolean(days?.[key]) });
+		out.push({
+			key,
+			active: Boolean(days?.[key]),
+			reads: 0,
+			listenSeconds: 0,
+		});
 	}
 	return out;
 }
@@ -232,6 +279,116 @@ export function learningDayStripForDisplay(
 }
 
 const MINUTE_MS = 60_000;
+
+function activitySlugKey(raw: string): string {
+	return raw.replace(/^\/+/, "").split("?")[0].split("#")[0].trim().toLowerCase();
+}
+
+/** Count mark-as-read timestamps per local calendar day (unique slugs, earliest stamp). */
+export function readsByDayFromReadMinutes(
+	pages: Record<string, unknown> | null | undefined,
+	dayKeyFn: (ms: number) => string = (ms) => localDayKey(new Date(ms)),
+): Record<string, number> {
+	const earliestBySlug: Record<string, { day: string; minutes: number }> = {};
+	if (!pages) return {};
+	for (const [rawSlug, raw] of Object.entries(pages)) {
+		if (typeof raw !== "number" || !Number.isFinite(raw) || raw <= 0) continue;
+		const day = sanitizeDayKey(dayKeyFn(raw * MINUTE_MS));
+		if (!day) continue;
+		const fileSlug = activitySlugKey(rawSlug) || rawSlug;
+		for (const id of expandSlugToDiscourseIds(fileSlug)) {
+			const prev = earliestBySlug[id];
+			if (!prev || raw < prev.minutes) {
+				earliestBySlug[id] = { day, minutes: raw };
+			}
+		}
+	}
+	const out: Record<string, number> = {};
+	for (const { day } of Object.values(earliestBySlug)) {
+		out[day] = (out[day] || 0) + 1;
+	}
+	return out;
+}
+
+export function withLearningDayActivity(
+	dots: readonly LearningDayDot[],
+	readsByDay: Record<string, number> | null | undefined,
+	listenSecondsByDay: Record<string, number> | null | undefined,
+): LearningDayDot[] {
+	return dots.map((dot) => ({
+		...dot,
+		reads: Math.max(0, Math.floor(readsByDay?.[dot.key] || 0)),
+		listenSeconds: Math.max(0, listenSecondsByDay?.[dot.key] || 0),
+	}));
+}
+
+/** Last-N-day strip with suffix-streak display + per-day read/listen detail. */
+export function overviewLearningDayStrip(
+	days: Record<string, true> | null | undefined,
+	readsByDay: Record<string, number> | null | undefined,
+	listenSecondsByDay: Record<string, number> | null | undefined,
+	endDay?: string,
+): LearningDayDot[] {
+	return withLearningDayActivity(
+		learningDayStripForDisplay(recentLearningDayStrip(days, undefined, endDay)),
+		readsByDay,
+		listenSecondsByDay,
+	);
+}
+
+export function learningDayEmphasis(
+	dot: Pick<LearningDayDot, "active" | "reads">,
+): LearningDayEmphasis {
+	const reads = dot.reads || 0;
+	if (reads >= 10) return "most";
+	if (reads >= 3) return "more";
+	if (dot.active || reads > 0) return "some";
+	return "none";
+}
+
+export function formatLearningDayDate(dayKey: string): string {
+	const key = sanitizeDayKey(dayKey);
+	if (!key) return "";
+	const [year, month, day] = key.split("-").map(Number);
+	const date = new Date(year, month - 1, day);
+	return date.toLocaleDateString("en-GB", {
+		weekday: "short",
+		day: "numeric",
+		month: "short",
+	});
+}
+
+function listenMinutesLabel(seconds: number): string {
+	const minutes = Math.floor(Math.max(0, seconds) / 60);
+	if (minutes < 1) return "";
+	return minutes === 1 ? "1 min listened" : `${minutes} mins listened`;
+}
+
+function readsLabel(reads: number): string {
+	if (reads <= 0) return "";
+	return reads === 1 ? "1 discourse read" : `${reads} discourses read`;
+}
+
+/**
+ * Hover/tap copy for a day with activity. Empty when the cell should stay quiet.
+ */
+export function learningDayDetailLabel(dot: LearningDayDot): string {
+	const emphasis = learningDayEmphasis(dot);
+	if (emphasis === "none") return "";
+	const parts = [readsLabel(dot.reads), listenMinutesLabel(dot.listenSeconds)].filter(
+		Boolean,
+	);
+	const activity =
+		parts.length > 0 ? parts.join(", ") : "Engaged with the teachings";
+	const date = formatLearningDayDate(dot.key);
+	return date ? `${date}: ${activity}` : activity;
+}
+
+export function learningDayDotClassName(dot: LearningDayDot): string {
+	const emphasis = learningDayEmphasis(dot);
+	if (emphasis === "none") return "learning-day-dot";
+	return `learning-day-dot active ${emphasis}`;
+}
 
 /**
  * Derive learning-day keys from mark-as-read timestamps (`pages` map values

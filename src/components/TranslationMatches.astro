@@ -3664,6 +3664,11 @@ function getCurrentSuttaId(): string {
     if (document.getElementById('tm-discourse-json-btn')) return;
     if (!document.querySelector('p.pali-paragraph')) return;
 
+    const paliBtn = document.getElementById('paliButton');
+    const paliWrap = paliBtn?.closest('span.contents') ?? paliBtn?.parentElement;
+    // Discourse chrome only: never float a TM chip on Review Room / other pages.
+    if (!paliBtn || !paliWrap?.parentElement) return;
+
     const btn = document.createElement('button');
     btn.id = 'tm-discourse-json-btn';
     btn.type = 'button';
@@ -3671,17 +3676,7 @@ function getCurrentSuttaId(): string {
     btn.textContent = 'TM';
     btn.title = 'Copy translation-memory JSON for this whole discourse (for agent translation)';
     btn.setAttribute('aria-label', 'Discourse translation memory JSON');
-
-    const paliBtn = document.getElementById('paliButton');
-    const paliWrap = paliBtn?.closest('span.contents') ?? paliBtn?.parentElement;
-    if (paliWrap?.parentElement) {
-      paliWrap.insertAdjacentElement('afterend', btn);
-    } else if (paliBtn?.parentElement) {
-      paliBtn.insertAdjacentElement('afterend', btn);
-    } else {
-      btn.classList.add('tm-discourse-json-btn-floating');
-      document.body.appendChild(btn);
-    }
+    paliWrap.insertAdjacentElement('afterend', btn);
   }
 
   function showDiscourseTmSnapshotModal() {

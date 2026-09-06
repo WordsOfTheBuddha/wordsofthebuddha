@@ -1,5 +1,6 @@
 import type { ContentPair } from "./contentParser";
 import {
+	compareHierarchicalNumber,
 	constructHierarchicalEnd,
 	headingMatchesSectionNumber,
 	isHierarchicalNumberInRange,
@@ -178,6 +179,45 @@ export function findParentDiscourseRoute(
 		const properRangeEnd = constructHierarchicalEnd(rangeStart, rangeEnd);
 		return isInRange(rangeStart, properRangeEnd);
 	});
+}
+
+/**
+ * File slug that contains this requested id (e.g. dhp2 → dhp1-20, an1.1 → an1.1-10).
+ * Returns undefined when `requested` is already a file or has no range parent.
+ */
+export function findRangeParentSlug(
+	requested: string,
+	candidateRoutes: readonly string[],
+): string | undefined {
+	const id = requested.replace(/^\/+/, "").split("?")[0];
+	if (!id || candidateRoutes.includes(id)) return undefined;
+	const idParseMatch = id.match(/^([a-z]+)(\d+(?:\.\d+)?(?:-\d+)?)/i);
+	if (!idParseMatch) return undefined;
+	const [, prefix, numericPart] = idParseMatch;
+	if (numericPart.includes("-")) {
+		const [startStr, endStr] = numericPart.split("-");
+		const constructedTargetEnd = constructHierarchicalEnd(
+			startStr,
+			endStr,
+		);
+		return findParentDiscourseRoute(
+			prefix,
+			(rangeStart, properRangeEnd) =>
+				compareHierarchicalNumber(startStr, rangeStart) >= 0 &&
+				compareHierarchicalNumber(
+					constructedTargetEnd,
+					properRangeEnd,
+				) <= 0,
+			candidateRoutes,
+		);
+	}
+	return findParentDiscourseRoute(
+		prefix,
+		(rangeStart, properRangeEnd) =>
+			compareHierarchicalNumber(numericPart, rangeStart) >= 0 &&
+			compareHierarchicalNumber(numericPart, properRangeEnd) <= 0,
+		candidateRoutes,
+	);
 }
 
 /** Sort bilara segment keys by embedded sutta prefix, then segment index. */

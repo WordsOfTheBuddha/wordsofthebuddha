@@ -2,32 +2,43 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { db } from "../../../service/firebase/server";
 import { verifyUser } from "../../../middleware/auth";
+import { normalizeDiscourseSlug } from "../../../utils/reviewRoomStats";
+import {
+	isSlugFullyRead,
+	markReadPages,
+	unmarkReadPages,
+} from "../../../utils/readPages";
 
-export const GET: APIRoute = async ({ params, cookies, request }) => {
+type PagesMap = Record<string, unknown>;
+
+function pagesFromDoc(data: { pages?: unknown } | undefined): PagesMap {
+	const pages = data?.pages;
+	if (!pages || typeof pages !== "object") return {};
+	return pages as PagesMap;
+}
+
+export const GET: APIRoute = async ({ params, cookies }) => {
 	const sessionCookie = cookies.get("__session")?.value;
-	let userId;
 	let isAuthenticated = false;
 	let hasRead = false;
+	const slug = normalizeDiscourseSlug(params.slug || "");
 
 	try {
 		if (sessionCookie) {
 			const decodedCookie = await verifyUser(sessionCookie, { cookies });
 
 			if (decodedCookie) {
-				userId = decodedCookie.uid;
 				isAuthenticated = true;
 
-				// Fetch the read status from Firestore
 				const readDoc = await db
 					.collection("users")
-					.doc(userId)
+					.doc(decodedCookie.uid)
 					.collection("read")
 					.doc("pages")
 					.get();
 
-				if (readDoc.exists) {
-					const data = readDoc.data();
-					hasRead = Boolean(data?.pages?.[params.slug || ""]);
+				if (readDoc.exists && slug) {
+					hasRead = isSlugFullyRead(pagesFromDoc(readDoc.data()), slug);
 				}
 			}
 		}
@@ -50,7 +61,7 @@ export const GET: APIRoute = async ({ params, cookies, request }) => {
 };
 
 export const POST: APIRoute = async ({ params, cookies, request }) => {
-	const slug = params.slug;
+	const slug = normalizeDiscourseSlug(params.slug || "");
 	if (!slug) {
 		return new Response(JSON.stringify({ error: "Slug is required" }), {
 			status: 400,
@@ -67,14 +78,14 @@ export const POST: APIRoute = async ({ params, cookies, request }) => {
 		);
 	}
 
-	let userId;
+	let userId: string;
 	try {
 		const decodedCookie = await verifyUser(sessionCookie, { cookies });
 		if (!decodedCookie) {
 			throw new Error("Invalid session");
 		}
 		userId = decodedCookie.uid;
-	} catch (error) {
+	} catch {
 		return new Response(JSON.stringify({ error: "Invalid session" }), {
 			status: 401,
 		});
@@ -90,31 +101,18 @@ export const POST: APIRoute = async ({ params, cookies, request }) => {
 			.collection("read")
 			.doc("pages");
 
+		const snap = await readRef.get();
+		const existing = pagesFromDoc(snap.data());
+
 		if (isRead) {
-			// Mark as read - Add to the pages map with timestamp (minute precision)
-			await readRef.set(
-				{
-					pages: {
-						[slug]: Math.floor(Date.now() / 60000), // Timestamp in minutes
-					},
-				},
-				{ merge: true },
+			const next = markReadPages(
+				existing,
+				slug,
+				Math.floor(Date.now() / 60000),
 			);
-		} else {
-			// Mark as unread - Remove from the pages map
-			// We need to get the current document to update it properly
-			const doc = await readRef.get();
-
-			if (doc.exists) {
-				const data = doc.data() || {};
-				const pages = data.pages || {};
-
-				// Remove the slug
-				delete pages[slug];
-
-				// Update the document
-				await readRef.update({ pages });
-			}
+			await readRef.set({ pages: next });
+		} else if (snap.exists) {
+			await readRef.set({ pages: unmarkReadPages(existing, slug) });
 		}
 
 		return new Response(

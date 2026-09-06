@@ -190,7 +190,12 @@ export async function resolveCatchAllDiscoursePage(
 				splitAvailable: refPage.splitAvailable,
 				refPaliOnlyContent: refPage.refPaliOnlyContent,
 				referenceFallbackPage: refPage.referenceFallbackPage,
-				suttaProps: refPage.suttaProps,
+				suttaProps: {
+					...refPage.suttaProps,
+					requestedSlug: originalId || id,
+					showRead:
+						Boolean(refPage.suttaProps.showRead) && !paragraphRequest,
+				},
 				canonicalId: id,
 			};
 		}
@@ -332,7 +337,8 @@ export async function resolveCatchAllDiscoursePage(
 		id,
 		showReadLater: !subsetFallback,
 		showSave: !subsetFallback,
-		showRead: !subsetFallback,
+		showRead: !subsetFallback && !paragraphRequest,
+		requestedSlug: originalId || id,
 		lastUpdated,
 		showAuth: true,
 		showPali: !subsetFallback,

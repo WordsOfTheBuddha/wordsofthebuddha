@@ -34,19 +34,21 @@ import {
 } from "../utils/reviewRoomStats";
 import {
 	groupLearningDayStrip,
-	learningDayStripForDisplay,
-	LEARNING_DAY_STRIP_LENGTH,
+	learningDayDetailLabel,
+	learningDayDotClassName,
 	learningDaysFromReadMinutes,
-	learningDaysStatLabel,
+	learningDaysStatKind,
+	learningDaysStatUnit,
 	mergeLearningDays,
-	recentLearningDayStrip,
+	overviewLearningDayStrip,
+	readsByDayFromReadMinutes,
 	type LearningDayDot,
 } from "../utils/learningActivity";
 import {
 	loadUserLearningActivity,
 	mergeUserLearningActivity,
 } from "../utils/learningActivityServer";
-import { formatListenStat } from "../utils/listenActivity";
+import { formatListenStat, type ListenStatDisplay } from "../utils/listenActivity";
 import { loadUserListenActivity } from "../utils/listenActivityServer";
 
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
@@ -77,7 +79,8 @@ let coverage: CanonCoverage = { rows: [], totalRead: 0, totalAvailable: 0 };
 let learningDays = 0;
 let learningDayStrip: LearningDayDot[] = [];
 let listenTotalSeconds = 0;
-let listenStat: { value: string; label: string } | null = null;
+let listenSecondsByDay: Record<string, number> = {};
+let listenStat: ListenStatDisplay | null = null;
 let readPagesMap: Record<string, number> = {};
 let oldestReadLater: {
 	slug: string;
@@ -129,11 +132,13 @@ try {
 		// One summary doc for listen minutes.
 		loadUserListenActivity(user).catch(() => ({
 			bySlug: {} as Record<string, number>,
+			secondsByDay: {} as Record<string, number>,
 			totalSeconds: 0,
 		})),
 	]);
 	let learningSummary = loadedLearningSummary;
 	listenTotalSeconds = loadedListenSummary.totalSeconds;
+	listenSecondsByDay = loadedListenSummary.secondsByDay || {};
 	listenStat = formatListenStat(listenTotalSeconds);
 
 	// Process highlights
@@ -173,8 +178,13 @@ try {
 		}));
 	}
 	learningDays = learningSummary.dayCount;
-	learningDayStrip = learningDayStripForDisplay(
-		recentLearningDayStrip(learningSummary.days),
+	learningDayStrip = overviewLearningDayStrip(
+		learningSummary.days,
+		readsByDayFromReadMinutes(
+			readPagesMap,
+			(ms) => new Date(ms).toISOString().slice(0, 10),
+		),
+		listenSecondsByDay,
 	);
 
 	// Process readLater entries from the 'pages' document
@@ -293,9 +303,7 @@ try {
 				)
 			}
 			<!-- Tabs: mobile keeps Overview + Asks; other sections sit in a menu -->
-			<div
-				class="sticky top-0 z-10 py-2 mb-4"
-			>
+			<div class="py-2 mb-4">
 				<div class="pills-scroll-container relative">
 					<nav
 						class="pills-scroll flex flex-wrap justify-center gap-2 sm:gap-3 py-1"
@@ -490,6 +498,9 @@ try {
 										id="learning-days-tile"
 										class="stat-tile"
 									>
+										<span class="stat-kind">
+											{learningDaysStatKind()}
+										</span>
 										<span
 											class="stat-value"
 											id="learning-days-value"
@@ -497,31 +508,9 @@ try {
 										>
 											{learningDays}
 										</span>
-										<span class="stat-label">
-											{learningDaysStatLabel()}
+										<span class="stat-unit">
+											{learningDaysStatUnit()}
 										</span>
-										<div
-											id="learning-day-strip"
-											class="learning-day-strip"
-											aria-label={`Learning activity over the last ${LEARNING_DAY_STRIP_LENGTH} days`}
-											title="Filled days are days you engaged with the teachings"
-										>
-											{groupLearningDayStrip(learningDayStrip).map((row) => (
-												<div class="learning-day-row">
-													{row.map((dot) => (
-														<span
-															class:list={[
-																"learning-day-dot",
-																{ active: dot.active },
-															]}
-															title={dot.key}
-															aria-hidden="true"
-														>
-														</span>
-													))}
-												</div>
-											))}
-										</div>
 									</div>
 								)}
 								{coverage.totalRead > 0 && (
@@ -529,6 +518,7 @@ try {
 										id="discourses-read-tile"
 										class="stat-tile"
 									>
+										<span class="stat-kind">Read</span>
 										<span
 											class="stat-value"
 											id="discourses-read-value"
@@ -538,8 +528,8 @@ try {
 										>
 											{coverage.totalRead}
 										</span>
-										<span class="stat-label">
-											discourses read
+										<span class="stat-unit">
+											discourses
 										</span>
 									</div>
 								)}
@@ -548,6 +538,12 @@ try {
 										id="listen-minutes-tile"
 										class="stat-tile"
 									>
+										<span
+											class="stat-kind"
+											id="listen-minutes-kind"
+										>
+											{listenStat.kind}
+										</span>
 										<span
 											class="stat-value"
 											id="listen-minutes-value"
@@ -558,13 +554,61 @@ try {
 											{listenStat.value}
 										</span>
 										<span
-											class="stat-label"
-											id="listen-minutes-label"
+											class="stat-unit"
+											id="listen-minutes-unit"
+											hidden={!listenStat.unit}
 										>
-											{listenStat.label}
+											{listenStat.unit}
 										</span>
 									</div>
 								)}
+							</div>
+						)
+					}
+
+					{
+						learningDays > 0 && (
+							<div
+								id="learning-day-strip"
+								class="learning-day-strip"
+								aria-label="Days of learning"
+							>
+								<div class="learning-day-rows">
+									{groupLearningDayStrip(learningDayStrip).map(
+										(row) => (
+											<div class="learning-day-row">
+												{row.map((dot) => {
+													const label =
+														learningDayDetailLabel(
+															dot,
+														);
+													const className =
+														learningDayDotClassName(
+															dot,
+														);
+													return label ? (
+														<button
+															type="button"
+															class={className}
+															data-day={dot.key}
+															aria-label={label}
+														/>
+													) : (
+														<span
+															class={className}
+															aria-hidden="true"
+														/>
+													);
+												})}
+											</div>
+										),
+									)}
+								</div>
+								<div
+									class="learning-day-tip"
+									role="tooltip"
+									hidden
+								/>
 							</div>
 						)
 					}
@@ -598,9 +642,10 @@ try {
 													/>
 												</span>
 												<span class="coverage-count">
-													{row.read}
+													<span class="coverage-read">
+														{row.read}
+													</span>
 													<span class="coverage-total">
-														{" "}
 														/ {row.total}
 													</span>
 												</span>
@@ -651,7 +696,7 @@ try {
 				<div id="asks" class="tab-content hidden">
 					<div class="mt-4 ask-panel">
 						<a href={searchAskHref()} class="ask-new-btn">
-							Ask a new question
+							+ Ask
 						</a>
 						{
 							askEntries.length === 0 ? (
@@ -875,6 +920,7 @@ try {
 		userDisplayName,
 		readPagesMap,
 		listenTotalSeconds,
+		listenSecondsByDay,
 		askCount: askEntries.length,
 		askKeys: askEntries.map((entry) =>
 			entry.question.replace(/\s+/g, " ").trim().toLowerCase(),
@@ -886,15 +932,22 @@ try {
 	import { syncLearningDaysFromReadPages } from "../utils/learningActivityClient";
 	import {
 		groupLearningDayStrip,
-		learningDayStripForDisplay,
-		learningDaysStatLabel,
-		LEARNING_DAY_STRIP_LENGTH,
-		recentLearningDayStrip,
+		learningDayDetailLabel,
+		learningDayDotClassName,
+		learningDaysStatKind,
+		learningDaysStatUnit,
+		overviewLearningDayStrip,
+		readsByDayFromReadMinutes,
+		type LearningDayDot,
 	} from "../utils/learningActivity";
-	import { formatListenStat } from "../utils/listenActivity";
+	import {
+		formatListenStat,
+		mergeListenSecondsByDay,
+	} from "../utils/listenActivity";
 	import {
 		flushListenActivity,
 		flushOfflineReadPages,
+		readListenActivityBuffer,
 	} from "../utils/listenActivityClient";
 	import {
 		normalizeAskQuestionKey,
@@ -914,23 +967,188 @@ try {
 		highlights: "Highlights",
 	};
 	const ASK_SYNC_FLAG = "review-room-ask-history-synced";
+	let latestLearningDays: Record<string, true> | null = null;
+
+	function escapeAttr(value: string): string {
+		return value
+			.replace(/&/g, "&amp;")
+			.replace(/"/g, "&quot;")
+			.replace(/</g, "&lt;");
+	}
+
+	function currentListenSecondsByDay(): Record<string, number> {
+		return mergeListenSecondsByDay(
+			boot.listenSecondsByDay,
+			readListenActivityBuffer().secondsByDay,
+		);
+	}
+
+	function currentReadsByDay(): Record<string, number> {
+		return readsByDayFromReadMinutes(boot.readPagesMap);
+	}
+
+	function learningDotMarkup(dot: LearningDayDot): string {
+		const className = learningDayDotClassName(dot);
+		const label = learningDayDetailLabel(dot);
+		if (!label) {
+			return `<span class="${className}" aria-hidden="true"></span>`;
+		}
+		return `<button type="button" class="${className}" data-day="${escapeAttr(dot.key)}" aria-label="${escapeAttr(label)}"></button>`;
+	}
+
+	function placeOverviewNode(
+		section: Element,
+		node: HTMLElement,
+		kind: "aggregates" | "strip",
+	): void {
+		const card = section.querySelector(".overview-card");
+		if (kind === "aggregates") {
+			const strip = document.getElementById("learning-day-strip");
+			const before = strip || card;
+			if (before) section.insertBefore(node, before);
+			else section.prepend(node);
+			return;
+		}
+		if (card) section.insertBefore(node, card);
+		else section.appendChild(node);
+	}
+
+	function bindLearningDayStrip(container: HTMLElement): void {
+		if (container.dataset.bound === "1") return;
+		container.dataset.bound = "1";
+		let sticky = false;
+
+		const tip = (): HTMLElement | null =>
+			container.querySelector(".learning-day-tip");
+
+		const hideTip = () => {
+			const el = tip();
+			if (!el) return;
+			el.hidden = true;
+			el.textContent = "";
+			delete el.dataset.day;
+		};
+
+		const showTipFor = (cell: HTMLElement) => {
+			const el = tip();
+			const label = cell.getAttribute("aria-label");
+			if (!el || !label) return;
+			el.textContent = label;
+			el.hidden = false;
+			el.dataset.day = cell.dataset.day || "";
+			const stripRect = container.getBoundingClientRect();
+			const cellRect = cell.getBoundingClientRect();
+			const desired =
+				cellRect.left - stripRect.left + cellRect.width / 2;
+			const tipWidth = el.offsetWidth || 160;
+			const min = tipWidth / 2 + 8;
+			const max = Math.max(min, stripRect.width - tipWidth / 2 - 8);
+			el.style.left = `${Math.min(max, Math.max(min, desired))}px`;
+			const showBelow = cellRect.top < el.offsetHeight + 12;
+			el.classList.toggle("is-below", showBelow);
+			el.style.top = showBelow
+				? `${cellRect.bottom - stripRect.top}px`
+				: `${cellRect.top - stripRect.top}px`;
+		};
+
+		container.addEventListener("pointerover", (event) => {
+			if (event.pointerType === "touch") return;
+			const cell = (event.target as HTMLElement | null)?.closest?.(
+				"button.learning-day-dot",
+			);
+			if (cell instanceof HTMLElement && container.contains(cell)) {
+				showTipFor(cell);
+			}
+		});
+		container.addEventListener("pointerout", (event) => {
+			if (event.pointerType === "touch" || sticky) return;
+			const next = event.relatedTarget as Node | null;
+			if (next && container.contains(next)) {
+				const stillOnCell =
+					next instanceof Element &&
+					next.closest("button.learning-day-dot");
+				if (stillOnCell) return;
+			}
+			hideTip();
+		});
+		container.addEventListener("click", (event) => {
+			const cell = (event.target as HTMLElement | null)?.closest?.(
+				"button.learning-day-dot",
+			);
+			if (!(cell instanceof HTMLElement) || !container.contains(cell)) {
+				sticky = false;
+				hideTip();
+				return;
+			}
+			const el = tip();
+			if (el && !el.hidden && el.dataset.day === cell.dataset.day) {
+				sticky = false;
+				hideTip();
+				return;
+			}
+			sticky = true;
+			showTipFor(cell);
+		});
+		container.addEventListener("focusin", (event) => {
+			const cell = (event.target as HTMLElement | null)?.closest?.(
+				"button.learning-day-dot",
+			);
+			if (cell instanceof HTMLElement) showTipFor(cell);
+		});
+		container.addEventListener("focusout", () => {
+			if (!sticky) hideTip();
+		});
+		document.addEventListener("click", (event) => {
+			if (!container.contains(event.target as Node)) {
+				sticky = false;
+				hideTip();
+			}
+		});
+		document.addEventListener("keydown", (event) => {
+			if (event.key !== "Escape") return;
+			sticky = false;
+			hideTip();
+		});
+	}
+
+	function ensureLearningDayStrip(): HTMLElement | null {
+		const existing = document.getElementById("learning-day-strip");
+		if (existing) {
+			bindLearningDayStrip(existing);
+			return existing;
+		}
+		const section = document.querySelector(".overview-stats");
+		if (!section) return null;
+		const wrap = document.createElement("div");
+		wrap.id = "learning-day-strip";
+		wrap.className = "learning-day-strip";
+		wrap.setAttribute("aria-label", "Days of learning");
+		wrap.innerHTML = `<div class="learning-day-rows"></div><div class="learning-day-tip" role="tooltip" hidden></div>`;
+		placeOverviewNode(section, wrap, "strip");
+		bindLearningDayStrip(wrap);
+		return wrap;
+	}
 
 	function renderLearningDayStrip(
-		container: HTMLElement | null,
 		days: Record<string, true> | null | undefined,
 	): void {
+		if (days) latestLearningDays = days;
+		const useDays = days || latestLearningDays;
+		if (!useDays) return;
+		const container = ensureLearningDayStrip();
 		if (!container) return;
-		const strip = learningDayStripForDisplay(
-			recentLearningDayStrip(days || {}),
+		const rows = container.querySelector(".learning-day-rows");
+		if (!rows) return;
+		const strip = overviewLearningDayStrip(
+			useDays,
+			currentReadsByDay(),
+			currentListenSecondsByDay(),
 		);
-		container.innerHTML = groupLearningDayStrip(strip)
+		rows.innerHTML = groupLearningDayStrip(strip)
 			.map(
 				(row) =>
 					`<div class="learning-day-row">${row
-						.map(
-							(dot) =>
-								`<span class="learning-day-dot${dot.active ? " active" : ""}" title="${dot.key}" aria-hidden="true"></span>`,
-						)
+						.map((dot) => learningDotMarkup(dot))
 						.join("")}</div>`,
 			)
 			.join("");
@@ -941,12 +1159,14 @@ try {
 		userDisplayName: string;
 		readPagesMap: Record<string, unknown>;
 		listenTotalSeconds: number;
+		listenSecondsByDay: Record<string, number>;
 		askCount: number;
 		askKeys: string[];
 	} = {
 		userDisplayName: "there",
 		readPagesMap: {},
 		listenTotalSeconds: 0,
+		listenSecondsByDay: {},
 		askCount: 0,
 		askKeys: [],
 	};
@@ -956,12 +1176,16 @@ try {
 				askCount: 0,
 				askKeys: [],
 				listenTotalSeconds: 0,
+				listenSecondsByDay: {},
 				...JSON.parse(rawData),
 			};
 		}
 	} catch {
 		/* keep defaults */
 	}
+
+	const ssrStrip = document.getElementById("learning-day-strip");
+	if (ssrStrip) bindLearningDayStrip(ssrStrip);
 
 	function syncOverviewAggregateLayout(): void {
 		const aggregates = document.querySelector(".overview-aggregates");
@@ -971,15 +1195,30 @@ try {
 		aggregates.classList.toggle("is-triple", count >= 3);
 	}
 
+	function listenStatMarkup(
+		totalSeconds: number,
+		display: { kind: string; value: string; unit: string },
+	): string {
+		const unitHidden = display.unit ? "" : " hidden";
+		return `<span class="stat-kind" id="listen-minutes-kind">${display.kind}</span><span class="stat-value" id="listen-minutes-value" data-listen-seconds="${totalSeconds}">${display.value}</span><span class="stat-unit" id="listen-minutes-unit"${unitHidden}>${display.unit}</span>`;
+	}
+
+	function learningDaysStatMarkup(dayCount: number): string {
+		return `<span class="stat-kind">${learningDaysStatKind()}</span><span class="stat-value" id="learning-days-value" data-learning-days="${dayCount}">${dayCount}</span><span class="stat-unit">${learningDaysStatUnit()}</span>`;
+	}
+
 	function renderListenStatTile(totalSeconds: number): void {
 		const display = formatListenStat(totalSeconds);
 		if (!display) return;
 		const valueEl = document.getElementById("listen-minutes-value");
-		const labelEl = document.getElementById("listen-minutes-label");
-		if (valueEl && labelEl) {
+		const kindEl = document.getElementById("listen-minutes-kind");
+		const unitEl = document.getElementById("listen-minutes-unit");
+		if (valueEl && kindEl && unitEl) {
 			valueEl.textContent = display.value;
 			valueEl.dataset.listenSeconds = String(totalSeconds);
-			labelEl.textContent = display.label;
+			kindEl.textContent = display.kind;
+			unitEl.textContent = display.unit;
+			unitEl.hidden = !display.unit;
 			syncOverviewAggregateLayout();
 			return;
 		}
@@ -989,14 +1228,12 @@ try {
 		if (!aggregates) {
 			aggregates = document.createElement("div");
 			aggregates.className = "overview-aggregates";
-			const byCollection = section.querySelector(".overview-card");
-			if (byCollection) section.insertBefore(aggregates, byCollection);
-			else section.prepend(aggregates);
+			placeOverviewNode(section, aggregates as HTMLElement, "aggregates");
 		}
 		const tile = document.createElement("div");
 		tile.id = "listen-minutes-tile";
 		tile.className = "stat-tile";
-		tile.innerHTML = `<span class="stat-value" id="listen-minutes-value" data-listen-seconds="${totalSeconds}">${display.value}</span><span class="stat-label" id="listen-minutes-label">${display.label}</span>`;
+		tile.innerHTML = listenStatMarkup(totalSeconds, display);
 		aggregates.appendChild(tile);
 		syncOverviewAggregateLayout();
 	}
@@ -1009,6 +1246,9 @@ try {
 				result?.totalSeconds || 0,
 			);
 			renderListenStatTile(seconds);
+			if (latestLearningDays || document.getElementById("learning-day-strip")) {
+				renderLearningDayStrip(latestLearningDays);
+			}
 		},
 	);
 
@@ -1020,10 +1260,7 @@ try {
 		if (valueEl) {
 			valueEl.textContent = String(result.dayCount);
 			valueEl.dataset.learningDays = String(result.dayCount);
-			renderLearningDayStrip(
-				document.getElementById("learning-day-strip"),
-				result.days,
-			);
+			renderLearningDayStrip(result.days);
 			return;
 		}
 		// First paint had 0 days — insert the days tile now that sign-in day counted.
@@ -1033,24 +1270,19 @@ try {
 		if (!aggregates) {
 			aggregates = document.createElement("div");
 			aggregates.className = "overview-aggregates is-single";
-			const byCollection = section.querySelector(".overview-card");
-			if (byCollection) section.insertBefore(aggregates, byCollection);
-			else section.prepend(aggregates);
+			placeOverviewNode(section, aggregates as HTMLElement, "aggregates");
 		}
 		const tile = document.createElement("div");
 		tile.id = "learning-days-tile";
 		tile.className = "stat-tile";
-		tile.innerHTML = `<span class="stat-value" id="learning-days-value" data-learning-days="${result.dayCount}">${result.dayCount}</span><span class="stat-label">${learningDaysStatLabel()}</span><div id="learning-day-strip" class="learning-day-strip" aria-label="Learning activity over the last ${LEARNING_DAY_STRIP_LENGTH} days" title="Filled days are days you engaged with the teachings"></div>`;
+		tile.innerHTML = learningDaysStatMarkup(result.dayCount);
 		// Days reading leads; insert before discourses read / listen when present.
 		const readTile = document.getElementById("discourses-read-tile");
 		const listenTile = document.getElementById("listen-minutes-tile");
 		if (readTile) aggregates.insertBefore(tile, readTile);
 		else if (listenTile) aggregates.insertBefore(tile, listenTile);
 		else aggregates.appendChild(tile);
-		renderLearningDayStrip(
-			document.getElementById("learning-day-strip"),
-			result.days,
-		);
+		renderLearningDayStrip(result.days);
 		syncOverviewAggregateLayout();
 	});
 

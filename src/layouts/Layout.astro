@@ -81,6 +81,7 @@ const {
 	viewSource = "en",
 	referenceFallback = false,
 	canonicalPath = null,
+	requestedSlug = null,
 	robots = null,
 	ogType = null,
 	seoDescription = null,
@@ -127,6 +128,11 @@ const {
 	 * consolidate onto the primary page instead of competing.
 	 */
 	canonicalPath?: string | null;
+	/**
+	 * Public URL slug for mark-as-read / read-later / save (`dhp1` on an
+	 * excerpt page). Falls back to `id` (the file) when unset.
+	 */
+	requestedSlug?: string | null;
 	robots?: string | null;
 	ogType?: string | null;
 	/** Meta description only. Lets a page ship SEO copy while keeping the in-page description box empty. */
@@ -255,6 +261,10 @@ const canonicalNormalizedPath =
 		? canonicalRawPath.replace(/\/+$/, "")
 		: canonicalRawPath;
 const canonicalURL = new URL(canonicalNormalizedPath || "/", SITE_ORIGIN).href;
+const actionSlug = (requestedSlug || id || "")
+	.replace(/^\/+/, "")
+	.split("?")[0];
+const offerRead = showRead && !paragraphRequest;
 
 /** No meta description beats a boilerplate one: Google writes a query-relevant snippet instead. */
 const metaDescription =
@@ -576,16 +586,12 @@ const structuredData = buildStructuredData({
 									<div class="flex items-center gap-1">
 										{showReadLater && (
 											<ReadLaterButton
-												slug={canonicalRawPath
-													.replace(/^\/+/, "")
-													.split("?")[0]}
+												slug={actionSlug}
 											/>
 										)}
 										{showSave && (
 											<SaveButton
-												slug={canonicalRawPath
-													.replace(/^\/+/, "")
-													.split("?")[0]}
+												slug={actionSlug}
 											/>
 										)}
 									</div>
@@ -635,12 +641,10 @@ const structuredData = buildStructuredData({
 					<slot />
 					<Commentary commentary={commentary} />
 					{
-						showRead && (
+						offerRead && (
 							<div class="flex justify-end mt-6 mb-4">
 								<ReadButton
-									slug={canonicalRawPath
-										.replace(/^\/+/, "")
-										.split("?")[0]}
+									slug={actionSlug}
 								/>
 							</div>
 						)
