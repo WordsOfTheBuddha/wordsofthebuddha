@@ -1,9 +1,10 @@
 ---
+title: Sambodhi sutta - Full Awakening
+description: The Buddha outlines five proximate causes for cultivating qualities connected with full awakening, beginning with good friendship, and four further practices to uproot the conceit ‘I am.’
+qualities: good friendship, ethical conduct, right effort, wisdom, perception of impermanence, loving-kindness, breathing, conceit
+theme: training guideline, inspiration
 slug: an9.1
-source: suttacentral/bilara-data
-title: Sambodhisutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi:
