@@ -1,27 +1,27 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-	activityTime,
-	buildRecentFeeds,
+	buildAddedItems,
 	collectionFromEnglishPath,
 	filterRecentDiscourses,
 	isEnglishDiscoursePath,
+	mergeDiscourseAdditions,
 	parseRecentFilters,
 	recentSummary,
-	type RecentDiscourseRecord,
+	serializeDiscourseAdditions,
+	slugFromEnglishPath,
+	type DiscourseMeta,
 } from "./recentDiscourses";
 
 const now = new Date("2026-09-01T12:00:00.000Z");
 
-function record(
-	partial: Partial<RecentDiscourseRecord> & Pick<RecentDiscourseRecord, "slug">,
-): RecentDiscourseRecord {
+function meta(
+	partial: Partial<DiscourseMeta> & Pick<DiscourseMeta, "slug">,
+): DiscourseMeta {
 	return {
 		title: partial.title ?? partial.slug,
 		description: partial.description ?? "A discourse.",
 		collection: partial.collection ?? "sn",
-		added: partial.added ?? now,
-		modified: partial.modified ?? partial.added ?? now,
 		volpage: partial.volpage,
 		...partial,
 		slug: partial.slug,
@@ -52,6 +52,15 @@ describe("isEnglishDiscoursePath", () => {
 	});
 });
 
+describe("slugFromEnglishPath", () => {
+	it("uses the mdx filename", () => {
+		assert.equal(
+			slugFromEnglishPath("src/content/en/mn/mn115.mdx"),
+			"mn115",
+		);
+	});
+});
+
 describe("collectionFromEnglishPath", () => {
 	it("reads the nikāya folder, falling back to the slug", () => {
 		assert.equal(
@@ -62,113 +71,108 @@ describe("collectionFromEnglishPath", () => {
 	});
 });
 
-describe("buildRecentFeeds", () => {
-	it("lists newly added files separately from later updates", () => {
-		const items = buildRecentFeeds(
-			[
-				record({
-					slug: "sn22.100",
-					added: new Date("2026-08-31T10:00:00.000Z"),
-					modified: new Date("2026-08-31T11:00:00.000Z"),
-				}),
-				record({
-					slug: "mn22",
-					collection: "mn",
-					added: new Date("2025-01-01T00:00:00.000Z"),
-					modified: new Date("2026-08-20T00:00:00.000Z"),
-				}),
-			],
-			now,
-			{ newLimit: 1 },
+describe("mergeDiscourseAdditions", () => {
+	it("keeps existing dates and only records dates for new slugs", () => {
+		const merged = mergeDiscourseAdditions(
+			{ mn10: "2024-01-01T00:00:00.000Z" },
+			["mn10", "sn22.100"],
+			{
+				mn10: "2026-08-01T00:00:00.000Z",
+				"sn22.100": "2026-08-31T10:00:00.000Z",
+			},
+			"2026-09-01T12:00:00.000Z",
 		);
-		assert.deepEqual(
-			items.map((item) => `${item.kind}:${item.slug}`),
-			["new:sn22.100", "updated:mn22"],
-		);
+		assert.deepEqual(merged, {
+			mn10: "2024-01-01T00:00:00.000Z",
+			"sn22.100": "2026-08-31T10:00:00.000Z",
+		});
 	});
 
-	it("keeps a recently added file in the new feed even after a same-day edit", () => {
-		const items = buildRecentFeeds(
-			[
-				record({
-					slug: "mn115",
-					collection: "mn",
-					added: new Date("2026-08-31T02:00:00.000Z"),
-					modified: new Date("2026-08-31T18:00:00.000Z"),
-				}),
-			],
-			now,
+	it("drops slugs whose files are gone and falls back when undiscovered", () => {
+		const merged = mergeDiscourseAdditions(
+			{ old: "2024-01-01T00:00:00.000Z" },
+			["dn21"],
+			{},
+			"2026-09-01T12:00:00.000Z",
 		);
-		assert.deepEqual(
-			items.map((item) => item.kind),
-			["new"],
+		assert.deepEqual(merged, {
+			dn21: "2026-09-01T12:00:00.000Z",
+		});
+	});
+});
+
+describe("serializeDiscourseAdditions", () => {
+	it("writes slug-sorted UTC JSON with a trailing newline", () => {
+		assert.equal(
+			serializeDiscourseAdditions({
+				sn1: "2026-02-01T00:00:00+05:30",
+				an1: "2026-01-01T00:00:00.000Z",
+			}),
+			`${JSON.stringify(
+				{
+					an1: "2026-01-01T00:00:00.000Z",
+					sn1: "2026-01-31T18:30:00.000Z",
+				},
+				null,
+				2,
+			)}\n`,
 		);
 	});
+});
 
-	it("treats files with no added date as updates", () => {
-		const items = buildRecentFeeds(
+describe("buildAddedItems", () => {
+	it("joins additions to discourse metadata and sorts newest first", () => {
+		const items = buildAddedItems(
 			[
-				record({
-					slug: "dn16",
-					collection: "dn",
-					added: null,
-					modified: new Date("2026-08-15T00:00:00.000Z"),
-				}),
+				meta({ slug: "mn10", collection: "mn" }),
+				meta({ slug: "sn22.100" }),
+				meta({ slug: "dn16", collection: "dn" }),
 			],
-			now,
+			{
+				mn10: "2026-08-20T00:00:00.000Z",
+				"sn22.100": "2026-08-31T10:00:00.000Z",
+			},
 		);
-		assert.equal(items.length, 1);
-		assert.equal(items[0]?.kind, "updated");
-		assert.equal(items[0]?.slug, "dn16");
+		assert.deepEqual(
+			items.map((item) => item.slug),
+			["sn22.100", "mn10"],
+		);
+		assert.equal(items[0]?.added, "2026-08-31T10:00:00.000Z");
 	});
 });
 
 describe("filterRecentDiscourses", () => {
-	const feed = buildRecentFeeds(
+	const feed = buildAddedItems(
 		[
-			record({
-				slug: "sn47.42",
-				added: new Date("2026-08-28T00:00:00.000Z"),
-			}),
-			record({
-				slug: "an4.189",
-				collection: "an",
-				added: new Date("2026-08-20T00:00:00.000Z"),
-			}),
-			record({
-				slug: "mn10",
-				collection: "mn",
-				added: new Date("2025-01-01T00:00:00.000Z"),
-				modified: new Date("2026-08-25T00:00:00.000Z"),
-			}),
-			record({
-				slug: "dn22",
-				collection: "dn",
-				added: new Date("2024-01-01T00:00:00.000Z"),
-				modified: new Date("2026-07-01T00:00:00.000Z"),
-			}),
+			meta({ slug: "sn47.42" }),
+			meta({ slug: "an4.189", collection: "an" }),
+			meta({ slug: "mn10", collection: "mn" }),
+			meta({ slug: "dn22", collection: "dn" }),
 		],
-		now,
-		{ newLimit: 2 },
+		{
+			"sn47.42": "2026-08-28T00:00:00.000Z",
+			"an4.189": "2026-08-20T00:00:00.000Z",
+			mn10: "2026-07-15T00:00:00.000Z",
+			dn22: "2025-01-01T00:00:00.000Z",
+		},
 	);
 
-	it("defaults to a top-20 new feed", () => {
+	it("defaults to a top-20 feed", () => {
 		const items = filterRecentDiscourses(
 			feed,
-			{ kind: "new", range: "20", collection: "all" },
+			{ range: "20", collection: "all" },
 			now,
 		);
 		assert.deepEqual(
 			items.map((item) => item.slug),
-			["sn47.42", "an4.189"],
+			["sn47.42", "an4.189", "mn10", "dn22"],
 		);
-		assert.ok(activityTime(items[0]!) >= activityTime(items[1]!));
 	});
 
 	it("filters by collection and 30-day window", () => {
 		const items = filterRecentDiscourses(
 			feed,
-			{ kind: "new", range: "30d", collection: "an" },
+			{ range: "30d", collection: "an" },
 			now,
 		);
 		assert.deepEqual(
@@ -177,32 +181,24 @@ describe("filterRecentDiscourses", () => {
 		);
 	});
 
-	it("shows updates without mixing in newly added files", () => {
-		const items = filterRecentDiscourses(
-			feed,
-			{ kind: "updated", range: "90d", collection: "all" },
-			now,
-		);
-		assert.deepEqual(
-			items.map((item) => item.slug),
-			["mn10", "dn22"],
+	it("does not treat later edits as additions", () => {
+		assert.equal(
+			feed.some((item) => item.slug === "dn22" && item.added.startsWith("2026")),
+			false,
 		);
 	});
 });
 
 describe("parseRecentFilters", () => {
-	it("reads kind, range, and collection from query params", () => {
+	it("reads range and collection from query params", () => {
 		assert.deepEqual(
-			parseRecentFilters(
-				new URLSearchParams("kind=updated&range=30d&col=mn"),
-			),
-			{ kind: "updated", range: "30d", collection: "mn" },
+			parseRecentFilters(new URLSearchParams("range=30d&col=mn")),
+			{ range: "30d", collection: "mn" },
 		);
 	});
 
-	it("falls back to the default new / last-20 feed", () => {
-		assert.deepEqual(parseRecentFilters(new URLSearchParams()), {
-			kind: "new",
+	it("falls back to the default last-20 feed", () => {
+		assert.deepEqual(parseRecentFilters(new URLSearchParams("kind=updated")), {
 			range: "20",
 			collection: "all",
 		});
@@ -210,10 +206,9 @@ describe("parseRecentFilters", () => {
 });
 
 describe("recentSummary", () => {
-	it("names the active kind", () => {
+	it("names the collection when filtered", () => {
 		assert.equal(
 			recentSummary(20, {
-				kind: "new",
 				range: "20",
 				collection: "all",
 			}),
@@ -221,11 +216,10 @@ describe("recentSummary", () => {
 		);
 		assert.equal(
 			recentSummary(1, {
-				kind: "updated",
 				range: "30d",
 				collection: "sn",
 			}),
-			"1 recently updated discourse",
+			"1 newly added SN discourse",
 		);
 	});
 });

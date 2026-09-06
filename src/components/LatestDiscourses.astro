@@ -1,14 +1,9 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
 import PostCard from "./PostCard.astro";
-import { getGitTimestamps } from "../utils/getLastModified";
-import { getPtsDisplay } from "../utils/ptsReferences";
+import { loadRecentlyAddedFeed } from "../utils/loadRecentlyAddedFeed";
 import {
-	buildRecentFeeds,
-	collectionFromEnglishPath,
 	DEFAULT_RECENT_FILTERS,
 	filterRecentDiscourses,
-	isEnglishDiscoursePath,
 } from "../utils/recentDiscourses";
 
 interface Props {
@@ -17,32 +12,8 @@ interface Props {
 
 const { n = 5 } = Astro.props;
 
-const allDiscourses = await getCollection("all");
-const records = allDiscourses
-	.filter(
-		(discourse: CollectionEntry<"all">) =>
-			Boolean(discourse.filePath) &&
-			isEnglishDiscoursePath(discourse.filePath ?? "") &&
-			discourse.data.description,
-	)
-	.map((discourse: CollectionEntry<"all">) => {
-		const { added, modified } = getGitTimestamps(discourse.filePath ?? "");
-		return {
-			slug: discourse.data.slug,
-			title: discourse.data.title,
-			description: discourse.data.description ?? "",
-			collection: collectionFromEnglishPath(
-				discourse.filePath ?? "",
-				discourse.data.slug,
-			),
-			added,
-			modified,
-			volpage: getPtsDisplay(discourse.data.slug) || undefined,
-		};
-	});
-
 const latestDiscourses = filterRecentDiscourses(
-	buildRecentFeeds(records),
+	await loadRecentlyAddedFeed(),
 	DEFAULT_RECENT_FILTERS,
 ).slice(0, n);
 ---

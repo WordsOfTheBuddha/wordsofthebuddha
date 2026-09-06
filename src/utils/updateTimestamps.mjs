@@ -45,7 +45,7 @@ function isoFromStat(date) {
 }
 
 try {
-	// Handle shallow clones (like in Vercel) so first-added dates are real.
+	// Full history helps last-modified dates on Vercel’s shallow clone.
 	if (process.env.VERCEL_GIT_FETCH_DEPTH) {
 		try {
 			execSync("git fetch --unshallow", { stdio: "pipe" });
@@ -64,32 +64,19 @@ try {
 			'git log --name-only --pretty=format:"COMMIT %aI" -- "src/content/**/*.mdx"',
 		),
 	);
-	const firstAdded = firstSeenDates(
-		git(
-			'git log --diff-filter=A --name-only --pretty=format:"COMMIT %aI" -- "src/content/**/*.mdx"',
-		),
-	);
 
 	const cache = {};
 
 	for (const file of trackedMdx) {
 		const modified = lastModified[file];
-		const added = firstAdded[file];
-		if (!modified && !added) continue;
-		cache[file] = {
-			modified: modified || added,
-			added: added || null,
-		};
+		if (!modified) continue;
+		cache[file] = modified;
 	}
 
 	for (const file of untrackedMdx) {
 		try {
 			const st = fs.statSync(path.join(process.cwd(), file));
-			const modified = isoFromStat(st.mtime);
-			const added = isoFromStat(
-				st.birthtime && st.birthtime.getTime() > 0 ? st.birthtime : st.mtime,
-			);
-			cache[file] = { modified, added };
+			cache[file] = isoFromStat(st.mtime);
 		} catch {
 			console.warn(`timestamps: could not stat untracked ${file}`);
 		}
@@ -101,9 +88,8 @@ try {
 	}
 
 	fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
-	const addedCount = Object.values(cache).filter((entry) => entry.added).length;
 	console.log(
-		`timestamps: cached ${Object.keys(cache).length} file(s) (${addedCount} with added date, ${untrackedMdx.length} untracked)`,
+		`timestamps: cached ${Object.keys(cache).length} file(s) (${untrackedMdx.length} untracked)`,
 	);
 } catch (error) {
 	console.error("Failed to update timestamps:", error);

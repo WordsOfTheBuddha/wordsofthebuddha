@@ -2,63 +2,33 @@
 export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-import { getGitTimestamps } from "../../utils/getLastModified";
-import { getPtsDisplay } from "../../utils/ptsReferences";
+import { loadRecentlyAddedFeed } from "../../utils/loadRecentlyAddedFeed";
 import {
-	buildRecentFeeds,
 	collectionChipLabel,
 	filterRecentDiscourses,
-	isEnglishDiscoursePath,
-	collectionFromEnglishPath,
 	parseRecentFilters,
 	recentSummary,
 	RECENT_COLLECTIONS,
 	type RecentDiscourseItem,
 } from "../../utils/recentDiscourses";
 
-const allDiscourses = await getCollection("all");
-const records = allDiscourses
-	.filter(
-		(discourse: CollectionEntry<"all">) =>
-			Boolean(discourse.filePath) &&
-			isEnglishDiscoursePath(discourse.filePath ?? ""),
-	)
-	.map((discourse: CollectionEntry<"all">) => {
-		const { added, modified } = getGitTimestamps(discourse.filePath ?? "");
-		return {
-			slug: discourse.data.slug,
-			title: discourse.data.title,
-			description: discourse.data.description ?? "",
-			collection: collectionFromEnglishPath(
-				discourse.filePath ?? "",
-				discourse.data.slug,
-			),
-			added,
-			modified,
-			volpage: getPtsDisplay(discourse.data.slug) || undefined,
-		};
-	});
-
-const feed = buildRecentFeeds(records);
+const feed = await loadRecentlyAddedFeed();
 const initialFilters = parseRecentFilters(Astro.url.searchParams);
 const initialItems = filterRecentDiscourses(feed, initialFilters);
-const initialVisible = new Set(
-	initialItems.map((item) => `${item.kind}:${item.slug}`),
-);
+const initialVisible = new Set(initialItems.map((item) => item.slug));
 const collectionsInFeed = RECENT_COLLECTIONS.filter((collection) =>
 	feed.some((item) => item.collection === collection),
 );
 const initialSummary = recentSummary(initialItems.length, initialFilters);
 
 function cardDate(item: RecentDiscourseItem): string {
-	return item.kind === "new" ? item.added : item.modified;
+	return item.added;
 }
 ---
 
 <Layout
 	seoTitle="Recently Added Discourses - Words of the Buddha"
-	seoDescription="A feed of newly translated suttas and recently updated discourses from the Pāli canon, with filters by collection and recency."
+	seoDescription="Newly translated English suttas added to the site, with filters by collection and recency."
 	showAuth={false}
 >
 	<main class="container mx-auto px-3 sm:px-4 pt-8 pb-16">
@@ -70,7 +40,7 @@ function cardDate(item: RecentDiscourseItem): string {
 				Recently added
 			</h1>
 			<p class="text-base sm:text-lg mb-0" style="color:var(--text-muted);">
-				New English translations in the last weeks, distinct from
+				New English translations as they are added to the site, not
 				revisions of discourses that were already here.
 			</p>
 		</section>
@@ -81,42 +51,6 @@ function cardDate(item: RecentDiscourseItem): string {
 			data-filters={JSON.stringify(initialFilters)}
 		>
 			<div class="recent-toolbar" role="search">
-				<div class="recent-filter-row">
-					<p class="recent-filter-label" id="recent-kind-label">Show</p>
-					<div
-						class="recent-chips"
-						role="group"
-						aria-labelledby="recent-kind-label"
-					>
-						<button
-							type="button"
-							class="recent-chip"
-							data-filter="kind"
-							data-value="new"
-							aria-pressed={initialFilters.kind === "new"}
-						>
-							Newly added
-						</button>
-						<button
-							type="button"
-							class="recent-chip"
-							data-filter="kind"
-							data-value="updated"
-							aria-pressed={initialFilters.kind === "updated"}
-						>
-							Updated
-						</button>
-						<button
-							type="button"
-							class="recent-chip"
-							data-filter="kind"
-							data-value="all"
-							aria-pressed={initialFilters.kind === "all"}
-						>
-							All
-						</button>
-					</div>
-				</div>
 				<div class="recent-filter-row">
 					<p class="recent-filter-label" id="recent-range-label">When</p>
 					<div
@@ -200,12 +134,10 @@ function cardDate(item: RecentDiscourseItem): string {
 						<div
 							class="recent-card-wrap"
 							data-recent-item
-							data-kind={item.kind}
 							data-collection={item.collection}
 							data-added={item.added}
-							data-modified={item.modified}
 							data-slug={item.slug}
-							hidden={!initialVisible.has(`${item.kind}:${item.slug}`)}
+							hidden={!initialVisible.has(item.slug)}
 						>
 							<PostCard
 								title={item.title}
@@ -213,7 +145,7 @@ function cardDate(item: RecentDiscourseItem): string {
 								id={item.slug}
 								volpage={item.volpage}
 								lastUpdated={cardDate(item)}
-								badge={item.kind}
+								badge="new"
 							/>
 						</div>
 					))
@@ -241,10 +173,6 @@ function cardDate(item: RecentDiscourseItem): string {
 		type RecentFilters,
 	} from "../../utils/recentDiscourses";
 
-	function itemKey(kind: string, slug: string): string {
-		return `${kind}:${slug}`;
-	}
-
 	function applyFilters(root: HTMLElement, filters: RecentFilters) {
 		const cards = [
 			...root.querySelectorAll<HTMLElement>("[data-recent-item]"),
@@ -254,27 +182,17 @@ function cardDate(item: RecentDiscourseItem): string {
 			title: "",
 			description: "",
 			collection: card.dataset.collection ?? "",
-			kind: card.dataset.kind === "updated" ? "updated" : "new",
 			added: card.dataset.added ?? "",
-			modified: card.dataset.modified ?? "",
 		}));
 		const visible = filterRecentDiscourses(items, filters);
-		const visibleKeys = new Set(
-			visible.map((item) => itemKey(item.kind, item.slug)),
-		);
+		const visibleSlugs = new Set(visible.map((item) => item.slug));
 		const list = root.querySelector("#recent-list");
 		for (const card of cards) {
-			card.hidden = !visibleKeys.has(
-				itemKey(card.dataset.kind ?? "", card.dataset.slug ?? ""),
-			);
+			card.hidden = !visibleSlugs.has(card.dataset.slug ?? "");
 		}
 		if (list) {
 			for (const item of visible) {
-				const card = cards.find(
-					(el) =>
-						itemKey(el.dataset.kind ?? "", el.dataset.slug ?? "") ===
-						itemKey(item.kind, item.slug),
-				);
+				const card = cards.find((el) => el.dataset.slug === item.slug);
 				if (card) list.appendChild(card);
 			}
 		}
@@ -298,8 +216,6 @@ function cardDate(item: RecentDiscourseItem): string {
 
 	function writeUrl(filters: RecentFilters) {
 		const params = new URLSearchParams();
-		if (filters.kind !== DEFAULT_RECENT_FILTERS.kind)
-			params.set("kind", filters.kind);
 		if (filters.range !== DEFAULT_RECENT_FILTERS.range)
 			params.set("range", filters.range);
 		if (filters.collection !== DEFAULT_RECENT_FILTERS.collection)
