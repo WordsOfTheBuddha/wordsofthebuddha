@@ -2,7 +2,13 @@ import type { DiscourseSuggestHit } from "./discourseIdSuggest";
 import { compactDiscourseIdQuery, MIN_TITLE_SUGGEST_LEN } from "./discourseIdSuggest";
 import { normalizeForComparison } from "./searchRanking";
 
-export type PageSuggestKind = "essay" | "topic" | "quality" | "simile" | "page";
+export type PageSuggestKind =
+	| "essay"
+	| "person"
+	| "topic"
+	| "quality"
+	| "simile"
+	| "page";
 
 export interface PageSuggestEntry {
 	kind: PageSuggestKind;
@@ -24,6 +30,7 @@ export type NavSuggestItem =
 
 export const PAGE_KIND_LABEL: Record<PageSuggestKind, string> = {
 	essay: "Essay",
+	person: "Person",
 	topic: "Topic",
 	quality: "Quality",
 	simile: "Simile",
@@ -34,8 +41,9 @@ const KIND_DEDUP_RANK: Record<PageSuggestKind, number> = {
 	essay: 0,
 	topic: 1,
 	quality: 2,
-	simile: 3,
-	page: 4,
+	person: 3,
+	simile: 4,
+	page: 5,
 };
 
 const CATALOG_KINDS = new Set<PageSuggestKind>(["topic", "quality", "simile"]);
@@ -333,11 +341,13 @@ export function hasCatalogKindFilter(rawQuery: string): boolean {
 }
 
 /**
- * Essays first (prefix OK), then discourses, then topic/quality/simile pages
- * (exact, or prefix from 5 characters — 3 when filtering by quality/topic/simile)
- * then other site pages. Queries that include quality/topic/simile — including
- * `quality:radical` — always surface matching catalog pages for the remaining
- * words. ID-shaped queries stay discourse-only.
+ * Essays first (prefix OK), then persons (exact, or prefix from 5 characters),
+ * then discourses, then topic/quality/simile pages (exact, or prefix from 5
+ * characters — 3 when filtering by quality/topic/simile), then other site
+ * pages. Persons stay above discourses even when many titles match. Queries
+ * that include quality/topic/simile — including `quality:radical` — always
+ * surface matching catalog pages for the remaining words. ID-shaped queries
+ * stay discourse-only.
  */
 export function composeNavSuggestions(
 	query: string,
@@ -364,6 +374,10 @@ export function composeNavSuggestions(
 		kinds: ["essay"],
 		mode: "prefix",
 	});
+	const persons = matchPageEntries(pages, queryNorm, {
+		kinds: ["person"],
+		mode: catalogMatchMode(queryNorm),
+	}).slice(0, MAX_CATALOG_HITS);
 	const catalog = matchPageEntries(pages, catalogQuery, {
 		kinds: hint.kinds ?? [...CATALOG_KINDS],
 		mode: catalogMode,
@@ -375,6 +389,7 @@ export function composeNavSuggestions(
 
 	const items: NavSuggestItem[] = [
 		...essays.map((hit) => ({ type: "page" as const, hit })),
+		...persons.map((hit) => ({ type: "page" as const, hit })),
 		...discourses.map((hit) => ({ type: "discourse" as const, hit })),
 	];
 

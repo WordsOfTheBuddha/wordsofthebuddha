@@ -92,6 +92,20 @@ const gangesSimile: PageSuggestEntry = {
 	aliases: [],
 };
 
+const anandaPerson: PageSuggestEntry = {
+	kind: "person",
+	title: "Venerable Ānanda",
+	href: "/on/ananda",
+	aliases: ["ananda"],
+};
+
+const sariputtaPerson: PageSuggestEntry = {
+	kind: "person",
+	title: "Venerable Sāriputta",
+	href: "/on/sariputta",
+	aliases: ["sariputta"],
+};
+
 const privacyPage: PageSuggestEntry = {
 	kind: "page",
 	title: "Privacy Policy",
@@ -508,6 +522,68 @@ describe("composeNavSuggestions", () => {
 		assert.equal(hasCatalogKindFilter("quality:rad"), true);
 		assert.equal(hasCatalogKindFilter("topic radical"), true);
 		assert.equal(hasCatalogKindFilter("radical"), false);
+	});
+
+	it("shows a person above discourse titles and below essays", () => {
+		const anandaEssay: PageSuggestEntry = {
+			kind: "essay",
+			title: "Ānanda's Recollection",
+			href: "/ananda-recollection",
+			aliases: ["ananda"],
+		};
+		const items = composeNavSuggestions(
+			"ananda",
+			[discourse("mn52", "Atthakanagara - To the Man from Atthakanagara")],
+			[...pages, anandaPerson, anandaEssay],
+		);
+		assert.deepEqual(
+			items.map((item) =>
+				item.type === "page" ? `${item.hit.kind} ${item.hit.href}` : item.hit.slug,
+			),
+			["essay /ananda-recollection", "person /on/ananda", "mn52"],
+		);
+		assert.equal(items[1]?.type, "page");
+		assert.equal(items[1]?.hit.kindLabel, "Person");
+	});
+
+	it("keeps a matching person above many discourse title hits", () => {
+		const items = composeNavSuggestions(
+			"ananda",
+			[
+				discourse("mn52", "Atthakanagara"),
+				discourse("an3.60", "Sangarava"),
+				discourse("dn16", "Mahaparinibbana"),
+				discourse("mn18", "Madhupindika"),
+				discourse("sn22.83", "Ananda"),
+			],
+			[...pages, anandaPerson],
+		);
+		assert.equal(items[0]?.type, "page");
+		assert.equal(items[0]?.hit.href, "/on/ananda");
+		assert.ok(items.some((item) => item.type === "discourse" && item.hit.slug === "sn22.83"));
+	});
+
+	it("does not treat person or character as a catalog kind filter", () => {
+		assert.equal(hasCatalogKindFilter("person ananda"), false);
+		assert.equal(hasCatalogKindFilter("character ananda"), false);
+		assert.equal(hasCatalogKindFilter("persons"), false);
+		const items = composeNavSuggestions(
+			"person ananda",
+			[discourse("sn22.83", "Ananda")],
+			[...pages, anandaPerson, ...SITE_PAGE_SUGGESTIONS],
+		);
+		assert.ok(!items.some((item) => item.type === "page" && item.hit.href === "/on/ananda"));
+	});
+
+	it("prefix-matches person pages from 5 characters", () => {
+		assert.deepEqual(
+			composeNavSuggestions("sari", [], [...pages, sariputtaPerson]),
+			[],
+		);
+		const items = composeNavSuggestions("sarip", [], [...pages, sariputtaPerson]);
+		assert.equal(items[0]?.type, "page");
+		assert.equal(items[0]?.hit.href, "/on/sariputta");
+		assert.equal(items[0]?.hit.kindLabel, "Person");
 	});
 
 	it("leaves ID-shaped queries as discourse-only", () => {

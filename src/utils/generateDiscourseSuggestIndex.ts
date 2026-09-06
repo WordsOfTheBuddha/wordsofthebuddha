@@ -101,13 +101,14 @@ async function loadEssayEntries(): Promise<PageSuggestEntry[]> {
 }
 
 function loadCatalogEntries(): PageSuggestEntry[] {
-	const items = buildAllContent(["topics", "qualities", "similes"]);
+	const items = buildAllContent(["topics", "qualities", "similes", "persons"]);
 	const out: PageSuggestEntry[] = [];
 	for (const item of items) {
 		if (
 			item.type !== "topic" &&
 			item.type !== "quality" &&
-			item.type !== "simile"
+			item.type !== "simile" &&
+			item.type !== "person"
 		) {
 			continue;
 		}
@@ -152,9 +153,10 @@ export async function generateDiscourseSuggestIndex(): Promise<void> {
 	const catalog = pages.filter((page) =>
 		page.kind === "topic" || page.kind === "quality" || page.kind === "simile",
 	).length;
+	const persons = pages.filter((page) => page.kind === "person").length;
 	const site = pages.filter((page) => page.kind === "page").length;
 	console.log(
-		`discourse-suggest-index: wrote ${entries.length} discourses (native ${native.length}, reference ${reference.length}) and ${pages.length} pages (essay ${essays}, catalog ${catalog}, site ${site}) to generated/discourse-suggest-index.json (${kb.toFixed(1)} KB) in ${Date.now() - start}ms`,
+		`discourse-suggest-index: wrote ${entries.length} discourses (native ${native.length}, reference ${reference.length}) and ${pages.length} pages (essay ${essays}, catalog ${catalog}, person ${persons}, site ${site}) to generated/discourse-suggest-index.json (${kb.toFixed(1)} KB) in ${Date.now() - start}ms`,
 	);
 }
 
