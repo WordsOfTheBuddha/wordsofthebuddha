@@ -63,6 +63,33 @@ export function isEnglishDiscoursePath(filePath: string): boolean {
 	return p.endsWith(".mdx");
 }
 
+/**
+ * Same filter as {@link isEnglishDiscoursePath}, but also accepts glob-loader
+ * ids (`sn/sn22.100`) when `filePath` is missing — as on Vercel SSR.
+ */
+export function isEnglishDiscourseEntry(entry: {
+	filePath?: string;
+	id?: string;
+}): boolean {
+	if (entry.filePath) return isEnglishDiscoursePath(entry.filePath);
+	const id = (entry.id ?? "").replace(/\\/g, "/").replace(/\.mdx$/i, "");
+	if (!id || id === "index" || id.endsWith("/index")) return false;
+	if (id === "anthologies" || id.startsWith("anthologies/")) return false;
+	if (id === "books" || id.startsWith("books/")) return false;
+	return true;
+}
+
+export function parseDiscourseAdditions(parsed: unknown): DiscourseAdditions {
+	if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+		return {};
+	}
+	const additions: DiscourseAdditions = {};
+	for (const [slug, value] of Object.entries(parsed)) {
+		if (typeof value === "string" && value) additions[slug] = value;
+	}
+	return additions;
+}
+
 export function slugFromEnglishPath(filePath: string): string {
 	const p = filePath.replace(/\\/g, "/");
 	const base = p.split("/").pop() ?? "";

@@ -4,8 +4,10 @@ import {
 	buildAddedItems,
 	collectionFromEnglishPath,
 	filterRecentDiscourses,
+	isEnglishDiscourseEntry,
 	isEnglishDiscoursePath,
 	mergeDiscourseAdditions,
+	parseDiscourseAdditions,
 	parseRecentFilters,
 	recentSummary,
 	serializeDiscourseAdditions,
@@ -49,6 +51,51 @@ describe("isEnglishDiscoursePath", () => {
 			false,
 		);
 		assert.equal(isEnglishDiscoursePath("src/content/pli/sn/sn22.100.md"), false);
+	});
+});
+
+describe("isEnglishDiscourseEntry", () => {
+	it("uses filePath when present", () => {
+		assert.equal(
+			isEnglishDiscourseEntry({
+				filePath: "src/content/en/sn/sn22.100.mdx",
+				id: "sn/sn22.100",
+			}),
+			true,
+		);
+		assert.equal(
+			isEnglishDiscourseEntry({
+				filePath: "src/content/en/index.mdx",
+				id: "index",
+			}),
+			false,
+		);
+	});
+
+	it("falls back to glob-loader ids when filePath is missing", () => {
+		assert.equal(isEnglishDiscourseEntry({ id: "sn/sn22.100" }), true);
+		assert.equal(isEnglishDiscourseEntry({ id: "index" }), false);
+		assert.equal(
+			isEnglishDiscourseEntry({ id: "anthologies/in-the-buddhas-words" }),
+			false,
+		);
+		assert.equal(isEnglishDiscourseEntry({ id: "books/some-book" }), false);
+		assert.equal(isEnglishDiscourseEntry({}), false);
+	});
+});
+
+describe("parseDiscourseAdditions", () => {
+	it("keeps string dates and drops junk", () => {
+		assert.deepEqual(
+			parseDiscourseAdditions({
+				mn10: "2026-08-20T00:00:00.000Z",
+				bad: 1,
+				empty: "",
+			}),
+			{ mn10: "2026-08-20T00:00:00.000Z" },
+		);
+		assert.deepEqual(parseDiscourseAdditions(null), {});
+		assert.deepEqual(parseDiscourseAdditions([]), {});
 	});
 });
 
