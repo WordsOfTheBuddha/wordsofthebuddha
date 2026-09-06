@@ -1,5 +1,5 @@
-// Search index is loaded from generated/*.json (copied into the Vercel
-// function via includeFiles) or from the static CDN as a fallback.
+// Search index is loaded from generated/*.json.gz in the Vercel function
+// (uncompressed JSON exceeds the 250 MB limit) or from the static CDN.
 import {
 	loadNativeSearchIndex,
 	loadReferenceSearchIndex,

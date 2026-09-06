@@ -4,6 +4,7 @@
 // Outputs (copied to the client by searchIndexStatic):
 // - generated/search-index.json (full docs; API / body search)
 // - generated/search-meta.json (slug/title/description only; light client search)
+// - matching .json.gz companions (Vercel function includeFiles; ~5 MB vs ~26 MB)
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -11,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { glob } from "glob";
 import matter from "gray-matter";
 import { getPtsDisplay } from "./ptsReferences";
+import { writeGzipCompanion } from "./gzipJsonFile";
 interface SearchDoc {
 	slug: string;
 	title: string;
@@ -160,8 +162,11 @@ async function parseFileToDoc(
 async function writeSearchIndex(docs: SearchDoc[]) {
 	await mkdir(generatedDir, { recursive: true });
 	const json = JSON.stringify(docs);
+	const meta = JSON.stringify(toMetaDocs(docs));
 	await writeFile(jsonOutFile, json, "utf8");
-	await writeFile(metaOutFile, JSON.stringify(toMetaDocs(docs)), "utf8");
+	await writeFile(metaOutFile, meta, "utf8");
+	await writeGzipCompanion(jsonOutFile, json);
+	await writeGzipCompanion(metaOutFile, meta);
 	return json;
 }
 

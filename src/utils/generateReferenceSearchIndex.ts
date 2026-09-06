@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { loadCatalogEntries } from "./generateCollectionReferenceIndex";
 import { getPtsDisplay } from "./ptsReferences";
+import { writeGzipCompanion } from "./gzipJsonFile";
 
 export interface ReferenceSearchDoc {
 	slug: string;
@@ -108,6 +109,7 @@ async function writeReferenceSearchIndex(docs: ReferenceSearchDoc[]) {
 	await mkdir(generatedDir, { recursive: true });
 	const json = JSON.stringify(docs);
 	await writeFile(jsonOutFile, json, "utf8");
+	await writeGzipCompanion(jsonOutFile, json);
 	return json;
 }
 

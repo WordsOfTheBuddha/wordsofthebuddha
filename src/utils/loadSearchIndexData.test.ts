@@ -5,7 +5,9 @@ import {
 	parseSearchIndexJson,
 	searchIndexOrigin,
 } from "./loadSearchIndexData";
+import { decodeMaybeGzip } from "./gzipJsonFile";
 import { publicJsonCandidates } from "./loadSearchIndexData.server";
+import { gzipSync } from "node:zlib";
 
 describe("searchIndexOrigin", () => {
 	it("prefers the Astro site over VERCEL_URL", () => {
@@ -62,12 +64,30 @@ describe("parseSearchIndexJson", () => {
 	});
 });
 
+describe("decodeMaybeGzip", () => {
+	it("gunzips serverless companions and passes through plain JSON", () => {
+		const json = '[{"slug":"mn10"}]';
+		assert.equal(decodeMaybeGzip("search-index.json", Buffer.from(json)), json);
+		assert.equal(
+			decodeMaybeGzip(
+				"search-index.json.gz",
+				gzipSync(Buffer.from(json, "utf8")),
+			),
+			json,
+		);
+	});
+});
+
 describe("publicJsonCandidates", () => {
 	it("looks in generated/ first so includeFiles land in the function", () => {
 		const candidates = publicJsonCandidates("search-index.json");
 		assert.equal(
 			candidates[0],
 			path.join(process.cwd(), "generated", "search-index.json"),
+		);
+		assert.equal(
+			candidates[1],
+			path.join(process.cwd(), "generated", "search-index.json.gz"),
 		);
 		assert.ok(
 			candidates.includes(path.join(process.cwd(), "search-index.json")),

@@ -42,14 +42,12 @@ const vercelPdfIncludeContentImages = globSync("public/content-images/**/*", {
 });
 
 /**
- * Ask / `/api/search` load these from disk in SSR. They are also copied to
- * static output for the browser. Without includeFiles, the function falls
- * back to fetching `https://$VERCEL_URL/search-index.json`, which returns
- * HTML (auth wall or the catch-all page) and Ask dies with a JSON parse 502.
- * `prebuild` writes them before `astro build`.
+ * Ask / `/api/search` need the indexes on disk in SSR. Uncompressed JSON is
+ * ~26 MB and pushed `_render` over Vercel's 250 MB limit; gzip companions
+ * are ~5 MB. `prebuild` writes the `.gz` files before `astro build`.
  */
 const vercelSearchIndexFiles = globSync(
-	"generated/{search-index,search-meta,reference-search-index}.json",
+	"generated/{search-index,search-meta,reference-search-index}.json.gz",
 	{
 		cwd: __dirname,
 		nodir: true,
@@ -108,6 +106,9 @@ export default defineConfig({
 		maxDuration: 60,
 		includeFiles: [...vercelPdfIncludeContentImages, ...vercelSearchIndexFiles],
 		excludeFiles: [
+			"generated/search-index.json",
+			"generated/search-meta.json",
+			"generated/reference-search-index.json",
 			"generated/suggestions-index.json",
 			"generated/discourse-suggest-index.json",
 		],

@@ -2,16 +2,20 @@ import { readFile, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { SearchIndexDoc } from "./loadSearchIndexData";
+import { decodeMaybeGzip } from "./gzipJsonFile";
 
 export function publicJsonCandidates(filename: string): string[] {
 	const cwd = process.cwd();
+	const names = filename.endsWith(".gz")
+		? [filename]
+		: [filename, `${filename}.gz`];
 	return [
-		path.join(cwd, "generated", filename),
-		path.join(cwd, filename),
-		path.join(cwd, "public", filename),
-		path.join(cwd, "static", filename),
-		path.join(cwd, ".vercel", "output", "static", filename),
-	];
+		path.join(cwd, "generated"),
+		cwd,
+		path.join(cwd, "public"),
+		path.join(cwd, "static"),
+		path.join(cwd, ".vercel", "output", "static"),
+	].flatMap((dir) => names.map((name) => path.join(dir, name)));
 }
 
 /** Resolved path for the first existing index file (dev cache invalidation). */
@@ -38,8 +42,8 @@ export async function readIndexFromDisk(
 ): Promise<SearchIndexDoc[] | null> {
 	for (const filePath of publicJsonCandidates(filename)) {
 		if (!existsSync(filePath)) continue;
-		const raw = await readFile(filePath, "utf8");
-		return JSON.parse(raw) as SearchIndexDoc[];
+		const raw = await readFile(filePath);
+		return JSON.parse(decodeMaybeGzip(filePath, raw)) as SearchIndexDoc[];
 	}
 	return null;
 }
