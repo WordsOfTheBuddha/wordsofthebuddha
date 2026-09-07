@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import {
+	applyAskThinkingStreamPatch,
 	askReasoningIsLong,
 	askResultsCaption,
 	askSendShortcutLabel,
@@ -185,5 +187,166 @@ describe("buildAskProcessSteps", () => {
 		assert.match(done[1]?.text || "", /Searched the library · 186 discourses/);
 		assert.equal(done[2]?.text, "Crunched 186 discourses");
 		assert.doesNotMatch(done[2]?.text || "", /showing/);
+	});
+});
+
+describe("applyAskThinkingStreamPatch", () => {
+	function liveThread() {
+		const dom = new JSDOM(`<!DOCTYPE html><html><body>
+			<div data-ai-thread>
+				<section class="ai-turn" data-pending="0">
+					<p class="ai-summary">Hmm, these are diverse but don't relate.</p>
+				</section>
+				<section class="ai-turn" data-pending="1">
+					<ol class="ai-process">
+						<li class="is-active"><span>Understanding the question…</span></li>
+						<li class="is-todo"><span>Search the library</span></li>
+					</ol>
+					<div class="ai-skel"></div>
+				</section>
+			</div>
+		</body></html>`);
+		const thread = dom.window.document.querySelector("[data-ai-thread]");
+		assert.ok(thread);
+		return { document: dom.window.document, window: dom.window, thread };
+	}
+
+	it("keeps earlier-turn nodes (and their selection) while thinking streams", () => {
+		const { document, window, thread } = liveThread();
+		const summary = thread.querySelector(".ai-summary");
+		assert.ok(summary);
+		const range = document.createRange();
+		range.selectNodeContents(summary);
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(range);
+		assert.match(selection.toString(), /diverse/);
+
+		assert.equal(
+			applyAskThinkingStreamPatch(
+				thread,
+				{ pending: true, reasoning: "Looking for a full-moon awakening scene." },
+				1,
+			),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-summary"), summary);
+		assert.match(selection.toString(), /diverse/);
+		assert.match(
+			thread.querySelector(".ai-process-thinking-text")?.innerHTML || "",
+			/full-moon/,
+		);
+		assert.equal(thread.querySelector(".ai-skel"), null);
+
+		assert.equal(
+			applyAskThinkingStreamPatch(
+				thread,
+				{
+					pending: true,
+					reasoning:
+						"Looking for a full-moon awakening scene.\n\nMN 21 is about anger, not the moon.",
+				},
+				1,
+			),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-summary"), summary);
+		assert.match(selection.toString(), /diverse/);
+		assert.equal(thread.querySelectorAll(".ai-process-thinking").length, 1);
+		assert.match(
+			thread.querySelector(".ai-process-thinking-text")?.innerHTML || "",
+			/MN 21/,
+		);
+	});
+
+	it("adds the show-all toggle once thinking is long, without replacing earlier turns", () => {
+		const { thread } = liveThread();
+		const earlier = thread.querySelector(".ai-turn");
+		const long = Array.from(
+			{ length: 8 },
+			(_, i) => `Line ${i} of the model’s thinking.`,
+		).join("\n");
+		assert.equal(askReasoningIsLong(long), true);
+		assert.equal(
+			applyAskThinkingStreamPatch(thread, { pending: true, reasoning: long }, 1),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-turn"), earlier);
+		const thinking = thread.querySelector(".ai-process-thinking");
+		assert.ok(thinking?.classList.contains("is-live"));
+		assert.ok(thinking?.classList.contains("is-clamped"));
+		const toggle = thread.querySelector("[data-ai-toggle-thinking]");
+		assert.equal(toggle?.textContent, "Show all thinking");
+
+		assert.equal(
+			applyAskThinkingStreamPatch(
+				thread,
+				{ pending: true, reasoning: long, reasoningExpanded: true },
+				1,
+			),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-turn"), earlier);
+		assert.equal(thinking?.classList.contains("is-clamped"), false);
+		assert.equal(toggle?.textContent, "Show less");
+	});
+
+	it("removes the thinking pane when a discarded stream is cleared", () => {
+		const { thread } = liveThread();
+		const earlier = thread.querySelector(".ai-summary");
+		applyAskThinkingStreamPatch(
+			thread,
+			{ pending: true, reasoning: "First attempt notes." },
+			1,
+		);
+		assert.ok(thread.querySelector(".ai-process-thinking"));
+		assert.equal(
+			applyAskThinkingStreamPatch(thread, { pending: true, reasoning: "" }, 1),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-process-thinking"), null);
+		assert.equal(thread.querySelector(".ai-summary"), earlier);
+	});
+
+	it("replaces discarded MiniMax notes with the Gemini planner note, not a Show-all-thinking link", () => {
+		const { thread } = liveThread();
+		applyAskThinkingStreamPatch(
+			thread,
+			{
+				pending: true,
+				reasoning:
+					"- ^MN puṇṇama (already tried)\n- ^DN puṇṇama (already tried)",
+			},
+			1,
+		);
+		assert.match(
+			thread.querySelector(".ai-process-thinking-text")?.textContent || "",
+			/puṇṇama/,
+		);
+
+		assert.equal(
+			applyAskThinkingStreamPatch(
+				thread,
+				{
+					pending: false,
+					reasoning: "",
+					plannerNote:
+						"M3 didn’t produce a usable search plan, and the other free models couldn’t complete the plan — planned with Gemini instead, which does not share its thinking.",
+				},
+				1,
+			),
+			true,
+		);
+		assert.match(
+			thread.querySelector(".ai-process-thinking-note")?.textContent || "",
+			/Gemini/,
+		);
+		assert.doesNotMatch(
+			thread.querySelector(".ai-process")?.textContent || "",
+			/puṇṇama/,
+		);
+		assert.equal(thread.querySelector(".ai-process-thinking-text"), null);
+		assert.equal(thread.querySelector("[data-ai-toggle-thinking]"), null);
 	});
 });

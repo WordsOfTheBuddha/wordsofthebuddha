@@ -10,7 +10,9 @@ import {
 	type AiAskShareTurn,
 } from "./aiAskShare";
 import {
+	ASK_HISTORY_PREVIEW_LIMIT,
 	askHistoryEntriesForRestore,
+	askHistoryEntriesForTab,
 	clearAskResumeFromDiscourse,
 	clearAskThreadResumeIntent,
 	findAiAskSessionEntry,
@@ -18,15 +20,19 @@ import {
 	markAskResumeFromDiscourse,
 	mergeAskHistoryEntries,
 	normalizeAskQuestionKey,
+	pinnedAskHistoryEntries,
 	readActiveAskThread,
 	readAiAskSession,
 	removeAskHistoryEntriesByQuestions,
+	resolveAskHistoryTab,
 	shouldRestoreActiveAskThread,
 	shouldResumeAskFromDiscourse,
 	upsertAiAskSessionEntry,
+	visibleAskHistoryEntries,
 	writeActiveAskThread,
 	writeAiAskSession,
 	type AiAskSessionEntry,
+	type AskHistoryTab,
 } from "./aiAskSession";
 import {
 	assembleSpeechTranscript,
@@ -452,6 +458,142 @@ export function renderAskThinkingHtml(text: string): string {
 		out.push(`<p>${rendered}</p>`);
 	}
 	return out.join("");
+}
+
+function renderAskThinkingItemHtml(input: {
+	reasoningText: string;
+	pending: boolean;
+	reasoningExpanded?: boolean;
+	plannerNote?: string;
+	degradedNote?: string;
+	turnIndex: number;
+}): string {
+	const plannerNote = input.plannerNote
+		? `<p class="ai-process-thinking-note">${escapeHtml(input.plannerNote)}</p>`
+		: "";
+	const degradedNote = input.degradedNote || "";
+	if (!input.reasoningText) {
+		return `<li class="ai-process-thinking" aria-label="Model notes">
+				<span class="ai-process-mark" aria-hidden="true"></span>
+				<div class="ai-process-thinking-body">${plannerNote}${degradedNote}</div>
+			</li>`;
+	}
+	const clampable =
+		!input.reasoningExpanded && askReasoningIsLong(input.reasoningText);
+	const toggle = askReasoningIsLong(input.reasoningText)
+		? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${input.turnIndex}" aria-expanded="${input.reasoningExpanded ? "true" : "false"}">${input.reasoningExpanded ? "Show less" : "Show all thinking"}</button>`
+		: "";
+	return `<li class="ai-process-thinking${input.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}" aria-label="Model thinking">
+				<span class="ai-process-mark" aria-hidden="true"></span>
+				<div class="ai-process-thinking-body">
+					${plannerNote}
+					<div class="ai-process-thinking-text">${renderAskThinkingHtml(input.reasoningText)}</div>
+					${toggle}
+				</div>
+			</li>`;
+}
+
+/**
+ * Update the live thinking pane in place. Replacing the whole thread with
+ * innerHTML on every reasoning token detaches earlier turns and clears the
+ * reader’s text selection.
+ */
+export function applyAskThinkingStreamPatch(
+	thread: ParentNode,
+	turn: Pick<
+		AiAskTurn,
+		"pending" | "reasoning" | "reasoningExpanded" | "plannerNote"
+	>,
+	turnIndex: number,
+): boolean {
+	const section = thread.querySelectorAll(":scope > .ai-turn")[turnIndex];
+	if (!section) return false;
+	const process = section.querySelector(".ai-process");
+	if (!process) return false;
+
+	const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
+	if (!reasoningText) {
+		const existing = process.querySelector(":scope > .ai-process-thinking");
+		const note = (turn.plannerNote || "").trim();
+		if (!note) {
+			existing?.remove();
+			return true;
+		}
+		const html = renderAskThinkingItemHtml({
+			reasoningText: "",
+			pending: false,
+			plannerNote: turn.plannerNote,
+			turnIndex,
+		});
+		if (existing) existing.outerHTML = html;
+		else {
+			const first = process.querySelector(":scope > li");
+			if (!first) return false;
+			first.insertAdjacentHTML("afterend", html);
+		}
+		return true;
+	}
+
+	let thinkingEl = process.querySelector(":scope > .ai-process-thinking");
+	if (!thinkingEl) {
+		const first = process.querySelector(":scope > li");
+		if (!first) return false;
+		first.insertAdjacentHTML(
+			"afterend",
+			renderAskThinkingItemHtml({
+				reasoningText,
+				pending: turn.pending,
+				reasoningExpanded: turn.reasoningExpanded,
+				plannerNote: turn.plannerNote,
+				turnIndex,
+			}),
+		);
+		section.querySelector(".ai-skel")?.remove();
+		pinClampedAskThinking(section);
+		return true;
+	}
+
+	thinkingEl.classList.toggle("is-live", Boolean(turn.pending));
+	thinkingEl.classList.toggle(
+		"is-clamped",
+		!turn.reasoningExpanded && askReasoningIsLong(reasoningText),
+	);
+	thinkingEl.setAttribute("aria-label", "Model thinking");
+
+	const body = thinkingEl.querySelector(".ai-process-thinking-body");
+	if (!body) return false;
+
+	let textEl = body.querySelector(".ai-process-thinking-text");
+	if (!textEl) {
+		textEl = section.ownerDocument.createElement("div");
+		textEl.className = "ai-process-thinking-text";
+		const existingToggle = body.querySelector("[data-ai-toggle-thinking]");
+		if (existingToggle) body.insertBefore(textEl, existingToggle);
+		else body.append(textEl);
+	}
+	const nextHtml = renderAskThinkingHtml(reasoningText);
+	if (textEl.innerHTML !== nextHtml) {
+		textEl.innerHTML = nextHtml;
+	}
+
+	if (askReasoningIsLong(reasoningText)) {
+		const expanded = Boolean(turn.reasoningExpanded);
+		const label = expanded ? "Show less" : "Show all thinking";
+		let toggle = body.querySelector("[data-ai-toggle-thinking]");
+		if (!toggle) {
+			body.insertAdjacentHTML(
+				"beforeend",
+				`<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${turnIndex}" aria-expanded="${expanded ? "true" : "false"}">${label}</button>`,
+			);
+		} else {
+			toggle.setAttribute("data-turn-index", String(turnIndex));
+			toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+			if (toggle.textContent !== label) toggle.textContent = label;
+		}
+	}
+
+	pinClampedAskThinking(section);
+	return true;
 }
 
 function isClientFreeModelId(id: string): boolean {
@@ -1731,7 +1873,7 @@ export function attachAiMode(options: {
 				: "Unpin — allow this Ask to drop off with older ones"
 			: signedInForHistory
 				? conversation
-					? "Pin this conversation so the whole thread stays in Recent Asks"
+					? "Pin this conversation so the whole thread stays under Pinned"
 					: "Pin so it stays when older Asks drop off"
 				: "Create an account to pin Asks";
 		const pinLabel = pinned
@@ -1942,33 +2084,27 @@ export function attachAiMode(options: {
 			: "";
 		// Latest lines stay visible; older reasoning is clipped unless expanded.
 		const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
-		const plannerNote = turn.plannerNote
-			? `<p class="ai-process-thinking-note">${escapeHtml(turn.plannerNote)}</p>`
-			: "";
 		let thinking = "";
 		if (reasoningText) {
-			const clampable =
-				!turn.reasoningExpanded && askReasoningIsLong(reasoningText);
-			const toggle = askReasoningIsLong(reasoningText)
-				? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${turnIndex}" aria-expanded="${turn.reasoningExpanded ? "true" : "false"}">${turn.reasoningExpanded ? "Show less" : "Show all thinking"}</button>`
-				: "";
-			thinking = `<li class="ai-process-thinking${turn.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}" aria-label="Model thinking">
-				<span class="ai-process-mark" aria-hidden="true"></span>
-				<div class="ai-process-thinking-body">
-					${plannerNote}
-					<div class="ai-process-thinking-text">${renderAskThinkingHtml(reasoningText)}</div>
-					${toggle}
-				</div>
-			</li>`;
-		} else if (plannerNote || (!turn.pending && turn.degraded)) {
+			thinking = renderAskThinkingItemHtml({
+				reasoningText,
+				pending: turn.pending,
+				reasoningExpanded: turn.reasoningExpanded,
+				plannerNote: turn.plannerNote,
+				turnIndex,
+			});
+		} else if (turn.plannerNote || (!turn.pending && turn.degraded)) {
 			const degradedNote =
 				!turn.pending && turn.degraded
 					? `<p>Simplified search plan — the model’s rewrite JSON was missing or its query chips were unusable, so short topical searches were built from your question instead.</p>`
 					: "";
-			thinking = `<li class="ai-process-thinking" aria-label="Model notes">
-				<span class="ai-process-mark" aria-hidden="true"></span>
-				<div class="ai-process-thinking-body">${plannerNote}${degradedNote}</div>
-			</li>`;
+			thinking = renderAskThinkingItemHtml({
+				reasoningText: "",
+				pending: false,
+				plannerNote: turn.plannerNote,
+				degradedNote,
+				turnIndex,
+			});
 		}
 		const process = processStepsHtml(
 			buildAskProcessSteps({
@@ -2243,7 +2379,22 @@ export function attachAiMode(options: {
 			});
 	}
 
+	let syncTimer = 0;
+
+	function toggleTurnThinking(turnIndex: number): void {
+		const turn = turns[turnIndex];
+		if (!turn) return;
+		turn.reasoningExpanded = !turn.reasoningExpanded;
+		if (!applyAskThinkingStreamPatch(thread, turn, turnIndex)) {
+			syncLayout();
+		}
+	}
+
 	function syncLayout(): void {
+		if (syncTimer) {
+			window.clearTimeout(syncTimer);
+			syncTimer = 0;
+		}
 		const hasThread = turns.length > 0;
 		root.classList.toggle("has-thread", hasThread);
 		empty.hidden = hasThread || shareMode;
@@ -2304,17 +2455,6 @@ export function attachAiMode(options: {
 				});
 			},
 		);
-		thread
-			.querySelectorAll<HTMLButtonElement>("[data-ai-toggle-thinking]")
-			.forEach((button) => {
-				button.addEventListener("click", () => {
-					const index = Number(button.getAttribute("data-turn-index"));
-					const turn = turns[index];
-					if (!turn) return;
-					turn.reasoningExpanded = !turn.reasoningExpanded;
-					syncLayout();
-				});
-			});
 		if (thread) pinClampedAskThinking(thread);
 		if (!shareMode) renderHistory();
 	}
@@ -2374,12 +2514,15 @@ export function attachAiMode(options: {
 		});
 	}
 
-	let syncTimer = 0;
 	function scheduleSync(): void {
 		if (syncTimer) return;
 		syncTimer = window.setTimeout(() => {
 			syncTimer = 0;
-			syncLayout();
+			const turnIndex = turns.length - 1;
+			const turn = turns[turnIndex];
+			if (!turn) return;
+			if (applyAskThinkingStreamPatch(thread, turn, turnIndex)) return;
+			if (turn.pending) syncLayout();
 		}, 80);
 	}
 
@@ -2875,6 +3018,18 @@ export function attachAiMode(options: {
 			pendingReplaceQuestions = null;
 			leaveAskHome();
 		});
+	});
+
+	thread.addEventListener("click", (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		const button = target.closest("[data-ai-toggle-thinking]");
+		if (!(button instanceof HTMLButtonElement) || !thread.contains(button)) {
+			return;
+		}
+		const index = Number(button.getAttribute("data-turn-index"));
+		if (!Number.isFinite(index)) return;
+		toggleTurnThinking(index);
 	});
 
 	thread.addEventListener(
