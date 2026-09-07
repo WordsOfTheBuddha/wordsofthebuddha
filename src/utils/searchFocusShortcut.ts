@@ -59,26 +59,60 @@ function focusSearchInput(input: HTMLInputElement): void {
 	if (typeof input.select === "function") input.select();
 }
 
+function shortcutEventTarget(event: Event): Element | null {
+	const t = event.target;
+	if (t instanceof Element) return t;
+	if (t instanceof Node) return t.parentElement;
+	return document.activeElement;
+}
+
+const FIREFOX_FIND_LISTEN_OPTS: AddEventListenerOptions = { capture: true };
+
 /** `/` focuses the visible search field, or goes to /search when only the icon is shown. */
 export function installSearchFocusShortcut(): void {
 	const w = window as unknown as { __searchFocusShortcut?: boolean };
 	if (w.__searchFocusShortcut) return;
 	w.__searchFocusShortcut = true;
 
-	document.addEventListener("keydown", (event) => {
-		if (!shouldHandleSearchFocusShortcut(event, document.activeElement)) {
-			return;
-		}
-		if (dialogBlocksSearchFocus()) return;
+	// Firefox Quick Find (`/` and `'`) is a default action. A bubbling
+	// keydown listener often runs after Firefox has already opened the
+	// find bar and stolen focus. Capture + preventDefault (and a keypress
+	// follow-up) cancel it in time. See https://bugzilla.mozilla.org/1455101
+	let suppressFindKeypress = false;
 
-		const input = resolveSearchFocusTarget(
-			document.querySelectorAll(SEARCH_FOCUS_SELECTOR),
-		);
-		event.preventDefault();
-		if (input) {
-			focusSearchInput(input);
-			return;
-		}
-		window.location.assign(SEARCH_FOCUS_FALLBACK_HREF);
-	});
+	window.addEventListener(
+		"keydown",
+		(event) => {
+			suppressFindKeypress = false;
+			if (
+				!shouldHandleSearchFocusShortcut(event, shortcutEventTarget(event))
+			) {
+				return;
+			}
+			if (dialogBlocksSearchFocus()) return;
+
+			event.preventDefault();
+			suppressFindKeypress = true;
+
+			const input = resolveSearchFocusTarget(
+				document.querySelectorAll(SEARCH_FOCUS_SELECTOR),
+			);
+			if (input) {
+				focusSearchInput(input);
+				return;
+			}
+			window.location.assign(SEARCH_FOCUS_FALLBACK_HREF);
+		},
+		FIREFOX_FIND_LISTEN_OPTS,
+	);
+
+	window.addEventListener(
+		"keypress",
+		(event) => {
+			if (!suppressFindKeypress) return;
+			suppressFindKeypress = false;
+			event.preventDefault();
+		},
+		FIREFOX_FIND_LISTEN_OPTS,
+	);
 }
