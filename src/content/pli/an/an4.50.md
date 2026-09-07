@@ -1,6 +1,5 @@
 ---
 slug: an4.50
-character: Deity Sun
 source: suttacentral/bilara-data
 title: Upakkilesasutta
 edition: ms

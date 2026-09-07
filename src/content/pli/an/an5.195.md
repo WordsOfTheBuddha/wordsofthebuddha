@@ -1,8 +1,6 @@
 ---
 slug: an5.195
-character:
-  - Deity Sun
-  - Brahmin Piṅgiyānī
+character: Brahmin Piṅgiyānī
 source: suttacentral/bilara-data
 title: Piṅgiyānīsutta
 edition: ms

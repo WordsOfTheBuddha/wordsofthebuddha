@@ -1,6 +1,5 @@
 ---
 slug: sn1.13
-character: Deity Sun
 source: suttacentral/bilara-data
 title: Natthiputtasamasutta
 edition: ms

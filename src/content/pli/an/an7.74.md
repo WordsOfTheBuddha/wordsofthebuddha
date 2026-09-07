@@ -1,6 +1,5 @@
 ---
 slug: an7.74
-character: Deity Sun
 source: suttacentral/bilara-data
 title: Arakasutta
 edition: ms

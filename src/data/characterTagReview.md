@@ -3,8 +3,8 @@
 Featured interlocutors on reference-only Pali files (no English MDX). Short names are mapped onto an existing English character when the match is unique. Homonyms, remaining new labels, and English near-duplicates need a pass before biographies.
 
 - Reference-only files scanned: 2487
-- Tagged: 744
-- Left untagged (no featured interlocutor detected): 1743
+- Tagged: 719
+- Left untagged (no featured interlocutor detected): 1768
 
 ## Homonyms that need confirmation
 
@@ -62,22 +62,10 @@ None.
 - `an3.58` → Brahmin Tikaṇṇa
 - `an3.71` → Wanderer Channa
 - `an3.91` → Venerable Kassapagotta
-- `an3.94` → Deity Sun
-- `an4.17` → Deity Moon
-- `an4.18` → Deity Moon
-- `an4.19` → Deity Moon
 - `an4.39` → Brahmin Ujjaya
 - `an4.40` → Brahmin Udāyī
-- `an4.47` → Deity Sun
 - `an4.48` → Venerable Visākha, Pañcālī's Son
-- `an4.50` → Deity Sun
-- `an4.70` → Deity Moon; Deity Sun
 - `an4.111` → Kesi Assadammasārathi
-- `an4.127` → Deity Moon; Deity Sun
-- `an4.141` → Deity Moon
-- `an4.142` → Deity Moon
-- `an4.144` → Deity Moon
-- `an4.145` → Deity Moon
 - `an4.176` → Laywoman Nandamātā
 - `an4.177` → Venerable Rāhula
 - `an4.188` → Upaka Maṇḍikāputta
@@ -88,11 +76,9 @@ None.
 - `an5.34` → General Sīha
 - `an5.50` → Venerable Nārada
 - `an5.170` → Venerable Bhaddaji
-- `an5.195` → Deity Sun; Brahmin Piṅgiyānī
+- `an5.195` → Brahmin Piṅgiyānī
 - `an5.201` → Venerable Kimila
-- `an6.2` → Deity Sun
 - `an6.16` → Householder Nakulamātā Gahapatānī Nakulapitara
-- `an6.17` → Deity Sun
 - `an6.37` → Laywoman Nandamātā
 - `an6.40` → Venerable Kimila
 - `an6.47` → Wanderer Moḷiyasīvaka
@@ -101,11 +87,9 @@ None.
 - `an6.56` → Venerable Phagguna
 - `an6.59` → Householder Dārukammika
 - `an6.60` → Venerable Citta
-- `an6.70` → Deity Sun
 - `an7.47` → Brahmin Uggatasarīra
 - `an7.57` → General Sīha
 - `an7.59` → Venerable Kimila
-- `an7.74` → Deity Sun
 - `an8.8` → Venerable Uttara
 - `an8.11` → Brahmin Verañja
 - `an8.12` → General Sīha
@@ -119,7 +103,6 @@ None.
 - `an9.11` → Venerable Maṁ
 - `an9.41` → Householder Tapussa
 - `an10.26` → Laywoman Kāḷī
-- `an10.29` → Deity Moon
 - `an10.44` → Venerable Kāyika; Venerable Vācasika; Venerable Sabrahmacārīsu
 - `an10.65` → Wanderer Sāmaṇḍaka
 - `an10.66` → Wanderer Sāmaṇḍaka
@@ -129,9 +112,7 @@ None.
 - `an10.94` → Householder Vajjiyamāhita
 - `an10.95` → Wanderer Uttiya
 - `an10.96` → Venerable Okāsa
-- `an10.97` → Deity Sun
 - `an10.116` → Wanderer Ajita
-- `an10.176` → Deity Sun
 - `an11.13` → Nandiya the Sakyan
 - `dn4` → Brahmin Soṇadaṇḍa
 - `dn8` → Naked Ascetic Kassapa
@@ -161,9 +142,7 @@ None.
 - `mn146` → Venerable Nandaka
 - `mn147` → Venerable Rāhula
 - `mn150` → Brahmin Nagaravindeyyakā
-- `sn1.13` → Deity Sun
-- `sn1.26` → Deity Moon; Deity Sun
-- `sn2.4` → Deity Moon; Deity Sun; Deity Māgadha
+- `sn2.4` → Deity Māgadha
 - `sn2.5` → Deity Dāmali
 - `sn2.6` → Deity Kāmada
 - `sn2.7` → Deity Pañcālacaṇḍa
@@ -228,7 +207,7 @@ None.
 - `sn8.8` → Venerable Vaṅgīsa
 - `sn8.9` → Venerable Vaṅgīsa
 - `sn8.10` → Venerable Vaṅgīsa
-- `sn8.11` → Deity Moon; Venerable Vaṅgīsa
+- `sn8.11` → Venerable Vaṅgīsa
 - `sn8.12` → Venerable Vaṅgīsa
 - `sn9.3` → Venerable Kassapagotta
 - `sn9.7` → Venerable Nāgadatta
@@ -243,13 +222,11 @@ None.
 - `sn11.14` → Deity Ayañhi
 - `sn11.15` → Devānaminda the Sakyan
 - `sn11.16` → Devānaminda the Sakyan
-- `sn11.17` → Deity Moon
 - `sn11.21` → Devānaminda the Sakyan
 - `sn12.17` → Naked Ascetic Kassapa
 - `sn12.18` → Wanderer Timbaruka
 - `sn12.32` → Kaḷāra the Aristocrat
 - `sn12.70` → Wanderer Susima
-- `sn16.7` → Deity Moon
 - `sn16.10` → Bhikkhunī Thullatissā
 - `sn18.1` → Venerable Rāhula
 - `sn18.2` → Venerable Rāhula
@@ -270,7 +247,7 @@ None.
 - `sn21.6` → Venerable Bhaddiya
 - `sn21.7` → Venerable Visākha, Pañcālī's Son
 - `sn21.9` → Venerable Tissa
-- `sn21.11` → Deity Moon; Deity Sun; Venerable Mahākappina
+- `sn21.11` → Venerable Mahākappina
 - `sn22.3` → Householder Hāliddikāni
 - `sn22.4` → Householder Hāliddikāni
 - `sn22.49` → Householder Soṇa
@@ -282,10 +259,6 @@ None.
 - `sn22.88` → Venerable Assaji
 - `sn22.91` → Venerable Rāhula
 - `sn22.92` → Venerable Rāhula
-- `sn24.1` → Deity Moon
-- `sn24.19` → Deity Moon
-- `sn24.45` → Deity Moon
-- `sn24.71` → Deity Moon
 - `sn35.63` → Venerable Migajāla
 - `sn35.64` → Venerable Migajāla
 - `sn35.83` → Venerable Phagguna
@@ -317,7 +290,6 @@ None.
 - `sn44.11` → Venerable Sabhiya
 - `sn45.10` → Wanderer Nandiya
 - `sn45.30` → Venerable Uttiya
-- `sn45.146-148` → Deity Moon; Deity Sun
 - `sn47.15` → Venerable Bāhiya
 - `sn47.16` → Venerable Uttiya
 - `sn47.30` → Householder Mānadinna
@@ -329,7 +301,6 @@ None.
 - `sn55.47` → Nandiya the Sakyan
 - `sn55.48` → Bhaddiya the Sakyan
 - `sn55.53` → Lay follower Dhammadinna
-- `sn56.46` → Deity Moon; Deity Sun
 - `snp1.4` → Brahmin Kasibhāradvāja
 - `snp1.7` → Brahmin Bhāradvāja the Fire-Worshiper
 - `snp1.10` → Spirit Āḷavaka
@@ -348,7 +319,7 @@ None.
 - `an2.130-140` → Laywoman Nandamātā; Venerable Sāriputta; Venerable Mahāmoggallāna; Hatthaka of Āḷavi
 - `an4.176` → Laywoman Nandamātā; Venerable Sāriputta; Venerable Mahāmoggallāna; Hatthaka of Āḷavi
 - `an4.243` → Venerable Ānanda; Venerable Sāriputta; Venerable Mahāmoggallāna; Venerable Anuruddha
-- `an6.17` → Venerable Mahākassapa; Deity Sun; Venerable Mahācunda; Venerable Sāriputta; Venerable Mahāmoggallāna; Venerable Anuruddha
+- `an6.17` → Venerable Mahākassapa; Venerable Mahācunda; Venerable Sāriputta; Venerable Mahāmoggallāna; Venerable Anuruddha
 - `an6.120-139` → Citta the householder; Layman Isidatta; Layman Purāṇa; Householder Ugga of Vesāli; Sakka, lord of the gods; Householder Anāthapiṇḍika; Mahānāma the Sakyan; Hatthaka of Āḷavi
 - `an9.11` → Venerable Sāriputta; Venerable Mahāmoggallāna; Venerable Maṁ; Venerable Ānanda
 - `sn2.30` → Māra the Evil One; Deity Sahali; Deity Nīko; Deity Ākoṭaka; Deity Vegabbhari; Deity Māro Pāpimā Begabbhariṁ; Deity Asama

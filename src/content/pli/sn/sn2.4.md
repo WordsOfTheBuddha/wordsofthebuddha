@@ -1,9 +1,6 @@
 ---
 slug: sn2.4
-character:
-  - Deity Moon
-  - Deity Sun
-  - Deity Māgadha
+character: Deity Māgadha
 source: suttacentral/bilara-data
 title: Māgadhasutta
 edition: ms

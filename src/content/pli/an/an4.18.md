@@ -1,6 +1,5 @@
 ---
 slug: an4.18
-character: Deity Moon
 source: suttacentral/bilara-data
 title: Dutiyaagatisutta
 edition: ms

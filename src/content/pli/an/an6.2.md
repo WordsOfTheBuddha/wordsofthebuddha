@@ -1,6 +1,5 @@
 ---
 slug: an6.2
-character: Deity Sun
 source: suttacentral/bilara-data
 title: Dutiyaāhuneyyasutta
 edition: ms

@@ -2,7 +2,6 @@
 slug: an6.17
 character:
   - Venerable Mahākassapa
-  - Deity Sun
   - Venerable Mahācunda
   - Venerable Sāriputta
   - Venerable Mahāmoggallāna

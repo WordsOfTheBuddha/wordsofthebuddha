@@ -236,15 +236,15 @@ export const PERSON_SENSES: PersonSense[] = [
 	{
 		label: "Deity Moon",
 		pali: ["candimā devaputt", "candimaṁ devaputt", "candimaso devaputt"],
-		sujato: ["moon god", "the moon"],
-		titleNames: ["the moon", "moon"],
+		paliRequire: ["devaputt"],
+		sujato: ["moon god", "godling candimasa", "young deity candimasa"],
+		titleNames: ["candimasa"],
 	},
 	{
 		label: "Deity Sun",
 		pali: ["sūriyo devaputt", "sūriyaṁ devaputt", "sūriyo devaputt"],
 		paliRequire: ["devaputt"],
-		sujato: ["sun god", "the sun"],
-		titleNames: ["the sun", "sun"],
+		sujato: ["sun god"],
 	},
 	{
 		label: "Princess Cundī",

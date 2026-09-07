@@ -1,6 +1,5 @@
 ---
 slug: an4.47
-character: Deity Sun
 source: suttacentral/bilara-data
 title: Suvidūrasutta
 edition: ms

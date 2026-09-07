@@ -1,8 +1,5 @@
 ---
 slug: an4.70
-character:
-  - Deity Moon
-  - Deity Sun
 source: suttacentral/bilara-data
 title: Adhammikasutta
 edition: ms

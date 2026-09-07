@@ -1,6 +1,5 @@
 ---
 slug: an4.145
-character: Deity Moon
 source: suttacentral/bilara-data
 title: Pajjotasutta
 edition: ms

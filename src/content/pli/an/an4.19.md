@@ -1,6 +1,5 @@
 ---
 slug: an4.19
-character: Deity Moon
 source: suttacentral/bilara-data
 title: Tatiyaagatisutta
 edition: ms

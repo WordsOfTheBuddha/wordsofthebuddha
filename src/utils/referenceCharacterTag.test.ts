@@ -598,6 +598,57 @@ describe("detectReferenceCharacters false-positive guards", () => {
 		);
 	});
 
+	it("does not tag Deity Moon or Deity Sun from passing celestial mentions", () => {
+		assert.deepEqual(
+			detectReferenceCharacters({
+				slug: "an4.17",
+				paliBody: "kāḷapakkheva candimā”ti.",
+				sujatoBody: "like the moon in the waning fortnight.",
+			}).labels,
+			[],
+		);
+		assert.deepEqual(
+			detectReferenceCharacters({
+				slug: "sn24.1",
+				paliBody:
+					"na candimasūriyā udenti vā apenti vā esikaṭṭhāyiṭṭhitā",
+				sujatoBody:
+					"the moon and stars neither rise nor set, but stand firm like a pillar",
+			}).labels,
+			[],
+		);
+		assert.equal(
+			detectReferenceCharacters({
+				slug: "sn16.7",
+				paliBody:
+					"Atha kho āyasmā mahākassapo yena bhagavā tenupasaṅkami",
+				sujatoBody:
+					"It's like the moon in the waning fortnight. Whether by day or by night, its beauty only declines.",
+			}).labels.includes("Deity Moon"),
+			false,
+		);
+		assert.equal(
+			detectReferenceCharacters({
+				slug: "sn45.146-148",
+				sujatoTitle: "The Moon, Etc.",
+				paliBody:
+					"yā kāci tārakarūpānaṁ pabhā, sabbā tā candimappabhāya kalaṁ nāgghanti soḷasiṁ",
+				sujatoBody:
+					"The radiance of all the stars is not worth a sixteenth part of the moon’s radiance",
+			}).labels.includes("Deity Moon"),
+			false,
+		);
+		assert.equal(
+			detectReferenceCharacters({
+				slug: "an4.141",
+				paliBody: "Candābhā, sūriyābhā, aggābhā, paññābhā",
+				sujatoBody:
+					"The brightness of the moon, sun, fire, and wisdom.",
+			}).labels.some((label) => label === "Deity Moon" || label === "Deity Sun"),
+			false,
+		);
+	});
+
 	it("handles geographic crowds, clan wanderers, and slug-specific figures", () => {
 		assert.deepEqual(
 			detectReferenceCharacters({

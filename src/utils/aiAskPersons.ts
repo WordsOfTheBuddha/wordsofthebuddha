@@ -35,6 +35,26 @@ const GENERIC_PERSON_QUESTION_KEYS = new Set([
 	"yakkha",
 	"deva",
 ]);
+/** English nouns that also appear as person slugs / “Deity X” titles. */
+const COMMON_NOUN_PERSON_KEYS = new Set([
+	"moon",
+	"sun",
+	"earth",
+	"fire",
+	"wind",
+	"rain",
+	"star",
+	"light",
+	"sky",
+	"night",
+	"day",
+]);
+/** Distinctive names for figures whose English title is a common noun. */
+const PERSON_QUESTION_ALIASES: Record<string, readonly string[]> = {
+	moon: ["candima", "candimasa"],
+	sun: ["suriya"],
+};
+const PERSON_ROLE_PREFIX = /^(deity|god|goddess|spirit)\s+(.+)$/;
 const MAX_HINT_PERSONS = 160;
 const MAX_RESULT_PERSONS = 3;
 const MAX_SAMPLE_IDS = 4;
@@ -103,7 +123,8 @@ export function personMatchKeys(record: AiAskPersonRecord): string[] {
 
 /**
  * Names safe to look for in the reader's question. Skips short slug-heads that
- * collide with ordinary Dhamma terms (sati, nāga, …).
+ * collide with ordinary Dhamma terms (sati, nāga, …) and bare common nouns
+ * (moon in “full moon”) that are not themselves a named figure.
  */
 export function personQuestionKeys(record: AiAskPersonRecord): string[] {
 	const keys = new Set<string>();
@@ -111,6 +132,7 @@ export function personQuestionKeys(record: AiAskPersonRecord): string[] {
 		const key = normalizePersonMatchKey(raw);
 		if (!key || key.length < min) return;
 		if (GENERIC_PERSON_QUESTION_KEYS.has(key)) return;
+		if (COMMON_NOUN_PERSON_KEYS.has(key)) return;
 		keys.add(key);
 	};
 	add(record.title);
@@ -121,7 +143,53 @@ export function personQuestionKeys(record: AiAskPersonRecord): string[] {
 	add(record.slug.replace(/-/g, " "));
 	const slugHead = record.slug.split("-")[0] || "";
 	if (slugHead.length >= 5) add(slugHead);
+	const roleTitle = normalizePersonMatchKey(record.title);
+	const roleMatch = roleTitle.match(PERSON_ROLE_PREFIX);
+	if (roleMatch) {
+		const role = roleMatch[1] || "";
+		const name = roleMatch[2] || "";
+		if (name) {
+			add(`${name} ${role}`);
+			add(`${name} god`);
+			add(`god ${name}`);
+			add(`${name} goddess`);
+			add(`goddess ${name}`);
+		}
+	}
+	for (const alias of PERSON_QUESTION_ALIASES[record.slug] || []) {
+		add(alias);
+	}
 	return [...keys];
+}
+
+function personWeakQuestionKeys(record: AiAskPersonRecord): string[] {
+	const weak = new Set<string>();
+	const consider = (raw: string) => {
+		const key = normalizePersonMatchKey(raw);
+		if (COMMON_NOUN_PERSON_KEYS.has(key)) weak.add(key);
+	};
+	consider(record.slug.replace(/-/g, " "));
+	consider(record.slug.split("-")[0] || "");
+	const beforeComma = record.title.split(",")[0] || "";
+	const roleMatch = normalizePersonMatchKey(beforeComma).match(
+		PERSON_ROLE_PREFIX,
+	);
+	if (roleMatch?.[2]) consider(roleMatch[2]);
+	return [...weak];
+}
+
+function questionHasPersonKey(haystack: string, key: string): boolean {
+	const pattern = new RegExp(`(?:^|\\s)${escapePersonKey(key)}(?:\\s|$)`);
+	return pattern.test(haystack);
+}
+
+/** “Who is the Moon?” — not “a special full moon”. */
+function questionAsksWhoIsWeakPerson(haystack: string, key: string): boolean {
+	const k = escapePersonKey(key);
+	const pattern = new RegExp(
+		`(?:^|\\s)who (?:is|was|are|were) (?:the )?(?:deity |god |goddess |spirit )?${k}(?: deity| god| goddess| spirit)?$`,
+	);
+	return pattern.test(haystack);
 }
 
 /** True when the question text itself names this figure. */
@@ -131,10 +199,12 @@ export function questionNamesPerson(
 ): boolean {
 	const haystack = normalizePersonMatchKey(question);
 	if (!haystack) return false;
-	return personQuestionKeys(record).some((key) => {
-		const pattern = new RegExp(`(?:^|\\s)${escapePersonKey(key)}(?:\\s|$)`);
-		return pattern.test(haystack);
-	});
+	if (personQuestionKeys(record).some((key) => questionHasPersonKey(haystack, key))) {
+		return true;
+	}
+	return personWeakQuestionKeys(record).some((key) =>
+		questionAsksWhoIsWeakPerson(haystack, key),
+	);
 }
 
 function blurbFor(record: AiAskPersonRecord): string {
