@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	AI_ASK_SESSION_LIMIT,
+	ASK_HISTORY_PREVIEW_LIMIT,
 	askHistoryEntriesForRestore,
+	askHistoryEntriesForTab,
 	clearActiveAskThread,
 	clearAskResumeFromDiscourse,
 	clearAskThreadResumeIntent,
@@ -13,11 +15,14 @@ import {
 	formatAskRelativeTime,
 	mergeAskHistoryEntries,
 	normalizeAskQuestionKey,
+	pinnedAskHistoryEntries,
 	readActiveAskThread,
+	resolveAskHistoryTab,
 	removeAskHistoryEntriesByQuestions,
 	sanitizeAskHistoryEntry,
 	trimAskHistoryEntries,
 	upsertAiAskSessionEntry,
+	visibleAskHistoryEntries,
 	writeActiveAskThread,
 	type AiAskSessionEntry,
 } from "./aiAskSession";
@@ -303,5 +308,72 @@ describe("active Ask thread", () => {
 		assert.equal(read[0]?.question, "mindfulness of the body");
 		clearActiveAskThread(storage);
 		assert.deepEqual(readActiveAskThread(storage), []);
+	});
+});
+
+describe("ask history tabs", () => {
+	const entries = [
+		entry("old pin", 1, { saved: true }),
+		entry("mid", 2),
+		entry("new", 3),
+		entry("newer pin", 4, { saved: true }),
+		entry("newest", 5),
+		entry("q6", 6),
+		entry("q7", 7),
+	];
+
+	it("keeps Recent in recency order instead of lifting pins", () => {
+		assert.deepEqual(
+			askHistoryEntriesForTab(entries, "recent").map((item) => item.question),
+			["q7", "q6", "newest", "newer pin", "new", "mid", "old pin"],
+		);
+	});
+
+	it("lists every pin newest-first on the Pinned tab", () => {
+		assert.deepEqual(
+			pinnedAskHistoryEntries(entries).map((item) => item.question),
+			["newer pin", "old pin"],
+		);
+		assert.deepEqual(
+			visibleAskHistoryEntries(entries, "pinned", false).map(
+				(item) => item.question,
+			),
+			["newer pin", "old pin"],
+		);
+	});
+
+	it("does not cap the Pinned tab at the Recent preview limit", () => {
+		const manyPins = Array.from({ length: 8 }, (_, i) =>
+			entry(`pin ${i}`, i + 1, { saved: true }),
+		);
+		assert.equal(
+			visibleAskHistoryEntries(manyPins, "pinned", false).length,
+			8,
+		);
+	});
+
+	it("previews five Recent Asks until expanded", () => {
+		assert.equal(ASK_HISTORY_PREVIEW_LIMIT, 5);
+		assert.deepEqual(
+			visibleAskHistoryEntries(entries, "recent", false).map(
+				(item) => item.question,
+			),
+			["q7", "q6", "newest", "newer pin", "new"],
+		);
+		assert.equal(
+			visibleAskHistoryEntries(entries, "recent", true).length,
+			entries.length,
+		);
+	});
+
+	it("falls back to Recent when nothing is pinned", () => {
+		assert.equal(resolveAskHistoryTab(entries, "pinned"), "pinned");
+		assert.equal(
+			resolveAskHistoryTab(
+				entries.map((item) => ({ ...item, saved: false })),
+				"pinned",
+			),
+			"recent",
+		);
 	});
 });

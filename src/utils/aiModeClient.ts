@@ -40,6 +40,14 @@ import {
 } from "./aiSpeechTranscript";
 import { linkifyAskSummaryHtml } from "./linkifyAskSummary";
 import { transformId } from "./transformId";
+import {
+	ASK_EXPORT_OPEN_EVENT,
+	askExportSharePathFromTurns,
+	askTurnsForExport,
+} from "./askExportTurns";
+import { buildAskFollowUpHistory } from "./aiAskHistory";
+
+export { buildAskFollowUpHistory };
 
 export interface AiDiscourseHit {
 	slug: string;
@@ -140,6 +148,10 @@ interface AiAskEvent {
 	quota?: AiAskQuotaView;
 	plannerNote?: string;
 	routing?: AskPlannerRoutingView;
+	/** Replace streamed thinking with the accepted planner’s reasoning. */
+	reasoning?: string;
+	/** Drop thinking from a discarded planner attempt. */
+	reset?: boolean;
 }
 
 /** Mirrors server AiAskPlannerRouting — only present in `astro dev`. */
@@ -174,7 +186,7 @@ const ASK_REASONING_STATUS_LINE =
  * starts with one of these words (“Queries should target…”) is kept.
  */
 const ASK_REASONING_META_LINE =
-	/^\s*[-*]?\s*"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage|usefulFallbackQueries|count|slugs|summary)"?\s*[:=]/i;
+	/^\s*[-*]?\s*"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage|followUpIntent|excludeSlugs|blacklist|usefulFallbackQueries|count|slugs|summary)"?\s*[:=]/i;
 const ASK_REASONING_FORMAT_LINE =
 	/^\s*(?:```|JSON\s*:?\s*$|Return JSON\b|Output JSON\b|\{|\}|\[|\])/i;
 
@@ -204,6 +216,30 @@ export function displayAskReasoning(
 	// While streaming, keep raw text so partial reasoning isn’t dropped mid-line.
 	if (pending && !kept && text.trim()) return text.trim();
 	return kept;
+}
+
+/**
+ * Keep the process-box thinking in sync with the accepted planner:
+ * stream deltas, drop discarded attempts, replace with plan.reasoning.
+ */
+export function mergeAskTurnReasoning(
+	current: string,
+	event: {
+		type?: string;
+		delta?: string;
+		reset?: boolean;
+		reasoning?: string;
+	},
+): string {
+	if (event.type === "reasoning") {
+		if (event.reset) return "";
+		if (event.delta) return current + event.delta;
+		return current;
+	}
+	if (event.type === "plan" && typeof event.reasoning === "string") {
+		return event.reasoning;
+	}
+	return current;
 }
 
 export type AskProcessStepState = "todo" | "active" | "done";
@@ -1857,6 +1893,23 @@ export function attachAiMode(options: {
 		return -1;
 	}
 
+	function openAskDownload(): void {
+		const exportTurns = askTurnsForExport(turns);
+		if (exportTurns.length === 0) return;
+		const sharePath = askExportSharePathFromTurns(
+			turns,
+			window.location.pathname,
+		);
+		window.dispatchEvent(
+			new CustomEvent(ASK_EXPORT_OPEN_EVENT, {
+				detail: {
+					turns: exportTurns,
+					...(sharePath ? { sharePath } : {}),
+				},
+			}),
+		);
+	}
+
 	function shareActionsHtml(turn: AiAskTurn, turnIndex: number): string {
 		if (turn.pending || turn.error || turn.results.length === 0) {
 			return "";
@@ -1888,14 +1941,12 @@ export function attachAiMode(options: {
 				${PIN_ICON_SVG}<span>${pinLabel}</span>
 			</button>`
 			: "";
-		const deleteBtn =
-			showPin && !turn.fromShare
-				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}">Delete</button>`
-				: "";
 		return `<div class="ai-share-actions">
 			${pinBtn}
-			${deleteBtn}
-			<button type="button" class="ai-share-btn ai-share-btn-end" data-ai-share data-turn-index="${turnIndex}">Share link</button>
+			<div class="ai-share-actions-end">
+				<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>
+				<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">Share link</button>
+			</div>
 		</div>`;
 	}
 
@@ -2212,31 +2263,34 @@ export function attachAiMode(options: {
 		</section>`;
 	}
 
-	const HISTORY_PREVIEW_LIMIT = 6;
+	let historyTab: AskHistoryTab = "recent";
 	let historyExpanded = false;
 
-	function renderHistory(): void {
+	function renderHistory(options?: { focusTab?: boolean }): void {
 		if (!historyEl) return;
 		if (turns.length > 0 || sessionEntries.length === 0) {
 			historyEl.hidden = true;
 			historyEl.innerHTML = "";
 			return;
 		}
-		const ordered = [...sessionEntries].sort((a, b) => {
-			if (a.saved && !b.saved) return -1;
-			if (!a.saved && b.saved) return 1;
-			return b.at - a.at;
-		});
-		const hiddenCount = Math.max(0, ordered.length - HISTORY_PREVIEW_LIMIT);
-		const visible =
-			historyExpanded || hiddenCount === 0
-				? ordered
-				: ordered.slice(0, HISTORY_PREVIEW_LIMIT);
+		const pinned = pinnedAskHistoryEntries(sessionEntries);
+		const activeTab = resolveAskHistoryTab(sessionEntries, historyTab);
+		historyTab = activeTab;
+		const ordered = askHistoryEntriesForTab(sessionEntries, activeTab);
+		const hiddenCount =
+			activeTab === "pinned"
+				? 0
+				: Math.max(0, ordered.length - ASK_HISTORY_PREVIEW_LIMIT);
+		const visible = visibleAskHistoryEntries(
+			sessionEntries,
+			activeTab,
+			historyExpanded,
+		);
 		const items = visible
 			.map((entry) => {
 				const when = formatAskRelativeTime(entry.at);
 				const threadCount = entry.thread?.length || 0;
-				const pinned = entry.saved
+				const pinMark = entry.saved
 					? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
 					: "";
 				const resultIds = entry.results
@@ -2267,7 +2321,7 @@ export function attachAiMode(options: {
 						<button type="button" class="ai-history-item" data-ai-history-q="${q}">
 							<span class="ai-history-top">
 								<span class="ai-history-q">${q}</span>
-								<span class="ai-history-meta">${pinned}${when ? `<span class="ai-history-when">${escapeHtml(when)}</span>` : ""}</span>
+								<span class="ai-history-meta">${pinMark}${when ? `<span class="ai-history-when">${escapeHtml(when)}</span>` : ""}</span>
 							</span>
 							${rootRow}
 							${threadRow}
@@ -2292,11 +2346,46 @@ export function attachAiMode(options: {
 					? `<button type="button" class="ai-history-more" data-ai-history-more>Show fewer</button>`
 					: `<button type="button" class="ai-history-more" data-ai-history-more>More · ${hiddenCount} older</button>`
 				: "";
-		historyEl.innerHTML = `<div class="ai-history-heading">
+		const hint =
+			activeTab === "pinned"
+				? "Stay until you unpin"
+				: "Older ones drop off · pin to keep";
+		const heading =
+			pinned.length > 0
+				? `<div class="ai-history-heading">
+			<div class="ai-history-tabs" role="tablist" aria-label="Ask history">
+				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "recent" ? "true" : "false"}" data-ai-history-tab="recent">Recent</button>
+				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "pinned" ? "true" : "false"}" data-ai-history-tab="pinned">Pinned <span class="ai-history-tab-count">${pinned.length}</span></button>
+			</div>
+			<p class="ai-history-hint">${hint}</p>
+		</div>`
+				: `<div class="ai-history-heading">
 			<p class="ai-history-label">Recent Asks</p>
-			<p class="ai-history-hint">Older ones drop off · pin to keep</p>
-		</div><div class="ai-history-list">${items}</div>${moreRow}`;
+			<p class="ai-history-hint">${hint}</p>
+		</div>`;
+		historyEl.innerHTML = `${heading}<div class="ai-history-list">${items}</div>${moreRow}`;
 		historyEl.hidden = false;
+
+		if (options?.focusTab) {
+			historyEl
+				.querySelector<HTMLButtonElement>(
+					`[data-ai-history-tab="${activeTab}"]`,
+				)
+				?.focus();
+		}
+
+		historyEl
+			.querySelectorAll<HTMLButtonElement>("[data-ai-history-tab]")
+			.forEach((button) => {
+				button.addEventListener("click", () => {
+					const next = button.getAttribute("data-ai-history-tab");
+					if (next !== "recent" && next !== "pinned") return;
+					if (next === historyTab) return;
+					historyTab = next;
+					historyExpanded = false;
+					renderHistory({ focusTab: true });
+				});
+			});
 
 		historyEl
 			.querySelector<HTMLButtonElement>("[data-ai-history-more]")
@@ -2431,6 +2520,11 @@ export function attachAiMode(options: {
 				if (turn) void copyShareLink(turn, button, index);
 			});
 		});
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-download]").forEach((button) => {
+			button.addEventListener("click", () => {
+				openAskDownload();
+			});
+		});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-pin]").forEach((button) => {
 			button.addEventListener("click", () => {
 				const index = Number(button.getAttribute("data-turn-index"));
@@ -2438,15 +2532,6 @@ export function attachAiMode(options: {
 				if (turn) toggleSaveTurn(turn);
 			});
 		});
-		thread
-			.querySelectorAll<HTMLButtonElement>("[data-ai-delete-turn]")
-			.forEach((button) => {
-				button.addEventListener("click", () => {
-					const index = Number(button.getAttribute("data-turn-index"));
-					const turn = turns[index];
-					if (turn) deleteOpenAskTurn(turn);
-				});
-			});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-edit-question]").forEach(
 			(button) => {
 				button.addEventListener("click", () => {
@@ -2676,15 +2761,7 @@ export function attachAiMode(options: {
 				body: JSON.stringify({
 					question: q,
 					model: currentModel(),
-					history: turns.slice(0, -1).map((item) => ({
-						question: item.question,
-						lookingFor: item.lookingFor,
-						queries: item.queries,
-						resultSlugs: item.results.map((hit) => hit.slug).filter(Boolean),
-						...(item.summary
-							? { summary: item.summary.replace(/\s+/g, " ").trim().slice(0, 800) }
-							: {}),
-					})),
+					history: buildAskFollowUpHistory(turns.slice(0, -1)),
 				}),
 			});
 			const ctype = response.headers.get("content-type") || "";
@@ -2731,8 +2808,9 @@ export function attachAiMode(options: {
 				if (event.requestId) turn.requestId = event.requestId;
 				if (event.type === "quota" && event.quota) {
 					applyQuota(event.quota);
-				} else if (event.type === "reasoning" && event.delta) {
-					turn.reasoning += event.delta;
+				} else if (event.type === "reasoning") {
+					turn.reasoning = mergeAskTurnReasoning(turn.reasoning, event);
+					if (!turn.reasoning) turn.reasoningExpanded = false;
 					scheduleSync();
 				} else if (event.type === "status" && event.phase === "search") {
 					turn.phase = "search";
@@ -2767,6 +2845,8 @@ export function attachAiMode(options: {
 							turn.routing,
 						);
 					}
+					turn.reasoning = mergeAskTurnReasoning(turn.reasoning, event);
+					if (!turn.reasoning) turn.reasoningExpanded = false;
 					turn.lookingFor = event.lookingFor || "";
 					turn.queries = event.queries || [];
 					turn.fallbackQueries = event.fallbackQueries || [];

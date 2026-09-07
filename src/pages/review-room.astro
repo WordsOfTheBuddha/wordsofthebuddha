@@ -19,6 +19,8 @@ import { verifyUser } from "../middleware/auth";
 import { loadUserAskHistory } from "../utils/aiAskHistoryServer";
 import {
 	formatAskRelativeTime,
+	orderAskHistoryByRecent,
+	pinnedAskHistoryEntries,
 	type AiAskSessionEntry,
 } from "../utils/aiAskSession";
 import { openAskHistoryHref, searchAskHref } from "../utils/aiAskHref";
@@ -29,7 +31,6 @@ import {
 	formatMinutesAgo,
 	normalizeDiscourseSlug,
 	oldestPending,
-	orderAsksForReview,
 	type CanonCoverage,
 } from "../utils/reviewRoomStats";
 import {
@@ -75,6 +76,7 @@ let validReadLaterEntries: any[] = [];
 let validSavedEntries: any[] = [];
 let validReadEntries: any[] = [];
 let askEntries: AiAskSessionEntry[] = [];
+let pinnedAskEntries: AiAskSessionEntry[] = [];
 let coverage: CanonCoverage = { rows: [], totalRead: 0, totalAvailable: 0 };
 let learningDays = 0;
 let learningDayStrip: LearningDayDot[] = [];
@@ -145,7 +147,8 @@ try {
 	const { highlights: validHighlightsData } = await highlightsResponse.json();
 	validHighlights = validHighlightsData;
 
-	askEntries = orderAsksForReview(askHistory);
+	askEntries = orderAskHistoryByRecent(askHistory);
+	pinnedAskEntries = pinnedAskHistoryEntries(askEntries);
 
 	// Progress through each collection — readable union (site + reference).
 	readPagesMap = readDoc.exists ? readDoc.data()?.pages || {} : {};
@@ -694,22 +697,66 @@ try {
 			<!-- Tab Content Area -->
 			<div id="tab-content-area" class="px-2">
 				<div id="asks" class="tab-content hidden">
-					<div class="mt-4 ask-panel">
-						<a href={searchAskHref()} class="ask-new-btn">
-							+ Ask
-						</a>
+					<div class="mt-4 ask-panel" data-ask-history>
+						<div class="ask-panel-bar">
+							<a href={searchAskHref()} class="ask-new-btn">
+								+ Ask
+							</a>
+							{
+								askEntries.length > 0 && (
+									<div class="ask-panel-meta">
+										{
+											pinnedAskEntries.length > 0 ? (
+												<div
+													class="ask-history-tabs"
+													role="tablist"
+													aria-label="Ask history"
+												>
+													<button
+														type="button"
+														class="ask-history-tab"
+														role="tab"
+														aria-selected="true"
+														data-ask-history-tab="recent"
+													>
+														Recent
+													</button>
+													<button
+														type="button"
+														class="ask-history-tab"
+														role="tab"
+														aria-selected="false"
+														data-ask-history-tab="pinned"
+													>
+														Pinned{" "}
+														<span class="ask-history-tab-count">
+															{
+																pinnedAskEntries.length
+															}
+														</span>
+													</button>
+												</div>
+											) : (
+												<p class="ask-history-label">
+													Recent Asks
+												</p>
+											)
+										}
+										<p
+											class="ask-history-hint"
+											data-ask-history-hint
+										>
+											Older ones drop off · pin to keep
+										</p>
+									</div>
+								)
+							}
+						</div>
 						{
 							askEntries.length === 0 ? (
 								<p class="ask-empty">No asks yet.</p>
 							) : (
-								<>
-									<div class="ask-history-heading">
-										<p class="ask-history-label">Recent Asks</p>
-										<p class="ask-history-hint">
-											Older ones drop off · pin to keep
-										</p>
-									</div>
-									<div class="ask-history-list">
+								<div class="ask-history-list">
 										{askEntries.map((entry) => (
 											<a
 												href={openAskHistoryHref(
@@ -719,6 +766,9 @@ try {
 													"ask-row",
 													{ "is-pinned": entry.saved },
 												]}
+												data-ask-pinned={
+													entry.saved ? "1" : "0"
+												}
 											>
 												<div class="ask-row-head">
 													<p class="ask-row-q">
@@ -758,7 +808,6 @@ try {
 											</a>
 										))}
 									</div>
-								</>
 							)
 						}
 					</div>
@@ -1473,4 +1522,39 @@ try {
 
 	window.addEventListener("popstate", handleInitialLoad);
 	handleInitialLoad();
+
+	const askHistoryPanel = document.querySelector("[data-ask-history]");
+	if (askHistoryPanel) {
+		const tabs = [
+			...askHistoryPanel.querySelectorAll("[data-ask-history-tab]"),
+		];
+		const rows = [...askHistoryPanel.querySelectorAll(".ask-row")];
+		const hint = askHistoryPanel.querySelector("[data-ask-history-hint]");
+		const showAskHistoryTab = (tab) => {
+			if (tab !== "recent" && tab !== "pinned") return;
+			tabs.forEach((button) => {
+				button.setAttribute(
+					"aria-selected",
+					button.getAttribute("data-ask-history-tab") === tab
+						? "true"
+						: "false",
+				);
+			});
+			rows.forEach((row) => {
+				const pinned = row.getAttribute("data-ask-pinned") === "1";
+				row.hidden = tab === "pinned" && !pinned;
+			});
+			if (hint) {
+				hint.textContent =
+					tab === "pinned"
+						? "Stay until you unpin"
+						: "Older ones drop off · pin to keep";
+			}
+		};
+		tabs.forEach((button) => {
+			button.addEventListener("click", () => {
+				showAskHistoryTab(button.getAttribute("data-ask-history-tab"));
+			});
+		});
+	}
 </script>

@@ -2,14 +2,19 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	AI_ASK_HISTORY_SUMMARY_MAX,
+	AI_REWRITE_SYSTEM_PROMPT,
 	buildRewriteMessages,
 	clipAiHistorySummary,
 	clipAiQuestion,
 	extractJsonObject,
 	looksLikeHardTeachingTopic,
 	looksLikePersonalCrisis,
+	parseAskExcludeSlugs,
+	parseAskFollowUpIntent,
+	parseAskHistory,
 	parseRewritePlan,
 	preferMinimalCorrectedQuestion,
+	resolveRewriteExcludeSlugs,
 	shouldHonorOffTopic,
 	shouldRetryUnusableRewrite,
 } from "./aiQueryRewrite";
@@ -58,6 +63,68 @@ describe("parseRewritePlan", () => {
 			plan.rankingGuidance,
 			"They want practice instructions; favour SN 47 and MN 118 over verse.",
 		);
+	});
+
+	it("keeps excludeSlugs only from already-shown IDs", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "other mindfulness",
+				queries: ["kāyagatāsati"],
+				followUpIntent: "diversify",
+				excludeSlugs: ["MN 10", "sn47.19", "mn999", "invented"],
+			}),
+			"other discourses",
+			["mn10", "sn47.19"],
+		);
+		assert.equal(plan.followUpIntent, "diversify");
+		assert.deepEqual(plan.excludeSlugs, ["mn10", "sn47.19"]);
+		assert.ok(!plan.excludeSlugs?.includes("mn999"));
+	});
+
+	it("parses a diversify follow-up plan with a blacklist", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "further satipaṭṭhāna",
+				queries: ["kāyagatāsati", "sampajañña"],
+				followUpIntent: "diversify",
+				excludeSlugs: ["sn47.19", "mn10"],
+				rankingGuidance:
+					"Cover remaining SN 47 facets; do not repeat the prior shortlist.",
+			}),
+			"other discourses",
+			["sn47.19", "mn10"],
+		);
+		assert.equal(plan.followUpIntent, "diversify");
+		assert.deepEqual(plan.excludeSlugs, ["sn47.19", "mn10"]);
+	});
+
+	it("parses a refine follow-up with an empty blacklist", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "MN 131",
+				queries: ["MN 131"],
+				followUpIntent: "refine",
+				excludeSlugs: [],
+				rankingGuidance: "Stay with MN 131; they asked to go deeper on that hit.",
+			}),
+			"tell me more about MN 131",
+			["sn47.19", "mn10", "mn131"],
+		);
+		assert.equal(plan.followUpIntent, "refine");
+		assert.deepEqual(plan.excludeSlugs, []);
+	});
+
+	it("omits excludeSlugs when the planner did not set the field", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "anger",
+				queries: ["kodha"],
+			}),
+			"why am I angry",
+			["mn10"],
+		);
+		assert.equal(plan.excludeSlugs, undefined);
+		assert.equal(plan.followUpIntent, undefined);
 	});
 
 	it("keeps survey coverage from the planner", () => {
@@ -232,6 +299,24 @@ describe("preferMinimalCorrectedQuestion", () => {
 	});
 });
 
+describe("parseAskHistory", () => {
+	it("keeps turn 1 with result slugs instead of a tail-only slice", () => {
+		const raw = Array.from({ length: 8 }, (_, i) => ({
+			question: i === 0 ? "What is mindfulness?" : `Follow-up ${i}`,
+			lookingFor: "theme",
+			queries: ["sati"],
+			resultSlugs: i === 0 ? ["sn47.19", "mn10"] : [`an${i}`],
+			summary: i === 0 ? "Original sati briefing." : "",
+		}));
+		const turns = parseAskHistory(raw);
+		assert.equal(turns.length, 6);
+		assert.equal(turns[0]?.question, "What is mindfulness?");
+		assert.deepEqual(turns[0]?.resultSlugs, ["sn47.19", "mn10"]);
+		assert.match(turns[0]?.summary || "", /Original sati/);
+		assert.equal(turns[turns.length - 1]?.question, "Follow-up 7");
+	});
+});
+
 describe("clipAiHistorySummary", () => {
 	it("trims and caps prior-turn briefing length", () => {
 		assert.equal(clipAiHistorySummary("  a   b  "), "a b");
@@ -264,6 +349,26 @@ describe("buildRewriteMessages", () => {
 		assert.match(String(user.content), /alreadyShown: sn47\.19, mn10/);
 		assert.match(String(user.content), /summary: These discourses develop/);
 		assert.match(String(user.content), /What about the second one\?/);
+		assert.match(String(user.content), /Already shown IDs/);
+		assert.match(String(user.content), /excludeSlugs/);
+	});
+
+	it("keeps the original question and shown IDs when history is longer than the cap", () => {
+		const history = Array.from({ length: 8 }, (_, i) => ({
+			question: i === 0 ? "What is mindfulness?" : `Follow-up ${i}`,
+			lookingFor: "mindfulness",
+			queries: ["sati"],
+			resultSlugs: i === 0 ? ["sn47.19", "mn10"] : [`mn${i + 20}`],
+			summary: i === 0 ? "Original briefing on sati." : "",
+		}));
+		const messages = buildRewriteMessages("other discourses", history, "");
+		const user = messages.find((message) => message.role === "user");
+		assert.ok(user);
+		assert.match(String(user.content), /What is mindfulness\?/);
+		assert.match(String(user.content), /alreadyShown: sn47\.19, mn10/);
+		assert.match(String(user.content), /Follow-up 7/);
+		assert.doesNotMatch(String(user.content), /Follow-up 1\n/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /never drop the first question/i);
 	});
 });
 
@@ -297,6 +402,9 @@ describe("AI_REWRITE_SYSTEM_PROMPT", () => {
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /Satipaṭṭhāna Saṃyutta|SN 47/i);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /alreadyShown/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /Classify the intent/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /excludeSlugs/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /followUpIntent/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /non-thinking/);
 	});
 
 	it("keeps hard ethics in-library and refuses only personal crisis", async () => {
@@ -319,5 +427,75 @@ describe("parseRewritePlan shareSlug", () => {
 			"what is mindfulness of the body?",
 		);
 		assert.equal(plan.shareSlug, "mindfulness-of-the-body");
+	});
+});
+
+describe("parseAskExcludeSlugs", () => {
+	it("keeps only allowed shown slugs", () => {
+		assert.deepEqual(
+			parseAskExcludeSlugs(
+				["MN 10", "sn47.19", "mn999", "an3.1"],
+				["mn10", "sn47.19"],
+			),
+			["mn10", "sn47.19"],
+		);
+		assert.deepEqual(parseAskExcludeSlugs(["mn10"], []), []);
+		assert.equal(parseAskFollowUpIntent("diversify"), "diversify");
+		assert.equal(parseAskFollowUpIntent("refine"), "refine");
+		assert.equal(parseAskFollowUpIntent("new topic"), undefined);
+		assert.equal(parseAskFollowUpIntent("new"), "new");
+	});
+});
+
+describe("resolveRewriteExcludeSlugs", () => {
+	const shown = ["sn47.19", "mn10"];
+
+	it("uses the planner list when present", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs(
+				{ excludeSlugs: ["mn10"], followUpIntent: "diversify" },
+				shown,
+				"other discourses",
+			),
+			["mn10"],
+		);
+	});
+
+	it("fills already-shown IDs for a diversify plan that omitted the list", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs(
+				{ followUpIntent: "diversify" },
+				shown,
+				"give me a fresh set",
+			),
+			shown,
+		);
+	});
+
+	it("does not blacklist on refine even if the question looks like 'more'", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs(
+				{ excludeSlugs: [], followUpIntent: "refine" },
+				shown,
+				"tell me more about MN 131",
+			),
+			[],
+		);
+	});
+
+	it("falls back to the question-text heuristic only when the planner omitted both fields", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs({}, shown, "other discourses"),
+			shown,
+		);
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs({}, shown, "give me a fresh set"),
+			[],
+		);
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs({}, shown, "tell me more about MN 131"),
+			[],
+		);
+		assert.deepEqual(resolveRewriteExcludeSlugs({}, [], "other discourses"), []);
 	});
 });

@@ -42,6 +42,9 @@ const SESSION_KEY = "ai-ask-session-v1";
 const ACTIVE_THREAD_KEY = "ai-ask-active-thread-v1";
 /** Rolling history for signed-in (and local) Ask sessions. */
 export const AI_ASK_SESSION_LIMIT = 20;
+/** Recent-Asks preview above the composer; the Pinned tab shows every pin. */
+export const ASK_HISTORY_PREVIEW_LIMIT = 5;
+export type AskHistoryTab = "recent" | "pinned";
 export const AI_ASK_THREAD_TURN_LIMIT = 6;
 const ACTIVE_THREAD_TURN_LIMIT = AI_ASK_THREAD_TURN_LIMIT;
 
@@ -386,6 +389,48 @@ export function formatAskRelativeTime(at: number, now = Date.now()): string {
 	} catch {
 		return "";
 	}
+}
+
+export function orderAskHistoryByRecent(
+	entries: readonly AiAskSessionEntry[],
+): AiAskSessionEntry[] {
+	return [...entries].sort((a, b) => b.at - a.at);
+}
+
+export function pinnedAskHistoryEntries(
+	entries: readonly AiAskSessionEntry[],
+): AiAskSessionEntry[] {
+	return orderAskHistoryByRecent(entries).filter((entry) => entry.saved);
+}
+
+export function resolveAskHistoryTab(
+	entries: readonly AiAskSessionEntry[],
+	tab: AskHistoryTab,
+): AskHistoryTab {
+	if (tab === "pinned" && pinnedAskHistoryEntries(entries).length > 0) {
+		return "pinned";
+	}
+	return "recent";
+}
+
+export function askHistoryEntriesForTab(
+	entries: readonly AiAskSessionEntry[],
+	tab: AskHistoryTab,
+): AiAskSessionEntry[] {
+	const recent = orderAskHistoryByRecent(entries);
+	if (tab === "pinned") return recent.filter((entry) => entry.saved);
+	return recent;
+}
+
+export function visibleAskHistoryEntries(
+	entries: readonly AiAskSessionEntry[],
+	tab: AskHistoryTab,
+	expanded: boolean,
+	limit = ASK_HISTORY_PREVIEW_LIMIT,
+): AiAskSessionEntry[] {
+	const list = askHistoryEntriesForTab(entries, tab);
+	if (tab === "pinned" || expanded || list.length <= limit) return list;
+	return list.slice(0, limit);
 }
 
 function sessionStorageOrNull(): Storage | null {

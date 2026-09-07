@@ -1,5 +1,15 @@
 import type { OpenRouterChatMessage } from "./openrouter";
 import { getAiLibraryHintsText } from "./aiLibraryHintsServer";
+import {
+	ASK_HISTORY_MAX_TURNS,
+	ASK_HISTORY_PARSE_CAP,
+	ASK_HISTORY_SUMMARY_MAX,
+	clipAskHistoryTurns,
+	collectAskHistoryShownSlugs,
+	formatAskAlreadyShownIds,
+	shouldExcludeAlreadyShownAskHits,
+	type AiAskFollowUpHistoryTurn,
+} from "./aiAskHistory";
 import { normalizeAskShareSlug } from "./aiAskShare";
 import {
 	isWeakAiSearchQuery,
@@ -7,18 +17,10 @@ import {
 	topicalFallbackQueries,
 } from "./aiSearchQuery";
 
-export interface AiRewriteHistoryTurn {
-	question: string;
-	lookingFor: string;
-	queries: string[];
-	/** Slugs already shown — follow-ups should diversify away from these. */
-	resultSlugs?: string[];
-	/** Clipped prior briefing — helps follow-ups continue the same conversation. */
-	summary?: string;
-}
+export type AiRewriteHistoryTurn = AiAskFollowUpHistoryTurn;
 
 /** Soft cap for prior-turn summary text sent as Ask conversation context. */
-export const AI_ASK_HISTORY_SUMMARY_MAX = 800;
+export const AI_ASK_HISTORY_SUMMARY_MAX = ASK_HISTORY_SUMMARY_MAX;
 /** How many already-shown slugs to mention in follow-up rewrite context. */
 const HISTORY_SHOWN_SLUGS = 50;
 
@@ -28,6 +30,9 @@ export function clipAiHistorySummary(
 ): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, max);
 }
+
+/** Planner classification of whether prior result IDs should be blacklisted. */
+export type AiAskFollowUpIntent = "diversify" | "refine" | "new";
 
 export interface AiRewritePlan {
 	/** Lightly cleaned wording for display (typos / speech errors fixed). */
@@ -47,6 +52,7 @@ export interface AiRewritePlan {
 	/**
 	 * Notes for the later ranking + briefing step (facets to cover, how to
 	 * treat the question, what to avoid). Written by the planning model.
+	 * Says *why*; the blacklist decision lives in `excludeSlugs`.
 	 */
 	rankingGuidance?: string;
 	/**
@@ -54,6 +60,18 @@ export interface AiRewritePlan {
 	 * ceiling even when the displayed question dropped words like “extensive”.
 	 */
 	coverage?: "brief" | "survey";
+	/**
+	 * Planner classification for a follow-up: drop prior hits, keep them
+	 * for a named refine, or treat this as a new topic.
+	 */
+	followUpIntent?: AiAskFollowUpIntent;
+	/**
+	 * Discourse slugs the rescorer must not include. Only IDs from
+	 * already-shown history; never invented. `[]` means keep them in play.
+	 * Omitted when the planner did not classify — callers may use a light
+	 * question-text heuristic as a degraded fallback.
+	 */
+	excludeSlugs?: string[];
 }
 
 /**
@@ -70,10 +88,10 @@ export const AI_REWRITE_SYSTEM_PROMPT = `You rewrite a person's question into se
 
 The search engine already ranks discourses. Your job is NOT to answer, quote, or teach. Do not invent sutta citations. Do not write a Dhamma explanation.
 
-Pipeline context: after your queries run, a separate (smaller) model re-ranks up to ~500 candidate discourses and writes the reader's briefing from their titles and descriptions. It only sees the candidates, the question, and your rankingGuidance — so rankingGuidance is your one chance to steer it.
+Pipeline context: after your queries run, a separate smaller (non-thinking) model re-ranks up to ~500 candidate discourses and writes the reader's briefing. It sees the candidates, the question, earlier turns, rankingGuidance, and excludeSlugs. It must not infer which prior IDs to drop — you classify that. rankingGuidance says why (facets to cover instead); excludeSlugs is the blacklist the ranker will hard-apply.
 
 Return JSON only in the final answer — no markdown fences, no preface, no trailing commentary. Put any chain-of-thought in the reasoning channel (or <think> tags), never as a substitute for the JSON object. Content must be exactly one JSON object:
-{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","coverage":"brief","rankingGuidance":"1–3 sentences for the ranking step","offTopic":false}
+{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","coverage":"brief","rankingGuidance":"1–3 sentences for the ranking step","followUpIntent":"diversify","excludeSlugs":["mn10"],"offTopic":false}
 
 Search language (this site's real operators — use them when they help):
 - Default matches titles, descriptions, IDs, and topics/qualities/similes/persons (fuzzy).
@@ -104,8 +122,13 @@ Query rules:
 - If they asked for exact wording, a collection, OR/exclude, or a PTS page, encode that with the operators above.
 - fallbackQueries: 1–3 broader backups (plain short words, no operators) if the first queries might miss.
 - coverage: always set this. "survey" when they want a wide, cited, or thorough treatment of a topic — including when they never used those words (gather the discourses on X; what the canon says across the nikāyas; help me study Y properly; map the teaching). "brief" for a named sutta, a specific story, “which discourse”, or an ordinary short question. Classify the intent; do not copy the example’s "brief".
-- rankingGuidance: 1–3 plain sentences addressed to the ranking / briefing step. Say what the person actually wants (practice technique vs doctrine vs a specific story or person vs a survey), which facets or saṃyuttas should be represented, which named IDs are must-haves if present, what to de-prioritize (e.g. reference-only duplicates, tangential verses), and how to frame it when the topic is partly outside the early discourses or is hard/controversial. For hard topics, tell the ranking step to report what the Buddha said, what he refused to declare, and any characteristic reframes in the selected set (e.g. killing anger rather than beings; the undeclared points). When coverage is survey, tell it to keep a broad set and not collapse to a handful of hits. Do not answer the question here. Empty string when nothing beyond the obvious applies.
-- Follow-ups that ask for “other”, “more”, “diverse”, “not included yet”, or an enumeration: invent a fresh complementary query set. Prefer different facets / saṃyuttas / IDs than Earlier turns already returned (see alreadyShown). Do not repeat the same lookingFor or the same primary queries unless the person asked to refine one specific hit.
+- rankingGuidance: 1–3 plain sentences addressed to the ranking / briefing step. Say what the person actually wants (practice technique vs doctrine vs a specific story or person vs a survey), which facets or saṃyuttas should be represented, which named IDs are must-haves if present, what to de-prioritize (e.g. reference-only duplicates, tangential verses), and how to frame it when the topic is partly outside the early discourses or is hard/controversial. For hard topics, tell the ranking step to report what the Buddha said, what he refused to declare, and any characteristic reframes in the selected set (e.g. killing anger rather than beings; the undeclared points). When coverage is survey, tell it to keep a broad set and not collapse to a handful of hits. Do not answer the question here. Empty string when nothing beyond the obvious applies. On follow-ups, say which facets to cover instead — do not use rankingGuidance as the blacklist; that is excludeSlugs.
+- Follow-ups: Earlier turns include the original question, later questions, clipped summaries, and alreadyShown IDs. Resolve pronouns (“that”, “the second one”) against those turns — never drop the first question when the thread is long.
+- followUpIntent + excludeSlugs: you own the blacklist. The ranking model is a basic non-thinking Flash model — do not leave it to infer “other discourses → drop the previous shortlist.” Copy IDs into excludeSlugs only from Already shown IDs (same slug spelling). Never invent a citation.
+  - diversify (“other”, “more like this”, “not those”, “fresh set”, “not included yet”, further discourses): followUpIntent "diversify". Put the alreadyShown IDs in excludeSlugs (omit a slug only if they named it as an exception to keep). Invent a fresh complementary query set (different facets / saṃyuttas / IDs than alreadyShown). Do not repeat the same lookingFor or the same primary queries.
+  - refine (“the second one”, “tell me more about MN 131”, “those discourses”, go deeper on a named hit): followUpIntent "refine". excludeSlugs must be []. Keep that ID in queries / rankingGuidance.
+  - new topic (unrelated to prior hits): followUpIntent "new". excludeSlugs [] unless a prior ID is clearly stale and would confuse the new search.
+- First question (no earlier turns): omit followUpIntent; excludeSlugs [].
 - Scope (set offTopic carefully — this is library scope, not a content filter):
   - Related but outside early Buddhist discourses (commentaries, Abhidhamma later layers, other Buddhist schools, popular Buddhist terms not in the nikāyas): keep offTopic false. Search for the closest early-discourse parallels / themes so the later summary can frame what is and is not in the Buddha’s discourses.
   - Clearly unrelated (weather, recipes, news, coding, celebrity gossip): set offTopic true and empty query arrays. Put a brief polite redirect in lookingFor (e.g. “This Ask looks only in the early discourses.”).
@@ -113,8 +136,9 @@ Query rules:
   - Hard, controversial, “edgy”, or test questions about the teachings (killing, war, sexuality, undeclared points after death, harsh speech, caste, gender, politics, “most controversial discourse”, hypotheticals meant to stress the ethics): keep offTopic false and search normally. Do NOT refuse, sanitize, or leave queries empty for safety. The Buddha addressed many of these by stating a teaching, refusing to declare speculative positions, or reframing (e.g. kill anger/greed/delusion; avyākata / undeclared points in SN 44, MN 63, MN 72; householder ethics in DN 31 / AN 8.54). Prefer queries that surface those discourses. Never invent a refusal in lookingFor for these.`;
 
 const MAX_QUESTION_CHARS = 500;
-const MAX_HISTORY_TURNS = 6;
 const MAX_QUERIES = 4;
+/** Per-turn already-shown slugs accepted from the follow-up payload. */
+const HISTORY_PARSE_SLUG_CAP = 55;
 const MAX_FALLBACK_QUERIES = 3;
 const MAX_QUERY_CHARS = 100;
 
@@ -246,6 +270,111 @@ export function parseAskCoverage(value: unknown): "brief" | "survey" | undefined
 	return undefined;
 }
 
+export function parseAskFollowUpIntent(
+	value: unknown,
+): AiAskFollowUpIntent | undefined {
+	if (typeof value !== "string") return undefined;
+	const token = value.replace(/\s+/g, " ").trim().toLowerCase();
+	if (
+		token === "diversify" ||
+		token === "other" ||
+		token === "more" ||
+		token === "blacklist"
+	) {
+		return "diversify";
+	}
+	if (token === "refine" || token === "deeper" || token === "keep") {
+		return "refine";
+	}
+	if (token === "new" || token === "new_topic" || token === "new-topic") {
+		return "new";
+	}
+	return undefined;
+}
+
+/** Compact planner/history IDs so "MN 10" and "mn10" match. */
+export function normalizeAskPlanSlug(raw: string): string {
+	return raw.replace(/\s+/g, "").trim().toLowerCase();
+}
+
+/**
+ * Keep only slugs that already appeared in this Ask. Never invent IDs.
+ */
+export function parseAskExcludeSlugs(
+	raw: unknown,
+	allowedShown: readonly string[],
+): string[] {
+	const allowed = new Map<string, string>();
+	for (const slug of allowedShown) {
+		const key = normalizeAskPlanSlug(slug);
+		if (!key || allowed.has(key)) continue;
+		allowed.set(key, key);
+	}
+	if (allowed.size === 0) return [];
+	const values = Array.isArray(raw)
+		? raw
+		: typeof raw === "string" && raw.trim()
+			? [raw]
+			: [];
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const item of values) {
+		if (typeof item !== "string") continue;
+		const match = allowed.get(normalizeAskPlanSlug(item));
+		if (!match || seen.has(match)) continue;
+		seen.add(match);
+		out.push(match);
+	}
+	return out;
+}
+
+function rewriteExcludeField(record: Record<string, unknown>): unknown {
+	if ("excludeSlugs" in record) return record.excludeSlugs;
+	if ("blacklist" in record) return record.blacklist;
+	if ("excludeIds" in record) return record.excludeIds;
+	return undefined;
+}
+
+/**
+ * Planner-owned blacklist for the rescorer.
+ *
+ * Prefer `excludeSlugs` when the planner set the field. If it classified
+ * diversify but left the list empty, fill from already-shown IDs. If it
+ * omitted both fields, a light question-text heuristic is the degraded
+ * fallback — do not invent a huge blacklist on a first ask or a refine.
+ */
+export function resolveRewriteExcludeSlugs(
+	plan: Pick<AiRewritePlan, "excludeSlugs" | "followUpIntent">,
+	alreadyShown: readonly string[],
+	question: string,
+): string[] {
+	const shown = collectAskHistoryShownSlugs([{ resultSlugs: alreadyShown }]);
+	if (shown.length === 0) return [];
+	const shownSet = new Set(shown);
+
+	if (plan.excludeSlugs !== undefined) {
+		const filtered = plan.excludeSlugs.filter((slug) =>
+			shownSet.has(normalizeAskPlanSlug(slug)),
+		);
+		if (filtered.length > 0) return filtered;
+		if (plan.followUpIntent === "diversify") return shown;
+		return [];
+	}
+
+	if (plan.followUpIntent === "diversify") return shown;
+	if (plan.followUpIntent === "refine" || plan.followUpIntent === "new") {
+		return [];
+	}
+
+	// Planner omitted the classification. Regex on the user question — not
+	// something the Flash rescorer should infer from history.
+	return shouldExcludeAlreadyShownAskHits(question, [
+		{ resultSlugs: shown },
+	])
+		? shown
+		: [];
+}
+
 function shortLookingFor(
 	preferred: string,
 	queries: readonly string[],
@@ -328,6 +457,7 @@ export function shouldHonorOffTopic(
 export function parseRewritePlan(
 	raw: string,
 	fallbackQuestion: string,
+	alreadyShownSlugs: readonly string[] = [],
 ): AiRewritePlan {
 	const repairedFallback = repairCommonAskTypos(clipAiQuestion(fallbackQuestion));
 	const parsed = extractJsonObject(raw);
@@ -422,6 +552,14 @@ export function parseRewritePlan(
 		record.rankingGuidance ?? record.guidance ?? record.rerankGuidance,
 	);
 	const coverage = parseAskCoverage(record.coverage);
+	const followUpIntent = parseAskFollowUpIntent(
+		record.followUpIntent ?? record.intent ?? record.followupIntent,
+	);
+	const excludeRaw = rewriteExcludeField(record);
+	const excludeSpecified = excludeRaw !== undefined;
+	const excludeSlugs = excludeSpecified
+		? parseAskExcludeSlugs(excludeRaw, alreadyShownSlugs)
+		: undefined;
 	return {
 		correctedQuestion,
 		lookingFor,
@@ -432,8 +570,54 @@ export function parseRewritePlan(
 		...(personSlugs.length > 0 ? { personSlugs } : {}),
 		...(rankingGuidance ? { rankingGuidance } : {}),
 		...(coverage ? { coverage } : {}),
+		...(followUpIntent ? { followUpIntent } : {}),
+		...(excludeSpecified ? { excludeSlugs: excludeSlugs ?? [] } : {}),
 		...(degraded ? { degraded: true, degradedReason } : {}),
 	};
+}
+
+export function parseAskHistory(raw: unknown): AiRewriteHistoryTurn[] {
+	if (!Array.isArray(raw)) return [];
+	const turns: AiRewriteHistoryTurn[] = [];
+	for (const item of clipAskHistoryTurns(raw, ASK_HISTORY_PARSE_CAP)) {
+		if (!item || typeof item !== "object") continue;
+		const record = item as Record<string, unknown>;
+		const question =
+			typeof record.question === "string" ? clipAiQuestion(record.question) : "";
+		if (!question) continue;
+		const lookingFor =
+			typeof record.lookingFor === "string"
+				? record.lookingFor.replace(/\s+/g, " ").trim().slice(0, 160)
+				: "";
+		const queries = Array.isArray(record.queries)
+			? record.queries
+					.filter((query): query is string => typeof query === "string")
+					.map((query) => query.replace(/\s+/g, " ").trim())
+					.filter(Boolean)
+					.slice(0, 4)
+			: [];
+		// Follow-ups (“more like this”, “not already shown”) need every shown
+		// slug, including a survey that slightly overshoots the typical 50.
+		const resultSlugs = Array.isArray(record.resultSlugs)
+			? record.resultSlugs
+					.filter((slug): slug is string => typeof slug === "string")
+					.map((slug) => slug.replace(/\s+/g, " ").trim().toLowerCase())
+					.filter(Boolean)
+					.slice(0, HISTORY_PARSE_SLUG_CAP)
+			: [];
+		const summary =
+			typeof record.summary === "string"
+				? clipAiHistorySummary(record.summary)
+				: "";
+		turns.push({
+			question,
+			lookingFor,
+			queries,
+			...(resultSlugs.length > 0 ? { resultSlugs } : {}),
+			...(summary ? { summary } : {}),
+		});
+	}
+	return clipAskHistoryTurns(turns, ASK_HISTORY_MAX_TURNS);
 }
 
 export function buildRewriteMessages(
@@ -442,11 +626,19 @@ export function buildRewriteMessages(
 	libraryHints: string = getAiLibraryHintsText(),
 ): OpenRouterChatMessage[] {
 	const clipped = clipAiQuestion(question);
-	const recent = history.slice(-MAX_HISTORY_TURNS);
+	const recent = clipAskHistoryTurns(history, ASK_HISTORY_MAX_TURNS);
+	const allShown = formatAskAlreadyShownIds(
+		collectAskHistoryShownSlugs(history),
+		(slug) => slug,
+		HISTORY_SHOWN_SLUGS,
+	);
+	const shownUnion = allShown
+		? `\nAlready shown IDs (copy these into excludeSlugs when followUpIntent is diversify; leave excludeSlugs [] when they refine a named hit or “the second one”): ${allShown}`
+		: "";
 	const historyBlock =
 		recent.length === 0
 			? ""
-			: `\n\nEarlier turns (same conversation — resolve pronouns / “that” / “the second one” against these):\n${recent
+			: `\n\nEarlier turns (same conversation — resolve pronouns / “that” / “the second one” against these; turn 1 is the original question):\n${recent
 					.map((turn, index) => {
 						const queries = turn.queries.join(" | ") || "(none)";
 						const shown = (turn.resultSlugs || [])
@@ -461,7 +653,7 @@ export function buildRewriteMessages(
 							: "";
 						return `${index + 1}. Q: ${turn.question}\n   lookingFor: ${turn.lookingFor}\n   queries: ${queries}${shownLine}${summaryLine}`;
 					})
-					.join("\n")}`;
+					.join("\n")}${shownUnion}`;
 	const system = libraryHints
 		? `${AI_REWRITE_SYSTEM_PROMPT}\n\n${libraryHints}`
 		: AI_REWRITE_SYSTEM_PROMPT;

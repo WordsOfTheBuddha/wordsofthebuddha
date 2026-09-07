@@ -18,10 +18,11 @@ import {
 	resolveAskResultLimit,
 } from "../../../utils/aiResultRerank";
 import {
-	clipAiHistorySummary,
 	clipAiQuestion,
-	type AiRewriteHistoryTurn,
+	parseAskHistory,
+	resolveRewriteExcludeSlugs,
 } from "../../../utils/aiQueryRewrite";
+import { collectAskHistoryShownSlugs } from "../../../utils/aiAskHistory";
 import {
 	buildAiAskTelemetryAskEvent,
 	newAiAskRequestId,
@@ -32,52 +33,6 @@ import {
 	getOpenRouterApiKey,
 	resolveRequestedOpenRouterModel,
 } from "../../../utils/openrouter";
-
-const MAX_HISTORY = 6;
-
-function parseHistory(raw: unknown): AiRewriteHistoryTurn[] {
-	if (!Array.isArray(raw)) return [];
-	const turns: AiRewriteHistoryTurn[] = [];
-	for (const item of raw.slice(-MAX_HISTORY)) {
-		if (!item || typeof item !== "object") continue;
-		const record = item as Record<string, unknown>;
-		const question =
-			typeof record.question === "string" ? clipAiQuestion(record.question) : "";
-		if (!question) continue;
-		const lookingFor =
-			typeof record.lookingFor === "string"
-				? record.lookingFor.replace(/\s+/g, " ").trim().slice(0, 160)
-				: "";
-		const queries = Array.isArray(record.queries)
-			? record.queries
-					.filter((query): query is string => typeof query === "string")
-					.map((query) => query.replace(/\s+/g, " ").trim())
-					.filter(Boolean)
-					.slice(0, 4)
-			: [];
-		// Follow-ups (“more like this”, “not already shown”) need every shown
-		// slug, and a research turn can now show up to 50.
-		const resultSlugs = Array.isArray(record.resultSlugs)
-			? record.resultSlugs
-					.filter((slug): slug is string => typeof slug === "string")
-					.map((slug) => slug.replace(/\s+/g, " ").trim().toLowerCase())
-					.filter(Boolean)
-					.slice(0, 50)
-			: [];
-		const summary =
-			typeof record.summary === "string"
-				? clipAiHistorySummary(record.summary)
-				: "";
-		turns.push({
-			question,
-			lookingFor,
-			queries,
-			...(resultSlugs.length > 0 ? { resultSlugs } : {}),
-			...(summary ? { summary } : {}),
-		});
-	}
-	return turns;
-}
 
 function sse(data: unknown): string {
 	return `data: ${JSON.stringify(data)}\n\n`;
@@ -166,7 +121,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	const model = resolveRequestedOpenRouterModel(
 		typeof body.model === "string" ? body.model : undefined,
 	);
-	const history = parseHistory(body.history);
+	const history = parseAskHistory(body.history);
 	const requestId = newAiAskRequestId();
 	const startedAt = Date.now();
 	const encoder = new TextEncoder();
@@ -213,11 +168,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					history,
 					model,
 					onReasoning: (delta) => send({ type: "reasoning", delta }),
+					onReasoningReset: () => send({ type: "reasoning", reset: true }),
 				});
 				const plan = rewrite.plan;
 				let usedModel = rewrite.model;
-				// Gemini has no reasoning stream — don’t invent status text for
-				// “How it searched”. OpenRouter deltas already stream when present.
+				// Accepted planner only — discarded OpenRouter thinking is reset
+				// above and replaced here so the process box matches the search.
 				let reasoning = rewrite.reasoning;
 				const routing = rewrite.routing;
 				if (import.meta.env.DEV) {
@@ -248,6 +204,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					degraded: plan.degraded === true,
 					shareSlug,
 					persons,
+					reasoning,
 					...(rewrite.plannerNote ? { plannerNote: rewrite.plannerNote } : {}),
 					// DEV only — which planner models were tried / used.
 					...(import.meta.env.DEV ? { routing } : {}),
@@ -290,6 +247,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					{ mergeLimit: AI_SEARCH_CANDIDATE_LIMIT },
 				);
 				const candidates = searched.hits;
+				// Prompt target (10 brief / 50 survey). The rescorer owns the
+				// final count — results.length is sent as showCount below.
 				const showCount = resolveAskResultLimit(
 					`${question} ${plan.correctedQuestion || ""}`,
 					plan.coverage,
@@ -312,6 +271,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					// question to the rescorer instead of making it start cold.
 					guidance: plan.rankingGuidance,
 					planningNotes: reasoning,
+					// Planner-owned blacklist (not a Flash inference from history).
+					excludeSlugs: resolveRewriteExcludeSlugs(
+						plan,
+						collectAskHistoryShownSlugs(history),
+						plan.correctedQuestion || question,
+					),
 				});
 				const results = ranked.results;
 				const summary = ranked.summary || "";

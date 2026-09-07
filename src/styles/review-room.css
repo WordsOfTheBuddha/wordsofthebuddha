@@ -574,10 +574,28 @@
 	margin-right: auto;
 }
 
+#dashboard-container .ask-panel-bar {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+#dashboard-container .ask-panel-meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 0.3rem;
+	margin-left: auto;
+	text-align: right;
+	min-width: 0;
+}
+
 #dashboard-container .ask-new-btn {
 	display: inline-flex;
 	align-items: center;
-	margin-bottom: 0.75rem;
+	flex-shrink: 0;
 	padding: 0.375rem 0.75rem;
 	font-size: 0.875rem;
 	text-decoration: none;
@@ -600,13 +618,47 @@
 	margin: 0;
 }
 
-#dashboard-container .ask-history-heading {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 0.35rem 0.75rem;
-	margin-bottom: 0.55rem;
+#dashboard-container .ask-history-tabs {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	gap: 0.15rem;
+	padding: 0.15rem;
+	border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.28));
+	border-radius: 999px;
+	background: var(--surface-elevated, var(--surface-paper));
+	font-size: 0.8rem;
+}
+
+#dashboard-container .ask-history-tab {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--text-muted, #9ca3af);
+	padding: 0.22rem 0.75rem;
+	border-radius: 999px;
+	cursor: pointer;
+	font: inherit;
+}
+
+#dashboard-container .ask-history-tab:hover {
+	color: var(--text-color);
+}
+
+#dashboard-container .ask-history-tab[aria-selected="true"] {
+	color: var(--text-color);
+	font-weight: 600;
+	background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+}
+
+#dashboard-container .ask-history-tab:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 2px;
+}
+
+#dashboard-container .ask-history-tab-count {
+	font-weight: 600;
+	opacity: 0.72;
 }
 
 #dashboard-container .ask-history-label,
@@ -635,6 +687,10 @@
 	border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.28));
 	color: var(--text-color);
 	transition: border-color 0.15s ease;
+}
+
+#dashboard-container .ask-row[hidden] {
+	display: none;
 }
 
 #dashboard-container .ask-row:hover {

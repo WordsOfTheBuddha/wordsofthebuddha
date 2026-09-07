@@ -2,18 +2,37 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	AI_RERANK_DEFAULT_LIMIT,
+	AI_RERANK_HARD_LIMIT,
 	AI_RERANK_MAX_LIMIT,
 	AI_RERANK_SUMMARY_MAX,
 	AI_RERANK_SNIPPET_CANDIDATES,
+	RERANK_SYSTEM,
 	applyRerankOrder,
+	askRerankCap,
 	buildRerankUserPrompt,
+	clampAskResultLimit,
 	clipPlanningNotes,
 	clipRerankSummary,
+	formatRerankExcludeBlock,
 	formatRerankHistoryBlock,
 	parseRerankResponse,
 	parseRerankSlugs,
 	resolveAskResultLimit,
 } from "./aiResultRerank";
+import { candidatesForAskFollowUp } from "./aiAskHistory";
+
+/*
+ * Live Ask count check (dev server, anonymous daily quota):
+ *   curl -sN -H 'Content-Type: application/json' -H 'Accept: text/event-stream' \
+ *     --data '{"question":"Research extensively, with citations, what the early discourses teach about feeling (vedanā)."}' \
+ *     http://localhost:4321/api/ai/ask
+ * Then a brief control:
+ *   curl -sN -H 'Content-Type: application/json' -H 'Accept: text/event-stream' \
+ *     --data '{"question":"What is MN 10?"}' \
+ *     http://localhost:4321/api/ai/ask
+ * Parse SSE `data:` JSON where type==="results": results.length and showCount.
+ * Cookie `__session` is optional; unsigned requests use the anonymous quota.
+ */
 
 describe("parseRerankSlugs", () => {
 	it("keeps only allowed slugs in order", () => {
@@ -97,17 +116,21 @@ describe("parseRerankResponse", () => {
 		);
 	});
 
-	it("can keep up to the max number of slugs", () => {
+	it("can keep a small survey overshoot up to the hard cap", () => {
 		const slugs = Array.from(
-			{ length: AI_RERANK_MAX_LIMIT },
+			{ length: AI_RERANK_HARD_LIMIT + 3 },
 			(_, index) => `mn${index + 1}`,
 		);
 		const allowed = new Set(slugs);
 		const parsed = parseRerankResponse(
-			JSON.stringify({ slugs, summary: "ok" }),
+			JSON.stringify({ slugs, summary: "ok", count: slugs.length }),
 			allowed,
 		);
-		assert.equal(parsed.slugs.length, AI_RERANK_MAX_LIMIT);
+		assert.equal(parsed.slugs.length, AI_RERANK_HARD_LIMIT);
+		assert.equal(
+			parsed.slugs[AI_RERANK_HARD_LIMIT - 1],
+			`mn${AI_RERANK_HARD_LIMIT}`,
+		);
 	});
 });
 
@@ -136,13 +159,63 @@ describe("applyRerankOrder", () => {
 		);
 	});
 
-	it("fills a survey to the ceiling after the model’s ranking", () => {
+	it("does not pad a survey to the typical ceiling", () => {
 		const candidates = Array.from({ length: 8 }, (_, index) => ({
 			slug: String.fromCharCode(97 + index),
 		}));
 		assert.deepEqual(
-			applyRerankOrder(candidates, ["c"], 8, 8).map((item) => item.slug),
-			["c", "a", "b", "d", "e", "f", "g", "h"],
+			applyRerankOrder(candidates, ["c"], AI_RERANK_MAX_LIMIT).map(
+				(item) => item.slug,
+			),
+			["c"],
+		);
+		assert.deepEqual(
+			applyRerankOrder(
+				candidates,
+				["c"],
+				askRerankCap(AI_RERANK_MAX_LIMIT),
+			).map((item) => item.slug),
+			["c"],
+		);
+	});
+
+	it("keeps a small survey overshoot instead of clipping at 50", () => {
+		const candidates = Array.from({ length: 60 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+		}));
+		const slugs = candidates.slice(0, 53).map((item) => item.slug);
+		assert.equal(
+			applyRerankOrder(
+				candidates,
+				slugs,
+				askRerankCap(AI_RERANK_MAX_LIMIT),
+			).length,
+			53,
+		);
+		assert.equal(
+			applyRerankOrder(
+				candidates,
+				candidates.map((item) => item.slug),
+				AI_RERANK_HARD_LIMIT + 10,
+			).length,
+			AI_RERANK_HARD_LIMIT,
+		);
+	});
+});
+
+describe("askRerankCap", () => {
+	it("keeps brief at 10 and lets survey overshoot to 55", () => {
+		assert.equal(askRerankCap(AI_RERANK_DEFAULT_LIMIT), AI_RERANK_DEFAULT_LIMIT);
+		assert.equal(askRerankCap(AI_RERANK_MAX_LIMIT), AI_RERANK_HARD_LIMIT);
+		assert.equal(clampAskResultLimit(AI_RERANK_HARD_LIMIT), AI_RERANK_HARD_LIMIT);
+		assert.equal(clampAskResultLimit(80), AI_RERANK_HARD_LIMIT);
+		assert.equal(
+			resolveAskResultLimit("what is mindfulness?", "survey"),
+			AI_RERANK_MAX_LIMIT,
+		);
+		assert.notEqual(
+			resolveAskResultLimit("what is mindfulness?", "survey"),
+			askRerankCap(AI_RERANK_MAX_LIMIT),
 		);
 	});
 });
@@ -242,8 +315,51 @@ describe("buildRerankUserPrompt", () => {
 		assert.match(prompt, /MN 118/i);
 		assert.match(prompt, /satipaṭṭhāna/);
 		assert.match(prompt, /What about the second one\?/);
-		assert.match(prompt, /Target result count: up to 20/);
-		assert.match(prompt, /research \/ be extensive/);
+		assert.match(prompt, /Target result count: typically 20–50/);
+		assert.match(prompt, /hard cap 55/);
+		assert.match(prompt, /research \/ survey \/ cite thoroughly/);
+		assert.match(prompt, /do not pad to a round number/);
+		assert.match(prompt, /Already shown IDs/);
+	});
+
+	it("keeps the original question when rerank history is longer than the cap", () => {
+		const history = Array.from({ length: 8 }, (_, i) => ({
+			question: i === 0 ? "What is mindfulness?" : `Follow-up ${i}`,
+			lookingFor: "mindfulness",
+			queries: ["sati"],
+			resultSlugs: i === 0 ? ["sn47.19", "mn118"] : [`mn${i + 30}`],
+			summary: i === 0 ? "Original sati briefing." : "",
+		}));
+		const prompt = buildRerankUserPrompt(
+			"other discourses",
+			[{ slug: "mn1", title: "Mindfulness", description: "" }],
+			{ history, limit: 10 },
+		);
+		assert.match(prompt, /What is mindfulness\?/);
+		assert.match(prompt, /SN 47\.19/i);
+		assert.match(prompt, /Follow-up 7/);
+		assert.match(RERANK_SYSTEM, /planner blacklist/);
+		assert.match(RERANK_SYSTEM, /Do not infer a blacklist/);
+	});
+
+	it("tells survey asks not to pad to a quota of 50", () => {
+		const prompt = buildRerankUserPrompt(
+			"research feeling with citations",
+			[{ slug: "sn36.1", title: "Concentration", description: "" }],
+			{ limit: AI_RERANK_MAX_LIMIT },
+		);
+		assert.match(prompt, /typically 20–50/);
+		assert.match(prompt, /hard cap 55/);
+		assert.match(prompt, /do not pad to a round number/);
+		assert.match(prompt, /stretch to 50 for quota/);
+		assert.doesNotMatch(prompt, /the full target, not a top-10/);
+		assert.match(RERANK_SYSTEM, /Typical size is 20–50/);
+		assert.match(RERANK_SYSTEM, /Do not stretch to 50 to fill a round number/);
+		assert.match(RERANK_SYSTEM, /hard cap about 55/);
+		assert.doesNotMatch(
+			RERANK_SYSTEM,
+			/If the pool has 50 relevant discourses, return 50/,
+		);
 	});
 
 	it("forwards planning guidance and notes to the rescorer", () => {
@@ -300,5 +416,102 @@ describe("clipPlanningNotes", () => {
 describe("formatRerankHistoryBlock", () => {
 	it("returns empty when there is no history", () => {
 		assert.equal(formatRerankHistoryBlock([]), "");
+	});
+});
+
+describe("follow-up already-shown exclude", () => {
+	it("does not keep the same slug list as the only results for other discourses", () => {
+		const history = [
+			{
+				question: "What is mindfulness?",
+				lookingFor: "mindfulness",
+				queries: ["sati"],
+				resultSlugs: ["sn47.19", "mn10"],
+			},
+		];
+		const pool = [
+			{ slug: "sn47.19" },
+			{ slug: "mn10" },
+			{ slug: "mn118" },
+			{ slug: "sn47.35" },
+		];
+		assert.deepEqual(
+			candidatesForAskFollowUp(pool, "other discourses", history).map(
+				(hit) => hit.slug,
+			),
+			["mn118", "sn47.35"],
+		);
+		assert.deepEqual(
+			candidatesForAskFollowUp(
+				pool,
+				"tell me more about MN 131",
+				history,
+			).map((hit) => hit.slug),
+			["sn47.19", "mn10", "mn118", "sn47.35"],
+		);
+	});
+
+	it("filters the candidate pool from the planner blacklist", () => {
+		const history = [
+			{
+				question: "What is mindfulness?",
+				lookingFor: "mindfulness",
+				queries: ["sati"],
+				resultSlugs: ["sn47.19", "mn10"],
+			},
+		];
+		const pool = [
+			{ slug: "sn47.19" },
+			{ slug: "mn10" },
+			{ slug: "mn118" },
+			{ slug: "sn47.35" },
+		];
+		assert.deepEqual(
+			candidatesForAskFollowUp(
+				pool,
+				"give me a fresh set",
+				history,
+				["sn47.19", "mn10"],
+			).map((hit) => hit.slug),
+			["mn118", "sn47.35"],
+		);
+	});
+});
+
+describe("formatRerankExcludeBlock", () => {
+	it("puts the planner blacklist in the rescorer prompt", () => {
+		assert.equal(formatRerankExcludeBlock(["mn10"], false), "");
+		assert.match(
+			formatRerankExcludeBlock(["mn10", "sn47.19"], true),
+			/Do not include these IDs \(planner blacklist\): MN 10, SN 47\.19/,
+		);
+		assert.match(
+			formatRerankExcludeBlock([], true),
+			/planner blacklist\): \(none\)/,
+		);
+	});
+
+	it("includes the blacklist when building a follow-up rerank prompt", () => {
+		const prompt = buildRerankUserPrompt(
+			"other discourses",
+			[{ slug: "mn118", title: "Mindfulness", description: "" }],
+			{
+				history: [
+					{
+						question: "What is mindfulness?",
+						lookingFor: "mindfulness",
+						queries: ["sati"],
+						resultSlugs: ["sn47.19", "mn10"],
+					},
+				],
+				excludeSlugs: ["sn47.19", "mn10"],
+				limit: 10,
+			},
+		);
+		assert.match(
+			prompt,
+			/Do not include these IDs \(planner blacklist\): SN 47\.19, MN 10/,
+		);
+		assert.match(prompt, /context for pronouns only/);
 	});
 });

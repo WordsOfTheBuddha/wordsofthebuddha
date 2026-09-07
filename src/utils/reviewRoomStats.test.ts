@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { AiAskSessionEntry } from "./aiAskSession";
 import {
 	computeCanonCoverage,
 	discoursesReadLabel,
@@ -8,7 +7,6 @@ import {
 	formatMinutesAgo,
 	normalizeDiscourseSlug,
 	oldestPending,
-	orderAsksForReview,
 } from "./reviewRoomStats";
 
 const catalog = [
@@ -162,36 +160,5 @@ describe("formatMinutesAgo", () => {
 	it("returns empty for invalid input", () => {
 		assert.equal(formatMinutesAgo(0, now), "");
 		assert.equal(formatMinutesAgo(Number.NaN, now), "");
-	});
-});
-
-describe("orderAsksForReview", () => {
-	const entry = (
-		question: string,
-		at: number,
-		saved = false,
-	): AiAskSessionEntry => ({
-		question,
-		lookingFor: "",
-		queries: [],
-		fallbackQueries: [],
-		offTopic: false,
-		results: [],
-		model: "",
-		reasoning: "",
-		at,
-		saved,
-	});
-
-	it("puts pinned asks first, then newest first", () => {
-		const ordered = orderAsksForReview([
-			entry("old", 1),
-			entry("new", 3),
-			entry("pinned-old", 2, true),
-		]);
-		assert.deepEqual(
-			ordered.map((item) => item.question),
-			["pinned-old", "new", "old"],
-		);
 	});
 });

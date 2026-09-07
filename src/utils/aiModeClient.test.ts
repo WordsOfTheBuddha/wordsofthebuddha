@@ -10,7 +10,9 @@ import {
 	displayAskReasoning,
 	formatAskRoutingDevHtml,
 	isAskSendShortcut,
+	mergeAskTurnReasoning,
 	renderAskThinkingHtml,
+	buildAskFollowUpHistory,
 } from "./aiModeClient";
 
 function key(
@@ -49,6 +51,38 @@ describe("askSendShortcutLabel", () => {
 	it("uses ⌘ on Apple platforms and Ctrl elsewhere", () => {
 		assert.equal(askSendShortcutLabel("MacIntel"), "Send (⌘Enter)");
 		assert.equal(askSendShortcutLabel("Win32"), "Send (Ctrl+Enter)");
+	});
+});
+
+describe("mergeAskTurnReasoning", () => {
+	it("streams deltas, clears discarded attempts, and keeps accepted plan reasoning", () => {
+		let reasoning = mergeAskTurnReasoning(
+			"",
+			{ type: "reasoning", delta: "kattikā puṇṇamā\n- ^MN puṇṇama (already tried)" },
+		);
+		reasoning = mergeAskTurnReasoning(reasoning, { type: "reasoning", reset: true });
+		assert.equal(reasoning, "");
+		reasoning = mergeAskTurnReasoning(reasoning, {
+			type: "plan",
+			reasoning: "",
+		});
+		assert.equal(reasoning, "");
+	});
+
+	it("replaces leftover MiniMax notes when Gemini’s empty plan arrives", () => {
+		const leftover =
+			"The user wants unique awakening narratives under a full moon.\n- ^MN puṇṇama (already tried)";
+		assert.equal(
+			mergeAskTurnReasoning(leftover, { type: "plan", reasoning: "" }),
+			"",
+		);
+		assert.equal(
+			mergeAskTurnReasoning(leftover, {
+				type: "plan",
+				reasoning: "Prefer SN 51 for bases of power.",
+			}),
+			"Prefer SN 51 for bases of power.",
+		);
 	});
 });
 
@@ -187,6 +221,24 @@ describe("buildAskProcessSteps", () => {
 		assert.match(done[1]?.text || "", /Searched the library · 186 discourses/);
 		assert.equal(done[2]?.text, "Crunched 186 discourses");
 		assert.doesNotMatch(done[2]?.text || "", /showing/);
+	});
+});
+
+describe("buildAskFollowUpHistory", () => {
+	it("sends turn 1 with result slugs on a follow-up", () => {
+		const history = buildAskFollowUpHistory([
+			{
+				question: "What is mindfulness?",
+				lookingFor: "mindfulness",
+				queries: ["sati", "satipatthana"],
+				results: [{ slug: "sn47.19" }, { slug: "mn10" }],
+				summary: "These discourses develop satipaṭṭhāna in practice.",
+			},
+		]);
+		assert.equal(history.length, 1);
+		assert.equal(history[0]?.question, "What is mindfulness?");
+		assert.deepEqual(history[0]?.resultSlugs, ["sn47.19", "mn10"]);
+		assert.match(history[0]?.summary || "", /satipaṭṭhāna/);
 	});
 });
 

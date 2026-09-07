@@ -8,6 +8,7 @@
  *   GET /api/export/sn1-11?format=epub
  *   POST /api/export/sn1-11  (JSON body — subset export; see POST handler)
  *   GET /api/export/on/mindfulness
+ *   POST /api/export/ask  (JSON body — Ask turns + selected slugs)
  *
  * Query params (optional):
  *   threshold  – integer, max tooltip def length before footnoting (default: 40)
@@ -27,8 +28,10 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	fetchOnPagePdfData,
+	fetchAskPdfData,
 	buildPdfHtml,
 	countCollectionDiscourses,
+	AskExportDiscourseError,
 	type PdfPaliOptions,
 	type CollectionPdf,
 } from "../../../utils/pdfRenderer";
@@ -59,6 +62,10 @@ import {
 	type OnPageDiscourse,
 } from "../../../utils/onPagePdfExportTree";
 import { findContentBySlug } from "../../../utils/discover-data";
+import {
+	askExportCollectionUrl,
+	parseAskExportRequest,
+} from "../../../utils/askExportRequest";
 import {
 	getReferencePostsForTag,
 	personOnPagePdfSplit,
@@ -556,8 +563,10 @@ function validateSelectedOnPageDiscourseSlugs(
 function parseExportSlugParam(slug: string | undefined):
 	| { kind: "on-page"; pageSlug: string }
 	| { kind: "collection"; collectionSlug: string }
+	| { kind: "ask" }
 	| null {
 	if (!slug) return null;
+	if (slug === "ask") return { kind: "ask" };
 	if (slug.startsWith("on/")) {
 		const pageSlug = slug.slice("on/".length).trim();
 		return pageSlug ? { kind: "on-page", pageSlug } : null;
@@ -843,6 +852,142 @@ async function runPdfGeneration(
 	}
 }
 
+async function runAskExport(
+	body: Record<string, unknown>,
+	params: PdfExportParams,
+	format: ExportFormat,
+): Promise<Response> {
+	const parsed = parseAskExportRequest(body);
+	if (!parsed.ok) return errorResponse(parsed.error, 400);
+
+	const { downloadDate, imageMode, vizImageMode, pdfContentOptions } =
+		params;
+	const collectionUrl = askExportCollectionUrl(parsed.value.sharePath);
+	const turnInputs = parsed.value.turns.map((turn) => ({
+		question: turn.question,
+		summary: turn.summary,
+		slugs: turn.selectedDiscourseSlugs,
+	}));
+	const coverTitle = parsed.value.title || turnInputs[0]?.question || "Ask";
+
+	console.log(
+		`[${format === "epub" ? "EPUB" : "PDF"} Export] Generating ${format.toUpperCase()} for Ask (${turnInputs.length} turn(s), ${turnInputs.reduce((n, t) => n + t.slugs.length, 0)} discourses)`,
+	);
+
+	try {
+		if (format === "epub") {
+			const collectionData = await fetchAskPdfData(
+				turnInputs,
+				imageMode,
+				pdfContentOptions,
+				coverTitle,
+			);
+			return await respondWithEpub(collectionData, {
+				collectionUrl,
+				date: downloadDate,
+				title: coverTitle,
+				emptyMessage: "Select at least one discourse.",
+				coverKind: "topic",
+				titleKindLabel: "Ask",
+				vizImageMode,
+			});
+		}
+
+		activeJobs++;
+		let browser: Browser | undefined;
+		const startMs = Date.now();
+		try {
+			const [collectionData, launchedBrowser] = await Promise.all([
+				fetchAskPdfData(
+					turnInputs,
+					imageMode,
+					pdfContentOptions,
+					coverTitle,
+				),
+				launchBrowser(),
+			]);
+			browser = launchedBrowser;
+
+			const totalDiscourses = countCollectionDiscourses(collectionData);
+			if (totalDiscourses === 0) {
+				return errorResponse("Select at least one discourse.", 404);
+			}
+
+			const html = buildPdfHtml(collectionData, {
+				collectionUrl,
+				date: downloadDate,
+				vizImageMode: pdfVizImageMode(vizImageMode),
+			});
+			const page = await browser.newPage();
+			await page.setViewportSize({ width: 794, height: 1123 });
+			await page.setContent(html, {
+				waitUntil: "domcontentloaded",
+				timeout: 20_000,
+			});
+
+			const pdfBuffer = await page.pdf({
+				format: "A4",
+				margin: {
+					top: "22mm",
+					right: "22mm",
+					bottom: "28mm",
+					left: "22mm",
+				},
+				printBackground: false,
+				displayHeaderFooter: true,
+				headerTemplate: "<span></span>",
+				footerTemplate: `
+				<div style="
+					font-family: 'Times New Roman', Times, serif;
+					font-size: 9pt;
+					color: #888;
+					width: 100%;
+					text-align: center;
+					padding: 0 22mm;
+					box-sizing: border-box;
+				">
+					<span class="pageNumber"></span>
+				</div>`,
+				outline: true,
+				tagged: true,
+			});
+
+			await browser.close();
+			browser = undefined;
+
+			const elapsed = ((Date.now() - startMs) / 1000).toFixed(1);
+			console.log(
+				`[PDF Export] Ask done in ${elapsed}s — ${pdfBuffer.length} bytes`,
+			);
+
+			return fileDownloadResponse(
+				new Uint8Array(pdfBuffer),
+				safeExportFilename(coverTitle, "pdf"),
+				"application/pdf",
+			);
+		} catch (err) {
+			if (err instanceof AskExportDiscourseError) {
+				return errorResponse(`Discourse not found: ${err.slug}`, 400);
+			}
+			const msg = err instanceof Error ? err.message : String(err);
+			console.error("[PDF Export] Ask error:", msg);
+			if (browser) {
+				await browser.close().catch(() => {});
+			}
+			return errorResponse(`PDF generation failed: ${msg}`, 500);
+		} finally {
+			activeJobs--;
+		}
+	} catch (err) {
+		if (err instanceof AskExportDiscourseError) {
+			return errorResponse(`Discourse not found: ${err.slug}`, 400);
+		}
+		const msg = err instanceof Error ? err.message : String(err);
+		console.error("[EPUB Export] Ask error:", msg);
+		return errorResponse(`EPUB generation failed: ${msg}`, 500);
+	}
+}
+
 export const GET: APIRoute = async ({ params, url }) => {
 	const parsed = parseExportSlugParam(params.slug as string | undefined);
 	if (!parsed) {
@@ -859,6 +1004,10 @@ export const GET: APIRoute = async ({ params, url }) => {
 			"Export is busy — please try again in a moment.",
 			503,
 		);
+	}
+
+	if (parsed.kind === "ask") {
+		return errorResponse("Ask export requires POST with selected turns.", 405);
 	}
 
 	if (parsed.kind === "on-page") {
@@ -887,6 +1036,8 @@ export const GET: APIRoute = async ({ params, url }) => {
  * Subset export: JSON body with `selectedDiscourseSlugs` (non-empty) plus the
  * same option fields as GET query params (`date`, `images`, `viz`, `pli`,
  * `layout`, `keyTerms`, `format`).
+ *
+ * Ask: POST /api/export/ask with `turns: [{ question, summary, selectedDiscourseSlugs }]`.
  */
 export const POST: APIRoute = async ({ params, request }) => {
 	const parsed = parseExportSlugParam(params.slug as string | undefined);
@@ -919,6 +1070,10 @@ export const POST: APIRoute = async ({ params, request }) => {
 			"Export is busy — please try again in a moment.",
 			503,
 		);
+	}
+
+	if (parsed.kind === "ask") {
+		return runAskExport(body, exportParams, format);
 	}
 
 	if (parsed.kind === "on-page") {

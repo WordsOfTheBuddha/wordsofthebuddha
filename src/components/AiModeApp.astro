@@ -6,6 +6,7 @@ import {
 	shouldShowAiModelPicker,
 } from "../utils/openrouter";
 import "../styles/ai-mode.css";
+import AskExportModal from "./AskExportModal.astro";
 
 interface Props {
 	/** When false, the page owns the title + Search/Ask switch. */
@@ -287,6 +288,8 @@ const examples = [
 			</div>
 		</div>
 	</div>
+
+	<AskExportModal />
 </div>
 
 <style>

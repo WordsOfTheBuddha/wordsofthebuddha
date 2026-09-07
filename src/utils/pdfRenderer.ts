@@ -39,6 +39,7 @@ import {
 	getEffectiveVaggaSections,
 	groupDiscoursesByVaggaSection,
 } from "./vaggaSections";
+import { linkifyAskSummaryHtml } from "./linkifyAskSummary";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -325,6 +326,8 @@ export interface DiscoursePdf {
 	title: string;
 	description: string;
 	html: string;
+	/** Disambiguates the same slug across Ask turns (anchors / EPUB files). */
+	exportKey?: string;
 }
 
 export interface VaggaPdf {
@@ -350,6 +353,8 @@ export interface CollectionPdf {
 	chapters: ChapterPdf[];
 	/** True when the collection has named sub-collections (e.g. SN 1-11 → SN 1, SN 2 …) */
 	hasChapters: boolean;
+	/** Ask exports: question + briefing + per-turn ToC before each turn's discourses. */
+	layout?: "collection" | "ask";
 }
 
 /** Discourse count for one chapter, including vagga-grouped discourses. */
@@ -800,6 +805,114 @@ export async function fetchOnPagePdfData(
 	};
 }
 
+export class AskExportDiscourseError extends Error {
+	readonly slug: string;
+	constructor(slug: string) {
+		super(`Discourse not found: ${slug}`);
+		this.name = "AskExportDiscourseError";
+		this.slug = slug;
+	}
+}
+
+export type AskExportTurnInput = {
+	question: string;
+	summary: string;
+	slugs: string[];
+};
+
+async function fetchAskDiscoursePdf(
+	slug: string,
+	imageMode: PdfImageMode,
+	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
+	keepSvgIntact = false,
+): Promise<DiscoursePdf | null> {
+	const entry = await findEntry("en", { slug });
+	if (entry?.body) {
+		const html = await fetchDiscourseHtml(
+			slug,
+			imageMode,
+			paliOptions,
+			includeKeyTermsSection,
+			keepSvgIntact,
+		);
+		const data = entry.data as
+			| { title?: string; description?: string }
+			| undefined;
+		return {
+			slug,
+			title: String(data?.title || slug).trim(),
+			description: String(data?.description || "").trim(),
+			html,
+		};
+	}
+
+	const refPage = await buildReferenceDiscoursePage(slug, { refMode: true });
+	if (!refPage) return null;
+	const html = await fetchReferenceDiscourseHtml(
+		slug,
+		paliOptions,
+		includeKeyTermsSection,
+	);
+	if (/<em>\(Content not available\)<\/em>/.test(html)) return null;
+	return {
+		slug,
+		title: refPage.suttaProps.title || slug,
+		description: refPage.suttaProps.description || "",
+		html,
+	};
+}
+
+/**
+ * Cross-nikāya Ask export: each turn is a chapter (question + briefing),
+ * with that turn's selected discourses inside.
+ */
+export async function fetchAskPdfData(
+	turns: AskExportTurnInput[],
+	imageMode: PdfImageMode = "svgPrimaryOnly",
+	options?: PdfExportContentOptions,
+	coverTitle?: string,
+): Promise<CollectionPdf> {
+	const paliOptions = options?.paliOptions;
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+	const keepSvgIntact = options?.keepSvgIntact === true;
+
+	const chapters: ChapterPdf[] = [];
+	for (let i = 0; i < turns.length; i++) {
+		const turn = turns[i];
+		if (!turn) continue;
+		const discourses = await Promise.all(
+			turn.slugs.map(async (slug) => {
+				const discourse = await fetchAskDiscoursePdf(
+					slug,
+					imageMode,
+					paliOptions,
+					includeKeyTermsSection,
+					keepSvgIntact,
+				);
+				if (!discourse) throw new AskExportDiscourseError(slug);
+				return { ...discourse, exportKey: `t${i}-${slug}` };
+			}),
+		);
+		chapters.push({
+			slug: `ask-turn-${i + 1}`,
+			title: turn.question,
+			description: turn.summary,
+			discourses,
+		});
+	}
+
+	const title = (coverTitle || turns[0]?.question || "Ask").trim() || "Ask";
+	return {
+		slug: "ask",
+		title,
+		description: "",
+		chapters,
+		hasChapters: true,
+		layout: "ask",
+	};
+}
+
 // ---------------------------------------------------------------------------
 // HTML document builder
 // ---------------------------------------------------------------------------
@@ -834,6 +947,10 @@ function extractPaliName(title: string): string {
 	return title.slice(0, idx).trim();
 }
 
+function discourseAnchor(d: DiscoursePdf): string {
+	return d.exportKey || d.slug;
+}
+
 function buildTocDiscourseEntry(d: DiscoursePdf): string {
 	const id = formatSlugId(d.slug);
 	const displayTitle = stripPaliPrefix(d.title);
@@ -842,9 +959,50 @@ function buildTocDiscourseEntry(d: DiscoursePdf): string {
 		? `<span class="toc-pali">${paliName}</span>`
 		: "";
 	return `<div class="toc-entry">
-  <a href="#d-${d.slug}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}${paliSpan}</a>
+  <a href="#d-${discourseAnchor(d)}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}${paliSpan}</a>
   ${d.description ? `<div class="toc-desc">${d.description}</div>` : ""}
 </div>\n`;
+}
+
+function buildChapterToc(chapter: ChapterPdf): string {
+	return chapter.discourses.map((d) => buildTocDiscourseEntry(d)).join("");
+}
+
+function askSummaryHtml(summary: string, slugs: string[]): string {
+	const text = summary.trim();
+	if (!text) return "";
+	return `<div class="ask-summary">${linkifyAskSummaryHtml(
+		text,
+		slugs.map((slug) => ({ slug, href: `/${slug}` })),
+	)}</div>`;
+}
+
+function buildAskContent(collection: CollectionPdf): string {
+	let html = "";
+	collection.chapters.forEach((ch, index) => {
+		const breakAttr = index === 0 ? "" : ' style="page-break-before:always"';
+		const slugs = ch.discourses.map((d) => d.slug);
+		html += `<section class="ask-turn"${breakAttr}>
+  <div class="ask-preface">
+    <p class="ask-preface-kicker">Question</p>
+    <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
+    ${askSummaryHtml(ch.description, slugs)}
+  </div>
+  <div class="ask-turn-toc">
+    <h2 class="toc-heading">Discourses in this answer</h2>
+    ${buildChapterToc(ch)}
+  </div>
+`;
+		for (const d of ch.discourses) {
+			html += buildDiscourseSection(
+				d,
+				"h3",
+				' style="page-break-before:always"',
+			);
+		}
+		html += `</section>\n`;
+	});
+	return html;
 }
 
 function buildToc(collection: CollectionPdf): string {
@@ -897,7 +1055,7 @@ function buildDiscourseSection(
 		? `<p class="discourse-pali">${paliName}</p>`
 		: "";
 
-	return `<section id="d-${d.slug}" class="discourse"${breakAttr}>
+	return `<section id="d-${discourseAnchor(d)}" class="discourse"${breakAttr}>
   <${hLevel} class="discourse-title">${id} ${displayTitle}</${hLevel}>
   ${paliLine}
   ${d.description ? `<p class="discourse-desc">${d.description}</p>` : ""}
@@ -983,11 +1141,12 @@ export function buildPdfHtml(
 		options.vizImageMode === "thermal"
 			? options.vizImageMode
 			: "dark";
-	const toc = buildToc(collection);
-	const content = buildContent(collection);
+	const isAsk = collection.layout === "ask";
+	const toc = isAsk ? "" : buildToc(collection);
+	const content = isAsk ? buildAskContent(collection) : buildContent(collection);
 
 	// Split title into Pali subtitle + English main title
-	const hasSeparator = collection.title.includes(" - ");
+	const hasSeparator = !isAsk && collection.title.includes(" - ");
 	let paliName = "";
 	let englishTitle = collection.title;
 	if (hasSeparator) {
@@ -996,23 +1155,40 @@ export function buildPdfHtml(
 		englishTitle = collection.title.slice(idx + 3).trim();
 	}
 
-	// Format the sub-title line: "Paliname · ID" or just "ID" when no Pali
-	const formattedId = formatSlugId(collection.slug);
-	const subtitleParts: string[] = [];
-	if (paliName) subtitleParts.push(paliName);
-	subtitleParts.push(formattedId);
-	const subtitleLine = subtitleParts.join(" \u00B7 ");
+	const subtitleLine = isAsk
+		? collection.chapters.length > 1
+			? `Ask \u00B7 ${collection.chapters.length} questions`
+			: "Ask"
+		: (() => {
+				const formattedId = formatSlugId(collection.slug);
+				const subtitleParts: string[] = [];
+				if (paliName) subtitleParts.push(paliName);
+				subtitleParts.push(formattedId);
+				return subtitleParts.join(" \u00B7 ");
+			})();
 
-	// "from Udāna — Inspired Utterances" context line for sub-collections
-	const fromLine = parentTitle
-		? `<p class="cover-from">from ${parentTitle}</p>`
-		: "";
+	const fromLine =
+		!isAsk && parentTitle
+			? `<p class="cover-from">from ${parentTitle}</p>`
+			: "";
+
+	const coverTitle = isAsk ? escapeHtml(englishTitle) : englishTitle;
+	const docTitle = isAsk ? escapeHtml(collection.title) : collection.title;
+	const tocBlock = isAsk
+		? ""
+		: `
+<!-- ── Table of Contents ──────────────────────────────────────────── -->
+<div class="toc-page">
+  <h2 class="toc-heading">Table of Contents</h2>
+  ${toc}
+</div>
+`;
 
 	return `<!DOCTYPE html>
 <html lang="en" data-viz-image-mode="${vizImageMode}">
 <head>
   <meta charset="utf-8">
-  <title>${collection.title}</title>
+  <title>${docTitle}</title>
   <style>${PDF_CSS}</style>
 </head>
 <body>
@@ -1021,7 +1197,7 @@ export function buildPdfHtml(
 <div class="cover-page">
   <p class="cover-brand">Words of the Buddha</p>
   <div class="cover-main">
-    <h1 class="cover-title">${englishTitle}</h1>
+    <h1 class="cover-title">${coverTitle}</h1>
     <p class="cover-subtitle">${subtitleLine}</p>
     ${fromLine}
     <hr class="cover-rule" />
@@ -1032,13 +1208,7 @@ export function buildPdfHtml(
     <p class="cover-date">Downloaded on ${date}</p>
   </div>
 </div>
-
-<!-- ── Table of Contents ──────────────────────────────────────────── -->
-<div class="toc-page">
-  <h2 class="toc-heading">Table of Contents</h2>
-  ${toc}
-</div>
-
+${tocBlock}
 <!-- ── Discourse content ──────────────────────────────────────────── -->
 <div class="content-pages">
   ${content}
@@ -1090,6 +1260,7 @@ body {
 /* ── Page breaks ───────────────────── */
 .cover-page  { page-break-after: always; }
 .toc-page    { page-break-after: always; }
+.ask-turn-toc { page-break-after: always; }
 
 h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
 p { orphans: 3; widows: 3; margin: 0.5em 0; }
@@ -1241,6 +1412,29 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   line-height: 1.7;
   color: #333;
   margin-bottom: 1em;
+}
+.ask-preface-kicker {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 10pt;
+  color: #888;
+  margin-bottom: 0.35em;
+}
+.ask-question {
+  font-size: 15pt;
+  font-weight: bold;
+  margin-bottom: 0.8em;
+  line-height: 1.35;
+}
+.ask-summary {
+  margin-bottom: 1.2em;
+}
+.ask-summary p {
+  font-size: 11pt;
+  line-height: 1.7;
+}
+.ask-summary a {
+  color: #000;
 }
 .vagga-heading {
   font-size: 13pt;

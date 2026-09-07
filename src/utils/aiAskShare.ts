@@ -5,6 +5,8 @@ import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 export const ASK_SHARE_SLUG_MIN = 8;
 export const ASK_SHARE_SLUG_MAX = 48;
 export const ASK_SHARE_COLLECTION = "askShares";
+/** Walk `-2`, `-3`, … this many times before a timestamp fallback. */
+export const ASK_SHARE_SLUG_SUFFIX_LIMIT = 1000;
 
 const STOP = new Set([
 	"a",
@@ -73,6 +75,14 @@ export interface AiAskShareSnapshot {
 	thread?: AiAskShareTurn[];
 }
 
+/** Fields that distinguish one public Ask snapshot from another. */
+export interface AskShareIdentityInput {
+	question: string;
+	summary: string;
+	results: readonly { slug: string }[];
+	requestId?: string;
+}
+
 const ASK_SHARE_THREAD_LIMIT = 6;
 
 function clip(value: string, max: number): string {
@@ -130,6 +140,92 @@ export function resolveAskShareSlug(
 		normalizeAskShareSlug(preferred || "") ||
 		deriveAskShareSlug(lookingFor, question)
 	);
+}
+
+/** `base-2`, `base-3`, … clipped so the result stays a valid public slug. */
+export function askShareSlugWithNumericSuffix(
+	base: string,
+	n: number,
+): string {
+	const root = normalizeAskShareSlug(base) || base;
+	if (!Number.isFinite(n) || n < 2) return root;
+	const suffix = String(Math.floor(n));
+	const budget = ASK_SHARE_SLUG_MAX - suffix.length - 1;
+	const trimmed = root
+		.slice(0, Math.max(ASK_SHARE_SLUG_MIN, budget))
+		.replace(/-+$/g, "");
+	const candidate = `${trimmed}-${suffix}`;
+	return normalizeAskShareSlug(candidate) || candidate;
+}
+
+/** n=1 is the unsuffixed theme slug; n=2 is `-2`, and so on. */
+export function askShareSlugCandidate(base: string, n: number): string {
+	const root = normalizeAskShareSlug(base) || base;
+	if (!Number.isFinite(n) || n <= 1) return root;
+	return askShareSlugWithNumericSuffix(root, n);
+}
+
+export function askShareResultFingerprint(
+	results: readonly { slug?: string }[],
+): string {
+	return results
+		.map((item) =>
+			typeof item.slug === "string" ? item.slug.trim().toLowerCase() : "",
+		)
+		.filter(Boolean)
+		.join("\n");
+}
+
+/**
+ * Same public Ask: this question, this summary, and this result set.
+ * Theme slug matches are not enough — those are collisions.
+ */
+export function askShareIsSameSnapshot(
+	existing: AskShareIdentityInput,
+	incoming: AskShareIdentityInput,
+): boolean {
+	if (!askShareMatchesQuestion(existing, incoming.question)) {
+		return false;
+	}
+	if (
+		askShareResultFingerprint(existing.results) !==
+		askShareResultFingerprint(incoming.results)
+	) {
+		return false;
+	}
+	return (
+		normalizeAskSummaryProse(existing.summary || "") ===
+		normalizeAskSummaryProse(incoming.summary || "")
+	);
+}
+
+/**
+ * Reuse a slug only for the same snapshot; otherwise append `-2`, `-3`, …
+ * `getExisting` may be sync (tests) or async (Firestore).
+ */
+export async function uniquifyAskShareSlug<T extends AskShareIdentityInput>(
+	preferred: string | undefined | null,
+	incoming: AskShareIdentityInput,
+	getExisting: (slug: string) => T | null | Promise<T | null>,
+	lookingFor = "",
+): Promise<{ slug: string; existing: T | null }> {
+	const base = resolveAskShareSlug(
+		preferred,
+		lookingFor,
+		incoming.question,
+	);
+	for (let n = 1; n <= ASK_SHARE_SLUG_SUFFIX_LIMIT; n++) {
+		const candidate = askShareSlugCandidate(base, n);
+		const existing = await getExisting(candidate);
+		if (!existing) return { slug: candidate, existing: null };
+		if (askShareIsSameSnapshot(existing, incoming)) {
+			return { slug: candidate, existing };
+		}
+	}
+	return {
+		slug: askShareSlugWithNumericSuffix(base, Date.now()),
+		existing: null,
+	};
 }
 
 export function askSharePath(slug: string): string {
@@ -279,7 +375,7 @@ export function askShareTurnsForRestore(
 }
 
 export function askShareMatchesQuestion(
-	snapshot: AiAskShareSnapshot,
+	snapshot: Pick<AiAskShareSnapshot, "question">,
 	question: string,
 ): boolean {
 	return (

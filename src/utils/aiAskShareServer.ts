@@ -3,11 +3,11 @@ import type { UserRecord } from "firebase-admin/auth";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
 import {
 	ASK_SHARE_COLLECTION,
-	askShareMatchesQuestion,
 	askSharePath,
 	normalizeAskShareSlug,
 	resolveAskShareSlug,
 	sanitizeAskShareSnapshot,
+	uniquifyAskShareSlug,
 	type AiAskShareSnapshot,
 } from "./aiAskShare";
 
@@ -37,26 +37,21 @@ export async function loadAskShare(
 	return sanitizeAskShareSnapshot({ ...data, slug: clean, createdAt });
 }
 
+function isAlreadyExistsError(error: unknown): boolean {
+	if (!error || typeof error !== "object") return false;
+	const code = "code" in error ? (error as { code: unknown }).code : undefined;
+	return code === 6 || code === "already-exists";
+}
+
 async function allocateShareSlug(
-	preferred: string,
-	question: string,
+	draft: AiAskShareSnapshot,
 ): Promise<{ slug: string; existing: AiAskShareSnapshot | null }> {
-	const base = resolveAskShareSlug(preferred, "", question);
-	let candidate = base;
-	for (let attempt = 0; attempt < 24; attempt++) {
-		const existing = await loadAskShare(candidate);
-		if (!existing) return { slug: candidate, existing: null };
-		if (askShareMatchesQuestion(existing, question)) {
-			return { slug: candidate, existing };
-		}
-		const suffix = attempt < 8 ? String(attempt + 2) : `${Date.now().toString(36).slice(-4)}`;
-		const trimmed = base.slice(0, Math.max(8, 48 - suffix.length - 1));
-		candidate = `${trimmed}-${suffix}`;
-	}
-	return {
-		slug: `${base.slice(0, 40)}-${Date.now().toString(36).slice(-6)}`,
-		existing: null,
-	};
+	return uniquifyAskShareSlug(
+		draft.slug,
+		draft,
+		(slug) => loadAskShare(slug),
+		draft.lookingFor,
+	);
 }
 
 export async function publishAskShare(options: {
@@ -99,36 +94,48 @@ export async function publishAskShare(options: {
 		return { slug: draft.slug, path: askSharePath(draft.slug), created: false };
 	}
 
-	const { slug, existing } = await allocateShareSlug(
-		draft.slug,
-		draft.question,
-	);
-	const incomingThreadLen = draft.thread?.length || 1;
-	const existingThreadLen = existing?.thread?.length || 1;
-	if (existing) {
-		// Re-sharing the same question with a fuller conversation should upgrade
-		// the public snapshot (e.g. turn 2 share that includes turn 1).
-		if (incomingThreadLen > existingThreadLen) {
-			await shareRef(slug).set(
-				{
-					...draft,
-					slug,
-					createdAt: existing.createdAt,
-					updatedAt: FieldValue.serverTimestamp(),
-					...(options.user ? { createdBy: options.user.uid } : {}),
-				},
-				{ merge: true },
-			);
+	const MAX_CREATE_ATTEMPTS = 6;
+	for (let attempt = 0; attempt < MAX_CREATE_ATTEMPTS; attempt++) {
+		const { slug, existing } = await allocateShareSlug(draft);
+		const incomingThreadLen = draft.thread?.length || 1;
+		const existingThreadLen = existing?.thread?.length || 1;
+		if (existing) {
+			// Re-sharing the same Ask with a fuller conversation should upgrade
+			// the public snapshot (e.g. turn 2 share that includes turn 1).
+			if (incomingThreadLen > existingThreadLen) {
+				await shareRef(slug).set(
+					{
+						...draft,
+						slug,
+						createdAt: existing.createdAt,
+						updatedAt: FieldValue.serverTimestamp(),
+						...(options.user ? { createdBy: options.user.uid } : {}),
+					},
+					{ merge: true },
+				);
+			}
+			return { slug, path: askSharePath(slug), created: false };
 		}
-		return { slug, path: askSharePath(slug), created: false };
+
+		const payload = {
+			...draft,
+			slug,
+			createdAt: FieldValue.serverTimestamp(),
+			...(options.user ? { createdBy: options.user.uid } : {}),
+		};
+		try {
+			await shareRef(slug).create(payload);
+			return { slug, path: askSharePath(slug), created: true };
+		} catch (error) {
+			if (
+				attempt + 1 < MAX_CREATE_ATTEMPTS &&
+				isAlreadyExistsError(error)
+			) {
+				continue;
+			}
+			throw error;
+		}
 	}
 
-	const payload = {
-		...draft,
-		slug,
-		createdAt: FieldValue.serverTimestamp(),
-		...(options.user ? { createdBy: options.user.uid } : {}),
-	};
-	await shareRef(slug).create(payload);
-	return { slug, path: askSharePath(slug), created: true };
+	throw new Error("Could not allocate a unique share slug.");
 }

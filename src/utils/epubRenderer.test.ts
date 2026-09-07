@@ -257,6 +257,72 @@ describe("buildCollectionEpub", () => {
 		assert.match(ncx, /Upon Awakening \(First\)/);
 	});
 
+	it("gives each Ask turn a preface and unique files when slugs repeat", async () => {
+		const ask: CollectionPdf = {
+			slug: "ask",
+			title: "What is mindfulness?",
+			description: "",
+			hasChapters: true,
+			layout: "ask",
+			chapters: [
+				{
+					slug: "ask-turn-1",
+					title: "What is mindfulness?",
+					description: "Start with MN 10.",
+					discourses: [
+						{
+							slug: "mn10",
+							title: "Satipaṭṭhāna Sutta - The Establishments of Mindfulness",
+							description: "",
+							html: "<p>First turn.</p>",
+							exportKey: "t0-mn10",
+						},
+					],
+				},
+				{
+					slug: "ask-turn-2",
+					title: "And in daily life?",
+					description: "See it again.",
+					discourses: [
+						{
+							slug: "mn10",
+							title: "Satipaṭṭhāna Sutta - The Establishments of Mindfulness",
+							description: "",
+							html: "<p>Second turn.</p>",
+							exportKey: "t1-mn10",
+						},
+					],
+				},
+			],
+		};
+		const buf = await buildCollectionEpub(ask, {
+			collectionUrl: "www.wordsofthebuddha.org/search?mode=ai",
+			date: "7 September 2026",
+			identifier: "urn:uuid:test-ask",
+			modified: "2026-09-07T00:00:00Z",
+			coverKind: "topic",
+			titleKindLabel: "Ask",
+		});
+		const names = listZipEntryNames(buf);
+		assert.ok(names.includes("EPUB/ask-turn-1.xhtml"));
+		assert.ok(names.includes("EPUB/ask-turn-2.xhtml"));
+		assert.ok(names.includes("EPUB/d-t0-mn10.xhtml"));
+		assert.ok(names.includes("EPUB/d-t1-mn10.xhtml"));
+		const preface = extractZipEntry(buf, "EPUB/ask-turn-1.xhtml")?.toString(
+			"utf8",
+		);
+		assert.ok(preface);
+		assert.match(preface, /What is mindfulness\?/);
+		assert.match(preface, /Start with MN 10/);
+		assert.match(preface, /href="d-t0-mn10.xhtml"/);
+		const titlePage = extractZipEntry(buf, "EPUB/title.xhtml")?.toString(
+			"utf8",
+		);
+		assert.ok(titlePage);
+		assert.match(titlePage, /What is mindfulness\?/);
+		assert.match(titlePage, />Ask</);
+	});
+
 	it("turns commentary markers into EPUB noterefs and keeps Notes", async () => {
 		const withNotes: CollectionPdf = {
 			...sample,

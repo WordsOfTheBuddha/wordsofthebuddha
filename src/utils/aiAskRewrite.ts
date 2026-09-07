@@ -5,6 +5,8 @@ import {
 	type AiRewriteHistoryTurn,
 	type AiRewritePlan,
 } from "./aiQueryRewrite";
+import { collectAskHistoryShownSlugs } from "./aiAskHistory";
+import { buildAskPlannerNote } from "./aiAskPlannerNote";
 import {
 	geminiGenerate,
 	getConfiguredGeminiModel,
@@ -17,7 +19,6 @@ import {
 	ASK_PLANNER_FALLBACK_ORDER,
 	ASK_PLANNER_MAX_TOKENS,
 	ASK_PLANNER_REASONING_EFFORT,
-	curatedAskModelLabel,
 	getOpenRouterApiKey,
 	openRouterChatStream,
 	splitThinkTags,
@@ -55,7 +56,7 @@ export interface AiAskRewriteResult {
 	requestedModel: string;
 	/**
 	 * Reader-facing note when the plan did not come from the requested model
-	 * (e.g. “GLM 5.2 was busy — planned with Nemotron 3 Ultra instead”).
+	 * (honest about unusable / 404 / timeout / quota vs busy).
 	 */
 	plannerNote?: string;
 	routing: AiAskPlannerRouting;
@@ -169,6 +170,7 @@ async function rewriteWithOpenRouter(options: {
 	history: readonly AiRewriteHistoryTurn[];
 	model: string;
 	onReasoning?: (delta: string) => void;
+	onReasoningReset?: () => void;
 	signal?: AbortSignal;
 }): Promise<Omit<AiAskRewriteResult, "requestedModel" | "routing">> {
 	const messages = buildRewriteMessages(options.question, options.history);
@@ -176,11 +178,14 @@ async function rewriteWithOpenRouter(options: {
 	let reasoning = "";
 	let usedModel = options.model;
 	let usedJsonMode = true;
+	let startedStream = false;
 	const runStream = async (jsonMode: boolean) => {
 		content = "";
 		reasoning = "";
 		usedModel = options.model;
 		usedJsonMode = jsonMode;
+		if (startedStream) options.onReasoningReset?.();
+		startedStream = true;
 		for await (const chunk of openRouterChatStream({
 			model: options.model,
 			messages,
@@ -219,7 +224,11 @@ async function rewriteWithOpenRouter(options: {
 			options.onReasoning?.(split.reasoning);
 		}
 	}
-	const plan = parseRewritePlan(content, options.question);
+	const plan = parseRewritePlan(
+		content,
+		options.question,
+		collectAskHistoryShownSlugs(options.history),
+	);
 	if (plan.degraded && import.meta.env?.DEV) {
 		const preview = content.replace(/\s+/g, " ").trim().slice(0, 280);
 		console.warn(
@@ -251,15 +260,15 @@ async function rewriteWithGemini(options: {
 		signal: options.signal,
 	});
 	return {
-		plan: parseRewritePlan(generated.content, options.question),
+		plan: parseRewritePlan(
+			generated.content,
+			options.question,
+			collectAskHistoryShownSlugs(options.history),
+		),
 		reasoning: "",
 		model: generated.model || model,
 		provider: "gemini",
 	};
-}
-
-function modelLabel(id: string): string {
-	return curatedAskModelLabel(id).replace(/^[^:]+:\s*/, "");
 }
 
 function failureMessage(error: unknown): string {
@@ -271,8 +280,8 @@ const PLANNER_ATTEMPT_MS = 90_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
- * when it is rate-limited or unavailable try the other curated models before
- * falling back to Gemini (no reasoning stream) when GEMINI_API_KEY is set.
+ * when it fails (busy, unusable JSON, 404, timeout, …) try the other curated
+ * models before Gemini (no reasoning stream) when GEMINI_API_KEY is set.
  *
  * Each attempt gets its own timeout so a slow/refusing first model does not
  * abort the whole fallback chain via a shared AbortSignal.
@@ -282,6 +291,8 @@ export async function rewriteAskQuestion(options: {
 	history?: readonly AiRewriteHistoryTurn[];
 	model: string;
 	onReasoning?: (delta: string) => void;
+	/** Clear streamed thinking from a discarded planner attempt. */
+	onReasoningReset?: () => void;
 	signal?: AbortSignal;
 }): Promise<AiAskRewriteResult> {
 	const history = options.history || [];
@@ -347,6 +358,7 @@ export async function rewriteAskQuestion(options: {
 					history,
 					model,
 					onReasoning: options.onReasoning,
+					onReasoningReset: options.onReasoningReset,
 					signal: attemptSignal(),
 				});
 				if (shouldRetryUnusableRewrite(result.plan)) {
@@ -360,18 +372,20 @@ export async function rewriteAskQuestion(options: {
 							`[ai/ask] planner ${model} returned unusable rewrite; trying next`,
 						);
 						// Soft miss — don’t cool the model down like a 429.
+						options.onReasoningReset?.();
 						if (hasNextOpenRouter) continue;
 						break; // fall through to Gemini
 					}
 				}
 				plannerModelHealth.recordSuccess(model);
-				const skippedRequested = skippedCooldown.includes(requested.trim());
-				const note =
-					model !== requested
-						? skippedRequested
-							? `${modelLabel(requested)} was recently unavailable — planned with ${modelLabel(model)} instead.`
-							: `${modelLabel(requested)} was busy — planned with ${modelLabel(model)} instead.`
-						: undefined;
+				const note = buildAskPlannerNote({
+					requested,
+					used: model,
+					provider: "openrouter",
+					failed,
+					skippedCooldown,
+					acceptedHasReasoning: Boolean(result.reasoning.trim()),
+				});
 				return {
 					...result,
 					requestedModel: requested,
@@ -389,6 +403,7 @@ export async function rewriteAskQuestion(options: {
 				if (parentSignal?.aborted || !shouldTryAnotherPlannerModel(error)) {
 					throw error;
 				}
+				options.onReasoningReset?.();
 				console.warn(
 					`[ai/ask] planner ${model} unavailable (${errorStatus(error) || "error"}); trying next`,
 					error instanceof Error ? error.message : error,
@@ -408,20 +423,26 @@ export async function rewriteAskQuestion(options: {
 				? "[ai/ask] all OpenRouter planners in cooldown — using Gemini"
 				: "[ai/ask] all OpenRouter planners failed or unusable; using Gemini",
 		);
+		options.onReasoningReset?.();
 		called.push(getConfiguredGeminiModel());
 		const result = await rewriteWithGemini({
 			question: options.question,
 			history,
 			signal: attemptSignal(),
 		});
+		const plannerNote = buildAskPlannerNote({
+			requested,
+			used: result.model,
+			provider: "gemini",
+			failed,
+			skippedCooldown,
+			acceptedHasReasoning: Boolean(result.reasoning.trim()),
+		});
 		return {
 			...result,
 			requestedModel: requested,
 			routing: buildRouting(result.model, "gemini", result.plan),
-			plannerNote:
-				queue.length === 0
-					? `Free models were recently unavailable — planned with Gemini instead, which does not share its thinking.`
-					: `${modelLabel(requested)} and the other free models were busy — planned with Gemini instead, which does not share its thinking.`,
+			...(plannerNote ? { plannerNote } : {}),
 		};
 	}
 

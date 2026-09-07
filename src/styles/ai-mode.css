@@ -1234,10 +1234,58 @@
 .ai-history-heading {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: baseline;
+	align-items: center;
 	justify-content: space-between;
 	gap: 0.35rem 0.75rem;
 	margin-bottom: 0.55rem;
+}
+
+.ai-history-heading:has(.ai-history-tabs) {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.35rem;
+}
+
+.ai-history-tabs {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.15rem;
+	padding: 0.15rem;
+	border: 1px solid var(--surface-border);
+	border-radius: 999px;
+	background: var(--surface-elevated);
+	font-size: 0.8rem;
+}
+
+.ai-history-tab {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--text-muted);
+	padding: 0.22rem 0.75rem;
+	border-radius: 999px;
+	cursor: pointer;
+	font: inherit;
+}
+
+.ai-history-tab:hover {
+	color: var(--text-color);
+}
+
+.ai-history-tab[aria-selected="true"] {
+	color: var(--text-color);
+	font-weight: 600;
+	background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+}
+
+.ai-history-tab:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 2px;
+}
+
+.ai-history-tab-count {
+	font-weight: 600;
+	opacity: 0.72;
 }
 
 .ai-history-heading .ai-history-label {

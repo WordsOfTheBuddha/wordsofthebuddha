@@ -267,21 +267,32 @@ function splitCollectionTitle(title: string): {
 	};
 }
 
+function exportEnglishTitle(collection: CollectionPdf): string {
+	if (collection.layout === "ask") return collection.title;
+	return splitCollectionTitle(collection.title).englishTitle;
+}
+
 function titlePageBody(
 	collection: CollectionPdf,
 	options: EpubBuildOptions,
 ): string {
-	const { paliName, englishTitle } = splitCollectionTitle(collection.title);
+	const isAsk = collection.layout === "ask";
+	const { paliName, englishTitle } = isAsk
+		? { paliName: "", englishTitle: collection.title }
+		: splitCollectionTitle(collection.title);
 	const formattedId = formatSlugId(collection.slug);
-	const subtitleLine =
-		options.titleKindLabel ||
-		[paliName, formattedId].filter(Boolean).join(" \u00B7 ");
-	const fromLine = options.parentTitle
-		? `<p class="cover-from">from ${escapeXml(options.parentTitle)}</p>`
-		: "";
-	const desc = collection.description
-		? `<p class="cover-desc">${escapeXml(collection.description)}</p>`
-		: "";
+	const subtitleLine = isAsk
+		? options.titleKindLabel || "Ask"
+		: options.titleKindLabel ||
+			[paliName, formattedId].filter(Boolean).join(" \u00B7 ");
+	const fromLine =
+		!isAsk && options.parentTitle
+			? `<p class="cover-from">from ${escapeXml(options.parentTitle)}</p>`
+			: "";
+	const desc =
+		!isAsk && collection.description
+			? `<p class="cover-desc">${escapeXml(collection.description)}</p>`
+			: "";
 	return `<div class="cover-page">
   <p class="cover-brand">Words of the Buddha</p>
   <div class="cover-main">
@@ -308,6 +319,10 @@ function headingPageBody(title: string, description?: string): string {
 </section>`;
 }
 
+function discourseFileKey(d: DiscoursePdf): string {
+	return d.exportKey || d.slug;
+}
+
 function discourseBody(d: DiscoursePdf): {
 	body: string;
 	images: { href: string; data: string }[];
@@ -321,12 +336,13 @@ function discourseBody(d: DiscoursePdf): {
 	const desc = d.description
 		? `<p class="discourse-desc">${escapeXml(d.description)}</p>`
 		: "";
+	const key = discourseFileKey(d);
 	const extracted = extractEpubInlineSvgs(
 		enhanceEpubCommentaryNotes(d.html),
-		`viz-${fileStem(d.slug)}`,
+		`viz-${fileStem(key)}`,
 	);
 	return {
-		body: `<section class="discourse" id="${xmlId("d", d.slug)}">
+		body: `<section class="discourse" id="${xmlId("d", key)}">
   <h1 class="discourse-title">${escapeXml(`${id} ${displayTitle}`.trim())}</h1>
   ${paliLine}
   ${desc}
@@ -334,6 +350,39 @@ function discourseBody(d: DiscoursePdf): {
 </section>`,
 		images: extracted.files,
 	};
+}
+
+function askSummaryXhtml(summary: string): string {
+	const paras = summary
+		.split(/\n+/)
+		.map((part) => part.trim())
+		.filter(Boolean);
+	if (paras.length === 0) return "";
+	return `<div class="ask-summary">${paras
+		.map((part) => `<p>${escapeXml(part)}</p>`)
+		.join("\n")}</div>`;
+}
+
+function askTurnPrefaceBody(
+	question: string,
+	summary: string,
+	items: { label: string; href: string }[],
+): string {
+	const toc = items
+		.map(
+			(item) =>
+				`    <li><a href="${escapeXml(item.href)}">${escapeXml(item.label)}</a></li>`,
+		)
+		.join("\n");
+	return `<section class="ask-preface">
+  <p class="ask-preface-kicker">Question</p>
+  <h1 class="ask-question">${escapeXml(question)}</h1>
+  ${askSummaryXhtml(summary)}
+  <h2>Discourses in this answer</h2>
+  <ol class="ask-turn-toc">
+${toc}
+  </ol>
+</section>`;
 }
 
 function collectSpineAndNav(collection: CollectionPdf): {
@@ -354,6 +403,58 @@ function collectSpineAndNav(collection: CollectionPdf): {
 		spine.push(item);
 		return item;
 	};
+
+	if (collection.layout === "ask") {
+		collection.chapters.forEach((ch, index) => {
+			const discItems = ch.discourses.map((d) => {
+				const key = discourseFileKey(d);
+				return {
+					d,
+					key,
+					href: `d-${fileStem(key)}.xhtml`,
+					title: discourseLabel(d),
+				};
+			});
+			const prefaceHref = `ask-turn-${index + 1}.xhtml`;
+			pushItem(
+				xmlId("ask", String(index + 1)),
+				prefaceHref,
+				ch.title,
+				htmlToXhtml(
+					askTurnPrefaceBody(
+						ch.title,
+						ch.description,
+						discItems.map((item) => ({
+							label: item.title,
+							href: item.href,
+						})),
+					),
+				),
+			);
+			const chapterNav: NavNode = {
+				label: ch.title,
+				href: prefaceHref,
+				children: [],
+			};
+			nav.push(chapterNav);
+			for (const item of discItems) {
+				const rendered = discourseBody(item.d);
+				pushItem(
+					xmlId("item", item.key),
+					item.href,
+					item.title,
+					rendered.body,
+					rendered.images,
+				);
+				chapterNav.children = chapterNav.children ?? [];
+				chapterNav.children.push({
+					label: item.title,
+					href: item.href,
+				});
+			}
+		});
+		return { spine, nav };
+	}
 
 	for (const ch of collection.chapters) {
 		let chapterNav: NavNode | null = null;
@@ -530,7 +631,7 @@ function packageOpf(
 	identifier: string,
 	modified: string,
 ): string {
-	const { englishTitle } = splitCollectionTitle(collection.title);
+	const englishTitle = exportEnglishTitle(collection);
 	const manifestItems = [
 		`<item id="title" href="title.xhtml" media-type="application/xhtml+xml"/>`,
 		`<item id="toc" href="toc.xhtml" media-type="application/xhtml+xml"/>`,
@@ -682,6 +783,27 @@ h1.cover-title {
   font-size: 0.95em;
   color: #444;
   font-style: italic;
+}
+.ask-preface-kicker {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.85em;
+  color: #888;
+  margin-bottom: 0.35em;
+}
+.ask-question {
+  font-size: 1.25em;
+  font-weight: bold;
+  margin-bottom: 0.8em;
+  line-height: 1.35;
+}
+.ask-summary p {
+  margin: 0.5em 0;
+  line-height: 1.7;
+}
+.ask-turn-toc {
+  margin: 0.6em 0 0 1.2em;
+  padding: 0;
 }
 
 .discourse-title {
@@ -874,7 +996,7 @@ export async function buildCollectionEpub(
 		accentRole: options.coverAccentRole,
 		discourseCount: discourseCount(collection),
 	});
-	const { englishTitle } = splitCollectionTitle(collection.title);
+	const englishTitle = exportEnglishTitle(collection);
 
 	return buildZip([
 		{ name: "mimetype", data: "application/epub+zip", store: true },

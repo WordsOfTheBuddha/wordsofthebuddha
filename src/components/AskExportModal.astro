@@ -1,0 +1,757 @@
+---
+/**
+ * Ask PDF/EPUB download modal. Opened from the Ask action row via
+ * `ask-export-open`. Tree (turns → discourses) is filled in by the script.
+ */
+import "../styles/collection-pdf-export.css";
+---
+
+<dialog
+	id="ask-pdf-export-dialog"
+	class="collection-pdf-dialog"
+	aria-labelledby="ask-pdf-export-title"
+>
+	<div class="collection-pdf-dialog-inner">
+		<header class="collection-pdf-dialog-header">
+			<h2 id="ask-pdf-export-title" class="collection-pdf-dialog-title">
+				<span class="collection-pdf-dialog-action">Download</span>
+				<span class="collection-pdf-dialog-subject" data-ask-export-subject>Ask</span>
+			</h2>
+			<button
+				type="button"
+				class="collection-pdf-dialog-close"
+				aria-label="Close"
+				data-ask-pdf-close
+			>
+				&times;
+			</button>
+		</header>
+
+		<div class="collection-pdf-dialog-body">
+			<div class="collection-pdf-main">
+				<section
+					id="ask-pdf-contents"
+					class="collection-pdf-contents-select"
+					aria-label="Choose questions and discourses"
+				>
+					<div class="collection-pdf-contents-head">
+						<h3 class="collection-pdf-section-label">Discourses to include</h3>
+						<div class="collection-pdf-contents-toolbar">
+							<span class="collection-pdf-selection-count" id="ask-pdf-selection-count">
+								0 of 0 selected
+							</span>
+							<button type="button" class="collection-pdf-btn-tertiary" id="ask-pdf-select-all">
+								Select all
+							</button>
+							<button type="button" class="collection-pdf-btn-tertiary" id="ask-pdf-clear-all">
+								Clear all
+							</button>
+						</div>
+					</div>
+					<div class="collection-pdf-tree-scroll" id="ask-pdf-tree-scroll" tabindex="0"></div>
+				</section>
+				<p class="collection-pdf-hint">
+					These choices apply only to this download. They do not change how you read on the site.
+				</p>
+			</div>
+
+			<div class="collection-pdf-settings">
+				<section class="collection-pdf-format-block" aria-label="File format">
+					<h3 class="collection-pdf-section-label">Format</h3>
+					<fieldset class="collection-pdf-format" id="ask-export-format-fieldset">
+						<legend class="sr-only">File format</legend>
+						<label class="collection-pdf-format-option">
+							<input type="radio" name="ask-export-format" value="pdf" checked />
+							<span>
+								<strong>PDF</strong>
+								<span class="collection-pdf-format-desc">Print layout, A4 pages</span>
+							</span>
+						</label>
+						<label class="collection-pdf-format-option">
+							<input type="radio" name="ask-export-format" value="epub" />
+							<span>
+								<strong>EPUB</strong>
+								<span class="collection-pdf-format-desc">Reflowable, for e-readers</span>
+							</span>
+						</label>
+					</fieldset>
+					<p id="ask-export-epub-note" class="collection-pdf-epub-note" hidden>
+						EPUB uses interleaved Pāli (when included). Split-column layout and thermal print colors are PDF-only. Diagrams default to an e-ink paper profile.
+					</p>
+				</section>
+
+				<section id="ask-pdf-options" class="collection-pdf-options" aria-label="Download options">
+					<h3 class="collection-pdf-section-label">Options</h3>
+					<div class="collection-pdf-option-stack">
+						<div class="collection-pdf-option-group">
+							<label class="collection-pdf-field">
+								<input type="checkbox" id="ask-pdf-opt-pli" name="pli" />
+								<span>Include Pāli text</span>
+							</label>
+							<fieldset class="collection-pdf-fieldset" id="ask-pdf-fieldset-layout" disabled>
+								<legend class="sr-only">Pāli layout</legend>
+								<label>
+									<input type="radio" name="ask-layout" value="interleaved" checked />
+									Interleaved (Pāli then English per paragraph)
+								</label>
+								<label>
+									<input type="radio" name="ask-layout" value="split" />
+									Split columns (English left, Pāli right)
+								</label>
+							</fieldset>
+						</div>
+
+						<div class="collection-pdf-option-group collection-pdf-viz-group" id="ask-pdf-opt-viz-group">
+							<label class="collection-pdf-field">
+								<input type="checkbox" id="ask-pdf-opt-viz-show" name="vizShow" />
+								<span>Include discourse images</span>
+							</label>
+							<fieldset class="collection-pdf-fieldset" id="ask-pdf-fieldset-viz-colors" disabled>
+								<legend class="sr-only">Diagram colors</legend>
+								<label data-viz-mode-option="light">
+									<input type="radio" name="ask-viz-mode" value="light" checked />
+									Light
+								</label>
+								<label data-viz-mode-option="eink" hidden>
+									<input type="radio" name="ask-viz-mode" value="eink" />
+									E-ink
+								</label>
+								<label>
+									<input type="radio" name="ask-viz-mode" value="dark" />
+									Dark
+								</label>
+								<label data-viz-mode-option="thermal">
+									<input type="radio" name="ask-viz-mode" value="thermal" />
+									Thermal
+								</label>
+							</fieldset>
+						</div>
+
+						<label class="collection-pdf-field">
+							<input type="checkbox" id="ask-pdf-opt-keyterms" name="keyterms" checked />
+							<span>Include Key Terms glossary at the end of each discourse</span>
+						</label>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<footer class="collection-pdf-dialog-footer">
+			<button type="button" class="collection-pdf-btn-secondary" data-ask-pdf-close>
+				Cancel
+			</button>
+			<button
+				type="button"
+				class="collection-pdf-btn-primary"
+				id="ask-pdf-generate"
+				data-label-pdf="Print PDF"
+				data-label-epub="Download EPUB"
+			>
+				Print PDF
+			</button>
+		</footer>
+	</div>
+</dialog>
+
+<div class="collection-pdf-toast ask-pdf-toast" role="alert" aria-live="assertive">
+	<span class="toast-msg"></span>
+	<button type="button" class="toast-close" aria-label="Dismiss">&times;</button>
+</div>
+
+<script>
+	import { ASK_EXPORT_OPEN_EVENT, type AskExportOpenDetail, type AskExportTurnView } from "../utils/askExportTurns";
+	import { transformId } from "../utils/transformId";
+
+	let toastTimer: ReturnType<typeof setTimeout>;
+	let keydownWired = false;
+	let currentTurns: AskExportTurnView[] = [];
+	let currentSharePath: string | undefined;
+
+	function escapeHtml(value: string): string {
+		return value
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+	}
+
+	function getDialog(): HTMLDialogElement | null {
+		return document.querySelector<HTMLDialogElement>("#ask-pdf-export-dialog");
+	}
+
+	function closeDialog(): void {
+		const dlg = getDialog();
+		if (dlg?.open) {
+			try {
+				dlg.close();
+			} catch {
+				/* ignore */
+			}
+		}
+	}
+
+	function showToast(msg: string): void {
+		const toast = document.querySelector<HTMLElement>(".ask-pdf-toast");
+		const toastMsg = toast?.querySelector<HTMLElement>(".toast-msg");
+		if (!toast || !toastMsg) return;
+		clearTimeout(toastTimer);
+		toastMsg.textContent = msg;
+		toast.classList.add("visible");
+		toastTimer = setTimeout(() => toast.classList.remove("visible"), 8000);
+	}
+
+	function getSelectedFormat(dlg: HTMLDialogElement): "pdf" | "epub" {
+		const input = dlg.querySelector<HTMLInputElement>(
+			'input[name="ask-export-format"]:checked',
+		);
+		return input?.value === "epub" ? "epub" : "pdf";
+	}
+
+	function generateButtonLabel(
+		dlg: HTMLDialogElement,
+		format: "pdf" | "epub",
+	): string {
+		const gen = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
+		if (format === "epub") return gen?.dataset.labelEpub || "Download EPUB";
+		return gen?.dataset.labelPdf || "Print PDF";
+	}
+
+	function getDiscourseCheckboxes(dlg: HTMLDialogElement): HTMLInputElement[] {
+		return Array.from(
+			dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb"),
+		);
+	}
+
+	function updateSelectionUi(dlg: HTMLDialogElement): void {
+		const boxes = getDiscourseCheckboxes(dlg);
+		const total = boxes.length;
+		const sel = boxes.filter((cb) => cb.checked).length;
+		const countEl = dlg.querySelector("#ask-pdf-selection-count");
+		if (countEl) countEl.textContent = `${sel} of ${total} selected`;
+		const gen = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
+		if (gen) gen.disabled = sel === 0;
+	}
+
+	function syncChapterFromChildren(chapterEl: Element): void {
+		const chapterCb = chapterEl.querySelector(
+			".pdf-chapter-cb",
+		) as HTMLInputElement | null;
+		const discs = Array.from(
+			chapterEl.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb"),
+		);
+		if (!chapterCb) return;
+		const n = discs.length;
+		const c = discs.filter((d) => d.checked).length;
+		chapterCb.checked = c === n && n > 0;
+		chapterCb.indeterminate = c > 0 && c < n;
+	}
+
+	function applyChapterToDiscourses(chapterCb: HTMLInputElement): void {
+		const chapterEl = chapterCb.closest(".pdf-tree-chapter");
+		if (!chapterEl) return;
+		chapterEl
+			.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb")
+			.forEach((d) => {
+				d.checked = chapterCb.checked;
+			});
+		chapterCb.indeterminate = false;
+	}
+
+	function resetAll(dlg: HTMLDialogElement): void {
+		getDiscourseCheckboxes(dlg).forEach((d) => {
+			d.checked = true;
+		});
+		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+			const cb = ch.querySelector(".pdf-chapter-cb") as HTMLInputElement | null;
+			if (cb) {
+				cb.checked = true;
+				cb.indeterminate = false;
+			}
+		});
+		updateSelectionUi(dlg);
+	}
+
+	function clearAll(dlg: HTMLDialogElement): void {
+		getDiscourseCheckboxes(dlg).forEach((d) => {
+			d.checked = false;
+		});
+		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+			const cb = ch.querySelector(".pdf-chapter-cb") as HTMLInputElement | null;
+			if (cb) {
+				cb.checked = false;
+				cb.indeterminate = false;
+			}
+		});
+		updateSelectionUi(dlg);
+	}
+
+	function applyFormatDependentUi(dlg: HTMLDialogElement): void {
+		const format = getSelectedFormat(dlg);
+		const isEpub = format === "epub";
+		const layoutFs = dlg.querySelector<HTMLFieldSetElement>(
+			"#ask-pdf-fieldset-layout",
+		);
+		const vizColors = dlg.querySelector<HTMLFieldSetElement>(
+			"#ask-pdf-fieldset-viz-colors",
+		);
+		const epubNote = dlg.querySelector<HTMLElement>("#ask-export-epub-note");
+		const gen = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
+		const pliInput = dlg.querySelector<HTMLInputElement>("#ask-pdf-opt-pli");
+		const vizShow = dlg.querySelector<HTMLInputElement>("#ask-pdf-opt-viz-show");
+
+		if (layoutFs) {
+			layoutFs.hidden = isEpub;
+			if (!isEpub) layoutFs.disabled = !pliInput?.checked;
+		}
+		if (vizColors) {
+			vizColors.hidden = false;
+			vizColors.disabled = !vizShow?.checked;
+			const lightOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='light']",
+			);
+			const einkOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='eink']",
+			);
+			const thermalOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='thermal']",
+			);
+			if (lightOpt) lightOpt.hidden = isEpub;
+			if (einkOpt) einkOpt.hidden = !isEpub;
+			if (thermalOpt) thermalOpt.hidden = isEpub;
+			const lightR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="ask-viz-mode"][value="light"]',
+			);
+			const einkR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="ask-viz-mode"][value="eink"]',
+			);
+			const darkR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="ask-viz-mode"][value="dark"]',
+			);
+			if (isEpub) {
+				if (!darkR?.checked && einkR) einkR.checked = true;
+			} else if (einkR?.checked && lightR) {
+				lightR.checked = true;
+			}
+		}
+		if (epubNote) epubNote.hidden = !isEpub;
+		if (
+			gen &&
+			gen.textContent !== "Printing…" &&
+			gen.textContent !== "Building EPUB…"
+		) {
+			gen.textContent = generateButtonLabel(dlg, format);
+		}
+	}
+
+	function applyDefaultsFromPage(dlg: HTMLDialogElement): void {
+		const pliInput = dlg.querySelector<HTMLInputElement>("#ask-pdf-opt-pli");
+		const layoutFieldset = dlg.querySelector<HTMLFieldSetElement>(
+			"#ask-pdf-fieldset-layout",
+		);
+		const vizShowInput = dlg.querySelector<HTMLInputElement>(
+			"#ask-pdf-opt-viz-show",
+		);
+		const vizColorsFieldset = dlg.querySelector<HTMLFieldSetElement>(
+			"#ask-pdf-fieldset-viz-colors",
+		);
+		const keyTermsInput = dlg.querySelector<HTMLInputElement>(
+			"#ask-pdf-opt-keyterms",
+		);
+		if (!pliInput || !layoutFieldset || !keyTermsInput) {
+			resetAll(dlg);
+			applyFormatDependentUi(dlg);
+			return;
+		}
+
+		try {
+			const params = new URLSearchParams(window.location.search);
+			const showPali =
+				document.documentElement.classList.contains("pali-on") ||
+				localStorage.getItem("paliMode") === "true" ||
+				params.get("pli") === "true";
+			pliInput.checked = showPali;
+			const split =
+				document.documentElement.classList.contains("split") ||
+				localStorage.getItem("layout") === "split";
+			const interleaved = dlg.querySelector<HTMLInputElement>(
+				'input[name="ask-layout"][value="interleaved"]',
+			);
+			const splitR = dlg.querySelector<HTMLInputElement>(
+				'input[name="ask-layout"][value="split"]',
+			);
+			if (splitR && interleaved) {
+				if (split) splitR.checked = true;
+				else interleaved.checked = true;
+			}
+			layoutFieldset.disabled = !showPali;
+
+			if (vizShowInput && vizColorsFieldset) {
+				const imgStored = localStorage.getItem("showDiscourseImages");
+				const showImg = imgStored === null || imgStored === "true";
+				vizShowInput.checked = showImg;
+				vizColorsFieldset.disabled = !showImg;
+
+				let v = localStorage.getItem("vizImageMode");
+				if (v === "print") v = "thermal";
+				const lightR = dlg.querySelector<HTMLInputElement>(
+					'input[name="ask-viz-mode"][value="light"]',
+				);
+				const darkR = dlg.querySelector<HTMLInputElement>(
+					'input[name="ask-viz-mode"][value="dark"]',
+				);
+				const thermalR = dlg.querySelector<HTMLInputElement>(
+					'input[name="ask-viz-mode"][value="thermal"]',
+				);
+				if (v === "light" && lightR) lightR.checked = true;
+				else if (v === "dark" && darkR) darkR.checked = true;
+				else if (v === "thermal" && thermalR) thermalR.checked = true;
+				else if (lightR) lightR.checked = true;
+			}
+
+			keyTermsInput.checked = true;
+
+			const savedFormat = localStorage.getItem("exportFormat");
+			const epubR = dlg.querySelector<HTMLInputElement>(
+				'input[name="ask-export-format"][value="epub"]',
+			);
+			const pdfR = dlg.querySelector<HTMLInputElement>(
+				'input[name="ask-export-format"][value="pdf"]',
+			);
+			if (savedFormat === "epub" && epubR) epubR.checked = true;
+			else if (pdfR) pdfR.checked = true;
+		} catch {
+			pliInput.checked = false;
+			layoutFieldset.disabled = true;
+		}
+
+		resetAll(dlg);
+		applyFormatDependentUi(dlg);
+	}
+
+	function renderTree(turns: AskExportTurnView[]): string {
+		const multi = turns.length > 1;
+		return turns
+			.map((turn, i) => {
+				const question = escapeHtml(turn.question);
+				const discourses = turn.discourses
+					.map((d) => {
+						const title =
+							d.title && d.title.trim() !== d.slug
+								? ` <span>${escapeHtml(d.title)}</span>`
+								: "";
+						const badge = d.isReference
+							? '<span class="pdf-tree-ref-badge">Ref.</span>'
+							: "";
+						return `<li${d.isReference ? ' class="pdf-tree-discourse--reference"' : ""}>
+							<label class="pdf-tree-discourse-label${d.isReference ? " pdf-tree-discourse-label--reference" : ""}">
+								<input type="checkbox" class="pdf-discourse-cb" data-slug="${escapeHtml(d.slug)}" data-turn-index="${i}" checked />
+								<span class="pdf-tree-discourse-title">
+									<span class="pdf-tree-id">${escapeHtml(transformId(d.slug))}</span>${title}${badge}
+								</span>
+							</label>
+						</li>`;
+					})
+					.join("");
+				const idSpan = multi
+					? `<span class="pdf-tree-id">${i + 1}</span> `
+					: "";
+				return `<div class="pdf-tree-chapter" data-turn-index="${i}">
+					<div class="pdf-tree-chapter-row">
+						<label class="pdf-tree-chapter-label">
+							<input type="checkbox" class="pdf-chapter-cb" checked />
+							<span class="pdf-tree-chapter-title">${idSpan}<span>${question}</span></span>
+						</label>
+					</div>
+					<ul class="pdf-tree-discourses">${discourses}</ul>
+				</div>`;
+			})
+			.join("");
+	}
+
+	function openWith(detail: AskExportOpenDetail): void {
+		const dlg = getDialog();
+		if (!dlg) return;
+		currentTurns = detail.turns || [];
+		currentSharePath = detail.sharePath;
+		if (currentTurns.length === 0) return;
+
+		const tree = dlg.querySelector("#ask-pdf-tree-scroll");
+		if (tree) tree.innerHTML = renderTree(currentTurns);
+
+		const subject = dlg.querySelector<HTMLElement>("[data-ask-export-subject]");
+		if (subject) {
+			subject.textContent =
+				currentTurns.length === 1
+					? currentTurns[0]?.question || "Ask"
+					: "Ask conversation";
+		}
+
+		applyDefaultsFromPage(dlg);
+		if (!dlg.open) dlg.showModal();
+	}
+
+	function selectedTurnsPayload(dlg: HTMLDialogElement): {
+		question: string;
+		summary: string;
+		selectedDiscourseSlugs: string[];
+	}[] {
+		const byTurn = new Map<number, string[]>();
+		getDiscourseCheckboxes(dlg)
+			.filter((cb) => cb.checked)
+			.forEach((cb) => {
+				const index = Number(cb.dataset.turnIndex);
+				const slug = cb.dataset.slug;
+				if (!Number.isFinite(index) || !slug) return;
+				const list = byTurn.get(index) ?? [];
+				list.push(slug);
+				byTurn.set(index, list);
+			});
+		const out: {
+			question: string;
+			summary: string;
+			selectedDiscourseSlugs: string[];
+		}[] = [];
+		currentTurns.forEach((turn, index) => {
+			const slugs = byTurn.get(index);
+			if (!slugs || slugs.length === 0) return;
+			out.push({
+				question: turn.question,
+				summary: turn.summary,
+				selectedDiscourseSlugs: slugs,
+			});
+		});
+		return out;
+	}
+
+	async function handleGenerate(): Promise<void> {
+		const dlg = getDialog();
+		if (!dlg?.open) return;
+		const generateBtn = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
+		if (!generateBtn || generateBtn.disabled) return;
+
+		const pliInput = dlg.querySelector<HTMLInputElement>("#ask-pdf-opt-pli");
+		const keyTermsInput = dlg.querySelector<HTMLInputElement>(
+			"#ask-pdf-opt-keyterms",
+		);
+		const vizShowInput = dlg.querySelector<HTMLInputElement>(
+			"#ask-pdf-opt-viz-show",
+		);
+		if (!pliInput || !keyTermsInput) return;
+
+		const format = getSelectedFormat(dlg);
+		generateBtn.disabled = true;
+		generateBtn.textContent =
+			format === "epub" ? "Building EPUB…" : "Printing…";
+
+		try {
+			const d = new Date();
+			const day = d.getDate();
+			const suffix = [11, 12, 13].includes(day)
+				? "th"
+				: day % 10 === 1
+					? "st"
+					: day % 10 === 2
+						? "nd"
+						: day % 10 === 3
+							? "rd"
+							: "th";
+			const month = d.toLocaleDateString("en-GB", { month: "long" });
+			const year = d.getFullYear();
+			const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
+
+			const includeImages = !!vizShowInput?.checked;
+			const layoutEl = dlg.querySelector<HTMLInputElement>(
+				'input[name="ask-layout"]:checked',
+			);
+			const lay =
+				format === "epub"
+					? "interleaved"
+					: layoutEl?.value === "split"
+						? "split"
+						: "interleaved";
+
+			const turns = selectedTurnsPayload(dlg);
+			if (turns.length === 0) {
+				showToast("Select at least one discourse.");
+				return;
+			}
+
+			const postBody: Record<string, unknown> = {
+				turns,
+				date,
+				format,
+				images: includeImages ? "svgPrimaryOnly" : "none",
+				pli: pliInput.checked,
+				layout: lay,
+				keyTerms: keyTermsInput.checked,
+			};
+			if (currentSharePath) postBody.sharePath = currentSharePath;
+			if (currentTurns[0]?.question) postBody.title = currentTurns[0].question;
+			if (includeImages) {
+				const mode = dlg.querySelector<HTMLInputElement>(
+					'input[name="ask-viz-mode"]:checked',
+				);
+				const vz = mode?.value;
+				if (format === "epub") {
+					postBody.viz = vz === "dark" ? "dark" : "eink";
+				} else if (vz === "light" || vz === "dark" || vz === "thermal") {
+					postBody.viz = vz;
+				}
+			}
+
+			const response = await fetch("/api/export/ask", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(postBody),
+			});
+
+			if (!response.ok) {
+				let detail = response.statusText;
+				try {
+					const errBody = await response.json();
+					detail = (errBody as { error?: string }).error ?? detail;
+				} catch {
+					/* ignore */
+				}
+				if (response.status === 504) {
+					detail =
+						"The export took too long on the server. Try selecting fewer discourses, or try again in a moment.";
+				}
+				throw new Error(detail);
+			}
+
+			const blob = await response.blob();
+			const objectUrl = URL.createObjectURL(blob);
+			const disposition = response.headers.get("Content-Disposition") ?? "";
+			const nameMatch = /filename="([^"]+)"/.exec(disposition);
+			const filename =
+				nameMatch?.[1] ?? `ask.${format === "epub" ? "epub" : "pdf"}`;
+
+			const anchor = document.createElement("a");
+			anchor.href = objectUrl;
+			anchor.download = filename;
+			document.body.appendChild(anchor);
+			anchor.click();
+			document.body.removeChild(anchor);
+			setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+			closeDialog();
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			const kind = format === "epub" ? "EPUB" : "PDF";
+			showToast(`${kind} generation failed: ${msg}`);
+		} finally {
+			generateBtn.textContent = generateButtonLabel(dlg, format);
+			updateSelectionUi(dlg);
+		}
+	}
+
+	function wireUi(): void {
+		const dlg = getDialog();
+		if (!dlg) return;
+
+		dlg.querySelectorAll("[data-ask-pdf-close]").forEach((btn) => {
+			(btn as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				closeDialog();
+			};
+		});
+		dlg.onclick = (e) => {
+			if (e.target === dlg) closeDialog();
+		};
+
+		const gen = dlg.querySelector("#ask-pdf-generate");
+		if (gen) {
+			(gen as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				void handleGenerate();
+			};
+		}
+		const selAll = dlg.querySelector("#ask-pdf-select-all");
+		if (selAll) {
+			(selAll as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				resetAll(dlg);
+			};
+		}
+		const clr = dlg.querySelector("#ask-pdf-clear-all");
+		if (clr) {
+			(clr as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				clearAll(dlg);
+			};
+		}
+
+		dlg.onchange = (e) => {
+			const el = e.target as HTMLElement | null;
+			if (!el) return;
+			if (el.classList.contains("pdf-chapter-cb")) {
+				applyChapterToDiscourses(el as HTMLInputElement);
+				updateSelectionUi(dlg);
+				return;
+			}
+			if (el.classList.contains("pdf-discourse-cb")) {
+				const ch = el.closest(".pdf-tree-chapter");
+				if (ch) syncChapterFromChildren(ch);
+				updateSelectionUi(dlg);
+				return;
+			}
+			if (el.id === "ask-pdf-opt-pli" || el.id === "ask-pdf-opt-viz-show") {
+				applyFormatDependentUi(dlg);
+			}
+			if ((el as HTMLInputElement).name === "ask-export-format") {
+				applyFormatDependentUi(dlg);
+				try {
+					localStorage.setItem("exportFormat", getSelectedFormat(dlg));
+				} catch {
+					/* ignore */
+				}
+			}
+		};
+
+		if (!keydownWired) {
+			keydownWired = true;
+			window.addEventListener(
+				"keydown",
+				(e) => {
+					if (e.key !== "Escape") return;
+					if (!getDialog()?.open) return;
+					closeDialog();
+					e.preventDefault();
+				},
+				true,
+			);
+		}
+	}
+
+	function bindToastDismiss(): void {
+		if (document.documentElement.dataset.askPdfToastDismiss === "1") return;
+		document.documentElement.dataset.askPdfToastDismiss = "1";
+		document.addEventListener(
+			"click",
+			(e) => {
+				const t = e.target as HTMLElement | null;
+				if (!t?.closest(".ask-pdf-toast .toast-close")) return;
+				e.preventDefault();
+				clearTimeout(toastTimer);
+				document.querySelector(".ask-pdf-toast")?.classList.remove("visible");
+			},
+			true,
+		);
+	}
+
+	function init(): void {
+		bindToastDismiss();
+		queueMicrotask(() => wireUi());
+		if (document.documentElement.dataset.askExportOpenWired === "1") return;
+		document.documentElement.dataset.askExportOpenWired = "1";
+		window.addEventListener(ASK_EXPORT_OPEN_EVENT, ((
+			event: CustomEvent<AskExportOpenDetail>,
+		) => {
+			openWith(event.detail || { turns: [] });
+		}) as EventListener);
+	}
+
+	document.addEventListener("DOMContentLoaded", init);
+	document.addEventListener("astro:page-load", init);
+	init();
+</script>

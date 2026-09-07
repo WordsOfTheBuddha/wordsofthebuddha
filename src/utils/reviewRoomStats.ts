@@ -1,5 +1,4 @@
 import collectionReferenceIndex from "../data/collectionReferenceIndex";
-import type { AiAskSessionEntry } from "./aiAskSession";
 import { isDiscourseSlug } from "./collectionAvailabilityCounts";
 import { collectionChipLabel } from "./recentDiscourses";
 import { routes } from "./routes";
@@ -214,14 +213,4 @@ export function formatMinutesAgo(minutes: number, nowMs = Date.now()): string {
 	}
 	const years = Math.floor(days / 365);
 	return `${years} ${years === 1 ? "year" : "years"} ago`;
-}
-
-/** Pinned asks first, then newest first. */
-export function orderAsksForReview(
-	entries: readonly AiAskSessionEntry[],
-): AiAskSessionEntry[] {
-	return [...entries].sort((a, b) => {
-		const pinned = Number(b.saved === true) - Number(a.saved === true);
-		return pinned !== 0 ? pinned : b.at - a.at;
-	});
 }
