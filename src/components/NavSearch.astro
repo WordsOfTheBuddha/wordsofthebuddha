@@ -65,8 +65,10 @@ import "../styles/search-gateway.css";
 		transition: width 180ms ease;
 	}
 
+	/* Avoid :not(:placeholder-shown): Vite prefixes it as :not(:-moz-placeholder),
+	   which Safari treats as always true and hides the idle hint in `astro dev`. */
 	.nav-search:focus-within,
-	.nav-search:has(.nav-search-input:not(:placeholder-shown)) {
+	.nav-search.is-filled {
 		width: var(--nav-search-expanded);
 	}
 
@@ -87,6 +89,7 @@ import "../styles/search-gateway.css";
 		left: 2.25rem;
 		right: 0.5rem;
 		top: 50%;
+		z-index: 1;
 		transform: translateY(-50%);
 		display: flex;
 		align-items: center;
@@ -100,7 +103,7 @@ import "../styles/search-gateway.css";
 	}
 
 	.nav-search:focus-within .nav-search-hint,
-	.nav-search-input:not(:placeholder-shown) ~ .nav-search-hint {
+	.nav-search.is-filled .nav-search-hint {
 		display: none;
 	}
 
@@ -144,6 +147,13 @@ import "../styles/search-gateway.css";
 	const list = document.getElementById("nav-search-suggestions-list");
 
 	if (form && input && dropdown && list) {
+		const syncFilled = () => {
+			form.classList.toggle("is-filled", input.value.trim().length > 0);
+		};
+		syncFilled();
+		input.addEventListener("input", syncFilled);
+		input.addEventListener("change", syncFilled);
+
 		attachSearchGateway({
 			form,
 			input,
