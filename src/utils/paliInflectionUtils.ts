@@ -23,8 +23,57 @@ export function applyStemVowelToHighlightPattern(
 	return pattern.replace(/(\[[^\]]*\])$/, HIGHLIGHT_STEM_VOWEL_PATTERN);
 }
 
+/** Longest-first case endings on diacritic-stripped norms (`ṁ` → `m`). */
+const LONG_CASE_ENDINGS = [
+	"ebhi",
+	"ehi",
+	"esu",
+	"ahi",
+	"asu",
+	"anam",
+	"assa",
+	"iyo",
+	"ini",
+	"ino",
+	"ina",
+	"aya",
+	"ena",
+	"am",
+	"im",
+	"um",
+] as const;
+
+const MIN_INFLECTION_LEN = 5;
+/** Extra endings only on longer tokens so `sati` / `sato` stay distinct. */
+const MIN_LONG_FOLD_LEN = 8;
+/** Keep `bhikkhussa` from collapsing onto a `bhikkh-` stub next to `bhikkhu`. */
+const MIN_LONG_STEM_LEN = 8;
+
+/**
+ * Collapse common Pali inflections to a lemma key (normalized text).
+ * Short tokens only drop a final a/o; longer tokens also drop ena/assa/aṁ/etc.
+ */
 export function inflectionStemKey(norm: string): string {
-	if (norm.length < 5) return norm;
+	if (norm.length < MIN_INFLECTION_LEN) return norm;
+
+	if (norm.length >= MIN_LONG_FOLD_LEN) {
+		for (const end of LONG_CASE_ENDINGS) {
+			if (
+				norm.endsWith(end) &&
+				norm.length - end.length >= MIN_LONG_STEM_LEN
+			) {
+				return norm.slice(0, -end.length);
+			}
+		}
+		const last = norm.at(-1)!;
+		if (
+			(last === "e" || last === "i" || last === "u") &&
+			norm.length - 1 >= MIN_LONG_STEM_LEN
+		) {
+			return norm.slice(0, -1);
+		}
+	}
+
 	const last = norm.at(-1)!;
 	if (last === "a" || last === "o") return norm.slice(0, -1);
 	if (last === "ā") return `${norm.slice(0, -1)}a`;

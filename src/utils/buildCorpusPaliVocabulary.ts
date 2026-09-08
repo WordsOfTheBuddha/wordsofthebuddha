@@ -9,10 +9,13 @@ import { normalizeForComparison } from "./searchRanking";
 const PALI_TOKEN_RE = /[a-zA-Zāīūṃṁṅñṭḍṇḷ]+/g;
 
 const MIN_TOKEN_LEN = 3;
-/** Minimum Pali files a token must appear in to enter the corpus suggestion layer. */
+/** Minimum Pali files a lemma must appear in to enter the corpus suggestion layer. */
 export const CORPUS_MIN_DOCS = 5;
-/** Max corpus-layer entries after frequency sort (curated/tooltip layers are separate). */
-export const CORPUS_MAX_ENTRIES = 5000;
+/**
+ * Max corpus-layer entries after frequency sort (curated/tooltip layers are separate).
+ * 10k admits ~6-file lemmas; 5k cut off at ~12 files of a single spelling.
+ */
+export const CORPUS_MAX_ENTRIES = 10000;
 
 /** Recurring multi-word Pali stock phrases — companion terms bypass the corpus cap. */
 const STOCK_PHRASE_RE =
@@ -23,7 +26,14 @@ type CorpusStats = {
 	docs: Set<string>;
 };
 
-function pickCanonicalForm(forms: Map<string, number>): string {
+function pickCanonicalForm(
+	forms: Map<string, number>,
+	lemma?: string,
+): string {
+	if (lemma) {
+		const preferred = pickPreferredLemmaForm(forms, lemma);
+		if (preferred) return preferred;
+	}
 	let best = "";
 	let count = 0;
 	for (const [form, n] of forms) {
@@ -33,6 +43,56 @@ function pickCanonicalForm(forms: Map<string, number>): string {
 		}
 	}
 	return best;
+}
+
+/** Prefer an observed a-stem, then nominative -o, else the most frequent spelling. */
+function pickPreferredLemmaForm(
+	forms: Map<string, number>,
+	lemma: string,
+): string | null {
+	const wantA = `${lemma}a`;
+	const wantO = `${lemma}o`;
+	let aForm: string | null = null;
+	let aCount = 0;
+	let oForm: string | null = null;
+	let oCount = 0;
+	for (const [form, n] of forms) {
+		const nrm = normalizeForComparison(form);
+		if (nrm === wantA && n >= aCount) {
+			aForm = form;
+			aCount = n;
+		} else if (nrm === wantO && n >= oCount) {
+			oForm = form;
+			oCount = n;
+		}
+	}
+	return aForm ?? oForm;
+}
+
+function mergeStatsByLemma(
+	byNorm: Map<string, CorpusStats>,
+	existingNorms: Set<string>,
+): Map<string, CorpusStats> {
+	const grouped = new Map<string, CorpusStats>();
+
+	for (const [norm, data] of byNorm) {
+		const lemma = inflectionStemKey(norm);
+		if (existingNorms.has(norm) || existingNorms.has(lemma)) continue;
+
+		let stats = grouped.get(lemma);
+		if (!stats) {
+			stats = { forms: new Map(), docs: new Set() };
+			grouped.set(lemma, stats);
+		}
+		for (const [form, n] of data.forms) {
+			stats.forms.set(form, (stats.forms.get(form) ?? 0) + n);
+		}
+		for (const doc of data.docs) {
+			stats.docs.add(doc);
+		}
+	}
+
+	return grouped;
 }
 
 function collectCorpusStats(pliRoot: string): Map<string, CorpusStats> {
@@ -68,20 +128,19 @@ export function buildCorpusPaliEntries(
 	const minDocs = options?.minDocs ?? CORPUS_MIN_DOCS;
 	const maxEntries = options?.maxEntries ?? CORPUS_MAX_ENTRIES;
 	const stats = collectCorpusStats(pliRoot);
+	const grouped = mergeStatsByLemma(stats, existingNorms);
 
 	const candidates: Array<{ entry: SuggestionIndexEntry; docCount: number }> =
 		[];
 
-	for (const [norm, data] of stats) {
-		if (existingNorms.has(norm) || existingNorms.has(inflectionStemKey(norm))) {
-			continue;
-		}
+	for (const [lemma, data] of grouped) {
 		if (data.docs.size < minDocs) continue;
 
+		const text = pickCanonicalForm(data.forms, lemma);
 		candidates.push({
 			entry: {
-				text: pickCanonicalForm(data.forms),
-				norm,
+				text,
+				norm: normalizeForComparison(text),
 				source: "corpus",
 				entityType: "topic",
 			},

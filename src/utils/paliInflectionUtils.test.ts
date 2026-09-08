@@ -40,6 +40,28 @@ describe("inflectionStemKey", () => {
 	it("does not collapse short tokens", () => {
 		assert.notEqual(inflectionStemKey("sati"), inflectionStemKey("sato"));
 	});
+
+	it("groups long technical terms across case endings", () => {
+		const lemma = inflectionStemKey("vimuttikkhandha");
+		assert.equal(inflectionStemKey("vimuttikkhandho"), lemma);
+		assert.equal(inflectionStemKey("vimuttikkhandhena"), lemma);
+		assert.equal(inflectionStemKey("vimuttikkhandham"), lemma);
+		assert.equal(inflectionStemKey("vimuttikkhandhassa"), lemma);
+	});
+
+	it("does not merge bhikkhu with bhikkhussa", () => {
+		assert.notEqual(
+			inflectionStemKey("bhikkhu"),
+			inflectionStemKey("bhikkhussa"),
+		);
+	});
+
+	it("keeps prefix-distinct stems apart", () => {
+		assert.notEqual(
+			inflectionStemKey("animitta"),
+			inflectionStemKey("nimitta"),
+		);
+	});
 });
 
 describe("highlightSuggestionText", () => {
@@ -93,5 +115,18 @@ describe("createSuggestionSearcher inflection matching", () => {
 		const results = searcher.suggest("sabbasankharasamatho");
 		assert.equal(results[0]?.text, "sabbasaṅkhārasamatha");
 		assert.ok(computeHighlightEnd(results[0]!.text, "sabbasankharasamatho") > 0);
+	});
+
+	it("matches an instrumental query to the a-stem entry", () => {
+		const searcher = createSuggestionSearcher([
+			{
+				text: "vimuttikkhandha",
+				norm: "vimuttikkhandha",
+				source: "tooltip",
+				entityType: "topic",
+			},
+		]);
+		const results = searcher.suggest("vimuttikkhandhena");
+		assert.equal(results[0]?.text, "vimuttikkhandha");
 	});
 });
