@@ -952,6 +952,13 @@ export function attachAiMode(options: {
 	let voiceBase = "";
 	let recognition: BrowserSpeechRecognition | null = null;
 	let selectedModel = defaultModel;
+	const SHARE_LINK_IDLE_HTML =
+		'<span class="ai-share-label-full">Share link</span><span class="ai-share-label-short">Share</span>';
+
+	function restoreShareLinkButton(button: HTMLButtonElement): void {
+		button.disabled = false;
+		button.innerHTML = SHARE_LINK_IDLE_HTML;
+	}
 	if (showModelPicker) {
 		try {
 			const stored = localStorage.getItem(MODEL_STORAGE_KEY);
@@ -1168,7 +1175,11 @@ export function attachAiMode(options: {
 	}
 
 	function maybeOfferFeedback(view: AiAskQuotaView | null | undefined): void {
-		if (!view?.offerFeedback || view.feedbackClaimed) return;
+		if (!view?.offerFeedback || view.feedbackClaimed) {
+			// “Not now” only snoozes until the last 2 Asks remain.
+			if (!view?.offerFeedback) feedbackPromptShown = false;
+			return;
+		}
 		if (feedbackPromptShown) return;
 		feedbackPromptShown = true;
 		window.clearTimeout(feedbackHintTimer);
@@ -1188,7 +1199,10 @@ export function attachAiMode(options: {
 				success?: boolean;
 				quota?: AiAskQuotaView;
 			};
-			if (data.success && data.quota) applyQuota(data.quota);
+			if (data.success && data.quota) {
+				applyQuota(data.quota);
+				if (!data.quota.offerFeedback) feedbackPromptShown = false;
+			}
 		} catch {
 			/* ignore */
 		}
@@ -1545,7 +1559,50 @@ export function attachAiMode(options: {
 	}
 
 	function deleteOpenAskTurn(turn: AiAskTurn): void {
-		if (turn.fromShare || turn.pending || turn.error) return;
+		if (busy || turn.fromShare || turn.pending || turn.error) return;
+		const index = turns.indexOf(turn);
+		if (index < 0 || index !== turns.length - 1) return;
+		if (index !== latestPinnableTurnIndex()) return;
+
+		let previousTip: AiAskTurn | undefined;
+		for (let i = index - 1; i >= 0; i--) {
+			const item = turns[i];
+			if (
+				item &&
+				!item.pending &&
+				!item.error &&
+				!item.offTopic &&
+				item.results.length > 0
+			) {
+				previousTip = item;
+				break;
+			}
+		}
+
+		if (previousTip) {
+			if (
+				!window.confirm(
+					"Remove this last follow-up from the conversation?",
+				)
+			) {
+				return;
+			}
+			const removedQuestions = [
+				turn.question,
+				turn.originalQuestion || "",
+			].filter(Boolean);
+			const keepPinned = turn.saved === true;
+			turns = turns.slice(0, index);
+			if (keepPinned) {
+				for (const item of turns) item.saved = false;
+				previousTip.saved = true;
+			}
+			pendingReplaceQuestions = removedQuestions;
+			persistSessionFromTurn(previousTip);
+			syncLayout();
+			return;
+		}
+
 		if (
 			!window.confirm(
 				"Delete this Ask from Recent Asks? This cannot be undone.",
@@ -1936,16 +1993,25 @@ export function attachAiMode(options: {
 			: conversation
 				? "Pin conversation"
 				: "Pin this Ask";
+		const pinShortLabel = pinned ? "Pinned" : "Pin";
 		const pinBtn = showPin
 			? `<button type="button" class="ai-share-btn ai-pin-btn${pinned ? " is-pinned" : ""}" data-ai-pin data-turn-index="${turnIndex}" aria-pressed="${pinned ? "true" : "false"}" title="${pinTitle}" aria-label="${pinTitle}">
-				${PIN_ICON_SVG}<span>${pinLabel}</span>
+				${PIN_ICON_SVG}<span class="ai-share-label-full">${pinLabel}</span><span class="ai-share-label-short">${pinShortLabel}</span>
 			</button>`
 			: "";
+		const deleteBtn =
+			showPin && !turn.fromShare && turnIndex === turns.length - 1
+				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}" title="${conversation ? "Remove this last follow-up" : "Delete this Ask"}">Delete</button>`
+				: "";
+		const startBtns =
+			pinBtn || deleteBtn
+				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
+				: "";
 		return `<div class="ai-share-actions">
-			${pinBtn}
+			${startBtns}
 			<div class="ai-share-actions-end">
 				<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>
-				<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">Share link</button>
+				<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>
 			</div>
 		</div>`;
 	}
@@ -2006,7 +2072,6 @@ export function attachAiMode(options: {
 		turnIndex: number,
 	): Promise<void> {
 		if (turn.results.length === 0) return;
-		const previous = button.textContent || "Share link";
 		button.disabled = true;
 		const index =
 			Number.isFinite(turnIndex) && turnIndex >= 0
@@ -2025,10 +2090,7 @@ export function attachAiMode(options: {
 			} catch {
 				button.textContent = "Could not copy";
 			}
-			window.setTimeout(() => {
-				button.disabled = false;
-				button.textContent = previous;
-			}, 1600);
+			window.setTimeout(() => restoreShareLinkButton(button), 1600);
 			return;
 		}
 		button.textContent = "Sharing…";
@@ -2058,10 +2120,7 @@ export function attachAiMode(options: {
 			};
 			if (!response.ok || !data.success || !data.path) {
 				button.textContent = data.error || "Could not share";
-				window.setTimeout(() => {
-					button.disabled = false;
-					button.textContent = previous;
-				}, 1800);
+				window.setTimeout(() => restoreShareLinkButton(button), 1800);
 				return;
 			}
 			turn.shareSlug = data.slug || turn.shareSlug;
@@ -2070,16 +2129,10 @@ export function attachAiMode(options: {
 			await navigator.clipboard.writeText(url);
 			button.textContent = "Link copied";
 			persistSessionFromTurn(turn);
-			window.setTimeout(() => {
-				button.disabled = false;
-				button.textContent = "Share link";
-			}, 1600);
+			window.setTimeout(() => restoreShareLinkButton(button), 1600);
 		} catch {
 			button.textContent = "Could not share";
-			window.setTimeout(() => {
-				button.disabled = false;
-				button.textContent = previous;
-			}, 1800);
+			window.setTimeout(() => restoreShareLinkButton(button), 1800);
 		}
 	}
 
@@ -2532,6 +2585,15 @@ export function attachAiMode(options: {
 				if (turn) toggleSaveTurn(turn);
 			});
 		});
+		thread
+			.querySelectorAll<HTMLButtonElement>("[data-ai-delete-turn]")
+			.forEach((button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					const turn = turns[index];
+					if (turn) deleteOpenAskTurn(turn);
+				});
+			});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-edit-question]").forEach(
 			(button) => {
 				button.addEventListener("click", () => {

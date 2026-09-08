@@ -907,7 +907,14 @@
 .ai-follow {
 	position: sticky;
 	bottom: 0;
+	z-index: 6;
 	padding: 0.75rem 0 1rem;
+	/*
+	 * Page color, not a distinct chrome. At rest this matches the page so
+	 * “New question” / remaining Asks look like plain text; when the bar is
+	 * stuck over results it keeps those labels readable.
+	 */
+	background: var(--background-color);
 }
 
 .ai-new {
@@ -1033,9 +1040,29 @@
 .ai-share-actions {
 	display: flex;
 	align-items: center;
-	gap: 0.75rem;
+	gap: 0.5rem 0.75rem;
 	margin: 1rem 0 0;
 	flex-wrap: wrap;
+	container-type: inline-size;
+	container-name: ai-share-actions;
+}
+
+.ai-share-actions-start {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-width: 0;
+}
+
+.ai-share-actions-end {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-left: auto;
+}
+
+.ai-share-label-short {
+	display: none;
 }
 
 .ai-share-btn {
@@ -1048,6 +1075,21 @@
 	font: inherit;
 	font-size: 0.85rem;
 	cursor: pointer;
+}
+
+@container ai-share-actions (max-width: 36rem) {
+	.ai-share-label-full {
+		display: none;
+	}
+
+	.ai-share-label-short {
+		display: inline;
+	}
+
+	.ai-share-btn {
+		padding-left: 0.7rem;
+		padding-right: 0.7rem;
+	}
 }
 
 .ai-share-btn-end {
