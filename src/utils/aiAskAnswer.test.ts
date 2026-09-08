@@ -71,6 +71,19 @@ describe("parseAskAnswerSummary", () => {
 		);
 		assert.equal(parseAskAnswerSummary("no json here"), "");
 	});
+
+	it("joins a paragraphs array into a briefing", () => {
+		const text = parseAskAnswerSummary(
+			JSON.stringify({
+				paragraphs: [
+					"MN 107 gives the going and returning formula.",
+					"AN 6.29 is a compact establishment of recollection.",
+				],
+			}),
+		);
+		assert.match(text, /MN 107 gives/);
+		assert.match(text, /\n\nAN 6\.29/);
+	});
 });
 
 describe("ASK_ANSWER_SYSTEM", () => {
@@ -78,6 +91,8 @@ describe("ASK_ANSWER_SYSTEM", () => {
 		assert.match(ASK_ANSWER_SYSTEM, /merely lists/);
 		assert.match(ASK_ANSWER_SYSTEM, /Do not import stock Dhamma/);
 		assert.match(ASK_ANSWER_SYSTEM, /Match the form they asked for/);
+		assert.match(ASK_ANSWER_SYSTEM, /paragraphs/);
+		assert.match(ASK_ANSWER_SYSTEM, /silence\.AN 6\.29/);
 	});
 });
 

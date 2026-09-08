@@ -117,6 +117,24 @@ describe("parseRerankResponse", () => {
 		);
 	});
 
+	it("prefers a paragraphs array over a glued summary string", () => {
+		const allowed = new Set(["mn10", "an6.29"]);
+		const parsed = parseRerankResponse(
+			JSON.stringify({
+				slugs: ["mn10"],
+				summary: "Ignore this glued blob.AN 6.29 is worse.",
+				paragraphs: [
+					"MN 10 is the famous treatment.",
+					"AN 6.29 is the compact daily-life version.",
+				],
+			}),
+			allowed,
+		);
+		assert.match(parsed.summary, /MN 10 is the famous treatment/);
+		assert.match(parsed.summary, /\n\nAN 6\.29 is the compact/);
+		assert.doesNotMatch(parsed.summary, /Ignore this glued blob/);
+	});
+
 	it("can keep a small survey overshoot up to the hard cap", () => {
 		const slugs = Array.from(
 			{ length: AI_RERANK_HARD_LIMIT + 3 },

@@ -50,6 +50,20 @@ describe("linkifyAskSummaryHtml", () => {
 		assert.match(html, /href="\/mn10"/);
 		assert.match(html, /Second paragraph/);
 	});
+
+	it("repairs glued sentences and infers paragraphs before discourse IDs", () => {
+		const wall =
+			"Daily-life mindfulness is trained through satisampajañña, not as a stand-alone technique.AN 6.29 gives a compact version of the same practice. Relatedly, AN 10.51 makes self-monitoring a daily review.AN 4.41 locates this in feelings and thoughts as they arise. A caveat: most of these passages address bhikkhus.";
+		const html = linkifyAskSummaryHtml(wall, [
+			{ slug: "an6.29", href: "/an6.29" },
+			{ slug: "an4.41", href: "/an4.41" },
+		]);
+		assert.match(html, /stand-alone technique\.<\/p><p>/);
+		assert.match(html, /href="\/an6\.29"/);
+		assert.match(html, /href="\/an4\.41"/);
+		assert.ok([...html.matchAll(/<p>/g)].length >= 4);
+		assert.match(html, /<p>A caveat:/);
+	});
 });
 
 describe("normalizeAskSummaryProse", () => {
@@ -59,5 +73,15 @@ describe("normalizeAskSummaryProse", () => {
 			"First.\n\nSecond.",
 		);
 		assert.equal(normalizeAskSummaryProse("abcdefghij", 6), "abcdef");
+	});
+
+	it("does not break i.e. or discourse-ID decimals", () => {
+		const text = normalizeAskSummaryProse(
+			"Feelings arise known (viditā) — i.e., tracking ordinary mental events as in AN 4.41.",
+		);
+		assert.match(text, /i\.e\., tracking/);
+		assert.match(text, /AN 4\.41/);
+		assert.doesNotMatch(text, /i\. e\./);
+		assert.doesNotMatch(text, /4\. 41/);
 	});
 });

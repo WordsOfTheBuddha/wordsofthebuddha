@@ -25,17 +25,107 @@ export function discourseIdAliases(slug: string): string[] {
 		.filter(Boolean);
 }
 
+/** Soft wrap for inferred briefing paragraphs (JSON dumps often omit blank lines). */
+const ASK_SUMMARY_PARA_CHARS = 560;
+
+const DISCOURSE_SENTENCE_START =
+	/^(?:AN|SN|MN|DN|ITI|Iti|Dhp|Ud|Snp|SNP|Thag|Thig|Kp|Khp|Pv|Vv|Ja|Bv|Cp|Mil|Nett|Pe)\s*\d/i;
+
+const ASK_SUMMARY_BREAK_CUE =
+	/^(?:A caveat\b|Caveat:|Note that\b|And note that\b|Relatedly,)/i;
+
+const FALSE_SENTENCE_END =
+	/(?:^|[^a-zāīū])(?:i\.e|e\.g|vs|cf|n\.b)\.$/i;
+
+/**
+ * Models in JSON mode often glue the next sentence to the period
+ * (`technique.AN 6.29`). Insert the missing space; leave `i.e.` / `6.29` alone.
+ */
+export function repairAskSentenceSpacing(value: string): string {
+	return value.replace(
+		/([a-zāīūṅñṭḍṇḷṃṁ0-9\)\]'’"”])([.!?])(['"”’)\]]*)(?=\p{Lu})/gu,
+		"$1$2$3 ",
+	);
+}
+
+function isFalseSentenceEnd(text: string, punctIndex: number): boolean {
+	if (text[punctIndex] !== ".") return false;
+	const window = text.slice(Math.max(0, punctIndex - 6), punctIndex + 1);
+	return FALSE_SENTENCE_END.test(window);
+}
+
+export function splitAskSummarySentences(text: string): string[] {
+	const trimmed = text.replace(/\s+/g, " ").trim();
+	if (!trimmed) return [];
+	const out: string[] = [];
+	const re = /[.!?]['"”’)]*(?=\s+\p{Lu}|$)/gu;
+	let start = 0;
+	let match: RegExpExecArray | null;
+	while ((match = re.exec(trimmed))) {
+		if (isFalseSentenceEnd(trimmed, match.index)) continue;
+		const piece = trimmed.slice(start, match.index + match[0].length).trim();
+		if (piece) out.push(piece);
+		start = match.index + match[0].length;
+	}
+	const tail = trimmed.slice(start).trim();
+	if (tail) out.push(tail);
+	return out.length > 0 ? out : [trimmed];
+}
+
+function inferAskParagraphs(text: string): string {
+	const sentences = splitAskSummarySentences(text);
+	if (sentences.length <= 1) return text.replace(/\s+/g, " ").trim();
+	const paras: string[] = [];
+	let current = "";
+	for (const sentence of sentences) {
+		const force =
+			current.length > 0 &&
+			(DISCOURSE_SENTENCE_START.test(sentence) ||
+				ASK_SUMMARY_BREAK_CUE.test(sentence));
+		const overflow =
+			current.length > 0 &&
+			current.length + 1 + sentence.length > ASK_SUMMARY_PARA_CHARS;
+		if (force || overflow) {
+			paras.push(current);
+			current = sentence;
+		} else {
+			current = current ? `${current} ${sentence}` : sentence;
+		}
+	}
+	if (current) paras.push(current);
+	return paras.join("\n\n");
+}
+
+function formatAskSummaryBlock(block: string): string {
+	const spaced = repairAskSentenceSpacing(block.replace(/[ \t]+/g, " ").trim());
+	if (!spaced) return "";
+	return inferAskParagraphs(spaced);
+}
+
+/** Join a model `paragraphs` array into briefing prose. */
+export function joinAskSummaryParagraphs(raw: unknown): string {
+	if (!Array.isArray(raw)) return "";
+	return raw
+		.map((item) =>
+			typeof item === "string" ? item.replace(/\s+/g, " ").trim() : "",
+		)
+		.filter(Boolean)
+		.join("\n\n");
+}
+
 /**
  * Keep paragraph breaks; collapse intra-paragraph whitespace. Used before
- * storing, clipping, and rendering Ask briefings.
+ * storing, clipping, and rendering Ask briefings. Also repairs glued
+ * sentences and infers paragraphs when the model omitted blank lines.
  */
 export function normalizeAskSummaryProse(value: string, max?: number): string {
 	const text = value
 		.replace(/\r\n/g, "\n")
 		.split(/\n+/)
-		.map((part) => part.replace(/[ \t]+/g, " ").trim())
+		.map((part) => formatAskSummaryBlock(part))
 		.filter(Boolean)
-		.join("\n\n");
+		.join("\n\n")
+		.replace(/\n{3,}/g, "\n\n");
 	if (max == null) return text;
 	return text.slice(0, Math.max(0, max));
 }

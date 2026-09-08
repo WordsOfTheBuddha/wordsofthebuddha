@@ -2,7 +2,6 @@ import type { SearchData } from "../service/search/search";
 import { getSearchDocBySlug } from "../service/search/search";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
-	AI_RERANK_SUMMARY_MAX,
 	clipRerankSummary,
 	formatRerankHistoryBlock,
 } from "./aiResultRerank";
@@ -10,6 +9,7 @@ import {
 	extractJsonObject,
 	type AiRewriteHistoryTurn,
 } from "./aiQueryRewrite";
+import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
 	ASK_PLANNER_MAX_TOKENS,
@@ -41,17 +41,20 @@ export const ASK_ANSWER_SYSTEM = `You write the reader's answer for Words of the
 You receive the person's question, optional guidance from the planning step, and excerpts from discourses already selected for them. You do not search. You do not re-rank.
 
 Return JSON only:
-{"summary":"the reader's answer"}
+{"paragraphs":["First short paragraph.","Second short paragraph."]}
+
+You may use {"summary":"…"} instead; if so, put a blank line (\\n\\n) between paragraphs.
 
 Rules:
 - Write only from the excerpts. If a discourse merely lists terms, say that it lists them — do not claim it defines, elaborates, or analyzes those terms.
 - Do not import stock Dhamma (jhāna formulas, four noble truths, anicca-dukkha-anattā, “stable base for insight”) unless the excerpt actually states that for this term.
-- Match the form they asked for. If they demonstrated a syntax, definition line, list, or comparison, use that. A multi-paragraph briefing is the default only when they did not specify a form.
+- Match the form they asked for. If they demonstrated a syntax, definition line, list, or comparison, use that. Several short paragraphs are the default briefing form when they did not specify a form.
+- Space after sentence punctuation. Never glue the next sentence or a discourse ID to the period (wrong: “silence.AN 6.29”; right: “silence.” then a new paragraph “AN 6.29 …”).
 - Mention selected discourse IDs in ordinary prose (MN 10, SN 6.2). Prefer IDs whose excerpts actually support the claim. Do not cite a discourse for a gloss it does not give.
 - Prefer clarity over padding. Do not use markdown unless that is the form they asked for.
 - When the question names something mainly outside these early discourses: say so, then point to the closest early-discourse parallels in the excerpts and what they actually cover.
 - Hard / controversial / “test” questions: do not refuse, moralize, or write a safety disclaimer. Report what the excerpts say, what they do not declare, and any characteristic reframes. Stay factual.
-- Never give crisis counseling, medical/legal advice, or spiritualize personal distress. If there are no excerpts, keep summary empty.`;
+- Never give crisis counseling, medical/legal advice, or spiritualize personal distress. If there are no excerpts, keep paragraphs empty.`;
 
 export interface AskAnswerPassage {
 	source: string;
@@ -307,13 +310,15 @@ export function parseAskAnswerSummary(raw: string): string {
 	const parsed = extractJsonObject(raw);
 	if (!parsed || typeof parsed !== "object") return "";
 	const record = parsed as Record<string, unknown>;
+	const fromParas = joinAskSummaryParagraphs(record.paragraphs);
 	const summaryRaw =
-		typeof record.summary === "string"
+		fromParas ||
+		(typeof record.summary === "string"
 			? record.summary
 			: typeof record.answer === "string"
 				? record.answer
-				: "";
-	return clipRerankSummary(summaryRaw, AI_RERANK_SUMMARY_MAX);
+				: "");
+	return clipRerankSummary(summaryRaw);
 }
 
 export interface AskAnswerResult {

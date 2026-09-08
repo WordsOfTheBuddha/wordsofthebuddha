@@ -11,7 +11,7 @@ import {
 	formatAskAlreadyShownIds,
 } from "./aiAskHistory";
 import { normalizeAskShareSlug } from "./aiAskShare";
-import { normalizeAskSummaryProse } from "./linkifyAskSummary";
+import { joinAskSummaryParagraphs, normalizeAskSummaryProse } from "./linkifyAskSummary";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
 	geminiGenerate,
@@ -125,7 +125,7 @@ Rules:
 - When "Guidance from the planning step" is present, follow it for what to prioritize, which facets to represent, and how to frame the answer. It comes from a stronger model that read the question first. Planning notes (if present) are its raw thinking — use them for intent, ignore any JSON drafting.
 - When Earlier in this Ask is present, treat this as one conversation: resolve pronouns and references (“that”, “the second one”, “those discourses”, “more like this”) against prior questions, shown IDs, and clipped prior summaries. Rank and write the summary as a continuation, not a brand-new isolated Ask — unless the new question clearly changes topic. Already-shown IDs are context for pronouns, not a blacklist you infer.
 - When "Do not include these IDs (planner blacklist)" is present, never select those slugs. The planning model already classified diversify vs refine vs new topic. Do not infer a blacklist from earlier turns or from wording like “other discourses.” An empty planner blacklist means already-shown IDs may stay in play.
-- summary: fallback reader's answer, written only from the passages shown — not a caption. A later thinking step may replace this from fuller excerpts. Match the form they asked for. If they demonstrated a syntax, list, definition line, or comparison, use that. A multi-paragraph briefing is the default only when they did not specify a form. Follow Guidance from the planning step for how to frame it. Ordinary unspecified questions: typically two short paragraphs (about 5–10 sentences). When they asked for detail, research, a survey, many citations, or exhaustive coverage: write a fuller treatment in several short paragraphs (as much as needed, roughly 12–25 sentences) covering the main facets present in the selected set. Mention selected discourse IDs in ordinary prose (e.g. MN 10, SN 47.19); the UI can link those IDs. Prefer clarity over padding. Do not invent teachings or quote long passages. Do not credit a discourse with an explanation, analysis, or definition its passage does not contain. Do not use markdown unless that is the form they asked for.
+- summary / paragraphs: fallback reader's answer, written only from the passages shown — not a caption. A later thinking step may replace this from fuller excerpts. Prefer "paragraphs":["…","…"] (one short paragraph per item). If you use summary, put \\n\\n between paragraphs. Space after sentence punctuation; never glue the next sentence or a discourse ID to the period (wrong: “silence.AN 6.29”). Match the form they asked for. If they demonstrated a syntax, list, definition line, or comparison, use that. A multi-paragraph briefing is the default only when they did not specify a form. Follow Guidance from the planning step for how to frame it. Ordinary unspecified questions: typically two short paragraphs (about 5–10 sentences). When they asked for detail, research, a survey, many citations, or exhaustive coverage: write a fuller treatment in several short paragraphs (as much as needed, roughly 12–25 sentences) covering the main facets present in the selected set. Mention selected discourse IDs in ordinary prose (e.g. MN 10, SN 47.19); the UI can link those IDs. Prefer clarity over padding. Do not invent teachings or quote long passages. Do not credit a discourse with an explanation, analysis, or definition its passage does not contain. Do not use markdown unless that is the form they asked for.
 - When the question names something mainly outside these early discourses (commentaries, later Abhidhamma layers, other Buddhist schools, popular terms not taught here): say so clearly, then point to the closest early-discourse parallels in the selected set and what they actually cover. Use the extra length when needed for that framing.
 - Hard / controversial / “test” questions (killing, war, sexuality, undeclared points, harsh ethics, political or social provocations still aimed at the early discourses): do not refuse, moralize, or write a safety disclaimer. Answer the way the selected discourses do — report what the Buddha said, what he did not declare, and any characteristic reframes (e.g. killing anger rather than beings; the four undeclared positions). Stay factual and measured; do not sensationalize; let the discourses carry the answer.
 - Never give crisis counseling, medical/legal advice, or spiritualize personal distress. If the rewrite layer marked a true personal crisis off-topic, keep summary empty.
@@ -246,14 +246,16 @@ export function parseRerankResponse(
 		if (out.length >= max) break;
 	}
 	// JSON `count` is advisory for the model; slugs are the selected set.
+	const fromParas = joinAskSummaryParagraphs(record.paragraphs);
 	const summaryRaw =
-		typeof record.summary === "string"
+		fromParas ||
+		(typeof record.summary === "string"
 			? record.summary
 			: typeof record.alignment === "string"
 				? record.alignment
 				: typeof record.blurb === "string"
 					? record.blurb
-					: "";
+					: "");
 	const shareSlug =
 		normalizeAskShareSlug(
 			typeof record.shareSlug === "string" ? record.shareSlug : "",
