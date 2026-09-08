@@ -102,8 +102,8 @@ export default defineConfig({
 
 	adapter: vercel({
 		// PDF export (/api/export/*) launches headless Chromium; Hobby Fluid Compute
-		// caps serverless functions at 60s.
-		maxDuration: 60,
+		// caps serverless functions at 300s.
+		maxDuration: 300,
 		includeFiles: [...vercelPdfIncludeContentImages, ...vercelSearchIndexFiles],
 		excludeFiles: [
 			"generated/search-index.json",
