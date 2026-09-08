@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	ASK_ANON_DAILY_LIMIT,
 	ASK_FEEDBACK_BONUS,
+	ASK_FEEDBACK_REMINDER_REMAINING,
 	ASK_SIGNED_IN_DAILY_LIMIT,
 	applyAskFeedbackBonus,
 	askQuotaSubjectKey,
@@ -129,6 +130,39 @@ describe("toAskQuotaView offerFeedback", () => {
 		};
 		assert.equal(toAskQuotaView(state).offerFeedback, false);
 	});
+
+	it("re-offers after Not now when last 2 Asks remain", () => {
+		const seed = emptyAskQuotaState({
+			day: "2026-09-03",
+			subjectKind: "user",
+			subjectKey: "user:u1",
+		});
+		const remaining3 = {
+			...seed,
+			used: ASK_SIGNED_IN_DAILY_LIMIT - ASK_FEEDBACK_REMINDER_REMAINING - 1,
+			feedbackPromptDismissed: true,
+		};
+		const remaining2 = {
+			...seed,
+			used: ASK_SIGNED_IN_DAILY_LIMIT - ASK_FEEDBACK_REMINDER_REMAINING,
+			feedbackPromptDismissed: true,
+		};
+		const remaining0 = {
+			...seed,
+			used: ASK_SIGNED_IN_DAILY_LIMIT,
+			feedbackPromptDismissed: true,
+		};
+		assert.equal(toAskQuotaView(remaining3).remaining, 3);
+		assert.equal(toAskQuotaView(remaining3).offerFeedback, false);
+		assert.equal(toAskQuotaView(remaining2).remaining, 2);
+		assert.equal(toAskQuotaView(remaining2).offerFeedback, true);
+		assert.equal(toAskQuotaView(remaining0).remaining, 0);
+		assert.equal(toAskQuotaView(remaining0).offerFeedback, true);
+		assert.equal(
+			toAskQuotaView({ ...remaining2, feedbackClaimed: true }).offerFeedback,
+			false,
+		);
+	});
 });
 
 describe("applyAskFeedbackBonus", () => {
@@ -159,7 +193,7 @@ describe("isValidAskUserReview", () => {
 });
 
 describe("dismissAskFeedbackPrompt", () => {
-	it("stops offering feedback", () => {
+	it("stops offering feedback until last 2 Asks remain", () => {
 		const halfway = Math.ceil(ASK_SIGNED_IN_DAILY_LIMIT / 2);
 		const state = {
 			...emptyAskQuotaState({
@@ -170,9 +204,14 @@ describe("dismissAskFeedbackPrompt", () => {
 			used: halfway,
 		};
 		assert.equal(toAskQuotaView(state).offerFeedback, true);
+		const dismissed = dismissAskFeedbackPrompt(state);
+		assert.equal(toAskQuotaView(dismissed).offerFeedback, false);
 		assert.equal(
-			toAskQuotaView(dismissAskFeedbackPrompt(state)).offerFeedback,
-			false,
+			toAskQuotaView({
+				...dismissed,
+				used: ASK_SIGNED_IN_DAILY_LIMIT - ASK_FEEDBACK_REMINDER_REMAINING,
+			}).offerFeedback,
+			true,
 		);
 	});
 });

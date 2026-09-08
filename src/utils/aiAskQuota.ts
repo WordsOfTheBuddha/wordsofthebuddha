@@ -4,6 +4,8 @@ export const ASK_ANON_DAILY_LIMIT = 3;
 export const ASK_SIGNED_IN_DAILY_LIMIT = 13;
 export const ASK_FEEDBACK_BONUS = 5;
 export const ASK_FEEDBACK_MIN_CHARS = 30;
+/** After “Not now”, show the +5 prompt again when this many Asks remain. */
+export const ASK_FEEDBACK_REMINDER_REMAINING = 2;
 
 export type AskQuotaSubjectKind = "anon" | "user";
 
@@ -85,11 +87,12 @@ export function toAskQuotaView(
 	const used = state.used + priorUsed;
 	const remaining = Math.max(0, limit - used);
 	const halfway = Math.ceil(state.baseLimit / 2);
+	const lastAsksRemaining = remaining <= ASK_FEEDBACK_REMINDER_REMAINING;
 	const offerFeedback =
 		state.subjectKind === "user" &&
 		!state.feedbackClaimed &&
-		!state.feedbackPromptDismissed &&
-		used >= halfway;
+		used >= halfway &&
+		(!state.feedbackPromptDismissed || lastAsksRemaining);
 	return {
 		signedIn: state.subjectKind === "user",
 		used,
