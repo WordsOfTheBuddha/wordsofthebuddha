@@ -69,7 +69,7 @@ describe("mergeAskTurnReasoning", () => {
 		assert.equal(reasoning, "");
 	});
 
-	it("replaces leftover MiniMax notes when Gemini’s empty plan arrives", () => {
+	it("replaces leftover planner notes when Gemini’s empty plan arrives", () => {
 		const leftover =
 			"The user wants unique awakening narratives under a full moon.\n- ^MN puṇṇama (already tried)";
 		assert.equal(
@@ -148,8 +148,8 @@ describe("formatAskRoutingDevHtml", () => {
 			requested: "nvidia/nemotron-3-ultra-550b-a55b:free",
 			queue: [
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"minimax/minimax-m3:free",
-				"z-ai/glm-5.2:free",
+				"poolside/laguna-s-2.1:free",
+				"nvidia/nemotron-3.5-lightning:free",
 			],
 			attempts: ["nvidia/nemotron-3-ultra-550b-a55b:free"],
 			skippedCooldown: [],
@@ -159,14 +159,16 @@ describe("formatAskRoutingDevHtml", () => {
 			degraded: true,
 			degradedReason: "no_json",
 			reranker: "gemini-3.5-flash-lite",
+			writer: "nvidia/nemotron-3-ultra-550b-a55b:free",
 		});
 		assert.match(html, /ai-dev-routing/);
 		assert.match(html, /DEV · called/);
 		assert.match(html, /nemotron-3-ultra-550b-a55b/);
 		assert.match(html, /planner nemotron-3-ultra-550b-a55b/);
 		assert.match(html, /rerank gemini-3\.5-flash-lite/);
+		assert.match(html, /write nemotron-3-ultra-550b-a55b/);
 		assert.match(html, /simplified \(no_json\)/);
-		assert.doesNotMatch(html, /minimax-m3/);
+		assert.doesNotMatch(html, /laguna-s-2\.1/);
 		assert.equal(formatAskRoutingDevHtml(undefined), "");
 	});
 });
@@ -207,6 +209,19 @@ describe("buildAskProcessSteps", () => {
 		assert.doesNotMatch(ranking[2]?.text || "", /showing/);
 		assert.equal(ranking[3]?.state, "todo");
 		assert.match(ranking[3]?.text || "", /Show the best matches/);
+
+		const writing = buildAskProcessSteps({
+			pending: true,
+			phase: "answer",
+			question: "what is mindfulness?",
+			lookingFor: "mindfulness",
+			candidateCount: 186,
+			showCount: 12,
+		});
+		assert.equal(writing[2]?.state, "done");
+		assert.equal(writing[2]?.text, "Crunched 186 discourses");
+		assert.equal(writing[3]?.state, "active");
+		assert.match(writing[3]?.text || "", /Writing from the selected discourses/);
 
 		const done = buildAskProcessSteps({
 			pending: false,
@@ -361,7 +376,7 @@ describe("applyAskThinkingStreamPatch", () => {
 		assert.equal(thread.querySelector(".ai-summary"), earlier);
 	});
 
-	it("replaces discarded MiniMax notes with the Gemini planner note, not a Show-all-thinking link", () => {
+	it("replaces discarded planner notes with the Gemini planner note, not a Show-all-thinking link", () => {
 		const { thread } = liveThread();
 		applyAskThinkingStreamPatch(
 			thread,
@@ -384,7 +399,7 @@ describe("applyAskThinkingStreamPatch", () => {
 					pending: false,
 					reasoning: "",
 					plannerNote:
-						"M3 didn’t produce a usable search plan, and the other free models couldn’t complete the plan — planned with Gemini instead, which does not share its thinking.",
+						"Laguna S 2.1 didn’t produce a usable search plan, and the other free models couldn’t complete the plan — planned with Gemini instead, which does not share its thinking.",
 				},
 				1,
 			),

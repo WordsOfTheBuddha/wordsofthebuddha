@@ -14,31 +14,46 @@ export interface OpenRouterFreeModel {
  */
 export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 	{
-		id: "minimax/minimax-m3:free",
-		name: "MiniMax: M3",
-		contextLength: 0,
-	},
-	{
 		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
 		name: "NVIDIA: Nemotron 3 Ultra",
 		contextLength: 0,
 	},
 	{
-		id: "z-ai/glm-5.2:free",
-		name: "Z.ai: GLM 5.2",
+		id: "poolside/laguna-s-2.1:free",
+		name: "Poolside: Laguna S 2.1",
+		contextLength: 0,
+	},
+	{
+		id: "nvidia/nemotron-3.5-lightning:free",
+		name: "NVIDIA: Nemotron 3.5 Lightning",
 		contextLength: 0,
 	},
 ] as const;
 
 /**
- * OpenRouter planner fallback order after the requested/default model fails.
- * Prefer stronger models before lighter ones. Gemini is tried only after this.
+ * Paid OpenRouter planner fallback only — never shown in the free picker.
+ * Used as the 3rd thinking attempt after Ultra and Laguna (not Lightning).
+ */
+export const ASK_PLANNER_PAID_FALLBACK_MODEL = "z-ai/glm-5.3-flash";
+
+const ASK_INTERNAL_MODEL_LABELS: Readonly<Record<string, string>> = {
+	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "Z.ai: GLM 5.3 Flash",
+};
+
+export function isAskPlannerPaidFallbackModelId(id: string): boolean {
+	return id.trim() === ASK_PLANNER_PAID_FALLBACK_MODEL;
+}
+
+/**
+ * OpenRouter planner fallback after the requested/default model fails.
+ * Two free models, then paid GLM. Lightning stays pickable but is not an
+ * automatic fallback — it was the unreliable 3rd free attempt.
  */
 export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
-	"minimax/minimax-m3:free",
-	"nvidia/nemotron-3-ultra-550b-a55b:free",
-	"z-ai/glm-5.2:free",
-] as const;
+	CURATED_ASK_MODELS[0].id,
+	CURATED_ASK_MODELS[1].id,
+	ASK_PLANNER_PAID_FALLBACK_MODEL,
+];
 
 export const DEFAULT_OPENROUTER_MODEL = CURATED_ASK_MODELS[0].id;
 
@@ -65,11 +80,11 @@ export type OpenRouterReasoningEffort = "low" | "medium" | "high";
 
 /** Default for non-planner chat (e.g. OpenRouter rerank fallback). */
 export const DEFAULT_OPENROUTER_REASONING_EFFORT: OpenRouterReasoningEffort =
-	"low";
+	"medium";
 /** Planner rewrite — more thinking before the JSON chips. */
 export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
 /** Planner needs room for medium reasoning + the JSON object. */
-export const ASK_PLANNER_MAX_TOKENS = 8192;
+export const ASK_PLANNER_MAX_TOKENS = 4096;
 
 function env(name: string): string | undefined {
 	const meta = (
@@ -97,6 +112,11 @@ export function curatedAskModelLabel(id: string): string {
 	return (
 		CURATED_ASK_MODELS.find((model) => model.id === id)?.name || id
 	);
+}
+
+/** Picker labels plus internal fallbacks (paid GLM) that are not curated. */
+export function openRouterModelLabel(id: string): string {
+	return ASK_INTERNAL_MODEL_LABELS[id.trim()] || curatedAskModelLabel(id);
 }
 
 export function isAllowedFreeModelId(id: string): boolean {
@@ -136,6 +156,17 @@ export function resolveRequestedOpenRouterModel(
 		return configured;
 	}
 	return DEFAULT_OPENROUTER_MODEL;
+}
+
+/**
+ * Model id sent to OpenRouter. Client requests still go through
+ * `resolveRequestedOpenRouterModel` (free/curated only). Internal planner
+ * fallback may use the paid GLM id.
+ */
+export function resolveOpenRouterChatModel(model: string): string {
+	const trimmed = model.trim();
+	if (isAskPlannerPaidFallbackModelId(trimmed)) return trimmed;
+	return resolveRequestedOpenRouterModel(trimmed);
 }
 
 /**
@@ -267,7 +298,7 @@ export async function openRouterChat(options: {
 	jsonMode?: boolean;
 	signal?: AbortSignal;
 }): Promise<OpenRouterChatResult> {
-	const model = resolveRequestedOpenRouterModel(options.model);
+	const model = resolveOpenRouterChatModel(options.model);
 	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
 		method: "POST",
 		headers: openRouterAuthHeaders(),
@@ -380,7 +411,7 @@ export async function* openRouterChatStream(options: {
 	jsonMode?: boolean;
 	signal?: AbortSignal;
 }): AsyncGenerator<OpenRouterStreamChunk> {
-	const model = resolveRequestedOpenRouterModel(options.model);
+	const model = resolveOpenRouterChatModel(options.model);
 	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
 		method: "POST",
 		headers: openRouterAuthHeaders(),

@@ -2,14 +2,18 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { mergeDiscourseHits } from "./aiDiscourseHits";
 import {
+	AI_ASK_SEARCH_OPTIONS,
 	AI_SEARCH_CANDIDATE_LIMIT,
+	annotateAskSearchHits,
 	fallbackQueriesForResultSlugs,
 	queriesForResultSlugs,
 } from "./aiDiscourseSearch";
 import {
 	isPrefixedAiDiscourseIdQuery,
 	isWeakAiSearchQuery,
+	namedTermSearchQueries,
 	normalizeAiSearchQuery,
+	queryOccursAsTermInQuestion,
 	relaxSearchQuery,
 	topicalFallbackQueries,
 } from "./aiSearchQuery";
@@ -26,6 +30,13 @@ function hit(slug: string): { slug: string; title: string; description: string; 
 describe("AI_SEARCH_CANDIDATE_LIMIT", () => {
 	it("is wide enough for Gemini rerank pools", () => {
 		assert.ok(AI_SEARCH_CANDIDATE_LIMIT >= 500);
+	});
+});
+
+describe("AI_ASK_SEARCH_OPTIONS", () => {
+	it("requests highlighted snippets so the ranker is not guessing from titles", () => {
+		assert.equal(AI_ASK_SEARCH_OPTIONS.includeContent, true);
+		assert.equal(AI_ASK_SEARCH_OPTIONS.highlight, true);
 	});
 });
 
@@ -166,5 +177,104 @@ describe("relaxSearchQuery", () => {
 			relaxSearchQuery("^AN urgency !mindfulness"),
 			"urgency mindfulness",
 		);
+	});
+});
+
+describe("queryOccursAsTermInQuestion", () => {
+	const question =
+		"Share a gloss for vimuttikkhandho based on all the discourses this term appears in";
+	const glossFollowUp =
+		"But how do I gloss them? If I use: |aggregate of liberation::the realized fact of freedom within the lived body and mind. [vimuttikkhandha]| as the gloss for vimuttikkhandha, what should be the gloss for aggregate of wisdom. And likewise, what should be a gloss for aggregate of collectedness. Cite suttas extensively and compile the glosses based on that.";
+
+	it("matches the named compound, not a stem or English backup", () => {
+		assert.equal(queryOccursAsTermInQuestion("vimuttikkhandho", question), true);
+		assert.equal(queryOccursAsTermInQuestion("vimutti", question), false);
+		assert.equal(queryOccursAsTermInQuestion("liberation", question), false);
+		assert.equal(queryOccursAsTermInQuestion("this", question), false);
+		assert.deepEqual(
+			namedTermSearchQueries(question, [
+				"vimuttikkhandho",
+				"vimutti khandha",
+				"liberation",
+			]),
+			["vimuttikkhandho"],
+		);
+	});
+
+	it("matches inflected / bracket lemmas and uses planner termQueries on follow-ups", () => {
+		assert.equal(
+			queryOccursAsTermInQuestion("vimuttikkhandho", glossFollowUp),
+			true,
+		);
+		assert.equal(
+			queryOccursAsTermInQuestion("liberation", glossFollowUp),
+			false,
+		);
+		assert.equal(
+			queryOccursAsTermInQuestion("samadikkhandho", glossFollowUp),
+			false,
+		);
+		assert.deepEqual(
+			namedTermSearchQueries(
+				glossFollowUp,
+				[
+					"samadikkhandho",
+					"pannakkhandho",
+					"vimuttikkhandho",
+					"^AN",
+					"^SN",
+					"liberation",
+					"vimutti khandha",
+				],
+				["samadikkhandho", "pannakkhandho", "vimuttikkhandho", "^AN"],
+			),
+			["samadikkhandho", "pannakkhandho", "vimuttikkhandho"],
+		);
+	});
+});
+
+describe("annotateAskSearchHits", () => {
+	it("records matched queries and prefers the named-term snippet", () => {
+		const hits = annotateAskSearchHits(
+			[
+				{
+					slug: "sn47.13",
+					title: "Cunda",
+					description: "grief",
+					contentSnippet: "broader liberation snippet",
+				},
+			],
+			[
+				{
+					query: "vimuttikkhandho",
+					hits: [
+						{
+							slug: "sn47.13",
+							title: "Cunda",
+							description: "grief",
+							contentSnippet: "aggregate of liberation [vimuttikkhandha]",
+						},
+					],
+				},
+				{
+					query: "liberation",
+					hits: [
+						{
+							slug: "sn47.13",
+							title: "Cunda",
+							description: "grief",
+							contentSnippet: "broader liberation snippet",
+						},
+					],
+				},
+			],
+			{
+				question:
+					"Share a gloss for vimuttikkhandho based on all the discourses this term appears in",
+				primaryQueries: ["vimuttikkhandho", "liberation"],
+			},
+		);
+		assert.deepEqual(hits[0]?.matchedQueries, ["vimuttikkhandho", "liberation"]);
+		assert.match(hits[0]?.contentSnippet || "", /vimuttikkhandha/);
 	});
 });

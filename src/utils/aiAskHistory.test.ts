@@ -94,6 +94,13 @@ describe("follow-up diversity vs refine", () => {
 		assert.equal(shouldExcludeAlreadyShownAskHits("other discourses", history), true);
 	});
 
+	it("does not treat more citations / likewise as diversifying", () => {
+		const question =
+			"what should be the gloss for aggregate of wisdom. And likewise, what should be a gloss for aggregate of collectedness. Cite suttas extensively and compile the glosses based on that.";
+		assert.equal(isDiversifyingAskFollowUp(question), false);
+		assert.equal(shouldExcludeAlreadyShownAskHits(question, history), false);
+	});
+
 	it("does not exclude when they refine a named hit", () => {
 		assert.equal(
 			isRefiningAskFollowUp("tell me more about the second one"),

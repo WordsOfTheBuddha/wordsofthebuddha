@@ -6,7 +6,7 @@ import {
 	plannerModelAttempts,
 	shouldTryAnotherPlannerModel,
 } from "./aiAskRewrite";
-import { ASK_PLANNER_FALLBACK_ORDER } from "./openrouter";
+import { ASK_PLANNER_FALLBACK_ORDER, ASK_PLANNER_PAID_FALLBACK_MODEL } from "./openrouter";
 
 function httpError(status: number): Error & { status: number } {
 	const error = new Error(`status ${status}`) as Error & { status: number };
@@ -16,21 +16,21 @@ function httpError(status: number): Error & { status: number } {
 
 describe("plannerModelAttempts", () => {
 	it("tries the requested model, then stronger→lighter fallbacks, max 3", () => {
-		const order = ["ultra", "minimax", "glm", "lightning"];
-		assert.deepEqual(plannerModelAttempts("glm", order, 3), [
-			"glm",
+		const order = ["ultra", "laguna", "lightning", "other"];
+		assert.deepEqual(plannerModelAttempts("lightning", order, 3), [
+			"lightning",
 			"ultra",
-			"minimax",
+			"laguna",
 		]);
 		assert.deepEqual(plannerModelAttempts("ultra", order, 3), [
 			"ultra",
-			"minimax",
-			"glm",
+			"laguna",
+			"lightning",
 		]);
 		assert.deepEqual(plannerModelAttempts("zzz", order, 3), [
 			"zzz",
 			"ultra",
-			"minimax",
+			"laguna",
 		]);
 	});
 
@@ -38,32 +38,42 @@ describe("plannerModelAttempts", () => {
 		assert.equal(MAX_PLANNER_OPENROUTER_ATTEMPTS, 3);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
 			"nvidia/nemotron-3-ultra-550b-a55b:free",
-			"minimax/minimax-m3:free",
-			"z-ai/glm-5.2:free",
-			"nvidia/nemotron-3.5-lightning:free",
+			"poolside/laguna-s-2.1:free",
+			ASK_PLANNER_PAID_FALLBACK_MODEL,
 		]);
 		assert.deepEqual(
 			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free"),
 			[
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"minimax/minimax-m3:free",
-				"z-ai/glm-5.2:free",
+				"poolside/laguna-s-2.1:free",
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
 			],
 		);
-		assert.deepEqual(plannerModelAttempts("z-ai/glm-5.2:free"), [
-			"z-ai/glm-5.2:free",
-			"nvidia/nemotron-3-ultra-550b-a55b:free",
-			"minimax/minimax-m3:free",
-		]);
+		assert.deepEqual(
+			plannerModelAttempts("nvidia/nemotron-3.5-lightning:free"),
+			[
+				"nvidia/nemotron-3.5-lightning:free",
+				"nvidia/nemotron-3-ultra-550b-a55b:free",
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			],
+		);
+		assert.deepEqual(
+			plannerModelAttempts("poolside/laguna-s-2.1:free"),
+			[
+				"poolside/laguna-s-2.1:free",
+				"nvidia/nemotron-3-ultra-550b-a55b:free",
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			],
+		);
 	});
 
 	it("skips cooled-down models and fills from healthier ones", () => {
-		const order = ["ultra", "minimax", "glm", "lightning"];
+		const order = ["ultra", "laguna", "lightning", "other"];
 		assert.deepEqual(
 			plannerModelAttempts("ultra", order, 3, {
-				isExcluded: (id) => id === "ultra" || id === "glm",
+				isExcluded: (id) => id === "ultra" || id === "lightning",
 			}),
-			["minimax", "lightning"],
+			["laguna", "other"],
 		);
 		assert.deepEqual(
 			plannerModelAttempts("glm", order, 3, {
@@ -72,34 +82,51 @@ describe("plannerModelAttempts", () => {
 			[],
 		);
 	});
+
+	it("keeps paid GLM in the last slot when a free model is cooled down", () => {
+		assert.deepEqual(
+			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free", undefined, 3, {
+				isExcluded: (id) => id === "nvidia/nemotron-3-ultra-550b-a55b:free",
+			}),
+			["poolside/laguna-s-2.1:free", ASK_PLANNER_PAID_FALLBACK_MODEL],
+		);
+	});
 });
 
 describe("formatPlannerRoutingLine", () => {
 	it("summarizes models actually called, failures, and the model that answered", () => {
 		const line = formatPlannerRoutingLine({
-			requested: "z-ai/glm-5.2:free",
+			requested: "nvidia/nemotron-3.5-lightning:free",
 			queue: [
-				"minimax/minimax-m3:free",
-				"z-ai/glm-5.2:free",
+				"poolside/laguna-s-2.1:free",
+				"nvidia/nemotron-3.5-lightning:free",
+				"nvidia/nemotron-3-ultra-550b-a55b:free",
+			],
+			attempts: [
+				"poolside/laguna-s-2.1:free",
 				"nvidia/nemotron-3.5-lightning:free",
 			],
-			attempts: ["minimax/minimax-m3:free", "z-ai/glm-5.2:free"],
 			skippedCooldown: ["nvidia/nemotron-3-ultra-550b-a55b:free"],
 			failed: [
-				{ model: "minimax/minimax-m3:free", status: 429, message: "rate" },
+				{ model: "poolside/laguna-s-2.1:free", status: 429, message: "rate" },
 			],
-			used: "z-ai/glm-5.2:free",
+			used: "nvidia/nemotron-3.5-lightning:free",
 			provider: "openrouter",
 			degraded: true,
 			degradedReason: "no_json",
 			reranker: "gemini-3.5-flash-lite",
+			writer: "nvidia/nemotron-3-ultra-550b-a55b:free",
 		});
-		assert.match(line, /requested=z-ai\/glm-5\.2:free/);
-		assert.match(line, /called=minimax\/minimax-m3:free → z-ai\/glm-5\.2:free/);
+		assert.match(line, /requested=nvidia\/nemotron-3\.5-lightning:free/);
+		assert.match(
+			line,
+			/called=poolside\/laguna-s-2\.1:free → nvidia\/nemotron-3\.5-lightning:free/,
+		);
 		assert.match(line, /skipped cooldown: nvidia\/nemotron-3-ultra/);
-		assert.match(line, /failed: minimax\/minimax-m3:free \(429\)/);
-		assert.match(line, /used=z-ai\/glm-5\.2:free \(openrouter\)/);
+		assert.match(line, /failed: poolside\/laguna-s-2\.1:free \(429\)/);
+		assert.match(line, /used=nvidia\/nemotron-3\.5-lightning:free \(openrouter\)/);
 		assert.match(line, /rerank=gemini-3\.5-flash-lite/);
+		assert.match(line, /write=nvidia\/nemotron-3-ultra-550b-a55b:free/);
 		assert.match(line, /degraded:no_json/);
 	});
 });

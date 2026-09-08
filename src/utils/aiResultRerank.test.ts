@@ -15,6 +15,7 @@ import {
 	clipRerankSummary,
 	formatRerankExcludeBlock,
 	formatRerankHistoryBlock,
+	namedTermHitDebugRows,
 	parseRerankResponse,
 	parseRerankSlugs,
 	resolveAskResultLimit,
@@ -397,6 +398,120 @@ describe("buildRerankUserPrompt", () => {
 			prompt,
 			new RegExp(`passage: passage number ${AI_RERANK_SNIPPET_CANDIDATES + 1}\\b`),
 		);
+	});
+
+	it("tags named-term hits, lists them first, and keeps their passage past the top of the pool", () => {
+		const question =
+			"Share a gloss for vimuttikkhandho based on all the discourses this term appears in";
+		const buried = {
+			slug: "sn47.13",
+			title: "Cunda",
+			description: "When Sāriputta attains final Nibbāna, Ānanda grieves.",
+			contentSnippet:
+				"did he take away your aggregate of liberation [vimuttikkhandha]",
+			matchedQueries: ["vimuttikkhandho", "liberation"],
+		};
+		const famous = {
+			slug: "sn22.56",
+			title: "Upādānaparipavattasutta",
+			description: "The arising and fading of the five aggregates.",
+			contentSnippet: "form feeling perception",
+			matchedQueries: ["liberation"],
+		};
+		const prompt = buildRerankUserPrompt(question, [famous, buried], {
+			primaryQueries: ["vimuttikkhandho", "vimutti khandha", "liberation"],
+			limit: 10,
+		});
+		assert.match(prompt, /Named-term matches \(retrieved by vimuttikkhandho\)/);
+		assert.match(prompt, /SN 47\.13/);
+		assert.match(prompt, /\[term: vimuttikkhandho\]/);
+		assert.match(prompt, /passage: did he take away your aggregate of liberation/);
+		assert.doesNotMatch(prompt, /SN 22\.56[^\n]*\[term:/);
+		const namedAt = prompt.indexOf("SN 47.13");
+		const famousAt = prompt.indexOf("SN 22.56");
+		assert.ok(namedAt > 0 && famousAt > namedAt);
+		assert.match(RERANK_SYSTEM, /\[term:/);
+		assert.match(RERANK_SYSTEM, /Named-term matches are listed first/);
+		assert.match(RERANK_SYSTEM, /Match the form they asked for/);
+		assert.match(RERANK_SYSTEM, /termQueries/);
+		assert.match(RERANK_SYSTEM, /later thinking step/);
+		assert.match(RERANK_SYSTEM, /\[reference\] card/);
+		assert.match(RERANK_SYSTEM, /passage does not contain/);
+	});
+
+	it("tags planner termQueries on a follow-up even when the question used English", () => {
+		const question =
+			"what should be the gloss for aggregate of wisdom. And likewise, what should be a gloss for aggregate of collectedness. |aggregate of liberation::freedom. [vimuttikkhandha]|";
+		const prompt = buildRerankUserPrompt(
+			question,
+			[
+				{
+					slug: "dn10",
+					title: "Subha",
+					description: "The noble aggregates of virtue, immersion, and wisdom.",
+					contentSnippet: "ariyo samādhikkhandho ariyo paññākkhandho",
+					matchedQueries: ["samadikkhandho", "pannakkhandho"],
+				},
+				{
+					slug: "mn141",
+					title: "Saccavibhanga",
+					description: "An analysis of the four noble truths.",
+					contentSnippet: "right view is wisdom",
+					matchedQueries: ["^AN"],
+				},
+			],
+			{
+				primaryQueries: [
+					"samadikkhandho",
+					"pannakkhandho",
+					"vimuttikkhandho",
+					"^AN",
+				],
+				termQueries: [
+					"samadikkhandho",
+					"pannakkhandho",
+					"vimuttikkhandho",
+				],
+				limit: 50,
+			},
+		);
+		assert.match(
+			prompt,
+			/Named-term matches \(retrieved by samadikkhandho, pannakkhandho, vimuttikkhandho\)/,
+		);
+		assert.match(prompt, /\[term: samadikkhandho; pannakkhandho\]/);
+		assert.doesNotMatch(prompt, /MN 141[^\n]*\[term:/);
+	});
+});
+
+describe("namedTermHitDebugRows", () => {
+	it("records fused rank and whether a named-term hit was kept", () => {
+		const rows = namedTermHitDebugRows(
+			[
+				{
+					slug: "sn22.56",
+					title: "",
+					description: "",
+					matchedQueries: ["liberation"],
+				},
+				{
+					slug: "sn47.13",
+					title: "",
+					description: "",
+					contentSnippet: "vimuttikkhandha",
+					matchedQueries: ["vimuttikkhandho"],
+				},
+			],
+			"Share a gloss for vimuttikkhandho",
+			["vimuttikkhandho", "liberation"],
+			["sn22.56"],
+		);
+		assert.deepEqual(rows.namedTermQueries, ["vimuttikkhandho"]);
+		assert.equal(rows.hits.length, 1);
+		assert.equal(rows.hits[0]?.slug, "sn47.13");
+		assert.equal(rows.hits[0]?.rank, 2);
+		assert.equal(rows.hits[0]?.snippet, true);
+		assert.equal(rows.hits[0]?.kept, false);
 	});
 });
 

@@ -1,4 +1,5 @@
-import { compactDiscourseIdQuery } from "./searchRanking";
+import { inflectionStemKey } from "./paliInflectionUtils";
+import { compactDiscourseIdQuery, normalizeForComparison } from "./searchRanking";
 
 /** Drop operators so a missed exact/collection query can still find discourses. */
 export function relaxSearchQuery(query: string): string {
@@ -115,6 +116,119 @@ const TOPICAL_STOPWORDS = new Set([
 	"their",
 	"ones",
 ]);
+
+function escapeRegex(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Inflected / bracket lemmas shorter than this stay exact-match only. */
+const MIN_NAMED_STEM_LEN = 8;
+
+/**
+ * Drop `|example|` bodies so words inside a demonstrated syntax are not
+ * treated as search terms. Keep `[lemma]` markers.
+ */
+export function questionTextForTermMatch(question: string): string {
+	const text = question.replace(/\s+/g, " ").trim();
+	if (!text) return "";
+	return text.replace(/\|([^|\n]*)\|/g, (_all, inner: string) => {
+		const lemmas = [...String(inner).matchAll(/\[([^\]\n]{2,80})\]/g)]
+			.map((match) => match[1].trim())
+			.filter(Boolean)
+			.join(" ");
+		return lemmas ? ` ${lemmas} ` : " ";
+	});
+}
+
+function questionLemmaNorms(question: string): string[] {
+	const text = questionTextForTermMatch(question);
+	if (!text) return [];
+	const out: string[] = [];
+	const seen = new Set<string>();
+	const add = (raw: string) => {
+		const norm = normalizeForComparison(raw.replace(/\s+/g, " ").trim());
+		if (norm.length < 4 || seen.has(norm)) return;
+		seen.add(norm);
+		out.push(norm);
+	};
+	for (const match of text.matchAll(/\[([^\]\n]{2,80})\]/g)) {
+		add(match[1]);
+	}
+	for (const match of text.matchAll(/[\p{L}\p{N}]+/gu)) {
+		add(match[0]);
+	}
+	return out;
+}
+
+/** Bare `^AN` / `^SN` collection chips — they flood the fused pool. */
+export function isBareCollectionFilterQuery(query: string): boolean {
+	return /^\^[A-Za-z]{2,5}$/.test(query.replace(/\s+/g, " ").trim());
+}
+
+/**
+ * True when `query` occurs as its own term in the question — not as a stem
+ * inside a longer compound (`vimutti` in `vimuttikkhandho`).
+ */
+export function queryOccursAsTermInQuestion(
+	query: string,
+	question: string,
+): boolean {
+	const q = normalizeAiSearchQuery(query).replace(/\s+/g, " ").trim().toLowerCase();
+	if (!q || q.length < 4) return false;
+	const words = q.split(/\s+/).filter(Boolean);
+	if (words.length === 1 && TOPICAL_STOPWORDS.has(words[0])) return false;
+	const text = questionTextForTermMatch(question);
+	if (!text) return false;
+	const pattern = new RegExp(
+		`(^|[^\\p{L}\\p{N}])${escapeRegex(q)}(?=[^\\p{L}\\p{N}]|$)`,
+		"iu",
+	);
+	if (pattern.test(text)) return true;
+	if (words.length !== 1) return false;
+	const qStem = inflectionStemKey(normalizeForComparison(q));
+	if (qStem.length < MIN_NAMED_STEM_LEN) return false;
+	return questionLemmaNorms(question).some(
+		(token) => inflectionStemKey(token) === qStem,
+	);
+}
+
+/**
+ * Lexical-target searches for tagging. Prefer `termQueries` from the planner;
+ * otherwise fall back to queries that actually occur in the question.
+ */
+export function namedTermSearchQueries(
+	question: string,
+	queries: readonly string[],
+	termQueries?: readonly string[],
+): string[] {
+	const allowed = new Set<string>();
+	for (const query of queries) {
+		const normalized = normalizeAiSearchQuery(query);
+		if (normalized) allowed.add(normalized.toLowerCase());
+	}
+	const fromPlanner: string[] = [];
+	const seen = new Set<string>();
+	for (const query of termQueries || []) {
+		const normalized = normalizeAiSearchQuery(query);
+		if (!normalized || isBareCollectionFilterQuery(normalized)) continue;
+		const key = normalized.toLowerCase();
+		if (!allowed.has(key) || seen.has(key)) continue;
+		seen.add(key);
+		fromPlanner.push(normalized);
+	}
+	if (fromPlanner.length > 0) return fromPlanner;
+	const out: string[] = [];
+	for (const query of queries) {
+		const normalized = normalizeAiSearchQuery(query);
+		if (!normalized) continue;
+		const key = normalized.toLowerCase();
+		if (seen.has(key)) continue;
+		if (!queryOccursAsTermInQuestion(normalized, question)) continue;
+		seen.add(key);
+		out.push(normalized);
+	}
+	return out;
+}
 
 /** Simple speech/typo repairs before topical fallback extraction. */
 const TOPICAL_REPAIRS: readonly [RegExp, string][] = [

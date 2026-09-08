@@ -114,6 +114,38 @@ describe("parseRewritePlan", () => {
 		assert.deepEqual(plan.excludeSlugs, []);
 	});
 
+	it("keeps planner termQueries that are also primary queries", () => {
+		const plan = parseRewritePlan(
+			JSON.stringify({
+				lookingFor: "wisdom and collectedness",
+				queries: [
+					"samadikkhandho",
+					"pannakkhandho",
+					"vimuttikkhandho",
+					"^AN",
+				],
+				termQueries: [
+					"samadikkhandho",
+					"pannakkhandho",
+					"vimuttikkhandho",
+					"^AN",
+					"liberation",
+				],
+				followUpIntent: "refine",
+				excludeSlugs: [],
+			}),
+			"what should the gloss be for aggregate of wisdom",
+			["sn47.13", "iti104"],
+		);
+		assert.equal(plan.followUpIntent, "refine");
+		assert.deepEqual(plan.excludeSlugs, []);
+		assert.deepEqual(plan.termQueries, [
+			"samadikkhandho",
+			"pannakkhandho",
+			"vimuttikkhandho",
+		]);
+	});
+
 	it("omits excludeSlugs when the planner did not set the field", () => {
 		const plan = parseRewritePlan(
 			JSON.stringify({
@@ -396,6 +428,9 @@ describe("AI_REWRITE_SYSTEM_PROMPT", () => {
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /\^SN/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /content:/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /exact phrase/i);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /inflect/i);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /not 'vimuttikkhandho/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /never as the default for Pāli/i);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /correctedQuestion/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /verbatim|do not reword/i);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /shareSlug/);
@@ -405,6 +440,9 @@ describe("AI_REWRITE_SYSTEM_PROMPT", () => {
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /excludeSlugs/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /followUpIntent/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /non-thinking/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /termQueries/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /excludeSlugs \[\] means keep/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /thinking model then writes/);
 	});
 
 	it("keeps hard ethics in-library and refuses only personal crisis", async () => {
@@ -497,5 +535,30 @@ describe("resolveRewriteExcludeSlugs", () => {
 			[],
 		);
 		assert.deepEqual(resolveRewriteExcludeSlugs({}, [], "other discourses"), []);
+	});
+
+	it("treats an explicit empty exclude list as keep, even if intent is diversify", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs(
+				{ excludeSlugs: [], followUpIntent: "diversify" },
+				shown,
+				"cite suttas extensively and likewise for a related term",
+			),
+			[],
+		);
+	});
+
+	it("applies an explicit planner blacklist", () => {
+		assert.deepEqual(
+			resolveRewriteExcludeSlugs(
+				{
+					excludeSlugs: ["sn47.13", "iti104"],
+					followUpIntent: "diversify",
+				},
+				["sn47.13", "iti104", "an4.21"],
+				"other discourses",
+			),
+			["sn47.13", "iti104"],
+		);
 	});
 });

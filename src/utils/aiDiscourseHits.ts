@@ -1,3 +1,5 @@
+import { DEFAULT_SNIPPET_CLIP, clipSnippetAroundHighlight } from "./searchSnippetHighlight";
+
 export interface AiDiscourseHit {
 	slug: string;
 	title: string;
@@ -6,6 +8,11 @@ export interface AiDiscourseHit {
 	referenceOnly: boolean;
 	volpage?: string;
 	href: string;
+	/**
+	 * Search queries that retrieved this hit in the Ask pool. Used by the
+	 * rescorer; stripped before the public result payload.
+	 */
+	matchedQueries?: string[];
 }
 
 export interface DiscourseHitLike {
@@ -15,6 +22,7 @@ export interface DiscourseHitLike {
 	contentSnippet: string | null;
 	referenceOnly?: boolean;
 	volpage?: string;
+	matchedQueries?: string[];
 }
 
 const MERGED_LIMIT = 12;
@@ -61,15 +69,32 @@ export function mergeDiscourseHits<T extends MergeHit>(
 
 export function toAiDiscourseHit(hit: DiscourseHitLike): AiDiscourseHit {
 	const slug = hit.slug;
+	const matched = (hit.matchedQueries || [])
+		.map((query) => query.replace(/\s+/g, " ").trim())
+		.filter(Boolean);
 	return {
 		slug,
 		title: hit.title,
 		description: (hit.description || "").slice(0, 240),
 		contentSnippet: hit.contentSnippet
-			? hit.contentSnippet.slice(0, 240)
+			? clipSnippetAroundHighlight(hit.contentSnippet, DEFAULT_SNIPPET_CLIP)
 			: null,
 		referenceOnly: hit.referenceOnly === true,
 		volpage: hit.volpage,
 		href: `/${slug}`,
+		...(matched.length > 0 ? { matchedQueries: matched } : {}),
+	};
+}
+
+/** Drop Ask-pool annotations before sending hits to the browser. */
+export function toPublicAskHit(hit: AiDiscourseHit): AiDiscourseHit {
+	return {
+		slug: hit.slug,
+		title: hit.title,
+		description: hit.description,
+		contentSnippet: hit.contentSnippet,
+		referenceOnly: hit.referenceOnly,
+		href: hit.href,
+		...(hit.volpage ? { volpage: hit.volpage } : {}),
 	};
 }

@@ -10,9 +10,11 @@ import {
 	mergeDiscourseHits,
 	toAiDiscourseHit,
 	type AiDiscourseHit,
+	type DiscourseHitLike,
 } from "./aiDiscourseHits";
 import {
 	isPrefixedAiDiscourseIdQuery,
+	namedTermSearchQueries,
 	normalizeAiSearchQuery,
 	relaxSearchQuery,
 } from "./aiSearchQuery";
@@ -41,6 +43,13 @@ const SEARCH_CONCURRENCY = 3;
  * candidate set and let the reranker pick the best 10–50.
  */
 export const AI_SEARCH_CANDIDATE_LIMIT = 500;
+
+/** Ask search must request snippets — the ranker/writer have no other body text. */
+export const AI_ASK_SEARCH_OPTIONS = {
+	includeReferences: true,
+	includeContent: true,
+	highlight: true,
+} as const;
 
 function uniqueQueries(queries: readonly string[]): string[] {
 	const seen = new Set<string>();
@@ -88,20 +97,14 @@ export async function searchHitsForAiQuery(
 		const exact = await getSearchDocBySlug(normalized, true);
 		if (exact) return [searchResultFromDoc(exact)];
 
-		const fuzzy = await performSearch(normalized, {
-			includeReferences: true,
-			includeContent: true,
-		});
+		const fuzzy = await performSearch(normalized, AI_ASK_SEARCH_OPTIONS);
 		const exactHits = fuzzy.filter(
 			(hit) => hit.slug.toLowerCase() === normalized.toLowerCase(),
 		);
 		return exactHits.slice(0, 1);
 	}
 
-	const hits = await performSearch(normalized, {
-		includeReferences: true,
-		includeContent: true,
-	});
+	const hits = await performSearch(normalized, AI_ASK_SEARCH_OPTIONS);
 	return hits.slice(0, Math.max(1, limit));
 }
 
@@ -191,6 +194,85 @@ function toSearchBatches(
 }
 
 /**
+ * Record which searches retrieved each hit, and prefer the named-term
+ * highlight paragraph over a broader-query snippet when both exist.
+ */
+export function annotateAskSearchHits<T extends DiscourseHitLike>(
+	hits: readonly T[],
+	batches: readonly { query: string; hits: readonly DiscourseHitLike[] }[],
+	options: {
+		question?: string;
+		primaryQueries?: readonly string[];
+		termQueries?: readonly string[];
+	} = {},
+): T[] {
+	const namedKeys = new Set(
+		namedTermSearchQueries(
+			options.question || "",
+			options.primaryQueries || [],
+			options.termQueries,
+		).map((query) => query.toLowerCase()),
+	);
+	const bySlug = new Map<
+		string,
+		{ queries: string[]; namedSnippet: string | null; anySnippet: string | null }
+	>();
+	for (const batch of batches) {
+		const query = normalizeAiSearchQuery(batch.query);
+		if (!query) continue;
+		const key = query.toLowerCase();
+		const named = namedKeys.has(key);
+		for (const hit of batch.hits) {
+			if (!hit.slug) continue;
+			const slug = hit.slug.toLowerCase();
+			let entry = bySlug.get(slug);
+			if (!entry) {
+				entry = { queries: [], namedSnippet: null, anySnippet: null };
+				bySlug.set(slug, entry);
+			}
+			if (!entry.queries.some((item) => item.toLowerCase() === key)) {
+				entry.queries.push(query);
+			}
+			if (hit.contentSnippet) {
+				if (!entry.anySnippet) entry.anySnippet = hit.contentSnippet;
+				if (named && !entry.namedSnippet) {
+					entry.namedSnippet = hit.contentSnippet;
+				}
+			}
+		}
+	}
+	return hits.map((hit) => {
+		const entry = bySlug.get(hit.slug.toLowerCase());
+		const matchedQueries = entry?.queries || [];
+		const snippet =
+			entry?.namedSnippet || hit.contentSnippet || entry?.anySnippet || null;
+		return {
+			...hit,
+			contentSnippet: snippet,
+			...(matchedQueries.length > 0 ? { matchedQueries } : {}),
+		};
+	});
+}
+
+function finishAskSearch(
+	merged: DiscourseHitLike[],
+	batches: readonly { query: string; hits: SearchResult[] }[],
+	queries: readonly string[],
+	question: string,
+	termQueries?: readonly string[],
+): AiDiscourseSearchResult {
+	const annotated = annotateAskSearchHits(merged, batches, {
+		question,
+		primaryQueries: queries,
+		termQueries,
+	});
+	return {
+		hits: annotated.map(toAiDiscourseHit),
+		batches: toSearchBatches(batches),
+	};
+}
+
+/**
  * Search all rewrite queries (and usually fallbacks) then merge.
  * For large mergeLimit (Gemini pool), runs queries concurrently and pulls
  * many hits per query so the reranker sees a broad set.
@@ -198,9 +280,11 @@ function toSearchBatches(
 export async function searchDiscoursesForQueries(
 	queries: readonly string[],
 	fallbackQueries: readonly string[] = [],
-	options: { mergeLimit?: number } = {},
+	options: { mergeLimit?: number; question?: string; termQueries?: readonly string[] } = {},
 ): Promise<AiDiscourseSearchResult> {
 	const mergeLimit = options.mergeLimit ?? AI_SEARCH_CANDIDATE_LIMIT;
+	const question = options.question || "";
+	const termQueries = options.termQueries || [];
 	const wide = mergeLimit >= 100;
 	const perQueryLimit = wide ? PER_QUERY_LIMIT_WIDE : PER_QUERY_LIMIT_NARROW;
 
@@ -215,10 +299,13 @@ export async function searchDiscoursesForQueries(
 			...uniqueQueries(queries).map(relaxSearchQuery),
 		]);
 		const batches = await searchBatchesConcurrently(pool, perQueryLimit);
-		return {
-			hits: mergeDiscourseHits(batches, mergeLimit).map(toAiDiscourseHit),
-			batches: toSearchBatches(batches),
-		};
+		return finishAskSearch(
+			mergeDiscourseHits(batches, mergeLimit),
+			batches,
+			queries,
+			question,
+			termQueries,
+		);
 	}
 
 	const batches: {
@@ -258,9 +345,11 @@ export async function searchDiscoursesForQueries(
 			stopWhenMerged: 8,
 		});
 	}
-	const final = mergeDiscourseHits(batches, mergeLimit);
-	return {
-		hits: final.map(toAiDiscourseHit),
-		batches: toSearchBatches(batches),
-	};
+	return finishAskSearch(
+		mergeDiscourseHits(batches, mergeLimit),
+		batches,
+		queries,
+		question,
+		termQueries,
+	);
 }

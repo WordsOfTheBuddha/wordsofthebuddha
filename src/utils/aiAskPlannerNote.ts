@@ -1,4 +1,4 @@
-import { curatedAskModelLabel } from "./openrouter";
+import { openRouterModelLabel } from "./openrouter";
 
 export type AskPlannerFailureKind =
 	| "unusable"
@@ -29,7 +29,7 @@ export function plannerDisplayName(id: string): string {
 	const trimmed = (id || "").trim();
 	if (!trimmed) return "the model";
 	if (/gemini/i.test(trimmed)) return "Gemini";
-	return curatedAskModelLabel(trimmed).replace(/^[^:]+:\s*/, "") || trimmed;
+	return openRouterModelLabel(trimmed).replace(/^[^:]+:\s*/, "") || trimmed;
 }
 
 export function classifyPlannerFailure(

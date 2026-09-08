@@ -546,13 +546,8 @@
 	border-top: 1px dashed color-mix(in srgb, var(--surface-border) 80%, transparent);
 }
 
-.ai-dev-routing {
-	margin: 0;
-	font-size: 0.78rem;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	color: var(--text-muted);
-	line-height: 1.35;
-	overflow-wrap: anywhere;
+.ai-dev-routing + .ai-dev-routing {
+	margin-top: 0.25rem;
 }
 
 .ai-process-thinking.is-clamped .ai-process-thinking-text {

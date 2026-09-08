@@ -34,7 +34,7 @@ describe("PlannerModelHealth", () => {
 			store: createMemoryHealthStore(),
 			now: () => now,
 		});
-		const model = "z-ai/glm-5.2:free";
+		const model = "nvidia/nemotron-3.5-lightning:free";
 		health.recordFailure(model, httpError(429));
 		assert.equal(health.isExcluded(model), false);
 		health.recordFailure(model, httpError(429));
@@ -49,7 +49,7 @@ describe("PlannerModelHealth", () => {
 			store: createMemoryHealthStore(),
 			now: () => now,
 		});
-		const model = "minimax/minimax-m3:free";
+		const model = "poolside/laguna-s-2.1:free";
 		health.recordFailure(model, httpError(429));
 		health.recordFailure(model, httpError(503));
 		assert.equal(health.isExcluded(model), true);

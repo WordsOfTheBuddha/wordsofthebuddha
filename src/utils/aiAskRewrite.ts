@@ -20,6 +20,7 @@ import {
 	ASK_PLANNER_MAX_TOKENS,
 	ASK_PLANNER_REASONING_EFFORT,
 	getOpenRouterApiKey,
+	isAskPlannerPaidFallbackModelId,
 	openRouterChatStream,
 	splitThinkTags,
 	type OpenRouterChatMessage,
@@ -43,8 +44,10 @@ export interface AiAskPlannerRouting {
 	degraded: boolean;
 	/** Why the accepted plan is degraded (if any). */
 	degradedReason?: AiRewritePlan["degradedReason"];
-	/** Rescorer / summary model when separate from the planner (results event). */
+	/** Rescorer model when separate from the planner (results event). */
 	reranker?: string;
+	/** Thinking writer that replaces the ranker’s fallback briefing. */
+	writer?: string;
 }
 
 export interface AiAskRewriteResult {
@@ -83,10 +86,11 @@ export function formatPlannerRoutingLine(routing: AiAskPlannerRouting): string {
 		? ` | degraded${routing.degradedReason ? `:${routing.degradedReason}` : ""}`
 		: "";
 	const reranker = routing.reranker ? ` | rerank=${routing.reranker}` : "";
-	return `[ai/ask] planner requested=${routing.requested} called=${called}${skipped}${failed} → used=${routing.used} (${routing.provider})${reranker}${degraded}`;
+	const writer = routing.writer ? ` | write=${routing.writer}` : "";
+	return `[ai/ask] planner requested=${routing.requested} called=${called}${skipped}${failed} → used=${routing.used} (${routing.provider})${reranker}${writer}${degraded}`;
 }
 
-/** OpenRouter planner attempts (requested + fallbacks) before Gemini. */
+/** OpenRouter planner attempts (requested + fallbacks). No Gemini after this. */
 export const MAX_PLANNER_OPENROUTER_ATTEMPTS = 3;
 
 function openRouterMessagesToGemini(
@@ -138,13 +142,13 @@ export interface PlannerModelAttemptsOptions {
 }
 
 /**
- * Requested/default model first, then stronger→lighter fallbacks.
- * Caps at `maxAttempts` OpenRouter models; Gemini is separate after that.
- * Models in cooldown are skipped so the list still fills up to `maxAttempts`
- * from healthier options when possible.
+ * Requested/default model first, then free fallbacks, then paid GLM in the
+ * last slot. Caps at `maxAttempts`. Models in cooldown are skipped so the
+ * list still fills from healthier options when possible. Paid GLM is kept
+ * in the last slot even when the reader picked Lightning.
  *
- * Example (requested = Ultra): Ultra → MiniMax → GLM
- * Example (requested = GLM): GLM → Ultra → MiniMax
+ * Example (requested = Ultra): Ultra → Laguna → GLM 5.3 Flash
+ * Example (requested = Lightning): Lightning → Ultra → GLM 5.3 Flash
  */
 export function plannerModelAttempts(
 	requested: string,
@@ -160,8 +164,22 @@ export function plannerModelAttempts(
 		if (isExcluded(trimmed)) return;
 		out.push(trimmed);
 	};
+	const paidIds = fallbackOrder.filter((id) =>
+		isAskPlannerPaidFallbackModelId(id),
+	);
+	const freeIds = fallbackOrder.filter(
+		(id) => !isAskPlannerPaidFallbackModelId(id),
+	);
 	push(requested);
-	for (const id of fallbackOrder) push(id);
+	const paidToFit = paidIds.filter((id) => {
+		const trimmed = id.trim();
+		return trimmed && !out.includes(trimmed) && !isExcluded(trimmed);
+	}).length;
+	for (const id of freeIds) {
+		if (out.length >= maxAttempts - paidToFit) break;
+		push(id);
+	}
+	for (const id of paidIds) push(id);
 	return out;
 }
 
@@ -280,8 +298,9 @@ const PLANNER_ATTEMPT_MS = 90_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
- * when it fails (busy, unusable JSON, 404, timeout, …) try the other curated
- * models before Gemini (no reasoning stream) when GEMINI_API_KEY is set.
+ * when it fails (busy, unusable JSON, 404, timeout, …) try Laguna then paid
+ * GLM 5.3 Flash. Do not fall back to Gemini for planning when OpenRouter is
+ * configured — Gemini remains the rerank path.
  *
  * Each attempt gets its own timeout so a slow/refusing first model does not
  * abort the whole fallback chain via a shared AbortSignal.
@@ -317,7 +336,12 @@ export async function rewriteAskQuestion(options: {
 		requested,
 		ASK_PLANNER_FALLBACK_ORDER,
 		MAX_PLANNER_OPENROUTER_ATTEMPTS,
-		{ isExcluded: (id) => plannerModelHealth.isExcluded(id) },
+		{
+			isExcluded: (id) =>
+				isAskPlannerPaidFallbackModelId(id)
+					? false
+					: plannerModelHealth.isExcluded(id),
+		},
 	);
 	const skippedCooldown = fullOrder.filter(
 		(id) =>
@@ -367,15 +391,16 @@ export async function rewriteAskQuestion(options: {
 						message: `unusable rewrite (${result.plan.degradedReason || "degraded"})`,
 					});
 					const hasNextOpenRouter = queue.indexOf(model) < queue.length - 1;
-					if (hasNextOpenRouter || isGeminiConfigured()) {
+					if (hasNextOpenRouter) {
 						console.warn(
 							`[ai/ask] planner ${model} returned unusable rewrite; trying next`,
 						);
-						// Soft miss — don’t cool the model down like a 429.
 						options.onReasoningReset?.();
-						if (hasNextOpenRouter) continue;
-						break; // fall through to Gemini
+						continue;
 					}
+					console.warn(
+						`[ai/ask] planner ${model} returned unusable rewrite; using degraded plan`,
+					);
 				}
 				plannerModelHealth.recordSuccess(model);
 				const note = buildAskPlannerNote({
@@ -410,40 +435,19 @@ export async function rewriteAskQuestion(options: {
 				);
 			}
 		}
-		if (!isGeminiConfigured()) {
-			if (lastError) throw lastError;
+		if (queue.length === 0) {
 			const error = new Error(
-				"Ask planners returned unusable rewrites and Gemini is not configured.",
+				"Ask planners are temporarily unavailable. Try again shortly.",
 			) as Error & { status?: number };
-			error.status = 502;
+			error.status = 503;
 			throw error;
 		}
-		console.warn(
-			queue.length === 0
-				? "[ai/ask] all OpenRouter planners in cooldown — using Gemini"
-				: "[ai/ask] all OpenRouter planners failed or unusable; using Gemini",
-		);
-		options.onReasoningReset?.();
-		called.push(getConfiguredGeminiModel());
-		const result = await rewriteWithGemini({
-			question: options.question,
-			history,
-			signal: attemptSignal(),
-		});
-		const plannerNote = buildAskPlannerNote({
-			requested,
-			used: result.model,
-			provider: "gemini",
-			failed,
-			skippedCooldown,
-			acceptedHasReasoning: Boolean(result.reasoning.trim()),
-		});
-		return {
-			...result,
-			requestedModel: requested,
-			routing: buildRouting(result.model, "gemini", result.plan),
-			...(plannerNote ? { plannerNote } : {}),
+		if (lastError) throw lastError;
+		const error = new Error("Ask planners returned unusable rewrites.") as Error & {
+			status?: number;
 		};
+		error.status = 502;
+		throw error;
 	}
 
 	if (!isGeminiConfigured()) {

@@ -1,4 +1,4 @@
-import { isAskSearchMode } from "./aiAskHref";
+import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
@@ -81,7 +81,7 @@ export interface AiAskTurn {
 	/** Seeded from a public /ask/:slug snapshot (read-only turn). */
 	fromShare?: boolean;
 	pending: boolean;
-	phase: "rewrite" | "search" | "rerank" | "done";
+	phase: "rewrite" | "search" | "rerank" | "answer" | "done";
 	/** Candidate pool size while rescoring (status event). */
 	rerankCandidateCount?: number;
 	/** Target display count while rescoring (status event). */
@@ -100,6 +100,8 @@ export interface AiAskTurn {
 	plannerNote?: string;
 	/** DEV-only planner routing trace (attempts / failures / used model). */
 	routing?: AskPlannerRoutingView;
+	/** DEV-only rerank / thinking trace. */
+	debug?: AskDebugView;
 	/** Rescorer was unavailable — results are in search order without a briefing. */
 	rankedBySearchOnly?: boolean;
 }
@@ -148,6 +150,7 @@ interface AiAskEvent {
 	quota?: AiAskQuotaView;
 	plannerNote?: string;
 	routing?: AskPlannerRoutingView;
+	debug?: AskDebugView;
 	/** Replace streamed thinking with the accepted planner’s reasoning. */
 	reasoning?: string;
 	/** Drop thinking from a discarded planner attempt. */
@@ -168,6 +171,7 @@ export interface AskPlannerRoutingView {
 	degraded: boolean;
 	degradedReason?: string;
 	reranker?: string;
+	writer?: string;
 }
 
 const MODEL_STORAGE_KEY = "ai-mode-model";
@@ -252,7 +256,7 @@ export interface AskProcessStep {
 /** Compact process steps for the Ask UI (pending + finished). */
 export function buildAskProcessSteps(input: {
 	pending: boolean;
-	phase: "rewrite" | "search" | "rerank" | "done";
+	phase: "rewrite" | "search" | "rerank" | "answer" | "done";
 	question: string;
 	lookingFor?: string;
 	offTopic?: boolean;
@@ -338,6 +342,17 @@ export function buildAskProcessSteps(input: {
 	}
 
 	if (phase === "done") return [understood, searched, crunched];
+	if (phase === "answer") {
+		return [
+			understood,
+			searched,
+			crunched,
+			{
+				state: "active",
+				text: "Writing from the selected discourses…",
+			},
+		];
+	}
 	return [
 		understood,
 		searched,
@@ -389,7 +404,10 @@ export function formatAskRoutingDevHtml(
 	const rerank = routing.reranker
 		? ` · rerank ${shortModelId(routing.reranker)}`
 		: "";
-	const text = `DEV · called ${called}${skipped}${failed} → planner ${shortModelId(routing.used)} (${routing.provider})${rerank}${degraded}`;
+	const writer = routing.writer
+		? ` · write ${shortModelId(routing.writer)}`
+		: "";
+	const text = `DEV · called ${called}${skipped}${failed} → planner ${shortModelId(routing.used)} (${routing.provider})${rerank}${writer}${degraded}`;
 	return `<p class="ai-dev-routing" title="Planner routing (astro dev only)">${escapeHtml(text)}</p>`;
 }
 
@@ -707,6 +725,10 @@ function normalizeAskRouting(raw: unknown): AskPlannerRoutingView | undefined {
 		typeof record.reranker === "string" && record.reranker.trim()
 			? record.reranker.trim()
 			: undefined;
+	const writer =
+		typeof record.writer === "string" && record.writer.trim()
+			? record.writer.trim()
+			: undefined;
 	const degradedReason =
 		typeof record.degradedReason === "string" && record.degradedReason.trim()
 			? record.degradedReason.trim()
@@ -722,6 +744,72 @@ function normalizeAskRouting(raw: unknown): AskPlannerRoutingView | undefined {
 		degraded: record.degraded === true,
 		...(degradedReason ? { degradedReason } : {}),
 		...(reranker ? { reranker } : {}),
+		...(writer ? { writer } : {}),
+	};
+}
+
+function asFiniteInt(value: unknown): number | undefined {
+	if (typeof value !== "number" || !Number.isFinite(value)) return undefined;
+	return Math.max(0, Math.floor(value));
+}
+
+function normalizeAskDebug(raw: unknown): AskDebugView | undefined {
+	if (!raw || typeof raw !== "object") return undefined;
+	const record = raw as Record<string, unknown>;
+	const limit = asFiniteInt(record.limit);
+	const reasoningChars = asFiniteInt(record.reasoningChars);
+	const planningNotesChars = asFiniteInt(record.planningNotesChars);
+	const rankingGuidanceChars = asFiniteInt(record.rankingGuidanceChars);
+	if (
+		limit === undefined ||
+		reasoningChars === undefined ||
+		planningNotesChars === undefined ||
+		rankingGuidanceChars === undefined
+	) {
+		return undefined;
+	}
+	const namedTermQueries = Array.isArray(record.namedTermQueries)
+		? record.namedTermQueries.filter(
+				(item): item is string => typeof item === "string" && Boolean(item.trim()),
+			)
+		: [];
+	const dropped = Array.isArray(record.dropped)
+		? record.dropped.flatMap((item) => {
+				if (!item || typeof item !== "object") return [];
+				const row = item as Record<string, unknown>;
+				if (typeof row.slug !== "string" || !row.slug.trim()) return [];
+				const rank = asFiniteInt(row.rank);
+				if (rank === undefined) return [];
+				return [
+					{
+						slug: row.slug.trim(),
+						rank,
+						snippet: row.snippet === true,
+					},
+				];
+			})
+		: [];
+	const coverage =
+		typeof record.coverage === "string" && record.coverage.trim()
+			? record.coverage.trim()
+			: undefined;
+	const rankingGuidancePreview =
+		typeof record.rankingGuidancePreview === "string" &&
+		record.rankingGuidancePreview.trim()
+			? record.rankingGuidancePreview.trim()
+			: undefined;
+	return {
+		...(coverage ? { coverage } : {}),
+		limit,
+		reasoningChars,
+		planningNotesChars,
+		rankingGuidanceChars,
+		...(rankingGuidancePreview ? { rankingGuidancePreview } : {}),
+		namedTermQueries,
+		namedTermHits: asFiniteInt(record.namedTermHits) ?? 0,
+		namedTermKept: asFiniteInt(record.namedTermKept) ?? 0,
+		dropped,
+		droppedMore: asFiniteInt(record.droppedMore) ?? 0,
 	};
 }
 
@@ -2223,7 +2311,9 @@ export function attachAiMode(options: {
 			}),
 			{
 				afterFirst: thinking,
-				footer: formatAskRoutingDevHtml(turn.routing),
+				footer:
+					formatAskRoutingDevHtml(turn.routing) +
+					formatAskDebugDevHtml(turn.debug),
 			},
 		);
 		const summaryText = (turn.summary || "").trim();
@@ -2894,6 +2984,23 @@ export function attachAiMode(options: {
 						turn.rerankShowCount = Math.floor(event.showCount);
 					}
 					syncLayoutAndReveal();
+				} else if (event.type === "status" && event.phase === "answer") {
+					turn.phase = "answer";
+					if (
+						typeof event.candidateCount === "number" &&
+						Number.isFinite(event.candidateCount) &&
+						event.candidateCount > 0
+					) {
+						turn.rerankCandidateCount = Math.floor(event.candidateCount);
+					}
+					if (
+						typeof event.showCount === "number" &&
+						Number.isFinite(event.showCount) &&
+						event.showCount > 0
+					) {
+						turn.rerankShowCount = Math.floor(event.showCount);
+					}
+					syncLayoutAndReveal();
 				} else if (event.type === "plan") {
 					applyCorrectedQuestion(turn, event);
 					turn.plannerNote =
@@ -2957,6 +3064,11 @@ export function attachAiMode(options: {
 					if (resultRouting) {
 						turn.routing = resultRouting;
 						console.info("[ai/ask] final routing", resultRouting);
+					}
+					const resultDebug = normalizeAskDebug(event.debug);
+					if (resultDebug) {
+						turn.debug = resultDebug;
+						console.info("[ai/ask] rerank debug", resultDebug);
 					}
 					turn.pending = false;
 					turn.phase = "done";

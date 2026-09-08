@@ -24,6 +24,8 @@ import {
 	getOpenRouterApiKey,
 	openRouterChat,
 } from "./openrouter";
+import { namedTermSearchQueries } from "./aiSearchQuery";
+import { DEFAULT_SNIPPET_CLIP } from "./searchSnippetHighlight";
 import { transformId } from "./transformId";
 
 /** Match the search candidate pool — Gemini’s context can handle this easily. */
@@ -47,7 +49,8 @@ const RERANK_HISTORY_SHOWN_SLUGS = AI_RERANK_HARD_LIMIT;
  * alone are thin for writing a briefing; snippets are query-relevant passages.
  */
 export const AI_RERANK_SNIPPET_CANDIDATES = 150;
-const RERANK_SNIPPET_CHARS = 280;
+/** Same window as the search-page highlight clip. */
+const RERANK_SNIPPET_CHARS = DEFAULT_SNIPPET_CLIP;
 /** Tail of the planning model’s reasoning forwarded to the rescorer. */
 export const AI_RERANK_PLANNING_NOTES_MAX = 1200;
 
@@ -107,7 +110,7 @@ export function resolveAskResultLimit(
 
 export const RERANK_SYSTEM = `You re-rank Pāli discourse search candidates for Words of the Buddha.
 
-You receive a person's question, a result-count ceiling, optional guidance from the planning model that wrote the searches, optional earlier turns from the same Ask conversation, an optional planner blacklist of IDs not to include, optional fallback search terms that were also tried, and a list of candidate discourses (id, title, description, and for the top of the pool a matched passage). Return JSON only:
+You receive a person's question, a result-count ceiling, optional guidance from the planning model that wrote the searches, optional earlier turns from the same Ask conversation, an optional planner blacklist of IDs not to include, optional fallback search terms that were also tried, and a list of candidate discourses (id, title, description, optional [term: …] mark, and a matched passage for tagged hits plus the top of the pool). Rank first. A later thinking step writes the reader's answer from fuller excerpts; your summary is a fallback if that step fails. Return JSON only:
 {"slugs":["mn10","sn47.19"],"count":2,"summary":"A real briefing that answers the question from the selected discourses. Use blank lines between short paragraphs when the treatment needs more than one.","shareSlug":"mindfulness-of-the-body","usefulFallbackQueries":["broader term"]}
 
 Rules:
@@ -116,11 +119,13 @@ Rules:
 - Ordinary questions (target around 10): return only as many as are needed. A specific story, named sutta, or “which discourse” lookup may need 3–6. Do not stretch to 10 for padding.
 - Survey / research / extensive / citations: select every distinct on-topic discourse, best-first. Typical size is 20–50 — not a pad-to quota. Do not stop at a top-10 shortlist. Do not stretch to 50 to fill a round number. If the pool is thin, fewer than 20 is fine. If a few more than 50 are clearly on-topic, include them (hard cap about 55). Drop only near-duplicates, reference-only copies of a native hit, and clearly off-topic items.
 - Prefer native translations over reference-only when both cover the same teaching.
-- Candidates are listed in library-search order (best fused rank first). That order is a hint, not a verdict — read the descriptions and passages.
+- Candidates tagged [term: …] were retrieved by the planning model’s lexical-target searches (termQueries). Named-term matches are listed first. Prefer them when answering about those terms. Do not substitute famous discourses that only matched a backup or a looser query.
+- A tagged hit with a real passage (including Pāli) is stronger evidence than a famous title or a list-catalogue. Do not drop a [reference] card when it is the only candidate whose passage actually contains or defines the term.
+- Candidates are listed named-term first, then library-search order (best fused rank). That order is a hint, not a verdict — read the marks, descriptions, and passages.
 - When "Guidance from the planning step" is present, follow it for what to prioritize, which facets to represent, and how to frame the answer. It comes from a stronger model that read the question first. Planning notes (if present) are its raw thinking — use them for intent, ignore any JSON drafting.
 - When Earlier in this Ask is present, treat this as one conversation: resolve pronouns and references (“that”, “the second one”, “those discourses”, “more like this”) against prior questions, shown IDs, and clipped prior summaries. Rank and write the summary as a continuation, not a brand-new isolated Ask — unless the new question clearly changes topic. Already-shown IDs are context for pronouns, not a blacklist you infer.
 - When "Do not include these IDs (planner blacklist)" is present, never select those slugs. The planning model already classified diversify vs refine vs new topic. Do not infer a blacklist from earlier turns or from wording like “other discourses.” An empty planner blacklist means already-shown IDs may stay in play.
-- summary: this is the reader's answer, written from the selected discourses — not a caption. Plain prose; blank lines between short paragraphs when you need more than one. Ordinary questions: a real briefing, typically two short paragraphs (about 5–10 sentences). When they asked for detail, research, a survey, many citations, or exhaustive coverage: write a fuller treatment in several short paragraphs (as much as needed, roughly 12–25 sentences) covering the main facets present in the selected set. Mention selected discourse IDs in ordinary prose (e.g. MN 10, SN 47.19); the UI can link those IDs. Prefer clarity over padding. Do not invent teachings, quote long passages, or use markdown.
+- summary: fallback reader's answer, written only from the passages shown — not a caption. A later thinking step may replace this from fuller excerpts. Match the form they asked for. If they demonstrated a syntax, list, definition line, or comparison, use that. A multi-paragraph briefing is the default only when they did not specify a form. Follow Guidance from the planning step for how to frame it. Ordinary unspecified questions: typically two short paragraphs (about 5–10 sentences). When they asked for detail, research, a survey, many citations, or exhaustive coverage: write a fuller treatment in several short paragraphs (as much as needed, roughly 12–25 sentences) covering the main facets present in the selected set. Mention selected discourse IDs in ordinary prose (e.g. MN 10, SN 47.19); the UI can link those IDs. Prefer clarity over padding. Do not invent teachings or quote long passages. Do not credit a discourse with an explanation, analysis, or definition its passage does not contain. Do not use markdown unless that is the form they asked for.
 - When the question names something mainly outside these early discourses (commentaries, later Abhidhamma layers, other Buddhist schools, popular terms not taught here): say so clearly, then point to the closest early-discourse parallels in the selected set and what they actually cover. Use the extra length when needed for that framing.
 - Hard / controversial / “test” questions (killing, war, sexuality, undeclared points, harsh ethics, political or social provocations still aimed at the early discourses): do not refuse, moralize, or write a safety disclaimer. Answer the way the selected discourses do — report what the Buddha said, what he did not declare, and any characteristic reframes (e.g. killing anger rather than beings; the four undeclared positions). Stay factual and measured; do not sensationalize; let the discourses carry the answer.
 - Never give crisis counseling, medical/legal advice, or spiritualize personal distress. If the rewrite layer marked a true personal crisis off-topic, keep summary empty.
@@ -133,12 +138,18 @@ export interface AiRerankCandidate {
 	description: string;
 	contentSnippet?: string | null;
 	referenceOnly?: boolean;
+	/** Search queries that retrieved this hit (Ask pool). */
+	matchedQueries?: readonly string[];
 }
 
 export interface AiRerankPromptOptions {
 	fallbackQueries?: readonly string[];
 	history?: readonly AiRewriteHistoryTurn[];
 	limit?: number;
+	/** Planner primary queries — used to tag named-term hits. */
+	primaryQueries?: readonly string[];
+	/** Planner lexical-target subset of `primaryQueries`. */
+	termQueries?: readonly string[];
 	/** From the planning model’s JSON (`rankingGuidance`). */
 	guidance?: string;
 	/** Tail of the planning model’s reasoning stream. */
@@ -151,7 +162,7 @@ export interface AiRerankPromptOptions {
 }
 
 const PLANNING_NOTES_DRAFT_LINE =
-	/^[{}\[\]]|^```|^"?(?:queries|fallbackQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage|followUpIntent|excludeSlugs|blacklist)"?\s*:/i;
+	/^[{}\[\]]|^```|^"?(?:queries|fallbackQueries|termQueries|correctedQuestion|displayQuestion|lookingFor|shareSlug|offTopic|personSlugs|rankingGuidance|coverage|followUpIntent|excludeSlugs|blacklist)"?\s*:/i;
 
 export function clipPlanningNotes(
 	value: string | undefined,
@@ -271,7 +282,77 @@ export function parseRerankSlugs(
 	return parseRerankResponse(raw, allowed, max).slugs;
 }
 
-function candidateLine(hit: AiRerankCandidate, index: number): string {
+function namedTermKeySet(
+	question: string,
+	queries: readonly string[],
+	termQueries?: readonly string[],
+): Set<string> {
+	return new Set(
+		namedTermSearchQueries(question, queries, termQueries).map((query) =>
+			query.toLowerCase(),
+		),
+	);
+}
+
+function namedTermTags(
+	hit: AiRerankCandidate,
+	namedKeys: ReadonlySet<string>,
+): string[] {
+	if (namedKeys.size === 0) return [];
+	return (hit.matchedQueries || []).filter((query) =>
+		namedKeys.has(query.toLowerCase()),
+	);
+}
+
+function passageText(hit: AiRerankCandidate): string {
+	return (hit.contentSnippet || "")
+		.replace(/<[^>]*>/g, "")
+		.replace(/\s+/g, " ")
+		.trim()
+		.slice(0, RERANK_SNIPPET_CHARS);
+}
+
+export function orderNamedTermHitsFirst<T extends AiRerankCandidate>(
+	candidates: readonly T[],
+	namedKeys: ReadonlySet<string>,
+): T[] {
+	if (namedKeys.size === 0) return [...candidates];
+	const named: T[] = [];
+	const rest: T[] = [];
+	for (const hit of candidates) {
+		if (namedTermTags(hit, namedKeys).length > 0) named.push(hit);
+		else rest.push(hit);
+	}
+	return named.length === 0 ? [...candidates] : [...named, ...rest];
+}
+
+function formatNamedTermBlock(
+	candidates: readonly AiRerankCandidate[],
+	namedQueries: readonly string[],
+	namedKeys: ReadonlySet<string>,
+): string {
+	if (namedQueries.length === 0) return "";
+	const hits = candidates.filter(
+		(hit) => namedTermTags(hit, namedKeys).length > 0,
+	);
+	const terms = namedQueries.join(", ");
+	if (hits.length === 0) {
+		return `\nNamed-term searches (${terms}) retrieved no candidates in this pool.\n`;
+	}
+	const cap = 40;
+	const ids = hits
+		.slice(0, cap)
+		.map((hit) => transformId(hit.slug) || hit.slug)
+		.join(", ");
+	const extra = hits.length > cap ? ` (+${hits.length - cap} more)` : "";
+	return `\nNamed-term matches (retrieved by ${terms}): ${ids}${extra}. These are listed first and tagged [term: …]. Prefer them when the question is about those terms.\n`;
+}
+
+function candidateLine(
+	hit: AiRerankCandidate,
+	index: number,
+	namedKeys: ReadonlySet<string>,
+): string {
 	const id = transformId(hit.slug);
 	const title = (hit.title || "").replace(/\s+/g, " ").trim().slice(0, 100);
 	// Keep descriptions — they’re what lets the reranker beat keyword overfitting.
@@ -280,16 +361,57 @@ function candidateLine(hit: AiRerankCandidate, index: number): string {
 		.trim()
 		.slice(0, 180);
 	const ref = hit.referenceOnly ? " [reference]" : "";
+	const tags = namedTermTags(hit, namedKeys);
+	const mark = tags.length > 0 ? ` [term: ${tags.join("; ")}]` : "";
 	const snippet =
-		index < AI_RERANK_SNIPPET_CANDIDATES && hit.contentSnippet
-			? (hit.contentSnippet || "")
-					.replace(/<[^>]*>/g, "")
-					.replace(/\s+/g, " ")
-					.trim()
-					.slice(0, RERANK_SNIPPET_CHARS)
+		(tags.length > 0 || index < AI_RERANK_SNIPPET_CANDIDATES) &&
+		hit.contentSnippet
+			? passageText(hit)
 			: "";
 	const snippetLine = snippet ? `\n   passage: ${snippet}` : "";
-	return `${index + 1}. ${id}${ref} | ${title}\n   ${description || "(no description)"}${snippetLine}`;
+	return `${index + 1}. ${id}${ref}${mark} | ${title}\n   ${description || "(no description)"}${snippetLine}`;
+}
+
+export function namedTermHitDebugRows(
+	candidates: readonly AiRerankCandidate[],
+	question: string,
+	primaryQueries: readonly string[],
+	selectedSlugs: readonly string[],
+	termQueries?: readonly string[],
+): {
+	namedTermQueries: string[];
+	hits: Array<{
+		slug: string;
+		rank: number;
+		snippet: boolean;
+		kept: boolean;
+	}>;
+} {
+	const namedTermQueries = namedTermSearchQueries(
+		question,
+		primaryQueries,
+		termQueries,
+	);
+	const namedKeys = namedTermKeySet(question, primaryQueries, termQueries);
+	const selected = new Set(
+		selectedSlugs.map((slug) => slug.toLowerCase()).filter(Boolean),
+	);
+	const hits: Array<{
+		slug: string;
+		rank: number;
+		snippet: boolean;
+		kept: boolean;
+	}> = [];
+	candidates.forEach((hit, index) => {
+		if (namedTermTags(hit, namedKeys).length === 0) return;
+		hits.push({
+			slug: hit.slug,
+			rank: index + 1,
+			snippet: Boolean(passageText(hit)),
+			kept: selected.has(hit.slug.toLowerCase()),
+		});
+	});
+	return { namedTermQueries, hits };
 }
 
 export function formatRerankHistoryBlock(
@@ -351,7 +473,22 @@ export function buildRerankUserPrompt(
 		? { fallbackQueries: fallbackQueriesOrOptions, history, limit }
 		: (fallbackQueriesOrOptions as AiRerankPromptOptions);
 	const fallbackQueries = options.fallbackQueries || [];
-	const body = candidates.map((hit, index) => candidateLine(hit, index)).join("\n");
+	const primaryQueries = options.primaryQueries || [];
+	const namedQueries = namedTermSearchQueries(
+		question,
+		primaryQueries,
+		options.termQueries,
+	);
+	const namedKeys = namedTermKeySet(
+		question,
+		primaryQueries,
+		options.termQueries,
+	);
+	const ordered = orderNamedTermHitsFirst(candidates, namedKeys);
+	const namedBlock = formatNamedTermBlock(ordered, namedQueries, namedKeys);
+	const body = ordered
+		.map((hit, index) => candidateLine(hit, index, namedKeys))
+		.join("\n");
 	const target = clampAskResultLimit(options.limit ?? AI_RERANK_DEFAULT_LIMIT);
 	const survey = target > AI_RERANK_DEFAULT_LIMIT;
 	const coverage = survey
@@ -380,7 +517,7 @@ export function buildRerankUserPrompt(
 	return `Question: ${question.replace(/\s+/g, " ").trim()}
 ${targetLine}
 ${coverage}
-${guidanceBlock}${notesBlock}${earlier}${excludeBlock}${fallbacks}
+${guidanceBlock}${notesBlock}${namedBlock}${earlier}${excludeBlock}${fallbacks}
 Candidates:
 ${body}
 
@@ -493,6 +630,8 @@ interface RerankProviderOptions {
 	guidance?: string;
 	planningNotes?: string;
 	excludeSlugs?: readonly string[];
+	primaryQueries?: readonly string[];
+	termQueries?: readonly string[];
 	signal?: AbortSignal;
 }
 
@@ -516,6 +655,8 @@ async function rerankWithGemini(
 					guidance: options.guidance,
 					planningNotes: options.planningNotes,
 					excludeSlugs: options.excludeSlugs,
+					primaryQueries: options.primaryQueries,
+					termQueries: options.termQueries,
 				}),
 			},
 		],
@@ -562,6 +703,8 @@ async function rerankWithOpenRouter(
 					guidance: options.guidance,
 					planningNotes: options.planningNotes,
 					excludeSlugs: options.excludeSlugs,
+					primaryQueries: options.primaryQueries,
+					termQueries: options.termQueries,
 				}),
 			},
 		],
@@ -607,6 +750,10 @@ export async function rerankDiscourseHits(options: {
 	 * light question-text heuristic only as a degraded fallback.
 	 */
 	excludeSlugs?: readonly string[];
+	/** Planner primary queries. */
+	primaryQueries?: readonly string[];
+	/** Planner lexical-target subset of `primaryQueries`. */
+	termQueries?: readonly string[];
 	signal?: AbortSignal;
 }): Promise<AiRerankResult> {
 	const history = options.history || [];
@@ -617,6 +764,8 @@ export async function rerankDiscourseHits(options: {
 		options.excludeSlugs,
 	);
 	const fallbackQueries = options.fallbackQueries || [];
+	const primaryQueries = options.primaryQueries || [];
+	const termQueries = options.termQueries || [];
 	const limit = clampAskResultLimit(
 		options.limit ?? resolveAskResultLimit(options.question),
 	);
@@ -635,6 +784,8 @@ export async function rerankDiscourseHits(options: {
 				guidance: options.guidance,
 				planningNotes: options.planningNotes,
 				excludeSlugs: options.excludeSlugs,
+				primaryQueries,
+				termQueries,
 				signal: options.signal,
 			});
 		} catch (error) {
@@ -659,6 +810,8 @@ export async function rerankDiscourseHits(options: {
 			guidance: options.guidance,
 			planningNotes: options.planningNotes,
 			excludeSlugs: options.excludeSlugs,
+			primaryQueries,
+			termQueries,
 			openRouterModel: options.openRouterModel,
 			signal: options.signal,
 		});

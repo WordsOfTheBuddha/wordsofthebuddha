@@ -8,7 +8,8 @@
 
 /**
  * Newer free-tier accounts reject many 2.5 Flash IDs.
- * Flash-Lite is the reliable high-RPD default for both rewrite fallback and rerank.
+ * Flash-Lite is the reliable high-RPD default for rerank (and for planning
+ * only when OPENROUTER_API_KEY is not set).
  */
 export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite";
 export const DEFAULT_GEMINI_RERANK_MODEL = "gemini-3.5-flash-lite";

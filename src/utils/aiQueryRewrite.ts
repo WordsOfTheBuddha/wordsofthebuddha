@@ -13,6 +13,8 @@ import {
 import { normalizeAskShareSlug } from "./aiAskShare";
 import {
 	isWeakAiSearchQuery,
+	normalizeAiSearchQuery,
+	isBareCollectionFilterQuery,
 	repairCommonAskTypos,
 	topicalFallbackQueries,
 } from "./aiSearchQuery";
@@ -40,6 +42,11 @@ export interface AiRewritePlan {
 	lookingFor: string;
 	queries: string[];
 	fallbackQueries: string[];
+	/**
+	 * Subset of `queries` the planner marked as lexical targets (Pāli
+	 * compounds, exact terms). Code tags those hits for the ranker.
+	 */
+	termQueries?: string[];
 	offTopic: boolean;
 	/** Public URL slug for /ask/{shareSlug} — theme of the question. */
 	shareSlug?: string;
@@ -50,9 +57,9 @@ export interface AiRewritePlan {
 	/** Why the plan was degraded — used to decide whether to try another planner. */
 	degradedReason?: "no_json" | "weak_queries" | "offtopic_override";
 	/**
-	 * Notes for the later ranking + briefing step (facets to cover, how to
-	 * treat the question, what to avoid). Written by the planning model.
-	 * Says *why*; the blacklist decision lives in `excludeSlugs`.
+	 * Notes for the later ranking step and the thinking writer (facets to
+	 * cover, how to treat the question, what to avoid). Written by the
+	 * planning model. Says *why*; the blacklist decision lives in `excludeSlugs`.
 	 */
 	rankingGuidance?: string;
 	/**
@@ -68,8 +75,8 @@ export interface AiRewritePlan {
 	/**
 	 * Discourse slugs the rescorer must not include. Only IDs from
 	 * already-shown history; never invented. `[]` means keep them in play.
-	 * Omitted when the planner did not classify — callers may use a light
-	 * question-text heuristic as a degraded fallback.
+	 * Omitted when the planner did not set the field — callers may fall
+	 * back to followUpIntent or a light question-text heuristic.
 	 */
 	excludeSlugs?: string[];
 }
@@ -88,17 +95,17 @@ export const AI_REWRITE_SYSTEM_PROMPT = `You rewrite a person's question into se
 
 The search engine already ranks discourses. Your job is NOT to answer, quote, or teach. Do not invent sutta citations. Do not write a Dhamma explanation.
 
-Pipeline context: after your queries run, a separate smaller (non-thinking) model re-ranks up to ~500 candidate discourses and writes the reader's briefing. It sees the candidates, the question, earlier turns, rankingGuidance, and excludeSlugs. It must not infer which prior IDs to drop — you classify that. rankingGuidance says why (facets to cover instead); excludeSlugs is the blacklist the ranker will hard-apply.
+Pipeline context: after your queries run, a smaller (non-thinking) model re-ranks up to ~500 candidate discourses. A thinking model then writes the reader's answer from fuller excerpts of the selected set. The ranker sees the candidates, the question, earlier turns, rankingGuidance, termQueries (as [term: …] marks), and excludeSlugs. It must not infer which prior IDs to drop — you set excludeSlugs. rankingGuidance tells the ranker what to prefer and the writer how to frame the answer (form and facets). termQueries tell the harness which searches are lexical targets.
 
 Return JSON only in the final answer — no markdown fences, no preface, no trailing commentary. Put any chain-of-thought in the reasoning channel (or <think> tags), never as a substitute for the JSON object. Content must be exactly one JSON object:
-{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","coverage":"brief","rankingGuidance":"1–3 sentences for the ranking step","followUpIntent":"diversify","excludeSlugs":["mn10"],"offTopic":false}
+{"correctedQuestion":"their question with only clear typos fixed (or unchanged)","lookingFor":"short phrase shown to the reader","queries":["term"],"termQueries":["term"],"fallbackQueries":["broader term"],"personSlugs":["ananda"],"shareSlug":"mindfulness-of-the-body","coverage":"brief","rankingGuidance":"1–3 sentences for the ranking and answer steps","followUpIntent":"refine","excludeSlugs":[],"offTopic":false}
 
 Search language (this site's real operators — use them when they help):
 - Default matches titles, descriptions, IDs, and topics/qualities/similes/persons (fuzzy).
-- quest — fuzzy word
+- quest — fuzzy word. Unquoted Pāli is diacritic-insensitive and matches inflected endings: vimuttikkhandho also finds vimuttikkhandha, vimuttikkhandhaṁ, vimuttikkhandhena. Prefer this for a named Pāli term (gloss, “where this word appears”, “all discourses with X”).
 - ^SN or ^AN — only that collection (SN, AN, MN, DN, DHP, …)
 - !word — exclude discourses containing word
-- 'sammāsati or "sammāsati" — exact whole word, diacritic-exact
+- 'sammāsati or "sammāsati" — exact whole word, diacritic-exact, no inflections. 'vimuttikkhandho misses vimuttikkhandhaṁ. Use only when they asked for that exact spelling / no inflected matches — never as the default for Pāli.
 - "letting go" — exact phrase (each word exact)
 - illusion | ignorance — either word
 - title:element content:consciousness — restrict to title or body
@@ -113,7 +120,8 @@ Query rules:
 - shareSlug: a short public URL slug for this question (lowercase kebab-case English, 3–6 words, about 12–48 characters). Capture the theme, e.g. "mindfulness-of-the-body", "four-foundations-of-mindfulness", "craving-and-suffering". No spaces, no punctuation besides hyphens, no discourse IDs alone, no filler like "question-about". Prefer readable over cryptic.
 - 1 to 4 primary queries. Each is usually 1–8 tokens, not a full sentence. Never put the whole question into queries[].
 - Prefer short topical English and common Pāli from the library vocabulary / Known discourses list.
-- Prefer queries likely to hit real discourses (known terms, exact Pāli forms with '… when diacritics matter, collection filters only when the person asked for a nikāya).
+- Prefer queries likely to hit real discourses (known terms, collection filters only when the person asked for a nikāya).
+- Named Pāli words/compounds: put the bare unquoted form in queries[] (vimuttikkhandho, not 'vimuttikkhandho). Do not quote Pāli “because diacritics matter” — default search already handles diacritics and inflections; '… is too tight. Do not replace a named compound with a shorter stem as a primary query (vimuttikkhandho → vimutti) unless they asked about the broader term.
 - personSlugs: optional. Include a slug only when the person named that figure in the question (e.g. "Ānanda", "Sakka"). Do not infer a person from a story, a yakkha/spirit, or a teaching topic. Leave personSlugs empty when they did not name anyone. Never invent slugs.
 - If they named a discourse (MN 10, SN 12.2, Dhp 1), include that ID as one query.
 - When citing a specific sutta by name or story, copy the ID only from the Known discourses list below (never invent a nearby number such as SN 22.87 for Puṇṇama).
@@ -121,13 +129,14 @@ Query rules:
 - Broad / practical / “inspired” / “technique” / “how to apply” / “diverse aspects” asks: cover several facets with complementary short queries (classic practice clusters + English synonyms). For mindfulness / sati practice, prefer the Satipaṭṭhāna Saṃyutta and related stems: satipaṭṭhāna, ^SN satipaṭṭhāna, ānāpānasati, kāyagatāsati, sampajañña, sati, sammāsati — plus known IDs (MN 10, MN 118, SN 47.1, SN 47.2, SN 47.35, SN 47.40, SN 47.42, AN 8.63). Do not stop at DN 22 / MN 10 alone when they ask for techniques or other kinds.
 - If they asked for exact wording, a collection, OR/exclude, or a PTS page, encode that with the operators above.
 - fallbackQueries: 1–3 broader backups (plain short words, no operators) if the first queries might miss.
+- termQueries: subset of queries[] that are the lexical targets to find or define. Include a Pāli compound even when the person used an English headword and you supplied the Pāli (samadikkhandho for “aggregate of collectedness”). Do not list collection filters, English synonyms, or a split compound (vimutti khandha). The harness marks hits from these searches for the ranker. Empty when every primary query is just a topical backup.
 - coverage: always set this. "survey" when they want a wide, cited, or thorough treatment of a topic — including when they never used those words (gather the discourses on X; what the canon says across the nikāyas; help me study Y properly; map the teaching). "brief" for a named sutta, a specific story, “which discourse”, or an ordinary short question. Classify the intent; do not copy the example’s "brief".
-- rankingGuidance: 1–3 plain sentences addressed to the ranking / briefing step. Say what the person actually wants (practice technique vs doctrine vs a specific story or person vs a survey), which facets or saṃyuttas should be represented, which named IDs are must-haves if present, what to de-prioritize (e.g. reference-only duplicates, tangential verses), and how to frame it when the topic is partly outside the early discourses or is hard/controversial. For hard topics, tell the ranking step to report what the Buddha said, what he refused to declare, and any characteristic reframes in the selected set (e.g. killing anger rather than beings; the undeclared points). When coverage is survey, tell it to keep a broad set and not collapse to a handful of hits. Do not answer the question here. Empty string when nothing beyond the obvious applies. On follow-ups, say which facets to cover instead — do not use rankingGuidance as the blacklist; that is excludeSlugs.
+- rankingGuidance: 1–3 plain sentences addressed to the ranking step and the later thinking writer. Say what they actually want and how to write it — including any form they demonstrated or requested (a syntax, definition line, list, comparison, “likewise” for a related term). Name facets or must-have IDs; say what to de-prioritize. For hard topics, tell it to report what the Buddha said, what he refused to declare, and any characteristic reframes. When coverage is survey, keep a broad set. When termQueries is set, tell it to prefer those tagged hits over famous discourses that only matched a backup. Do not answer the question here. Empty string when nothing beyond the obvious applies. On follow-ups, say which facets to cover instead — do not use rankingGuidance as the blacklist; that is excludeSlugs.
 - Follow-ups: Earlier turns include the original question, later questions, clipped summaries, and alreadyShown IDs. Resolve pronouns (“that”, “the second one”) against those turns — never drop the first question when the thread is long.
-- followUpIntent + excludeSlugs: you own the blacklist. The ranking model is a basic non-thinking Flash model — do not leave it to infer “other discourses → drop the previous shortlist.” Copy IDs into excludeSlugs only from Already shown IDs (same slug spelling). Never invent a citation.
-  - diversify (“other”, “more like this”, “not those”, “fresh set”, “not included yet”, further discourses): followUpIntent "diversify". Put the alreadyShown IDs in excludeSlugs (omit a slug only if they named it as an exception to keep). Invent a fresh complementary query set (different facets / saṃyuttas / IDs than alreadyShown). Do not repeat the same lookingFor or the same primary queries.
-  - refine (“the second one”, “tell me more about MN 131”, “those discourses”, go deeper on a named hit): followUpIntent "refine". excludeSlugs must be []. Keep that ID in queries / rankingGuidance.
-  - new topic (unrelated to prior hits): followUpIntent "new". excludeSlugs [] unless a prior ID is clearly stale and would confuse the new search.
+- followUpIntent + excludeSlugs: default is keep already-shown IDs. excludeSlugs [] means keep them — the harness will not infer a blacklist from followUpIntent. Copy IDs into excludeSlugs only from Already shown IDs (same slug spelling), and only when they clearly want a *different set of discourses* (“other”, “not those”, “fresh set”, “not included yet”). Never invent a citation. More evidence, more citations, “likewise” / “and also” for a related term, or continuing the same treatment are not grounds to drop prior IDs.
+  - diversify (they want a different set): followUpIntent "diversify" and put those alreadyShown IDs in excludeSlugs. Invent a fresh complementary query set. Do not repeat the same lookingFor or the same primary queries.
+  - refine (go deeper, “the second one”, continue the same task for a related term): followUpIntent "refine". excludeSlugs must be []. Search any newly named terms unquoted. Do not use a bare ^AN / ^SN / ^ITI as a primary query; it floods the pool.
+  - new topic (unrelated to prior hits): followUpIntent "new". excludeSlugs [].
 - First question (no earlier turns): omit followUpIntent; excludeSlugs [].
 - Scope (set offTopic carefully — this is library scope, not a content filter):
   - Related but outside early Buddhist discourses (commentaries, Abhidhamma later layers, other Buddhist schools, popular Buddhist terms not in the nikāyas): keep offTopic false. Search for the closest early-discourse parallels / themes so the later summary can frame what is and is not in the Buddha’s discourses.
@@ -335,13 +344,35 @@ function rewriteExcludeField(record: Record<string, unknown>): unknown {
 	return undefined;
 }
 
+function parseTermQueries(
+	raw: unknown,
+	queries: readonly string[],
+): string[] {
+	const allowed = new Set(
+		queries.map((query) => normalizeAiSearchQuery(query).toLowerCase()).filter(Boolean),
+	);
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const value of asStringArray(raw, MAX_QUERIES)) {
+		const normalized = normalizeAiSearchQuery(value);
+		if (!normalized || isBareCollectionFilterQuery(normalized)) continue;
+		if (!normalized) continue;
+		const key = normalized.toLowerCase();
+		if (!allowed.has(key) || seen.has(key)) continue;
+		seen.add(key);
+		out.push(normalized);
+	}
+	return out;
+}
+
 /**
  * Planner-owned blacklist for the rescorer.
  *
- * Prefer `excludeSlugs` when the planner set the field. If it classified
- * diversify but left the list empty, fill from already-shown IDs. If it
- * omitted both fields, a light question-text heuristic is the degraded
- * fallback — do not invent a huge blacklist on a first ask or a refine.
+ * `excludeSlugs` is authoritative, including `[]` (keep prior IDs). Do not
+ * expand an empty list just because followUpIntent is diversify. If the
+ * planner omitted the field and classified diversify, fill from already-shown
+ * IDs. If it omitted both, a light question-text heuristic is the degraded
+ * fallback.
  */
 export function resolveRewriteExcludeSlugs(
 	plan: Pick<AiRewritePlan, "excludeSlugs" | "followUpIntent">,
@@ -353,12 +384,9 @@ export function resolveRewriteExcludeSlugs(
 	const shownSet = new Set(shown);
 
 	if (plan.excludeSlugs !== undefined) {
-		const filtered = plan.excludeSlugs.filter((slug) =>
+		return plan.excludeSlugs.filter((slug) =>
 			shownSet.has(normalizeAskPlanSlug(slug)),
 		);
-		if (filtered.length > 0) return filtered;
-		if (plan.followUpIntent === "diversify") return shown;
-		return [];
 	}
 
 	if (plan.followUpIntent === "diversify") return shown;
@@ -366,8 +394,6 @@ export function resolveRewriteExcludeSlugs(
 		return [];
 	}
 
-	// Planner omitted the classification. Regex on the user question — not
-	// something the Flash rescorer should infer from history.
 	return shouldExcludeAlreadyShownAskHits(question, [
 		{ resultSlugs: shown },
 	])
@@ -560,6 +586,10 @@ export function parseRewritePlan(
 	const excludeSlugs = excludeSpecified
 		? parseAskExcludeSlugs(excludeRaw, alreadyShownSlugs)
 		: undefined;
+	const termQueries = parseTermQueries(
+		record.termQueries ?? record.namedTerms ?? record.focusQueries,
+		queries,
+	);
 	return {
 		correctedQuestion,
 		lookingFor,
@@ -568,6 +598,7 @@ export function parseRewritePlan(
 		offTopic: false,
 		...(shareSlug ? { shareSlug } : {}),
 		...(personSlugs.length > 0 ? { personSlugs } : {}),
+		...(termQueries.length > 0 ? { termQueries } : {}),
 		...(rankingGuidance ? { rankingGuidance } : {}),
 		...(coverage ? { coverage } : {}),
 		...(followUpIntent ? { followUpIntent } : {}),
@@ -633,7 +664,7 @@ export function buildRewriteMessages(
 		HISTORY_SHOWN_SLUGS,
 	);
 	const shownUnion = allShown
-		? `\nAlready shown IDs (copy these into excludeSlugs when followUpIntent is diversify; leave excludeSlugs [] when they refine a named hit or “the second one”): ${allShown}`
+		? `\nAlready shown IDs (copy into excludeSlugs only when they want a different set of discourses; leave excludeSlugs [] to keep them): ${allShown}`
 		: "";
 	const historyBlock =
 		recent.length === 0

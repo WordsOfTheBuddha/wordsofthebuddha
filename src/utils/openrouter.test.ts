@@ -3,10 +3,15 @@ import { describe, it } from "node:test";
 import {
 	CURATED_ASK_MODELS,
 	DEFAULT_OPENROUTER_MODEL,
+	ASK_PLANNER_FALLBACK_ORDER,
+	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	getAskPickerDefaultModel,
 	isAllowedFreeModelId,
+	isAskPlannerPaidFallbackModelId,
 	isCuratedAskModelId,
 	isFreeCatalogModel,
+	openRouterModelLabel,
+	resolveOpenRouterChatModel,
 	resolveRequestedOpenRouterModel,
 	selectFreeOpenRouterModels,
 	shouldShowAiModelPicker,
@@ -60,6 +65,7 @@ describe("isAllowedFreeModelId", () => {
 	it("rejects paid and malformed ids", () => {
 		assert.equal(isAllowedFreeModelId("openai/gpt-4o"), false);
 		assert.equal(isAllowedFreeModelId("nvidia/nemotron-3-ultra-550b-a55b"), false);
+		assert.equal(isAllowedFreeModelId("z-ai/glm-5.3-flash"), false);
 		assert.equal(isAllowedFreeModelId("evil:free extra"), false);
 		assert.equal(isAllowedFreeModelId(""), false);
 	});
@@ -77,6 +83,30 @@ describe("resolveRequestedOpenRouterModel", () => {
 		const resolved = resolveRequestedOpenRouterModel("openai/gpt-4o");
 		assert.equal(isAllowedFreeModelId(resolved), true);
 		assert.notEqual(resolved, "openai/gpt-4o");
+		assert.notEqual(
+			resolveRequestedOpenRouterModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
+			ASK_PLANNER_PAID_FALLBACK_MODEL,
+		);
+	});
+});
+
+describe("resolveOpenRouterChatModel", () => {
+	it("allows the paid planner fallback without exposing it to client requests", () => {
+		assert.equal(
+			resolveOpenRouterChatModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
+			ASK_PLANNER_PAID_FALLBACK_MODEL,
+		);
+		assert.equal(isAskPlannerPaidFallbackModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), true);
+		assert.equal(isCuratedAskModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), false);
+		assert.equal(
+			openRouterModelLabel(ASK_PLANNER_PAID_FALLBACK_MODEL),
+			"Z.ai: GLM 5.3 Flash",
+		);
+		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
+			"nvidia/nemotron-3-ultra-550b-a55b:free",
+			"poolside/laguna-s-2.1:free",
+			ASK_PLANNER_PAID_FALLBACK_MODEL,
+		]);
 	});
 });
 
@@ -139,10 +169,10 @@ describe("selectFreeOpenRouterModels", () => {
 				pricing: { prompt: "0", completion: "0" },
 			},
 			{
-				id: "z-ai/glm-5.2:free",
-				name: "GLM 5.2 (free)",
+				id: "poolside/laguna-s-2.1:free",
+				name: "Laguna S 2.1 (free)",
 				pricing: { prompt: "0", completion: "0" },
-				context_length: 256000,
+				context_length: 262144,
 			},
 		]);
 		assert.equal(models.length, CURATED_ASK_MODELS.length);
@@ -154,8 +184,7 @@ describe("selectFreeOpenRouterModels", () => {
 			models.map((model) => model.id),
 			[
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"minimax/minimax-m3:free",
-				"z-ai/glm-5.2:free",
+				"poolside/laguna-s-2.1:free",
 				"nvidia/nemotron-3.5-lightning:free",
 			],
 		);

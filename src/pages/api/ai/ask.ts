@@ -13,7 +13,12 @@ import {
 	queriesForResultSlugs,
 	searchDiscoursesForQueries,
 } from "../../../utils/aiDiscourseSearch";
+import { toPublicAskHit } from "../../../utils/aiDiscourseHits";
+import { buildAskDebugView } from "../../../utils/aiAskDebug";
+import { writeAskAnswer } from "../../../utils/aiAskAnswer";
 import {
+	clipPlanningNotes,
+	namedTermHitDebugRows,
 	rerankDiscourseHits,
 	resolveAskResultLimit,
 } from "../../../utils/aiResultRerank";
@@ -244,7 +249,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				const searched = await searchDiscoursesForQueries(
 					plan.queries,
 					plan.fallbackQueries,
-					{ mergeLimit: AI_SEARCH_CANDIDATE_LIMIT },
+					{
+						mergeLimit: AI_SEARCH_CANDIDATE_LIMIT,
+						question: plan.correctedQuestion || question,
+						termQueries: plan.termQueries,
+					},
 				);
 				const candidates = searched.hits;
 				// Prompt target (10 brief / 50 survey). The rescorer owns the
@@ -271,6 +280,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					// question to the rescorer instead of making it start cold.
 					guidance: plan.rankingGuidance,
 					planningNotes: reasoning,
+					primaryQueries: plan.queries,
+					termQueries: plan.termQueries,
 					// Planner-owned blacklist (not a Flash inference from history).
 					excludeSlugs: resolveRewriteExcludeSlugs(
 						plan,
@@ -279,7 +290,49 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					),
 				});
 				const results = ranked.results;
-				const summary = ranked.summary || "";
+				let summary = ranked.summary || "";
+				let writerModel = "";
+				if (results.length > 0 && getOpenRouterApiKey()) {
+					send({
+						type: "status",
+						phase: "answer",
+						requestId,
+						candidateCount:
+							ranked.candidateCount > 0
+								? ranked.candidateCount
+								: candidates.length,
+						showCount: results.length,
+					});
+					send({ type: "reasoning", reset: true });
+					try {
+						const written = await writeAskAnswer({
+							question: plan.correctedQuestion || question,
+							hits: results,
+							model: rewrite.model,
+							termQueries: plan.termQueries,
+							guidance: plan.rankingGuidance,
+							history,
+							onReasoning: (delta) => send({ type: "reasoning", delta }),
+						});
+						if (written.summary) {
+							summary = written.summary;
+							writerModel = written.model || rewrite.model;
+							usedModel = `${usedModel} + ${writerModel}`;
+						} else if (reasoning.trim()) {
+							send({ type: "reasoning", reset: true });
+							send({ type: "reasoning", delta: reasoning });
+						}
+					} catch (error) {
+						console.warn(
+							"[ai/ask] thinking writer failed — keeping ranker briefing",
+							error instanceof Error ? error.message : error,
+						);
+						if (reasoning.trim()) {
+							send({ type: "reasoning", reset: true });
+							send({ type: "reasoning", delta: reasoning });
+						}
+					}
+				}
 				if (ranked.shareSlug) {
 					shareSlug = resolveAskShareSlug(
 						ranked.shareSlug,
@@ -315,13 +368,33 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				);
 				const shownQueries =
 					contributingQueries.length > 0 ? contributingQueries : plan.queries;
+				const publicResults = results.map(toPublicAskHit);
+				const namedDebug = namedTermHitDebugRows(
+					candidates,
+					plan.correctedQuestion || question,
+					plan.queries,
+					resultSlugs,
+					plan.termQueries,
+				);
+				const debug = buildAskDebugView({
+					coverage: plan.coverage,
+					limit: showCount,
+					reasoning,
+					planningNotes: clipPlanningNotes(reasoning),
+					rankingGuidance: plan.rankingGuidance,
+					namedTermQueries: namedDebug.namedTermQueries,
+					namedTermHits: namedDebug.hits,
+				});
+				if (import.meta.env.DEV) {
+					console.info("[ai/ask] rerank debug", debug);
+				}
 				await persistAsk({
 					displayQuestion: plan.correctedQuestion,
 					lookingFor: plan.lookingFor,
 					queries: plan.queries,
 					fallbackQueries: usefulFallbacks,
 					offTopic: plan.offTopic,
-					results,
+					results: publicResults,
 					model: usedModel,
 					reasoning,
 					summary,
@@ -340,7 +413,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					summary,
 					shareSlug,
 					persons,
-					results,
+					results: publicResults,
 					candidateCount:
 						ranked.candidateCount > 0
 							? ranked.candidateCount
@@ -361,7 +434,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 														: ranked.model || "gemini-rerank",
 											}
 										: {}),
+									...(writerModel ? { writer: writerModel } : {}),
 								},
+								debug,
 							}
 						: {}),
 				});
