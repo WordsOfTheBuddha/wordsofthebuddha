@@ -4,7 +4,6 @@
 // with view-state params. Search results themselves run in the browser.
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import BottomDrawer from "../components/BottomDrawer.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
 import AiModeApp from "../components/AiModeApp.astro";
 import "../styles/ai-mode.css";
@@ -64,6 +63,4 @@ Astro.response.headers.set(
 			})();
 		</script>
 	</main>
-
-	<BottomDrawer />
 </Layout>

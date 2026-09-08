@@ -29,7 +29,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	width: 100vw;
+	width: 100%;
 	/* Tooltips stay compact; dictionary gets a small mobile bump below. */
 	height: var(--drawer-height);
 	background-color: var(--background-color);
@@ -37,10 +37,18 @@
 	box-shadow:
 		0 -4px 6px -1px rgba(0, 0, 0, 0.1),
 		0 -2px 4px -1px rgba(0, 0, 0, 0.06);
-	transform: translateY(100%);
+	/*
+	 * Hide off-screen when closed. Firefox Android’s visual viewport is often
+	 * taller than the layout viewport (`bottom: 0`), so translateY(100%) alone
+	 * leaves a sliver of the drawer — and its close “x” — above the nav bar.
+	 */
+	transform: translateY(calc(100% + 8px));
+	visibility: hidden;
+	pointer-events: none;
 	transition:
 		transform 0.3s ease-in-out,
-		height 0.2s ease-in-out;
+		height 0.2s ease-in-out,
+		visibility 0s linear 0.3s;
 	z-index: 9999;
 	display: flex;
 	flex-direction: column;
@@ -70,6 +78,12 @@ html.dark .bottom-popover {
 
 .bottom-popover.visible {
 	transform: translateY(0);
+	visibility: visible;
+	pointer-events: auto;
+	transition:
+		transform 0.3s ease-in-out,
+		height 0.2s ease-in-out,
+		visibility 0s linear 0s;
 }
 
 .popover-content {
@@ -82,7 +96,7 @@ html.dark .bottom-popover {
 }
 
 .close-btn {
-	position: fixed;
+	position: absolute;
 	top: 1rem;
 	right: 1rem;
 	background-color: var(--background-color);

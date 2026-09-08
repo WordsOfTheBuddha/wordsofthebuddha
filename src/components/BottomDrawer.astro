@@ -67,6 +67,8 @@ import "../styles/bottomDrawer.css";
 		private createPopover() {
 			this.popover = document.createElement("div");
 			this.popover.className = "bottom-popover";
+			this.popover.setAttribute("aria-hidden", "true");
+			this.popover.inert = true;
 			this.popover.innerHTML = `
 				<div class="popover-content">
 					<button class="close-btn" aria-label="Close">
@@ -127,6 +129,8 @@ import "../styles/bottomDrawer.css";
 				contentEl.innerHTML = content;
 			}
 
+			this.popover.inert = false;
+			this.popover.setAttribute("aria-hidden", "false");
 			this.popover.classList.add("visible");
 			this.isVisible = true;
 
@@ -137,6 +141,8 @@ import "../styles/bottomDrawer.css";
 		hide() {
 			if (!this.popover) return;
 			this.popover.classList.remove("visible");
+			this.popover.setAttribute("aria-hidden", "true");
+			this.popover.inert = true;
 			this.isVisible = false;
 			dictionaryLookupStack.length = 0;
 			currentDictionaryWord = "";
