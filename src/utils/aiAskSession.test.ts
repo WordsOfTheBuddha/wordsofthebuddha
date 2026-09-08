@@ -240,6 +240,11 @@ describe("formatAskRelativeTime", () => {
 		assert.equal(formatAskRelativeTime(now - 30_000, now), "just now");
 		assert.equal(formatAskRelativeTime(now - 5 * 60_000, now), "5m ago");
 		assert.equal(formatAskRelativeTime(now - 3 * 60 * 60_000, now), "3h ago");
+		assert.equal(formatAskRelativeTime(now - 23 * 60 * 60_000, now), "23h ago");
+		assert.equal(formatAskRelativeTime(now - 24 * 60 * 60_000, now), "1d ago");
+		assert.equal(formatAskRelativeTime(now - 33 * 60 * 60_000, now), "1d ago");
+		assert.equal(formatAskRelativeTime(now - 39 * 60 * 60_000, now), "1d ago");
+		assert.equal(formatAskRelativeTime(now - 2 * 24 * 60 * 60_000, now), "2d ago");
 	});
 });
 

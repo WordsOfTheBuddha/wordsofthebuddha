@@ -378,7 +378,7 @@ export function formatAskRelativeTime(at: number, now = Date.now()): string {
 	if (mins < 1) return "just now";
 	if (mins < 60) return `${mins}m ago`;
 	const hours = Math.floor(mins / 60);
-	if (hours < 48) return `${hours}h ago`;
+	if (hours < 24) return `${hours}h ago`;
 	const days = Math.floor(hours / 24);
 	if (days < 14) return `${days}d ago`;
 	try {
