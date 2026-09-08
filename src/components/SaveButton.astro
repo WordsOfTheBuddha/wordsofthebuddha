@@ -33,18 +33,22 @@ const userId = null;
 		<span id="saveCheckIcon" class="w-4 h-4 hidden" set:html={Check} />
 		<span id="saveLabel">Save</span>
 	</button>
-	<SignInPrompt id="saveSignInPrompt" feature="save this page" />
+	<SignInPrompt
+		id="saveSignInPrompt"
+		title="Save this page"
+		body="Create a free account to save and sync discourses across devices."
+	/>
 </div>
 
 <script>
 	import { loadPageUserState } from "../utils/pageUserStateClient";
 	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+	import { showSignInPrompt } from "../utils/signInPrompt";
 
 	const btn = document.getElementById("saveButton");
 	const outline = document.getElementById("saveIcon");
 	const check = document.getElementById("saveCheckIcon");
 	const saveLabel = document.getElementById("saveLabel");
-	const prompt = document.getElementById("saveSignInPrompt");
 	const slug = normalizeDiscourseSlug(
 		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
 	);
@@ -131,13 +135,7 @@ const userId = null;
 		btn.addEventListener("click", async () => {
 			const isAuthenticated = btn.dataset.authenticated === "true";
 			if (!isAuthenticated) {
-				// Close all other prompts first
-				document.querySelectorAll("[data-prompt]").forEach((p) => {
-					if (p.id !== "saveSignInPrompt") {
-						p.classList.add("hidden");
-					}
-				});
-				prompt?.classList.remove("hidden");
+				showSignInPrompt("saveSignInPrompt");
 				return;
 			}
 
@@ -172,12 +170,6 @@ const userId = null;
 			} finally {
 				btn?.classList.remove("animate-pulse");
 			}
-		});
-
-		// Fix: Target the close button within this specific prompt
-		const closeBtn = prompt?.querySelector(".close-prompt");
-		closeBtn?.addEventListener("click", () => {
-			prompt?.classList.add("hidden");
 		});
 	}
 </script>

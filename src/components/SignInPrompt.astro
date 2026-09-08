@@ -1,43 +1,56 @@
 ---
+import "../styles/siteDialog.css";
+
 interface Props {
 	id: string;
-	feature: string;
+	title: string;
+	body: string;
 }
 
-const { id, feature } = Astro.props;
+const { id, title, body } = Astro.props;
+const titleId = `${id}-title`;
 ---
 
 <div
 	id={id}
+	class="site-dialog"
 	data-prompt
-	class="hidden absolute z-50 mt-2 w-72 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4"
+	hidden
+	aria-hidden="true"
 >
-	<div class="text-sm text-gray-700 dark:text-gray-300">
-		<p class="my-2">Sign in to {feature}</p>
-		<div class="mt-3 flex gap-2">
-			<a
-				href="/signin"
-				data-return-path
-				class="inline-flex items-center px-3 py-1 text-sm border border-transparent rounded-md shadow-sm font-medium text-white leading-5 bg-[var(--auth-button-bg)] hover:bg-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
-			>
+	<div
+		class="site-dialog-sheet"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby={titleId}
+	>
+		<button
+			type="button"
+			class="site-dialog-close close-prompt"
+			aria-label="Close"
+		>
+			×
+		</button>
+		<h2 id={titleId} class="site-dialog-title">{title}</h2>
+		<p class="site-dialog-body">{body}</p>
+		<div class="site-dialog-actions">
+			<a class="site-dialog-primary" data-auth-href="/register" href="/register">
+				Create an account
+			</a>
+			<a class="site-dialog-secondary" data-auth-href="/signin" href="/signin">
 				Sign in
 			</a>
-			<button
-				type="button"
-				class="close-prompt px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
-			>
-				Cancel
+			<button type="button" class="site-dialog-tertiary close-prompt">
+				Not now
 			</button>
 		</div>
-
-		<script>
-			const links = document.querySelectorAll("a[data-return-path]");
-			links.forEach((link) => {
-				(link as HTMLAnchorElement).href =
-					`/signin?returnTo=${encodeURIComponent(
-						`${window.location.pathname}${window.location.search}`,
-					)}`;
-			});
-		</script>
 	</div>
 </div>
+
+<script>
+	import { installSignInPrompt } from "../utils/signInPrompt";
+
+	document.querySelectorAll<HTMLElement>("[data-prompt]").forEach((prompt) => {
+		installSignInPrompt(prompt);
+	});
+</script>

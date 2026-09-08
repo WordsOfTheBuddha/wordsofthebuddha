@@ -47,7 +47,11 @@ const userId = null;
 		<span id="readCheckIcon" class="w-4 h-4 hidden" set:html={Check} />
 		<span id="readLabel">Mark as read</span>
 	</button>
-	<SignInPrompt id="readSignInPrompt" feature="mark this page as read" />
+	<SignInPrompt
+		id="readSignInPrompt"
+		title="Mark this as read"
+		body="Create a free account to mark this discourse as Read."
+	/>
 </div>
 
 <script>
@@ -59,12 +63,12 @@ const userId = null;
 		unmarkReadPages,
 	} from "../utils/readPages";
 	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+	import { showSignInPrompt } from "../utils/signInPrompt";
 
 	const btn = document.getElementById("readButton");
 	const check = document.getElementById("readCheckIcon");
 	const dashedCheck = document.getElementById("readCheckDashedIcon");
 	const readLabel = document.getElementById("readLabel");
-	const prompt = document.getElementById("readSignInPrompt");
 	const pingIndicator = document.getElementById("pingIndicator");
 	const slug = normalizeDiscourseSlug(
 		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
@@ -311,13 +315,7 @@ const userId = null;
 
 			const isAuthenticated = btn.dataset.authenticated === "true";
 			if (!isAuthenticated) {
-				// Close all other prompts first
-				document.querySelectorAll("[data-prompt]").forEach((p) => {
-					if (p.id !== "readSignInPrompt") {
-						p.classList.add("hidden");
-					}
-				});
-				prompt?.classList.remove("hidden");
+				showSignInPrompt("readSignInPrompt");
 				return;
 			}
 
@@ -359,14 +357,6 @@ const userId = null;
 				btn?.classList.remove("animate-pulse");
 			}
 		});
-
-		// Handle sign-in prompt close button if prompt exists
-		if (prompt) {
-			const closeBtn = prompt.querySelector(".close-prompt");
-			closeBtn?.addEventListener("click", () => {
-				prompt.classList.add("hidden");
-			});
-		}
 
 		// Monitor scroll and time for ping animation
 		window.addEventListener("scroll", checkScrollPosition);

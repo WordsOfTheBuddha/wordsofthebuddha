@@ -34,19 +34,20 @@ const userId = null;
 	</button>
 	<SignInPrompt
 		id="readLaterSignInPrompt"
-		feature="add this page for later reading"
+		title="Read this later"
+		body="Create a free account to add a discourse to Read Later."
 	/>
 </div>
 
 <script>
 	import { loadPageUserState } from "../utils/pageUserStateClient";
 	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+	import { showSignInPrompt } from "../utils/signInPrompt";
 
 	const btn = document.getElementById("readLaterButton");
 	const outline = document.getElementById("readLaterIcon");
 	const check = document.getElementById("readLaterCheckIcon");
 	const readLaterLabel = document.getElementById("readLaterLabel");
-	const prompt = document.getElementById("readLaterSignInPrompt");
 	const slug = normalizeDiscourseSlug(
 		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, ""),
 	);
@@ -133,13 +134,7 @@ const userId = null;
 		btn.addEventListener("click", async () => {
 			const isAuthenticated = btn.dataset.authenticated === "true";
 			if (!isAuthenticated) {
-				// Close all other prompts first
-				document.querySelectorAll("[data-prompt]").forEach((p) => {
-					if (p.id !== "readLaterSignInPrompt") {
-						p.classList.add("hidden");
-					}
-				});
-				prompt?.classList.remove("hidden");
+				showSignInPrompt("readLaterSignInPrompt");
 				return;
 			}
 
@@ -176,13 +171,5 @@ const userId = null;
 				btn?.classList.remove("animate-pulse");
 			}
 		});
-
-		// Handle sign-in prompt close button if prompt exists
-		if (prompt) {
-			const closeBtn = prompt.querySelector(".close-prompt");
-			closeBtn?.addEventListener("click", () => {
-				prompt.classList.add("hidden");
-			});
-		}
 	}
 </script>
