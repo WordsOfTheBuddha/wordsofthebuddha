@@ -20,6 +20,7 @@ import {
 	type PageSuggestEntry,
 	type PageSuggestHit,
 } from "./pageSuggest";
+import { stripAnnotations } from "./searchRanking";
 
 const MIN_INDEX_SUGGEST_LEN = 2;
 
@@ -42,12 +43,42 @@ export function shouldOfferIndexSuggestions(
 
 /** Visible suggestion text: drop |term::gloss| markup and leftover pipes. */
 export function displaySuggestionText(text: string): string {
-	let s = (text || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
-	s = s.replace(/\|([^|:]+):::+[^|]*\|/g, "$1");
+	let s = stripAnnotations(text || "");
 	s = s.replace(/\|/g, "");
 	const cut = s.indexOf("::");
 	if (cut >= 0) s = s.slice(0, cut);
 	return s.replace(/\s+/g, " ").trim();
+}
+
+/** True when suggestion equals the typed token aside from letter case. */
+export function isCaseOnlySuggestion(text: string, query: string): boolean {
+	const visible = displaySuggestionText(text);
+	if (!visible || !query) return false;
+	return (
+		visible.normalize("NFC").toLowerCase() ===
+		query.normalize("NFC").toLowerCase()
+	);
+}
+
+/**
+ * Match suggestion casing to what the user typed (lowercase `liberation`
+ * stays lowercase; Title Case stays title case). Diacritics are preserved.
+ */
+export function applySuggestionQueryCase(text: string, query: string): string {
+	if (!text || !query) return text;
+	if (query === query.toLowerCase()) return text.toLowerCase();
+	if (query === query.toUpperCase() && /\p{L}/u.test(query)) {
+		return text.toUpperCase();
+	}
+	const rest = query.slice(1);
+	if (query[0] !== query[0].toLowerCase() && rest === rest.toLowerCase()) {
+		return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+	}
+	return text;
+}
+
+export function formatSuggestionForQuery(text: string, query: string): string {
+	return applySuggestionQueryCase(displaySuggestionText(text), query);
 }
 
 /** Inline layout so suggestions stack even if component CSS fails to load. */
@@ -317,7 +348,7 @@ export function attachSearchAutocomplete(
 		currentSuggestions.forEach((entry, index) => {
 			const item = createSuggestionItemButton(inputId, index);
 			item.innerHTML = highlightMatch(
-				displaySuggestionText(entry.text),
+				formatSuggestionForQuery(entry.text, currentToken!.raw),
 				currentToken!.raw,
 			);
 			if (index === activeIndex) {
@@ -498,7 +529,9 @@ export function attachSearchAutocomplete(
 			return;
 		}
 
-		const next = searcher.suggest(token.raw);
+		const next = searcher
+			.suggest(token.raw)
+			.filter((entry) => !isCaseOnlySuggestion(entry.text, token.raw));
 		if (next.length === 0) {
 			close();
 			return;
@@ -581,7 +614,7 @@ export function attachSearchAutocomplete(
 		const next = applySuggestion(
 			input.value,
 			token,
-			displaySuggestionText(entry.text) || entry.text,
+			formatSuggestionForQuery(entry.text, token.raw) || entry.text,
 		);
 		input.value = next.value;
 		input.setSelectionRange(next.cursor, next.cursor);

@@ -27,4 +27,12 @@ describe("pickContentSnippet", () => {
 			oneEachPali,
 		);
 	});
+
+	it("treats a phrase mark as multiple terms via data-hl-count", () => {
+		const phrase =
+			'<mark class="bg-yellow-100" data-hl-count="3">aggregate of liberation</mark>';
+		const twoMarks =
+			'<mark>a</mark> <mark>b</mark>';
+		assert.equal(pickContentSnippet(phrase, twoMarks, false), phrase);
+	});
 });

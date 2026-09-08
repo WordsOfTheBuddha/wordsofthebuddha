@@ -16,11 +16,16 @@ import {
 } from "../../utils/fuseQueryParser";
 import {
 	isStopword,
-	findPhraseMatchPositions,
 	calculatePhraseProximity,
 	stripAnnotations,
 	textContainsStrictWord,
 } from "../../utils/searchRanking";
+import {
+	countSnippetHighlightTerms,
+	createHighlightPattern,
+	highlightSnippetText,
+	clipSnippetAroundHighlight,
+} from "../../utils/searchSnippetHighlight";
 import {
 	getPtsDisplay,
 	hasPtsDirective,
@@ -304,191 +309,6 @@ function normalizeText(text: string): string {
 	return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function escapeRegExp(string: string) {
-	return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function processTermForHighlight(highlightTerm: HighlightTerm): string {
-	// Return just the clean term - word boundaries will be added in the pattern creation
-	return highlightTerm.term;
-}
-
-// Minimum term length for infix (partial word) highlighting
-const MIN_LENGTH_FOR_INFIX_HIGHLIGHT = 4;
-
-const MARK_STYLE = 'style="padding-inline:0.05rem"';
-
-// Unicode-aware letter boundary (Pali diacritics like ṭ, ñ, ṇ, ṁ are \p{L} but NOT \w)
-const UL = "\\p{L}\\p{N}"; // Unicode letters + numbers
-const NOT_UL = `[^${UL}]`; // non-letter, non-number
-
-/**
- * Case-insensitive, diacritic-exact pattern for quoted/`'term` highlighting.
- * Preserves Pāli diacritics (ā stays ā); only folds letter case.
- */
-function createExactLiteralPattern(term: string): string {
-	let pattern = "";
-	for (const char of term.normalize("NFC")) {
-		if (/\p{L}/u.test(char)) {
-			const lower = char.toLowerCase();
-			const upper = char.toUpperCase();
-			if (lower === upper) {
-				pattern += escapeRegExp(char);
-			} else {
-				pattern += `[${escapeRegExp(lower)}${escapeRegExp(upper)}]`;
-			}
-		} else {
-			pattern += escapeRegExp(char);
-		}
-	}
-	return pattern;
-}
-
-/**
- * Replace the best occurrence of a term in text with a <mark> tag.
- * Prefers whole-word matches (with Pali inflection tolerance) over infix matches.
- * Uses \p{L} boundaries so Pali diacritic consonants (ṭ, ñ, ṇ…) are treated as letters.
- */
-function highlightBestMatch(
-	text: string,
-	infixPattern: string,
-	markClass: string,
-	operation: HighlightTerm["operation"],
-	paliMode = false,
-): { result: string; matched: boolean } {
-	const markOpen = `<mark class="${markClass} rounded" ${MARK_STYLE}>`;
-
-	// Exact quotes: literal whole word only (diacritic-exact, no suffix)
-	if (operation === "exact") {
-		const regex = new RegExp(
-			`(?<=^|${NOT_UL})(${infixPattern})(?=${NOT_UL}|$)`,
-			"u",
-		);
-		if (regex.test(text)) {
-			return {
-				result: text.replace(regex, (_, matched) => `${markOpen}${matched}</mark>`),
-				matched: true,
-			};
-		}
-		return { result: text, matched: false };
-	}
-
-	// For infix-capable patterns, prefer whole-word match using Unicode letter boundaries.
-	// (paliMode vowel flexibility is applied in createHighlightPattern before this call)
-	const wholeWordRegex = new RegExp(
-		`(^|${NOT_UL})(?=${infixPattern})(${infixPattern}[${UL}]{0,3})(?=${NOT_UL}|$)`,
-		"u",
-	);
-	if (wholeWordRegex.test(text)) {
-		return {
-			result: text.replace(
-				wholeWordRegex,
-				(_, pre, matched) => `${pre}${markOpen}${matched}</mark>`,
-			),
-			matched: true,
-		};
-	}
-
-	// Fall back to infix match (original pattern, no stem flexibility)
-	const regex = new RegExp(infixPattern, "u");
-	if (regex.test(text)) {
-		return {
-			result: text.replace(regex, (m) => `${markOpen}${m}</mark>`),
-			matched: true,
-		};
-	}
-	return { result: text, matched: false };
-}
-
-// Create diacritic-insensitive pattern for a vowel (both lower and upper case)
-function vowelPattern(vowel: string): string {
-	const patterns: Record<string, string> = {
-		a: "[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄ]",
-		e: "[eEéÉèÈêÊëËēĒĕĔėĖ]",
-		i: "[iIíÍìÌîÎïÏīĪĭĬįĮ]",
-		o: "[oOóÓòÒôÔöÖõÕōŌŏŎőŐ]",
-		u: "[uUúÚùÙûÛüÜūŪŭŬůŮ]",
-	};
-	return patterns[vowel.toLowerCase()] || vowel;
-}
-
-// Matches any vowel with diacritics (for Pali stem-final vowel flexibility: a→o, etc.)
-const ANY_VOWEL_PATTERN =
-	"[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄeEéÉèÈêÊëËēĒĕĔėĖiIíÍìÌîÎïÏīĪĭĬįĮoOóÓòÒôÔöÖõÕōŌŏŎőŐuUúÚùÙûÛüÜūŪŭŬůŮ]";
-
-// Create case-insensitive pattern for a consonant, including Pali/Indic diacritic variants
-function consonantPattern(char: string): string {
-	const paliVariants: Record<string, string> = {
-		t: "[tTṭṬ]",
-		d: "[dDḍḌ]",
-		n: "[nNñÑṇṆṅṄ]",
-		m: "[mMṁṀṃṂ]",
-		l: "[lLḷḶ]",
-		s: "[sSśŚṣṢ]",
-		r: "[rRṛṚ]",
-		h: "[hHḥḤ]",
-	};
-	const lower = char.toLowerCase();
-	if (paliVariants[lower]) return paliVariants[lower];
-	const upper = char.toUpperCase();
-	if (lower === upper) return escapeRegExp(char);
-	return `[${lower}${upper}]`;
-}
-
-function createHighlightPattern(
-	term: string,
-	operation: HighlightTerm["operation"],
-	context: string = "", // For startsWith/endsWith checks
-	paliMode = false,
-): string {
-	// Exact quotes keep diacritics; other ops stay diacritic-insensitive.
-	if (operation === "exact") {
-		return createExactLiteralPattern(term);
-	}
-
-	const normalized = normalizeText(term);
-
-	// Build case-insensitive pattern character by character
-	let diacriticPattern = "";
-	for (const char of normalized) {
-		if (/[aeiou]/i.test(char)) {
-			diacriticPattern += vowelPattern(char);
-		} else if (/[a-z]/i.test(char)) {
-			diacriticPattern += consonantPattern(char);
-		} else {
-			diacriticPattern += escapeRegExp(char);
-		}
-	}
-
-	// In paliMode, allow the final stem vowel to match any vowel (a→o, e, i, u)
-	// when the stem ends in a vowel — not for consonant-final terms like āsavānaṁ.
-	if (paliMode && /[aeiou]$/i.test(normalized)) {
-		diacriticPattern = diacriticPattern.replace(
-			/(\[[^\]]*\])$/,
-			ANY_VOWEL_PATTERN,
-		);
-	}
-
-	switch (operation) {
-		case "doesNotStartWith":
-		case "doesNotEndWith":
-		case "negation":
-			return "";
-		case "startsWith":
-			// For highlighting, we should only highlight if it's at start of paragraph
-			return `^[^\\S\\r\\n]*${diacriticPattern}`; // Match start of content with optional whitespace
-		case "endsWith":
-			return `${diacriticPattern}$`; // Must be at end of content
-		default:
-			// For fuzzy/infix, check term length
-			// Short terms (< 4 chars) only match whole words to avoid over-highlighting
-			if (term.length < MIN_LENGTH_FOR_INFIX_HIGHLIGHT) {
-				return `(?<=^|${NOT_UL})${diacriticPattern}(?=${NOT_UL}|$)`;
-			}
-			return diacriticPattern; // Infix match (can be part of another word)
-	}
-}
-
 function findBestMatchingParagraph(
 	text: string,
 	indices: [number, number][],
@@ -503,14 +323,10 @@ function findBestMatchingParagraph(
 			),
 	);
 
-	const queryTerms = termsToHighlight.map((ht) =>
-		processTermForHighlight(ht),
-	);
+	const queryTerms = termsToHighlight.map((ht) => ht.term);
 	const normalizedTerms = queryTerms.map((term) =>
 		normalizeText(term.toLowerCase()),
 	);
-
-	const fullQuery = queryTerms.join(" ").toLowerCase();
 
 	// Precompile per-term match data once — patterns depend only on term/operation,
 	// so building them per paragraph (as before) recompiled thousands of RegExps per doc
@@ -521,7 +337,6 @@ function findBestMatchingParagraph(
 		const pattern = createHighlightPattern(
 			highlightTerm.operation === "exact" ? originalTerm : term,
 			highlightTerm.operation,
-			"",
 			paliMode,
 		);
 		return {
@@ -745,215 +560,9 @@ function findBestMatchingParagraph(
 		}
 	}
 
-	/* console.log("Debug: Best match found:", {
-            preview: bestMatch.text.slice(0, 50) + "...",
-            score: bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount,
-            debug: bestMatch.debug,
-        }); */
-
-	// Split text into segments, preserving tooltip boundaries using updated pattern
-	const segments = snippetText.split(/(\|[^|]+::[^|]+\|)/g);
-
-	// Extract non-stopword terms for phrase matching
-	const nonStopwordTerms = termsToHighlight
-		.filter(
-			(ht) =>
-				!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
-					ht.operation,
-				) && !isStopword(ht.term),
-		)
-		.map((ht) => processTermForHighlight(ht));
-
-	// Check if there's a phrase match anywhere in the snippet (using visible text)
-	const hasPhraseMatch =
-		nonStopwordTerms.length >= 2
-			? findPhraseMatchPositions(snippetText, nonStopwordTerms) !== null
-			: false;
-
-	// Helper function to check if a segment contains all terms near each other
-	function segmentHasPhraseMatch(segmentText: string): boolean {
-		if (!hasPhraseMatch || nonStopwordTerms.length < 2) return false;
-		const positions = findPhraseMatchPositions(
-			segmentText,
-			nonStopwordTerms,
-		);
-		return positions !== null;
-	}
-
-	// Pre-scan segments to find which one has the phrase match
-	// This ensures we highlight in the phrase segment, not the first occurrence
-	let phraseSegmentIndex = -1;
-	if (hasPhraseMatch) {
-		for (let i = 0; i < segments.length; i++) {
-			const segment = segments[i];
-			// For tooltip segments, check the visible part
-			const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
-			const textToCheck = tooltipMatch ? tooltipMatch[1] : segment;
-			if (segmentHasPhraseMatch(textToCheck)) {
-				phraseSegmentIndex = i;
-				break;
-			}
-		}
-	}
-
-	// Get the actual phrase match positions if we found a phrase segment
-	// This tells us exactly WHERE in the text the phrase terms appear together
-	let phrasePositions: Array<{
-		term: string;
-		startPos: number;
-		endPos: number;
-	}> | null = null;
-	if (phraseSegmentIndex >= 0) {
-		const segment = segments[phraseSegmentIndex];
-		const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
-		const textToCheck = tooltipMatch ? tooltipMatch[1] : segment;
-		phrasePositions = findPhraseMatchPositions(
-			textToCheck,
-			nonStopwordTerms,
-		);
-	}
-
-	// Track which terms have already been highlighted (for first-match-only)
-	const highlightedTerms = new Set<string>();
-
-	// Helper to apply highlighting to text
-	// When we have a phrase match in this segment, highlight the phrase terms at their specific positions
-	function applyHighlighting(
-		text: string,
-		currentSegmentIndex: number,
-	): string {
-		let highlighted = text;
-
-		// Check if this is the segment with the phrase match
-		const isPhraseSeg = currentSegmentIndex === phraseSegmentIndex;
-
-		// If this is the phrase segment and we have positions, highlight at those specific positions
-		// We need to process positions in reverse order to preserve character indices
-		if (isPhraseSeg && phrasePositions && phrasePositions.length > 0) {
-			const markClass = "bg-yellow-100 dark:bg-yellow-900";
-
-			// Sort positions in reverse order (rightmost first) to preserve indices while replacing
-			const sortedPositions = [...phrasePositions].sort(
-				(a, b) => b.startPos - a.startPos,
-			);
-
-			for (const pos of sortedPositions) {
-				const termLower = pos.term.toLowerCase();
-				// Get the actual text at this position
-				const actualText = text.substring(pos.startPos, pos.endPos);
-
-				// Replace at the specific position
-				highlighted =
-					highlighted.substring(0, pos.startPos) +
-					`<mark class="${markClass} rounded" style="padding-inline:0.05rem">${actualText}</mark>` +
-					highlighted.substring(pos.endPos);
-
-				highlightedTerms.add(termLower);
-			}
-
-			// Now handle any remaining non-phrase terms that haven't been highlighted
-			termsToHighlight.forEach((ht) => {
-				const cleanTerm = processTermForHighlight(ht);
-				const termLower = cleanTerm.toLowerCase();
-
-				// Skip phrase terms (already handled above)
-				if (nonStopwordTerms.includes(cleanTerm)) return;
-				// Skip if already highlighted
-				if (highlightedTerms.has(termLower)) return;
-
-				const pattern = createHighlightPattern(
-					cleanTerm,
-					ht.operation,
-					"",
-					paliMode,
-				);
-				if (!pattern) return;
-
-				const matchMarkClass =
-					ht.operation === "exact"
-						? "bg-yellow-200 dark:bg-yellow-800"
-						: "bg-yellow-100 dark:bg-yellow-900";
-				const { result, matched } = highlightBestMatch(
-					highlighted,
-					pattern,
-					matchMarkClass,
-					ht.operation,
-					paliMode,
-				);
-				if (matched) {
-					highlighted = result;
-					highlightedTerms.add(termLower);
-				}
-			});
-
-			return highlighted;
-		}
-
-		termsToHighlight.forEach((ht) => {
-			const cleanTerm = processTermForHighlight(ht);
-			const termLower = cleanTerm.toLowerCase();
-
-			// Skip if this term was already highlighted in a previous segment
-			if (highlightedTerms.has(termLower)) return;
-
-			const pattern = createHighlightPattern(
-				cleanTerm,
-				ht.operation,
-				"",
-				paliMode,
-			);
-			if (!pattern) return;
-
-			const markClass =
-				ht.operation === "exact"
-					? "bg-yellow-200 dark:bg-yellow-800"
-					: "bg-yellow-100 dark:bg-yellow-900";
-
-			// If there's a phrase segment found but this isn't it, skip phrase terms
-			// (we want to highlight phrase terms only in the phrase segment)
-			if (
-				phraseSegmentIndex >= 0 &&
-				nonStopwordTerms.includes(cleanTerm)
-			) {
-				return;
-			}
-
-			const { result, matched } = highlightBestMatch(
-				highlighted,
-				pattern,
-				markClass,
-				ht.operation,
-				paliMode,
-			);
-			if (matched) {
-				highlighted = result;
-				highlightedTerms.add(termLower);
-			}
-		});
-		return highlighted;
-	}
-
-	// Process each segment separately
-	const processed = segments.map((segment, segmentIndex) => {
-		// Handle tooltip segments: |visible text::tooltip text|
-		// We should highlight matches in the visible part but not the tooltip part
-		const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
-		if (tooltipMatch) {
-			const visibleText = tooltipMatch[1];
-			const tooltipText = tooltipMatch[2];
-			// Apply highlighting only to visible text, preserve tooltip
-			const highlightedVisible = applyHighlighting(
-				visibleText,
-				segmentIndex,
-			);
-			return `|${highlightedVisible}::${tooltipText}|`;
-		}
-
-		// Regular text segment - apply highlighting
-		return applyHighlighting(segment, segmentIndex);
-	});
-
-	let result = processed.join("").trim();
+	let result = clipSnippetAroundHighlight(
+		highlightSnippetText(snippetText, termsToHighlight, paliMode),
+	).trim();
 
 	// Post-process: Convert section headings (###, ####, etc.) to bold text
 	result = result.replace(/^(#{2,6})\s+(.+)$/gm, "<strong>$2</strong>");
@@ -1024,8 +633,7 @@ function isPaliOnlyContentMatch(
 }
 
 function countHighlightMarks(snippet: string | null | undefined): number {
-	if (!snippet) return 0;
-	return (snippet.match(/<mark/g) ?? []).length;
+	return countSnippetHighlightTerms(snippet);
 }
 
 /** Prefer the snippet that highlights more query terms; break ties toward Pali. */

@@ -1200,7 +1200,7 @@ export const GET: APIRoute = async ({ url }) => {
 			description: r.item.description?.substring(0, 200),
 			pali: r.item.pali,
 			synonyms: r.item.synonyms,
-			contentSnippet: r.item.contentSnippet?.substring(0, 200),
+			contentSnippet: r.item.contentSnippet,
 			score: r.score,
 			matchType: r.matchType,
 			priority: r.priority || 1,

@@ -163,11 +163,12 @@ export function isStopword(word: string): boolean {
 }
 
 /**
- * Strip annotation/gloss syntax from text: |visible::tooltip| → visible
- * Keeps the visible part so glosses in content can still match
+ * Strip annotation/gloss syntax from text, keeping the visible term.
+ * - `|term::tooltip|` / `|term::tooltip::tts|` → term
+ * - `|term::::pronunciation|` (TTS-only) → term
  */
 export function stripAnnotations(text: string): string {
-	return (text || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
+	return (text || "").replace(/\|([^|]*?)::[^|]*\|/g, "$1");
 }
 
 /**

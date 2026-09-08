@@ -1267,9 +1267,11 @@ const isSearchOnly = mode === "search-only";
 		getParsedSearchTerms,
 		getCleanQueryString,
 		textContainsStrictWord,
+		stripAnnotations,
 		formatSearchResultsQueryLabel,
 	} from "../utils/searchRanking";
-	import { normalizeSearchQuery, queryHasContentField } from "../utils/fuseQueryParser";
+	import { normalizeSearchQuery, queryHasContentField, type HighlightTerm } from "../utils/fuseQueryParser";
+	import { highlightSnippetText } from "../utils/searchSnippetHighlight";
 
 	function setSearchInsideStatus(message: string | null) {
 		if (!searchInsideStatusEl) return;
@@ -1490,7 +1492,7 @@ const isSearchOnly = mode === "search-only";
 					const combinedText = searchableFields.join(" ").toLowerCase();
 
 					// Strip annotation text (|visible::tooltip|) before counting
-					const cleanedText = combinedText.replace(/\|(.+?)::[^|]+\|/g, "$1");
+					const cleanedText = stripAnnotations(combinedText);
 
 					// Count how many non-stopword terms match (for ALL queries)
 					let categoryNonStopMatches = 0;
@@ -2455,9 +2457,7 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	function stripTooltipContext(html: string): string {
-		// Match |visible::tooltip| where visible may contain <mark> tags with classes
-		// Use a non-greedy match for the visible part, stopping at ::
-		return (html || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
+		return stripAnnotations(html || "");
 	}
 
 	// Process content snippet: strip tooltips, convert headings to bold, convert MD links
@@ -2478,81 +2478,23 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	// Highlight matching terms in text (for slug, title, description, etc.)
-	// For multi-word queries, highlights the FIRST occurrence of each term only
+	// Prefers an in-order phrase span; otherwise first occurrence of each term.
 	function highlightText(text: string, query: string): string {
 		if (!text || !query || query.length < 2) return text;
 
 		const normalizedQuery = normalizeSearchQuery(query);
 		const { searchQuery } = parseSlugPrefixes(normalizedQuery);
-		const terms = getParsedSearchTerms(searchQuery || normalizedQuery).filter(
-			(t) => !t.isStopword && t.term.length >= 2,
+		const parsed = getParsedSearchTerms(searchQuery || normalizedQuery).filter(
+			(t) => t.term.length >= 2,
 		);
-		if (terms.length === 0) return text;
+		if (parsed.length === 0) return stripAnnotations(text);
 
-		// Sort terms: non-stopwords first (they're more important)
-		const sortedTerms = [...terms].sort((a, b) => {
-			const aStop = a.isStopword ? 1 : 0;
-			const bStop = b.isStopword ? 1 : 0;
-			return aStop - bStop;
-		});
-
-		let result = text;
-		const UL = "\\p{L}\\p{N}";
-		const NOT_UL = `[^${UL}]`;
-
-		// Highlight first occurrence of each term only
-		for (const { term, exact } of sortedTerms) {
-			const source = exact ? term.normalize("NFC") : term;
-			const escaped = source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-			// Exact: case-insensitive, diacritic-exact. Fuzzy: expand vowel/consonant diacritics.
-			let pattern = "";
-			for (const char of escaped) {
-				const lower = char.toLowerCase();
-				if (exact) {
-					if (/\p{L}/u.test(char)) {
-						const upper = char.toUpperCase();
-						pattern +=
-							lower === upper
-								? char
-								: `[${lower}${upper}]`;
-					} else {
-						pattern += char;
-					}
-				} else if ("aeiou".includes(lower)) {
-					const vowelPatterns: Record<string, string> = {
-						'a': '[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄ]',
-						'e': '[eEéÉèÈêÊëËēĒĕĔėĖ]',
-						'i': '[iIíÍìÌîÎïÏīĪĭĬįĮ]',
-						'o': '[oOóÓòÒôÔöÖõÕōŌŏŎőŐ]',
-						'u': '[uUúÚùÙûÛüÜūŪŭŬůŮ]',
-					};
-					pattern += vowelPatterns[lower] || char;
-				} else if (/[a-z]/i.test(char)) {
-					pattern += `[${char.toLowerCase()}${char.toUpperCase()}]`;
-				} else {
-					pattern += char;
-				}
-			}
-
-			try {
-				// Exact-word mode: literal whole word only (no suffix, diacritic-exact)
-				const boundaryPattern = exact
-					? `(?<=^|${NOT_UL})(${pattern})(?=${NOT_UL}|$)`
-					: term.length < 4
-						? `\\b(${pattern})\\b`
-						: `(${pattern})`;
-				const regex = new RegExp(boundaryPattern, "u");
-				const markClass = isStopword(term)
-					? "bg-yellow-50 dark:bg-yellow-950 px-0.5 rounded"
-					: "bg-yellow-100 dark:bg-yellow-900 px-0.5 rounded";
-				result = result.replace(regex, `<mark class="${markClass}">$1</mark>`);
-			} catch {
-				// Skip invalid patterns
-			}
-		}
-
-		return result;
+		const terms: HighlightTerm[] = parsed.map((t) => ({
+			field: "content",
+			term: t.term,
+			operation: t.exact ? "exact" : "fuzzy",
+		}));
+		return highlightSnippetText(text, terms, { fallbackSkipStopwords: true });
 	}
 
 	function renderSearchResults(
@@ -2608,8 +2550,10 @@ const isSearchOnly = mode === "search-only";
 
 					// Apply highlighting to displayed text
 					const highlightedId = highlightText(idFormatted, query);
-					const highlightedTitle = highlightText(title, query);
-					const highlightedDescription = item.description ? highlightText(item.description, query) : "";
+					const highlightedTitle = processSnippet(highlightText(title, query));
+					const highlightedDescription = item.description
+						? processSnippet(highlightText(item.description, query))
+						: "";
 
 					const descriptionHtml = highlightedDescription
 						? `<p class="mt-2 text-text line-clamp-4 text-sm sm:text-base">${highlightedDescription}</p>`

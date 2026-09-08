@@ -5,6 +5,9 @@ import {
 	discourseSuggestionActiveIndex,
 	displaySuggestionText,
 	shouldOfferIndexSuggestions,
+	isCaseOnlySuggestion,
+	applySuggestionQueryCase,
+	formatSuggestionForQuery,
 } from "./searchAutocompleteClient";
 
 describe("computeDropdownLeft", () => {
@@ -78,5 +81,26 @@ describe("displaySuggestionText", () => {
 
 	it("drops pronunciation after ::::", () => {
 		assert.equal(displaySuggestionText("|jhānas::::jah-naas|"), "jhānas");
+	});
+});
+
+describe("suggestion query case", () => {
+	it("treats Liberation vs liberation as a case-only duplicate", () => {
+		assert.equal(isCaseOnlySuggestion("Liberation", "liberation"), true);
+		assert.equal(isCaseOnlySuggestion("liberation", "Liberation"), true);
+	});
+
+	it("keeps diacritic upgrades", () => {
+		assert.equal(isCaseOnlySuggestion("jhāna", "jhana"), false);
+		assert.equal(formatSuggestionForQuery("jhāna", "jhana"), "jhāna");
+	});
+
+	it("lowercases suggestions to match a lowercase query", () => {
+		assert.equal(applySuggestionQueryCase("Liberation", "liberation"), "liberation");
+		assert.equal(formatSuggestionForQuery("Liberation", "lib"), "liberation");
+	});
+
+	it("title-cases suggestions to match a title-case query", () => {
+		assert.equal(applySuggestionQueryCase("liberation", "Lib"), "Liberation");
 	});
 });

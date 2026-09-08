@@ -14,6 +14,7 @@ import {
 	textContainsStrictWord,
 	tokenizeQuery,
 	wordMatchesStrict,
+	stripAnnotations,
 	type ScoredResult,
 } from "./searchRanking";
 
@@ -266,6 +267,23 @@ describe("formatSearchResultsQueryLabel", () => {
 		assert.equal(
 			formatSearchResultsQueryLabel("  right view  "),
 			"right view",
+		);
+	});
+});
+
+describe("stripAnnotations", () => {
+	it("keeps the visible term for ordinary glosses", () => {
+		assert.equal(
+			stripAnnotations("|liberation::release, deliverance [vimutti]|"),
+			"liberation",
+		);
+	});
+
+	it("keeps the visible term for TTS-only :::: pronunciation glosses", () => {
+		assert.equal(stripAnnotations("|jhānas::::jah-naas|"), "jhānas");
+		assert.equal(
+			stripAnnotations("through the |jhānas::::jah-naas|."),
+			"through the jhānas.",
 		);
 	});
 });
