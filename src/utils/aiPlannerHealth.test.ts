@@ -63,6 +63,16 @@ describe("PlannerModelHealth", () => {
 		assert.equal(health.isExcluded(model), false);
 	});
 
+	it("cools down a 404/403 model on the first failure", () => {
+		const health = new PlannerModelHealth({
+			store: createMemoryHealthStore(),
+			now: () => 1_000_000,
+		});
+		const model = "minimax/minimax-m3:free";
+		health.recordFailure(model, httpError(404));
+		assert.equal(health.isExcluded(model), true);
+	});
+
 	it("ignores failures outside the sliding window", () => {
 		let now = 1_000_000;
 		const health = new PlannerModelHealth({

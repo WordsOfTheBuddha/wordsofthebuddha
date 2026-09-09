@@ -13,7 +13,6 @@ import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
 	ASK_WRITER_MAX_TOKENS,
-	ASK_WRITER_REASONING_MAX_TOKENS,
 	askWriterChatOptions,
 	getOpenRouterApiKey,
 	openRouterChatStream,
@@ -463,7 +462,6 @@ export async function writeAskAnswer(options: {
 				messages,
 				maxTokens: ASK_WRITER_MAX_TOKENS,
 				reasoningEffort: writerChat.reasoningEffort,
-				reasoningMaxTokens: ASK_WRITER_REASONING_MAX_TOKENS,
 				jsonMode,
 				signal: watchdog.signal,
 			})) {

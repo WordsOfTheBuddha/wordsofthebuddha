@@ -142,13 +142,12 @@ describe("askWriterChatOptions", () => {
 });
 
 describe("openRouterReasoningBody", () => {
-	it("adds max_tokens only when a positive cap is set", () => {
+	it("sends effort or max_tokens, never both", () => {
 		assert.deepEqual(openRouterReasoningBody("low"), {
 			effort: "low",
 			exclude: false,
 		});
 		assert.deepEqual(openRouterReasoningBody("low", 1024), {
-			effort: "low",
 			exclude: false,
 			max_tokens: 1024,
 		});
@@ -202,6 +201,13 @@ describe("resolveRequestedOpenRouterModel", () => {
 		assert.notEqual(
 			resolveRequestedOpenRouterModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
+		);
+	});
+
+	it("ignores retired :free ids the client may still have stored", () => {
+		assert.notEqual(
+			resolveRequestedOpenRouterModel("minimax/minimax-m3:free"),
+			"minimax/minimax-m3:free",
 		);
 	});
 });

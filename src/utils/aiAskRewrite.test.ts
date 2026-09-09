@@ -101,20 +101,13 @@ describe("plannerModelAttempts", () => {
 });
 
 describe("nextUnusableRewriteAction", () => {
-	it("retries the same model once before trying next or degrading", () => {
+	it("moves on when a fallback exists; last model retries once then degrades", () => {
 		assert.equal(
 			nextUnusableRewriteAction({
 				alreadyRetriedSameModel: false,
 				hasNextOpenRouter: true,
 			}),
-			"retry_same",
-		);
-		assert.equal(
-			nextUnusableRewriteAction({
-				alreadyRetriedSameModel: false,
-				hasNextOpenRouter: false,
-			}),
-			"retry_same",
+			"try_next",
 		);
 		assert.equal(
 			nextUnusableRewriteAction({
@@ -122,6 +115,13 @@ describe("nextUnusableRewriteAction", () => {
 				hasNextOpenRouter: true,
 			}),
 			"try_next",
+		);
+		assert.equal(
+			nextUnusableRewriteAction({
+				alreadyRetriedSameModel: false,
+				hasNextOpenRouter: false,
+			}),
+			"retry_same",
 		);
 		assert.equal(
 			nextUnusableRewriteAction({

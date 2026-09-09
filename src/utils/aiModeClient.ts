@@ -642,7 +642,12 @@ export function applyAskThinkingStreamPatch(
 function isClientFreeModelId(id: string): boolean {
 	const trimmed = id.trim();
 	if (!trimmed || trimmed.length > 200 || /\s/.test(trimmed)) return false;
-	return trimmed === "openrouter/free" || trimmed.endsWith(":free");
+	// Curated picker ids only — retired :free slugs in localStorage (e.g.
+	// minimax/minimax-m3:free) 404 and burn the Ask on a dead planner.
+	return (
+		trimmed === "nvidia/nemotron-3-ultra-550b-a55b:free" ||
+		trimmed === "nvidia/nemotron-3.5-lightning:free"
+	);
 }
 
 /** Enter and Shift+Enter stay newlines. ⌘Enter (Mac) / Ctrl+Enter (elsewhere) sends. */
@@ -2342,7 +2347,7 @@ export function attachAiMode(options: {
 					<span class="ai-spinner"></span>
 					<span class="sr-only">Working on your Ask</span>
 				</div>
-				${turn.phase === "search" || turn.phase === "rerank" || !reasoningText ? skeletonHtml() : ""}`;
+				${turn.phase === "search" || turn.phase === "rerank" ? skeletonHtml() : ""}`;
 		} else {
 			const personHits = (turn.persons || [])
 				.map(renderPersonHit)
@@ -2947,6 +2952,7 @@ export function attachAiMode(options: {
 				return;
 			}
 			await readSseEvents(response, (event) => {
+				if (event.type === "ping") return;
 				if (event.requestId) turn.requestId = event.requestId;
 				if (event.type === "quota" && event.quota) {
 					applyQuota(event.quota);

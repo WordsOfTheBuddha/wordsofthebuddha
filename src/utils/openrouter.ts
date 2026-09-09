@@ -88,8 +88,6 @@ export const ASK_PLANNER_MAX_TOKENS = 4096;
  * medium/high effort spends the whole window on thinking and never emits JSON.
  */
 export const ASK_WRITER_MAX_TOKENS = 2048;
-/** Cap hidden thinking so the model still has room for the JSON briefing. */
-export const ASK_WRITER_REASONING_MAX_TOKENS = 1024;
 /** Write from excerpts — do not reuse the planner’s high-effort setting. */
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
@@ -128,22 +126,22 @@ export function askWriterChatOptions(model: string): {
 	};
 }
 
-/** OpenRouter `reasoning` object for chat / stream requests. */
+/**
+ * OpenRouter `reasoning` object. Providers reject sending both `effort` and
+ * `max_tokens` — only one may be set.
+ */
 export function openRouterReasoningBody(
 	effort: OpenRouterReasoningEffort = DEFAULT_OPENROUTER_REASONING_EFFORT,
 	maxTokens?: number,
 ): {
-	effort: OpenRouterReasoningEffort;
+	effort?: OpenRouterReasoningEffort;
 	exclude: false;
 	max_tokens?: number;
 } {
-	return {
-		effort,
-		exclude: false,
-		...(typeof maxTokens === "number" && maxTokens > 0
-			? { max_tokens: maxTokens }
-			: {}),
-	};
+	if (typeof maxTokens === "number" && maxTokens > 0) {
+		return { exclude: false, max_tokens: maxTokens };
+	}
+	return { effort, exclude: false };
 }
 
 function env(name: string): string | undefined {
@@ -207,10 +205,8 @@ export function resolveRequestedOpenRouterModel(
 ): string {
 	const trimmed = requested?.trim() || "";
 	if (trimmed && isCuratedAskModelId(trimmed)) return trimmed;
-	// When the picker is hidden, honor a free OPENROUTER_MODEL override.
-	if (trimmed && isAllowedFreeModelId(trimmed) && !shouldShowAiModelPicker()) {
-		return trimmed;
-	}
+	// Ignore stale client ids (retired :free models in localStorage). Env
+	// OPENROUTER_MODEL still applies when the picker is hidden.
 	const configured = getConfiguredOpenRouterModel();
 	if (isCuratedAskModelId(configured) || !shouldShowAiModelPicker()) {
 		return configured;

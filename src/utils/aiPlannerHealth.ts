@@ -137,7 +137,15 @@ export class PlannerModelHealth {
 			this.failureWindowMs,
 		);
 		const entry: PlannerModelHealthEntry = { failures };
-		if (failures.length >= this.failuresBeforeCooldown) {
+		const status =
+			typeof error === "object" &&
+			error &&
+			"status" in error &&
+			typeof (error as { status?: unknown }).status === "number"
+				? (error as { status: number }).status
+				: 0;
+		// 404/403 (model gone for this key) will not recover in a few minutes.
+		if (status === 403 || status === 404 || failures.length >= this.failuresBeforeCooldown) {
 			entry.cooldownUntil = now + this.cooldownMs;
 			entry.failures = [];
 		}

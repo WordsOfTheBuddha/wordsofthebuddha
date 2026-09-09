@@ -143,13 +143,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				}
 			};
 			const heartbeat = setInterval(() => {
-				if (!streamOpen) return;
-				try {
-					controller.enqueue(encoder.encode(": ping\n\n"));
-				} catch {
-					streamOpen = false;
-				}
-			}, 15_000);
+				send({ type: "ping" });
+			}, 10_000);
 			const persistAsk = async (input: {
 				displayQuestion: string;
 				lookingFor: string;

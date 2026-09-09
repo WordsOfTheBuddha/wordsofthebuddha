@@ -190,16 +190,17 @@ export function plannerModelAttempts(
 export type UnusableRewriteAction = "retry_same" | "try_next" | "use_degraded";
 
 /**
- * First unusable rewrite for a model retries that model once. A second
- * unusable result moves on (next OpenRouter model, or the degraded plan).
+ * Unusable JSON from a model that still has a fallback (Ultra → GLM) moves
+ * on immediately — a same-model retry was burning ~90s and dropping the SSE.
+ * Last-in-queue still retries once before accepting a degraded plan.
  * Timeouts/429 are handled separately and do not use this path.
  */
 export function nextUnusableRewriteAction(options: {
 	alreadyRetriedSameModel: boolean;
 	hasNextOpenRouter: boolean;
 }): UnusableRewriteAction {
-	if (!options.alreadyRetriedSameModel) return "retry_same";
 	if (options.hasNextOpenRouter) return "try_next";
+	if (!options.alreadyRetriedSameModel) return "retry_same";
 	return "use_degraded";
 }
 
@@ -314,15 +315,19 @@ function failureMessage(error: unknown): string {
 	return error instanceof Error ? error.message : String(error || "error");
 }
 
-/** Medium-effort reasoning on free models can take a while on hard questions. */
-const PLANNER_ATTEMPT_MS = 90_000;
+/**
+ * Per-attempt cap. 90s left the browser SSE dead before GLM could answer;
+ * 45s is enough to bail to the paid fallback on a hung free model.
+ */
+export const PLANNER_ATTEMPT_MS = 45_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
  * when it fails (busy, 404, timeout, …) try the next model (Ultra then paid
- * GLM 5.3 Flash). An unusable rewrite retries the same model once before
- * moving on or accepting a degraded plan. Do not fall back to Gemini for
- * planning when OpenRouter is configured — Gemini remains the rerank path.
+ * GLM 5.3 Flash). An unusable rewrite from a model with a fallback moves on;
+ * the last model retries once before a degraded plan. Do not fall back to
+ * Gemini for planning when OpenRouter is configured — Gemini remains the
+ * rerank path.
  *
  * Each attempt gets its own timeout so a slow/refusing first model does not
  * abort the whole fallback chain via a shared AbortSignal.
