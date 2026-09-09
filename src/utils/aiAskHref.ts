@@ -9,6 +9,29 @@ export function searchAskHref(query?: string | null): string {
 }
 
 /**
+ * Post-auth landing for Ask. A pending question becomes `?q=` so the composer
+ * prefills; otherwise keep the current page (or Ask home).
+ */
+export function askAuthReturnTo(
+	question?: string | null,
+	fallback = "",
+): string {
+	const trimmed = question?.replace(/\s+/g, " ").trim();
+	if (trimmed) return searchAskHref(trimmed);
+	return fallback || searchAskHref();
+}
+
+export function askAuthPageHref(
+	page: "/signin" | "/register",
+	question?: string | null,
+	fallbackReturnTo = "",
+): string {
+	return `${page}?returnTo=${encodeURIComponent(
+		askAuthReturnTo(question, fallbackReturnTo),
+	)}`;
+}
+
+/**
  * Reopen a past Ask from the reader's history without spending a credit.
  * The Ask UI matches `open` against the stored history and restores it;
  * if nothing matches it only prefills the question.

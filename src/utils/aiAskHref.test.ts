@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+	askAuthPageHref,
+	askAuthReturnTo,
 	isAskSearchMode,
 	openAskHistoryHref,
 	searchAskHref,
@@ -22,6 +24,30 @@ describe("searchAskHref", () => {
 		assert.equal(
 			searchAskHref("why anger"),
 			"/search?mode=ai&q=why+anger",
+		);
+	});
+});
+
+describe("askAuthReturnTo", () => {
+	it("carries a pending question onto Ask", () => {
+		assert.equal(askAuthReturnTo("  why   anger "), "/search?mode=ai&q=why+anger");
+	});
+
+	it("keeps the current page when there is no pending question", () => {
+		assert.equal(askAuthReturnTo("", "/search?mode=ai"), "/search?mode=ai");
+		assert.equal(askAuthReturnTo("   "), "/search?mode=ai");
+	});
+});
+
+describe("askAuthPageHref", () => {
+	it("nests the Ask return path on register and sign-in", () => {
+		assert.equal(
+			askAuthPageHref("/register", "why anger"),
+			"/register?returnTo=%2Fsearch%3Fmode%3Dai%26q%3Dwhy%2Banger",
+		);
+		assert.equal(
+			askAuthPageHref("/signin", "why anger"),
+			"/signin?returnTo=%2Fsearch%3Fmode%3Dai%26q%3Dwhy%2Banger",
 		);
 	});
 });

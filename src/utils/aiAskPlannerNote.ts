@@ -22,6 +22,12 @@ export interface BuildAskPlannerNoteInput {
 	skippedCooldown: readonly string[];
 	/** True when the accepted plan includes reader-visible reasoning. */
 	acceptedHasReasoning: boolean;
+	/**
+	 * `"reader"` (default) is what the Ask UI may show. OpenRouter→OpenRouter
+	 * fallbacks (Ultra → GLM, cooldown, timeout) are omitted — they belong in
+	 * server logs / DEV routing, not under “Understood”.
+	 */
+	audience?: "reader" | "log";
 }
 
 /** Short picker name (“M3”) rather than the provider-prefixed catalog label. */
@@ -150,9 +156,10 @@ function geminiLead(
 }
 
 /**
- * Reader-facing note when Ask did not use the requested planner.
- * Does not say “busy” unless the failure actually was a rate-limit/outage,
- * and only mentions Gemini’s missing reasoning when the accepted plan has none.
+ * Note when Ask did not use the requested planner.
+ * OpenRouter→OpenRouter fallbacks are log/DEV only. Gemini copy can mention
+ * missing thinking. Does not say “busy” unless the failure was a rate-limit
+ * or outage.
  */
 export function buildAskPlannerNote(
 	input: BuildAskPlannerNoteInput,
@@ -160,6 +167,7 @@ export function buildAskPlannerNote(
 	const requested = input.requested.trim();
 	const used = input.used.trim();
 	if (!requested && !used) return undefined;
+	const audience = input.audience ?? "reader";
 
 	if (input.provider === "gemini") {
 		if (input.failed.length === 0 && input.skippedCooldown.length === 0) {
@@ -176,6 +184,9 @@ export function buildAskPlannerNote(
 			input.acceptedHasReasoning,
 		);
 	}
+
+	// Ultra → GLM (timeout, cooldown, unusable, …) is not useful for readers.
+	if (audience === "reader") return undefined;
 
 	if (!requested || sameModel(used, requested)) return undefined;
 

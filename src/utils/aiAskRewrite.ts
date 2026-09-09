@@ -18,7 +18,7 @@ import { plannerModelHealth } from "./aiPlannerHealth";
 import {
 	ASK_PLANNER_FALLBACK_ORDER,
 	ASK_PLANNER_MAX_TOKENS,
-	ASK_PLANNER_REASONING_EFFORT,
+	askPlannerChatOptions,
 	getOpenRouterApiKey,
 	isAskPlannerPaidFallbackModelId,
 	openRouterChatStream,
@@ -58,8 +58,8 @@ export interface AiAskRewriteResult {
 	/** Model the reader picked (or the default) before any fallback. */
 	requestedModel: string;
 	/**
-	 * Reader-facing note when the plan did not come from the requested model
-	 * (honest about unusable / 404 / timeout / quota vs busy).
+	 * Not attached for OpenRouter→OpenRouter fallbacks. Kept optional so older
+	 * callers still type-check; the Ask UI no longer renders it.
 	 */
 	plannerNote?: string;
 	routing: AiAskPlannerRouting;
@@ -90,7 +90,11 @@ export function formatPlannerRoutingLine(routing: AiAskPlannerRouting): string {
 	return `[ai/ask] planner requested=${routing.requested} called=${called}${skipped}${failed} → used=${routing.used} (${routing.provider})${reranker}${writer}${degraded}`;
 }
 
-/** OpenRouter planner attempts (requested + fallbacks). No Gemini after this. */
+/**
+ * Distinct OpenRouter planners per Ask (requested + fallbacks). Same-model
+ * unusable retries do not count as extra models. Default Ultra → GLM uses 2;
+ * a picked model outside the automatic order (Lightning) can add a 3rd slot.
+ */
 export const MAX_PLANNER_OPENROUTER_ATTEMPTS = 3;
 
 function openRouterMessagesToGemini(
@@ -147,7 +151,7 @@ export interface PlannerModelAttemptsOptions {
  * list still fills from healthier options when possible. Paid GLM is kept
  * in the last slot even when the reader picked Lightning.
  *
- * Example (requested = Ultra): Ultra → Laguna → GLM 5.3 Flash
+ * Example (requested = Ultra): Ultra → GLM 5.3 Flash
  * Example (requested = Lightning): Lightning → Ultra → GLM 5.3 Flash
  */
 export function plannerModelAttempts(
@@ -183,6 +187,22 @@ export function plannerModelAttempts(
 	return out;
 }
 
+export type UnusableRewriteAction = "retry_same" | "try_next" | "use_degraded";
+
+/**
+ * First unusable rewrite for a model retries that model once. A second
+ * unusable result moves on (next OpenRouter model, or the degraded plan).
+ * Timeouts/429 are handled separately and do not use this path.
+ */
+export function nextUnusableRewriteAction(options: {
+	alreadyRetriedSameModel: boolean;
+	hasNextOpenRouter: boolean;
+}): UnusableRewriteAction {
+	if (!options.alreadyRetriedSameModel) return "retry_same";
+	if (options.hasNextOpenRouter) return "try_next";
+	return "use_degraded";
+}
+
 async function rewriteWithOpenRouter(options: {
 	question: string;
 	history: readonly AiRewriteHistoryTurn[];
@@ -192,10 +212,11 @@ async function rewriteWithOpenRouter(options: {
 	signal?: AbortSignal;
 }): Promise<Omit<AiAskRewriteResult, "requestedModel" | "routing">> {
 	const messages = buildRewriteMessages(options.question, options.history);
+	const plannerChat = askPlannerChatOptions(options.model);
 	let content = "";
 	let reasoning = "";
 	let usedModel = options.model;
-	let usedJsonMode = true;
+	let usedJsonMode = plannerChat.jsonMode;
 	let startedStream = false;
 	const runStream = async (jsonMode: boolean) => {
 		content = "";
@@ -208,7 +229,7 @@ async function rewriteWithOpenRouter(options: {
 			model: options.model,
 			messages,
 			maxTokens: ASK_PLANNER_MAX_TOKENS,
-			reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
+			reasoningEffort: plannerChat.reasoningEffort,
 			jsonMode,
 			signal: options.signal,
 		})) {
@@ -221,7 +242,7 @@ async function rewriteWithOpenRouter(options: {
 		}
 	};
 	try {
-		await runStream(true);
+		await runStream(plannerChat.jsonMode);
 	} catch (error) {
 		// Some free providers reject response_format — retry once without it.
 		if (errorStatus(error) === 400 && usedJsonMode) {
@@ -298,9 +319,10 @@ const PLANNER_ATTEMPT_MS = 90_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
- * when it fails (busy, unusable JSON, 404, timeout, …) try Laguna then paid
- * GLM 5.3 Flash. Do not fall back to Gemini for planning when OpenRouter is
- * configured — Gemini remains the rerank path.
+ * when it fails (busy, 404, timeout, …) try the next model (Ultra then paid
+ * GLM 5.3 Flash). An unusable rewrite retries the same model once before
+ * moving on or accepting a degraded plan. Do not fall back to Gemini for
+ * planning when OpenRouter is configured — Gemini remains the rerank path.
  *
  * Each attempt gets its own timeout so a slow/refusing first model does not
  * abort the whole fallback chain via a shared AbortSignal.
@@ -375,64 +397,94 @@ export async function rewriteAskQuestion(options: {
 		}
 		for (const model of queue) {
 			if (parentSignal?.aborted) throw parentSignal.reason ?? lastError;
-			called.push(model);
-			try {
-				const result = await rewriteWithOpenRouter({
-					question: options.question,
-					history,
-					model,
-					onReasoning: options.onReasoning,
-					onReasoningReset: options.onReasoningReset,
-					signal: attemptSignal(),
-				});
-				if (shouldRetryUnusableRewrite(result.plan)) {
+			let retriedUnusable = false;
+			modelAttempt: while (true) {
+				called.push(model);
+				try {
+					const result = await rewriteWithOpenRouter({
+						question: options.question,
+						history,
+						model,
+						onReasoning: options.onReasoning,
+						onReasoningReset: options.onReasoningReset,
+						signal: attemptSignal(),
+					});
+					if (shouldRetryUnusableRewrite(result.plan)) {
+						failed.push({
+							model,
+							message: `unusable rewrite (${result.plan.degradedReason || "degraded"})`,
+						});
+						const action = nextUnusableRewriteAction({
+							alreadyRetriedSameModel: retriedUnusable,
+							hasNextOpenRouter: queue.indexOf(model) < queue.length - 1,
+						});
+						if (action === "retry_same") {
+							retriedUnusable = true;
+							console.warn(
+								`[ai/ask] planner ${model} returned unusable rewrite; retrying same model`,
+							);
+							options.onReasoningReset?.();
+							continue modelAttempt;
+						}
+						if (action === "try_next") {
+							console.warn(
+								`[ai/ask] planner ${model} returned unusable rewrite; trying next`,
+							);
+							options.onReasoningReset?.();
+							break modelAttempt;
+						}
+						console.warn(
+							`[ai/ask] planner ${model} returned unusable rewrite; using degraded plan`,
+						);
+					}
+					plannerModelHealth.recordSuccess(model);
+					const routing = buildRouting(
+						result.model,
+						"openrouter",
+						result.plan,
+					);
+					const logNote = buildAskPlannerNote({
+						requested,
+						used: model,
+						provider: "openrouter",
+						failed,
+						skippedCooldown,
+						acceptedHasReasoning: Boolean(result.reasoning.trim()),
+						audience: "log",
+					});
+					if (logNote) {
+						console.info(`[ai/ask] ${logNote}`);
+					}
+					if (
+						import.meta.env?.DEV ||
+						routing.failed.length > 0 ||
+						routing.skippedCooldown.length > 0
+					) {
+						console.info(formatPlannerRoutingLine(routing));
+					}
+					return {
+						...result,
+						requestedModel: requested,
+						routing,
+					};
+				} catch (error) {
+					lastError = error;
+					plannerModelHealth.recordFailure(model, error);
 					failed.push({
 						model,
-						message: `unusable rewrite (${result.plan.degradedReason || "degraded"})`,
+						...(errorStatus(error) ? { status: errorStatus(error) } : {}),
+						message: failureMessage(error),
 					});
-					const hasNextOpenRouter = queue.indexOf(model) < queue.length - 1;
-					if (hasNextOpenRouter) {
-						console.warn(
-							`[ai/ask] planner ${model} returned unusable rewrite; trying next`,
-						);
-						options.onReasoningReset?.();
-						continue;
+					if (parentSignal?.aborted || !shouldTryAnotherPlannerModel(error)) {
+						throw error;
 					}
+					options.onReasoningReset?.();
 					console.warn(
-						`[ai/ask] planner ${model} returned unusable rewrite; using degraded plan`,
+						`[ai/ask] planner ${model} unavailable (${errorStatus(error) || "error"}); trying next`,
+						error instanceof Error ? error.message : error,
 					);
+					break modelAttempt;
 				}
-				plannerModelHealth.recordSuccess(model);
-				const note = buildAskPlannerNote({
-					requested,
-					used: model,
-					provider: "openrouter",
-					failed,
-					skippedCooldown,
-					acceptedHasReasoning: Boolean(result.reasoning.trim()),
-				});
-				return {
-					...result,
-					requestedModel: requested,
-					routing: buildRouting(result.model, "openrouter", result.plan),
-					...(note ? { plannerNote: note } : {}),
-				};
-			} catch (error) {
-				lastError = error;
-				plannerModelHealth.recordFailure(model, error);
-				failed.push({
-					model,
-					...(errorStatus(error) ? { status: errorStatus(error) } : {}),
-					message: failureMessage(error),
-				});
-				if (parentSignal?.aborted || !shouldTryAnotherPlannerModel(error)) {
-					throw error;
-				}
-				options.onReasoningReset?.();
-				console.warn(
-					`[ai/ask] planner ${model} unavailable (${errorStatus(error) || "error"}); trying next`,
-					error instanceof Error ? error.message : error,
-				);
 			}
 		}
 		if (queue.length === 0) {

@@ -82,8 +82,8 @@ export interface AiRewritePlan {
 }
 
 /**
- * True when this rewrite is too weak to trust — try the next planner model
- * instead of searching with topical fallbacks from this response.
+ * True when this rewrite is too weak to trust — retry the same planner once,
+ * then try the next model instead of searching with topical fallbacks.
  */
 export function shouldRetryUnusableRewrite(plan: AiRewritePlan): boolean {
 	return (

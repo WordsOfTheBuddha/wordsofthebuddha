@@ -1,10 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
-import {
-	formatPlannerRoutingLine,
-	rewriteAskQuestion,
-} from "../../../utils/aiAskRewrite";
+import { rewriteAskQuestion } from "../../../utils/aiAskRewrite";
 import { resolveAskShareSlug } from "../../../utils/aiAskShare";
 import { consumeAskQuota } from "../../../utils/aiAskQuotaServer";
 import { resolveAskPersonHits } from "../../../utils/aiAskPersons";
@@ -181,9 +178,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				// above and replaced here so the process box matches the search.
 				let reasoning = rewrite.reasoning;
 				const routing = rewrite.routing;
-				if (import.meta.env.DEV) {
-					console.info(formatPlannerRoutingLine(routing));
-				}
 				let shareSlug = resolveAskShareSlug(
 					plan.shareSlug,
 					plan.lookingFor,
@@ -210,7 +204,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					shareSlug,
 					persons,
 					reasoning,
-					...(rewrite.plannerNote ? { plannerNote: rewrite.plannerNote } : {}),
 					// DEV only — which planner models were tried / used.
 					...(import.meta.env.DEV ? { routing } : {}),
 				});
@@ -303,7 +296,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 								: candidates.length,
 						showCount: results.length,
 					});
-					send({ type: "reasoning", reset: true });
+					let writerStarted = false;
 					try {
 						const written = await writeAskAnswer({
 							question: plan.correctedQuestion || question,
@@ -312,13 +305,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 							termQueries: plan.termQueries,
 							guidance: plan.rankingGuidance,
 							history,
-							onReasoning: (delta) => send({ type: "reasoning", delta }),
+							onReasoning: (delta) => {
+								if (!writerStarted) {
+									send({ type: "reasoning", reset: true });
+									writerStarted = true;
+								}
+								send({ type: "reasoning", delta });
+							},
 						});
 						if (written.summary) {
 							summary = written.summary;
 							writerModel = written.model || rewrite.model;
 							usedModel = `${usedModel} + ${writerModel}`;
-						} else if (reasoning.trim()) {
+						} else if (writerStarted && reasoning.trim()) {
 							send({ type: "reasoning", reset: true });
 							send({ type: "reasoning", delta: reasoning });
 						}
@@ -327,7 +326,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 							"[ai/ask] thinking writer failed — keeping ranker briefing",
 							error instanceof Error ? error.message : error,
 						);
-						if (reasoning.trim()) {
+						if (writerStarted && reasoning.trim()) {
 							send({ type: "reasoning", reset: true });
 							send({ type: "reasoning", delta: reasoning });
 						}

@@ -10,17 +10,13 @@ export interface OpenRouterFreeModel {
 
 /**
  * Curated free models offered in the Ask picker (limited top choices).
- * Order is display preference — stronger models first.
+ * Order is display preference — stronger models first. Lightning is pickable
+ * but is not an automatic planner fallback.
  */
 export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 	{
 		id: "nvidia/nemotron-3-ultra-550b-a55b:free",
 		name: "NVIDIA: Nemotron 3 Ultra",
-		contextLength: 0,
-	},
-	{
-		id: "poolside/laguna-s-2.1:free",
-		name: "Poolside: Laguna S 2.1",
 		contextLength: 0,
 	},
 	{
@@ -32,7 +28,7 @@ export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 
 /**
  * Paid OpenRouter planner fallback only — never shown in the free picker.
- * Used as the 3rd thinking attempt after Ultra and Laguna (not Lightning).
+ * Used after Ultra (not Lightning).
  */
 export const ASK_PLANNER_PAID_FALLBACK_MODEL = "z-ai/glm-5.3-flash";
 
@@ -46,12 +42,11 @@ export function isAskPlannerPaidFallbackModelId(id: string): boolean {
 
 /**
  * OpenRouter planner fallback after the requested/default model fails.
- * Two free models, then paid GLM. Lightning stays pickable but is not an
- * automatic fallback — it was the unreliable 3rd free attempt.
+ * Ultra, then paid GLM. Lightning stays pickable but is not an automatic
+ * fallback.
  */
 export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
 	CURATED_ASK_MODELS[0].id,
-	CURATED_ASK_MODELS[1].id,
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 ];
 
@@ -83,8 +78,32 @@ export const DEFAULT_OPENROUTER_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"medium";
 /** Planner rewrite — more thinking before the JSON chips. */
 export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
+/** GLM 5.3 Flash accepts low / high / max, not medium. */
+export const ASK_PLANNER_PAID_REASONING_EFFORT: OpenRouterReasoningEffort =
+	"high";
 /** Planner needs room for medium reasoning + the JSON object. */
 export const ASK_PLANNER_MAX_TOKENS = 4096;
+
+/**
+ * Paid GLM often swallows the reasoning channel under `json_object`, and
+ * rejects `reasoning.effort: medium`. Free Nemotron planners keep JSON mode
+ * and medium effort.
+ */
+export function askPlannerChatOptions(model: string): {
+	jsonMode: boolean;
+	reasoningEffort: OpenRouterReasoningEffort;
+} {
+	if (isAskPlannerPaidFallbackModelId(model)) {
+		return {
+			jsonMode: false,
+			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
+		};
+	}
+	return {
+		jsonMode: true,
+		reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
+	};
+}
 
 function env(name: string): string | undefined {
 	const meta = (
@@ -361,10 +380,61 @@ export interface OpenRouterStreamChunk {
 	model?: string;
 }
 
+function reasoningDetailText(item: unknown): string {
+	if (!item || typeof item !== "object") return "";
+	const detail = item as Record<string, unknown>;
+	const type = typeof detail.type === "string" ? detail.type : "";
+	if (/encrypted|redacted/i.test(type)) return "";
+	return (
+		messageText(detail.text) ||
+		messageText(detail.summary) ||
+		messageText(detail.thinking) ||
+		(typeof detail.content === "string" ? detail.content : "")
+	);
+}
+
+/** Thinking parts inside `delta.content[]` (Claude / Z.AI-style blocks). */
+function thinkingPartsText(content: unknown): string {
+	if (!Array.isArray(content)) return "";
+	return content
+		.map((part) => {
+			if (!part || typeof part !== "object") return "";
+			const rec = part as Record<string, unknown>;
+			const type = typeof rec.type === "string" ? rec.type : "";
+			if (!type || !/think|reason/i.test(type)) return "";
+			if (/encrypted|redacted/i.test(type)) return "";
+			return messageText(rec.text) || messageText(rec.thinking) || "";
+		})
+		.join("");
+}
+
+/**
+ * Visible assistant text from a stream delta (skips thinking parts).
+ */
+export function streamDeltaContent(delta: unknown): string {
+	if (!delta || typeof delta !== "object") return "";
+	const record = delta as Record<string, unknown>;
+	const content = record.content;
+	if (typeof content === "string") return content;
+	if (!Array.isArray(content)) return "";
+	return content
+		.map((part) => {
+			if (typeof part === "string") return part;
+			if (!part || typeof part !== "object") return "";
+			const rec = part as Record<string, unknown>;
+			const type = typeof rec.type === "string" ? rec.type : "";
+			if (type && /think|reason/i.test(type)) return "";
+			if ("text" in rec) return String(rec.text || "");
+			return "";
+		})
+		.join("");
+}
+
 /**
  * Reasoning text from a stream delta. OpenRouter normalizes to `reasoning`,
- * but some providers only send `reasoning_content` or `reasoning_details[]`.
- * Never combine them — they carry the same text.
+ * but some providers only send `reasoning_content`, `reasoning_details[]`,
+ * a `thinking` field, or thinking blocks inside `content[]`.
+ * Never combine the string fields — they carry the same text.
  */
 export function streamDeltaReasoning(delta: unknown): string {
 	if (!delta || typeof delta !== "object") return "";
@@ -374,18 +444,75 @@ export function streamDeltaReasoning(delta: unknown): string {
 	const legacy = messageText(record.reasoning_content);
 	if (legacy) return legacy;
 	if (Array.isArray(record.reasoning_details)) {
-		return record.reasoning_details
-			.map((item) => {
-				if (!item || typeof item !== "object") return "";
-				const detail = item as { type?: unknown; text?: unknown; summary?: unknown };
-				if (typeof detail.type === "string" && !/^reasoning\.(text|summary)/.test(detail.type)) {
-					return "";
-				}
-				return messageText(detail.text) || messageText(detail.summary);
-			})
+		const fromDetails = record.reasoning_details
+			.map(reasoningDetailText)
 			.join("");
+		if (fromDetails) return fromDetails;
 	}
-	return "";
+	return thinkingPartsText(record.content);
+}
+
+/**
+ * Reasoning + content from a stream choice. Prefer `delta`; some providers
+ * only put the full text on `message` in the last chunk.
+ */
+export function openRouterChoiceDelta(choice: unknown): {
+	reasoning: string;
+	content: string;
+} {
+	if (!choice || typeof choice !== "object") {
+		return { reasoning: "", content: "" };
+	}
+	const rec = choice as { delta?: unknown; message?: unknown };
+	const reasoning =
+		streamDeltaReasoning(rec.delta) ||
+		(rec.delta ? "" : streamDeltaReasoning(rec.message));
+	const content =
+		streamDeltaContent(rec.delta) ||
+		(rec.delta ? "" : streamDeltaContent(rec.message));
+	return { reasoning, content };
+}
+
+/**
+ * Split `<think>` incrementally so later slices stay stable (no trim).
+ */
+export function splitThinkTagsRaw(content: string): {
+	content: string;
+	reasoning: string;
+} {
+	if (!/<think\b/i.test(content)) return { content, reasoning: "" };
+	const parts: string[] = [];
+	const stripped = content.replace(
+		/<think\b[^>]*>([\s\S]*?)(?:<\/think>|$)/gi,
+		(_m, inner: string) => {
+			parts.push(inner);
+			return "";
+		},
+	);
+	return { content: stripped, reasoning: parts.filter(Boolean).join("\n\n") };
+}
+
+export function createContentThinkSplitter(): (delta: string) => {
+	reasoning: string;
+	content: string;
+} {
+	let raw = "";
+	let emittedReasoning = "";
+	let emittedContent = "";
+	return (delta: string) => {
+		if (!delta) return { reasoning: "", content: "" };
+		raw += delta;
+		const split = splitThinkTagsRaw(raw);
+		const reasoning = split.reasoning.startsWith(emittedReasoning)
+			? split.reasoning.slice(emittedReasoning.length)
+			: "";
+		const content = split.content.startsWith(emittedContent)
+			? split.content.slice(emittedContent.length)
+			: "";
+		emittedReasoning = split.reasoning;
+		emittedContent = split.content;
+		return { reasoning, content };
+	};
 }
 
 /**
@@ -393,13 +520,8 @@ export function streamDeltaReasoning(delta: unknown): string {
  * the content stream instead. Split those out so the thinking is still shown.
  */
 export function splitThinkTags(content: string): { content: string; reasoning: string } {
-	if (!/<think\b/i.test(content)) return { content, reasoning: "" };
-	const parts: string[] = [];
-	const stripped = content.replace(/<think\b[^>]*>([\s\S]*?)(?:<\/think>|$)/gi, (_m, inner: string) => {
-		parts.push(inner.trim());
-		return "";
-	});
-	return { content: stripped.trim(), reasoning: parts.filter(Boolean).join("\n\n") };
+	const split = splitThinkTagsRaw(content);
+	return { content: split.content.trim(), reasoning: split.reasoning.trim() };
 }
 
 export async function* openRouterChatStream(options: {
@@ -450,7 +572,10 @@ export async function* openRouterChatStream(options: {
 	}
 	const reader = response.body.getReader();
 	const decoder = new TextDecoder();
+	const takeThink = createContentThinkSplitter();
 	let buffer = "";
+	let emittedReasoning = false;
+	let emittedContent = false;
 	while (true) {
 		const { done, value } = await reader.read();
 		if (done) break;
@@ -466,6 +591,7 @@ export async function* openRouterChatStream(options: {
 				model?: string;
 				choices?: Array<{
 					delta?: { content?: unknown; reasoning?: unknown };
+					message?: { content?: unknown; reasoning?: unknown };
 				}>;
 			};
 			try {
@@ -473,11 +599,33 @@ export async function* openRouterChatStream(options: {
 			} catch {
 				continue;
 			}
-			const delta = payload.choices?.[0]?.delta;
-			const reasoning = streamDeltaReasoning(delta);
-			const content = messageText(delta?.content);
-			if (reasoning) yield { reasoning };
-			if (content) yield { content };
+			const choice = payload.choices?.[0];
+			const fromDelta = openRouterChoiceDelta({ delta: choice?.delta });
+			let reasoning = fromDelta.reasoning;
+			let content = fromDelta.content;
+			// Some providers only put the full text on the last `message`.
+			// Skip that when deltas already streamed — the message is a repeat.
+			if (!reasoning && !emittedReasoning) {
+				reasoning = streamDeltaReasoning(choice?.message);
+			}
+			if (!content && !emittedContent) {
+				content = streamDeltaContent(choice?.message);
+			}
+			if (reasoning) {
+				emittedReasoning = true;
+				yield { reasoning };
+			}
+			if (content) {
+				const split = takeThink(content);
+				if (split.reasoning) {
+					emittedReasoning = true;
+					yield { reasoning: split.reasoning };
+				}
+				if (split.content) {
+					emittedContent = true;
+					yield { content: split.content };
+				}
+			}
 			if (payload.model) yield { model: payload.model };
 		}
 	}

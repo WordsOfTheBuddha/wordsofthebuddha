@@ -148,7 +148,6 @@ describe("formatAskRoutingDevHtml", () => {
 			requested: "nvidia/nemotron-3-ultra-550b-a55b:free",
 			queue: [
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"poolside/laguna-s-2.1:free",
 				"nvidia/nemotron-3.5-lightning:free",
 			],
 			attempts: ["nvidia/nemotron-3-ultra-550b-a55b:free"],
@@ -168,7 +167,6 @@ describe("formatAskRoutingDevHtml", () => {
 		assert.match(html, /rerank gemini-3\.5-flash-lite/);
 		assert.match(html, /write nemotron-3-ultra-550b-a55b/);
 		assert.match(html, /simplified \(no_json\)/);
-		assert.doesNotMatch(html, /laguna-s-2\.1/);
 		assert.equal(formatAskRoutingDevHtml(undefined), "");
 	});
 });
@@ -376,7 +374,7 @@ describe("applyAskThinkingStreamPatch", () => {
 		assert.equal(thread.querySelector(".ai-summary"), earlier);
 	});
 
-	it("replaces discarded planner notes with the Gemini planner note, not a Show-all-thinking link", () => {
+	it("removes the thinking pane when reasoning is cleared, and does not show a fallback note", () => {
 		const { thread } = liveThread();
 		applyAskThinkingStreamPatch(
 			thread,
@@ -398,22 +396,17 @@ describe("applyAskThinkingStreamPatch", () => {
 				{
 					pending: false,
 					reasoning: "",
-					plannerNote:
-						"Laguna S 2.1 didn’t produce a usable search plan, and the other free models couldn’t complete the plan — planned with Gemini instead, which does not share its thinking.",
 				},
 				1,
 			),
 			true,
 		);
-		assert.match(
-			thread.querySelector(".ai-process-thinking-note")?.textContent || "",
-			/Gemini/,
-		);
+		assert.equal(thread.querySelector(".ai-process-thinking"), null);
+		assert.equal(thread.querySelector(".ai-process-thinking-note"), null);
 		assert.doesNotMatch(
 			thread.querySelector(".ai-process")?.textContent || "",
-			/puṇṇama/,
+			/puṇṇama|GLM|timed out|planned with/i,
 		);
-		assert.equal(thread.querySelector(".ai-process-thinking-text"), null);
 		assert.equal(thread.querySelector("[data-ai-toggle-thinking]"), null);
 	});
 });

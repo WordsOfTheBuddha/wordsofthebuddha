@@ -49,7 +49,7 @@ describe("PlannerModelHealth", () => {
 			store: createMemoryHealthStore(),
 			now: () => now,
 		});
-		const model = "poolside/laguna-s-2.1:free";
+		const model = "nvidia/nemotron-3.5-lightning:free";
 		health.recordFailure(model, httpError(429));
 		health.recordFailure(model, httpError(503));
 		assert.equal(health.isExcluded(model), true);

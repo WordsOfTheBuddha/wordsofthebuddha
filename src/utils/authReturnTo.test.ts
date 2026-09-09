@@ -11,6 +11,13 @@ describe("safeAuthReturnUrl", () => {
 		assert.equal(url.searchParams.get("mode"), "ai");
 	});
 
+	it("keeps a prefilled Ask question on /search", () => {
+		const url = safeAuthReturnUrl("/search?mode=ai&q=why+anger", REQUEST);
+		assert.equal(url.pathname, "/search");
+		assert.equal(url.searchParams.get("mode"), "ai");
+		assert.equal(url.searchParams.get("q"), "why anger");
+	});
+
 	it("rejects off-origin redirects", () => {
 		const url = safeAuthReturnUrl("https://evil.example/phish", REQUEST);
 		assert.equal(url.pathname, "/review-room");

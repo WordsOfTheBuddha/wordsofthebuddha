@@ -3,10 +3,15 @@ import { describe, it } from "node:test";
 import {
 	MAX_PLANNER_OPENROUTER_ATTEMPTS,
 	formatPlannerRoutingLine,
+	nextUnusableRewriteAction,
 	plannerModelAttempts,
 	shouldTryAnotherPlannerModel,
 } from "./aiAskRewrite";
-import { ASK_PLANNER_FALLBACK_ORDER, ASK_PLANNER_PAID_FALLBACK_MODEL } from "./openrouter";
+import {
+	ASK_PLANNER_FALLBACK_ORDER,
+	ASK_PLANNER_PAID_FALLBACK_MODEL,
+	askPlannerChatOptions,
+} from "./openrouter";
 
 function httpError(status: number): Error & { status: number } {
 	const error = new Error(`status ${status}`) as Error & { status: number };
@@ -16,21 +21,21 @@ function httpError(status: number): Error & { status: number } {
 
 describe("plannerModelAttempts", () => {
 	it("tries the requested model, then stronger→lighter fallbacks, max 3", () => {
-		const order = ["ultra", "laguna", "lightning", "other"];
-		assert.deepEqual(plannerModelAttempts("lightning", order, 3), [
-			"lightning",
+		const order = ["ultra", "flash", "other"];
+		assert.deepEqual(plannerModelAttempts("flash", order, 3), [
+			"flash",
 			"ultra",
-			"laguna",
+			"other",
 		]);
 		assert.deepEqual(plannerModelAttempts("ultra", order, 3), [
 			"ultra",
-			"laguna",
-			"lightning",
+			"flash",
+			"other",
 		]);
 		assert.deepEqual(plannerModelAttempts("zzz", order, 3), [
 			"zzz",
 			"ultra",
-			"laguna",
+			"flash",
 		]);
 	});
 
@@ -38,14 +43,12 @@ describe("plannerModelAttempts", () => {
 		assert.equal(MAX_PLANNER_OPENROUTER_ATTEMPTS, 3);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
 			"nvidia/nemotron-3-ultra-550b-a55b:free",
-			"poolside/laguna-s-2.1:free",
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
 		]);
 		assert.deepEqual(
 			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free"),
 			[
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"poolside/laguna-s-2.1:free",
 				ASK_PLANNER_PAID_FALLBACK_MODEL,
 			],
 		);
@@ -57,23 +60,15 @@ describe("plannerModelAttempts", () => {
 				ASK_PLANNER_PAID_FALLBACK_MODEL,
 			],
 		);
-		assert.deepEqual(
-			plannerModelAttempts("poolside/laguna-s-2.1:free"),
-			[
-				"poolside/laguna-s-2.1:free",
-				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				ASK_PLANNER_PAID_FALLBACK_MODEL,
-			],
-		);
 	});
 
 	it("skips cooled-down models and fills from healthier ones", () => {
-		const order = ["ultra", "laguna", "lightning", "other"];
+		const order = ["ultra", "flash", "other"];
 		assert.deepEqual(
 			plannerModelAttempts("ultra", order, 3, {
-				isExcluded: (id) => id === "ultra" || id === "lightning",
+				isExcluded: (id) => id === "ultra" || id === "flash",
 			}),
-			["laguna", "other"],
+			["other"],
 		);
 		assert.deepEqual(
 			plannerModelAttempts("glm", order, 3, {
@@ -83,12 +78,57 @@ describe("plannerModelAttempts", () => {
 		);
 	});
 
+	it("plans paid GLM without json_object so the reasoning channel can stream", () => {
+		assert.equal(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL).jsonMode, false);
+		assert.equal(
+			askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL).reasoningEffort,
+			"high",
+		);
+		assert.equal(
+			askPlannerChatOptions("nvidia/nemotron-3-ultra-550b-a55b:free").jsonMode,
+			true,
+		);
+	});
+
 	it("keeps paid GLM in the last slot when a free model is cooled down", () => {
 		assert.deepEqual(
 			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free", undefined, 3, {
 				isExcluded: (id) => id === "nvidia/nemotron-3-ultra-550b-a55b:free",
 			}),
-			["poolside/laguna-s-2.1:free", ASK_PLANNER_PAID_FALLBACK_MODEL],
+			[ASK_PLANNER_PAID_FALLBACK_MODEL],
+		);
+	});
+});
+
+describe("nextUnusableRewriteAction", () => {
+	it("retries the same model once before trying next or degrading", () => {
+		assert.equal(
+			nextUnusableRewriteAction({
+				alreadyRetriedSameModel: false,
+				hasNextOpenRouter: true,
+			}),
+			"retry_same",
+		);
+		assert.equal(
+			nextUnusableRewriteAction({
+				alreadyRetriedSameModel: false,
+				hasNextOpenRouter: false,
+			}),
+			"retry_same",
+		);
+		assert.equal(
+			nextUnusableRewriteAction({
+				alreadyRetriedSameModel: true,
+				hasNextOpenRouter: true,
+			}),
+			"try_next",
+		);
+		assert.equal(
+			nextUnusableRewriteAction({
+				alreadyRetriedSameModel: true,
+				hasNextOpenRouter: false,
+			}),
+			"use_degraded",
 		);
 	});
 });
@@ -98,19 +138,19 @@ describe("formatPlannerRoutingLine", () => {
 		const line = formatPlannerRoutingLine({
 			requested: "nvidia/nemotron-3.5-lightning:free",
 			queue: [
-				"poolside/laguna-s-2.1:free",
+				"nvidia/nemotron-3.5-lightning:free",
+				"nvidia/nemotron-3-ultra-550b-a55b:free",
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			],
+			attempts: [
 				"nvidia/nemotron-3.5-lightning:free",
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
 			],
-			attempts: [
-				"poolside/laguna-s-2.1:free",
-				"nvidia/nemotron-3.5-lightning:free",
-			],
-			skippedCooldown: ["nvidia/nemotron-3-ultra-550b-a55b:free"],
+			skippedCooldown: [ASK_PLANNER_PAID_FALLBACK_MODEL],
 			failed: [
-				{ model: "poolside/laguna-s-2.1:free", status: 429, message: "rate" },
+				{ model: "nvidia/nemotron-3.5-lightning:free", status: 429, message: "rate" },
 			],
-			used: "nvidia/nemotron-3.5-lightning:free",
+			used: "nvidia/nemotron-3-ultra-550b-a55b:free",
 			provider: "openrouter",
 			degraded: true,
 			degradedReason: "no_json",
@@ -120,11 +160,11 @@ describe("formatPlannerRoutingLine", () => {
 		assert.match(line, /requested=nvidia\/nemotron-3\.5-lightning:free/);
 		assert.match(
 			line,
-			/called=poolside\/laguna-s-2\.1:free → nvidia\/nemotron-3\.5-lightning:free/,
+			/called=nvidia\/nemotron-3\.5-lightning:free → nvidia\/nemotron-3-ultra-550b-a55b:free/,
 		);
-		assert.match(line, /skipped cooldown: nvidia\/nemotron-3-ultra/);
-		assert.match(line, /failed: poolside\/laguna-s-2\.1:free \(429\)/);
-		assert.match(line, /used=nvidia\/nemotron-3\.5-lightning:free \(openrouter\)/);
+		assert.match(line, /skipped cooldown: z-ai\/glm-5\.3-flash/);
+		assert.match(line, /failed: nvidia\/nemotron-3\.5-lightning:free \(429\)/);
+		assert.match(line, /used=nvidia\/nemotron-3-ultra-550b-a55b:free \(openrouter\)/);
 		assert.match(line, /rerank=gemini-3\.5-flash-lite/);
 		assert.match(line, /write=nvidia\/nemotron-3-ultra-550b-a55b:free/);
 		assert.match(line, /degraded:no_json/);

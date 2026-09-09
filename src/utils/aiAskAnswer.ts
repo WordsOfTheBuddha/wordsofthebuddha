@@ -13,7 +13,7 @@ import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
 	ASK_PLANNER_MAX_TOKENS,
-	ASK_PLANNER_REASONING_EFFORT,
+	askPlannerChatOptions,
 	getOpenRouterApiKey,
 	openRouterChatStream,
 	splitThinkTags,
@@ -365,10 +365,11 @@ export async function writeAskAnswer(options: {
 			}),
 		},
 	];
+	const plannerChat = askPlannerChatOptions(options.model);
 	let content = "";
 	let reasoning = "";
 	let usedModel = options.model;
-	let usedJsonMode = true;
+	let usedJsonMode = plannerChat.jsonMode;
 	const runStream = async (jsonMode: boolean) => {
 		content = "";
 		reasoning = "";
@@ -378,7 +379,7 @@ export async function writeAskAnswer(options: {
 			model: options.model,
 			messages,
 			maxTokens: ASK_PLANNER_MAX_TOKENS,
-			reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
+			reasoningEffort: plannerChat.reasoningEffort,
 			jsonMode,
 			signal: options.signal ?? AbortSignal.timeout(90_000),
 		})) {
@@ -391,7 +392,7 @@ export async function writeAskAnswer(options: {
 		}
 	};
 	try {
-		await runStream(true);
+		await runStream(plannerChat.jsonMode);
 	} catch (error) {
 		if (errorStatus(error) === 400 && usedJsonMode) {
 			console.warn(

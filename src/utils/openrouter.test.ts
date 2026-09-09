@@ -5,17 +5,23 @@ import {
 	DEFAULT_OPENROUTER_MODEL,
 	ASK_PLANNER_FALLBACK_ORDER,
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
+	ASK_PLANNER_PAID_REASONING_EFFORT,
+	ASK_PLANNER_REASONING_EFFORT,
+	askPlannerChatOptions,
+	createContentThinkSplitter,
 	getAskPickerDefaultModel,
 	isAllowedFreeModelId,
 	isAskPlannerPaidFallbackModelId,
 	isCuratedAskModelId,
 	isFreeCatalogModel,
+	openRouterChoiceDelta,
 	openRouterModelLabel,
 	resolveOpenRouterChatModel,
 	resolveRequestedOpenRouterModel,
 	selectFreeOpenRouterModels,
 	shouldShowAiModelPicker,
 	splitThinkTags,
+	streamDeltaContent,
 	streamDeltaReasoning,
 } from "./openrouter";
 
@@ -44,6 +50,75 @@ describe("streamDeltaReasoning", () => {
 		);
 		assert.equal(streamDeltaReasoning({ content: "x" }), "");
 	});
+
+	it("reads GLM-style thinking fields and content blocks", () => {
+		assert.equal(
+			streamDeltaReasoning({
+				reasoning_details: [{ type: "reasoning", thinking: "glm think" }],
+			}),
+			"glm think",
+		);
+		assert.equal(
+			streamDeltaReasoning({
+				content: [{ type: "thinking", thinking: "block think" }],
+			}),
+			"block think",
+		);
+		assert.equal(
+			streamDeltaContent({
+				content: [
+					{ type: "thinking", thinking: "hidden" },
+					{ type: "text", text: '{"a":1}' },
+				],
+			}),
+			'{"a":1}',
+		);
+	});
+});
+
+describe("openRouterChoiceDelta", () => {
+	it("reads delta fields, or a message-only final chunk", () => {
+		assert.deepEqual(
+			openRouterChoiceDelta({
+				delta: { reasoning_content: "from delta" },
+			}),
+			{ reasoning: "from delta", content: "" },
+		);
+		assert.deepEqual(
+			openRouterChoiceDelta({
+				message: { reasoning_content: "late", content: '{"ok":true}' },
+			}),
+			{ reasoning: "late", content: '{"ok":true}' },
+		);
+	});
+});
+
+describe("createContentThinkSplitter", () => {
+	it("streams unclosed <think> tags into reasoning", () => {
+		const take = createContentThinkSplitter();
+		assert.deepEqual(take("<think>hi"), { reasoning: "hi", content: "" });
+		assert.deepEqual(take(" there</think>{\"a\":1}"), {
+			reasoning: " there",
+			content: '{"a":1}',
+		});
+	});
+});
+
+describe("askPlannerChatOptions", () => {
+	it("drops json_object and uses high effort for paid GLM", () => {
+		assert.deepEqual(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
+			jsonMode: false,
+			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
+		});
+		assert.equal(ASK_PLANNER_PAID_REASONING_EFFORT, "high");
+		assert.deepEqual(
+			askPlannerChatOptions("nvidia/nemotron-3-ultra-550b-a55b:free"),
+			{
+				jsonMode: true,
+				reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
+			},
+		);
+	});
 });
 
 describe("splitThinkTags", () => {
@@ -52,6 +127,9 @@ describe("splitThinkTags", () => {
 		assert.equal(split.reasoning, "plan it");
 		assert.equal(split.content, '{"a":1}');
 		assert.deepEqual(splitThinkTags('{"a":1}'), { content: '{"a":1}', reasoning: "" });
+		const open = splitThinkTags('<think>still thinking\n{"a":1}');
+		assert.equal(open.reasoning, 'still thinking\n{"a":1}');
+		assert.equal(open.content, "");
 	});
 });
 
@@ -104,7 +182,6 @@ describe("resolveOpenRouterChatModel", () => {
 		);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
 			"nvidia/nemotron-3-ultra-550b-a55b:free",
-			"poolside/laguna-s-2.1:free",
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
 		]);
 	});
@@ -169,8 +246,8 @@ describe("selectFreeOpenRouterModels", () => {
 				pricing: { prompt: "0", completion: "0" },
 			},
 			{
-				id: "poolside/laguna-s-2.1:free",
-				name: "Laguna S 2.1 (free)",
+				id: "nvidia/nemotron-3.5-lightning:free",
+				name: "Nemotron 3.5 Lightning (free)",
 				pricing: { prompt: "0", completion: "0" },
 				context_length: 262144,
 			},
@@ -184,7 +261,6 @@ describe("selectFreeOpenRouterModels", () => {
 			models.map((model) => model.id),
 			[
 				"nvidia/nemotron-3-ultra-550b-a55b:free",
-				"poolside/laguna-s-2.1:free",
 				"nvidia/nemotron-3.5-lightning:free",
 			],
 		);
