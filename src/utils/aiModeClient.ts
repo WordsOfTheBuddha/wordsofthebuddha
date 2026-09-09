@@ -1,4 +1,5 @@
 import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
+import { askAuthPageHref } from "./aiAskHref";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
@@ -1067,12 +1068,12 @@ export function attachAiMode(options: {
 		return `${window.location.pathname}${window.location.search}`;
 	}
 
-	function signInHref(): string {
-		return `/signin?returnTo=${encodeURIComponent(currentReturnTo())}`;
+	function signInHref(question?: string | null): string {
+		return askAuthPageHref("/signin", question, currentReturnTo());
 	}
 
-	function registerHref(): string {
-		return `/register?returnTo=${encodeURIComponent(currentReturnTo())}`;
+	function registerHref(question?: string | null): string {
+		return askAuthPageHref("/register", question, currentReturnTo());
 	}
 
 	function applyQuota(next: AiAskQuotaView | null | undefined): void {
@@ -1115,6 +1116,7 @@ export function attachAiMode(options: {
 
 	function openQuotaDialog(
 		kind: "signin" | "tomorrow" | "save" | "verify",
+		question?: string | null,
 	): void {
 		if (!quotaDialog) return;
 		const signin = quotaDialog.querySelector<HTMLElement>(
@@ -1151,8 +1153,9 @@ export function attachAiMode(options: {
 			"[data-ai-quota-register]",
 		);
 		const link = quotaDialog.querySelector<HTMLAnchorElement>("[data-ai-quota-signin]");
-		if (register) register.href = registerHref();
-		if (link) link.href = signInHref();
+		const pending = kind === "save" ? "" : question;
+		if (register) register.href = registerHref(pending);
+		if (link) link.href = signInHref(pending);
 		const verifyStatus = quotaDialog.querySelector<HTMLElement>(
 			"[data-ai-quota-verify-status]",
 		);
@@ -2855,6 +2858,7 @@ export function attachAiMode(options: {
 					: quota.needsEmailVerification
 						? "verify"
 						: "signin",
+				q,
 			);
 			return;
 		}
@@ -2933,6 +2937,10 @@ export function attachAiMode(options: {
 				if (data.quota) applyQuota(data.quota);
 				if (data.code === "ask_quota") {
 					abortReplace();
+					if (target) {
+						target.value = q;
+						fitTextarea(target);
+					}
 					const view = data.quota ?? quota;
 					openQuotaDialog(
 						view?.signedIn
@@ -2940,6 +2948,7 @@ export function attachAiMode(options: {
 							: view?.needsEmailVerification
 								? "verify"
 								: "signin",
+						q,
 					);
 					syncLayout();
 					return;
