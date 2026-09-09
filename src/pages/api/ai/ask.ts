@@ -9,6 +9,7 @@ import {
 	AI_SEARCH_CANDIDATE_LIMIT,
 	queriesForResultSlugs,
 	searchDiscoursesForQueries,
+	warmAskSearchIndexes,
 } from "../../../utils/aiDiscourseSearch";
 import { toPublicAskHit } from "../../../utils/aiDiscourseHits";
 import { buildAskDebugView } from "../../../utils/aiAskDebug";
@@ -42,6 +43,13 @@ import {
 function sse(data: unknown): string {
 	return `data: ${JSON.stringify(data)}\n\n`;
 }
+
+/**
+ * gzip/br/zstd only flush when the window fills or the stream ends. Firefox
+ * then sees tens of seconds with no new bytes and aborts; Vercel still logs
+ * 200 when the function finishes. Comment padding forces a flush.
+ */
+const SSE_PAD = `: ${" ".repeat(2048)}\n\n`;
 
 function friendlyAskError(error: unknown): { status: number; message: string } {
 	const status =
@@ -134,17 +142,30 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	const stream = new ReadableStream({
 		async start(controller) {
 			let streamOpen = true;
-			const send = (event: unknown) => {
+			const enqueue = (chunk: string) => {
 				if (!streamOpen) return;
 				try {
-					controller.enqueue(encoder.encode(sse(event)));
+					controller.enqueue(encoder.encode(chunk));
 				} catch {
 					streamOpen = false;
 				}
 			};
-			const heartbeat = setInterval(() => {
+			const send = (event: unknown) => {
+				enqueue(sse(event));
+			};
+			const ping = () => {
 				send({ type: "ping" });
-			}, 10_000);
+				enqueue(SSE_PAD);
+			};
+			const heartbeat = setInterval(ping, 10_000);
+			const flushSse = () =>
+				new Promise<void>((resolve) => {
+					ping();
+					setTimeout(resolve, 25);
+				});
+			const indexesReady = warmAskSearchIndexes().catch((error) => {
+				console.warn("[ai/ask] search index warm failed", error);
+			});
 			const persistAsk = async (input: {
 				displayQuestion: string;
 				lookingFor: string;
@@ -177,6 +198,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				// Meter should drop as soon as the Ask is accepted, before rewrite work.
 				send({ type: "quota", quota, requestId });
 				send({ type: "status", phase: "rewrite", requestId });
+				ping();
 				const rewrite = await rewriteAskQuestion({
 					question,
 					history,
@@ -219,6 +241,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					// DEV only — which planner models were tried / used.
 					...(import.meta.env.DEV ? { routing } : {}),
 				});
+				await flushSse();
 				if (plan.offTopic || plan.queries.length === 0) {
 					await persistAsk({
 						displayQuestion: plan.correctedQuestion,
@@ -251,6 +274,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					return;
 				}
 				send({ type: "status", phase: "search", requestId });
+				await flushSse();
+				await indexesReady;
 				const searched = await searchDiscoursesForQueries(
 					plan.queries,
 					plan.fallbackQueries,
@@ -413,6 +438,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					// Ranked hits + ranker briefing first. If the writer or the
 					// SSE later dies, the client already has a usable answer.
 					sendResults(true);
+					await flushSse();
 					let writerStarted = false;
 					try {
 						const written = await writeAskAnswer({
@@ -451,6 +477,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 						}
 					}
 				}
+				sendResults(false);
+				send({ type: "done" });
 				await persistAsk({
 					displayQuestion: plan.correctedQuestion,
 					lookingFor: plan.lookingFor,
@@ -462,8 +490,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					reasoning,
 					summary,
 				});
-				sendResults(false);
-				send({ type: "done" });
 			} catch (error) {
 				const { status, message } = friendlyAskError(error);
 				console.error("[ai/ask]", status, error);
@@ -484,7 +510,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		status: 200,
 		headers: {
 			"Content-Type": "text/event-stream; charset=utf-8",
-			"Cache-Control": "no-cache, no-transform",
+			"Cache-Control": "no-cache, no-store, no-transform",
+			"Content-Encoding": "identity",
 			Connection: "keep-alive",
 			"X-Accel-Buffering": "no",
 		},

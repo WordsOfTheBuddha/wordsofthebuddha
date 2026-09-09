@@ -26,6 +26,16 @@ export {
 	relaxSearchQuery,
 } from "./aiSearchQuery";
 
+/**
+ * Inflate the gzipped search indexes and body maps. Call this while the
+ * planner is streaming so a cold isolate does not block the SSE after `plan`
+ * (that stall is what the browser reports as a network error).
+ */
+export async function warmAskSearchIndexes(): Promise<void> {
+	await ensureReferenceSearchIndexLoaded();
+	await getNormalizedContentMap(true);
+}
+
 /** Hits kept per query before merge (wide pool for Gemini). */
 const PER_QUERY_LIMIT_WIDE = 200;
 /** Smaller per-query cap when not building a rerank pool. */

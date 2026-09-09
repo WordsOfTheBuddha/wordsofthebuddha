@@ -28,6 +28,23 @@
 					"value": "public, max-age=0, must-revalidate"
 				}
 			]
+		},
+		{
+			"source": "/api/ai/ask",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "no-cache, no-store, no-transform"
+				},
+				{
+					"key": "Content-Encoding",
+					"value": "identity"
+				},
+				{
+					"key": "X-Accel-Buffering",
+					"value": "no"
+				}
+			]
 		}
 	]
 }

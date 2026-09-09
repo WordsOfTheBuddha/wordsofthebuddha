@@ -953,6 +953,30 @@ function applyCorrectedQuestion(turn: AiAskTurn, event: AiAskEvent): void {
 	turn.question = corrected;
 }
 
+/** Pull complete `data:` frames out of an SSE buffer. */
+export function takeAskSseEvents(
+	buffer: string,
+	includeTail = false,
+): { events: AiAskEvent[]; rest: string } {
+	const parts = buffer.split("\n\n");
+	const rest = includeTail ? "" : parts.pop() || "";
+	const events: AiAskEvent[] = [];
+	for (const part of parts) {
+		const data = part
+			.split("\n")
+			.filter((line) => line.startsWith("data:"))
+			.map((line) => line.slice(5).trim())
+			.join("");
+		if (!data) continue;
+		try {
+			events.push(JSON.parse(data) as AiAskEvent);
+		} catch {
+			/* skip malformed */
+		}
+	}
+	return { events, rest };
+}
+
 async function readSseEvents(
 	response: Response,
 	onEvent: (event: AiAskEvent) => void,
@@ -963,25 +987,23 @@ async function readSseEvents(
 	const reader = response.body.getReader();
 	const decoder = new TextDecoder();
 	let buffer = "";
-	while (true) {
-		const { done, value } = await reader.read();
-		if (done) break;
-		buffer += decoder.decode(value, { stream: true });
-		const parts = buffer.split("\n\n");
-		buffer = parts.pop() || "";
-		for (const part of parts) {
-			const data = part
-				.split("\n")
-				.filter((line) => line.startsWith("data:"))
-				.map((line) => line.slice(5).trim())
-				.join("");
-			if (!data) continue;
-			try {
-				onEvent(JSON.parse(data) as AiAskEvent);
-			} catch {
-				/* skip malformed */
+	const emit = (chunk: string, includeTail: boolean) => {
+		const taken = takeAskSseEvents(chunk, includeTail);
+		buffer = taken.rest;
+		for (const event of taken.events) onEvent(event);
+	};
+	try {
+		while (true) {
+			const { done, value } = await reader.read();
+			if (done) {
+				emit(buffer + decoder.decode(), true);
+				return;
 			}
+			emit(buffer + decoder.decode(value, { stream: true }), false);
 		}
+	} catch (error) {
+		emit(buffer + decoder.decode(), true);
+		throw error;
 	}
 }
 
@@ -2896,6 +2918,7 @@ export function attachAiMode(options: {
 			const response = await fetch("/api/ai/ask", {
 				method: "POST",
 				credentials: "same-origin",
+				cache: "no-store",
 				headers: {
 					"Content-Type": "application/json",
 					Accept: "text/event-stream",

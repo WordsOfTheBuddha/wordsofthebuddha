@@ -13,6 +13,7 @@ import {
 	isAskSendShortcut,
 	mergeAskTurnReasoning,
 	renderAskThinkingHtml,
+	takeAskSseEvents,
 	buildAskFollowUpHistory,
 } from "./aiModeClient";
 
@@ -192,6 +193,17 @@ describe("askShouldSurviveDisconnect", () => {
 			askShouldSurviveDisconnect({ results: [], offTopic: true }),
 			true,
 		);
+	});
+});
+
+describe("takeAskSseEvents", () => {
+	it("holds a partial frame and emits it when the stream ends", () => {
+		const partial = takeAskSseEvents('data: {"type":"results","results":[{"slug":"mn70"}]}');
+		assert.equal(partial.events.length, 0);
+		assert.match(partial.rest, /mn70/);
+		const done = takeAskSseEvents(partial.rest, true);
+		assert.equal(done.events[0]?.type, "results");
+		assert.equal(done.events[0]?.results?.[0]?.slug, "mn70");
 	});
 });
 
