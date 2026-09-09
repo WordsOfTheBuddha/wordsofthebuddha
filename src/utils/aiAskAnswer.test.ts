@@ -2,11 +2,16 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	ASK_ANSWER_SYSTEM,
+	ASK_FUNCTION_BUDGET_MS,
+	ASK_WRITER_MAX_MS,
+	ASK_WRITER_MIN_MS,
 	askAnswerHints,
 	buildAskAnswerUserPrompt,
+	createWatchdogAbortSignal,
 	formatAskAnswerEvidenceBlock,
 	parseAskAnswerSummary,
 	pickMatchingParagraphs,
+	resolveAskWriterBudgetMs,
 	selectAskAnswerPassages,
 } from "./aiAskAnswer";
 
@@ -93,6 +98,39 @@ describe("ASK_ANSWER_SYSTEM", () => {
 		assert.match(ASK_ANSWER_SYSTEM, /Match the form they asked for/);
 		assert.match(ASK_ANSWER_SYSTEM, /paragraphs/);
 		assert.match(ASK_ANSWER_SYSTEM, /silence\.AN 6\.29/);
+		assert.match(ASK_ANSWER_SYSTEM, /Think briefly/);
+	});
+});
+
+describe("resolveAskWriterBudgetMs", () => {
+	it("caps at the writer max and skips when the function is almost out of time", () => {
+		assert.equal(resolveAskWriterBudgetMs(0), ASK_WRITER_MAX_MS);
+		assert.equal(resolveAskWriterBudgetMs(100_000), ASK_WRITER_MAX_MS);
+		assert.equal(
+			resolveAskWriterBudgetMs(ASK_FUNCTION_BUDGET_MS - 80_000),
+			80_000,
+		);
+		assert.equal(
+			resolveAskWriterBudgetMs(ASK_FUNCTION_BUDGET_MS - ASK_WRITER_MIN_MS + 1),
+			0,
+		);
+	});
+});
+
+describe("createWatchdogAbortSignal", () => {
+	it("aborts after idle silence and stays open when pinged", async () => {
+		const idle = createWatchdogAbortSignal({ idleMs: 25, maxMs: 500 });
+		idle.ping();
+		await new Promise((resolve) => setTimeout(resolve, 50));
+		assert.equal(idle.signal.aborted, true);
+		idle.dispose();
+
+		const live = createWatchdogAbortSignal({ idleMs: 40, maxMs: 400 });
+		const tick = setInterval(() => live.ping(), 12);
+		await new Promise((resolve) => setTimeout(resolve, 90));
+		clearInterval(tick);
+		assert.equal(live.signal.aborted, false);
+		live.dispose();
 	});
 });
 

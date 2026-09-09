@@ -152,10 +152,20 @@ interface AiAskEvent {
 	plannerNote?: string;
 	routing?: AskPlannerRoutingView;
 	debug?: AskDebugView;
+	/** Ranked hits shipped before the thinking writer finishes. */
+	partial?: boolean;
 	/** Replace streamed thinking with the accepted planner’s reasoning. */
 	reasoning?: string;
 	/** Drop thinking from a discarded planner attempt. */
 	reset?: boolean;
+}
+
+/** Keep the turn when the stream dies after ranked hits (or an off-topic plan) arrived. */
+export function askShouldSurviveDisconnect(turn: {
+	results: readonly unknown[];
+	offTopic?: boolean;
+}): boolean {
+	return turn.offTopic === true || turn.results.length > 0;
 }
 
 /** Mirrors server AiAskPlannerRouting — only present in `astro dev`. */
@@ -2292,26 +2302,25 @@ export function attachAiMode(options: {
 			},
 		);
 		const summaryText = (turn.summary || "").trim();
+		const hasHits = turn.results.length > 0;
 		const summary =
-			!turn.pending && summaryText && turn.results.length > 0
+			hasHits && summaryText
 				? `<div class="ai-summary">${linkifyAskSummaryHtml(
 						summaryText,
 						turn.results,
 					)}</div>`
-				: !turn.pending && turn.rankedBySearchOnly && turn.results.length > 0
+				: !turn.pending && turn.rankedBySearchOnly && hasHits
 					? `<p class="ai-result-meta">Ranked by library search only — the rescorer was unavailable, so there is no briefing this time.</p>`
 					: "";
-		const caption =
-			!turn.pending && turn.results.length > 0
-				? `<p class="ai-results-caption">${escapeHtml(
-						askResultsCaption({
-							resultCount: turn.results.length,
-							candidateCount: turn.rerankCandidateCount,
-						}),
-					)}</p>`
-				: "";
-		const hideQueryChips =
-			turn.pending || turn.offTopic || turn.results.length === 0;
+		const caption = hasHits
+			? `<p class="ai-results-caption">${escapeHtml(
+					askResultsCaption({
+						resultCount: turn.results.length,
+						candidateCount: turn.rerankCandidateCount,
+					}),
+				)}</p>`
+			: "";
+		const hideQueryChips = turn.offTopic || !hasHits;
 		const queryBlock = hideQueryChips ? "" : primaryQueries;
 		const fallbackBlock = hideQueryChips ? "" : fallbackQueries;
 		let body = "";
@@ -2327,7 +2336,7 @@ export function attachAiMode(options: {
 			// Keep the process strip + any streamed thinking so a timeout or
 			// refusal stall is still inspectable after the error lands.
 			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${retry}`;
-		} else if (turn.pending) {
+		} else if (turn.pending && !hasHits) {
 			body = `${process}
 				<div class="ai-loading" role="status">
 					<span class="ai-spinner"></span>
@@ -3047,35 +3056,40 @@ export function attachAiMode(options: {
 						turn.debug = resultDebug;
 						console.info("[ai/ask] rerank debug", resultDebug);
 					}
-					turn.pending = false;
-					turn.phase = "done";
-					if (event.quota) {
-						applyQuota(event.quota);
-						maybeOfferFeedback(event.quota);
-					}
-					persistSessionFromTurn(turn);
-					try {
-						void import("@vercel/analytics").then(({ track }) => {
-							track("ask_complete", {
-								resultCount: turn.results.length,
-								offTopic: turn.offTopic ? 1 : 0,
+					const partial = event.partial === true;
+					turn.pending = partial;
+					turn.phase = partial ? "answer" : "done";
+					if (event.quota) applyQuota(event.quota);
+					if (!partial) {
+						if (event.quota) maybeOfferFeedback(event.quota);
+						persistSessionFromTurn(turn);
+						try {
+							void import("@vercel/analytics").then(({ track }) => {
+								track("ask_complete", {
+									resultCount: turn.results.length,
+									offTopic: turn.offTopic ? 1 : 0,
+								});
 							});
-						});
-					} catch {
-						/* analytics optional */
+						} catch {
+							/* analytics optional */
+						}
 					}
 					syncLayoutAndReveal();
 				} else if (event.type === "error") {
 					turn.pending = false;
 					turn.phase = "done";
-					turn.error = event.error || "Ask could not complete.";
+					if (!askShouldSurviveDisconnect(turn)) {
+						turn.error = event.error || "Ask could not complete.";
+					} else {
+						persistSessionFromTurn(turn);
+					}
 					syncLayoutAndReveal();
 				}
 			});
 			if (turn.pending) {
 				turn.pending = false;
 				turn.phase = "done";
-				if (!turn.error && turn.results.length === 0 && !turn.offTopic) {
+				if (!turn.error && !askShouldSurviveDisconnect(turn)) {
 					turn.error = "Ask could not complete.";
 				}
 				if (!turn.error) persistSessionFromTurn(turn);
@@ -3085,7 +3099,9 @@ export function attachAiMode(options: {
 		} catch {
 			turn.pending = false;
 			turn.phase = "done";
-			if (restoreOnFail) {
+			if (askShouldSurviveDisconnect(turn)) {
+				persistSessionFromTurn(turn);
+			} else if (restoreOnFail) {
 				abortReplace();
 				setStatus("Network error. Try again.");
 			} else {

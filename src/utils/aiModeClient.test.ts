@@ -6,6 +6,7 @@ import {
 	askReasoningIsLong,
 	askResultsCaption,
 	askSendShortcutLabel,
+	askShouldSurviveDisconnect,
 	buildAskProcessSteps,
 	displayAskReasoning,
 	formatAskRoutingDevHtml,
@@ -177,6 +178,20 @@ describe("askReasoningIsLong", () => {
 		assert.equal(askReasoningIsLong("a\nb\nc\nd\ne"), false);
 		assert.equal(askReasoningIsLong("a\nb\nc\nd\ne\nf"), true);
 		assert.equal(askReasoningIsLong("x".repeat(700)), true);
+	});
+});
+
+describe("askShouldSurviveDisconnect", () => {
+	it("keeps ranked hits or an off-topic plan when the stream drops", () => {
+		assert.equal(askShouldSurviveDisconnect({ results: [] }), false);
+		assert.equal(
+			askShouldSurviveDisconnect({ results: [{ slug: "mn53" }] }),
+			true,
+		);
+		assert.equal(
+			askShouldSurviveDisconnect({ results: [], offTopic: true }),
+			true,
+		);
 	});
 });
 

@@ -12,8 +12,9 @@ import {
 import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
-	ASK_PLANNER_MAX_TOKENS,
-	askPlannerChatOptions,
+	ASK_WRITER_MAX_TOKENS,
+	ASK_WRITER_REASONING_MAX_TOKENS,
+	askWriterChatOptions,
 	getOpenRouterApiKey,
 	openRouterChatStream,
 	splitThinkTags,
@@ -46,6 +47,7 @@ Return JSON only:
 You may use {"summary":"…"} instead; if so, put a blank line (\\n\\n) between paragraphs.
 
 Rules:
+- Think briefly, then return the JSON. Do not narrate every excerpt in hidden thinking.
 - Write only from the excerpts. If a discourse merely lists terms, say that it lists them — do not claim it defines, elaborates, or analyzes those terms.
 - Do not import stock Dhamma (jhāna formulas, four noble truths, anicca-dukkha-anattā, “stable base for insight”) unless the excerpt actually states that for this term.
 - Match the form they asked for. If they demonstrated a syntax, definition line, list, or comparison, use that. Several short paragraphs are the default briefing form when they did not specify a form.
@@ -328,6 +330,75 @@ export interface AskAnswerResult {
 }
 
 /**
+ * Leave headroom under Vercel Fluid’s 300s function cap for persist + flush.
+ * Planner + rerank can already consume most of that window.
+ */
+export const ASK_FUNCTION_BUDGET_MS = 270_000;
+/** Wall-clock cap while tokens are still arriving. */
+export const ASK_WRITER_MAX_MS = 150_000;
+/** Skip the writer when the function is this close to the budget. */
+export const ASK_WRITER_MIN_MS = 20_000;
+/** Abort only after this long with no stream chunks (not a hard 90s cut). */
+export const ASK_WRITER_IDLE_MS = 45_000;
+
+/** How long the thinking writer may run given time already spent on this Ask. */
+export function resolveAskWriterBudgetMs(elapsedMs: number): number {
+	const remaining = ASK_FUNCTION_BUDGET_MS - Math.max(0, elapsedMs);
+	if (remaining < ASK_WRITER_MIN_MS) return 0;
+	return Math.min(ASK_WRITER_MAX_MS, remaining);
+}
+
+export function createWatchdogAbortSignal(options: {
+	idleMs: number;
+	maxMs: number;
+	parent?: AbortSignal;
+}): { signal: AbortSignal; ping: () => void; dispose: () => void } {
+	const controller = new AbortController();
+	const timeoutError = () =>
+		new DOMException("The operation was aborted due to timeout", "TimeoutError");
+	let idleTimer: ReturnType<typeof setTimeout> | undefined;
+	let maxTimer: ReturnType<typeof setTimeout> | undefined;
+	let disposed = false;
+
+	const abortTimeout = () => {
+		if (!controller.signal.aborted) controller.abort(timeoutError());
+	};
+
+	const ping = () => {
+		if (disposed || controller.signal.aborted) return;
+		if (idleTimer) clearTimeout(idleTimer);
+		idleTimer = setTimeout(abortTimeout, options.idleMs);
+	};
+
+	const onParentAbort = () => {
+		if (!controller.signal.aborted) {
+			controller.abort(options.parent?.reason);
+		}
+		dispose();
+	};
+
+	const dispose = () => {
+		disposed = true;
+		if (idleTimer) clearTimeout(idleTimer);
+		if (maxTimer) clearTimeout(maxTimer);
+		options.parent?.removeEventListener("abort", onParentAbort);
+	};
+
+	if (options.parent) {
+		if (options.parent.aborted) {
+			controller.abort(options.parent.reason);
+			return { signal: controller.signal, ping, dispose };
+		}
+		options.parent.addEventListener("abort", onParentAbort);
+	}
+	if (options.maxMs > 0) {
+		maxTimer = setTimeout(abortTimeout, options.maxMs);
+	}
+	// Idle watch starts on the first chunk — TTFT uses maxMs only.
+	return { signal: controller.signal, ping, dispose };
+}
+
+/**
  * Thinking-model write from expanded selected-discourse excerpts.
  * Returns an empty summary when OpenRouter is unavailable or the model fails
  * — callers should keep the ranker’s fallback briefing.
@@ -341,77 +412,94 @@ export async function writeAskAnswer(options: {
 	history?: readonly AiRewriteHistoryTurn[];
 	onReasoning?: (delta: string) => void;
 	signal?: AbortSignal;
+	/** Wall-clock budget from `resolveAskWriterBudgetMs`. 0 skips the writer. */
+	timeoutMs?: number;
 	loadDoc?: (slug: string) => Promise<SearchData | undefined>;
 }): Promise<AskAnswerResult> {
 	const empty: AskAnswerResult = { summary: "", model: "", reasoning: "" };
-	if (options.hits.length === 0 || !getOpenRouterApiKey()) return empty;
-	const hints = askAnswerHints(options.question, options.termQueries);
-	const pack = await buildAskAnswerEvidence(
-		options.hits,
-		hints,
-		options.loadDoc,
-	);
-	const evidence = formatAskAnswerEvidenceBlock(pack);
-	if (!evidence.trim()) return empty;
-	const messages = [
-		{ role: "system" as const, content: ASK_ANSWER_SYSTEM },
-		{
-			role: "user" as const,
-			content: buildAskAnswerUserPrompt({
-				question: options.question,
-				evidence,
-				guidance: options.guidance,
-				history: options.history,
-			}),
-		},
-	];
-	const plannerChat = askPlannerChatOptions(options.model);
-	let content = "";
-	let reasoning = "";
-	let usedModel = options.model;
-	let usedJsonMode = plannerChat.jsonMode;
-	const runStream = async (jsonMode: boolean) => {
-		content = "";
-		reasoning = "";
-		usedModel = options.model;
-		usedJsonMode = jsonMode;
-		for await (const chunk of openRouterChatStream({
-			model: options.model,
-			messages,
-			maxTokens: ASK_PLANNER_MAX_TOKENS,
-			reasoningEffort: plannerChat.reasoningEffort,
-			jsonMode,
-			signal: options.signal ?? AbortSignal.timeout(90_000),
-		})) {
-			if (chunk.reasoning) {
-				reasoning += chunk.reasoning;
-				options.onReasoning?.(chunk.reasoning);
-			}
-			if (chunk.content) content += chunk.content;
-			if (chunk.model) usedModel = chunk.model;
-		}
-	};
+	const budget = options.timeoutMs ?? ASK_WRITER_MAX_MS;
+	if (budget <= 0 || options.hits.length === 0 || !getOpenRouterApiKey()) {
+		return empty;
+	}
+	const watchdog = createWatchdogAbortSignal({
+		idleMs: ASK_WRITER_IDLE_MS,
+		maxMs: budget,
+		parent: options.signal,
+	});
 	try {
-		await runStream(plannerChat.jsonMode);
-	} catch (error) {
-		if (errorStatus(error) === 400 && usedJsonMode) {
-			console.warn(
-				`[ai/ask] writer ${options.model} rejected json_mode; retrying without it`,
-			);
-			await runStream(false);
-		} else {
-			throw error;
+		const hints = askAnswerHints(options.question, options.termQueries);
+		const pack = await buildAskAnswerEvidence(
+			options.hits,
+			hints,
+			options.loadDoc,
+		);
+		if (watchdog.signal.aborted) return empty;
+		const evidence = formatAskAnswerEvidenceBlock(pack);
+		if (!evidence.trim()) return empty;
+		const messages = [
+			{ role: "system" as const, content: ASK_ANSWER_SYSTEM },
+			{
+				role: "user" as const,
+				content: buildAskAnswerUserPrompt({
+					question: options.question,
+					evidence,
+					guidance: options.guidance,
+					history: options.history,
+				}),
+			},
+		];
+		const writerChat = askWriterChatOptions(options.model);
+		let content = "";
+		let reasoning = "";
+		let usedModel = options.model;
+		let usedJsonMode = writerChat.jsonMode;
+		const runStream = async (jsonMode: boolean) => {
+			content = "";
+			reasoning = "";
+			usedModel = options.model;
+			usedJsonMode = jsonMode;
+			for await (const chunk of openRouterChatStream({
+				model: options.model,
+				messages,
+				maxTokens: ASK_WRITER_MAX_TOKENS,
+				reasoningEffort: writerChat.reasoningEffort,
+				reasoningMaxTokens: ASK_WRITER_REASONING_MAX_TOKENS,
+				jsonMode,
+				signal: watchdog.signal,
+			})) {
+				watchdog.ping();
+				if (chunk.reasoning) {
+					reasoning += chunk.reasoning;
+					options.onReasoning?.(chunk.reasoning);
+				}
+				if (chunk.content) content += chunk.content;
+				if (chunk.model) usedModel = chunk.model;
+			}
+		};
+		try {
+			await runStream(writerChat.jsonMode);
+		} catch (error) {
+			if (errorStatus(error) === 400 && usedJsonMode) {
+				console.warn(
+					`[ai/ask] writer ${options.model} rejected json_mode; retrying without it`,
+				);
+				await runStream(false);
+			} else {
+				throw error;
+			}
 		}
-	}
-	if (!reasoning.trim()) {
-		const split = splitThinkTags(content);
-		if (split.reasoning) {
-			reasoning = split.reasoning;
-			content = split.content;
-			options.onReasoning?.(split.reasoning);
+		if (!reasoning.trim()) {
+			const split = splitThinkTags(content);
+			if (split.reasoning) {
+				reasoning = split.reasoning;
+				content = split.content;
+				options.onReasoning?.(split.reasoning);
+			}
 		}
+		const summary = parseAskAnswerSummary(content);
+		if (!summary) return { ...empty, reasoning, model: usedModel };
+		return { summary, model: usedModel, reasoning };
+	} finally {
+		watchdog.dispose();
 	}
-	const summary = parseAskAnswerSummary(content);
-	if (!summary) return { ...empty, reasoning, model: usedModel };
-	return { summary, model: usedModel, reasoning };
 }

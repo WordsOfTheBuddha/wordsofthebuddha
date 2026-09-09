@@ -83,6 +83,15 @@ export const ASK_PLANNER_PAID_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"high";
 /** Planner needs room for medium reasoning + the JSON object. */
 export const ASK_PLANNER_MAX_TOKENS = 4096;
+/**
+ * Writer only needs short paragraphs from excerpts. A 4096 budget with
+ * medium/high effort spends the whole window on thinking and never emits JSON.
+ */
+export const ASK_WRITER_MAX_TOKENS = 2048;
+/** Cap hidden thinking so the model still has room for the JSON briefing. */
+export const ASK_WRITER_REASONING_MAX_TOKENS = 1024;
+/** Write from excerpts — do not reuse the planner’s high-effort setting. */
+export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
 /**
  * Paid GLM often swallows the reasoning channel under `json_object`, and
@@ -102,6 +111,38 @@ export function askPlannerChatOptions(model: string): {
 	return {
 		jsonMode: true,
 		reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
+	};
+}
+
+/**
+ * Thinking writer: low effort so it finishes the JSON briefing. GLM still
+ * skips `json_object` (it swallows the reasoning channel under that mode).
+ */
+export function askWriterChatOptions(model: string): {
+	jsonMode: boolean;
+	reasoningEffort: OpenRouterReasoningEffort;
+} {
+	return {
+		jsonMode: !isAskPlannerPaidFallbackModelId(model),
+		reasoningEffort: ASK_WRITER_REASONING_EFFORT,
+	};
+}
+
+/** OpenRouter `reasoning` object for chat / stream requests. */
+export function openRouterReasoningBody(
+	effort: OpenRouterReasoningEffort = DEFAULT_OPENROUTER_REASONING_EFFORT,
+	maxTokens?: number,
+): {
+	effort: OpenRouterReasoningEffort;
+	exclude: false;
+	max_tokens?: number;
+} {
+	return {
+		effort,
+		exclude: false,
+		...(typeof maxTokens === "number" && maxTokens > 0
+			? { max_tokens: maxTokens }
+			: {}),
 	};
 }
 
@@ -313,6 +354,8 @@ export async function openRouterChat(options: {
 	messages: OpenRouterChatMessage[];
 	maxTokens?: number;
 	reasoningEffort?: OpenRouterReasoningEffort;
+	/** Provider-specific cap on hidden thinking tokens. */
+	reasoningMaxTokens?: number;
 	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
 	jsonMode?: boolean;
 	signal?: AbortSignal;
@@ -326,10 +369,10 @@ export async function openRouterChat(options: {
 			messages: options.messages,
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
-			reasoning: {
-				effort: options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
-				exclude: false,
-			},
+			reasoning: openRouterReasoningBody(
+				options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				options.reasoningMaxTokens,
+			),
 			...(options.jsonMode
 				? { response_format: { type: "json_object" } }
 				: {}),
@@ -529,6 +572,8 @@ export async function* openRouterChatStream(options: {
 	messages: OpenRouterChatMessage[];
 	maxTokens?: number;
 	reasoningEffort?: OpenRouterReasoningEffort;
+	/** Provider-specific cap on hidden thinking tokens. */
+	reasoningMaxTokens?: number;
 	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
 	jsonMode?: boolean;
 	signal?: AbortSignal;
@@ -544,10 +589,10 @@ export async function* openRouterChatStream(options: {
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
 			stream: true,
-			reasoning: {
-				effort: options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
-				exclude: false,
-			},
+			reasoning: openRouterReasoningBody(
+				options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				options.reasoningMaxTokens,
+			),
 			...(options.jsonMode
 				? { response_format: { type: "json_object" } }
 				: {}),

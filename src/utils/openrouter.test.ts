@@ -7,7 +7,10 @@ import {
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	ASK_PLANNER_PAID_REASONING_EFFORT,
 	ASK_PLANNER_REASONING_EFFORT,
+	ASK_WRITER_REASONING_EFFORT,
 	askPlannerChatOptions,
+	askWriterChatOptions,
+	openRouterReasoningBody,
 	createContentThinkSplitter,
 	getAskPickerDefaultModel,
 	isAllowedFreeModelId,
@@ -118,6 +121,41 @@ describe("askPlannerChatOptions", () => {
 				reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
 			},
 		);
+	});
+});
+
+describe("askWriterChatOptions", () => {
+	it("uses low effort and keeps GLM off json_object", () => {
+		assert.deepEqual(askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
+			jsonMode: false,
+			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
+		});
+		assert.deepEqual(
+			askWriterChatOptions("nvidia/nemotron-3-ultra-550b-a55b:free"),
+			{
+				jsonMode: true,
+				reasoningEffort: ASK_WRITER_REASONING_EFFORT,
+			},
+		);
+		assert.equal(ASK_WRITER_REASONING_EFFORT, "low");
+	});
+});
+
+describe("openRouterReasoningBody", () => {
+	it("adds max_tokens only when a positive cap is set", () => {
+		assert.deepEqual(openRouterReasoningBody("low"), {
+			effort: "low",
+			exclude: false,
+		});
+		assert.deepEqual(openRouterReasoningBody("low", 1024), {
+			effort: "low",
+			exclude: false,
+			max_tokens: 1024,
+		});
+		assert.deepEqual(openRouterReasoningBody("medium", 0), {
+			effort: "medium",
+			exclude: false,
+		});
 	});
 });
 

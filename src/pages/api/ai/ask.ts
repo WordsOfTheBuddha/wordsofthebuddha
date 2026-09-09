@@ -12,7 +12,10 @@ import {
 } from "../../../utils/aiDiscourseSearch";
 import { toPublicAskHit } from "../../../utils/aiDiscourseHits";
 import { buildAskDebugView } from "../../../utils/aiAskDebug";
-import { writeAskAnswer } from "../../../utils/aiAskAnswer";
+import {
+	resolveAskWriterBudgetMs,
+	writeAskAnswer,
+} from "../../../utils/aiAskAnswer";
 import {
 	clipPlanningNotes,
 	namedTermHitDebugRows,
@@ -130,9 +133,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
 	const stream = new ReadableStream({
 		async start(controller) {
+			let streamOpen = true;
 			const send = (event: unknown) => {
-				controller.enqueue(encoder.encode(sse(event)));
+				if (!streamOpen) return;
+				try {
+					controller.enqueue(encoder.encode(sse(event)));
+				} catch {
+					streamOpen = false;
+				}
 			};
+			const heartbeat = setInterval(() => {
+				if (!streamOpen) return;
+				try {
+					controller.enqueue(encoder.encode(": ping\n\n"));
+				} catch {
+					streamOpen = false;
+				}
+			}, 15_000);
 			const persistAsk = async (input: {
 				displayQuestion: string;
 				lookingFor: string;
@@ -285,53 +302,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				const results = ranked.results;
 				let summary = ranked.summary || "";
 				let writerModel = "";
-				if (results.length > 0 && getOpenRouterApiKey()) {
-					send({
-						type: "status",
-						phase: "answer",
-						requestId,
-						candidateCount:
-							ranked.candidateCount > 0
-								? ranked.candidateCount
-								: candidates.length,
-						showCount: results.length,
-					});
-					let writerStarted = false;
-					try {
-						const written = await writeAskAnswer({
-							question: plan.correctedQuestion || question,
-							hits: results,
-							model: rewrite.model,
-							termQueries: plan.termQueries,
-							guidance: plan.rankingGuidance,
-							history,
-							onReasoning: (delta) => {
-								if (!writerStarted) {
-									send({ type: "reasoning", reset: true });
-									writerStarted = true;
-								}
-								send({ type: "reasoning", delta });
-							},
-						});
-						if (written.summary) {
-							summary = written.summary;
-							writerModel = written.model || rewrite.model;
-							usedModel = `${usedModel} + ${writerModel}`;
-						} else if (writerStarted && reasoning.trim()) {
-							send({ type: "reasoning", reset: true });
-							send({ type: "reasoning", delta: reasoning });
-						}
-					} catch (error) {
-						console.warn(
-							"[ai/ask] thinking writer failed — keeping ranker briefing",
-							error instanceof Error ? error.message : error,
-						);
-						if (writerStarted && reasoning.trim()) {
-							send({ type: "reasoning", reset: true });
-							send({ type: "reasoning", delta: reasoning });
-						}
-					}
-				}
 				if (ranked.shareSlug) {
 					shareSlug = resolveAskShareSlug(
 						ranked.shareSlug,
@@ -387,6 +357,105 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				if (import.meta.env.DEV) {
 					console.info("[ai/ask] rerank debug", debug);
 				}
+				const candidateCount =
+					ranked.candidateCount > 0
+						? ranked.candidateCount
+						: candidates.length;
+				const sendResults = (partial: boolean) => {
+					send({
+						type: "results",
+						requestId,
+						question: plan.correctedQuestion,
+						correctedQuestion: plan.correctedQuestion,
+						lookingFor: plan.lookingFor,
+						queries: shownQueries,
+						fallbackQueries: usefulFallbacks,
+						offTopic: plan.offTopic,
+						degraded: plan.degraded === true,
+						reranked: ranked.reranked,
+						summary,
+						shareSlug,
+						persons,
+						results: publicResults,
+						candidateCount,
+						showCount: results.length,
+						model: usedModel,
+						quota,
+						partial,
+						...(import.meta.env.DEV
+							? {
+									routing: {
+										...routing,
+										degraded: plan.degraded === true,
+										...(ranked.reranked
+											? {
+													reranker:
+														ranked.provider === "openrouter"
+															? ranked.model || "openrouter-rerank"
+															: ranked.model || "gemini-rerank",
+												}
+											: {}),
+										...(writerModel ? { writer: writerModel } : {}),
+									},
+									debug,
+								}
+							: {}),
+					});
+				};
+				const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
+				if (
+					results.length > 0 &&
+					getOpenRouterApiKey() &&
+					writerBudget > 0
+				) {
+					send({
+						type: "status",
+						phase: "answer",
+						requestId,
+						candidateCount,
+						showCount: results.length,
+					});
+					// Ranked hits + ranker briefing first. If the writer or the
+					// SSE later dies, the client already has a usable answer.
+					sendResults(true);
+					let writerStarted = false;
+					try {
+						const written = await writeAskAnswer({
+							question: plan.correctedQuestion || question,
+							hits: results,
+							model: rewrite.model,
+							termQueries: plan.termQueries,
+							guidance: plan.rankingGuidance,
+							history,
+							timeoutMs: writerBudget,
+							signal: request.signal,
+							onReasoning: (delta) => {
+								if (!writerStarted) {
+									send({ type: "reasoning", reset: true });
+									writerStarted = true;
+								}
+								send({ type: "reasoning", delta });
+							},
+						});
+						if (written.summary) {
+							summary = written.summary;
+							writerModel = written.model || rewrite.model;
+							usedModel = `${usedModel} + ${writerModel}`;
+						} else if (writerStarted && reasoning.trim()) {
+							send({ type: "reasoning", reset: true });
+							send({ type: "reasoning", delta: reasoning });
+						}
+					} catch (error) {
+						console.warn(
+							"[ai/ask] thinking writer failed — keeping ranker briefing",
+							error instanceof Error ? error.message : error,
+						);
+						if (writerStarted && reasoning.trim()) {
+							send({ type: "reasoning", reset: true });
+							send({ type: "reasoning", delta: reasoning });
+						}
+					}
+				}
 				await persistAsk({
 					displayQuestion: plan.correctedQuestion,
 					lookingFor: plan.lookingFor,
@@ -398,54 +467,20 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					reasoning,
 					summary,
 				});
-				send({
-					type: "results",
-					requestId,
-					question: plan.correctedQuestion,
-					correctedQuestion: plan.correctedQuestion,
-					lookingFor: plan.lookingFor,
-					queries: shownQueries,
-					fallbackQueries: usefulFallbacks,
-					offTopic: plan.offTopic,
-					degraded: plan.degraded === true,
-					reranked: ranked.reranked,
-					summary,
-					shareSlug,
-					persons,
-					results: publicResults,
-					candidateCount:
-						ranked.candidateCount > 0
-							? ranked.candidateCount
-							: candidates.length,
-					showCount: results.length,
-					model: usedModel,
-					quota,
-					...(import.meta.env.DEV
-						? {
-								routing: {
-									...routing,
-									degraded: plan.degraded === true,
-									...(ranked.reranked
-										? {
-												reranker:
-													ranked.provider === "openrouter"
-														? ranked.model || "openrouter-rerank"
-														: ranked.model || "gemini-rerank",
-											}
-										: {}),
-									...(writerModel ? { writer: writerModel } : {}),
-								},
-								debug,
-							}
-						: {}),
-				});
+				sendResults(false);
 				send({ type: "done" });
 			} catch (error) {
 				const { status, message } = friendlyAskError(error);
 				console.error("[ai/ask]", status, error);
 				send({ type: "error", error: message, requestId });
 			} finally {
-				controller.close();
+				clearInterval(heartbeat);
+				streamOpen = false;
+				try {
+					controller.close();
+				} catch {
+					/* already closed */
+				}
 			}
 		},
 	});
