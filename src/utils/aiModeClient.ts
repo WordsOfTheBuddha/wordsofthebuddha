@@ -97,7 +97,7 @@ export interface AiAskTurn {
 	saved?: boolean;
 	/** Reader expanded the (clamped) reasoning after the Ask finished. */
 	reasoningExpanded?: boolean;
-	/** Server note when the plan came from a fallback model (e.g. Gemini). */
+	/** Ignored in the reader UI. Fallback detail lives on DEV routing / logs. */
 	plannerNote?: string;
 	/** DEV-only planner routing trace (attempts / failures / used model). */
 	routing?: AskPlannerRoutingView;
@@ -519,18 +519,15 @@ function renderAskThinkingItemHtml(input: {
 	reasoningText: string;
 	pending: boolean;
 	reasoningExpanded?: boolean;
-	plannerNote?: string;
 	degradedNote?: string;
 	turnIndex: number;
 }): string {
-	const plannerNote = input.plannerNote
-		? `<p class="ai-process-thinking-note">${escapeHtml(input.plannerNote)}</p>`
-		: "";
 	const degradedNote = input.degradedNote || "";
 	if (!input.reasoningText) {
+		if (!degradedNote) return "";
 		return `<li class="ai-process-thinking" aria-label="Model notes">
 				<span class="ai-process-mark" aria-hidden="true"></span>
-				<div class="ai-process-thinking-body">${plannerNote}${degradedNote}</div>
+				<div class="ai-process-thinking-body">${degradedNote}</div>
 			</li>`;
 	}
 	const clampable =
@@ -541,7 +538,6 @@ function renderAskThinkingItemHtml(input: {
 	return `<li class="ai-process-thinking${input.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}" aria-label="Model thinking">
 				<span class="ai-process-mark" aria-hidden="true"></span>
 				<div class="ai-process-thinking-body">
-					${plannerNote}
 					<div class="ai-process-thinking-text">${renderAskThinkingHtml(input.reasoningText)}</div>
 					${toggle}
 				</div>
@@ -557,7 +553,7 @@ export function applyAskThinkingStreamPatch(
 	thread: ParentNode,
 	turn: Pick<
 		AiAskTurn,
-		"pending" | "reasoning" | "reasoningExpanded" | "plannerNote"
+		"pending" | "reasoning" | "reasoningExpanded"
 	>,
 	turnIndex: number,
 ): boolean {
@@ -568,24 +564,7 @@ export function applyAskThinkingStreamPatch(
 
 	const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
 	if (!reasoningText) {
-		const existing = process.querySelector(":scope > .ai-process-thinking");
-		const note = (turn.plannerNote || "").trim();
-		if (!note) {
-			existing?.remove();
-			return true;
-		}
-		const html = renderAskThinkingItemHtml({
-			reasoningText: "",
-			pending: false,
-			plannerNote: turn.plannerNote,
-			turnIndex,
-		});
-		if (existing) existing.outerHTML = html;
-		else {
-			const first = process.querySelector(":scope > li");
-			if (!first) return false;
-			first.insertAdjacentHTML("afterend", html);
-		}
+		process.querySelector(":scope > .ai-process-thinking")?.remove();
 		return true;
 	}
 
@@ -599,7 +578,6 @@ export function applyAskThinkingStreamPatch(
 				reasoningText,
 				pending: turn.pending,
 				reasoningExpanded: turn.reasoningExpanded,
-				plannerNote: turn.plannerNote,
 				turnIndex,
 			}),
 		);
@@ -2285,19 +2263,13 @@ export function attachAiMode(options: {
 				reasoningText,
 				pending: turn.pending,
 				reasoningExpanded: turn.reasoningExpanded,
-				plannerNote: turn.plannerNote,
 				turnIndex,
 			});
-		} else if (turn.plannerNote || (!turn.pending && turn.degraded)) {
-			const degradedNote =
-				!turn.pending && turn.degraded
-					? `<p>Simplified search plan — the model’s rewrite JSON was missing or its query chips were unusable, so short topical searches were built from your question instead.</p>`
-					: "";
+		} else if (!turn.pending && turn.degraded) {
 			thinking = renderAskThinkingItemHtml({
 				reasoningText: "",
 				pending: false,
-				plannerNote: turn.plannerNote,
-				degradedNote,
+				degradedNote: `<p>Simplified search plan — the model’s rewrite JSON was missing or its query chips were unusable, so short topical searches were built from your question instead.</p>`,
 				turnIndex,
 			});
 		}
@@ -3012,10 +2984,6 @@ export function attachAiMode(options: {
 					syncLayoutAndReveal();
 				} else if (event.type === "plan") {
 					applyCorrectedQuestion(turn, event);
-					turn.plannerNote =
-						typeof event.plannerNote === "string" && event.plannerNote.trim()
-							? event.plannerNote.trim()
-							: undefined;
 					turn.routing = normalizeAskRouting(event.routing);
 					if (turn.routing) {
 						console.info(
