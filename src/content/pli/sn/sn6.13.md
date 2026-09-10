@@ -1,7 +1,7 @@
 ---
 title: Andhakavinda sutta - At Andhakavinda
 description: Sitting in the open during a pitch-black, stormy night, the Buddha is visited by Brahmā Sahampati, who speaks on the courage of solitary practice and the countless beings who have found release.
-qualities: mindfulness, solitude, without fear, stream-entry, ethical conduct
+qualities: mindfulness, solitude, without fear, stream-entry, ethical conduct, trainee
 theme: inspiration
 character:
   - Brahmā Sahampati
