@@ -12,7 +12,9 @@ import {
 	canShowResearchChip,
 	isAskResearchEnabled,
 	RESEARCH_EMAIL_PENDING_NOTE,
+	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
+	wrapAskAnswerHtml,
 	researchVerifyStepText,
 	isIncompleteResearchTurn,
 	researchRetrySubmitLabel,
@@ -353,6 +355,7 @@ describe("researchJobToHistoryEntry", () => {
 			id: "job-3",
 			status: "searching",
 			question: "Who is a sekha?",
+			createdAt: 1_700_000_000_000,
 		});
 		const entry = researchJobToHistoryEntry(job);
 		assert.equal(entry.research, true);
@@ -360,5 +363,132 @@ describe("researchJobToHistoryEntry", () => {
 		assert.equal(entry.researchPending, true);
 		assert.equal(entry.question, "Who is a sekha?");
 		assert.equal(entry.results.length, 0);
+		assert.equal(entry.at, 1_700_000_000_000);
+	});
+
+	it("does not restamp when a later poll updates the same job", () => {
+		const job = toResearchJobPublic({
+			id: "job-4",
+			status: "complete",
+			question: "Who is a sekha?",
+			createdAt: 9,
+		});
+		const entry = researchJobToHistoryEntry(job, { at: 5 });
+		assert.equal(entry.at, 5);
+	});
+
+	it("keeps a conversation thread when a follow-up job updates", () => {
+		const priorAsk = {
+			question: "Who is a trainee?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [
+				{
+					slug: "mn70",
+					title: "Kitagiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			model: "",
+			reasoning: "",
+			at: 1,
+		};
+		const job = toResearchJobPublic({
+			id: "job-follow",
+			status: "complete",
+			question: "What is the bare minimum?",
+			createdAt: 2,
+			result: {
+				question: "What is the bare minimum?",
+				lookingFor: "sekha",
+				queries: ["sekha"],
+				fallbackQueries: [],
+				offTopic: false,
+				results: [
+					{
+						slug: "sn48.53",
+						title: "Sekha",
+						description: "",
+						contentSnippet: null,
+						referenceOnly: false,
+						href: "/sn48.53",
+					},
+				],
+				model: "",
+				reasoning: "",
+				report: "## Report",
+			},
+		});
+		const entry = researchJobToHistoryEntry(job, {
+			at: 2,
+			thread: [
+				priorAsk,
+				{
+					...priorAsk,
+					question: "What is the bare minimum?",
+					research: true,
+					researchJobId: "job-follow",
+				},
+			],
+		});
+		assert.equal(entry.thread?.length, 2);
+		assert.equal(entry.thread?.[0]?.question, "Who is a trainee?");
+	});
+
+	it("walks a completion restamp back to createdAt", () => {
+		const job = toResearchJobPublic({
+			id: "job-5",
+			status: "complete",
+			question: "Who is a sekha?",
+			createdAt: 5,
+		});
+		const entry = researchJobToHistoryEntry(job, { at: 99 });
+		assert.equal(entry.at, 5);
+	});
+});
+
+describe("researchHistoryTimestamp", () => {
+	it("prefers the original ask time over now", () => {
+		assert.equal(
+			researchHistoryTimestamp({ existingAt: 10, createdAt: 20, now: 99 }),
+			10,
+		);
+		assert.equal(researchHistoryTimestamp({ createdAt: 20, now: 99 }), 20);
+		assert.equal(researchHistoryTimestamp({ now: 99 }), 99);
+		assert.equal(
+			researchHistoryTimestamp({ existingAt: 99, createdAt: 20, now: 99 }),
+			20,
+		);
+	});
+});
+
+describe("wrapAskAnswerHtml", () => {
+	it("puts a static copy control at both ends of a report", () => {
+		const html = wrapAskAnswerHtml({
+			kind: "report",
+			kicker: "Research report",
+			turnIndex: 0,
+			bodyHtml: "<p>Hello</p>",
+		});
+		assert.match(html, /ai-answer-toolbar-start/);
+		assert.match(html, /ai-answer-toolbar-end/);
+		assert.equal([...html.matchAll(/data-ai-copy-answer/g)].length, 2);
+		assert.match(html, /Research report/);
+	});
+
+	it("puts a single copy control at the end of an ask answer", () => {
+		const html = wrapAskAnswerHtml({
+			kind: "answer",
+			turnIndex: 1,
+			bodyHtml: "<p>Hello</p>",
+		});
+		assert.doesNotMatch(html, /ai-answer-toolbar-start/);
+		assert.match(html, /ai-answer-toolbar-end/);
+		assert.equal([...html.matchAll(/data-ai-copy-answer/g)].length, 1);
 	});
 });

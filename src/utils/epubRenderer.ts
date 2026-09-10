@@ -8,7 +8,10 @@
 
 import type { CollectionPdf, DiscoursePdf } from "./pdfRenderer";
 import { isAskExportLayout } from "./pdfRenderer";
-import { renderResearchReportHtml } from "./aiAskResearchReport";
+import {
+	renderAskBriefingHtml,
+	renderResearchReportHtml,
+} from "./aiAskResearchReport";
 import { buildZip } from "./epubZip";
 import {
 	buildEpubCoverModel,
@@ -362,21 +365,14 @@ function askSummaryXhtml(
 ): string {
 	const text = summary.trim();
 	if (!text) return "";
+	const hits = slugs.map((slug) => ({ slug, href: `/${slug}` }));
 	if (research) {
-		const html = renderResearchReportHtml(
-			text,
-			slugs.map((slug) => ({ slug, href: `/${slug}` })),
-		);
+		const html = renderResearchReportHtml(text, hits);
 		return `<div class="ask-summary ask-report">${html}</div>`;
 	}
-	const paras = text
-		.split(/\n+/)
-		.map((part) => part.trim())
-		.filter(Boolean);
-	if (paras.length === 0) return "";
-	return `<div class="ask-summary">${paras
-		.map((part) => `<p>${escapeXml(part)}</p>`)
-		.join("\n")}</div>`;
+	const html = renderAskBriefingHtml(text, hits);
+	if (!html) return "";
+	return `<div class="ask-summary">${html}</div>`;
 }
 
 function askTurnPrefaceBody(

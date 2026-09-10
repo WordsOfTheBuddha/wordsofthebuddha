@@ -109,6 +109,13 @@ export function hasHiddenAncestor(el: Element | null): boolean {
 	while (node) {
 		if (node.classList.contains("hidden")) return true;
 		if (node.hasAttribute("hidden")) return true;
+		if (node.tagName === "DETAILS" && el && el !== node) {
+			const details = node as HTMLDetailsElement;
+			if (!details.open) {
+				const summary = details.querySelector(":scope > summary");
+				if (!summary || !summary.contains(el)) return true;
+			}
+		}
 		node = node.parentElement;
 	}
 	return false;
@@ -380,7 +387,8 @@ function renderHints(assignments: LinkHintAssignment[]): void {
  * Hold ⌘ (Mac) / Alt (elsewhere) to arm numbered shortcuts on:
  * - dictionary DPD/PED tabs + multi-chip PED switchers (when drawer is open)
  * - otherwise viewport-visible discourse lists (collections, topics, qualities
- *   drawer, search, and ask)
+ *   drawer, search, and Ask source cards). Closed `<details>` lists are skipped
+ *   so collapsed Ask sources do not paint badges over the answer/report.
  *
  * Activation is bare 1–9 / a–z after the modifier is released (sticky window),
  * so ⌘1–⌘9 keep working as browser tab switches. Esc or timeout dismisses.

@@ -63,6 +63,8 @@ export interface ResearchJobPublic {
 	result?: ResearchJobResult;
 	/** Live status line for the process strip (e.g. “Searching · 3 of 8”). */
 	progressNote?: string;
+	/** When the reader started this research — history `at` should keep this. */
+	createdAt?: number;
 }
 
 export function isResearchJobTerminal(status: ResearchJobStatus): boolean {
@@ -234,6 +236,7 @@ export function toResearchJobPublic(input: {
 	emailSent?: boolean;
 	result?: unknown;
 	progressNote?: string;
+	createdAt?: number;
 }): ResearchJobPublic {
 	const status = input.status;
 	const result = sanitizeResearchJobResult(input.result);
@@ -269,6 +272,11 @@ export function toResearchJobPublic(input: {
 				: {}),
 		...(input.error ? { error: clip(input.error, 280) } : {}),
 		...(input.emailSent === true ? { emailSent: true } : {}),
+		...(typeof input.createdAt === "number" &&
+		Number.isFinite(input.createdAt) &&
+		input.createdAt > 0
+			? { createdAt: Math.floor(input.createdAt) }
+			: {}),
 		...(result ? { result } : {}),
 	};
 }

@@ -1,5 +1,10 @@
 import type { AiDiscourseHit } from "./aiDiscourseHits";
-import { linkifyDiscourseIdText } from "./linkifyAskSummary";
+import {
+	linkifyAskSummaryHtml,
+	linkifyDiscourseIdText,
+	looksLikeAskMarkdown,
+	normalizeAskSummaryProse,
+} from "./linkifyAskSummary";
 import { transformId } from "./transformId";
 
 export const RESEARCH_REPORT_MAX_CHARS = 20_000;
@@ -253,6 +258,19 @@ export function stripResearchSourcesSection(markdown: string): string {
 	return clipResearchReport(markdown)
 		.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
 		.trim();
+}
+
+/** Ask briefing: prose paragraphs, or the report renderer when they asked for structure. */
+export function renderAskBriefingHtml(
+	summary: string,
+	results: readonly { slug: string; href?: string }[] = [],
+): string {
+	const text = normalizeAskSummaryProse(summary);
+	if (!text) return "";
+	if (looksLikeAskMarkdown(text)) {
+		return renderResearchReportHtml(text, results);
+	}
+	return linkifyAskSummaryHtml(text, results);
 }
 
 export function renderResearchReportHtml(

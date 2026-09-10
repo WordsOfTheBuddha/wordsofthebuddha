@@ -563,8 +563,67 @@
 	line-height: 1.55;
 }
 
+.ai-answer-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.65rem;
+	min-height: 2.5rem;
+}
+
+.ai-answer-toolbar-start {
+	margin: 0 0 0.35rem;
+}
+
+.ai-answer-toolbar-end {
+	justify-content: flex-start;
+	margin: 0.55rem 0 0;
+}
+
+.ai-answer-copy {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
+	min-width: 2.5rem;
+	min-height: 2.5rem;
+	padding: 0.35rem 0.55rem;
+	border: 1px solid transparent;
+	border-radius: 0.65rem;
+	background: transparent;
+	color: var(--text-muted);
+	font: inherit;
+	font-size: 0.85rem;
+	cursor: pointer;
+}
+
+.ai-answer-toolbar-end .ai-answer-copy {
+	padding-inline: 0.7rem;
+}
+
+.ai-answer-copy:hover,
+.ai-answer-copy:focus-visible {
+	color: var(--text-color);
+	border-color: var(--surface-border);
+	background: var(--surface-elevated);
+}
+
+.ai-answer-copy:focus-visible {
+	outline: 2px solid color-mix(in srgb, var(--primary-color) 55%, transparent);
+	outline-offset: 2px;
+}
+
+.ai-answer-copy.is-copied {
+	color: var(--text-color);
+}
+
+.ai-answer-copy:disabled {
+	cursor: default;
+}
+
 .ai-report-kicker {
-	margin: 0 0 0.45rem;
+	margin: 0;
 	font-size: 0.72rem;
 	font-weight: 650;
 	letter-spacing: 0.08em;
@@ -580,15 +639,18 @@
 	line-height: 1.35;
 }
 
-.ai-report h2:first-child,
-.ai-report h3:first-child {
+.ai-report .ai-answer-body > h2:first-child,
+.ai-report .ai-answer-body > h3:first-child {
 	margin-top: 0.15rem;
 }
 
 .ai-report p,
 .ai-report ul,
 .ai-report ol,
-.ai-report blockquote {
+.ai-report blockquote,
+.ai-summary ul,
+.ai-summary ol,
+.ai-summary blockquote {
 	margin: 0 0 0.7rem;
 }
 
@@ -981,7 +1043,7 @@
 
 .ai-summary {
 	margin: 0 0 1rem;
-	padding: 0.85rem 1rem;
+	padding: 0.55rem 1rem 0.75rem;
 	border: 1px solid var(--surface-border);
 	border-radius: 0.85rem;
 	background: color-mix(in srgb, var(--surface-elevated) 88%, var(--primary-color) 6%);
@@ -995,8 +1057,12 @@
 	margin: 0 0 0.9em;
 }
 
-.ai-summary p:last-child {
+.ai-summary .ai-answer-body > :last-child {
 	margin-bottom: 0;
+}
+
+.ai-summary li {
+	margin: 0.2rem 0;
 }
 
 .ai-summary .ai-summary-ref {
@@ -1513,12 +1579,6 @@
 	font: inherit;
 	font-size: 0.85rem;
 	cursor: pointer;
-}
-
-.ai-copy-report-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35rem;
 }
 
 @container ai-share-actions (max-width: 36rem) {

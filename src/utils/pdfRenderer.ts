@@ -39,8 +39,10 @@ import {
 	getEffectiveVaggaSections,
 	groupDiscoursesByVaggaSection,
 } from "./vaggaSections";
-import { linkifyAskSummaryHtml } from "./linkifyAskSummary";
-import { renderResearchReportHtml } from "./aiAskResearchReport";
+import {
+	renderAskBriefingHtml,
+	renderResearchReportHtml,
+} from "./aiAskResearchReport";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -989,7 +991,7 @@ function askSummaryHtml(
 	if (research) {
 		return `<div class="ask-summary ask-report">${renderResearchReportHtml(text, hits)}</div>`;
 	}
-	return `<div class="ask-summary">${linkifyAskSummaryHtml(text, hits)}</div>`;
+	return `<div class="ask-summary">${renderAskBriefingHtml(text, hits)}</div>`;
 }
 
 function buildAskContent(collection: CollectionPdf): string {

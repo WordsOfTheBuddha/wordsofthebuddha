@@ -102,23 +102,120 @@ function formatAskSummaryBlock(block: string): string {
 	return inferAskParagraphs(spaced);
 }
 
+function isMdTableSeparator(line: string): boolean {
+	const cells = line
+		.trim()
+		.replace(/^\|/, "")
+		.replace(/\|$/, "")
+		.split("|")
+		.map((cell) => cell.trim());
+	return (
+		cells.length > 0 &&
+		cells.every((cell) => /^:?-{2,}:?$/.test(cell.replace(/\s+/g, "")))
+	);
+}
+
+function isMdListLine(line: string): boolean {
+	const trimmed = line.trim();
+	return /^[-*•]\s+\S/.test(trimmed) || /^\d+[.)]\s+\S/.test(trimmed);
+}
+
+/**
+ * True when the briefing is structured markdown (table, list, heading)
+ * rather than ordinary prose paragraphs.
+ */
+export function looksLikeAskMarkdown(value: string): boolean {
+	const lines = value
+		.replace(/\r\n/g, "\n")
+		.split("\n")
+		.map((line) => line.trimEnd())
+		.filter((line) => line.trim());
+	for (let i = 0; i < lines.length - 1; i++) {
+		const line = lines[i] || "";
+		const next = lines[i + 1] || "";
+		if (line.includes("|") && isMdTableSeparator(next)) return true;
+	}
+	if (lines.filter((line) => isMdListLine(line)).length >= 2) return true;
+	return lines.some((line) => /^#{1,3}\s+\S/.test(line.trim()));
+}
+
+function isStructuredMarkdownLine(line: string): boolean {
+	const trimmed = line.trim();
+	if (!trimmed) return false;
+	return (
+		trimmed.includes("|") ||
+		isMdListLine(trimmed) ||
+		isMdTableSeparator(trimmed) ||
+		/^#{1,3}\s+\S/.test(trimmed) ||
+		/^>\s?/.test(trimmed)
+	);
+}
+
+/** Drop blank lines between table rows or list items so each stays one block. */
+export function compactAskMarkdown(value: string): string {
+	const lines = value
+		.replace(/\r\n/g, "\n")
+		.trim()
+		.split("\n")
+		.map((line) => line.trimEnd());
+	const out: string[] = [];
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i] || "";
+		const blank = !line.trim();
+		if (!blank) {
+			out.push(line);
+			continue;
+		}
+		const prev = [...lines.slice(0, i)].reverse().find((item) => item.trim());
+		const next = lines.slice(i + 1).find((item) => item.trim());
+		if (!prev || !next) continue;
+		const prevTable = prev.includes("|") || isMdTableSeparator(prev);
+		const nextTable = next.includes("|") || isMdTableSeparator(next);
+		const prevList = isMdListLine(prev);
+		const nextList = isMdListLine(next);
+		if ((prevTable && nextTable) || (prevList && nextList)) continue;
+		if (out[out.length - 1] === "") continue;
+		out.push("");
+	}
+	return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function preserveStructuredParagraph(item: string): string {
+	const text = item.replace(/\r\n/g, "\n").trim();
+	if (!text) return "";
+	if (looksLikeAskMarkdown(text) || isStructuredMarkdownLine(text)) {
+		return text;
+	}
+	return text.replace(/\s+/g, " ");
+}
+
 /** Join a model `paragraphs` array into briefing prose. */
 export function joinAskSummaryParagraphs(raw: unknown): string {
 	if (!Array.isArray(raw)) return "";
-	return raw
+	const parts = raw
 		.map((item) =>
-			typeof item === "string" ? item.replace(/\s+/g, " ").trim() : "",
+			typeof item === "string" ? preserveStructuredParagraph(item) : "",
 		)
-		.filter(Boolean)
-		.join("\n\n");
+		.filter(Boolean);
+	if (parts.length === 0) return "";
+	if (looksLikeAskMarkdown(parts.join("\n"))) {
+		return compactAskMarkdown(parts.join("\n"));
+	}
+	return parts.join("\n\n");
 }
 
 /**
  * Keep paragraph breaks; collapse intra-paragraph whitespace. Used before
  * storing, clipping, and rendering Ask briefings. Also repairs glued
  * sentences and infers paragraphs when the model omitted blank lines.
+ * Structured markdown (tables, lists, headings) is left intact.
  */
 export function normalizeAskSummaryProse(value: string, max?: number): string {
+	if (looksLikeAskMarkdown(value)) {
+		const text = compactAskMarkdown(value);
+		if (max == null) return text;
+		return text.slice(0, Math.max(0, max));
+	}
 	const text = value
 		.replace(/\r\n/g, "\n")
 		.split(/\n+/)

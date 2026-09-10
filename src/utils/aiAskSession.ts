@@ -224,6 +224,37 @@ export function sanitizeAskHistoryEntry(
 	};
 }
 
+/**
+ * Keep a follow-up research report as the last turn of its conversation.
+ * Prefer the live thread when the reader is still on the page; otherwise
+ * reuse the snapshot saved when they left.
+ */
+export function attachResearchToHistoryThread(
+	research: AiAskSessionEntry,
+	existing?: Pick<AiAskSessionEntry, "thread"> | null,
+	liveThread?: readonly AiAskSessionEntry[],
+): AiAskSessionEntry {
+	const fromLive = (liveThread || [])
+		.map((item) => sanitizeAskHistoryEntry(item, { allowThread: false }))
+		.filter((item): item is AiAskSessionEntry => Boolean(item));
+	const fromExisting = (existing?.thread || [])
+		.map((item) => sanitizeAskHistoryEntry(item, { allowThread: false }))
+		.filter((item): item is AiAskSessionEntry => Boolean(item));
+	const base = fromLive.length > 1 ? fromLive : fromExisting;
+	const jobId = research.researchJobId || "";
+	const prior = base.filter(
+		(item) => !jobId || item.researchJobId !== jobId,
+	);
+	const tip = sanitizeAskHistoryEntry(research, { allowThread: false });
+	if (!tip) return research;
+	const thread = [...prior, tip];
+	if (thread.length <= 1) {
+		const { thread: _drop, ...solo } = research;
+		return solo;
+	}
+	return { ...research, thread };
+}
+
 /** Entries to restore into the Ask UI (full thread when a snapshot exists). */
 export function askHistoryEntriesForRestore(
 	entry: AiAskSessionEntry | null | undefined,

@@ -5,6 +5,7 @@ import {
 	formatResearchHitTitle,
 	formatResearchSourceLine,
 	parseResearchReportMarkdown,
+	renderAskBriefingHtml,
 	renderResearchReportHtml,
 	replaceResearchSourcesSection,
 } from "./aiAskResearchReport";
@@ -77,6 +78,28 @@ MN 10 is the root text.
 		);
 		assert.match(html, /&lt;script&gt;/);
 		assert.doesNotMatch(html, /<script>/);
+		assert.match(html, /href="\/mn10"/);
+	});
+});
+
+describe("renderAskBriefingHtml", () => {
+	it("keeps ordinary Ask briefings as paragraphs", () => {
+		const html = renderAskBriefingHtml("Start with MN 10, then SN 47.19.", [
+			{ slug: "mn10", href: "/mn10" },
+			{ slug: "sn47.19", href: "/sn47.19" },
+		]);
+		assert.match(html, /<p>/);
+		assert.doesNotMatch(html, /<table>/);
+		assert.match(html, /href="\/mn10"/);
+	});
+
+	it("renders a requested table or list", () => {
+		const html = renderAskBriefingHtml(
+			`| Discourse | Facet |\n| --- | --- |\n| MN 10 | body |\n\n- Keep sati in view`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(html, /ai-report-table/);
+		assert.match(html, /<ul>/);
 		assert.match(html, /href="\/mn10"/);
 	});
 });

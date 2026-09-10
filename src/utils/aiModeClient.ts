@@ -14,6 +14,7 @@ import {
 } from "./aiAskResearchClarify";
 import {
 	formatResearchHitTitle,
+	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
 import {
@@ -28,8 +29,10 @@ import {
 	RESEARCH_EMAIL_PENDING_NOTE,
 	RESEARCH_PLACEHOLDER,
 	isIncompleteResearchTurn,
+	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
 	researchRetrySubmitLabel,
+	wrapAskAnswerHtml,
 	sameResearchRetryQuestion,
 	shouldUseResearchAsk,
 } from "./aiAskResearchUi";
@@ -78,6 +81,7 @@ import {
 	resolveAskHistoryTab,
 	shouldRestoreActiveAskThread,
 	shouldResumeAskFromDiscourse,
+	attachResearchToHistoryThread,
 	upsertAiAskSessionEntry,
 	visibleAskHistoryEntries,
 	writeActiveAskThread,
@@ -89,7 +93,6 @@ import {
 	assembleSpeechTranscript,
 	type SpeechTranscriptResult,
 } from "./aiSpeechTranscript";
-import { linkifyAskSummaryHtml } from "./linkifyAskSummary";
 import { transformId } from "./transformId";
 import {
 	ASK_EXPORT_OPEN_EVENT,
@@ -160,6 +163,7 @@ export interface AiAskTurn {
 	/** Deep Research turn (separate daily quota). */
 	research?: boolean;
 	researchJobId?: string;
+	researchStartedAt?: number;
 	verifyNote?: string;
 	onTrack?: boolean;
 	progressNote?: string;
@@ -259,7 +263,6 @@ const ASK_HOME_HREF = "/search?mode=ai";
 
 /** Filled thumbtack — reads clearly at small sizes. */
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
-const COPY_REPORT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" /></svg>`;
 const MORE_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
 
 /** Provider status notes — not model reasoning. Hidden from “How it searched”. */
@@ -1026,6 +1029,7 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		saved: entry.saved === true,
 		...(entry.research ? { research: true } : {}),
 		...(entry.researchJobId ? { researchJobId: entry.researchJobId } : {}),
+		...(entry.research && entry.at ? { researchStartedAt: entry.at } : {}),
 	};
 }
 
@@ -1799,13 +1803,15 @@ export function attachAiMode(options: {
 		const index = turns.indexOf(turn);
 		const slice = index >= 0 ? turns.slice(0, index + 1) : [turn];
 		return slice
-			.filter(
-				(item) =>
+			.filter((item) => {
+				if (item === turn && item.research && item.researchJobId) return true;
+				return (
 					!item.pending &&
 					!item.error &&
 					!item.offTopic &&
-					item.results.length > 0,
-			)
+					item.results.length > 0
+				);
+			})
 			.map((item) => turnToSessionEntry(item));
 	}
 
@@ -1814,11 +1820,34 @@ export function attachAiMode(options: {
 		flags: { pending: boolean; unread: boolean },
 	): void {
 		if (shareMode || !turn.research || !turn.researchJobId) return;
-		const entry = turnToSessionEntry(turn);
+		const prior = sessionEntries.find(
+			(item) => item.researchJobId === turn.researchJobId,
+		);
+		const entry = attachResearchToHistoryThread(
+			turnToSessionEntry(turn),
+			prior,
+			threadSnapshotForTurn(turn),
+		);
+		entry.at = researchHistoryTimestamp({
+			existingAt: prior?.at,
+			createdAt: turn.researchStartedAt,
+		});
 		entry.research = true;
 		entry.researchJobId = turn.researchJobId;
 		if (flags.pending) entry.researchPending = true;
 		if (flags.unread) entry.researchUnread = true;
+		const replaceQuestions =
+			entry.thread && entry.thread.length > 1
+				? entry.thread.flatMap((item) =>
+						[item.question, item.originalQuestion || ""].filter(Boolean),
+					)
+				: [];
+		if (replaceQuestions.length > 0) {
+			sessionEntries = removeAskHistoryEntriesByQuestions(
+				sessionEntries,
+				replaceQuestions,
+			);
+		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
 		writeAiAskSession(sessionEntries);
 		renderHistory();
@@ -1826,7 +1855,10 @@ export function attachAiMode(options: {
 			method: "POST",
 			credentials: "same-origin",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ entry }),
+			body: JSON.stringify({
+				entry,
+				...(replaceQuestions.length > 0 ? { replaceQuestions } : {}),
+			}),
 		}).catch(() => {
 			/* history sync is best-effort */
 		});
@@ -1903,11 +1935,28 @@ export function attachAiMode(options: {
 			const jobs = Array.isArray(data.jobs) ? data.jobs : [];
 			let changed = false;
 			for (const job of jobs) {
-				if (!job.pending || !job.id) continue;
-				sessionEntries = upsertAiAskSessionEntry(
-					sessionEntries,
-					researchJobToHistoryEntry(job),
+				if (!job.id) continue;
+				const existing = sessionEntries.find(
+					(item) => item.researchJobId === job.id,
 				);
+				if (job.pending) {
+					sessionEntries = upsertAiAskSessionEntry(
+						sessionEntries,
+						researchJobToHistoryEntry(job, existing),
+					);
+					changed = true;
+					continue;
+				}
+				if (!existing) continue;
+				const nextAt = researchHistoryTimestamp({
+					existingAt: existing.at,
+					createdAt: job.createdAt,
+				});
+				if (nextAt === existing.at) continue;
+				sessionEntries = upsertAiAskSessionEntry(sessionEntries, {
+					...existing,
+					at: nextAt,
+				});
 				changed = true;
 			}
 			if (!changed) return;
@@ -1922,7 +1971,7 @@ export function attachAiMode(options: {
 	function openHistoryEntry(entry: AiAskSessionEntry): void {
 		if (entry.researchUnread) markResearchHistoryRead(entry);
 		if (entry.researchJobId && (entry.researchPending || (entry.research && entry.results.length === 0 && !entry.report))) {
-			void restoreResearchJob(entry.researchJobId);
+			void restoreResearchJob(entry.researchJobId, entry);
 			return;
 		}
 		const restored = askHistoryEntriesForRestore(entry);
@@ -1977,6 +2026,15 @@ export function attachAiMode(options: {
 
 		const thread = threadSnapshotForTurn(turn);
 		const entry = turnToSessionEntry(turn, { thread });
+		if (turn.research && turn.researchJobId) {
+			const prior = sessionEntries.find(
+				(item) => item.researchJobId === turn.researchJobId,
+			);
+			entry.at = researchHistoryTimestamp({
+				existingAt: prior?.at,
+				createdAt: turn.researchStartedAt,
+			});
+		}
 		const replaceQuestions = [
 			...(pendingReplaceQuestions || []),
 			...(extendPin
@@ -2797,12 +2855,6 @@ export function attachAiMode(options: {
 				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
 				: "";
 		const tip = turnIndex === turns.length - 1;
-		const copyBtn =
-			(turn.report || "").trim()
-				? `<button type="button" class="ai-share-btn ai-copy-report-btn" data-ai-copy-report data-turn-index="${turnIndex}" title="Copy report as Markdown">
-					${COPY_REPORT_ICON_SVG}<span class="ai-share-label-full">Copy</span><span class="ai-share-label-short">Copy</span>
-				</button>`
-				: "";
 		const downloadBtn =
 			tip && turn.results.length > 0
 				? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
@@ -2810,13 +2862,13 @@ export function attachAiMode(options: {
 		const shareBtn = tip
 			? `<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>`
 			: "";
-		if (!startBtns && !copyBtn && !downloadBtn && !sampleSaveBtn && !shareBtn) {
+		if (!startBtns && !downloadBtn && !sampleSaveBtn && !shareBtn) {
 			return "";
 		}
 		return `<div class="ai-share-actions">
 			${startBtns}
 			<div class="ai-share-actions-end">
-				${copyBtn}${downloadBtn}${sampleSaveBtn}${shareBtn}
+				${downloadBtn}${sampleSaveBtn}${shareBtn}
 			</div>
 		</div>`;
 	}
@@ -2874,23 +2926,48 @@ export function attachAiMode(options: {
 			}));
 	}
 
-	async function copyResearchReport(
+	async function copyAskAnswer(
 		turn: AiAskTurn,
 		button: HTMLButtonElement,
 	): Promise<void> {
-		const markdown = (turn.report || "").trim();
-		if (!markdown) return;
-		const idle = button.innerHTML;
-		button.disabled = true;
+		const kind = button.getAttribute("data-copy-kind") === "report"
+			? "report"
+			: "answer";
+		const text =
+			kind === "report"
+				? (turn.report || "").trim()
+				: (turn.summary || "").trim();
+		if (!text) return;
+		const index = Number(button.getAttribute("data-turn-index"));
+		const buttons = thread.querySelectorAll<HTMLButtonElement>(
+			`[data-ai-copy-answer][data-turn-index="${index}"]`,
+		);
+		const idles = new Map<HTMLButtonElement, string>();
+		for (const btn of buttons) {
+			idles.set(btn, btn.innerHTML);
+			btn.disabled = true;
+		}
 		try {
-			await navigator.clipboard.writeText(markdown);
-			button.innerHTML = "Copied";
+			await navigator.clipboard.writeText(text);
+			for (const btn of buttons) {
+				btn.classList.add("is-copied");
+				const label = btn.querySelector(".ai-answer-copy-label");
+				if (label) label.textContent = "Copied";
+				btn.setAttribute("aria-label", "Copied");
+			}
 		} catch {
-			button.innerHTML = "Could not copy";
+			for (const btn of buttons) {
+				const label = btn.querySelector(".ai-answer-copy-label");
+				if (label) label.textContent = "Could not copy";
+				btn.setAttribute("aria-label", "Could not copy");
+			}
 		}
 		window.setTimeout(() => {
-			button.disabled = false;
-			button.innerHTML = idle;
+			for (const btn of buttons) {
+				btn.disabled = false;
+				btn.classList.remove("is-copied");
+				btn.innerHTML = idles.get(btn) || btn.innerHTML;
+			}
 		}, 1600);
 	}
 
@@ -3112,15 +3189,18 @@ export function attachAiMode(options: {
 		const reportText = (turn.report || "").trim();
 		const hasHits = turn.results.length > 0;
 		const summary = reportText
-			? `<div class="ai-report"><p class="ai-report-kicker">Research report</p>${renderResearchReportHtml(
-					reportText,
-					turn.results,
-				)}</div>`
+			? wrapAskAnswerHtml({
+					kind: "report",
+					kicker: "Research report",
+					turnIndex,
+					bodyHtml: renderResearchReportHtml(reportText, turn.results),
+				})
 			: hasHits && summaryText
-				? `<div class="ai-summary">${linkifyAskSummaryHtml(
-						summaryText,
-						turn.results,
-					)}</div>`
+				? wrapAskAnswerHtml({
+						kind: "answer",
+						turnIndex,
+						bodyHtml: renderAskBriefingHtml(summaryText, turn.results),
+					})
 				: !turn.pending && turn.rankedBySearchOnly && hasHits
 					? `<p class="ai-result-meta">Ranked by library search only — the rescorer was unavailable, so there is no briefing this time.</p>`
 					: "";
@@ -3534,11 +3614,11 @@ export function attachAiMode(options: {
 				openAskDownload();
 			});
 		});
-		thread.querySelectorAll<HTMLButtonElement>("[data-ai-copy-report]").forEach((button) => {
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-copy-answer]").forEach((button) => {
 			button.addEventListener("click", () => {
 				const index = Number(button.getAttribute("data-turn-index"));
 				const turn = turns[index];
-				if (turn) void copyResearchReport(turn, button);
+				if (turn) void copyAskAnswer(turn, button);
 			});
 		});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-pin]").forEach((button) => {
@@ -4033,7 +4113,10 @@ export function attachAiMode(options: {
 		}
 	}
 
-	async function restoreResearchJob(jobId: string): Promise<boolean> {
+	async function restoreResearchJob(
+		jobId: string,
+		fromHistory?: AiAskSessionEntry,
+	): Promise<boolean> {
 		try {
 			const data = await fetchResearchJob(jobId);
 			if (data.status === 401) {
@@ -4063,7 +4146,13 @@ export function attachAiMode(options: {
 				researchJobId: job.id,
 			};
 			applyResearchJobToTurn(turn, job);
-			turns = [turn];
+			const history =
+				fromHistory ||
+				sessionEntries.find((item) => item.researchJobId === job.id);
+			const priorTurns = askHistoryEntriesForRestore(history)
+				.filter((item) => item.researchJobId !== job.id)
+				.map((item) => sessionEntryToTurn(item));
+			turns = [...priorTurns, turn];
 			syncResearchJobUrl(job.id);
 			if (turn.pending) {
 				persistResearchHistory(turn, { pending: true, unread: false });
@@ -4985,7 +5074,12 @@ export function attachAiMode(options: {
 	}
 
 	if (restoreResearchId) {
-		void refreshQuota().then(() => restoreResearchJob(restoreResearchId));
+		void refreshQuota().then(() =>
+			restoreResearchJob(
+				restoreResearchId,
+				sessionEntries.find((item) => item.researchJobId === restoreResearchId),
+			),
+		);
 	} else if (openQuestion) {
 		if (!openFromHistory(openQuestion)) {
 			// Not on this device yet — prefill while the server copy loads.

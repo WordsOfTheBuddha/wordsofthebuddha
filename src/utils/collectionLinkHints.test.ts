@@ -265,6 +265,51 @@ describe("collectViewportCollectionPostLinks", () => {
 			globalThis.document = previousDocument;
 		}
 	});
+
+	it("skips Ask source cards inside a closed sources list", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<section class="ai-turn">
+					<div class="ai-answer ai-report">
+						<p><a class="ai-summary-ref" href="/mn70">MN 70</a></p>
+					</div>
+					<details class="ai-sources">
+						<summary>Sources · 2 discourses</summary>
+						<div class="ai-hits">
+							<a class="search-discourse-card" data-search-result href="/mn70">MN 70</a>
+							<a class="search-discourse-card" data-search-result href="/sn48.53">SN 48.53</a>
+						</div>
+					</details>
+				</section>
+			</body></html>`);
+		const { document } = dom.window;
+		stubVisibleGeometry(dom, [
+			...document.querySelectorAll("a"),
+			document.querySelector(".ai-sources")!,
+		]);
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		try {
+			assert.deepEqual(
+				collectViewportCollectionPostLinks(document).map((link) =>
+					link.getAttribute("href"),
+				),
+				[],
+			);
+			document.querySelector("details")!.open = true;
+			assert.deepEqual(
+				collectViewportCollectionPostLinks(document).map((link) =>
+					link.getAttribute("href"),
+				),
+				["/mn70", "/sn48.53"],
+			);
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+		}
+	});
 });
 
 function stubVisibleGeometry(dom: JSDOM, elements: Element[]) {

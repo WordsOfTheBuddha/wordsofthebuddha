@@ -1885,7 +1885,10 @@ async function persistHistory(
 				summary: result.summary,
 				report: result.report,
 				shareSlug: result.shareSlug,
-				at: Date.now(),
+				at:
+					record.createdAt && record.createdAt > 0
+						? record.createdAt
+						: Date.now(),
 				requestId: result.requestId,
 				candidateCount: result.candidateCount,
 				research: true,

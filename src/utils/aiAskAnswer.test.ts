@@ -98,6 +98,7 @@ describe("ASK_ANSWER_SYSTEM", () => {
 		assert.match(ASK_ANSWER_SYSTEM, /merely lists/);
 		assert.match(ASK_ANSWER_SYSTEM, /Do not import stock Dhamma/);
 		assert.match(ASK_ANSWER_SYSTEM, /Match the form they asked for/);
+		assert.match(ASK_ANSWER_SYSTEM, /GitHub-flavored markdown/);
 		assert.match(ASK_ANSWER_SYSTEM, /paragraphs/);
 		assert.match(ASK_ANSWER_SYSTEM, /silence\.AN 6\.29/);
 		assert.match(ASK_ANSWER_SYSTEM, /Think briefly/);

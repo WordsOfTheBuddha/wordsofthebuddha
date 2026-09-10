@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	AI_ASK_SESSION_LIMIT,
 	ASK_HISTORY_PREVIEW_LIMIT,
+	attachResearchToHistoryThread,
 	askHistoryEntriesForRestore,
 	askHistoryEntriesForTab,
 	clearActiveAskThread,
@@ -227,6 +228,60 @@ describe("ask conversation thread snapshots", () => {
 			askHistoryEntriesForRestore(solo).map((item) => item.question),
 			["What is anger?"],
 		);
+	});
+});
+
+describe("attachResearchToHistoryThread", () => {
+	it("keeps follow-up research as the last turn of the conversation", () => {
+		const first = entry("Who is a trainee?", 1);
+		const research = entry("What is the bare minimum?", 2, {
+			research: true,
+			researchJobId: "job-follow",
+			report: "## Report",
+		});
+		const attached = attachResearchToHistoryThread(research, null, [
+			first,
+			research,
+		]);
+		assert.equal(attached.thread?.length, 2);
+		assert.equal(attached.thread?.[0]?.question, "Who is a trainee?");
+		assert.equal(attached.thread?.[1]?.researchJobId, "job-follow");
+		assert.deepEqual(
+			askHistoryEntriesForRestore(attached).map((item) => item.question),
+			["Who is a trainee?", "What is the bare minimum?"],
+		);
+	});
+
+	it("reuses the saved thread when the live page is gone", () => {
+		const first = entry("Who is a trainee?", 1);
+		const pending = entry("What is the bare minimum?", 2, {
+			research: true,
+			researchJobId: "job-follow",
+			researchPending: true,
+		});
+		pending.results = [];
+		const existing = {
+			thread: [first, pending],
+		};
+		const finished = entry("What is the bare minimum?", 3, {
+			research: true,
+			researchJobId: "job-follow",
+			report: "## Report",
+		});
+		const attached = attachResearchToHistoryThread(finished, existing);
+		assert.equal(attached.thread?.length, 2);
+		assert.equal(attached.thread?.[0]?.question, "Who is a trainee?");
+		assert.equal(attached.thread?.[1]?.report, "## Report");
+	});
+
+	it("leaves a first-turn research report standalone", () => {
+		const research = entry("Survey feeling", 1, {
+			research: true,
+			researchJobId: "job-solo",
+			report: "## Feeling",
+		});
+		const attached = attachResearchToHistoryThread(research, null, [research]);
+		assert.equal(attached.thread, undefined);
 	});
 });
 

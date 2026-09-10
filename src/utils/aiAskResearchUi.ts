@@ -1,6 +1,9 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
-import type { AiAskSessionEntry } from "./aiAskSession";
+import {
+	attachResearchToHistoryThread,
+	type AiAskSessionEntry,
+} from "./aiAskSession";
 import type {
 	ResearchAskPhase,
 	ResearchJobPublic,
@@ -74,6 +77,8 @@ export interface ResearchTurnFields {
 	requestId?: string;
 	research?: boolean;
 	researchJobId?: string;
+	/** When the research was started — history recency. */
+	researchStartedAt?: number;
 	verifyNote?: string;
 	onTrack?: boolean;
 	progressNote?: string;
@@ -195,6 +200,9 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 ): T {
 	turn.research = true;
 	turn.researchJobId = job.id;
+	if (job.createdAt && job.createdAt > 0) {
+		turn.researchStartedAt = job.createdAt;
+	}
 	const result = job.result;
 	if (result?.question) turn.question = result.question;
 	else if (job.question) turn.question = job.question;
@@ -244,9 +252,76 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	return turn;
 }
 
-export function researchJobToHistoryEntry(job: ResearchJobPublic): AiAskSessionEntry {
+/** History recency is when they asked — not when a long job later finished. */
+export function researchHistoryTimestamp(input: {
+	existingAt?: number;
+	createdAt?: number;
+	now?: number;
+}): number {
+	const existing =
+		typeof input.existingAt === "number" &&
+		Number.isFinite(input.existingAt) &&
+		input.existingAt > 0
+			? Math.round(input.existingAt)
+			: 0;
+	const created =
+		typeof input.createdAt === "number" &&
+		Number.isFinite(input.createdAt) &&
+		input.createdAt > 0
+			? Math.round(input.createdAt)
+			: 0;
+	if (existing > 0 && created > 0) return Math.min(existing, created);
+	if (existing > 0) return existing;
+	if (created > 0) return created;
+	return input.now ?? Date.now();
+}
+
+const ASK_COPY_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" /></svg>`;
+
+export function askAnswerCopyButtonHtml(input: {
+	turnIndex: number;
+	kind: "report" | "answer";
+	placement: "start" | "end";
+}): string {
+	const noun = input.kind === "report" ? "report" : "answer";
+	const title =
+		input.kind === "report" ? "Copy report as Markdown" : "Copy answer";
+	const showLabel = input.placement === "end";
+	return `<button type="button" class="ai-answer-copy" data-ai-copy-answer data-copy-kind="${input.kind}" data-copy-placement="${input.placement}" data-turn-index="${input.turnIndex}" title="${title}" aria-label="Copy ${noun}">
+		${ASK_COPY_ICON_SVG}<span class="ai-answer-copy-label"${showLabel ? "" : " hidden"}>Copy</span>
+	</button>`;
+}
+
+export function wrapAskAnswerHtml(input: {
+	kind: "report" | "answer";
+	bodyHtml: string;
+	turnIndex: number;
+	kicker?: string;
+}): string {
+	const className =
+		input.kind === "report" ? "ai-answer ai-report" : "ai-answer ai-summary";
+	const start =
+		input.kicker
+			? `<div class="ai-answer-toolbar ai-answer-toolbar-start">
+			<p class="ai-report-kicker">${input.kicker}</p>
+			${askAnswerCopyButtonHtml({ turnIndex: input.turnIndex, kind: input.kind, placement: "start" })}
+		</div>`
+			: "";
+	return `<div class="${className}">
+		${start}
+		<div class="ai-answer-body">${input.bodyHtml}</div>
+		<div class="ai-answer-toolbar ai-answer-toolbar-end">
+			${askAnswerCopyButtonHtml({ turnIndex: input.turnIndex, kind: input.kind, placement: "end" })}
+		</div>
+	</div>`;
+}
+
+export function researchJobToHistoryEntry(
+	job: ResearchJobPublic,
+	existing?: { at?: number; thread?: AiAskSessionEntry[] },
+): AiAskSessionEntry {
 	const result = job.result;
-	return {
+	const entry: AiAskSessionEntry = {
 		question: result?.question || job.question,
 		...(result?.originalQuestion && result.originalQuestion !== job.question
 			? { originalQuestion: result.originalQuestion }
@@ -266,7 +341,10 @@ export function researchJobToHistoryEntry(job: ResearchJobPublic): AiAskSessionE
 		reasoning: job.reasoning || result?.reasoning || "",
 		...(result?.summary ? { summary: result.summary } : {}),
 		...(result?.report ? { report: result.report } : {}),
-		at: Date.now(),
+		at: researchHistoryTimestamp({
+			existingAt: existing?.at,
+			createdAt: job.createdAt,
+		}),
 		research: true,
 		researchJobId: job.id,
 		...(job.pending ? { researchPending: true } : {}),
@@ -276,4 +354,5 @@ export function researchJobToHistoryEntry(job: ResearchJobPublic): AiAskSessionE
 				? { candidateCount: result.candidateCount }
 				: {}),
 	};
+	return attachResearchToHistoryThread(entry, existing);
 }

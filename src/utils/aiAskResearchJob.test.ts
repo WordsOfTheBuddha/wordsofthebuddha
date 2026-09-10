@@ -96,6 +96,16 @@ describe("research job status machine", () => {
 		assert.equal(view.phase, "search");
 	});
 
+	it("exposes createdAt for history recency", () => {
+		const view = toResearchJobPublic({
+			id: "job-6",
+			status: "searching",
+			question: "feeling?",
+			createdAt: 1_700_000_000_000,
+		});
+		assert.equal(view.createdAt, 1_700_000_000_000);
+	});
+
 	it("keeps description and PTS on public hits", () => {
 		const view = toResearchJobPublic({
 			id: "job-5",

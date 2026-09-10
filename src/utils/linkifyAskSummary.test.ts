@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	discourseIdAliases,
+	joinAskSummaryParagraphs,
 	linkifyAskSummaryHtml,
+	looksLikeAskMarkdown,
 	normalizeAskSummaryProse,
 } from "./linkifyAskSummary";
 
@@ -73,6 +75,26 @@ describe("normalizeAskSummaryProse", () => {
 			"First.\n\nSecond.",
 		);
 		assert.equal(normalizeAskSummaryProse("abcdefghij", 6), "abcdef");
+	});
+
+	it("keeps markdown tables and lists intact", () => {
+		const table = `| Discourse | Facet |\n| --- | --- |\n| MN 10 | body |`;
+		assert.equal(looksLikeAskMarkdown(table), true);
+		assert.match(normalizeAskSummaryProse(table), /\| MN 10 \| body \|/);
+		const fromParas = joinAskSummaryParagraphs([
+			"| Discourse | Facet |",
+			"| --- | --- |",
+			"| MN 10 | body |",
+		]);
+		assert.match(fromParas, /\| --- \| --- \|/);
+		assert.doesNotMatch(fromParas, /\n\n\| ---/);
+	});
+
+	it("does not treat ordinary prose as markdown", () => {
+		assert.equal(
+			looksLikeAskMarkdown("MN 10 sets out the four establishments of mindfulness."),
+			false,
+		);
 	});
 
 	it("does not break i.e. or discourse-ID decimals", () => {
