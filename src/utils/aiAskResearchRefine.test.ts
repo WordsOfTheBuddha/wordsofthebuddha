@@ -71,7 +71,7 @@ describe("shouldAttemptResearchRefine", () => {
 
 describe("RESEARCH_REFINE_SYSTEM", () => {
 	it("asks for a second search only when the thesis needs it", () => {
-		assert.match(RESEARCH_REFINE_SYSTEM, /needed:true only if/);
+		assert.match(RESEARCH_REFINE_SYSTEM, /needed:true when/);
 		assert.match(RESEARCH_REFINE_SYSTEM, /cross-check/);
 		assert.match(RESEARCH_REFINE_SYSTEM, /You have excerpts/);
 		assert.match(RESEARCH_REFINE_SYSTEM, /readFull/);

@@ -16,7 +16,9 @@ describe("research job status machine", () => {
 		assert.equal(researchJobPhase("verify"), "search");
 		assert.equal(researchJobPhase("searching"), "search");
 		assert.equal(researchJobPhase("crunching"), "rerank");
+		assert.equal(researchJobPhase("reviewing"), "review");
 		assert.equal(researchJobPhase("answering"), "answer");
+		assert.equal(parseResearchJobStatus("reviewing"), "reviewing");
 		assert.equal(researchJobPhase("complete"), "done");
 		assert.equal(researchJobPhase("failed"), "done");
 		assert.equal(researchJobPhase("cancelled"), "done");

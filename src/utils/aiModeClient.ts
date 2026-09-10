@@ -143,7 +143,7 @@ export interface AiAskTurn {
 	/** Curated sample chip — no quota, not the reader's own Ask. */
 	fromSample?: boolean;
 	pending: boolean;
-	phase: "rewrite" | "verify" | "search" | "rerank" | "answer" | "done";
+	phase: "rewrite" | "verify" | "search" | "rerank" | "review" | "answer" | "done";
 	/** Candidate pool size while rescoring (status event). */
 	rerankCandidateCount?: number;
 	/** Target display count while rescoring (status event). */
@@ -346,7 +346,7 @@ export interface AskProcessStep {
 /** Compact process steps for the Ask UI (pending + finished). */
 export function buildAskProcessSteps(input: {
 	pending: boolean;
-	phase: "rewrite" | "verify" | "search" | "rerank" | "answer" | "done";
+	phase: "rewrite" | "verify" | "search" | "rerank" | "review" | "answer" | "done";
 	question: string;
 	lookingFor?: string;
 	queries?: readonly string[];
@@ -413,7 +413,7 @@ export function buildAskProcessSteps(input: {
 	const searchIdle = input.research ? "Search widely" : "Search the library";
 	const searchActive = (() => {
 		const requestBit = requested ? `Requesting ${requested}` : "";
-		if (note && /^reading\b/i.test(note)) return note;
+		if (note && /^(reading|reviewing)\b/i.test(note)) return note;
 		if (note) {
 			return requestBit ? `${requestBit} · ${note}` : note;
 		}
@@ -445,8 +445,13 @@ export function buildAskProcessSteps(input: {
 	// Crunching (rescoring the pool) and showing (the final picks) are two
 	// distinct moments. The strip carries the crunch; the “Showing N” caption
 	// sits with the answer (see askResultsCaption).
+	const alreadyCrunched = input.research === true && shown > 0;
 	let crunched: AskProcessStep;
-	if (phase === "rewrite" || phase === "verify" || phase === "search") {
+	if (
+		phase === "rewrite" ||
+		phase === "verify" ||
+		(phase === "search" && !alreadyCrunched)
+	) {
 		crunched = { state: "todo", text: "Crunch the candidates" };
 	} else if (phase === "rerank") {
 		crunched = {
@@ -485,7 +490,17 @@ export function buildAskProcessSteps(input: {
 			: input.research
 				? { state: "todo", text: "Write the report" }
 				: { state: "todo", text: "Show the best matches" };
-	return [...prefix, searched, crunched, writeStep];
+	if (!input.research) return [...prefix, searched, crunched, writeStep];
+	const reviewed: AskProcessStep =
+		phase === "review"
+			? {
+					state: "active",
+					text: note || "Reviewing the evidence…",
+				}
+			: phase === "answer" || (phase === "search" && alreadyCrunched)
+				? { state: "done", text: "Reviewed the evidence" }
+				: { state: "todo", text: "Review evidence" };
+	return [...prefix, searched, crunched, reviewed, writeStep];
 }
 
 /** Caption shown with the answer once results are in (“Showing 12 discourses”). */

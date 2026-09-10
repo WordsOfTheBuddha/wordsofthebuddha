@@ -56,6 +56,7 @@ import {
 import {
 	formatResearchReadProgress,
 	parseResearchContinueDecision,
+	resolveResearchReadFullSlugs,
 	RESEARCH_CONTINUE_SYSTEM,
 	shouldEvaluateResearchContinue,
 } from "./aiAskResearchContinue";
@@ -1794,8 +1795,10 @@ export async function runResearchJob(options: {
 		if (shouldAttemptResearchRefine(timeLeft(startedAt))) {
 			await throwIfCancelled(current);
 			current = await writeJob(current, {
-				status: "searching",
-				progressNote: "Reading the selected discourses…",
+				status: "reviewing",
+				showCount: results.length,
+				candidateCount: pool.length,
+				progressNote: "Reviewing the evidence…",
 			});
 			const refine = await planResearchRefine({
 				question: plan.correctedQuestion || current.question,
@@ -1907,23 +1910,28 @@ export async function runResearchJob(options: {
 
 		const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
 		if (results.length > 0 && getOpenRouterApiKey() && writerBudget > 0) {
+			const writerGuidance = [plan.rankingGuidance, scoutGuidance]
+				.filter(Boolean)
+				.join(" ");
+			const writerNamedQueries = [...namedQueries, ...scoutQueries];
+			const openingFull = resolveResearchReadFullSlugs(
+				writerNamedQueries,
+				results.map((hit) => hit.slug),
+				scoutReadFull,
+			);
 			current = await writeJob(current, {
 				status: "answering",
 				showCount: results.length,
 				candidateCount: pool.length,
 				progressNote:
-					scoutReadFull.length > 0 || scoutReadPali.length > 0
+					openingFull.length > 0 || scoutReadPali.length > 0
 						? formatResearchReadProgress({
-								readFull: scoutReadFull,
+								readFull: openingFull,
 								readPali: scoutReadPali,
 							})
 						: "Writing the report…",
 			});
 			await throwIfCancelled(current);
-			const writerGuidance = [plan.rankingGuidance, scoutGuidance]
-				.filter(Boolean)
-				.join(" ");
-			const writerNamedQueries = [...namedQueries, ...scoutQueries];
 			try {
 				const written = await retryOnce(
 					"report",

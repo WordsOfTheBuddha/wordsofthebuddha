@@ -302,8 +302,10 @@ describe("buildAskProcessSteps", () => {
 			candidateCount: 80,
 			showCount: 12,
 		});
-		assert.equal(review[3]?.state, "active");
-		assert.equal(review[3]?.text, "Reviewing the report…");
+		assert.equal(review[3]?.state, "done");
+		assert.equal(review[3]?.text, "Reviewed the evidence");
+		assert.equal(review[4]?.state, "active");
+		assert.equal(review[4]?.text, "Reviewing the report…");
 
 		const deeper = buildAskProcessSteps({
 			pending: true,
@@ -317,7 +319,7 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(deeper[1]?.text, "Going deeper…");
 	});
 
-	it("does not insert a scout-verify step for Research", () => {
+	it("does not insert a plan-verify step for Research", () => {
 		const pending = buildAskProcessSteps({
 			pending: true,
 			phase: "search",
@@ -325,11 +327,17 @@ describe("buildAskProcessSteps", () => {
 			lookingFor: "vedanā",
 			research: true,
 		});
-		assert.equal(pending.length, 4);
+		assert.equal(pending.length, 5);
 		assert.equal(pending[0]?.state, "done");
 		assert.equal(pending[1]?.state, "active");
 		assert.equal(pending[1]?.text, "Searching widely…");
-		assert.equal(pending[3]?.text, "Write the report");
+		assert.equal(pending[3]?.text, "Review evidence");
+		assert.equal(pending[3]?.state, "todo");
+		assert.equal(pending[4]?.text, "Write the report");
+		assert.equal(
+			pending.some((step) => /on track|first hits|verify/i.test(step.text)),
+			false,
+		);
 
 		const done = buildAskProcessSteps({
 			pending: false,
@@ -367,12 +375,18 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(searching[1]?.text, "Searching · 3 of 8 queries · 40 so far");
 		const scouting = buildAskProcessSteps({
 			pending: true,
-			phase: "search",
+			phase: "review",
 			question: "feeling?",
 			research: true,
-			progressNote: "Reading the selected discourses…",
+			progressNote: "Reviewing the evidence…",
+			candidateCount: 80,
+			showCount: 12,
 		});
-		assert.equal(scouting[1]?.text, "Reading the selected discourses…");
+		assert.equal(scouting[2]?.state, "done");
+		assert.equal(scouting[3]?.state, "active");
+		assert.equal(scouting[3]?.text, "Reviewing the evidence…");
+		assert.equal(scouting[4]?.state, "todo");
+		assert.equal(scouting[4]?.text, "Write the report");
 		const planning = buildAskProcessSteps({
 			pending: true,
 			phase: "rewrite",
@@ -417,7 +431,8 @@ describe("buildAskProcessSteps", () => {
 			candidateCount: 80,
 			showCount: 12,
 		});
-		assert.equal(reading[3]?.text, "Reading MN 70 in full…");
+		assert.equal(reading[3]?.text, "Reviewed the evidence");
+		assert.equal(reading[4]?.text, "Reading MN 70 in full…");
 	});
 });
 
@@ -608,6 +623,7 @@ describe("applyAskProcessStreamPatch", () => {
 						<li class="is-done"><span class="ai-process-mark">✓</span><span>Understood the question</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Search widely</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Crunch the candidates</span></li>
+						<li class="is-todo"><span class="ai-process-mark">○</span><span>Review evidence</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Write the report</span></li>
 					</ol>
 				</section>

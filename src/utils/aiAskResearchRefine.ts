@@ -15,12 +15,12 @@ You have excerpts and, for some IDs, full English. Use them. Titles alone are no
 
 Three operations, which you may combine:
 - queries: 1–6 library searches (Pāli terms, discourse IDs, topical phrases) when a claim needs a cross-check, a missed collection, or a text the passages point to that is not in this set
-- readFull: ordinary discourse IDs already in this set, when the excerpt is too thin for the brief (a later section, definition, or follower the excerpt does not contain)
+- readFull: ordinary discourse IDs already in this set. Ask for every ID that carries the thesis or whose excerpt is too thin (a later section, definition, or follower the excerpt does not contain). A thorough report should not be written from a slice when the full text is in this set
 - readPali: ordinary discourse IDs already in this set, when a claim turns on Pāli wording
 
 Rules:
-- needed:true only if you can name a concrete gap and give queries, readFull, and/or readPali that would close it
-- If the passages already cover the brief, {"needed":false,"queries":[],"readFull":[],"readPali":[],"reason":"…"}
+- needed:true when a new search, a fuller read, or Pāli would make the report more reliable
+- If the passages already cover the brief in full, {"needed":false,"queries":[],"readFull":[],"readPali":[],"reason":"…"}
 - Do not repeat queries already tried unless a tighter ID or compound will help
 - readFull and readPali only from this set. Never invent those IDs
 - queries may fetch a new ID or term the passages or the brief actually point to. Do not pad with guesswork IDs

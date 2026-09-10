@@ -11,6 +11,7 @@ export type ResearchJobStatus =
 	| "verify"
 	| "searching"
 	| "crunching"
+	| "reviewing"
 	| "answering"
 	| "complete"
 	| "failed"
@@ -21,6 +22,7 @@ export type ResearchAskPhase =
 	| "verify"
 	| "search"
 	| "rerank"
+	| "review"
 	| "answer"
 	| "done";
 
@@ -92,6 +94,7 @@ export function researchJobRetryReusesCredit(input: {
 export function researchJobPhase(status: ResearchJobStatus): ResearchAskPhase {
 	if (status === "searching" || status === "verify") return "search";
 	if (status === "crunching") return "rerank";
+	if (status === "reviewing") return "review";
 	if (status === "answering") return "answer";
 	if (isResearchJobTerminal(status)) return "done";
 	return "rewrite";
@@ -209,6 +212,7 @@ export function parseResearchJobStatus(value: unknown): ResearchJobStatus | null
 		value === "verify" ||
 		value === "searching" ||
 		value === "crunching" ||
+		value === "reviewing" ||
 		value === "answering" ||
 		value === "complete" ||
 		value === "failed" ||
