@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { toResearchJobPublic } from "./aiAskResearchJob";
 import {
 	applyResearchJobToTurn,
+	askComposerMeterIsResearch,
 	askMeterLabel,
 	canShowResearchChip,
 	isAskResearchEnabled,
@@ -30,7 +31,48 @@ function withResearchFlag(value: string | undefined, fn: () => void): void {
 	}
 }
 
+describe("askComposerMeterIsResearch", () => {
+	it("uses Ask credits after a finished report unless Research is on again", () => {
+		assert.equal(
+			askComposerMeterIsResearch({ chipOn: false }),
+			false,
+		);
+		assert.equal(
+			askComposerMeterIsResearch({
+				chipOn: false,
+				clarifying: false,
+				researchPending: false,
+			}),
+			false,
+		);
+		assert.equal(askComposerMeterIsResearch({ chipOn: true }), true);
+		assert.equal(
+			askComposerMeterIsResearch({ chipOn: false, clarifying: true }),
+			true,
+		);
+		assert.equal(
+			askComposerMeterIsResearch({
+				chipOn: false,
+				researchPending: true,
+			}),
+			true,
+		);
+	});
+});
+
 describe("askMeterLabel", () => {
+	it("shows Ask remaining after a finished research when the chip is off", () => {
+		assert.equal(
+			askMeterLabel({
+				signedIn: true,
+				researchOn: askComposerMeterIsResearch({ chipOn: false }),
+				askRemaining: 12,
+				researchRemaining: 0,
+			}),
+			"12 Asks left today",
+		);
+	});
+
 	it("shows only the active mode’s remaining count", () => {
 		assert.equal(
 			askMeterLabel({

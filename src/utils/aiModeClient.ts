@@ -19,6 +19,7 @@ import {
 import {
 	ASK_PLACEHOLDER,
 	applyResearchJobToTurn,
+	askComposerMeterIsResearch,
 	askMeterLabel,
 	canShowResearchChip,
 	RESEARCH_CHIP_STORAGE_KEY,
@@ -1273,8 +1274,13 @@ export function attachAiMode(options: {
 		const label = askMeterLabel({
 			signedIn: true,
 			needsEmailVerification: quota.needsEmailVerification,
-			researchOn:
-				researchUiOn() || Boolean(last?.research && !last.pending),
+			researchOn: askComposerMeterIsResearch({
+				chipOn: researchUiOn(),
+				clarifying: isClarifyingTurn(last),
+				researchPending: Boolean(
+					last?.research && last.pending && last.researchJobId,
+				),
+			}),
 			askRemaining: quota.remaining,
 			researchRemaining: researchQuota?.remaining,
 			hideResearchRemaining: researchRunning,

@@ -65,6 +65,19 @@ export interface ResearchTurnFields {
 	progressNote?: string;
 }
 
+/**
+ * Whether the composer meter should show Research credits.
+ * A finished research turn does not count — follow-ups are ordinary Asks
+ * unless the chip is on again, questions are open, or a job is in flight.
+ */
+export function askComposerMeterIsResearch(input: {
+	chipOn: boolean;
+	clarifying?: boolean;
+	researchPending?: boolean;
+}): boolean {
+	return Boolean(input.chipOn || input.clarifying || input.researchPending);
+}
+
 export function askMeterLabel(input: {
 	signedIn: boolean;
 	needsEmailVerification?: boolean;
