@@ -1,12 +1,12 @@
 ---
-slug: sn6.13
+title: Andhakavinda sutta - At Andhakavinda
+description: Sitting in the open during a pitch-black, stormy night, the Buddha is visited by Brahmā Sahampati, who speaks on the courage of solitary practice and the countless beings who have found release.
+qualities: mindfulness, solitude, without fear, stream-entry, ethical conduct
+theme: inspiration
 character:
-  - "Sakka, lord of the gods"
   - Brahmā Sahampati
-source: suttacentral/bilara-data
-title: Andhakavindasutta
-edition: ms
-granularity: paragraph
+slug: sn6.13
+priority: 1.2
 ---
 
 Ekaṁ samayaṁ bhagavā māgadhesu viharati andhakavinde.
