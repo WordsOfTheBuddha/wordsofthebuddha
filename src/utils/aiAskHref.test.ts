@@ -4,6 +4,7 @@ import {
 	askAuthPageHref,
 	askAuthReturnTo,
 	isAskSearchMode,
+	askResearchJobParam,
 	openAskHistoryHref,
 	openAskResearchHref,
 	searchAskHref,
@@ -74,6 +75,17 @@ describe("askAuthPageHref", () => {
 			askAuthPageHref("/signin", "why anger"),
 			"/signin?returnTo=%2Fsearch%3Fmode%3Dai%26q%3Dwhy%2Banger",
 		);
+	});
+});
+
+describe("askResearchJobParam", () => {
+	it("reads a research job id from the Ask URL", () => {
+		assert.equal(
+			askResearchJobParam("mode=ai&research=30042cc5-e76c-44b0-8c53-7df1a76e8ed5"),
+			"30042cc5-e76c-44b0-8c53-7df1a76e8ed5",
+		);
+		assert.equal(askResearchJobParam("mode=ai"), "");
+		assert.equal(askResearchJobParam("?research=  job-1  "), "job-1");
 	});
 });
 

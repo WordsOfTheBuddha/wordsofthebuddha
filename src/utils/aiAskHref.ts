@@ -56,6 +56,17 @@ export function openAskResearchHref(jobId: string): string {
 	return `/search?${params.toString()}`;
 }
 
+/** Job id from `?research=` on an Ask URL, or empty. */
+export function askResearchJobParam(
+	search: string | URLSearchParams | null | undefined,
+): string {
+	const params =
+		typeof search === "string"
+			? new URLSearchParams(search.startsWith("?") ? search.slice(1) : search)
+			: search || new URLSearchParams();
+	return (params.get("research") || "").replace(/\s+/g, "").trim();
+}
+
 export function openAskHistoryHref(question: string): string {
 	const params = new URLSearchParams();
 	params.set("mode", ASK_SEARCH_MODE);

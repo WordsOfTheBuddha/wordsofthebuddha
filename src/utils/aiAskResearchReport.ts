@@ -1,7 +1,8 @@
+import { Marked, Renderer } from "marked";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
 	linkifyAskSummaryHtml,
-	linkifyDiscourseIdText,
+	linkifyDiscourseIdsInHtml,
 	looksLikeAskMarkdown,
 	normalizeAskSummaryProse,
 } from "./linkifyAskSummary";
@@ -12,16 +13,22 @@ export const RESEARCH_REPORT_MAX_CHARS = 20_000;
 export const RESEARCH_REPORT_SYSTEM = `You write a research report from early Buddhist discourses already selected for the reader. You do not search. You do not invent citations.
 
 Write GitHub-flavored markdown only (no JSON, no HTML tags). Use:
-- ## / ### headings
+- ## / ### / #### headings
 - short paragraphs and lists
 - markdown tables when a comparison, map of collections, or survey of facets helps
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — only IDs whose excerpts or full text you were given
 - no ## Sources section — the harness appends a bilingual source list
 
+Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what the passages support and which IDs carry the claim.
+
+If a claim turns on Pāli wording (a compound, inflection, or a distinction English does not settle), add a final line the harness will strip:
+readPali: MN 70, SN 12.49
+Use only IDs you were given. The harness then opens those discourses in Pāli and English and you rewrite. Omit the line when English is enough, and omit it when Pāli (full text) is already in the passages.
+
 Rules:
-- Write only from the excerpts. If a discourse merely lists terms, say that — do not claim it defines them.
+- Write only from the passages you were given (excerpts, full English, and Pāli when present). If a discourse merely lists terms, say that — do not claim it defines them.
 - Do not import stock Dhamma unless the excerpt states it.
-- Prefer a readable document over padding. Tables should have a header row.
+- Write a thorough report when the passages support it. Prefer a readable document over padding. Tables should have a header row.
 - Space after sentence punctuation. Never glue a discourse ID to the period.
 - Hard / controversial questions: report what the excerpts say and what they do not declare. No safety sermon.
 - Never give crisis counseling, medical, or legal advice.
@@ -31,136 +38,79 @@ export interface ResearchReportResult {
 	report: string;
 	model: string;
 	reasoning: string;
+	/** Selected-set slugs the writer asked to open in Pāli and English. */
+	readPali?: string[];
 }
 
-function escapeAlreadyLinkedInline(
-	html: string,
-): string {
-	return html
-		.replace(/\*\*((?:(?!\*\*).)+)\*\*/g, "<strong>$1</strong>")
-		.replace(
-			/(^|[\s(>])\*([^*\n<]+)\*(?=[\s).,;:!?<*]|$)/g,
-			"$1<em>$2</em>",
-		);
+function escapeHtml(value: string): string {
+	return value
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;");
 }
 
-function inlineHtml(
-	text: string,
-	results: readonly { slug: string; href?: string }[],
-): string {
-	return escapeAlreadyLinkedInline(linkifyDiscourseIdText(text, results));
-}
-
-function splitTableRow(line: string): string[] {
-	const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
-	return trimmed.split("|").map((cell) => cell.trim());
-}
-
-function isSeparatorRow(line: string): boolean {
-	const cells = splitTableRow(line);
-	return (
-		cells.length > 0 &&
-		cells.every((cell) => /^:?-{2,}:?$/.test(cell.replace(/\s+/g, "")))
-	);
-}
-
-function isTableBlock(lines: readonly string[]): boolean {
-	if (lines.length < 2) return false;
-	if (!lines[0]?.includes("|")) return false;
-	return isSeparatorRow(lines[1] || "");
-}
-
-function renderTable(
-	lines: readonly string[],
-	results: readonly { slug: string; href?: string }[],
-): string {
-	const header = splitTableRow(lines[0] || "");
-	const body = lines.slice(2).filter((line) => line.includes("|"));
-	const th = header
-		.map((cell) => `<th>${inlineHtml(cell, results)}</th>`)
-		.join("");
-	const rows = body
-		.map((line) => {
-			const cells = splitTableRow(line);
-			while (cells.length < header.length) cells.push("");
-			return `<tr>${cells
-				.slice(0, header.length)
-				.map((cell) => `<td>${inlineHtml(cell, results)}</td>`)
-				.join("")}</tr>`;
-		})
-		.join("");
-	return `<div class="ai-report-table-wrap"><table class="ai-report-table"><thead><tr>${th}</tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-
-function renderList(
-	lines: readonly string[],
-	ordered: boolean,
-	results: readonly { slug: string; href?: string }[],
-): string {
-	const items = lines
-		.map((line) =>
-			line.replace(ordered ? /^\d+[.)]\s+/ : /^[-*•]\s+/, ""),
-		)
-		.map((line) => `<li>${inlineHtml(line, results)}</li>`)
-		.join("");
-	return ordered ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
-}
-
-function isQuoteBlock(lines: readonly string[]): boolean {
-	const nonempty = lines.filter((line) => line.trim());
-	return (
-		nonempty.length > 0 &&
-		nonempty.every((line) => /^>\s?/.test(line.trim()))
-	);
-}
-
-function renderQuote(
-	lines: readonly string[],
-	results: readonly { slug: string; href?: string }[],
-): string {
-	const text = lines
-		.map((line) => line.trim().replace(/^>\s?/, ""))
-		.filter(Boolean)
-		.join(" ");
-	if (!text) return "";
-	return `<blockquote><p>${inlineHtml(text, results)}</p></blockquote>`;
-}
-
-function renderHeading(
-	line: string,
-	results: readonly { slug: string; href?: string }[],
-): string {
-	const match = line.match(/^(#{1,3})\s+(.*)$/);
-	if (!match) return `<p>${inlineHtml(line, results)}</p>`;
-	const level = match[1]?.length || 2;
-	const tag = level === 1 ? "h2" : level === 2 ? "h2" : "h3";
-	return `<${tag}>${inlineHtml(match[2] || "", results)}</${tag}>`;
-}
-
-function renderBlock(
-	block: string,
-	results: readonly { slug: string; href?: string }[],
-): string {
-	const lines = block
-		.split("\n")
-		.map((line) => line.trimEnd())
-		.filter((line) => line.trim());
-	if (lines.length === 0) return "";
-	if (isQuoteBlock(lines)) return renderQuote(lines, results);
-	if (isTableBlock(lines)) return renderTable(lines, results);
-	const bullet = lines.every((line) => /^[-*•]\s+/.test(line.trim()));
-	const numbered = lines.every((line) => /^\d+[.)]\s+/.test(line.trim()));
-	if (bullet || numbered) {
-		return renderList(
-			lines.map((line) => line.trim()),
-			numbered,
-			results,
-		);
+function safeReportHref(href: string | null | undefined): string | null {
+	const trimmed = (href || "").trim();
+	if (!trimmed) return null;
+	if (trimmed.startsWith("/") && !trimmed.startsWith("//")) return trimmed;
+	if (trimmed.startsWith("#") && !trimmed.toLowerCase().startsWith("#javascript")) {
+		return trimmed;
 	}
-	if (lines.length === 1 && /^#{1,3}\s+/.test(lines[0] || "")) {
-		return renderHeading((lines[0] || "").trim(), results);
-	}
-	return `<p>${lines.map((line) => inlineHtml(line.trim(), results)).join("<br>")}</p>`;
+	return null;
+}
+
+const reportRenderer = new Renderer();
+
+reportRenderer.heading = function ({ tokens, depth }) {
+	const html = this.parser.parseInline(tokens);
+	const tag = depth <= 2 ? "h2" : "h3";
+	return `<${tag}>${html}</${tag}>\n`;
+};
+
+reportRenderer.html = function ({ text }) {
+	return escapeHtml(text);
+};
+
+reportRenderer.image = function ({ text }) {
+	return escapeHtml(text || "");
+};
+
+reportRenderer.link = function ({ href, title, tokens }) {
+	const text = this.parser.parseInline(tokens);
+	const safe = safeReportHref(href);
+	if (!safe) return text;
+	const titleAttr = title ? ` title="${escapeHtml(title)}"` : "";
+	return `<a class="ai-summary-ref" href="${escapeHtml(safe)}"${titleAttr}>${text}</a>`;
+};
+
+reportRenderer.hr = function () {
+	return `<hr class="ai-report-rule">\n`;
+};
+
+reportRenderer.table = function (token) {
+	const inner = Renderer.prototype.table.call(this, token);
+	return `<div class="ai-report-table-wrap">${inner.replace(
+		"<table>",
+		'<table class="ai-report-table">',
+	)}</div>\n`;
+};
+
+const reportMarked = new Marked({
+	async: false,
+	gfm: true,
+	breaks: false,
+	pedantic: false,
+});
+reportMarked.use({ renderer: reportRenderer });
+
+/** GFM soft breaks are spaces; marked leaves the newline in the HTML. */
+function flattenSoftBreaks(html: string): string {
+	return html.replace(
+		/<(p|h2|h3|li|td|th)([^>]*)>([\s\S]*?)<\/\1>/gi,
+		(_match, tag: string, attrs: string, inner: string) =>
+			`<${tag}${attrs}>${inner.replace(/[ \t]*\n[ \t]*/g, " ")}</${tag}>`,
+	);
 }
 
 export function clipResearchReport(
@@ -192,6 +142,31 @@ export function parseResearchReportMarkdown(raw: string): string {
 		}
 	}
 	return clipResearchReport(text);
+}
+
+/** Strip a harness `readPali:` line and return the requested IDs. */
+export function takeResearchReadPaliRequest(raw: string): {
+	report: string;
+	readPali: string[];
+} {
+	const lines = raw.replace(/\r\n/g, "\n").split("\n");
+	const ids: string[] = [];
+	const kept: string[] = [];
+	for (const line of lines) {
+		const match = line.trim().match(/^readPali:\s*(.+)$/i);
+		if (match) {
+			for (const part of match[1].split(/[,;]/)) {
+				const id = part.replace(/\s+/g, " ").trim();
+				if (id) ids.push(id);
+			}
+			continue;
+		}
+		kept.push(line);
+	}
+	return {
+		report: kept.join("\n").replace(/\n{3,}/g, "\n\n").trim(),
+		readPali: ids,
+	};
 }
 
 /** Split a catalog title (`Pali - English`) for source lines. */
@@ -255,9 +230,12 @@ export function replaceResearchSourcesSection(
 }
 
 export function stripResearchSourcesSection(markdown: string): string {
-	return clipResearchReport(markdown)
-		.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
-		.trim();
+	return takeResearchReadPaliRequest(
+		clipResearchReport(markdown).replace(
+			/(?:^|\n)## Sources\b[\s\S]*$/i,
+			"",
+		),
+	).report;
 }
 
 /** Ask briefing: prose paragraphs, or the report renderer when they asked for structure. */
@@ -279,11 +257,11 @@ export function renderResearchReportHtml(
 ): string {
 	const text = stripResearchSourcesSection(markdown);
 	if (!text) return "";
-	return text
-		.split(/\n{2,}/)
-		.map((block) => renderBlock(block, results))
-		.filter(Boolean)
-		.join("");
+	const html = reportMarked.parse(text);
+	return linkifyDiscourseIdsInHtml(
+		flattenSoftBreaks(typeof html === "string" ? html : ""),
+		results,
+	);
 }
 
 export function fallbackResearchReport(options: {

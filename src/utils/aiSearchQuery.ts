@@ -1,5 +1,6 @@
 import { inflectionStemKey } from "./paliInflectionUtils";
 import { compactDiscourseIdQuery, normalizeForComparison } from "./searchRanking";
+import { transformId } from "./transformId";
 
 /** Drop operators so a missed exact/collection query can still find discourses. */
 export function relaxSearchQuery(query: string): string {
@@ -29,6 +30,121 @@ export function normalizeAiSearchQuery(query: string): string {
 export function isPrefixedAiDiscourseIdQuery(query: string): boolean {
 	const compact = compactDiscourseIdQuery(query.replace(/\s+/g, " ").trim());
 	return Boolean(compact && /^[a-z]{2,5}\d/i.test(compact));
+}
+
+function queryOrParts(query: string): string[] {
+	return query
+		.split("|")
+		.map((part) => part.replace(/\s+/g, " ").trim())
+		.filter(Boolean);
+}
+
+/**
+ * Prefixed discourse IDs named in a query, including OR parts
+ * ("SN 12.49 | SN 48.9" → sn12.49, sn48.9).
+ */
+export function prefixedAiDiscourseIdsInQuery(query: string): string[] {
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const part of queryOrParts(query)) {
+		if (!isPrefixedAiDiscourseIdQuery(part)) continue;
+		const compact = normalizeAiSearchQuery(part);
+		const key = compact.toLowerCase();
+		if (!compact || seen.has(key)) continue;
+		seen.add(key);
+		out.push(compact);
+	}
+	return out;
+}
+
+export function prefixedAiDiscourseIdsInQueries(
+	queries: readonly string[] = [],
+): string[] {
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const query of queries) {
+		for (const id of prefixedAiDiscourseIdsInQuery(query)) {
+			const key = id.toLowerCase();
+			if (seen.has(key)) continue;
+			seen.add(key);
+			out.push(id);
+		}
+	}
+	return out;
+}
+
+/** True when every OR-part is a prefixed discourse ID (direct request). */
+export function isPrefixedAiDiscourseIdOnlyQuery(query: string): boolean {
+	const parts = queryOrParts(query);
+	return (
+		parts.length > 0 && parts.every((part) => isPrefixedAiDiscourseIdQuery(part))
+	);
+}
+
+const NAMED_DISCOURSE_PREFIX =
+	"mn|dn|sn|an|dhp|ud|iti|snp|kp|thag|thig|vv|pv|ja|bv|cp|mil";
+const NAMED_DISCOURSE_ID_IN_TEXT = new RegExp(
+	`\\b(${NAMED_DISCOURSE_PREFIX})\\s*(\\d+(?:\\.\\d+)*)\\b`,
+	"gi",
+);
+const MAX_NAMED_DISCOURSE_IDS = 12;
+
+/**
+ * Prefixed discourse IDs the person wrote in prose (MN 70, SN 12.49, SN48.9).
+ * Harness-side — does not depend on the planner putting IDs in queries[].
+ */
+export function prefixedAiDiscourseIdsInText(text: string): string[] {
+	const out: string[] = [];
+	const seen = new Set<string>();
+	const source = (text || "").replace(/\u2019/g, "'");
+	for (const match of source.matchAll(NAMED_DISCOURSE_ID_IN_TEXT)) {
+		const compact = `${(match[1] || "").toLowerCase()}${match[2] || ""}`;
+		if (!isPrefixedAiDiscourseIdQuery(compact)) continue;
+		const key = compact.toLowerCase();
+		if (seen.has(key)) continue;
+		seen.add(key);
+		out.push(compact);
+		if (out.length >= MAX_NAMED_DISCOURSE_IDS) break;
+	}
+	return out;
+}
+
+/** Named IDs from the question first, then any ID-only search chips. */
+export function collectDirectDiscourseIds(input: {
+	question?: string;
+	queries?: readonly string[];
+}): string[] {
+	const out: string[] = [];
+	const seen = new Set<string>();
+	const add = (id: string) => {
+		const key = id.toLowerCase();
+		if (!key || seen.has(key)) return;
+		seen.add(key);
+		out.push(id);
+	};
+	for (const id of prefixedAiDiscourseIdsInText(input.question || "")) add(id);
+	for (const id of prefixedAiDiscourseIdsInQueries(input.queries || [])) add(id);
+	return out;
+}
+
+/** Reader-facing ID list for the process strip (SN 12.49, MN 70). */
+export function formatDirectDiscourseIds(
+	input: { question?: string; queries?: readonly string[] },
+	max = 8,
+): string {
+	return collectDirectDiscourseIds(input)
+		.slice(0, Math.max(1, max))
+		.map((id) => transformId(id))
+		.filter(Boolean)
+		.join(", ");
+}
+
+/** @deprecated use formatDirectDiscourseIds */
+export function formatPrefixedDiscourseIds(
+	queries: readonly string[] = [],
+	max = 8,
+): string {
+	return formatDirectDiscourseIds({ queries }, max);
 }
 
 const MAX_USEFUL_QUERY_WORDS = 8;

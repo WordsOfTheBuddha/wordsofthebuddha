@@ -13,9 +13,11 @@ import {
 	type DiscourseHitLike,
 } from "./aiDiscourseHits";
 import {
-	isPrefixedAiDiscourseIdQuery,
+	isPrefixedAiDiscourseIdOnlyQuery,
 	namedTermSearchQueries,
 	normalizeAiSearchQuery,
+	prefixedAiDiscourseIdsInQuery,
+	prefixedAiDiscourseIdsInText,
 	relaxSearchQuery,
 } from "./aiSearchQuery";
 
@@ -103,15 +105,30 @@ export async function searchHitsForAiQuery(
 	const normalized = normalizeAiSearchQuery(query);
 	if (!normalized) return [];
 
-	if (isPrefixedAiDiscourseIdQuery(normalized)) {
-		const exact = await getSearchDocBySlug(normalized, true);
-		if (exact) return [searchResultFromDoc(exact)];
-
-		const fuzzy = await performSearch(normalized, AI_ASK_SEARCH_OPTIONS);
-		const exactHits = fuzzy.filter(
-			(hit) => hit.slug.toLowerCase() === normalized.toLowerCase(),
-		);
-		return exactHits.slice(0, 1);
+	if (isPrefixedAiDiscourseIdOnlyQuery(normalized)) {
+		const hits: SearchResult[] = [];
+		const seen = new Set<string>();
+		for (const id of prefixedAiDiscourseIdsInQuery(normalized)) {
+			const exact = await getSearchDocBySlug(id, true);
+			if (exact) {
+				const key = exact.slug.toLowerCase();
+				if (seen.has(key)) continue;
+				seen.add(key);
+				hits.push(searchResultFromDoc(exact));
+				continue;
+			}
+			const fuzzy = await performSearch(id, AI_ASK_SEARCH_OPTIONS);
+			const exactHits = fuzzy.filter(
+				(hit) => hit.slug.toLowerCase() === id.toLowerCase(),
+			);
+			for (const hit of exactHits.slice(0, 1)) {
+				const key = hit.slug.toLowerCase();
+				if (seen.has(key)) continue;
+				seen.add(key);
+				hits.push(hit);
+			}
+		}
+		if (hits.length > 0) return hits;
 	}
 
 	const hits = await performSearch(normalized, AI_ASK_SEARCH_OPTIONS);
@@ -322,6 +339,7 @@ export async function searchDiscoursesForQueries(
 	const onProgress = options.onProgress;
 	const wide = mergeLimit >= 100;
 	const perQueryLimit = wide ? PER_QUERY_LIMIT_WIDE : PER_QUERY_LIMIT_NARROW;
+	const namedIds = prefixedAiDiscourseIdsInText(question);
 
 	if (wide) {
 		// Inflate shared indexes once before fan-out. Overlapping first searches
@@ -329,6 +347,7 @@ export async function searchDiscoursesForQueries(
 		await ensureReferenceSearchIndexLoaded();
 		await getNormalizedContentMap(true);
 		const pool = uniqueQueries([
+			...namedIds,
 			...queries,
 			...fallbackQueries,
 			...uniqueQueries(queries).map(relaxSearchQuery),
@@ -353,6 +372,7 @@ export async function searchDiscoursesForQueries(
 	}[] = [];
 	const tried = new Set<string>();
 	const planned = uniqueQueries([
+		...namedIds,
 		...queries,
 		...fallbackQueries,
 		...uniqueQueries(queries).map(relaxSearchQuery),
@@ -384,6 +404,7 @@ export async function searchDiscoursesForQueries(
 		}
 	}
 
+	await run(namedIds);
 	await run(queries);
 	let merged = mergeDiscourseHits(batches, mergeLimit);
 	if (merged.length < ENOUGH_HITS) {

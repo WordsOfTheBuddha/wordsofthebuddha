@@ -1,5 +1,10 @@
 import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
-import { askAuthPageHref, isAskSearchMode, withAskResearchParam } from "./aiAskHref";
+import {
+	askAuthPageHref,
+	askResearchJobParam,
+	isAskSearchMode,
+	withAskResearchParam,
+} from "./aiAskHref";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
@@ -93,6 +98,7 @@ import {
 	assembleSpeechTranscript,
 	type SpeechTranscriptResult,
 } from "./aiSpeechTranscript";
+import { formatDirectDiscourseIds } from "./aiSearchQuery";
 import { transformId } from "./transformId";
 import {
 	ASK_EXPORT_OPEN_EVENT,
@@ -343,6 +349,7 @@ export function buildAskProcessSteps(input: {
 	phase: "rewrite" | "verify" | "search" | "rerank" | "answer" | "done";
 	question: string;
 	lookingFor?: string;
+	queries?: readonly string[];
 	offTopic?: boolean;
 	candidateCount?: number;
 	showCount?: number;
@@ -384,6 +391,10 @@ export function buildAskProcessSteps(input: {
 	}
 
 	const note = (input.progressNote || "").replace(/\s+/g, " ").trim();
+	const requested = formatDirectDiscourseIds({
+		question: input.question,
+		queries: input.queries,
+	});
 	const understood: AskProcessStep =
 		input.clarifyPending && phase === "rewrite"
 			? { state: "active", text: "Understanding the research request…" }
@@ -400,9 +411,19 @@ export function buildAskProcessSteps(input: {
 				};
 
 	const searchIdle = input.research ? "Search widely" : "Search the library";
-	const searchActive = input.research
-		? note || "Searching widely…"
-		: "Searching the library…";
+	const searchActive = (() => {
+		const requestBit = requested ? `Requesting ${requested}` : "";
+		if (note && /^reading\b/i.test(note)) return note;
+		if (note) {
+			return requestBit ? `${requestBit} · ${note}` : note;
+		}
+		if (requestBit) {
+			return input.research
+				? requestBit
+				: `${requestBit} · searching the library…`;
+		}
+		return input.research ? "Searching widely…" : "Searching the library…";
+	})();
 	const searchDone =
 		pool > 0
 			? input.research
@@ -654,10 +675,11 @@ function renderAskThinkingItemHtml(input: {
 	}
 	const clampable =
 		!input.reasoningExpanded && askReasoningIsLong(input.reasoningText);
+	const expanded = Boolean(input.reasoningExpanded);
 	const toggle = askReasoningIsLong(input.reasoningText)
-		? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${input.turnIndex}" aria-expanded="${input.reasoningExpanded ? "true" : "false"}">${input.reasoningExpanded ? "Show less" : "Show all thinking"}</button>`
+		? `<button type="button" class="ai-process-thinking-toggle" data-ai-toggle-thinking data-turn-index="${input.turnIndex}" aria-expanded="${expanded ? "true" : "false"}">${expanded ? "Show less" : "Show all thinking"}</button>`
 		: "";
-	return `<li class="ai-process-thinking${input.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}" aria-label="Model thinking">
+	return `<li class="ai-process-thinking${input.pending ? " is-live" : ""}${clampable ? " is-clamped" : ""}${expanded ? " is-expanded" : ""}" aria-label="Model thinking">
 				<span class="ai-process-mark" aria-hidden="true"></span>
 				<div class="ai-process-thinking-body">
 					<div class="ai-process-thinking-text">${renderAskThinkingHtml(input.reasoningText)}</div>
@@ -713,6 +735,7 @@ export function applyAskThinkingStreamPatch(
 		"is-clamped",
 		!turn.reasoningExpanded && askReasoningIsLong(reasoningText),
 	);
+	thinkingEl.classList.toggle("is-expanded", Boolean(turn.reasoningExpanded));
 	thinkingEl.setAttribute("aria-label", "Model thinking");
 
 	const body = thinkingEl.querySelector(".ai-process-thinking-body");
@@ -749,6 +772,106 @@ export function applyAskThinkingStreamPatch(
 
 	pinClampedAskThinking(section);
 	return true;
+}
+
+export function askProcessStepsFromTurn(
+	turn: Pick<
+		AiAskTurn,
+		| "pending"
+		| "phase"
+		| "question"
+		| "lookingFor"
+		| "queries"
+		| "offTopic"
+		| "rerankCandidateCount"
+		| "rerankShowCount"
+		| "results"
+		| "research"
+		| "researchJobId"
+		| "verifyNote"
+		| "onTrack"
+		| "progressNote"
+	>,
+): AskProcessStep[] {
+	return buildAskProcessSteps({
+		pending: turn.pending,
+		phase: turn.phase,
+		question: turn.question,
+		lookingFor: turn.lookingFor,
+		queries: turn.queries,
+		offTopic: turn.offTopic,
+		candidateCount: turn.rerankCandidateCount,
+		showCount: turn.rerankShowCount,
+		resultCount: turn.results.length,
+		research: turn.research === true,
+		clarifyPending:
+			turn.research === true && turn.pending && !turn.researchJobId,
+		verifyNote: turn.verifyNote,
+		onTrack: turn.onTrack,
+		progressNote: turn.progressNote,
+	});
+}
+
+function processStatusLis(process: Element): HTMLElement[] {
+	return [...process.querySelectorAll<HTMLElement>(":scope > li")].filter(
+		(li) =>
+			!li.classList.contains("ai-process-thinking") &&
+			!li.classList.contains("ai-process-dev"),
+	);
+}
+
+/**
+ * Update process-step labels and live thinking without replacing the thread.
+ * Research polls used to innerHTML + scrollIntoView every 1.5s, which yanked
+ * the page back to the turn while the reader was scrolling.
+ */
+export function applyAskProcessStreamPatch(
+	thread: ParentNode,
+	turn: Pick<
+		AiAskTurn,
+		| "pending"
+		| "phase"
+		| "question"
+		| "lookingFor"
+		| "queries"
+		| "offTopic"
+		| "rerankCandidateCount"
+		| "rerankShowCount"
+		| "results"
+		| "research"
+		| "researchJobId"
+		| "verifyNote"
+		| "onTrack"
+		| "progressNote"
+		| "reasoning"
+		| "reasoningExpanded"
+	>,
+	turnIndex: number,
+): boolean {
+	const section = thread.querySelectorAll(":scope > .ai-turn")[turnIndex];
+	if (!section) return false;
+	const process = section.querySelector(".ai-process");
+	if (!process) return false;
+
+	const steps = askProcessStepsFromTurn(turn);
+	const stepLis = processStatusLis(process);
+	if (stepLis.length !== steps.length) return false;
+
+	steps.forEach((step, index) => {
+		const li = stepLis[index];
+		if (!li) return;
+		li.classList.remove("is-todo", "is-active", "is-done");
+		li.classList.add(`is-${step.state}`);
+		const mark = li.querySelector(".ai-process-mark");
+		if (mark) {
+			mark.textContent =
+				step.state === "done" ? "✓" : step.state === "active" ? "●" : "○";
+		}
+		const text = li.querySelector("span:not(.ai-process-mark)");
+		if (text && text.textContent !== step.text) text.textContent = step.text;
+	});
+
+	return applyAskThinkingStreamPatch(thread, turn, turnIndex);
 }
 
 function isClientFreeModelId(id: string): boolean {
@@ -1187,6 +1310,17 @@ export function attachAiMode(options: {
 		...root.querySelectorAll<HTMLButtonElement>("[data-ai-mic]"),
 	];
 	if (!form || !input || !thread || !empty || !composer) return;
+
+	function setRestoringResearch(on: boolean): void {
+		root.classList.toggle("is-restoring-research", on);
+	}
+
+	if (
+		!shareMode &&
+		askResearchJobParam(window.location.search)
+	) {
+		setRestoringResearch(true);
+	}
 
 	let turns: AiAskTurn[] = [];
 	let sessionEntries = readAiAskSession();
@@ -3160,24 +3294,7 @@ export function attachAiMode(options: {
 			});
 		}
 		const process = processStepsHtml(
-			buildAskProcessSteps({
-				pending: turn.pending,
-				phase: turn.phase,
-				question: turn.question,
-				lookingFor: turn.lookingFor,
-				offTopic: turn.offTopic,
-				candidateCount: turn.rerankCandidateCount,
-				showCount: turn.rerankShowCount,
-				resultCount: turn.results.length,
-				research: turn.research === true,
-				clarifyPending:
-					turn.research === true &&
-					turn.pending &&
-					!turn.researchJobId,
-				verifyNote: turn.verifyNote,
-				onTrack: turn.onTrack,
-				progressNote: turn.progressNote,
-			}),
+			askProcessStepsFromTurn(turn),
 			{
 				afterFirst: thinking,
 				footer:
@@ -3314,6 +3431,10 @@ export function attachAiMode(options: {
 
 	function renderHistory(options?: { focusTab?: boolean }): void {
 		if (!historyEl) return;
+		if (root.classList.contains("is-restoring-research")) {
+			historyEl.hidden = true;
+			return;
+		}
 		if (turns.length > 0 || sessionEntries.length === 0) {
 			historyEl.hidden = true;
 			historyEl.innerHTML = "";
@@ -3562,8 +3683,10 @@ export function attachAiMode(options: {
 				button.disabled = threadPending;
 			});
 		syncResearchChip();
-		empty.hidden = hasThread || shareMode;
-		composer.hidden = hasThread || shareMode;
+		const restoring = root.classList.contains("is-restoring-research");
+		empty.hidden = hasThread || shareMode || restoring;
+		composer.hidden = hasThread || shareMode || restoring;
+		if (historyEl && restoring) historyEl.hidden = true;
 		if (followForm) {
 			followForm.hidden =
 				shareMode || !hasThread || clarifying || declinedOpen;
@@ -3818,7 +3941,7 @@ export function attachAiMode(options: {
 			const turnIndex = turns.length - 1;
 			const turn = turns[turnIndex];
 			if (!turn) return;
-			if (applyAskThinkingStreamPatch(thread, turn, turnIndex)) return;
+			if (applyAskProcessStreamPatch(thread, turn, turnIndex)) return;
 			if (turn.pending) syncLayout();
 		}, 80);
 	}
@@ -3950,8 +4073,20 @@ export function attachAiMode(options: {
 					turn.progressNote =
 						"Still working… this can take a few minutes.";
 				}
+				if (data.job.pending) {
+					const turnIndex = turns.indexOf(turn);
+					if (
+						turnIndex < 0 ||
+						!applyAskProcessStreamPatch(thread, turn, turnIndex)
+					) {
+						const y = window.scrollY;
+						syncLayout();
+						window.scrollTo({ top: y, left: 0, behavior: "auto" });
+					}
+					continue;
+				}
 				syncLayoutAndReveal();
-				if (!data.job.pending) break;
+				break;
 			} catch {
 				turn.pending = false;
 				turn.phase = "done";
@@ -4117,9 +4252,11 @@ export function attachAiMode(options: {
 		jobId: string,
 		fromHistory?: AiAskSessionEntry,
 	): Promise<boolean> {
+		let keepRestoring = false;
 		try {
 			const data = await fetchResearchJob(jobId);
 			if (data.status === 401) {
+				keepRestoring = true;
 				window.location.assign(askAuthPageHref("/signin", null, currentReturnTo()));
 				return true;
 			}
@@ -4165,6 +4302,7 @@ export function attachAiMode(options: {
 				setResearchChipOn(false);
 			}
 			syncLayoutAndReveal();
+			setRestoringResearch(false);
 			if (!turn.pending) {
 				if (!turn.error) persistSessionFromTurn(turn);
 				return true;
@@ -4180,6 +4318,14 @@ export function attachAiMode(options: {
 		} catch {
 			setStatus("Could not load research.");
 			return false;
+		} finally {
+			if (!keepRestoring) {
+				setRestoringResearch(false);
+				if (turns.length === 0) {
+					renderHistory();
+					syncLayout();
+				}
+			}
 		}
 	}
 
@@ -5044,9 +5190,7 @@ export function attachAiMode(options: {
 	}
 
 	const researchJobParam =
-		shareMode || !askSurfaceVisible
-			? ""
-			: (params.get("research") || "").replace(/\s+/g, "").trim();
+		shareMode || !askSurfaceVisible ? "" : askResearchJobParam(params);
 	const rememberedResearchJob =
 		shareMode || !askSurfaceVisible || researchJobParam
 			? ""
@@ -5074,12 +5218,12 @@ export function attachAiMode(options: {
 	}
 
 	if (restoreResearchId) {
-		void refreshQuota().then(() =>
-			restoreResearchJob(
-				restoreResearchId,
-				sessionEntries.find((item) => item.researchJobId === restoreResearchId),
-			),
+		setRestoringResearch(true);
+		void restoreResearchJob(
+			restoreResearchId,
+			sessionEntries.find((item) => item.researchJobId === restoreResearchId),
 		);
+		void refreshQuota();
 	} else if (openQuestion) {
 		if (!openFromHistory(openQuestion)) {
 			// Not on this device yet — prefill while the server copy loads.

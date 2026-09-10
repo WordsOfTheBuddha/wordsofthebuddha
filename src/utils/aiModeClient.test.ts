@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import {
+	applyAskProcessStreamPatch,
 	applyAskThinkingStreamPatch,
 	askReasoningIsLong,
 	askResultsCaption,
@@ -364,6 +365,14 @@ describe("buildAskProcessSteps", () => {
 			progressNote: "Searching · 3 of 8 queries · 40 so far",
 		});
 		assert.equal(searching[1]?.text, "Searching · 3 of 8 queries · 40 so far");
+		const scouting = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "feeling?",
+			research: true,
+			progressNote: "Reading the selected discourses…",
+		});
+		assert.equal(scouting[1]?.text, "Reading the selected discourses…");
 		const planning = buildAskProcessSteps({
 			pending: true,
 			phase: "rewrite",
@@ -371,6 +380,44 @@ describe("buildAskProcessSteps", () => {
 			research: true,
 		});
 		assert.equal(planning[0]?.text, "Planning searches…");
+	});
+
+	it("names requested discourse IDs on the search step", () => {
+		const fromQuestion = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question:
+				"Check SN 12.49, SN 48.9, and MN 70 on whether a saddhānusārī is a trainee.",
+			research: true,
+			queries: ["saddhanusari | dhammanusari"],
+		});
+		assert.equal(fromQuestion[1]?.state, "active");
+		assert.equal(fromQuestion[1]?.text, "Requesting SN 12.49, SN 48.9, MN 70");
+
+		const searching = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "Can a saddhānusārī be a trainee?",
+			research: true,
+			queries: ["SN 12.49 | SN 48.9", "MN 70"],
+			progressNote: "Searching · 2 of 4 queries",
+		});
+		assert.equal(
+			searching[1]?.text,
+			"Requesting SN 12.49, SN 48.9, MN 70 · Searching · 2 of 4 queries",
+		);
+
+		const reading = buildAskProcessSteps({
+			pending: true,
+			phase: "answer",
+			question: "Can a saddhānusārī be a trainee?",
+			research: true,
+			queries: ["MN 70"],
+			progressNote: "Reading MN 70 in full…",
+			candidateCount: 80,
+			showCount: 12,
+		});
+		assert.equal(reading[3]?.text, "Reading MN 70 in full…");
 	});
 });
 
@@ -491,6 +538,7 @@ describe("applyAskThinkingStreamPatch", () => {
 		);
 		assert.equal(thread.querySelector(".ai-turn"), earlier);
 		assert.equal(thinking?.classList.contains("is-clamped"), false);
+		assert.equal(thinking?.classList.contains("is-expanded"), true);
 		assert.equal(toggle?.textContent, "Show less");
 	});
 
@@ -545,5 +593,62 @@ describe("applyAskThinkingStreamPatch", () => {
 			/puṇṇama|GLM|timed out|planned with/i,
 		);
 		assert.equal(thread.querySelector("[data-ai-toggle-thinking]"), null);
+	});
+});
+
+describe("applyAskProcessStreamPatch", () => {
+	it("updates process status in place without replacing earlier turns", () => {
+		const dom = new JSDOM(`<!DOCTYPE html><html><body>
+			<div data-ai-thread>
+				<section class="ai-turn" data-pending="0">
+					<p class="ai-summary">Earlier answer.</p>
+				</section>
+				<section class="ai-turn" data-pending="1">
+					<ol class="ai-process">
+						<li class="is-done"><span class="ai-process-mark">✓</span><span>Understood the question</span></li>
+						<li class="is-todo"><span class="ai-process-mark">○</span><span>Search widely</span></li>
+						<li class="is-todo"><span class="ai-process-mark">○</span><span>Crunch the candidates</span></li>
+						<li class="is-todo"><span class="ai-process-mark">○</span><span>Write the report</span></li>
+					</ol>
+				</section>
+			</div>
+		</body></html>`);
+		const thread = dom.window.document.querySelector("[data-ai-thread]");
+		assert.ok(thread);
+		const earlier = thread.querySelector(".ai-summary");
+		const firstTurn = thread.querySelector(".ai-turn");
+		assert.equal(
+			applyAskProcessStreamPatch(
+				thread,
+				{
+					pending: true,
+					phase: "search",
+					question: "Can a saddhānusārī be a trainee?",
+					lookingFor: "saddhanusari | dhammanusari",
+					queries: ["SN 12.49 | SN 48.9", "MN 70"],
+					offTopic: false,
+					results: [],
+					research: true,
+					researchJobId: "job-1",
+					progressNote: "Searching · 2 of 4 queries",
+					reasoning: "Checking whether named IDs are requested.",
+				},
+				1,
+			),
+			true,
+		);
+		assert.equal(thread.querySelector(".ai-summary"), earlier);
+		assert.equal(thread.querySelector(".ai-turn"), firstTurn);
+		const steps = [...thread.querySelectorAll(".ai-process > li")].filter(
+			(li) =>
+				!li.classList.contains("ai-process-thinking") &&
+				!li.classList.contains("ai-process-dev"),
+		);
+		assert.match(steps[0]?.textContent || "", /Understood/);
+		assert.match(
+			steps[1]?.textContent || "",
+			/Requesting SN 12\.49, SN 48\.9, MN 70 · Searching · 2 of 4 queries/,
+		);
+		assert.ok(steps[1]?.classList.contains("is-active"));
 	});
 });

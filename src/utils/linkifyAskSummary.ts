@@ -120,6 +120,14 @@ function isMdListLine(line: string): boolean {
 	return /^[-*•]\s+\S/.test(trimmed) || /^\d+[.)]\s+\S/.test(trimmed);
 }
 
+function isMdHeadingLine(line: string): boolean {
+	return /^#{1,6}\s+\S/.test(line.trim());
+}
+
+function isMdRuleLine(line: string): boolean {
+	return /^-{3,}$/.test(line.trim());
+}
+
 /**
  * True when the briefing is structured markdown (table, list, heading)
  * rather than ordinary prose paragraphs.
@@ -136,7 +144,7 @@ export function looksLikeAskMarkdown(value: string): boolean {
 		if (line.includes("|") && isMdTableSeparator(next)) return true;
 	}
 	if (lines.filter((line) => isMdListLine(line)).length >= 2) return true;
-	return lines.some((line) => /^#{1,3}\s+\S/.test(line.trim()));
+	return lines.some((line) => isMdHeadingLine(line) || isMdRuleLine(line));
 }
 
 function isStructuredMarkdownLine(line: string): boolean {
@@ -146,7 +154,8 @@ function isStructuredMarkdownLine(line: string): boolean {
 		trimmed.includes("|") ||
 		isMdListLine(trimmed) ||
 		isMdTableSeparator(trimmed) ||
-		/^#{1,3}\s+\S/.test(trimmed) ||
+		isMdHeadingLine(trimmed) ||
+		isMdRuleLine(trimmed) ||
 		/^>\s?/.test(trimmed)
 	);
 }
@@ -264,6 +273,31 @@ export function linkifyDiscourseIdText(
 ): string {
 	const { byKey, pattern } = discourseIdLinkIndex(results);
 	return linkifySummaryParagraph(text, byKey, pattern);
+}
+
+/**
+ * Link discourse IDs in already-escaped HTML text nodes. Skips tags and
+ * existing anchors so marked output is not double-escaped or nested.
+ */
+export function linkifyDiscourseIdsInHtml(
+	html: string,
+	results: readonly { slug: string; href?: string }[],
+): string {
+	const { byKey, pattern } = discourseIdLinkIndex(results);
+	if (!pattern) return html;
+	return html.replace(
+		/(<a\b[^>]*>[\s\S]*?<\/a>)|(<[^>]+>)|([^<]+)/gi,
+		(chunk, _anchor: string | undefined, _tag: string | undefined, text: string | undefined) => {
+			if (!text) return chunk;
+			pattern.lastIndex = 0;
+			return text.replace(pattern, (token) => {
+				const href = byKey.get(token.toLowerCase());
+				return href
+					? `<a class="ai-summary-ref" href="${escapeHtml(href)}">${token}</a>`
+					: token;
+			});
+		},
+	);
 }
 
 function linkifySummaryParagraph(

@@ -443,6 +443,9 @@ describe("AI_REWRITE_SYSTEM_PROMPT", () => {
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /termQueries/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /excludeSlugs \[\] means keep/);
 		assert.match(AI_REWRITE_SYSTEM_PROMPT, /thinking model then writes/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /shown to the reader/);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /request.*by ID/i);
+		assert.match(AI_REWRITE_SYSTEM_PROMPT, /do not spend a primary query slot/i);
 	});
 
 	it("keeps hard ethics in-library and refuses only personal crisis", async () => {

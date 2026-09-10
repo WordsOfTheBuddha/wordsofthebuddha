@@ -9,10 +9,17 @@ import {
 	queriesForResultSlugs,
 } from "./aiDiscourseSearch";
 import {
+	collectDirectDiscourseIds,
+	formatDirectDiscourseIds,
+	formatPrefixedDiscourseIds,
+	isPrefixedAiDiscourseIdOnlyQuery,
 	isPrefixedAiDiscourseIdQuery,
 	isWeakAiSearchQuery,
 	namedTermSearchQueries,
 	normalizeAiSearchQuery,
+	prefixedAiDiscourseIdsInQuery,
+	prefixedAiDiscourseIdsInQueries,
+	prefixedAiDiscourseIdsInText,
 	queryOccursAsTermInQuestion,
 	relaxSearchQuery,
 	topicalFallbackQueries,
@@ -134,6 +141,54 @@ describe("normalizeAiSearchQuery", () => {
 		assert.equal(normalizeAiSearchQuery("Puṇṇama"), "Puṇṇama");
 		assert.equal(isPrefixedAiDiscourseIdQuery("MN 109"), true);
 		assert.equal(isPrefixedAiDiscourseIdQuery("full moon night"), false);
+	});
+});
+
+describe("prefixed discourse ID queries", () => {
+	it("treats OR’d IDs as a direct request of each discourse", () => {
+		assert.equal(isPrefixedAiDiscourseIdOnlyQuery("SN 12.49 | SN 48.9"), true);
+		assert.equal(isPrefixedAiDiscourseIdOnlyQuery("saddhanusari | dhammanusari"), false);
+		assert.deepEqual(prefixedAiDiscourseIdsInQuery("SN 12.49 | SN 48.9"), [
+			"sn12.49",
+			"sn48.9",
+		]);
+		assert.deepEqual(
+			prefixedAiDiscourseIdsInQueries([
+				"saddhanusari | dhammanusari",
+				"SN 12.49 | SN 48.9",
+				"MN 70",
+			]),
+			["sn12.49", "sn48.9", "mn70"],
+		);
+		assert.equal(
+			formatPrefixedDiscourseIds(["SN 12.49 | SN 48.9", "MN 70"]),
+			"SN 12.49, SN 48.9, MN 70",
+		);
+	});
+
+	it("extracts named IDs from the question without planner query chips", () => {
+		const question =
+			"Check SN 12.49, SN 12.50, SN 48.53, SN 6.13, nibbedhika in SN 48.9's faculty of wisdom, and MN 70.";
+		assert.deepEqual(prefixedAiDiscourseIdsInText(question), [
+			"sn12.49",
+			"sn12.50",
+			"sn48.53",
+			"sn6.13",
+			"sn48.9",
+			"mn70",
+		]);
+		assert.deepEqual(prefixedAiDiscourseIdsInText("leave it 27 and an extra note"), []);
+		assert.deepEqual(
+			collectDirectDiscourseIds({
+				question,
+				queries: ["saddhanusari | dhammanusari"],
+			}),
+			["sn12.49", "sn12.50", "sn48.53", "sn6.13", "sn48.9", "mn70"],
+		);
+		assert.equal(
+			formatDirectDiscourseIds({ question: "See MN 70 and SN 12.49." }),
+			"MN 70, SN 12.49",
+		);
 	});
 });
 

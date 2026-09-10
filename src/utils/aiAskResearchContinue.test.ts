@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+	formatResearchReadFullProgress,
+	formatResearchReadPaliProgress,
+	formatResearchReadProgress,
 	parseResearchContinueDecision,
 	resolveResearchReadFullSlugs,
 	RESEARCH_CONTINUE_SYSTEM,
@@ -38,6 +41,22 @@ describe("parseResearchContinueDecision", () => {
 		);
 		assert.equal(decision.continue, true);
 		assert.deepEqual(decision.readFull, ["mn70"]);
+	});
+
+	it("continues for a Pali and English reread of a selected discourse", () => {
+		const decision = parseResearchContinueDecision(
+			JSON.stringify({
+				continue: true,
+				queries: [],
+				readPali: ["MN 70", "sn99.1"],
+				reason: "The claim turns on the Pāli compound.",
+			}),
+			[],
+			["mn70", "an3.85"],
+		);
+		assert.equal(decision.continue, true);
+		assert.deepEqual(decision.readPali, ["mn70"]);
+		assert.deepEqual(decision.readFull, []);
 	});
 
 	it("does not continue when readFull IDs are not in the selected set", () => {
@@ -84,6 +103,49 @@ describe("resolveResearchReadFullSlugs", () => {
 			["mn70", "an3.85", "sn12.33"],
 		);
 	});
+
+	it("splits OR’d named IDs into individual full reads", () => {
+		assert.deepEqual(
+			resolveResearchReadFullSlugs(
+				["SN 12.49 | SN 48.9", "nibbedhika"],
+				["sn12.49", "sn48.9", "sn48.53"],
+			),
+			["sn12.49", "sn48.9"],
+		);
+	});
+});
+
+describe("formatResearchReadFullProgress", () => {
+	it("names the discourses being opened in full", () => {
+		assert.equal(
+			formatResearchReadFullProgress([]),
+			"Reading selected discourses in full…",
+		);
+		assert.equal(
+			formatResearchReadFullProgress(["mn70", "sn12.49"]),
+			"Reading MN 70, SN 12.49 in full…",
+		);
+	});
+});
+
+describe("formatResearchReadPaliProgress", () => {
+	it("names the discourses being opened in Pāli and English", () => {
+		assert.equal(
+			formatResearchReadPaliProgress([]),
+			"Reading Pāli with the English…",
+		);
+		assert.equal(
+			formatResearchReadPaliProgress(["mn70", "sn12.49"]),
+			"Reading MN 70, SN 12.49 in Pāli and English…",
+		);
+		assert.equal(
+			formatResearchReadProgress({
+				readFull: ["an3.85"],
+				readPali: ["mn70"],
+			}),
+			"Reading MN 70 in Pāli and English…",
+		);
+	});
 });
 
 describe("shouldEvaluateResearchContinue", () => {
@@ -97,6 +159,7 @@ describe("RESEARCH_CONTINUE_SYSTEM", () => {
 	it("asks the model for a concrete gap before continuing", () => {
 		assert.match(RESEARCH_CONTINUE_SYSTEM, /continue:true only if/);
 		assert.match(RESEARCH_CONTINUE_SYSTEM, /readFull/);
+		assert.match(RESEARCH_CONTINUE_SYSTEM, /readPali/);
 		assert.match(RESEARCH_CONTINUE_SYSTEM, /Do not ask for a second pass only to polish prose/);
 	});
 });

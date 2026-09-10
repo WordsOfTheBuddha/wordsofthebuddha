@@ -13,8 +13,10 @@ import {
 	formatAskAnswerEvidenceBlock,
 	parseAskAnswerSummary,
 	pickMatchingParagraphs,
+	RESEARCH_FULL_TEXT_CHARS,
 	resolveAskWriterBudgetMs,
 	selectAskAnswerPassages,
+	selectFullDiscoursePassages,
 } from "./aiAskAnswer";
 
 describe("askAnswerHints", () => {
@@ -101,7 +103,8 @@ describe("ASK_ANSWER_SYSTEM", () => {
 		assert.match(ASK_ANSWER_SYSTEM, /GitHub-flavored markdown/);
 		assert.match(ASK_ANSWER_SYSTEM, /paragraphs/);
 		assert.match(ASK_ANSWER_SYSTEM, /silence\.AN 6\.29/);
-		assert.match(ASK_ANSWER_SYSTEM, /Think briefly/);
+		assert.match(ASK_ANSWER_SYSTEM, /shown to the reader/);
+		assert.match(ASK_ANSWER_SYSTEM, /When you can/);
 	});
 });
 
@@ -134,6 +137,37 @@ describe("createWatchdogAbortSignal", () => {
 		clearInterval(tick);
 		assert.equal(live.signal.aborted, false);
 		live.dispose();
+	});
+});
+
+describe("RESEARCH_FULL_TEXT_CHARS", () => {
+	it("is large enough for most MN-length discourses", () => {
+		assert.equal(RESEARCH_FULL_TEXT_CHARS, 50_000);
+	});
+});
+
+describe("selectFullDiscoursePassages", () => {
+	it("returns English and Pali together when Pali is requested", () => {
+		const passages = selectFullDiscoursePassages({
+			english: "The faith-follower is defined here.",
+			pali: "Saddhānusārī idha paññāyati.",
+			includePali: true,
+		});
+		assert.deepEqual(
+			passages.map((passage) => passage.source),
+			["English (full text)", "Pali (full text)"],
+		);
+		assert.match(passages[0]?.text || "", /faith-follower/);
+		assert.match(passages[1]?.text || "", /Saddhānusārī/);
+	});
+
+	it("keeps English only when Pali is not requested", () => {
+		const passages = selectFullDiscoursePassages({
+			english: "The faith-follower is defined here.",
+			pali: "Saddhānusārī idha paññāyati.",
+		});
+		assert.equal(passages.length, 1);
+		assert.equal(passages[0]?.source, "English (full text)");
 	});
 });
 
@@ -286,6 +320,37 @@ describe("buildAskAnswerEvidence", () => {
 		);
 		assert.match(pack.expanded[0]?.passages[0]?.text || "", /AAA opening/);
 		assert.match(pack.expanded[0]?.passages[0]?.text || "", /saddhanusari/);
+	});
+
+	it("opens requested slugs in Pali and English", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			[],
+			async () =>
+				({
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					content: "The faith-follower is defined here.",
+					contentPali: "Saddhānusārī idha paññāyati.",
+				}) as const,
+			4,
+			{ paliSlugs: ["mn70"] },
+		);
+		assert.equal(pack.expanded[0]?.full, true);
+		assert.equal(pack.expanded[0]?.passages.length, 2);
+		assert.equal(pack.expanded[0]?.passages[0]?.source, "English (full text)");
+		assert.equal(pack.expanded[0]?.passages[1]?.source, "Pali (full text)");
+		assert.match(pack.expanded[0]?.passages[1]?.text || "", /Saddhānusārī/);
 	});
 
 	it("keeps the rest of the selected set as IDs when the writer cap is 28", async () => {

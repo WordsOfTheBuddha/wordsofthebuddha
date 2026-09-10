@@ -97,6 +97,10 @@ describe("normalizeAskSummaryProse", () => {
 		);
 	});
 
+	it("treats #### headings as markdown", () => {
+		assert.equal(looksLikeAskMarkdown("#### 1. Higher virtue"), true);
+	});
+
 	it("does not break i.e. or discourse-ID decimals", () => {
 		const text = normalizeAskSummaryProse(
 			"Feelings arise known (viditā) — i.e., tracking ordinary mental events as in AN 4.41.",

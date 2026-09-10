@@ -45,6 +45,11 @@ Astro.response.headers.set(
 				if (searchPane) searchPane.hidden = ask;
 				if (askPane) askPane.hidden = !ask;
 				if (title) title.textContent = ask ? "Ask" : "Search";
+				var researchId = (params.get("research") || "").replace(/\s+/g, "");
+				var askRoot = askPane && askPane.querySelector("[data-ai-mode]");
+				if (ask && researchId && askRoot) {
+					askRoot.classList.add("is-restoring-research");
+				}
 				document.querySelectorAll("[data-search-mode-link]").forEach(function (link) {
 					var mode = link.getAttribute("data-search-mode-link");
 					var next = new URL(location.href);

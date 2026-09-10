@@ -46,7 +46,7 @@ Return JSON only:
 You may use {"summary":"…"} instead; if so, put a blank line (\\n\\n) between paragraphs.
 
 Rules:
-- Think briefly, then return the JSON. Do not narrate every excerpt in hidden thinking.
+- Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what they support. Do not narrate every excerpt.
 - Write only from the excerpts. If a discourse merely lists terms, say that it lists them — do not claim it defines, elaborates, or analyzes those terms.
 - Do not import stock Dhamma (jhāna formulas, four noble truths, anicca-dukkha-anattā, “stable base for insight”) unless the excerpt actually states that for this term.
 - Match the form they asked for. If they demonstrated a syntax, definition line, list, or comparison, use that. Several short paragraphs are the default briefing form when they did not specify a form.
@@ -73,8 +73,8 @@ export interface AskAnswerHitEvidence {
 /** Research excerpts are longer than Ask; full reads skip hint-picking. */
 export const RESEARCH_EXCERPT_CHARS = 3600;
 export const RESEARCH_EXCERPT_PARAS = 8;
-/** Enough for a typical MN; longer discourses add later matching paragraphs. */
-export const RESEARCH_FULL_TEXT_CHARS = 28_000;
+/** Enough for most MN-length discourses; long DN texts still clip. */
+export const RESEARCH_FULL_TEXT_CHARS = 50_000;
 
 function errorStatus(error: unknown): number {
 	return typeof error === "object" &&
@@ -257,6 +257,8 @@ export function selectFullDiscoursePassages(input: {
 	maxChars?: number;
 	hints?: readonly string[];
 	maxParas?: number;
+	/** When the thinking model asked for Pāli, send both languages. */
+	includePali?: boolean;
 }): AskAnswerPassage[] {
 	const maxChars = input.maxChars ?? RESEARCH_FULL_TEXT_CHARS;
 	const english = composeFullDiscourseText(
@@ -265,20 +267,25 @@ export function selectFullDiscoursePassages(input: {
 		input.hints,
 		input.maxParas,
 	);
-	if (english) {
-		return [
-			{
-				source: input.referenceOnly ? "Sujato English (full text)" : "English (full text)",
-				text: english,
-			},
-		];
-	}
 	const pali = composeFullDiscourseText(
 		input.pali || "",
 		maxChars,
 		input.hints,
 		input.maxParas,
 	);
+	const out: AskAnswerPassage[] = [];
+	if (english) {
+		out.push({
+			source: input.referenceOnly
+				? "Sujato English (full text)"
+				: "English (full text)",
+			text: english,
+		});
+	}
+	if (input.includePali && pali) {
+		out.push({ source: "Pali (full text)", text: pali });
+	}
+	if (out.length > 0) return out;
 	if (pali) return [{ source: "Pali (full text)", text: pali }];
 	const fallback = composeFullDiscourseText(
 		input.fallback || "",
@@ -341,6 +348,8 @@ export async function buildAskAnswerEvidence(
 	maxExpanded = ASK_ANSWER_MAX_EXPANDED,
 	options?: {
 		fullSlugs?: readonly string[];
+		/** Full English plus full Pāli for these slugs. */
+		paliSlugs?: readonly string[];
 		excerptChars?: number;
 		excerptParas?: number;
 		fullChars?: number;
@@ -355,8 +364,17 @@ export async function buildAskAnswerEvidence(
 	const fullSet = new Set(
 		(options?.fullSlugs || []).map((slug) => slug.trim().toLowerCase()),
 	);
-	const fullHits = hits.filter((hit) => fullSet.has(hit.slug.toLowerCase()));
-	const restHits = hits.filter((hit) => !fullSet.has(hit.slug.toLowerCase()));
+	const paliSet = new Set(
+		(options?.paliSlugs || []).map((slug) => slug.trim().toLowerCase()),
+	);
+	const fullHits = hits.filter((hit) => {
+		const slug = hit.slug.toLowerCase();
+		return fullSet.has(slug) || paliSet.has(slug);
+	});
+	const restHits = hits.filter((hit) => {
+		const slug = hit.slug.toLowerCase();
+		return !fullSet.has(slug) && !paliSet.has(slug);
+	});
 	const ordered = [...fullHits, ...restHits];
 	const excerptChars = options?.excerptChars ?? ASK_ANSWER_HIT_CHARS;
 	const excerptParas = options?.excerptParas ?? ASK_ANSWER_MAX_PARAS;
@@ -370,7 +388,9 @@ export async function buildAskAnswerEvidence(
 		const fallback = [hit.contentSnippet, hit.description]
 			.filter(Boolean)
 			.join("\n\n");
-		const wantFull = fullSet.has(hit.slug.toLowerCase());
+		const slug = hit.slug.toLowerCase();
+		const wantPali = paliSet.has(slug);
+		const wantFull = fullSet.has(slug) || wantPali;
 		const passages = wantFull
 			? selectFullDiscoursePassages({
 					english: doc?.content,
@@ -380,6 +400,7 @@ export async function buildAskAnswerEvidence(
 					maxChars: fullChars,
 					hints,
 					maxParas: excerptParas,
+					includePali: wantPali,
 				})
 			: selectAskAnswerPassages({
 					english: doc?.content,

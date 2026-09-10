@@ -51,8 +51,10 @@ import {
 import {
 	fallbackResearchReport,
 	formatResearchSourceLine,
+	type ResearchReportResult,
 } from "./aiAskResearchReport";
 import {
+	formatResearchReadProgress,
 	parseResearchContinueDecision,
 	RESEARCH_CONTINUE_SYSTEM,
 	shouldEvaluateResearchContinue,
@@ -62,8 +64,12 @@ import {
 	RESEARCH_REFINE_SYSTEM,
 	shouldAttemptResearchRefine,
 } from "./aiAskResearchRefine";
+import { collectDirectDiscourseIds } from "./aiSearchQuery";
 import { getPtsDisplay } from "./ptsReferences";
-import { writeResearchReport } from "./aiAskResearchReportWrite";
+import {
+	buildResearchReportEvidence,
+	writeResearchReport,
+} from "./aiAskResearchReportWrite";
 import { sendResearchEmail } from "./researchEmail";
 import {
 	consumeResearchQuota,
@@ -136,6 +142,7 @@ interface ResearchJobRecord {
 	continueFallbackQueries?: string[];
 	continueGuidance?: string;
 	continueReadFull?: string[];
+	continueReadPali?: string[];
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -240,6 +247,9 @@ function recordFromData(
 				: undefined,
 		continueReadFull: Array.isArray(data.continueReadFull)
 			? (data.continueReadFull as string[])
+			: undefined,
+		continueReadPali: Array.isArray(data.continueReadPali)
+			? (data.continueReadPali as string[])
 			: undefined,
 	};
 }
@@ -585,6 +595,7 @@ export async function retryResearchJob(options: {
 		continueFallbackQueries: [],
 		continueGuidance: "",
 		continueReadFull: [],
+		continueReadPali: [],
 		result: null,
 		reasoning: "",
 		lookingFor: "",
@@ -661,20 +672,21 @@ async function planResearchRefine(input: {
 	brief: string;
 	triedQueries: readonly string[];
 	hits: readonly AiDiscourseHit[];
+	termQueries?: readonly string[];
+	namedQueries?: readonly string[];
 }): Promise<ReturnType<typeof parseResearchRefinePlan>> {
 	if (!getOpenRouterApiKey()) {
 		return parseResearchRefinePlan("");
 	}
-	const selected = input.hits
-		.slice(0, 40)
-		.map((hit) => {
-			const id = hit.slug;
-			const title = (hit.title || "").replace(/\s+/g, " ").trim();
-			return title ? `${id} — ${title}` : id;
-		})
-		.join("\n");
+	const selectedSlugs = input.hits.map((hit) => hit.slug);
 	const tried = input.triedQueries.filter(Boolean).join(", ");
 	try {
+		const evidence = await buildResearchReportEvidence({
+			question: input.question,
+			hits: input.hits,
+			termQueries: input.termQueries,
+			namedQueries: input.namedQueries,
+		});
 		const reply = await openRouterChat({
 			model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 			jsonMode: true,
@@ -685,14 +697,18 @@ async function planResearchRefine(input: {
 					role: "user",
 					content: `Question: ${input.question.replace(/\s+/g, " ").trim()}
 ${input.brief ? `Clarifying brief:\n${input.brief}\n` : ""}Tried queries: ${tried || "(none)"}
-Selected discourses:
-${selected || "(none)"}
+Passages from the selected discourses (excerpts, and full text where named IDs were opened):
+${evidence.trim() || "(none)"}
 
 JSON:`,
 				},
 			],
 		});
-		return parseResearchRefinePlan(reply.content, input.triedQueries);
+		return parseResearchRefinePlan(
+			reply.content,
+			input.triedQueries,
+			selectedSlugs,
+		);
 	} catch (error) {
 		console.warn(
 			"[ai/research] refine planner failed",
@@ -749,6 +765,29 @@ JSON:`,
 			error instanceof Error ? error.message : error,
 		);
 		return parseResearchContinueDecision("");
+	}
+}
+
+async function followUpResearchPaliRead(input: {
+	written: ResearchReportResult;
+	startedAt: number;
+	onProgress: (slugs: readonly string[]) => Promise<void>;
+	write: (timeoutMs: number) => Promise<ResearchReportResult>;
+}): Promise<ResearchReportResult> {
+	const slugs = input.written.readPali || [];
+	if (!input.written.report || slugs.length === 0) return input.written;
+	const timeoutMs = resolveAskWriterBudgetMs(Date.now() - input.startedAt);
+	if (timeoutMs <= 0) return input.written;
+	await input.onProgress(slugs);
+	try {
+		const again = await input.write(timeoutMs);
+		return again.report ? again : input.written;
+	} catch (error) {
+		console.warn(
+			"[ai/research] pali reread failed",
+			error instanceof Error ? error.message : error,
+		);
+		return input.written;
 	}
 }
 
@@ -882,7 +921,12 @@ async function runResearchChainPass(
 	}
 	const continueQueries = (current.continueQueries || []).filter(Boolean);
 	const readFull = (current.continueReadFull || []).filter(Boolean);
-	if (continueQueries.length === 0 && readFull.length === 0) {
+	const readPali = (current.continueReadPali || []).filter(Boolean);
+	if (
+		continueQueries.length === 0 &&
+		readFull.length === 0 &&
+		readPali.length === 0
+	) {
 		await finalizeFromDraft(current.uid, current.id, current.runToken);
 		return;
 	}
@@ -951,7 +995,7 @@ async function runResearchChainPass(
 			progressNote:
 				continueQueries.length > 0
 					? "Going deeper…"
-					: "Reading selected discourses in full…",
+					: formatResearchReadProgress({ readFull, readPali }),
 		});
 		if (continueQueries.length > 0) {
 			try {
@@ -977,7 +1021,11 @@ async function runResearchChainPass(
 				pool.push(hit);
 				freshHits.push(hit);
 			}
-			if (freshHits.length === 0 && readFull.length === 0) {
+			if (
+				freshHits.length === 0 &&
+				readFull.length === 0 &&
+				readPali.length === 0
+			) {
 				await commitDraft();
 				return;
 			}
@@ -1034,7 +1082,7 @@ async function runResearchChainPass(
 				"[ai/research] continue search failed",
 				error instanceof Error ? error.message : error,
 			);
-			if (readFull.length === 0) {
+			if (readFull.length === 0 && readPali.length === 0) {
 				await commitDraft();
 				return;
 			}
@@ -1073,11 +1121,13 @@ async function runResearchChainPass(
 						timeoutMs: writerBudget,
 						priorReport: draft.report,
 						namedQueries: [
+							...collectDirectDiscourseIds({ question }),
 							...plan.queries,
 							...plan.fallbackQueries,
 							...(plan.termQueries || []),
 						],
 						readFullSlugs: readFull,
+						readPaliSlugs: readPali,
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
@@ -1090,13 +1140,51 @@ async function runResearchChainPass(
 					});
 				},
 			);
-			if (!written.report) {
+			const followed = await followUpResearchPaliRead({
+				written,
+				startedAt,
+				onProgress: async (slugs) => {
+					current = await writeJob(current, {
+						status: "answering",
+						progressNote: formatResearchReadProgress({
+							readPali: slugs,
+						}),
+					});
+					await throwIfCancelled(current);
+				},
+				write: (timeoutMs) =>
+					writeResearchReport({
+						question,
+						brief,
+						hits: results,
+						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+						termQueries: plan.termQueries,
+						guidance: current.continueGuidance || plan.rankingGuidance,
+						history,
+						timeoutMs,
+						priorReport: written.report,
+						namedQueries: [
+							...collectDirectDiscourseIds({ question }),
+							...plan.queries,
+							...plan.fallbackQueries,
+							...(plan.termQueries || []),
+						],
+						readFullSlugs: [...readFull, ...(written.readPali || [])],
+						readPaliSlugs: written.readPali,
+						onReasoning: (delta) => {
+							const next = `${current.reasoning || ""}${delta}`;
+							current = { ...current, reasoning: next };
+							void writeJob(current, { reasoning: next });
+						},
+					}),
+			});
+			if (!followed.report) {
 				await commitDraft();
 				return;
 			}
-			report = written.report;
-			usedModel = `${usedModel} + ${written.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
-			if (written.reasoning) reasoning = written.reasoning;
+			report = followed.report;
+			usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
+			if (followed.reasoning) reasoning = followed.reasoning;
 		} catch (error) {
 			console.warn(
 				"[ai/research] continue writer failed — keeping first report",
@@ -1350,12 +1438,18 @@ export async function runResearchJob(options: {
 			],
 		});
 		if (!decision.continue) return false;
-		if (decision.queries.length === 0 && decision.readFull.length > 0) {
+		if (
+			decision.queries.length === 0 &&
+			(decision.readFull.length > 0 || decision.readPali.length > 0)
+		) {
 			const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
 			if (writerBudget > 0 && getOpenRouterApiKey() && results.length > 0) {
 				current = await writeJob(current, {
 					status: "answering",
-					progressNote: "Reading selected discourses in full…",
+					progressNote: formatResearchReadProgress({
+						readFull: decision.readFull,
+						readPali: decision.readPali,
+					}),
 				});
 				await throwIfCancelled(current);
 				try {
@@ -1370,20 +1464,66 @@ export async function runResearchJob(options: {
 						timeoutMs: writerBudget,
 						priorReport: artifact.report,
 						namedQueries: [
+							...collectDirectDiscourseIds({
+								question: artifact.question,
+							}),
 							...decision.queries,
 							...decision.fallbackQueries,
 						],
 						readFullSlugs: decision.readFull,
+						readPaliSlugs: decision.readPali,
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
 							void writeJob(current, { reasoning: next });
 						},
 					});
-					if (written.report) {
-						report = written.report;
-						usedModel = `${usedModel} + ${written.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
-						if (written.reasoning) reasoning = written.reasoning;
+					const followed = await followUpResearchPaliRead({
+						written,
+						startedAt,
+						onProgress: async (slugs) => {
+							current = await writeJob(current, {
+								status: "answering",
+								progressNote: formatResearchReadProgress({
+									readPali: slugs,
+								}),
+							});
+							await throwIfCancelled(current);
+						},
+						write: (timeoutMs) =>
+							writeResearchReport({
+								question: artifact.question,
+								brief,
+								hits: results,
+								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+								termQueries: plan.termQueries,
+								guidance: decision.guidance || plan.rankingGuidance,
+								history,
+								timeoutMs,
+								priorReport: written.report,
+								namedQueries: [
+									...collectDirectDiscourseIds({
+										question: artifact.question,
+									}),
+									...decision.queries,
+									...decision.fallbackQueries,
+								],
+								readFullSlugs: [
+									...decision.readFull,
+									...(written.readPali || []),
+								],
+								readPaliSlugs: written.readPali,
+								onReasoning: (delta) => {
+									const next = `${current.reasoning || ""}${delta}`;
+									current = { ...current, reasoning: next };
+									void writeJob(current, { reasoning: next });
+								},
+							}),
+					});
+					if (followed.report) {
+						report = followed.report;
+						usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
+						if (followed.reasoning) reasoning = followed.reasoning;
 						return false;
 					}
 				} catch (error) {
@@ -1402,11 +1542,15 @@ export async function runResearchJob(options: {
 			continueQueries: decision.queries,
 			continueFallbackQueries: decision.fallbackQueries,
 			continueReadFull: decision.readFull,
+			continueReadPali: decision.readPali,
 			continueGuidance: decision.guidance,
 			progressNote:
 				decision.queries.length > 0
 					? "Going deeper…"
-					: "Reading selected discourses in full…",
+					: formatResearchReadProgress({
+							readFull: decision.readFull,
+							readPali: decision.readPali,
+						}),
 			lookingFor: artifact.lookingFor,
 			queries: artifact.queries,
 			fallbackQueries: artifact.fallbackQueries,
@@ -1634,19 +1778,38 @@ export async function runResearchJob(options: {
 		shownQueries =
 			contributingQueries.length > 0 ? contributingQueries : plan.queries;
 
+		const namedQueries = [
+			...collectDirectDiscourseIds({
+				question: plan.correctedQuestion || current.question,
+			}),
+			...plan.queries,
+			...plan.fallbackQueries,
+			...(plan.termQueries || []),
+		];
+		let scoutReadFull: string[] = [];
+		let scoutReadPali: string[] = [];
+		let scoutGuidance = "";
+		let scoutQueries: string[] = [];
+
 		if (shouldAttemptResearchRefine(timeLeft(startedAt))) {
 			await throwIfCancelled(current);
 			current = await writeJob(current, {
 				status: "searching",
-				progressNote: "Checking for gaps…",
+				progressNote: "Reading the selected discourses…",
 			});
 			const refine = await planResearchRefine({
 				question: plan.correctedQuestion || current.question,
 				brief,
 				triedQueries: [...plan.queries, ...plan.fallbackQueries],
 				hits: results,
+				termQueries: plan.termQueries,
+				namedQueries,
 			});
-			if (refine.needed) {
+			scoutReadFull = refine.readFull;
+			scoutReadPali = refine.readPali;
+			scoutGuidance = refine.guidance || refine.reason;
+			scoutQueries = refine.queries;
+			if (refine.needed && refine.queries.length > 0) {
 				current = await writeJob(current, {
 					progressNote: "Searching again…",
 				});
@@ -1694,6 +1857,7 @@ export async function runResearchJob(options: {
 								openRouterModel: ASK_PLANNER_PAID_FALLBACK_MODEL,
 								guidance: [
 									plan.rankingGuidance,
+									refine.guidance,
 									refine.reason,
 								]
 									.filter(Boolean)
@@ -1747,9 +1911,19 @@ export async function runResearchJob(options: {
 				status: "answering",
 				showCount: results.length,
 				candidateCount: pool.length,
-				progressNote: "Writing the report…",
+				progressNote:
+					scoutReadFull.length > 0 || scoutReadPali.length > 0
+						? formatResearchReadProgress({
+								readFull: scoutReadFull,
+								readPali: scoutReadPali,
+							})
+						: "Writing the report…",
 			});
 			await throwIfCancelled(current);
+			const writerGuidance = [plan.rankingGuidance, scoutGuidance]
+				.filter(Boolean)
+				.join(" ");
+			const writerNamedQueries = [...namedQueries, ...scoutQueries];
 			try {
 				const written = await retryOnce(
 					"report",
@@ -1760,14 +1934,12 @@ export async function runResearchJob(options: {
 							hits: results,
 							model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 							termQueries: plan.termQueries,
-							guidance: plan.rankingGuidance,
+							guidance: writerGuidance,
 							history,
 							timeoutMs: writerBudget,
-							namedQueries: [
-								...plan.queries,
-								...plan.fallbackQueries,
-								...(plan.termQueries || []),
-							],
+							namedQueries: writerNamedQueries,
+							readFullSlugs: scoutReadFull,
+							readPaliSlugs: scoutReadPali,
 							onReasoning: (delta) => {
 								const next = `${current.reasoning || ""}${delta}`;
 								current = { ...current, reasoning: next };
@@ -1781,9 +1953,46 @@ export async function runResearchJob(options: {
 					},
 				);
 				if (written.report) {
-					report = written.report;
-					usedModel = `${usedModel} + ${written.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
-					if (written.reasoning) reasoning = written.reasoning;
+					const followed = await followUpResearchPaliRead({
+						written,
+						startedAt,
+						onProgress: async (slugs) => {
+							current = await writeJob(current, {
+								status: "answering",
+								progressNote: formatResearchReadProgress({
+									readPali: slugs,
+								}),
+							});
+							await throwIfCancelled(current);
+						},
+						write: (timeoutMs) =>
+							writeResearchReport({
+								question:
+									plan.correctedQuestion || current.question,
+								brief,
+								hits: results,
+								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+								termQueries: plan.termQueries,
+								guidance: writerGuidance,
+								history,
+								timeoutMs,
+								priorReport: written.report,
+								namedQueries: writerNamedQueries,
+								readFullSlugs: [
+									...scoutReadFull,
+									...(written.readPali || []),
+								],
+								readPaliSlugs: written.readPali,
+								onReasoning: (delta) => {
+									const next = `${current.reasoning || ""}${delta}`;
+									current = { ...current, reasoning: next };
+									void writeJob(current, { reasoning: next });
+								},
+							}),
+					});
+					report = followed.report;
+					usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
+					if (followed.reasoning) reasoning = followed.reasoning;
 				}
 			} catch (error) {
 				console.warn(

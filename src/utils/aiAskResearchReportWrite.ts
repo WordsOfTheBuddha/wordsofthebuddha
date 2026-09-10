@@ -16,6 +16,7 @@ import {
 	parseResearchReportMarkdown,
 	replaceResearchSourcesSection,
 	RESEARCH_REPORT_SYSTEM,
+	takeResearchReadPaliRequest,
 	type ResearchReportResult,
 } from "./aiAskResearchReport";
 
@@ -32,6 +33,42 @@ import {
 /** Research writer reads more of the selected set than a short Ask briefing. */
 export const RESEARCH_ANSWER_MAX_EXPANDED = 28;
 
+export async function buildResearchReportEvidence(options: {
+	question: string;
+	hits: readonly AiDiscourseHit[];
+	termQueries?: readonly string[];
+	namedQueries?: readonly string[];
+	readFullSlugs?: readonly string[];
+	readPaliSlugs?: readonly string[];
+	loadDoc?: (slug: string) => Promise<SearchData | undefined>;
+	maxExpanded?: number;
+}): Promise<string> {
+	const hints = askAnswerHints(options.question, options.termQueries);
+	const maxExpanded = options.maxExpanded ?? RESEARCH_ANSWER_MAX_EXPANDED;
+	const slugs = options.hits.map((hit) => hit.slug);
+	const pack = await buildAskAnswerEvidence(
+		options.hits,
+		hints,
+		options.loadDoc,
+		maxExpanded,
+		{
+			fullSlugs: resolveResearchReadFullSlugs(
+				options.namedQueries,
+				slugs,
+				options.readFullSlugs,
+			),
+			paliSlugs: resolveResearchReadFullSlugs(
+				[],
+				slugs,
+				options.readPaliSlugs,
+			),
+			excerptChars: RESEARCH_EXCERPT_CHARS,
+			excerptParas: RESEARCH_EXCERPT_PARAS,
+		},
+	);
+	return formatAskAnswerEvidenceBlock(pack);
+}
+
 export async function writeResearchReport(options: {
 	question: string;
 	brief?: string;
@@ -47,6 +84,8 @@ export async function writeResearchReport(options: {
 	maxExpanded?: number;
 	priorReport?: string;
 	readFullSlugs?: readonly string[];
+	/** Selected slugs to open in Pāli and English. */
+	readPaliSlugs?: readonly string[];
 	/** Search strings that may name already-selected discourse IDs. */
 	namedQueries?: readonly string[];
 }): Promise<ResearchReportResult> {
@@ -66,25 +105,18 @@ export async function writeResearchReport(options: {
 		parent: options.signal,
 	});
 	try {
-		const hints = askAnswerHints(options.question, options.termQueries);
 		const maxExpanded = options.maxExpanded ?? RESEARCH_ANSWER_MAX_EXPANDED;
-		const pack = await buildAskAnswerEvidence(
-			options.hits,
-			hints,
-			options.loadDoc,
+		const evidence = await buildResearchReportEvidence({
+			question: options.question,
+			hits: options.hits,
+			termQueries: options.termQueries,
+			namedQueries: options.namedQueries,
+			readFullSlugs: options.readFullSlugs,
+			readPaliSlugs: options.readPaliSlugs,
+			loadDoc: options.loadDoc,
 			maxExpanded,
-			{
-				fullSlugs: resolveResearchReadFullSlugs(
-					options.namedQueries,
-					options.hits.map((hit) => hit.slug),
-					options.readFullSlugs,
-				),
-				excerptChars: RESEARCH_EXCERPT_CHARS,
-				excerptParas: RESEARCH_EXCERPT_PARAS,
-			},
-		);
+		});
 		if (watchdog.signal.aborted) return empty;
-		const evidence = formatAskAnswerEvidenceBlock(pack);
 		if (!evidence.trim()) return empty;
 		const brief = (options.brief || "").replace(/\s+/g, " ").trim();
 		const guidance = (options.guidance || "").replace(/\s+/g, " ").trim();
@@ -95,7 +127,7 @@ export async function writeResearchReport(options: {
 				role: "user" as const,
 				content: `Question: ${options.question.replace(/\s+/g, " ").trim()}
 ${brief ? `Clarifying brief:\n${brief}\n` : ""}${guidance ? `Guidance: ${guidance}\n` : ""}${prior ? `Previous draft to improve (keep what still holds; revise from the new passages):\n${prior}\n` : ""}
-Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text):
+Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English):
 ${evidence}
 
 Markdown report:`,
@@ -128,12 +160,16 @@ Markdown report:`,
 				options.onReasoning?.(split.reasoning);
 			}
 		}
-		const report = replaceResearchSourcesSection(
+		const taken = takeResearchReadPaliRequest(
 			parseResearchReportMarkdown(content),
-			options.hits,
 		);
-		if (!report) return { ...empty, reasoning, model: usedModel };
-		return { report, model: usedModel, reasoning };
+		const report = replaceResearchSourcesSection(taken.report, options.hits);
+		const readPali = resolveResearchReadFullSlugs(
+			taken.readPali,
+			options.hits.map((hit) => hit.slug),
+		);
+		if (!report) return { ...empty, reasoning, model: usedModel, readPali };
+		return { report, model: usedModel, reasoning, readPali };
 	} finally {
 		watchdog.dispose();
 	}

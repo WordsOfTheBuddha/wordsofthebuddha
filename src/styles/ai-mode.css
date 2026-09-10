@@ -21,8 +21,73 @@
 }
 
 .ai-mode.has-thread.is-report-dock,
-.ai-mode.has-thread.ai-mode-share {
+.ai-mode.has-thread.ai-mode-share,
+.ai-mode.is-restoring-research {
 	padding-bottom: 2.5rem;
+}
+
+.ai-mode.is-restoring-research .ai-empty,
+.ai-mode.is-restoring-research .ai-composer,
+.ai-mode.is-restoring-research .ai-history,
+.ai-mode.is-restoring-research .ai-model-picker-row,
+.ai-mode.is-restoring-research .ai-follow,
+.ai-mode-share .ai-restore {
+	display: none !important;
+}
+
+.ai-restore {
+	display: none;
+	margin: 0.35rem 0 1.5rem;
+	padding: 0.15rem 0 0;
+}
+
+.ai-mode.is-restoring-research:not(.has-thread) .ai-restore {
+	display: block;
+}
+
+.ai-restore-status {
+	margin: 0 0 1rem;
+	color: var(--text-muted);
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
+.ai-restore-lines {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+}
+
+.ai-restore-lines span {
+	display: block;
+	height: 0.72rem;
+	border-radius: 0.4rem;
+	background: color-mix(in srgb, var(--surface-border) 80%, transparent);
+	animation: ai-restore-pulse 1.15s ease-in-out infinite;
+}
+
+.ai-restore-lines span:nth-child(1) {
+	width: 88%;
+}
+
+.ai-restore-lines span:nth-child(2) {
+	width: 72%;
+	animation-delay: 0.12s;
+}
+
+.ai-restore-lines span:nth-child(3) {
+	width: 80%;
+	animation-delay: 0.24s;
+}
+
+@keyframes ai-restore-pulse {
+	0%,
+	100% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 0.85;
+	}
 }
 
 .ai-shell {
@@ -325,6 +390,8 @@
 }
 
 .ai-send {
+	width: 2.1rem;
+	height: 2.1rem;
 	background: var(--primary-color);
 	color: #fff;
 }
@@ -642,6 +709,23 @@
 .ai-report .ai-answer-body > h2:first-child,
 .ai-report .ai-answer-body > h3:first-child {
 	margin-top: 0.15rem;
+}
+
+.ai-report-rule {
+	border: 0;
+	border-top: 1px solid var(--surface-border);
+	margin: 1.15rem 0;
+}
+
+.ai-report .ai-summary-ref {
+	color: var(--link-color);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--link-color) 45%, transparent);
+	text-underline-offset: 0.14em;
+}
+
+.ai-report .ai-summary-ref:hover {
+	color: var(--link-hover-color, var(--link-color));
 }
 
 .ai-report p,
@@ -972,12 +1056,24 @@
 	margin-top: 0.25rem;
 }
 
+.ai-process-thinking.is-clamped .ai-process-thinking-body {
+	min-width: 0;
+	overflow: hidden;
+}
+
 .ai-process-thinking.is-clamped .ai-process-thinking-text {
 	max-height: calc(5 * 1.45em);
 	overflow: hidden;
 	overflow-anchor: none;
 	-webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%);
 	mask-image: linear-gradient(to bottom, transparent, #000 40%);
+}
+
+.ai-process-thinking.is-expanded .ai-process-thinking-text {
+	max-height: min(40vh, 20rem);
+	overflow: auto;
+	overflow-anchor: none;
+	-webkit-overflow-scrolling: touch;
 }
 
 .ai-process-thinking.is-live .ai-process-thinking-text > :last-child::after {

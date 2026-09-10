@@ -8,6 +8,8 @@ import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 	replaceResearchSourcesSection,
+	RESEARCH_REPORT_SYSTEM,
+	takeResearchReadPaliRequest,
 } from "./aiAskResearchReport";
 
 describe("renderResearchReportHtml", () => {
@@ -80,6 +82,36 @@ MN 10 is the root text.
 		assert.doesNotMatch(html, /<script>/);
 		assert.match(html, /href="\/mn10"/);
 	});
+
+	it("renders #### headings, rules, and italics without eating spaces", () => {
+		const html = renderResearchReportHtml(
+			`### Strict check, qualification by qualification
+
+---
+
+#### 1. Higher virtue (*adhisīla*)
+
+None of the defining passages for the *saddhānusārī* or *dhammānusārī* in the excerpts.
+`,
+		);
+		assert.match(html, /<h3>Strict check, qualification by qualification<\/h3>/);
+		assert.match(html, /<hr class="ai-report-rule">/);
+		assert.doesNotMatch(html, /####/);
+		assert.match(html, /<em>adhisīla<\/em>/);
+		assert.match(html, /<em>saddhānusārī<\/em>/);
+		assert.match(html, /None of the defining passages for the/);
+		assert.doesNotMatch(html, /Noneof/);
+		assert.doesNotMatch(html, /virtue\(adhisīla\)/);
+	});
+
+	it("joins soft-wrapped paragraph lines with spaces", () => {
+		const html = renderResearchReportHtml(
+			`None of the defining passages for the\nexcerpts explicitly states a virtue qualification.`,
+		);
+		assert.match(html, /the excerpts explicitly/);
+		assert.doesNotMatch(html, /theexcerpts/);
+		assert.doesNotMatch(html, /<br>/);
+	});
 });
 
 describe("renderAskBriefingHtml", () => {
@@ -111,6 +143,35 @@ describe("parseResearchReportMarkdown", () => {
 		);
 		assert.match(parsed, /## Hello/);
 		assert.doesNotMatch(parsed, /hidden/);
+	});
+});
+
+describe("takeResearchReadPaliRequest", () => {
+	it("strips the harness line and keeps the requested IDs", () => {
+		const taken = takeResearchReadPaliRequest(
+			`## Thesis
+
+MN 70 distinguishes the faith-follower.
+
+readPali: MN 70, SN 12.49
+`,
+		);
+		assert.match(taken.report, /faith-follower/);
+		assert.doesNotMatch(taken.report, /readPali/);
+		assert.deepEqual(taken.readPali, ["MN 70", "SN 12.49"]);
+	});
+
+	it("omits a leaked readPali line from the on-screen report", () => {
+		const html = renderResearchReportHtml(
+			`## Thesis
+
+MN 70 distinguishes the faith-follower.
+
+readPali: MN 70`,
+			[{ slug: "mn70", href: "/mn70" }],
+		);
+		assert.match(html, /faith-follower/);
+		assert.doesNotMatch(html, /readPali/i);
 	});
 });
 
@@ -179,5 +240,14 @@ describe("fallbackResearchReport", () => {
 			hits: [],
 		});
 		assert.match(md, /did not return matching discourses/i);
+	});
+});
+
+describe("RESEARCH_REPORT_SYSTEM", () => {
+	it("asks for reader-facing hidden thinking", () => {
+		assert.match(RESEARCH_REPORT_SYSTEM, /shown to the reader/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /When you can/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /readPali:/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /thorough report/);
 	});
 });
