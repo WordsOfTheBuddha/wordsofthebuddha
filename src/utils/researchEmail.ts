@@ -2,9 +2,27 @@ import { OPENROUTER_SITE_URL } from "./openrouter";
 
 export const RESEARCH_EMAIL_FROM_DEFAULT = "Ask <ask@wordsofthebuddha.org>";
 
+const LOOPBACK_HOST = /^(localhost|127\.0\.0\.1|\[::1\]|::1|0\.0\.0\.0)$/i;
+
+/** Public site only — never a local/dev origin, even if the job ran there. */
+export function publicResearchEmailOrigin(origin?: string | null): string {
+	const raw = (origin || "").trim().replace(/\/+$/, "");
+	if (!raw) return OPENROUTER_SITE_URL;
+	try {
+		const url = new URL(raw.includes("://") ? raw : `http://${raw}`);
+		const host = url.hostname.replace(/^\[|\]$/g, "");
+		if (LOOPBACK_HOST.test(host) || host.endsWith(".localhost")) {
+			return OPENROUTER_SITE_URL;
+		}
+		return raw.includes("://") ? raw : `${url.protocol}//${url.host}`;
+	} catch {
+		return OPENROUTER_SITE_URL;
+	}
+}
+
 export function researchResultHref(jobId: string, origin = OPENROUTER_SITE_URL): string {
 	const id = jobId.replace(/\s+/g, "").trim();
-	const base = origin.replace(/\/+$/, "") || OPENROUTER_SITE_URL;
+	const base = publicResearchEmailOrigin(origin);
 	return `${base}/search?mode=ai&research=${encodeURIComponent(id)}`;
 }
 
