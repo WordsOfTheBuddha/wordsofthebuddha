@@ -7,6 +7,8 @@
  */
 
 import type { CollectionPdf, DiscoursePdf } from "./pdfRenderer";
+import { isAskExportLayout } from "./pdfRenderer";
+import { renderResearchReportHtml } from "./aiAskResearchReport";
 import { buildZip } from "./epubZip";
 import {
 	buildEpubCoverModel,
@@ -268,7 +270,7 @@ function splitCollectionTitle(title: string): {
 }
 
 function exportEnglishTitle(collection: CollectionPdf): string {
-	if (collection.layout === "ask") return collection.title;
+	if (isAskExportLayout(collection.layout)) return collection.title;
 	return splitCollectionTitle(collection.title).englishTitle;
 }
 
@@ -276,13 +278,14 @@ function titlePageBody(
 	collection: CollectionPdf,
 	options: EpubBuildOptions,
 ): string {
-	const isAsk = collection.layout === "ask";
+	const isAsk = isAskExportLayout(collection.layout);
 	const { paliName, englishTitle } = isAsk
 		? { paliName: "", englishTitle: collection.title }
 		: splitCollectionTitle(collection.title);
 	const formattedId = formatSlugId(collection.slug);
 	const subtitleLine = isAsk
-		? options.titleKindLabel || "Ask"
+		? options.titleKindLabel ||
+			(collection.layout === "research" ? "Research report" : "Ask")
 		: options.titleKindLabel ||
 			[paliName, formattedId].filter(Boolean).join(" \u00B7 ");
 	const fromLine =
@@ -352,8 +355,21 @@ function discourseBody(d: DiscoursePdf): {
 	};
 }
 
-function askSummaryXhtml(summary: string): string {
-	const paras = summary
+function askSummaryXhtml(
+	summary: string,
+	research: boolean,
+	slugs: string[],
+): string {
+	const text = summary.trim();
+	if (!text) return "";
+	if (research) {
+		const html = renderResearchReportHtml(
+			text,
+			slugs.map((slug) => ({ slug, href: `/${slug}` })),
+		);
+		return `<div class="ask-summary ask-report">${html}</div>`;
+	}
+	const paras = text
 		.split(/\n+/)
 		.map((part) => part.trim())
 		.filter(Boolean);
@@ -366,7 +382,8 @@ function askSummaryXhtml(summary: string): string {
 function askTurnPrefaceBody(
 	question: string,
 	summary: string,
-	items: { label: string; href: string }[],
+	items: { label: string; href: string; slug: string }[],
+	research: boolean,
 ): string {
 	const toc = items
 		.map(
@@ -375,10 +392,14 @@ function askTurnPrefaceBody(
 		)
 		.join("\n");
 	return `<section class="ask-preface">
-  <p class="ask-preface-kicker">Question</p>
+  <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
   <h1 class="ask-question">${escapeXml(question)}</h1>
-  ${askSummaryXhtml(summary)}
-  <h2>Discourses in this answer</h2>
+  ${askSummaryXhtml(
+		summary,
+		research,
+		items.map((item) => item.slug),
+	)}
+  <h2>${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
   <ol class="ask-turn-toc">
 ${toc}
   </ol>
@@ -404,7 +425,8 @@ function collectSpineAndNav(collection: CollectionPdf): {
 		return item;
 	};
 
-	if (collection.layout === "ask") {
+	if (isAskExportLayout(collection.layout)) {
+		const research = collection.layout === "research";
 		collection.chapters.forEach((ch, index) => {
 			const discItems = ch.discourses.map((d) => {
 				const key = discourseFileKey(d);
@@ -427,7 +449,9 @@ function collectSpineAndNav(collection: CollectionPdf): {
 						discItems.map((item) => ({
 							label: item.title,
 							href: item.href,
+							slug: item.d.slug,
 						})),
+						research,
 					),
 				),
 			);
@@ -800,6 +824,19 @@ h1.cover-title {
 .ask-summary p {
   margin: 0.5em 0;
   line-height: 1.7;
+}
+.ask-report h2, .ask-report h3 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 1em 0 0.4em;
+}
+.ask-report ul, .ask-report ol { margin: 0.4em 0 0.8em 1.2em; }
+.ask-report table { width: 100%; border-collapse: collapse; margin: 0.6em 0; }
+.ask-report th, .ask-report td {
+  border: 1px solid #ccc;
+  padding: 0.3em 0.45em;
+  text-align: left;
+  vertical-align: top;
 }
 .ask-turn-toc {
   margin: 0.6em 0 0 1.2em;

@@ -758,3 +758,31 @@ self.addEventListener("message", (event) => {
 		);
 	}
 });
+
+self.addEventListener("notificationclick", (event) => {
+	event.notification.close();
+	const target =
+		event.notification.data && typeof event.notification.data.url === "string"
+			? event.notification.data.url
+			: "/search?mode=ai";
+	event.waitUntil(
+		(async () => {
+			const windows = await self.clients.matchAll({
+				type: "window",
+				includeUncontrolled: true,
+			});
+			for (const client of windows) {
+				if ("focus" in client) {
+					await client.focus();
+					if ("navigate" in client && target) {
+						try {
+							await client.navigate(target);
+						} catch {}
+					}
+					return;
+				}
+			}
+			await self.clients.openWindow(target);
+		})(),
+	);
+});

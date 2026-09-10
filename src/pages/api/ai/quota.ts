@@ -1,16 +1,31 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
+import { isAskAdminEmail } from "../../../utils/aiAskAdmin";
+import { isAskQuotaSignedIn } from "../../../utils/aiAskQuota";
 import {
 	dismissAskFeedbackOffer,
 	getAskQuotaView,
 } from "../../../utils/aiAskQuotaServer";
+import { getResearchQuotaView } from "../../../utils/aiResearchQuotaServer";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
 	const session = cookies.get("__session")?.value;
 	const user = await verifyUserForAskQuota(session, { cookies });
 	const view = await getAskQuotaView({ request, user });
-	return new Response(JSON.stringify({ success: true, quota: view }), {
+	const payload: {
+		success: true;
+		quota: typeof view;
+		researchQuota?: Awaited<ReturnType<typeof getResearchQuotaView>>;
+		isAdmin?: boolean;
+	} = { success: true, quota: view };
+	if (isAskAdminEmail(user?.email)) {
+		payload.isAdmin = true;
+	}
+	if (user && isAskQuotaSignedIn(user)) {
+		payload.researchQuota = await getResearchQuotaView({ uid: user.uid });
+	}
+	return new Response(JSON.stringify(payload), {
 		status: 200,
 		headers: { "Content-Type": "application/json" },
 	});

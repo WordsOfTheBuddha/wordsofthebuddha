@@ -104,6 +104,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			model: typeof body.model === "string" ? body.model : "",
 			requestId:
 				typeof body.requestId === "string" ? body.requestId : undefined,
+			research: body.research === true,
+			report: typeof body.report === "string" ? body.report : undefined,
+			reasoning: typeof body.reasoning === "string" ? body.reasoning : undefined,
+			candidateCount:
+				typeof body.candidateCount === "number"
+					? body.candidateCount
+					: undefined,
 			...(thread ? { thread } : {}),
 			user,
 		});
@@ -117,6 +124,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			results,
 			model: body.model,
 			requestId: body.requestId,
+			research: body.research === true,
+			report: body.report,
+			reasoning: body.reasoning,
+			candidateCount: body.candidateCount,
 			createdAt: Date.now(),
 			...(thread ? { thread } : {}),
 		});

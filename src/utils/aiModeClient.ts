@@ -1,8 +1,41 @@
 import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
-import { askAuthPageHref } from "./aiAskHref";
+import { askAuthPageHref, isAskSearchMode, withAskResearchParam } from "./aiAskHref";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
+import type { ResearchQuotaView } from "./aiResearchQuota";
+import type { ResearchJobPublic } from "./aiAskResearchJob";
+import {
+	answersFromClarifyState,
+	canStartResearchClarify,
+	RESEARCH_CLARIFY_TITLE,
+	RESEARCH_CLARIFY_OTHER_ID,
+	type ResearchClarifyQuestion,
+} from "./aiAskResearchClarify";
+import {
+	formatResearchHitTitle,
+	renderResearchReportHtml,
+} from "./aiAskResearchReport";
+import {
+	ASK_PLACEHOLDER,
+	applyResearchJobToTurn,
+	askMeterLabel,
+	canShowResearchChip,
+	RESEARCH_CHIP_STORAGE_KEY,
+	RESEARCH_CHIP_TITLE,
+	RESEARCH_EMAIL_PENDING_NOTE,
+	RESEARCH_PLACEHOLDER,
+	isIncompleteResearchTurn,
+	researchJobToHistoryEntry,
+	researchRetrySubmitLabel,
+	sameResearchRetryQuestion,
+	shouldUseResearchAsk,
+} from "./aiAskResearchUi";
+import {
+	notifyResearchReady,
+	requestResearchNotifyPermission,
+	researchHistoryStatusLabel,
+} from "./aiAskResearchNotify";
 import {
 	askSharePath,
 	askShareTurnsForRestore,
@@ -10,6 +43,20 @@ import {
 	type AiAskShareSnapshot,
 	type AiAskShareTurn,
 } from "./aiAskShare";
+import {
+	ASK_SAMPLE_NOTE,
+	ASK_SAMPLE_PLAYBACK,
+	askSampleConfirmMessage,
+	askSamplePlaybackPatch,
+	canMarkAskAsSample,
+	findAskSample,
+	findAskSampleForExample,
+	sanitizeAskSamplePublic,
+	sampleToShareTurn,
+	upsertAskSampleLocal,
+	type AiAskSamplePublic,
+	type AskSamplePlaybackPhase,
+} from "./aiAskSamples";
 import {
 	ASK_HISTORY_PREVIEW_LIMIT,
 	askHistoryEntriesForRestore,
@@ -22,6 +69,7 @@ import {
 	mergeAskHistoryEntries,
 	normalizeAskQuestionKey,
 	pinnedAskHistoryEntries,
+	preservePendingResearchHistory,
 	readActiveAskThread,
 	readAiAskSession,
 	removeAskHistoryEntriesByQuestions,
@@ -81,8 +129,10 @@ export interface AiAskTurn {
 	sharePath?: string;
 	/** Seeded from a public /ask/:slug snapshot (read-only turn). */
 	fromShare?: boolean;
+	/** Curated sample chip — no quota, not the reader's own Ask. */
+	fromSample?: boolean;
 	pending: boolean;
-	phase: "rewrite" | "search" | "rerank" | "answer" | "done";
+	phase: "rewrite" | "verify" | "search" | "rerank" | "answer" | "done";
 	/** Candidate pool size while rescoring (status event). */
 	rerankCandidateCount?: number;
 	/** Target display count while rescoring (status event). */
@@ -105,6 +155,23 @@ export interface AiAskTurn {
 	debug?: AskDebugView;
 	/** Rescorer was unavailable — results are in search order without a briefing. */
 	rankedBySearchOnly?: boolean;
+	/** Deep Research turn (separate daily quota). */
+	research?: boolean;
+	researchJobId?: string;
+	verifyNote?: string;
+	onTrack?: boolean;
+	progressNote?: string;
+	/** Markdown research document. */
+	report?: string;
+	researchClarify?: {
+		id: string;
+		questions: ResearchClarifyQuestion[];
+		answers: Record<string, { choiceId: string; otherText?: string }>;
+	};
+	researchDeclined?: {
+		kind: string;
+		message: string;
+	};
 }
 
 interface AiModelsResponse {
@@ -190,6 +257,7 @@ const ASK_HOME_HREF = "/search?mode=ai";
 
 /** Filled thumbtack — reads clearly at small sizes. */
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
+const COPY_REPORT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" /></svg>`;
 const MORE_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
 
 /** Provider status notes — not model reasoning. Hidden from “How it searched”. */
@@ -267,13 +335,18 @@ export interface AskProcessStep {
 /** Compact process steps for the Ask UI (pending + finished). */
 export function buildAskProcessSteps(input: {
 	pending: boolean;
-	phase: "rewrite" | "search" | "rerank" | "answer" | "done";
+	phase: "rewrite" | "verify" | "search" | "rerank" | "answer" | "done";
 	question: string;
 	lookingFor?: string;
 	offTopic?: boolean;
 	candidateCount?: number;
 	showCount?: number;
 	resultCount?: number;
+	research?: boolean;
+	clarifyPending?: boolean;
+	verifyNote?: string;
+	onTrack?: boolean;
+	progressNote?: string;
 }): AskProcessStep[] {
 	const question = (input.question || "").replace(/\s+/g, " ").trim();
 	const looking = (input.lookingFor || "")
@@ -305,40 +378,58 @@ export function buildAskProcessSteps(input: {
 		];
 	}
 
+	const note = (input.progressNote || "").replace(/\s+/g, " ").trim();
 	const understood: AskProcessStep =
-		phase === "rewrite"
-			? { state: "active", text: "Understanding the question…" }
+		input.clarifyPending && phase === "rewrite"
+			? { state: "active", text: "Understanding the research request…" }
+			: phase === "rewrite"
+			? {
+					state: "active",
+					text:
+						note ||
+						(input.research ? "Planning searches…" : "Understanding the question…"),
+				}
 			: {
 					state: "done",
 					text: theme ? `Understood · ${theme}` : "Understood the question",
 				};
 
+	const searchIdle = input.research ? "Search widely" : "Search the library";
+	const searchActive = input.research
+		? note || "Searching widely…"
+		: "Searching the library…";
+	const searchDone =
+		pool > 0
+			? input.research
+				? `Searched widely · ${pool.toLocaleString()} discourses`
+				: `Searched the library · ${pool.toLocaleString()} discourses`
+			: input.research
+				? "Searched widely"
+				: "Searched the library";
 	const searched: AskProcessStep =
-		phase === "rewrite"
-			? { state: "todo", text: "Search the library" }
+		phase === "rewrite" || phase === "verify"
+			? { state: "todo", text: searchIdle }
 			: phase === "search"
-				? { state: "active", text: "Searching the library…" }
+				? { state: "active", text: searchActive }
 				: {
 						state: "done",
-						text:
-							pool > 0
-								? `Searched the library · ${pool.toLocaleString()} discourses`
-								: "Searched the library",
+						text: searchDone,
 					};
 
 	// Crunching (rescoring the pool) and showing (the final picks) are two
 	// distinct moments. The strip carries the crunch; the “Showing N” caption
 	// sits with the answer (see askResultsCaption).
 	let crunched: AskProcessStep;
-	if (phase === "rewrite" || phase === "search") {
+	if (phase === "rewrite" || phase === "verify" || phase === "search") {
 		crunched = { state: "todo", text: "Crunch the candidates" };
 	} else if (phase === "rerank") {
 		crunched = {
 			state: "active",
 			text:
-				pool > 0
+				note ||
+				(pool > 0
 					? `Crunching ${pool.toLocaleString()} discourses…`
-					: "Crunching discourses…",
+					: "Crunching discourses…"),
 		};
 	} else if (shown > 0) {
 		crunched = {
@@ -352,38 +443,54 @@ export function buildAskProcessSteps(input: {
 		crunched = { state: "done", text: "No matching discourses" };
 	}
 
-	if (phase === "done") return [understood, searched, crunched];
-	if (phase === "answer") {
-		return [
-			understood,
-			searched,
-			crunched,
-			{
-				state: "active",
-				text: "Writing from the selected discourses…",
-			},
-		];
-	}
-	return [
-		understood,
-		searched,
-		crunched,
-		{ state: "todo", text: "Show the best matches" },
-	];
+	const prefix: AskProcessStep[] = [understood];
+
+	if (phase === "done") return [...prefix, searched, crunched];
+	const writeStep: AskProcessStep =
+		phase === "answer"
+			? {
+					state: "active",
+					text:
+						note ||
+						(input.research
+							? "Writing the report…"
+							: "Writing from the selected discourses…"),
+				}
+			: input.research
+				? { state: "todo", text: "Write the report" }
+				: { state: "todo", text: "Show the best matches" };
+	return [...prefix, searched, crunched, writeStep];
 }
 
 /** Caption shown with the answer once results are in (“Showing 12 discourses”). */
 export function askResultsCaption(input: {
 	resultCount: number;
 	candidateCount?: number;
+	research?: boolean;
 }): string {
 	const shown = Math.max(0, Math.floor(input.resultCount || 0));
 	if (shown === 0) return "";
 	const pool = Math.max(0, Math.floor(input.candidateCount || 0));
 	const noun = `discourse${shown === 1 ? "" : "s"}`;
+	if (input.research) {
+		return pool > shown
+			? `Sources · ${shown} ${noun} · picked from ${pool.toLocaleString()}`
+			: `Sources · ${shown} ${noun}`;
+	}
 	return pool > shown
 		? `Showing ${shown} ${noun} · picked from ${pool.toLocaleString()}`
 		: `Showing ${shown} ${noun}`;
+}
+
+/** Collapsed-by-default source list for a research report. */
+export function researchSourcesBlockHtml(
+	caption: string,
+	hitsHtml: string,
+): string {
+	const label = (caption || "").trim();
+	const body = (hitsHtml || "").trim();
+	if (!label || !body) return body;
+	return `<details class="ai-sources"><summary>${label}</summary><div class="ai-hits">${body}</div></details>`;
 }
 
 /** Compact DEV line: which planner models were actually called and which answered. */
@@ -867,6 +974,7 @@ function turnToSessionEntry(
 		model: turn.model,
 		reasoning: turn.reasoning,
 		...(turn.summary ? { summary: turn.summary } : {}),
+		...(turn.report ? { report: turn.report } : {}),
 		...(turn.shareSlug ? { shareSlug: turn.shareSlug } : {}),
 		at: Date.now(),
 		...(turn.requestId ? { requestId: turn.requestId } : {}),
@@ -879,6 +987,8 @@ function turnToSessionEntry(
 			? { candidateCount: turn.rerankCandidateCount }
 			: {}),
 		...(thread ? { thread } : {}),
+		...(turn.research ? { research: true } : {}),
+		...(turn.researchJobId ? { researchJobId: turn.researchJobId } : {}),
 	};
 }
 
@@ -895,10 +1005,11 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		model: entry.model || "",
 		reasoning: entry.reasoning || "",
 		summary: entry.summary || "",
+		report: entry.report || "",
 		shareSlug: entry.shareSlug,
 		sharePath: entry.shareSlug ? askSharePath(entry.shareSlug) : undefined,
-		pending: false,
-		phase: "done",
+		pending: entry.researchPending === true,
+		phase: entry.researchPending === true ? "search" : "done",
 		...(typeof entry.candidateCount === "number" && entry.candidateCount > 0
 			? {
 					rerankCandidateCount: entry.candidateCount,
@@ -911,6 +1022,8 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 			? entry.feedback
 			: undefined,
 		saved: entry.saved === true,
+		...(entry.research ? { research: true } : {}),
+		...(entry.researchJobId ? { researchJobId: entry.researchJobId } : {}),
 	};
 }
 
@@ -927,11 +1040,12 @@ function shareTurnToAiAskTurn(
 		offTopic: false,
 		results: turn.results,
 		model: turn.model,
-		reasoning: "",
+		reasoning: turn.reasoning || "",
 		summary: turn.summary,
 		shareSlug: share.slug,
 		sharePath: askSharePath(share.slug),
 		fromShare: true,
+		fromSample: false,
 		pending: false,
 		phase: "done",
 		requestId: turn.requestId,
@@ -941,7 +1055,29 @@ function shareTurnToAiAskTurn(
 					rerankShowCount: turn.results.length,
 				}
 			: {}),
+		...(turn.research || turn.report ? { research: true } : {}),
+		...(turn.report ? { report: turn.report } : {}),
 	};
+}
+
+function sampleToAiAskTurn(sample: AiAskSamplePublic): AiAskTurn {
+	const turn = shareTurnToAiAskTurn(sampleToShareTurn(sample), {
+		slug: sample.slug,
+		question: sample.question,
+		lookingFor: sample.lookingFor,
+		queries: sample.queries,
+		fallbackQueries: sample.fallbackQueries,
+		summary: sample.summary,
+		results: sample.results,
+		model: sample.model,
+		createdAt: sample.updatedAt,
+		...(sample.requestId ? { requestId: sample.requestId } : {}),
+	});
+	turn.fromShare = false;
+	turn.fromSample = true;
+	turn.shareSlug = undefined;
+	turn.sharePath = undefined;
+	return turn;
 }
 
 function applyCorrectedQuestion(turn: AiAskTurn, event: AiAskEvent): void {
@@ -1023,6 +1159,9 @@ export function attachAiMode(options: {
 	} = options;
 	const form = root.querySelector<HTMLFormElement>("[data-ai-form]");
 	const followForm = root.querySelector<HTMLFormElement>("[data-ai-follow-form]");
+	const clarifyBar = root.querySelector<HTMLElement>("[data-ai-clarify-bar]");
+	const clarifyStartBtn = root.querySelector<HTMLButtonElement>("[data-ai-clarify-start]");
+	const clarifyCancelBtn = root.querySelector<HTMLButtonElement>("[data-ai-clarify-cancel]");
 	const input = root.querySelector<HTMLTextAreaElement>("[data-ai-input]");
 	const followInput = root.querySelector<HTMLTextAreaElement>("[data-ai-follow-input]");
 	const modelSelect = root.querySelector<HTMLSelectElement | HTMLInputElement>(
@@ -1046,9 +1185,18 @@ export function attachAiMode(options: {
 	let turns: AiAskTurn[] = [];
 	let sessionEntries = readAiAskSession();
 	let quota: AiAskQuotaView | null = null;
+	let researchQuota: ResearchQuotaView | null = null;
+	let isAskAdmin = false;
+	let askSamples: AiAskSamplePublic[] = [];
 	let signedInForHistory = false;
 	let pendingReplaceQuestions: string[] | null = null;
 	let busy = false;
+	let researchChipOn = false;
+	let researchPollTimer = 0;
+	let researchPollToken = 0;
+	let samplePlaybackTimer = 0;
+	let samplePlaybackToken = 0;
+	const watchingResearchJobs = new Set<string>();
 	let feedbackPromptShown = false;
 	let feedbackHintTimer = 0;
 	let listening = false;
@@ -1091,26 +1239,49 @@ export function attachAiMode(options: {
 		return askAuthPageHref("/register", question, currentReturnTo());
 	}
 
-	function applyQuota(next: AiAskQuotaView | null | undefined): void {
-		if (!next) return;
-		quota = next;
-		// Guests aren’t shown a countdown — the quota dialog handles the limit
-		// when it’s reached, and the register CTA carries the pitch.
-		if (!next.signedIn) {
+	function applyQuota(
+		next: AiAskQuotaView | null | undefined,
+		nextResearch?: ResearchQuotaView | null,
+	): void {
+		if (next) quota = next;
+		if (nextResearch !== undefined) researchQuota = nextResearch;
+		syncResearchChip();
+	}
+
+	function researchUiOn(): boolean {
+		if (!researchChipAvailable()) return false;
+		if (researchChipOn) return true;
+		const last = turns[turns.length - 1];
+		return Boolean(
+			last?.research &&
+				(isClarifyingTurn(last) || (last.pending && last.research)),
+		);
+	}
+
+	function renderMeters(): void {
+		if (!quota?.signedIn) {
 			meterEls.forEach((el) => {
 				el.textContent = "";
 				el.hidden = true;
 			});
 			return;
 		}
-		const unit = next.remaining === 1 ? "Ask" : "Asks";
-		let label = `${next.remaining} ${unit} left today`;
-		if (next.needsEmailVerification) {
-			label = `${label} · verify email for more`;
-		}
+		const last = turns[turns.length - 1];
+		const researchRunning = turns.some(
+			(turn) => turn.pending && turn.research && turn.researchJobId,
+		);
+		const label = askMeterLabel({
+			signedIn: true,
+			needsEmailVerification: quota.needsEmailVerification,
+			researchOn:
+				researchUiOn() || Boolean(last?.research && !last.pending),
+			askRemaining: quota.remaining,
+			researchRemaining: researchQuota?.remaining,
+			hideResearchRemaining: researchRunning,
+		});
 		meterEls.forEach((el) => {
 			el.textContent = label;
-			el.hidden = false;
+			el.hidden = !label;
 		});
 	}
 
@@ -1125,12 +1296,165 @@ export function attachAiMode(options: {
 		});
 	}
 
+	function optimisticConsumeResearchQuota(): void {
+		if (!researchQuota || !researchQuota.allowed) return;
+		const used = researchQuota.used + 1;
+		applyQuota(quota, {
+			...researchQuota,
+			used,
+			remaining: Math.max(0, researchQuota.limit - used),
+			allowed: used < researchQuota.limit,
+		});
+	}
+
+	function researchChipAvailable(): boolean {
+		return canShowResearchChip({
+			signedIn: quota?.signedIn,
+			needsEmailVerification: quota?.needsEmailVerification,
+			hasResearchQuota: Boolean(researchQuota),
+		});
+	}
+
+	function lastTurnIsResearch(): boolean {
+		return turns.some((turn) => turn.research === true);
+	}
+
+	function isClarifyingTurn(turn: AiAskTurn | undefined): boolean {
+		return Boolean(
+			turn?.research &&
+				turn.researchClarify &&
+				!turn.researchJobId &&
+				!turn.researchDeclined &&
+				!turn.pending,
+		);
+	}
+
+	function researchFlowLocksChip(): boolean {
+		const last = turns[turns.length - 1];
+		if (!last?.research) return false;
+		if (isClarifyingTurn(last)) return true;
+		// Keep the chip on while questions are loading; once a job exists the
+		// follow-up should be an ordinary Ask unless they turn Research on again.
+		if (last.pending && last.research && !last.researchJobId) return true;
+		return false;
+	}
+
+	function syncClarifyBar(): void {
+		const last = turns[turns.length - 1];
+		const clarifying = isClarifyingTurn(last);
+		if (clarifyBar) clarifyBar.hidden = !clarifying;
+		if (clarifying && last?.researchClarify && clarifyStartBtn) {
+			const answers = answersFromClarifyState(last.researchClarify.answers);
+			clarifyStartBtn.disabled = !canStartResearchClarify(
+				last.researchClarify.questions,
+				answers,
+			);
+			const left =
+				typeof researchQuota?.remaining === "number"
+					? researchQuota.remaining
+					: undefined;
+			clarifyStartBtn.textContent =
+				typeof left === "number"
+					? `Start research · ${left} left`
+					: "Start research";
+		}
+	}
+
+	function stopResearchPoll(): void {
+		researchPollToken += 1;
+		if (researchPollTimer) {
+			window.clearTimeout(researchPollTimer);
+			researchPollTimer = 0;
+		}
+		try {
+			sessionStorage.removeItem(RESEARCH_CHIP_STORAGE_KEY + "-job");
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function rememberResearchJobId(jobId: string): void {
+		try {
+			sessionStorage.setItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`, jobId);
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function readRememberedResearchJobId(): string {
+		try {
+			return sessionStorage.getItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`) || "";
+		} catch {
+			return "";
+		}
+	}
+
+	function syncResearchJobUrl(jobId: string | null): void {
+		if (shareMode) return;
+		if (window.location.pathname.replace(/\/$/, "") !== "/search") return;
+		const params = withAskResearchParam(window.location.search, jobId);
+		const next = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+		const current =
+			window.location.pathname + window.location.search + window.location.hash;
+		if (next !== current) {
+			window.history.replaceState(window.history.state, "", next);
+		}
+	}
+
+	function syncResearchChip(): void {
+		const available = researchChipAvailable();
+		const pressed = available && (researchChipOn || researchFlowLocksChip());
+		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
+			(chip) => {
+				chip.hidden = !available;
+				chip.title = RESEARCH_CHIP_TITLE;
+				chip.setAttribute("aria-pressed", pressed ? "true" : "false");
+				chip.classList.toggle("is-on", pressed);
+			},
+		);
+		root.querySelectorAll<HTMLElement>("[data-ai-examples]").forEach((group) => {
+			const kind = group.getAttribute("data-ai-examples");
+			group.hidden = pressed ? kind !== "research" : kind !== "ask";
+		});
+		const placeholder = pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
+		if (input) input.placeholder = placeholder;
+		if (followInput) {
+			followInput.placeholder = pressed
+				? "Follow up with a wider search"
+				: "Follow up in this conversation";
+		}
+		renderMeters();
+	}
+
+	function setResearchChipOn(next: boolean, persist = true): void {
+		researchChipOn = next && researchChipAvailable();
+		if (persist && researchChipAvailable()) {
+			try {
+				localStorage.setItem(
+					RESEARCH_CHIP_STORAGE_KEY,
+					researchChipOn ? "1" : "0",
+				);
+			} catch {
+				/* ignore */
+			}
+		}
+		syncResearchChip();
+	}
+
+	function loadResearchChipPreference(): void {
+		try {
+			researchChipOn = localStorage.getItem(RESEARCH_CHIP_STORAGE_KEY) === "1";
+		} catch {
+			researchChipOn = false;
+		}
+	}
+
 	function closeQuotaDialog(): void {
 		if (quotaDialog) quotaDialog.hidden = true;
 	}
 
 	function openQuotaDialog(
-		kind: "signin" | "tomorrow" | "save" | "verify",
+		kind: "signin" | "tomorrow" | "save" | "verify" | "research",
 		question?: string | null,
 	): void {
 		if (!quotaDialog) return;
@@ -1143,10 +1467,14 @@ export function attachAiMode(options: {
 		const verify = quotaDialog.querySelector<HTMLElement>(
 			'[data-ai-quota-panel="verify"]',
 		);
+		const research = quotaDialog.querySelector<HTMLElement>(
+			'[data-ai-quota-panel="research"]',
+		);
 		const showSignin = kind === "signin" || kind === "save";
 		if (signin) signin.hidden = !showSignin;
 		if (tomorrow) tomorrow.hidden = kind !== "tomorrow";
 		if (verify) verify.hidden = kind !== "verify";
+		if (research) research.hidden = kind !== "research";
 		const title = quotaDialog.querySelector<HTMLElement>(
 			"[data-ai-quota-signin-title]",
 		);
@@ -1273,8 +1601,16 @@ export function attachAiMode(options: {
 			const data = (await response.json()) as {
 				success?: boolean;
 				quota?: AiAskQuotaView;
+				researchQuota?: ResearchQuotaView;
+				isAdmin?: boolean;
 			};
-			if (data.success && data.quota) applyQuota(data.quota);
+			const nextAdmin = data.isAdmin === true;
+			const adminChanged = nextAdmin !== isAskAdmin;
+			isAskAdmin = nextAdmin;
+			if (data.success && data.quota) {
+				applyQuota(data.quota, data.researchQuota ?? null);
+			}
+			if (adminChanged && turns.length > 0) syncLayout();
 		} catch {
 			/* ignore */
 		}
@@ -1364,15 +1700,31 @@ export function attachAiMode(options: {
 
 	function persistActiveThread(): void {
 		if (shareMode) return;
+		if (
+			turns.length > 0 &&
+			turns.every((turn) => turn.fromSample) &&
+			!turns.some((turn) => turn.saved)
+		) {
+			writeActiveAskThread([]);
+			return;
+		}
 		const entries = turns
-			.filter(
-				(turn) =>
+			.filter((turn) => {
+				if (turn.research && turn.researchJobId) return true;
+				return (
 					!turn.pending &&
 					!turn.error &&
 					!turn.offTopic &&
-					turn.results.length > 0,
-			)
-			.map((turn) => turnToSessionEntry(turn));
+					turn.results.length > 0
+				);
+			})
+			.map((turn) => {
+				const entry = turnToSessionEntry(turn);
+				if (turn.research && turn.pending && turn.researchJobId) {
+					entry.researchPending = true;
+				}
+				return entry;
+			});
 		writeActiveAskThread(entries);
 	}
 
@@ -1392,13 +1744,39 @@ export function attachAiMode(options: {
 			return turn;
 		});
 		syncLayout();
+		const pending = turns.find(
+			(turn) => turn.pending && turn.research && turn.researchJobId,
+		);
+		if (pending) {
+			busy = true;
+			root.classList.add("is-busy");
+			syncResearchJobUrl(pending.researchJobId || null);
+			void pollResearchTurn(pending).finally(() => {
+				busy = false;
+				root.classList.remove("is-busy", "is-research-busy");
+				syncLayout();
+			});
+		}
 	}
 
 	function leaveAskHome(): void {
+		for (const turn of turns) {
+			if (turn.research && turn.pending && turn.researchJobId) {
+				persistResearchHistory(turn, { pending: true, unread: false });
+			}
+		}
+		persistActiveThread();
+		syncResearchJobUrl(null);
+		stopResearchPoll();
+		stopSamplePlayback();
+		busy = false;
+		root.classList.remove("is-busy", "is-research-busy");
 		clearAskThreadResumeIntent();
 		turns = [];
 		setStatus("");
+		syncResearchChip();
 		syncLayout();
+		watchPendingResearchHistory();
 		input.focus();
 	}
 
@@ -1423,7 +1801,122 @@ export function attachAiMode(options: {
 			.map((item) => turnToSessionEntry(item));
 	}
 
+	function persistResearchHistory(
+		turn: AiAskTurn,
+		flags: { pending: boolean; unread: boolean },
+	): void {
+		if (shareMode || !turn.research || !turn.researchJobId) return;
+		const entry = turnToSessionEntry(turn);
+		entry.research = true;
+		entry.researchJobId = turn.researchJobId;
+		if (flags.pending) entry.researchPending = true;
+		if (flags.unread) entry.researchUnread = true;
+		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
+		writeAiAskSession(sessionEntries);
+		renderHistory();
+		void fetch("/api/ai/history", {
+			method: "POST",
+			credentials: "same-origin",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ entry }),
+		}).catch(() => {
+			/* history sync is best-effort */
+		});
+	}
+
+	function markResearchHistoryRead(entry: AiAskSessionEntry): void {
+		if (!entry.researchUnread && !entry.researchPending) return;
+		const next = {
+			...entry,
+			researchUnread: undefined,
+			researchPending: entry.researchPending,
+		};
+		delete next.researchUnread;
+		sessionEntries = upsertAiAskSessionEntry(sessionEntries, next);
+		writeAiAskSession(sessionEntries);
+		renderHistory();
+	}
+
+	function watchPendingResearchHistory(): void {
+		if (shareMode || turns.length > 0) return;
+		for (const entry of sessionEntries) {
+			if (!entry.researchPending || !entry.researchJobId) continue;
+			void watchResearchHistoryJob(entry);
+		}
+	}
+
+	async function watchResearchHistoryJob(
+		entry: AiAskSessionEntry,
+	): Promise<void> {
+		const jobId = entry.researchJobId || "";
+		if (!jobId || watchingResearchJobs.has(jobId)) return;
+		watchingResearchJobs.add(jobId);
+		try {
+			while (turns.length === 0) {
+				await new Promise((resolve) => window.setTimeout(resolve, 2000));
+				if (turns.length > 0) return;
+				const data = await fetchResearchJob(jobId);
+				if (!data.ok || !data.job) return;
+				if (data.job.pending) continue;
+				const latest =
+					sessionEntries.find((item) => item.researchJobId === jobId) ||
+					entry;
+				const turn = sessionEntryToTurn(latest);
+				applyResearchJobToTurn(turn, data.job);
+				persistResearchHistory(turn, {
+					pending: false,
+					unread: !data.job.error,
+				});
+				void refreshQuota();
+				if (!data.job.error) {
+					void notifyResearchReady({
+						question: turn.question,
+						jobId,
+					});
+				}
+				return;
+			}
+		} catch {
+			/* keep the pending row; another visit can retry */
+		} finally {
+			watchingResearchJobs.delete(jobId);
+		}
+	}
+
+	async function hydrateOpenResearchJobs(): Promise<void> {
+		if (shareMode) return;
+		try {
+			const response = await fetch("/api/ai/research", {
+				credentials: "same-origin",
+				cache: "no-store",
+			});
+			if (!response.ok) return;
+			const data = (await response.json()) as { jobs?: ResearchJobPublic[] };
+			const jobs = Array.isArray(data.jobs) ? data.jobs : [];
+			let changed = false;
+			for (const job of jobs) {
+				if (!job.pending || !job.id) continue;
+				sessionEntries = upsertAiAskSessionEntry(
+					sessionEntries,
+					researchJobToHistoryEntry(job),
+				);
+				changed = true;
+			}
+			if (!changed) return;
+			writeAiAskSession(sessionEntries);
+			renderHistory();
+			watchPendingResearchHistory();
+		} catch {
+			/* listing is best-effort */
+		}
+	}
+
 	function openHistoryEntry(entry: AiAskSessionEntry): void {
+		if (entry.researchUnread) markResearchHistoryRead(entry);
+		if (entry.researchJobId && (entry.researchPending || (entry.research && entry.results.length === 0 && !entry.report))) {
+			void restoreResearchJob(entry.researchJobId);
+			return;
+		}
 		const restored = askHistoryEntriesForRestore(entry);
 		if (restored.length === 0) return;
 		clearAskResumeFromDiscourse();
@@ -1442,9 +1935,12 @@ export function attachAiMode(options: {
 	}
 
 	function persistSessionFromTurn(turn: AiAskTurn): void {
+		if (turn.fromSample) return;
 		if (turn.pending || turn.error || turn.offTopic) return;
-		// Empty answers are not worth replaying — they hide real retries.
-		if (turn.results.length === 0) return;
+		const keepEmptyResearch = Boolean(
+			turn.research && (turn.report || turn.researchJobId),
+		);
+		if (turn.results.length === 0 && !keepEmptyResearch) return;
 
 		const completedBefore = turns.filter(
 			(item) =>
@@ -1512,6 +2008,139 @@ export function attachAiMode(options: {
 			.catch(() => {
 				/* history sync is best-effort */
 			});
+	}
+
+	async function loadAskSamples(): Promise<void> {
+		try {
+			const response = await fetch("/api/ai/samples", {
+				credentials: "same-origin",
+				cache: "no-store",
+			});
+			const data = (await response.json()) as {
+				success?: boolean;
+				samples?: unknown;
+			};
+			if (!data.success || !Array.isArray(data.samples)) return;
+			askSamples = data.samples
+				.map((item) => sanitizeAskSamplePublic(item))
+				.filter((item): item is AiAskSamplePublic => Boolean(item));
+		} catch {
+			/* samples are optional until an admin marks one */
+		}
+	}
+
+	function stopSamplePlayback(): void {
+		samplePlaybackToken += 1;
+		window.clearTimeout(samplePlaybackTimer);
+		samplePlaybackTimer = 0;
+	}
+
+	function applySamplePlayback(
+		turn: AiAskTurn,
+		sample: AiAskSamplePublic,
+		phase: AskSamplePlaybackPhase,
+	): void {
+		const patch = askSamplePlaybackPatch(sample, phase);
+		turn.pending = patch.pending;
+		turn.phase = patch.phase;
+		turn.lookingFor = patch.lookingFor;
+		turn.queries = patch.queries;
+		turn.fallbackQueries = patch.fallbackQueries;
+		turn.summary = patch.summary;
+		turn.results = patch.results;
+		if (patch.rerankCandidateCount) {
+			turn.rerankCandidateCount = patch.rerankCandidateCount;
+			turn.rerankShowCount = patch.rerankShowCount;
+		} else {
+			turn.rerankCandidateCount = undefined;
+			turn.rerankShowCount = undefined;
+		}
+	}
+
+	function openAskSample(sample: AiAskSamplePublic): void {
+		stopSamplePlayback();
+		const token = samplePlaybackToken;
+		pendingReplaceQuestions = null;
+		clearAskResumeFromDiscourse();
+		const turn = sampleToAiAskTurn(sample);
+		applySamplePlayback(turn, sample, "rewrite");
+		turns = [turn];
+		busy = true;
+		root.classList.add("is-busy");
+		syncLayoutAndReveal();
+
+		const playFrom = (index: number): void => {
+			if (token !== samplePlaybackToken) return;
+			const step = ASK_SAMPLE_PLAYBACK[index];
+			if (!step) return;
+			applySamplePlayback(turn, sample, step.phase);
+			if (step.phase === "done") {
+				busy = false;
+				root.classList.remove("is-busy");
+				syncLayoutAndReveal();
+				followInput?.focus();
+				return;
+			}
+			syncLayoutAndReveal();
+			const next = ASK_SAMPLE_PLAYBACK[index + 1];
+			if (!next) return;
+			samplePlaybackTimer = window.setTimeout(
+				() => playFrom(index + 1),
+				Math.max(0, next.atMs - step.atMs),
+			);
+		};
+		playFrom(0);
+	}
+
+	async function saveTurnAsSample(turn: AiAskTurn): Promise<void> {
+		if (
+			!canMarkAskAsSample({
+				isAdmin: isAskAdmin,
+				pending: turn.pending,
+				error: turn.error,
+				offTopic: turn.offTopic,
+				resultCount: turn.results.length,
+				fromShare: turn.fromShare,
+				fromSample: turn.fromSample,
+				research: turn.research,
+			})
+		) {
+			return;
+		}
+		const replacing = Boolean(findAskSample(askSamples, turn.question));
+		if (!window.confirm(askSampleConfirmMessage(replacing))) return;
+		try {
+			const response = await fetch("/api/ai/admin/sample", {
+				method: "POST",
+				credentials: "same-origin",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					question: turn.question,
+					lookingFor: turn.lookingFor,
+					queries: turn.queries,
+					fallbackQueries: turn.fallbackQueries,
+					summary: turn.summary || "",
+					results: turn.results,
+					model: turn.model,
+					requestId: turn.requestId,
+					candidateCount: turn.rerankCandidateCount,
+				}),
+			});
+			const data = (await response.json()) as {
+				success?: boolean;
+				error?: string;
+				sample?: unknown;
+			};
+			if (!response.ok || !data.success) {
+				setStatus(data.error || "Could not save this example.");
+				return;
+			}
+			const saved = sanitizeAskSamplePublic(data.sample);
+			if (saved) askSamples = upsertAskSampleLocal(askSamples, saved);
+			setStatus("Saved as the example for this question.");
+		} catch {
+			setStatus("Could not save this example.");
+		}
 	}
 
 	function persistSaveState(turn: AiAskTurn): void {
@@ -1865,9 +2494,10 @@ export function attachAiMode(options: {
 					Array.isArray(probeData.entries) ? probeData.entries : [],
 				);
 			} else {
-				sessionEntries = Array.isArray(data.entries)
-					? data.entries
-					: sessionEntries;
+				sessionEntries = preservePendingResearchHistory(
+					sessionEntries,
+					Array.isArray(data.entries) ? data.entries : [],
+				);
 			}
 			writeAiAskSession(sessionEntries);
 			// Asks that finished during the first sync stay local-only unless we merge again.
@@ -1887,7 +2517,10 @@ export function attachAiMode(options: {
 					entries?: AiAskSessionEntry[];
 				};
 				if (catchUp.ok && catchUpData.success && Array.isArray(catchUpData.entries)) {
-					sessionEntries = catchUpData.entries;
+					sessionEntries = preservePendingResearchHistory(
+						latestLocal,
+						catchUpData.entries,
+					);
 					writeAiAskSession(sessionEntries);
 				} else {
 					sessionEntries = mergeAskHistoryEntries(
@@ -1915,6 +2548,7 @@ export function attachAiMode(options: {
 				item.saved = match?.saved === true;
 			}
 			renderHistory();
+			watchPendingResearchHistory();
 			if (turns.length > 0) syncLayout();
 		} catch {
 			/* keep local history */
@@ -1956,19 +2590,26 @@ export function attachAiMode(options: {
 		</div>`;
 	}
 
-	function renderHit(hit: AiDiscourseHit): string {
+	function renderHit(hit: AiDiscourseHit, research = false): string {
 		const id = escapeHtml(transformId(hit.slug));
-		const title = escapeHtml(hit.title);
+		const title = escapeHtml(
+			research ? formatResearchHitTitle(hit.title) : hit.title,
+		);
 		const description = hit.description
 			? `<p class="mt-2 text-text line-clamp-4 text-sm sm:text-base">${escapeHtml(stripHtml(hit.description))}</p>`
 			: "";
-		const snippet = hit.contentSnippet
-			? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${escapeHtml(stripHtml(hit.contentSnippet))}</p>`
-			: "";
+		const snippet =
+			!research && hit.contentSnippet
+				? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${escapeHtml(stripHtml(hit.contentSnippet))}</p>`
+				: "";
 		const badge = hit.referenceOnly
 			? `<span class="inline-block ml-1.5 px-1 py-0 text-[0.65rem] font-semibold uppercase tracking-wide text-[var(--text-muted)] align-middle">Reference</span>`
 			: "";
-		// Ask readers aren’t PTS/verse users — omit those labels here (Search still shows them).
+		const volpage =
+			research && hit.volpage
+				? `<div class="mt-2 flex justify-end"><span class="text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(hit.volpage)}">${escapeHtml(hit.volpage)}</span></div>`
+				: "";
+		// Ask cards stay slim. Research sources match Search: ID, Pāli, English, description, PTS.
 		return `<div data-result-type="discourse">
 			<a href="${escapeHtml(hit.href)}" class="search-discourse-card block no-underline text-inherit" data-search-result>
 				<div class="flex items-start">
@@ -1983,6 +2624,7 @@ export function attachAiMode(options: {
 				</div>
 				${description}
 				${snippet}
+				${volpage}
 			</a>
 		</div>`;
 	}
@@ -2028,6 +2670,7 @@ export function attachAiMode(options: {
 			const turn = turns[i];
 			if (
 				turn &&
+				!turn.fromSample &&
 				!turn.pending &&
 				!turn.error &&
 				!turn.offTopic &&
@@ -2068,13 +2711,20 @@ export function attachAiMode(options: {
 				detail: {
 					turns: exportTurns,
 					...(sharePath ? { sharePath } : {}),
+					...(exportTurns.some((turn) => turn.research)
+						? { research: true }
+						: {}),
 				},
 			}),
 		);
 	}
 
 	function shareActionsHtml(turn: AiAskTurn, turnIndex: number): string {
-		if (turn.pending || turn.error || turn.results.length === 0) {
+		if (
+			turn.pending ||
+			turn.error ||
+			(turn.results.length === 0 && !(turn.report || "").trim())
+		) {
 			return "";
 		}
 		const pinIndex = latestPinnableTurnIndex();
@@ -2105,10 +2755,35 @@ export function attachAiMode(options: {
 				${PIN_ICON_SVG}<span class="ai-share-label-full">${pinLabel}</span><span class="ai-share-label-short">${pinShortLabel}</span>
 			</button>`
 			: "";
-		const deleteBtn =
-			showPin && !turn.fromShare && turnIndex === turns.length - 1
-				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}" title="${conversation ? "Remove this last follow-up" : "Delete this Ask"}">Delete</button>`
+		const showDelete =
+			!turn.fromShare &&
+			!turn.fromSample &&
+			showPin &&
+			turnIndex === turns.length - 1;
+		const deleteBtn = showDelete
+				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}" title="${
+					conversation
+						? "Remove this last follow-up"
+						: "Delete this Ask"
+				}">Delete</button>`
 				: "";
+		const showSampleSave =
+			turnIndex === turns.length - 1 &&
+			canMarkAskAsSample({
+				isAdmin: isAskAdmin,
+				pending: turn.pending,
+				error: turn.error,
+				offTopic: turn.offTopic,
+				resultCount: turn.results.length,
+				fromShare: turn.fromShare,
+				fromSample: turn.fromSample,
+				research: turn.research,
+			});
+		const sampleSaveBtn = showSampleSave
+			? `<button type="button" class="ai-share-btn" data-ai-sample-save data-turn-index="${turnIndex}" title="Use this run as the example for this question">
+				<span class="ai-share-label-full">Use as sample</span><span class="ai-share-label-short">Sample</span>
+			</button>`
+			: "";
 		const startBtns =
 			pinBtn || deleteBtn
 				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
@@ -2116,7 +2791,19 @@ export function attachAiMode(options: {
 		return `<div class="ai-share-actions">
 			${startBtns}
 			<div class="ai-share-actions-end">
-				<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>
+				${
+					(turn.report || "").trim()
+						? `<button type="button" class="ai-share-btn ai-copy-report-btn" data-ai-copy-report data-turn-index="${turnIndex}" title="Copy report as Markdown">
+					${COPY_REPORT_ICON_SVG}<span class="ai-share-label-full">Copy</span><span class="ai-share-label-short">Copy</span>
+				</button>`
+						: ""
+				}
+				${
+					turn.results.length > 0
+						? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
+						: ""
+				}
+				${sampleSaveBtn}
 				<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>
 			</div>
 		</div>`;
@@ -2124,7 +2811,7 @@ export function attachAiMode(options: {
 
 	function feedbackHtml(turn: AiAskTurn, turnIndex: number): string {
 		// One feedback row per thread — only on the latest rateable turn.
-		if (turn.fromShare) return "";
+		if (turn.fromShare || turn.fromSample) return "";
 		if (turnIndex !== latestRateableTurnIndex()) return "";
 		if (
 			turn.pending ||
@@ -2169,7 +2856,30 @@ export function attachAiMode(options: {
 				item.rerankCandidateCount > 0
 					? { candidateCount: item.rerankCandidateCount }
 					: {}),
+				...(item.research ? { research: true } : {}),
+				...(item.report ? { report: item.report } : {}),
+				...(item.reasoning ? { reasoning: item.reasoning } : {}),
 			}));
+	}
+
+	async function copyResearchReport(
+		turn: AiAskTurn,
+		button: HTMLButtonElement,
+	): Promise<void> {
+		const markdown = (turn.report || "").trim();
+		if (!markdown) return;
+		const idle = button.innerHTML;
+		button.disabled = true;
+		try {
+			await navigator.clipboard.writeText(markdown);
+			button.innerHTML = "Copied";
+		} catch {
+			button.innerHTML = "Could not copy";
+		}
+		window.setTimeout(() => {
+			button.disabled = false;
+			button.innerHTML = idle;
+		}, 1600);
 	}
 
 	async function copyShareLink(
@@ -2215,6 +2925,13 @@ export function attachAiMode(options: {
 					model: turn.model,
 					requestId: turn.requestId,
 					shareSlug: turn.shareSlug,
+					...(turn.research ? { research: true } : {}),
+					...(turn.report ? { report: turn.report } : {}),
+					...(turn.reasoning ? { reasoning: turn.reasoning } : {}),
+					...(typeof turn.rerankCandidateCount === "number" &&
+					turn.rerankCandidateCount > 0
+						? { candidateCount: turn.rerankCandidateCount }
+						: {}),
 					...(thread.length > 1 ? { thread } : {}),
 				}),
 			});
@@ -2283,13 +3000,58 @@ export function attachAiMode(options: {
 		}
 	}
 
+	function renderClarifyCardHtml(turn: AiAskTurn, turnIndex: number): string {
+		const draft = turn.researchClarify;
+		if (!draft) return "";
+		const questions = draft.questions
+			.map((question, qIndex) => {
+				const selected = draft.answers[question.id]?.choiceId || "";
+				const otherText = draft.answers[question.id]?.otherText || "";
+				const chips = question.choices
+					.map((choice) => {
+						const on = selected === choice.id;
+						return `<button type="button" class="ai-clarify-choice${on ? " is-on" : ""}" data-ai-clarify-choice data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" data-choice-id="${escapeHtml(choice.id)}" role="radio" aria-checked="${on ? "true" : "false"}">${escapeHtml(choice.label)}</button>`;
+					})
+					.join("");
+				const otherField =
+					selected === RESEARCH_CLARIFY_OTHER_ID
+						? `<input class="ai-clarify-other" data-ai-clarify-other data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" type="text" maxlength="280" placeholder="Add a short note" value="${escapeHtml(otherText)}" />`
+						: "";
+				return `<div class="ai-clarify-q" role="radiogroup" aria-label="${escapeHtml(question.prompt)}">
+					<p class="ai-clarify-prompt">${qIndex + 1}. ${escapeHtml(question.prompt)}</p>
+					<div class="ai-clarify-choices">${chips}</div>
+					${otherField}
+				</div>`;
+			})
+			.join("");
+		return `<div class="ai-clarify">
+			<p class="ai-clarify-title">${escapeHtml(RESEARCH_CLARIFY_TITLE)}</p>
+			${questions}
+		</div>`;
+	}
+
+	function renderDeclineCardHtml(turn: AiAskTurn, turnIndex: number): string {
+		const message =
+			turn.researchDeclined?.message ||
+			"This Research only reads the early discourses on this site.";
+		return `<div class="ai-clarify-decline">
+			<p>${escapeHtml(message)}</p>
+			<div class="ai-clarify-actions">
+				<button type="button" class="ai-share-btn" data-ai-research-ask-instead data-turn-index="${turnIndex}">Ask instead</button>
+				<button type="button" class="ai-share-btn" data-ai-edit-question data-turn-index="${turnIndex}">Edit question</button>
+			</div>
+		</div>`;
+	}
+
 	function renderTurn(turn: AiAskTurn, turnIndex: number): string {
 		const primaryQueries = queryChipsHtml(turn.queries, "ai-queries");
 		const fallbackQueries =
 			turn.fallbackQueries.length > 0
 				? `<div class="ai-fallbacks"><span class="ai-fallbacks-label">Also tried</span>${queryChipsHtml(turn.fallbackQueries, "ai-queries ai-queries-fallback")}</div>`
 				: "";
-		const cacheNote = turn.fromCache
+		const cacheNote = turn.fromSample
+			? `<p class="ai-cache-note">${escapeHtml(ASK_SAMPLE_NOTE)}</p>`
+			: turn.fromCache
 			? `<p class="ai-cache-note" title="You asked this before, so the saved answer is shown again.">Saved answer from an earlier Ask</p>`
 			: "";
 		// Latest lines stay visible; older reasoning is clipped unless expanded.
@@ -2320,6 +3082,14 @@ export function attachAiMode(options: {
 				candidateCount: turn.rerankCandidateCount,
 				showCount: turn.rerankShowCount,
 				resultCount: turn.results.length,
+				research: turn.research === true,
+				clarifyPending:
+					turn.research === true &&
+					turn.pending &&
+					!turn.researchJobId,
+				verifyNote: turn.verifyNote,
+				onTrack: turn.onTrack,
+				progressNote: turn.progressNote,
 			}),
 			{
 				afterFirst: thinking,
@@ -2329,9 +3099,14 @@ export function attachAiMode(options: {
 			},
 		);
 		const summaryText = (turn.summary || "").trim();
+		const reportText = (turn.report || "").trim();
 		const hasHits = turn.results.length > 0;
-		const summary =
-			hasHits && summaryText
+		const summary = reportText
+			? `<div class="ai-report"><p class="ai-report-kicker">Research report</p>${renderResearchReportHtml(
+					reportText,
+					turn.results,
+				)}</div>`
+			: hasHits && summaryText
 				? `<div class="ai-summary">${linkifyAskSummaryHtml(
 						summaryText,
 						turn.results,
@@ -2339,24 +3114,36 @@ export function attachAiMode(options: {
 				: !turn.pending && turn.rankedBySearchOnly && hasHits
 					? `<p class="ai-result-meta">Ranked by library search only — the rescorer was unavailable, so there is no briefing this time.</p>`
 					: "";
-		const caption = hasHits
-			? `<p class="ai-results-caption">${escapeHtml(
-					askResultsCaption({
-						resultCount: turn.results.length,
-						candidateCount: turn.rerankCandidateCount,
-					}),
-				)}</p>`
+		const captionText = hasHits
+			? askResultsCaption({
+					resultCount: turn.results.length,
+					candidateCount: turn.rerankCandidateCount,
+					research: turn.research === true,
+				})
 			: "";
+		const caption =
+			hasHits && captionText && turn.research !== true
+				? `<p class="ai-results-caption">${escapeHtml(captionText)}</p>`
+				: "";
 		const hideQueryChips = turn.offTopic || !hasHits;
 		const queryBlock = hideQueryChips ? "" : primaryQueries;
 		const fallbackBlock = hideQueryChips ? "" : fallbackQueries;
 		let body = "";
-		if (turn.error) {
+		if (turn.researchDeclined && !turn.researchJobId) {
+			body = renderDeclineCardHtml(turn, turnIndex);
+		} else if (isClarifyingTurn(turn)) {
+			body = renderClarifyCardHtml(turn, turnIndex);
+		} else if (turn.error) {
+			const retryResearch = isIncompleteResearchTurn(turn);
 			const retry =
 				!turn.fromShare && turnIndex === turns.length - 1
 					? `<div class="ai-error-actions">
-						<button type="button" class="ai-error-retry" data-ai-edit-question data-turn-index="${turnIndex}">
-							Try again
+						<button type="button" class="ai-error-retry" ${
+							retryResearch
+								? `data-ai-research-retry data-turn-index="${turnIndex}"`
+								: `data-ai-edit-question data-turn-index="${turnIndex}"`
+						}>
+							${retryResearch ? "Research again" : "Try again"}
 						</button>
 					</div>`
 					: "";
@@ -2364,12 +3151,16 @@ export function attachAiMode(options: {
 			// refusal stall is still inspectable after the error lands.
 			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${retry}`;
 		} else if (turn.pending && !hasHits) {
-			body = `${process}
+			const emailNote =
+				turn.research && turn.researchJobId
+					? `<p class="ai-research-note">${escapeHtml(RESEARCH_EMAIL_PENDING_NOTE)}</p>`
+					: "";
+			body = `${process}${emailNote}
 				<div class="ai-loading" role="status">
 					<span class="ai-spinner"></span>
-					<span class="sr-only">Working on your Ask</span>
+					<span class="sr-only">${turn.research ? "Working on your research" : "Working on your Ask"}</span>
 				</div>
-				${turn.phase === "search" || turn.phase === "rerank" ? skeletonHtml() : ""}`;
+				${turn.phase === "verify" || turn.phase === "search" || turn.phase === "rerank" ? skeletonHtml() : ""}`;
 		} else {
 			const personHits = (turn.persons || [])
 				.map(renderPersonHit)
@@ -2377,12 +3168,20 @@ export function attachAiMode(options: {
 			const personBlock = personHits
 				? `<div class="ai-persons">${personHits}</div>`
 				: "";
-			const hits =
+			const hitCards =
 				turn.results.length > 0
-					? `<div class="ai-hits">${turn.results.map(renderHit).join("")}</div>`
-					: personBlock
-						? ""
-						: emptyHitsHtml(turn);
+					? turn.results
+							.map((hit) => renderHit(hit, turn.research === true))
+							.join("")
+					: "";
+			const hits =
+				hitCards && turn.research === true && captionText
+					? researchSourcesBlockHtml(escapeHtml(captionText), hitCards)
+					: hitCards
+						? `<div class="ai-hits">${hitCards}</div>`
+						: personBlock
+							? ""
+							: emptyHitsHtml(turn);
 			body = `${cacheNote}${process}${summary}${queryBlock}${fallbackBlock}${personBlock}${caption}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
 		}
 		const backLabel = shareMode ? "Ask your own question" : "Back to earlier questions";
@@ -2400,9 +3199,13 @@ export function attachAiMode(options: {
 			!turn.fromShare &&
 			!turn.pending &&
 			turnIndex === turns.length - 1;
+		const retryResearch = isIncompleteResearchTurn(turn);
+		const editTitle = retryResearch
+			? "Edit and research again"
+			: "Edit and ask again";
 		const questionEl = canEdit
-			? `<button type="button" class="ai-question ai-question-btn" data-ai-edit-question data-turn-index="${turnIndex}" title="Edit and ask again">${escapeHtml(turn.question)}</button>
-				<button type="button" class="ai-edit-btn" data-ai-edit-question data-turn-index="${turnIndex}" aria-label="Edit question" title="Edit and ask again">
+			? `<button type="button" class="ai-question ai-question-btn" data-ai-edit-question data-turn-index="${turnIndex}" title="${editTitle}">${escapeHtml(turn.question)}</button>
+				<button type="button" class="ai-edit-btn" data-ai-edit-question data-turn-index="${turnIndex}" aria-label="Edit question" title="${editTitle}">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="14" height="14" aria-hidden="true">
 						<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
 					</svg>
@@ -2459,6 +3262,13 @@ export function attachAiMode(options: {
 					threadCount > 1
 						? `<span class="ai-history-thread">${threadCount} turns in this conversation</span>`
 						: "";
+				const researchLabel = researchHistoryStatusLabel(entry);
+				const researchRow = researchLabel
+					? `<span class="ai-history-research${entry.researchPending ? " is-pending" : ""}${entry.researchUnread ? " is-ready" : ""}">${escapeHtml(researchLabel)}</span>`
+					: "";
+				const unreadDot = entry.researchUnread
+					? `<span class="ai-history-unread" aria-label="Unread"></span>`
+					: "";
 				const rootQuestion =
 					threadCount > 1 && entry.thread?.[0]?.question
 						? entry.thread[0].question
@@ -2471,14 +3281,16 @@ export function attachAiMode(options: {
 						: "";
 				const q = escapeHtml(entry.question);
 				const pinAction = entry.saved ? "Unpin" : "Pin";
-				return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}">
+				return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}${entry.researchUnread ? " is-unread" : ""}${entry.researchPending ? " is-research-pending" : ""}">
 						<button type="button" class="ai-history-item" data-ai-history-q="${q}">
 							<span class="ai-history-top">
+								${unreadDot}
 								<span class="ai-history-q">${q}</span>
 								<span class="ai-history-meta">${pinMark}${when ? `<span class="ai-history-when">${escapeHtml(when)}</span>` : ""}</span>
 							</span>
 							${rootRow}
 							${threadRow}
+							${researchRow}
 							${resultsRow}
 						</button>
 						<div class="ai-history-menu">
@@ -2640,9 +3452,28 @@ export function attachAiMode(options: {
 		}
 		const hasThread = turns.length > 0;
 		root.classList.toggle("has-thread", hasThread);
+		const last = turns[turns.length - 1];
+		const clarifying = isClarifyingTurn(last);
+		const declinedOpen =
+			Boolean(last?.researchDeclined) && !last?.researchJobId;
+		const researchBusy = turns.some(
+			(turn) => turn.pending && turn.research && turn.researchJobId,
+		);
+		root.classList.toggle("is-research-busy", researchBusy);
+		syncStopButtons(researchBusy);
+		if (followInput) followInput.disabled = researchBusy;
+		const followBox = followForm?.querySelector<HTMLElement>(".ai-box");
+		if (followBox) followBox.hidden = researchBusy;
+		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-stop]").forEach(
+			(button) => {
+				button.hidden = !researchBusy;
+			},
+		);
+		syncResearchChip();
 		empty.hidden = hasThread || shareMode;
 		composer.hidden = hasThread || shareMode;
-		if (followForm) followForm.hidden = !hasThread;
+		if (followForm) followForm.hidden = !hasThread || clarifying || declinedOpen;
+		syncClarifyBar();
 		if (historyEl && shareMode) historyEl.hidden = true;
 		thread.innerHTML = turns.map((turn, index) => renderTurn(turn, index)).join("");
 		thread.querySelectorAll<HTMLElement>("[data-ai-feedback-turn]").forEach((row) => {
@@ -2674,9 +3505,25 @@ export function attachAiMode(options: {
 				if (turn) void copyShareLink(turn, button, index);
 			});
 		});
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-sample-save]").forEach(
+			(button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					const turn = turns[index];
+					if (turn) void saveTurnAsSample(turn);
+				});
+			},
+		);
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-download]").forEach((button) => {
 			button.addEventListener("click", () => {
 				openAskDownload();
+			});
+		});
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-copy-report]").forEach((button) => {
+			button.addEventListener("click", () => {
+				const index = Number(button.getAttribute("data-turn-index"));
+				const turn = turns[index];
+				if (turn) void copyResearchReport(turn, button);
 			});
 		});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-pin]").forEach((button) => {
@@ -2703,6 +3550,78 @@ export function attachAiMode(options: {
 				});
 			},
 		);
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-research-retry]").forEach(
+			(button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					void retryIncompleteResearchTurn(index);
+				});
+			},
+		);
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-clarify-choice]").forEach(
+			(button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					const questionId = button.getAttribute("data-question-id") || "";
+					const choiceId = button.getAttribute("data-choice-id") || "";
+					const turn = turns[index];
+					if (!turn?.researchClarify || !questionId || !choiceId) return;
+					turn.researchClarify.answers = {
+						...turn.researchClarify.answers,
+						[questionId]: {
+							choiceId,
+							...(choiceId === RESEARCH_CLARIFY_OTHER_ID
+								? { otherText: turn.researchClarify.answers[questionId]?.otherText || "" }
+								: {}),
+						},
+					};
+					syncLayout();
+					if (choiceId === RESEARCH_CLARIFY_OTHER_ID) {
+						thread
+							.querySelector<HTMLInputElement>(
+								`[data-ai-clarify-other][data-question-id="${questionId}"]`,
+							)
+							?.focus();
+					}
+				});
+			},
+		);
+		thread.querySelectorAll<HTMLInputElement>("[data-ai-clarify-other]").forEach(
+			(inputEl) => {
+				inputEl.addEventListener("input", () => {
+					const index = Number(inputEl.getAttribute("data-turn-index"));
+					const questionId = inputEl.getAttribute("data-question-id") || "";
+					const turn = turns[index];
+					if (!turn?.researchClarify || !questionId) return;
+					const currentAnswer = turn.researchClarify.answers[questionId] || {
+						choiceId: RESEARCH_CLARIFY_OTHER_ID,
+					};
+					turn.researchClarify.answers = {
+						...turn.researchClarify.answers,
+						[questionId]: {
+							...currentAnswer,
+							choiceId: RESEARCH_CLARIFY_OTHER_ID,
+							otherText: inputEl.value,
+						},
+					};
+					syncClarifyBar();
+				});
+			},
+		);
+		thread
+			.querySelectorAll<HTMLButtonElement>("[data-ai-research-ask-instead]")
+			.forEach((button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					const turn = turns[index];
+					if (!turn) return;
+					const question = turn.question;
+					turns = turns.filter((item) => item !== turn);
+					setResearchChipOn(false);
+					syncLayout();
+					void ask(question, followInput || input);
+				});
+			});
 		if (thread) pinClampedAskThinking(thread);
 		if (!shareMode) renderHistory();
 	}
@@ -2721,11 +3640,13 @@ export function attachAiMode(options: {
 		row.querySelector(".ai-question")?.remove();
 		const wrap = document.createElement("div");
 		wrap.className = "ai-question-edit";
+		const retryResearch = isIncompleteResearchTurn(turn);
+		const submitLabel = researchRetrySubmitLabel(retryResearch);
 		wrap.innerHTML = `
 			<label class="sr-only" for="ai-edit-question">Edit question</label>
 			<textarea id="ai-edit-question" data-ai-edit-input rows="2"></textarea>
 			<div class="ai-question-edit-actions">
-				<button type="button" data-ai-edit-submit>Ask again</button>
+				<button type="button" data-ai-edit-submit>${submitLabel}</button>
 				<button type="button" data-ai-edit-cancel>Cancel</button>
 			</div>
 		`;
@@ -2743,7 +3664,10 @@ export function attachAiMode(options: {
 		const submit = (): void => {
 			const next = editInput.value.replace(/\s+/g, " ").trim();
 			if (!next || busy) return;
-			// Allow asking the same wording again (e.g. refresh results).
+			if (retryResearch) {
+				void retryIncompleteResearchTurn(turnIndex, next);
+				return;
+			}
 			void ask(next, null, { replaceTurnIndex: turnIndex });
 		};
 		wrap.querySelector("[data-ai-edit-cancel]")?.addEventListener("click", cancel);
@@ -2820,30 +3744,447 @@ export function attachAiMode(options: {
 		});
 	}
 
+	function syncStopButtons(researchBusy: boolean): void {
+		const sendHint = askSendShortcutLabel();
+		root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
+			if (researchBusy) {
+				button.setAttribute("data-ai-stop", "1");
+				button.setAttribute("aria-label", "Stop research");
+				button.title = "Stop research";
+			} else {
+				button.removeAttribute("data-ai-stop");
+				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : "Ask");
+				button.title = sendHint;
+			}
+		});
+	}
+
+	async function fetchResearchJob(
+		jobId: string,
+	): Promise<{ ok: boolean; status: number; job?: ResearchJobPublic; error?: string }> {
+		const response = await fetch(`/api/ai/research/${encodeURIComponent(jobId)}`, {
+			credentials: "same-origin",
+			cache: "no-store",
+		});
+		let data: {
+			job?: ResearchJobPublic;
+			error?: string;
+			researchQuota?: ResearchQuotaView;
+		} = {};
+		try {
+			data = (await response.json()) as typeof data;
+		} catch {
+			data = {};
+		}
+		if (data.researchQuota) applyQuota(quota, data.researchQuota);
+		return {
+			ok: response.ok,
+			status: response.status,
+			job: data.job,
+			error: data.error,
+		};
+	}
+
+	async function pollResearchTurn(turn: AiAskTurn): Promise<void> {
+		const token = researchPollToken;
+		if (!turn.researchJobId) return;
+		rememberResearchJobId(turn.researchJobId);
+		let stallKey = "";
+		let stallSince = Date.now();
+		while (turn.pending && turn.researchJobId && token === researchPollToken) {
+			const still = await new Promise<boolean>((resolve) => {
+				researchPollTimer = window.setTimeout(() => {
+					researchPollTimer = 0;
+					resolve(token === researchPollToken);
+				}, 1500);
+			});
+			if (!still || token !== researchPollToken) return;
+			try {
+				const data = await fetchResearchJob(turn.researchJobId);
+				if (data.status === 401) {
+					window.location.assign(askAuthPageHref("/signin", null, currentReturnTo()));
+					return;
+				}
+				if (!data.ok || !data.job) {
+					turn.pending = false;
+					turn.phase = "done";
+					turn.error = data.error || "Research not found.";
+					break;
+				}
+				const key = `${data.job.status}\0${data.job.progressNote || ""}`;
+				if (key !== stallKey) {
+					stallKey = key;
+					stallSince = Date.now();
+				}
+				applyResearchJobToTurn(turn, data.job);
+				if (
+					data.job.pending &&
+					!(data.job.progressNote || "").trim() &&
+					Date.now() - stallSince > 75_000
+				) {
+					turn.progressNote =
+						"Still working… this can take a few minutes.";
+				}
+				syncLayoutAndReveal();
+				if (!data.job.pending) break;
+			} catch {
+				turn.pending = false;
+				turn.phase = "done";
+				turn.error = "Network error. Try again.";
+				break;
+			}
+		}
+		if (token !== researchPollToken) return;
+		if (!turn.pending) {
+			void refreshQuota();
+			try {
+				sessionStorage.removeItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`);
+			} catch {
+				/* ignore */
+			}
+		}
+		if (!turn.pending && turn.error && turn.research) {
+			setResearchChipOn(true);
+		}
+		if (!turn.pending && !turn.error) {
+			setResearchChipOn(false);
+			persistSessionFromTurn(turn);
+			const hidden = typeof document !== "undefined" && document.hidden;
+			persistResearchHistory(turn, { pending: false, unread: hidden });
+			if (hidden && turn.researchJobId) {
+				void notifyResearchReady({
+					question: turn.question,
+					jobId: turn.researchJobId,
+				});
+			}
+		}
+	}
+
+	async function cancelActiveResearch(): Promise<void> {
+		const turn = [...turns]
+			.reverse()
+			.find((item) => item.pending && item.researchJobId);
+		if (!turn?.researchJobId) return;
+		stopResearchPoll();
+		try {
+			const response = await fetch(
+				`/api/ai/research/${encodeURIComponent(turn.researchJobId)}`,
+				{
+					method: "POST",
+					credentials: "same-origin",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ action: "cancel" }),
+				},
+			);
+			const data = (await response.json()) as {
+				job?: ResearchJobPublic;
+				researchQuota?: ResearchQuotaView;
+			};
+			if (data.researchQuota) applyQuota(quota, data.researchQuota);
+			if (data.job) applyResearchJobToTurn(turn, data.job);
+			else {
+				turn.pending = false;
+				turn.phase = "done";
+				turn.error = "Research stopped.";
+			}
+		} catch {
+			turn.pending = false;
+			turn.phase = "done";
+			turn.error = "Research stopped.";
+		}
+		void refreshQuota();
+		if (turn.research && !turn.report) setResearchChipOn(true);
+		busy = false;
+		root.classList.remove("is-busy", "is-research-busy");
+		syncLayout();
+	}
+
+	async function retryIncompleteResearchTurn(
+		turnIndex: number,
+		question?: string,
+	): Promise<void> {
+		const turn = turns[turnIndex];
+		if (!turn || busy || turn.fromShare) return;
+		const next = (question ?? turn.question).replace(/\s+/g, " ").trim();
+		if (!next) return;
+		if (turn.researchJobId && sameResearchRetryQuestion(next, turn)) {
+			await restartResearchJobTurn(turn, turnIndex);
+			return;
+		}
+		setResearchChipOn(true);
+		void ask(next, null, { replaceTurnIndex: turnIndex, forceResearch: true });
+	}
+
+	async function restartResearchJobTurn(
+		turn: AiAskTurn,
+		turnIndex: number,
+	): Promise<void> {
+		const jobId = turn.researchJobId;
+		if (!jobId || busy) return;
+		busy = true;
+		root.classList.add("is-busy", "is-research-busy");
+		turn.pending = true;
+		turn.phase = "rewrite";
+		turn.error = undefined;
+		turn.progressNote = "Starting…";
+		turn.report = undefined;
+		turn.results = [];
+		syncLayout();
+		let fallbackAsk = false;
+		try {
+			const response = await fetch(
+				`/api/ai/research/${encodeURIComponent(jobId)}`,
+				{
+					method: "POST",
+					credentials: "same-origin",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ action: "retry" }),
+				},
+			);
+			const data = (await response.json()) as {
+				job?: ResearchJobPublic;
+				error?: string;
+				code?: string;
+				researchQuota?: ResearchQuotaView;
+			};
+			if (data.researchQuota) applyQuota(quota, data.researchQuota);
+			if (data.code === "research_quota") {
+				turn.pending = false;
+				turn.phase = "done";
+				turn.error = "Research stopped.";
+				setResearchChipOn(true);
+				openQuotaDialog("research", turn.question);
+				return;
+			}
+			if (!response.ok || !data.job) {
+				turn.pending = false;
+				turn.phase = "done";
+				fallbackAsk = true;
+				return;
+			}
+			applyResearchJobToTurn(turn, data.job);
+			setResearchChipOn(false);
+			syncResearchJobUrl(data.job.id);
+			persistResearchHistory(turn, { pending: true, unread: false });
+			persistActiveThread();
+			syncLayoutAndReveal();
+			await pollResearchTurn(turn);
+		} catch {
+			turn.pending = false;
+			turn.phase = "done";
+			turn.error = "Network error. Try again.";
+			setResearchChipOn(true);
+		} finally {
+			busy = false;
+			root.classList.remove("is-busy", "is-research-busy");
+			syncLayout();
+		}
+		if (fallbackAsk) {
+			setResearchChipOn(true);
+			void ask(turn.question, null, {
+				replaceTurnIndex: turnIndex,
+				forceResearch: true,
+			});
+		}
+	}
+
+	async function restoreResearchJob(jobId: string): Promise<boolean> {
+		try {
+			const data = await fetchResearchJob(jobId);
+			if (data.status === 401) {
+				window.location.assign(askAuthPageHref("/signin", null, currentReturnTo()));
+				return true;
+			}
+			if (!data.ok || !data.job) {
+				setStatus(data.error || "Research not found.");
+				return false;
+			}
+			const job = data.job;
+			const turn: AiAskTurn = {
+				question: job.question,
+				originalQuestion: job.result?.originalQuestion || job.question,
+				lookingFor: "",
+				queries: [],
+				fallbackQueries: [],
+				offTopic: false,
+				results: [],
+				persons: [],
+				model: "",
+				reasoning: "",
+				summary: "",
+				pending: true,
+				phase: "rewrite",
+				research: true,
+				researchJobId: job.id,
+			};
+			applyResearchJobToTurn(turn, job);
+			turns = [turn];
+			syncResearchJobUrl(job.id);
+			if (turn.pending) {
+				persistResearchHistory(turn, { pending: true, unread: false });
+			}
+			const remembered = sessionEntries.find((item) => item.researchJobId === job.id);
+			if (remembered) markResearchHistoryRead(remembered);
+			if (!turn.pending && isIncompleteResearchTurn(turn)) {
+				setResearchChipOn(true);
+			} else {
+				setResearchChipOn(false);
+			}
+			syncLayoutAndReveal();
+			if (!turn.pending) {
+				if (!turn.error) persistSessionFromTurn(turn);
+				return true;
+			}
+			busy = true;
+			root.classList.add("is-busy");
+			syncLayout();
+			await pollResearchTurn(turn);
+			busy = false;
+			root.classList.remove("is-busy", "is-research-busy");
+			syncLayout();
+			return true;
+		} catch {
+			setStatus("Could not load research.");
+			return false;
+		}
+	}
+
+	function cancelResearchClarify(): void {
+		const last = turns[turns.length - 1];
+		if (!isClarifyingTurn(last) && !last?.researchDeclined) return;
+		turns = turns.slice(0, -1);
+		syncLayout();
+		if (turns.length === 0) input?.focus();
+		else followInput?.focus();
+	}
+
+	async function startResearchFromClarify(): Promise<void> {
+		const turn = turns[turns.length - 1];
+		if (!isClarifyingTurn(turn) || !turn.researchClarify || busy) return;
+		const answers = answersFromClarifyState(turn.researchClarify.answers);
+		if (!canStartResearchClarify(turn.researchClarify.questions, answers)) return;
+		if (researchQuota && !researchQuota.allowed) {
+			openQuotaDialog("research", turn.question);
+			return;
+		}
+		busy = true;
+		root.classList.add("is-busy");
+		optimisticConsumeResearchQuota();
+		turn.pending = true;
+		turn.phase = "rewrite";
+		syncLayout();
+		try {
+			const response = await fetch("/api/ai/research", {
+				method: "POST",
+				credentials: "same-origin",
+				cache: "no-store",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					clarifyId: turn.researchClarify.id,
+					answers,
+				}),
+			});
+			const data = (await response.json()) as {
+				success?: boolean;
+				error?: string;
+				code?: string;
+				declined?: boolean;
+				decline?: { kind?: string; message?: string };
+				job?: ResearchJobPublic;
+				researchQuota?: ResearchQuotaView;
+			};
+			if (data.researchQuota) applyQuota(quota, data.researchQuota);
+			if (data.declined && data.decline) {
+				turn.pending = false;
+				turn.phase = "done";
+				turn.researchDeclined = {
+					kind: data.decline.kind || "off_corpus",
+					message: data.decline.message || "",
+				};
+				void refreshQuota();
+				setResearchChipOn(false);
+				syncLayout();
+				return;
+			}
+			if (!response.ok || !data.job) {
+				turn.pending = false;
+				turn.phase = "done";
+				setResearchChipOn(true);
+				if (data.code === "research_quota") {
+					void refreshQuota();
+					openQuotaDialog("research", turn.question);
+					syncLayout();
+					return;
+				}
+				if (data.code === "clarify_expired") {
+					turn.error = data.error || "Those questions expired. Send the topic again.";
+					void refreshQuota();
+					syncLayout();
+					return;
+				}
+				turn.error = data.error || "Research could not start.";
+				void refreshQuota();
+				syncLayout();
+				return;
+			}
+			turn.researchClarify = undefined;
+			applyResearchJobToTurn(turn, data.job);
+			setResearchChipOn(false);
+			syncResearchJobUrl(data.job.id);
+			persistResearchHistory(turn, { pending: true, unread: false });
+			persistActiveThread();
+			void requestResearchNotifyPermission();
+			syncLayoutAndReveal();
+			await pollResearchTurn(turn);
+		} catch {
+			turn.pending = false;
+			turn.phase = "done";
+			turn.error = "Network error. Try again.";
+			void refreshQuota();
+			syncLayout();
+		} finally {
+			busy = false;
+			root.classList.remove("is-busy", "is-research-busy");
+			syncLayout();
+		}
+	}
+
 	async function ask(
 		question: string,
 		target: HTMLTextAreaElement | null,
-		options?: { replaceTurnIndex?: number },
+		options?: { replaceTurnIndex?: number; forceResearch?: boolean },
 	): Promise<void> {
 		const q = question.replace(/\s+/g, " ").trim();
 		if (!q || busy) return;
 		stopListening();
+		stopSamplePlayback();
 
 		const replaceTurnIndex = options?.replaceTurnIndex;
 		const replacing =
 			typeof replaceTurnIndex === "number" &&
 			replaceTurnIndex >= 0 &&
 			replaceTurnIndex < turns.length;
+		const replacingTurn = replacing ? turns[replaceTurnIndex] : undefined;
 
 		if (!replacing && turns.length === 0) {
 			clearAskResumeFromDiscourse();
 		}
 
+		const useResearch = shouldUseResearchAsk({
+			chipOn: researchChipOn && researchChipAvailable(),
+			followUp: replacing || turns.length > 0,
+			lastTurnResearch:
+				lastTurnIsResearch() || Boolean(replacingTurn?.research),
+			retryIncompleteResearch:
+				options?.forceResearch === true ||
+				Boolean(replacingTurn && isIncompleteResearchTurn(replacingTurn)),
+		});
+
 		// Follow-ups must always hit the model (diversity / refinement).
 		// Only the first turn of a thread may restore a prior session answer.
 		// Edits always re-ask so the stored answer matches the new wording.
 		const cached =
-			!replacing && turns.length === 0
+			!useResearch && !replacing && turns.length === 0
 				? findAiAskSessionEntry(sessionEntries, q)
 				: undefined;
 		if (cached && cached.results.length > 0) {
@@ -2857,9 +4198,12 @@ export function attachAiMode(options: {
 			return;
 		}
 
-		// Local gate so the sign-in / tomorrow modal appears even if the meter
-		// was already at zero before this attempt (server still enforces).
-		if (quota && !quota.allowed) {
+		if (useResearch) {
+			if (researchQuota && !researchQuota.allowed) {
+				openQuotaDialog("research", q);
+				return;
+			}
+		} else if (quota && !quota.allowed) {
 			openQuotaDialog(
 				quota.signedIn
 					? "tomorrow"
@@ -2878,7 +4222,7 @@ export function attachAiMode(options: {
 		}
 		setStatus("");
 		root.classList.add("is-busy");
-		optimisticConsumeQuota();
+		if (!useResearch) optimisticConsumeQuota();
 		const restoreOnFail = replacing ? turns.slice() : null;
 		if (replacing) {
 			const previous = turns[replaceTurnIndex];
@@ -2903,6 +4247,7 @@ export function attachAiMode(options: {
 			summary: "",
 			pending: true,
 			phase: "rewrite",
+			...(useResearch ? { research: true } : {}),
 		};
 		turns.push(turn);
 		syncLayoutAndReveal();
@@ -2914,6 +4259,88 @@ export function attachAiMode(options: {
 				turns = turns.filter((item) => item !== turn);
 			}
 		};
+		if (useResearch) {
+			try {
+				const response = await fetch("/api/ai/research/clarify", {
+					method: "POST",
+					credentials: "same-origin",
+					cache: "no-store",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						question: q,
+						history: buildAskFollowUpHistory(turns.slice(0, -1)),
+					}),
+				});
+				const data = (await response.json()) as {
+					success?: boolean;
+					error?: string;
+					code?: string;
+					clarifyId?: string;
+					inScope?: boolean;
+					decline?: { kind?: string; message?: string };
+					questions?: ResearchClarifyQuestion[];
+				};
+				if (!response.ok || !data.success) {
+					turn.pending = false;
+					turn.phase = "done";
+					if (data.code === "research_auth") {
+						abortReplace();
+						if (target) {
+							target.value = q;
+							fitTextarea(target);
+						}
+						void refreshQuota();
+						openQuotaDialog(
+							quota?.needsEmailVerification ? "verify" : "signin",
+							q,
+						);
+						syncLayout();
+						return;
+					}
+					if (restoreOnFail) {
+						abortReplace();
+						syncLayout();
+						setStatus(data.error || "Could not prepare those questions.");
+						return;
+					}
+					turn.error = data.error || "Could not prepare those questions.";
+					syncLayout();
+					return;
+				}
+				turn.pending = false;
+				turn.phase = "done";
+				if (data.inScope === false && data.decline) {
+					turn.researchDeclined = {
+						kind: data.decline.kind || "off_corpus",
+						message: data.decline.message || "",
+					};
+					setResearchChipOn(false);
+					syncLayoutAndReveal();
+					return;
+				}
+				turn.researchClarify = {
+					id: data.clarifyId || "",
+					questions: data.questions || [],
+					answers: {},
+				};
+				syncLayoutAndReveal();
+			} catch {
+				turn.pending = false;
+				turn.phase = "done";
+				if (restoreOnFail) {
+					abortReplace();
+					setStatus("Network error. Try again.");
+				} else {
+					turn.error = "Network error. Try again.";
+				}
+				syncLayout();
+			} finally {
+				busy = false;
+				root.classList.remove("is-busy", "is-research-busy");
+				syncLayout();
+			}
+			return;
+		}
 		try {
 			const response = await fetch("/api/ai/ask", {
 				method: "POST",
@@ -3229,10 +4656,18 @@ export function attachAiMode(options: {
 
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
+		if (turns.some((turn) => turn.pending && turn.research && turn.researchJobId)) {
+			void cancelActiveResearch();
+			return;
+		}
 		void ask(input.value, input);
 	});
 	followForm?.addEventListener("submit", (event) => {
 		event.preventDefault();
+		if (turns.some((turn) => turn.pending && turn.research && turn.researchJobId)) {
+			void cancelActiveResearch();
+			return;
+		}
 		if (followInput) void ask(followInput.value, followInput);
 	});
 
@@ -3257,10 +4692,18 @@ export function attachAiMode(options: {
 		});
 	}
 	bindModEnterSend(input, () => {
+		if (turns.some((turn) => turn.pending && turn.research && turn.researchJobId)) {
+			void cancelActiveResearch();
+			return;
+		}
 		void ask(input.value, input);
 	});
 	if (followInput) {
 		bindModEnterSend(followInput, () => {
+			if (turns.some((turn) => turn.pending && turn.research && turn.researchJobId)) {
+				void cancelActiveResearch();
+				return;
+			}
 			void ask(followInput.value, followInput);
 		});
 	}
@@ -3277,11 +4720,49 @@ export function attachAiMode(options: {
 		}
 	});
 
+	root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
+		(chip) => {
+			chip.addEventListener("click", () => {
+				if (researchFlowLocksChip()) return;
+				setResearchChipOn(!researchChipOn);
+			});
+		},
+	);
+
+	clarifyCancelBtn?.addEventListener("click", () => {
+		cancelResearchClarify();
+	});
+	clarifyStartBtn?.addEventListener("click", () => {
+		void startResearchFromClarify();
+	});
+	root.addEventListener("keydown", (event) => {
+		if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
+		if (!isClarifyingTurn(turns[turns.length - 1])) return;
+		const target = event.target as HTMLElement | null;
+		if (target?.closest?.(".ai-clarify-other")) return;
+		if (target?.closest?.("textarea")) return;
+		event.preventDefault();
+		void startResearchFromClarify();
+	});
+
+	const samplesReady = loadAskSamples();
 	root.querySelectorAll<HTMLButtonElement>("[data-ai-example]").forEach((button) => {
 		button.addEventListener("click", () => {
-			const text = button.getAttribute("data-ai-example") || "";
-			input.value = text;
-			void ask(text, input);
+			void samplesReady.then(() => {
+				const text = button.getAttribute("data-ai-example") || "";
+				const sample = findAskSampleForExample(askSamples, text, {
+					researchChipOn,
+				});
+				if (sample) {
+					if (busy && !turns.every((turn) => turn.fromSample)) return;
+					input.value = "";
+					fitTextarea(input);
+					openAskSample(sample);
+					return;
+				}
+				input.value = text;
+				void ask(text, input);
+			});
 		});
 	});
 
@@ -3295,6 +4776,13 @@ export function attachAiMode(options: {
 			leaveAskHome();
 		});
 	});
+	root.querySelectorAll<HTMLButtonElement>("[data-ai-research-stop]").forEach(
+		(button) => {
+			button.addEventListener("click", () => {
+				void cancelActiveResearch();
+			});
+		},
+	);
 
 	thread.addEventListener("click", (event) => {
 		const target = event.target;
@@ -3401,19 +4889,42 @@ export function attachAiMode(options: {
 		}
 	});
 
+	loadResearchChipPreference();
+
+	window.addEventListener("pagehide", () => {
+		for (const turn of turns) {
+			if (turn.research && turn.pending && turn.researchJobId) {
+				persistResearchHistory(turn, { pending: true, unread: false });
+			}
+		}
+		persistActiveThread();
+	});
+
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);
 	const onSearchPage = window.location.pathname.replace(/\/$/, "") === "/search";
+	const askSurfaceVisible = !onSearchPage || isAskSearchMode(params);
 	const initial = params.get("q");
 	if (initial?.trim() && (!onSearchPage || isAskSearchMode(params))) {
 		input.value = initial;
 		fitTextarea(input);
 	}
 
+	const researchJobParam =
+		shareMode || !askSurfaceVisible
+			? ""
+			: (params.get("research") || "").replace(/\s+/g, "").trim();
+	const rememberedResearchJob =
+		shareMode || !askSurfaceVisible || researchJobParam
+			? ""
+			: readRememberedResearchJobId();
+	const restoreResearchId = researchJobParam || rememberedResearchJob;
+
 	// `open` reopens a stored ask (e.g. from the Review Room) without a credit.
-	const openQuestion = shareMode
-		? ""
-		: params.get("open")?.replace(/\s+/g, " ").trim() || "";
+	const openQuestion =
+		shareMode || !askSurfaceVisible || restoreResearchId
+			? ""
+			: params.get("open")?.replace(/\s+/g, " ").trim() || "";
 	function openFromHistory(question: string): boolean {
 		const entry = findAiAskSessionEntry(sessionEntries, question);
 		if (!entry) return false;
@@ -3421,7 +4932,17 @@ export function attachAiMode(options: {
 		return true;
 	}
 
-	if (openQuestion) {
+	if (!askSurfaceVisible) {
+		renderHistory();
+		syncResearchChip();
+		void loadModels();
+		void refreshQuota();
+		return;
+	}
+
+	if (restoreResearchId) {
+		void refreshQuota().then(() => restoreResearchJob(restoreResearchId));
+	} else if (openQuestion) {
 		if (!openFromHistory(openQuestion)) {
 			// Not on this device yet — prefill while the server copy loads.
 			input.value = openQuestion;
@@ -3442,9 +4963,12 @@ export function attachAiMode(options: {
 	}
 
 	renderHistory();
+	syncResearchChip();
+	watchPendingResearchHistory();
 	void loadModels();
-	void refreshQuota();
+	if (!restoreResearchId) void refreshQuota();
 	const historySync = syncHistoryFromServer();
+	void historySync.then(() => hydrateOpenResearchJobs());
 	if (openQuestion && turns.length === 0) {
 		void historySync.then(() => {
 			if (turns.length === 0 && openFromHistory(openQuestion)) {

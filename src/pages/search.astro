@@ -54,6 +54,7 @@ Astro.response.headers.set(
 						next.searchParams.delete("q");
 					} else {
 						next.searchParams.delete("mode");
+						next.searchParams.delete("research");
 					}
 					link.setAttribute("href", next.pathname + next.search);
 					link.classList.toggle("is-active", (mode === "ask") === ask);

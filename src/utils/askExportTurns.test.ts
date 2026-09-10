@@ -42,6 +42,19 @@ describe("askTurnsForExport", () => {
 		assert.equal(turns[0]?.discourses[0]?.slug, "mn10");
 		assert.equal(turns[1]?.discourses[0]?.isReference, true);
 	});
+
+	it("marks a research report turn", () => {
+		const turns = askTurnsForExport([
+			{
+				question: "Who is a trainee?",
+				report: "## Thesis\n\nMN 53.",
+				research: true,
+				results: [hit],
+			},
+		]);
+		assert.equal(turns[0]?.research, true);
+		assert.match(turns[0]?.summary || "", /## Thesis/);
+	});
 });
 
 describe("askExportSharePathFromTurns", () => {

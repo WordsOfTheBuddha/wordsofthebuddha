@@ -67,7 +67,14 @@ export interface AskAnswerHitEvidence {
 	title: string;
 	referenceOnly: boolean;
 	passages: AskAnswerPassage[];
+	full?: boolean;
 }
+
+/** Research excerpts are longer than Ask; full reads skip hint-picking. */
+export const RESEARCH_EXCERPT_CHARS = 3600;
+export const RESEARCH_EXCERPT_PARAS = 8;
+/** Enough for a typical MN; longer discourses add later matching paragraphs. */
+export const RESEARCH_FULL_TEXT_CHARS = 28_000;
 
 function errorStatus(error: unknown): number {
 	return typeof error === "object" &&
@@ -159,6 +166,57 @@ function clipText(text: string, max: number): string {
 	return trimmed.slice(0, max).trimEnd();
 }
 
+export function clipDiscourseFromStart(
+	text: string,
+	maxChars: number,
+): string {
+	const body = stripMarkup(text || "");
+	if (!body) return "";
+	return clipText(body, maxChars);
+}
+
+/**
+ * Prefer the whole discourse. If it is longer than the budget, keep the
+ * opening and later hint-matched paragraphs (or the unused ending).
+ */
+export function composeFullDiscourseText(
+	text: string,
+	maxChars: number,
+	hints: readonly string[] = [],
+	maxParas = RESEARCH_EXCERPT_PARAS,
+): string {
+	const paras = splitParagraphs(text || "");
+	const body = paras.join("\n\n") || stripMarkup(text || "");
+	if (!body) return "";
+	if (body.length <= maxChars) return body;
+	const headBudget = Math.max(
+		Math.floor(maxChars * 0.6),
+		maxChars - RESEARCH_EXCERPT_CHARS,
+	);
+	let head = "";
+	let taken = 0;
+	for (const para of paras) {
+		const next = head ? `${head}\n\n${para}` : para;
+		if (next.length > Math.min(maxChars, headBudget)) {
+			if (!head) head = clipText(para, Math.min(maxChars, headBudget));
+			break;
+		}
+		head = next;
+		taken += 1;
+	}
+	if (!head) return clipText(body, maxChars);
+	const leftover = Math.max(0, maxChars - head.length);
+	if (leftover < 80) return head;
+	const later = paras.slice(taken).join("\n\n");
+	if (!later) return clipText(head, maxChars);
+	const matched = hints.length
+		? pickMatchingParagraphs(later, hints, leftover, maxParas)
+		: "";
+	const extra = matched || clipText(later, leftover);
+	if (!extra) return head;
+	return `${head}\n\n${extra}`.slice(0, maxChars).trimEnd();
+}
+
 export function pickMatchingParagraphs(
 	text: string,
 	hints: readonly string[],
@@ -191,6 +249,46 @@ export function pickMatchingParagraphs(
 	return out;
 }
 
+export function selectFullDiscoursePassages(input: {
+	english?: string;
+	pali?: string;
+	referenceOnly?: boolean;
+	fallback?: string;
+	maxChars?: number;
+	hints?: readonly string[];
+	maxParas?: number;
+}): AskAnswerPassage[] {
+	const maxChars = input.maxChars ?? RESEARCH_FULL_TEXT_CHARS;
+	const english = composeFullDiscourseText(
+		input.english || "",
+		maxChars,
+		input.hints,
+		input.maxParas,
+	);
+	if (english) {
+		return [
+			{
+				source: input.referenceOnly ? "Sujato English (full text)" : "English (full text)",
+				text: english,
+			},
+		];
+	}
+	const pali = composeFullDiscourseText(
+		input.pali || "",
+		maxChars,
+		input.hints,
+		input.maxParas,
+	);
+	if (pali) return [{ source: "Pali (full text)", text: pali }];
+	const fallback = composeFullDiscourseText(
+		input.fallback || "",
+		maxChars,
+		input.hints,
+		input.maxParas,
+	);
+	return fallback ? [{ source: "card", text: fallback }] : [];
+}
+
 export function selectAskAnswerPassages(input: {
 	english?: string;
 	pali?: string;
@@ -198,10 +296,21 @@ export function selectAskAnswerPassages(input: {
 	referenceOnly?: boolean;
 	fallback?: string;
 	maxChars?: number;
+	maxParas?: number;
 }): AskAnswerPassage[] {
 	const maxChars = input.maxChars ?? ASK_ANSWER_HIT_CHARS;
-	const english = pickMatchingParagraphs(input.english || "", input.hints, maxChars);
-	const pali = pickMatchingParagraphs(input.pali || "", input.hints, maxChars);
+	const english = pickMatchingParagraphs(
+		input.english || "",
+		input.hints,
+		maxChars,
+		input.maxParas,
+	);
+	const pali = pickMatchingParagraphs(
+		input.pali || "",
+		input.hints,
+		maxChars,
+		input.maxParas,
+	);
 	const enHints = matchingHintKeys(english, input.hints);
 	const paliHints = matchingHintKeys(pali, input.hints);
 	const out: AskAnswerPassage[] = [];
@@ -229,14 +338,31 @@ export async function buildAskAnswerEvidence(
 		slug: string,
 	) => Promise<SearchData | undefined> = (slug) =>
 		getSearchDocBySlug(slug, true),
+	maxExpanded = ASK_ANSWER_MAX_EXPANDED,
+	options?: {
+		fullSlugs?: readonly string[];
+		excerptChars?: number;
+		excerptParas?: number;
+		fullChars?: number;
+	},
 ): Promise<{
 	expanded: AskAnswerHitEvidence[];
 	listedOnly: string[];
 }> {
 	const expanded: AskAnswerHitEvidence[] = [];
 	const listedOnly: string[] = [];
-	for (const [index, hit] of hits.entries()) {
-		if (index >= ASK_ANSWER_MAX_EXPANDED) {
+	const expandLimit = Math.max(1, Math.floor(maxExpanded));
+	const fullSet = new Set(
+		(options?.fullSlugs || []).map((slug) => slug.trim().toLowerCase()),
+	);
+	const fullHits = hits.filter((hit) => fullSet.has(hit.slug.toLowerCase()));
+	const restHits = hits.filter((hit) => !fullSet.has(hit.slug.toLowerCase()));
+	const ordered = [...fullHits, ...restHits];
+	const excerptChars = options?.excerptChars ?? ASK_ANSWER_HIT_CHARS;
+	const excerptParas = options?.excerptParas ?? ASK_ANSWER_MAX_PARAS;
+	const fullChars = options?.fullChars ?? RESEARCH_FULL_TEXT_CHARS;
+	for (const [index, hit] of ordered.entries()) {
+		if (index >= expandLimit) {
 			listedOnly.push(hit.slug);
 			continue;
 		}
@@ -244,18 +370,32 @@ export async function buildAskAnswerEvidence(
 		const fallback = [hit.contentSnippet, hit.description]
 			.filter(Boolean)
 			.join("\n\n");
-		const passages = selectAskAnswerPassages({
-			english: doc?.content,
-			pali: doc?.contentPali,
-			hints,
-			referenceOnly: hit.referenceOnly || doc?.referenceOnly,
-			fallback,
-		});
+		const wantFull = fullSet.has(hit.slug.toLowerCase());
+		const passages = wantFull
+			? selectFullDiscoursePassages({
+					english: doc?.content,
+					pali: doc?.contentPali,
+					referenceOnly: hit.referenceOnly || doc?.referenceOnly,
+					fallback,
+					maxChars: fullChars,
+					hints,
+					maxParas: excerptParas,
+				})
+			: selectAskAnswerPassages({
+					english: doc?.content,
+					pali: doc?.contentPali,
+					hints,
+					referenceOnly: hit.referenceOnly || doc?.referenceOnly,
+					fallback,
+					maxChars: excerptChars,
+					maxParas: excerptParas,
+				});
 		expanded.push({
 			slug: hit.slug,
 			title: hit.title || "",
 			referenceOnly: hit.referenceOnly === true || doc?.referenceOnly === true,
 			passages,
+			...(wantFull ? { full: true } : {}),
 		});
 	}
 	return { expanded, listedOnly };
@@ -275,7 +415,8 @@ export function formatAskAnswerEvidenceBlock(input: {
 						.map((passage) => `${passage.source}:\n${passage.text}`)
 						.join("\n\n")
 				: "(no excerpt)";
-		return `${id}${ref} — ${title || "(untitled)"}\n${body}`;
+		const mark = hit.full ? " [full text]" : "";
+		return `${id}${ref}${mark} — ${title || "(untitled)"}\n${body}`;
 	});
 	const listed = (input.listedOnly || [])
 		.map((slug) => transformId(slug) || slug)

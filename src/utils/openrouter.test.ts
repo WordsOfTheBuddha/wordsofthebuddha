@@ -7,9 +7,11 @@ import {
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	ASK_PLANNER_PAID_REASONING_EFFORT,
 	ASK_PLANNER_REASONING_EFFORT,
+	ASK_RESEARCH_VERIFY_REASONING_EFFORT,
 	ASK_WRITER_REASONING_EFFORT,
 	askPlannerChatOptions,
 	askWriterChatOptions,
+	resolveReasoningEffort,
 	openRouterReasoningBody,
 	createContentThinkSplitter,
 	getAskPickerDefaultModel,
@@ -104,6 +106,24 @@ describe("createContentThinkSplitter", () => {
 			reasoning: " there",
 			content: '{"a":1}',
 		});
+	});
+});
+
+describe("resolveReasoningEffort", () => {
+	it("maps medium to high for GLM and leaves free models alone", () => {
+		assert.equal(
+			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "medium"),
+			"high",
+		);
+		assert.equal(
+			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "low"),
+			"low",
+		);
+		assert.equal(
+			resolveReasoningEffort("nvidia/nemotron-3-ultra-550b-a55b:free", "medium"),
+			"medium",
+		);
+		assert.equal(ASK_RESEARCH_VERIFY_REASONING_EFFORT, "low");
 	});
 });
 

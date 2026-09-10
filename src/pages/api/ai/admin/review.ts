@@ -1,20 +1,21 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUser } from "../../../../middleware/auth";
-import { isAskAdminEmail } from "../../../../utils/aiAskAdmin";
+import { askAdminApiGate } from "../../../../utils/aiAskAdmin";
 import { buildAiAskTelemetryReviewEvent } from "../../../../utils/aiAskTelemetry";
 import { recordAiAskTelemetry } from "../../../../utils/aiAskTelemetryServer";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
 	const session = cookies.get("__session")?.value;
 	const user = await verifyUser(session, { cookies });
-	const email = user?.email || null;
-	if (!user || !isAskAdminEmail(email)) {
-		return new Response(JSON.stringify({ success: false, error: "Forbidden" }), {
-			status: 403,
+	const gate = askAdminApiGate(user?.email || null);
+	if (!gate.ok) {
+		return new Response(JSON.stringify({ success: false, error: gate.error }), {
+			status: gate.status,
 			headers: { "Content-Type": "application/json" },
 		});
 	}
+	const email = gate.email;
 
 	let body: Record<string, unknown>;
 	try {

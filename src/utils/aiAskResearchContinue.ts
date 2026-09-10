@@ -1,0 +1,151 @@
+import { extractJsonObject } from "./extractJsonObject";
+import { normalizeAiSearchQuery } from "./aiSearchQuery";
+import { getSlugId } from "./transformId";
+
+/** Room to ask the model whether to continue, then enqueue the next run. */
+export const RESEARCH_CONTINUE_MIN_REMAINING_MS = 25_000;
+export const RESEARCH_CONTINUE_MAX_QUERIES = 6;
+export const RESEARCH_CONTINUE_MAX_READ_FULL = 12;
+
+export const RESEARCH_CONTINUE_SYSTEM = `You are reviewing a research report written from early Buddhist discourses.
+
+The writer often saw only short matched passages, not the whole discourse. Decide whether another pass would materially improve the report.
+
+Return JSON only:
+{"continue":true,"queries":["…"],"fallbackQueries":["…"],"readFull":["MN 70"],"guidance":"what the next search and rewrite should do","reason":"short"}
+
+Two operations, which you may combine:
+- queries: more library searches (Pāli terms, discourse IDs, topical phrases), 2–6 items, when discourses seem missing from the selected list
+- readFull: ordinary discourse IDs already on the selected list, when a claim was limited by a thin excerpt (a section, follower, or definition that the brief needs but the excerpt did not contain)
+
+Rules:
+- continue:true only if you can name a concrete gap and give queries and/or readFull IDs that would close it
+- If the report is already a fair, defensible synthesis of the brief, {"continue":false,"queries":[],"readFull":[],"reason":"…"}
+- readFull only from the selected list. Never invent discourse IDs
+- Do not ask for a second pass only to polish prose`;
+
+export interface ResearchContinueDecision {
+	continue: boolean;
+	queries: string[];
+	fallbackQueries: string[];
+	readFull: string[];
+	guidance: string;
+	reason: string;
+}
+
+export function shouldEvaluateResearchContinue(timeLeftMs: number): boolean {
+	return timeLeftMs >= RESEARCH_CONTINUE_MIN_REMAINING_MS;
+}
+
+function clipQueries(
+	value: unknown,
+	tried: ReadonlySet<string>,
+	max = RESEARCH_CONTINUE_MAX_QUERIES,
+): string[] {
+	if (!Array.isArray(value)) return [];
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const item of value) {
+		if (typeof item !== "string") continue;
+		const query = normalizeAiSearchQuery(item);
+		if (!query) continue;
+		const key = query.toLowerCase();
+		if (tried.has(key) || seen.has(key)) continue;
+		seen.add(key);
+		out.push(query);
+		if (out.length >= max) break;
+	}
+	return out;
+}
+
+function clipNote(value: unknown, max: number): string {
+	if (typeof value !== "string") return "";
+	return value.replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+/** Map a model ID to a slug that is already in the selected set. */
+export function resolveSelectedDiscourseRef(
+	raw: string,
+	selectedSlugs: readonly string[],
+): string {
+	const selected = new Set(
+		selectedSlugs.map((slug) => slug.trim().toLowerCase()).filter(Boolean),
+	);
+	if (selected.size === 0) return "";
+	const trimmed = raw.replace(/\s+/g, " ").trim();
+	if (!trimmed) return "";
+	const compact = trimmed.toLowerCase().replace(/[^a-z0-9.-]/g, "");
+	if (selected.has(compact)) return compact;
+	const fromDisplay = getSlugId(trimmed).toLowerCase();
+	if (fromDisplay && selected.has(fromDisplay)) return fromDisplay;
+	const spaced = getSlugId(trimmed.replace(/([a-zA-Z]+)(\d)/, "$1 $2")).toLowerCase();
+	if (spaced && selected.has(spaced)) return spaced;
+	return "";
+}
+
+export function resolveSelectedDiscourseRefs(
+	value: unknown,
+	selectedSlugs: readonly string[] = [],
+	max = RESEARCH_CONTINUE_MAX_READ_FULL,
+): string[] {
+	if (!Array.isArray(value)) return [];
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const item of value) {
+		if (typeof item !== "string") continue;
+		const slug = resolveSelectedDiscourseRef(item, selectedSlugs);
+		if (!slug || seen.has(slug)) continue;
+		seen.add(slug);
+		out.push(slug);
+		if (out.length >= max) break;
+	}
+	return out;
+}
+
+/** Named search IDs plus an explicit readFull list, resolved onto the selected set. */
+export function resolveResearchReadFullSlugs(
+	namedQueries: readonly string[] = [],
+	selectedSlugs: readonly string[] = [],
+	extraReadFull: readonly string[] = [],
+): string[] {
+	return resolveSelectedDiscourseRefs(
+		[...namedQueries, ...extraReadFull],
+		selectedSlugs,
+	);
+}
+
+/** Parse the model’s continue decision. No topic rules — JSON only. */
+export function parseResearchContinueDecision(
+	raw: string,
+	triedQueries: readonly string[] = [],
+	selectedSlugs: readonly string[] = [],
+): ResearchContinueDecision {
+	const empty: ResearchContinueDecision = {
+		continue: false,
+		queries: [],
+		fallbackQueries: [],
+		readFull: [],
+		guidance: "",
+		reason: "",
+	};
+	const parsed = extractJsonObject(raw);
+	if (!parsed || typeof parsed !== "object") return empty;
+	const record = parsed as Record<string, unknown>;
+	const tried = new Set(
+		triedQueries
+			.map((query) => normalizeAiSearchQuery(query).toLowerCase())
+			.filter(Boolean),
+	);
+	const queries = clipQueries(record.queries, tried);
+	const fallbackQueries = clipQueries(record.fallbackQueries, tried);
+	const readFull = resolveSelectedDiscourseRefs(record.readFull, selectedSlugs);
+	return {
+		continue:
+			record.continue === true && (queries.length > 0 || readFull.length > 0),
+		queries,
+		fallbackQueries,
+		readFull,
+		guidance: clipNote(record.guidance, 600),
+		reason: clipNote(record.reason, 240),
+	};
+}

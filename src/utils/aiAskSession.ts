@@ -35,6 +35,14 @@ export interface AiAskSessionEntry {
 	 * multi-turn thread. Nested entries do not carry their own `thread`.
 	 */
 	thread?: AiAskSessionEntry[];
+	/** Completed Deep Research turn. */
+	research?: boolean;
+	researchJobId?: string;
+	report?: string;
+	/** Job is still running — show in Recent so it is not lost. */
+	researchPending?: boolean;
+	/** Finished research the reader has not opened yet. */
+	researchUnread?: boolean;
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -123,7 +131,13 @@ export function sanitizeAskHistoryEntry(
 			href,
 		});
 	}
-	if (results.length === 0) return null;
+	const keepEmptyResearch =
+		record.research === true &&
+		(record.researchPending === true ||
+			(typeof record.researchJobId === "string" &&
+				Boolean(record.researchJobId.trim())) ||
+			(typeof record.report === "string" && Boolean(record.report.trim())));
+	if (results.length === 0 && !keepEmptyResearch) return null;
 
 	const queries = Array.isArray(record.queries)
 		? record.queries
@@ -177,6 +191,9 @@ export function sanitizeAskHistoryEntry(
 		...(typeof record.summary === "string" && record.summary.trim()
 			? { summary: normalizeAskSummaryProse(record.summary, MAX_SUMMARY) }
 			: {}),
+		...(typeof record.report === "string" && record.report.trim()
+			? { report: record.report.replace(/\r\n/g, "\n").trim().slice(0, 20_000) }
+			: {}),
 		...(typeof record.shareSlug === "string" && record.shareSlug.trim()
 			? { shareSlug: clip(record.shareSlug.toLowerCase(), 48) }
 			: {}),
@@ -198,6 +215,12 @@ export function sanitizeAskHistoryEntry(
 			? { candidateCount: Math.min(2000, Math.floor(record.candidateCount)) }
 			: {}),
 		...(thread.length > 1 ? { thread } : {}),
+		...(record.research === true ? { research: true } : {}),
+		...(typeof record.researchJobId === "string" && record.researchJobId.trim()
+			? { researchJobId: clip(record.researchJobId, 80) }
+			: {}),
+		...(record.researchPending === true ? { researchPending: true } : {}),
+		...(record.researchUnread === true ? { researchUnread: true } : {}),
 	};
 }
 
@@ -369,6 +392,32 @@ export function mergeAskHistoryEntries(
 		[...new Set(byKey.values())].sort((a, b) => b.at - a.at),
 		limit,
 	);
+}
+
+/**
+ * History sync must not drop an in-flight Research job the client already has.
+ * The server list can lag (empty-result pending rows used to be rejected).
+ */
+export function preservePendingResearchHistory(
+	local: readonly AiAskSessionEntry[],
+	remote: readonly AiAskSessionEntry[],
+	limit = AI_ASK_SESSION_LIMIT,
+): AiAskSessionEntry[] {
+	let next = sanitizeAskHistoryEntries(remote, limit);
+	for (const raw of local) {
+		const entry = sanitizeAskHistoryEntry(raw);
+		if (!entry?.researchJobId) continue;
+		if (!entry.researchPending && !entry.report) continue;
+		const match = next.find((item) => item.researchJobId === entry.researchJobId);
+		if (!match) {
+			next = upsertAiAskSessionEntry(next, entry, limit);
+			continue;
+		}
+		if (entry.researchPending && !match.researchPending && !match.report) {
+			next = upsertAiAskSessionEntry(next, entry, limit);
+		}
+	}
+	return next;
 }
 
 export function formatAskRelativeTime(at: number, now = Date.now()): string {

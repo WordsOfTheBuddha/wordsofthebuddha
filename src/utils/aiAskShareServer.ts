@@ -64,6 +64,10 @@ export async function publishAskShare(options: {
 	results: AiAskShareSnapshot["results"];
 	model: string;
 	requestId?: string;
+	research?: boolean;
+	report?: string;
+	reasoning?: string;
+	candidateCount?: number;
 	/** Conversation through the shared turn (oldest → newest). */
 	thread?: AiAskShareSnapshot["thread"];
 	user?: UserRecord | null;
@@ -82,6 +86,10 @@ export async function publishAskShare(options: {
 		results: options.results,
 		model: options.model,
 		requestId: options.requestId,
+		...(options.research ? { research: true } : {}),
+		...(options.report ? { report: options.report } : {}),
+		...(options.reasoning ? { reasoning: options.reasoning } : {}),
+		...(options.candidateCount ? { candidateCount: options.candidateCount } : {}),
 		createdAt: Date.now(),
 		...(options.thread && options.thread.length > 1
 			? { thread: options.thread }

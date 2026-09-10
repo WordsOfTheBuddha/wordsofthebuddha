@@ -4,9 +4,13 @@ import {
 	ASK_SHARE_SLUG_MAX,
 	askShareIsSameSnapshot,
 	askSharePath,
+	askShareSeo,
 	askShareSlugCandidate,
+	askShareSlugCollisionCandidates,
 	askShareSlugWithNumericSuffix,
 	askShareTurnsForRestore,
+	formatAskShareSlugUtcDate,
+	formatAskShareSlugUtcHour,
 	deriveAskShareSlug,
 	normalizeAskShareSlug,
 	resolveAskShareSlug,
@@ -14,6 +18,8 @@ import {
 	uniquifyAskShareSlug,
 	type AskShareIdentityInput,
 } from "./aiAskShare";
+
+const SEP_10_2026_14H = Date.UTC(2026, 8, 10, 14, 0, 0);
 
 function shareHit(slug: string) {
 	return {
@@ -118,6 +124,29 @@ describe("resolveAskShareSlug", () => {
 	});
 });
 
+describe("formatAskShareSlugUtcDate", () => {
+	it("uses a lowercase UTC month-day-year", () => {
+		assert.equal(formatAskShareSlugUtcDate(SEP_10_2026_14H), "sep-10-2026");
+		assert.equal(formatAskShareSlugUtcHour(SEP_10_2026_14H), "sep-10-2026-14h");
+	});
+});
+
+describe("askShareSlugCollisionCandidates", () => {
+	it("tries the clean slug, then the date, then the hour", () => {
+		assert.deepEqual(
+			askShareSlugCollisionCandidates(
+				"mindfulness-of-the-body",
+				SEP_10_2026_14H,
+			),
+			[
+				"mindfulness-of-the-body",
+				"mindfulness-of-the-body-sep-10-2026",
+				"mindfulness-of-the-body-sep-10-2026-14h",
+			],
+		);
+	});
+});
+
 describe("askShareSlugWithNumericSuffix", () => {
 	it("appends -2, -3 without changing the theme stem", () => {
 		assert.equal(
@@ -152,6 +181,28 @@ describe("askShareIsSameSnapshot", () => {
 		assert.equal(askShareIsSameSnapshot(a, { ...a }), true);
 	});
 
+	it("treats a different research report as a different snapshot", () => {
+		const question = "Who is a trainee?";
+		const results = [{ slug: "mn70" }];
+		assert.equal(
+			askShareIsSameSnapshot(
+				{
+					question,
+					summary: "Brief",
+					results,
+					report: "## First draft",
+				},
+				{
+					question,
+					summary: "Brief",
+					results,
+					report: "## Revised draft",
+				},
+			),
+			false,
+		);
+	});
+
 	it("treats a different result set as a different Ask", () => {
 		const question = "What is mindfulness of the body?";
 		assert.equal(
@@ -183,7 +234,7 @@ describe("uniquifyAskShareSlug", () => {
 		assert.equal(again.existing, snap);
 	});
 
-	it("appends -2 when two different questions share a theme slug", async () => {
+	it("appends a UTC date when two different questions share a theme slug", async () => {
 		const theme = "mindfulness-of-the-body";
 		const first = shareIdent(
 			"How do I practice mindfulness of the body?",
@@ -192,21 +243,30 @@ describe("uniquifyAskShareSlug", () => {
 		const second = shareIdent("What is kayagata-sati?", ["mn119", "mn10"]);
 		const occupied = new Map<string, AskShareIdentityInput>();
 		const lookup = (slug: string) => occupied.get(slug) ?? null;
+		const now = { now: SEP_10_2026_14H };
 
-		const publishedFirst = await uniquifyAskShareSlug(theme, first, lookup);
+		const publishedFirst = await uniquifyAskShareSlug(
+			theme,
+			first,
+			lookup,
+			"",
+			now,
+		);
 		occupied.set(publishedFirst.slug, first);
 		const publishedSecond = await uniquifyAskShareSlug(
 			theme,
 			second,
 			lookup,
+			"",
+			now,
 		);
 		occupied.set(publishedSecond.slug, second);
 
 		assert.equal(publishedFirst.slug, theme);
-		assert.equal(publishedSecond.slug, `${theme}-2`);
+		assert.equal(publishedSecond.slug, `${theme}-sep-10-2026`);
 		assert.notEqual(first.results.length, second.results.length);
 		assert.equal(occupied.get(theme)?.results.length, 3);
-		assert.equal(occupied.get(`${theme}-2`)?.results.length, 2);
+		assert.equal(occupied.get(`${theme}-sep-10-2026`)?.results.length, 2);
 	});
 
 	it("does not reuse a slug when the question matches but result counts differ", async () => {
@@ -221,25 +281,39 @@ describe("uniquifyAskShareSlug", () => {
 			theme,
 			later,
 			(slug) => occupied.get(slug) ?? null,
+			"",
+			{ now: SEP_10_2026_14H },
 		);
-		assert.equal(published.slug, `${theme}-2`);
+		assert.equal(published.slug, `${theme}-sep-10-2026`);
 		assert.equal(published.existing, null);
 		assert.equal(earlier.results.length, 3);
 		assert.equal(later.results.length, 2);
 	});
 
-	it("keeps incrementing when -2 is already taken", async () => {
-		const theme = "four-foundations-of-mindfulness";
+	it("uses the hour, then -2, when the date suffix is already taken", async () => {
+		const theme = "mindfulness-of-the-body";
 		const occupied = new Map<string, AskShareIdentityInput>([
 			[theme, shareIdent("First?", ["mn10"])],
-			[`${theme}-2`, shareIdent("Second?", ["mn10", "sn47.1"])],
+			[`${theme}-sep-10-2026`, shareIdent("Second?", ["mn10", "sn47.1"])],
 		]);
 		const third = await uniquifyAskShareSlug(
 			theme,
 			shareIdent("Third?", ["mn10", "mn119", "sn47.19"]),
 			(slug) => occupied.get(slug) ?? null,
+			"",
+			{ now: SEP_10_2026_14H },
 		);
-		assert.equal(third.slug, `${theme}-3`);
+		assert.equal(third.slug, `${theme}-sep-10-2026-14h`);
+
+		occupied.set(third.slug, shareIdent("Third?", ["mn10", "mn119", "sn47.19"]));
+		const fourth = await uniquifyAskShareSlug(
+			theme,
+			shareIdent("Fourth?", ["mn10", "mn119"]),
+			(slug) => occupied.get(slug) ?? null,
+			"",
+			{ now: SEP_10_2026_14H },
+		);
+		assert.equal(fourth.slug, `${theme}-2`);
 	});
 });
 
@@ -267,6 +341,30 @@ describe("sanitizeAskShareSnapshot", () => {
 		assert.ok(snap);
 		assert.equal(snap?.slug, "mindfulness-of-the-body");
 		assert.equal(askSharePath(snap!.slug), "/ask/mindfulness-of-the-body");
+	});
+
+	it("accepts a date collision suffix on the public slug", () => {
+		const snap = sanitizeAskShareSnapshot({
+			slug: "mindfulness-of-the-body-sep-10-2026",
+			question: "What is kayagata-sati?",
+			lookingFor: "kāyagatāsati",
+			queries: ["kayagata"],
+			results: [
+				{
+					slug: "mn119",
+					title: "Mindfulness of the Body",
+					description: "…",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn119",
+				},
+			],
+			summary: "A different briefing…",
+			model: "test",
+			createdAt: 1,
+		});
+		assert.ok(snap);
+		assert.equal(snap?.slug, "mindfulness-of-the-body-sep-10-2026");
 	});
 
 	it("accepts a numeric collision suffix on the public slug", () => {
@@ -341,5 +439,51 @@ describe("sanitizeAskShareSnapshot", () => {
 			["Are faith-followers sekhas?", "What about the second one?"],
 		);
 		assert.equal(restored[0]?.candidateCount, 120);
+	});
+
+	it("keeps a research report, reasoning, and candidate count", () => {
+		const report = [
+			"## Who Is a Trainee?",
+			"",
+			"> He trains (*sikkhati*), therefore he is called a trainee.",
+			"",
+			"- **The trainee is contrasted with the Arahant (*asekha*).**",
+		].join("\n");
+		const snap = sanitizeAskShareSnapshot({
+			slug: "who-is-a-trainee",
+			question: "Who is a trainee?",
+			lookingFor: "sekkha",
+			queries: ["sekkha"],
+			results: [
+				{
+					slug: "mn70",
+					title: "Kīṭāgiri sutta - At Kīṭāgiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			summary: "Flattened briefing",
+			model: "test",
+			research: true,
+			report,
+			reasoning: "The brief asks for the trainee grades.",
+			candidateCount: 509,
+			createdAt: 1,
+		});
+		assert.ok(snap);
+		assert.equal(snap?.research, true);
+		assert.match(snap?.report || "", /> He trains/);
+		assert.match(snap?.report || "", /\*\*The trainee/);
+		assert.equal(snap?.reasoning, "The brief asks for the trainee grades.");
+		assert.equal(snap?.candidateCount, 509);
+		const restored = askShareTurnsForRestore(snap!);
+		assert.equal(restored[0]?.research, true);
+		assert.equal(restored[0]?.report, snap?.report);
+		assert.equal(restored[0]?.candidateCount, 509);
+		const seo = askShareSeo(snap!);
+		assert.match(seo.title, /Research Report/);
+		assert.match(seo.description, /trainee/i);
 	});
 });

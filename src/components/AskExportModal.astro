@@ -166,6 +166,7 @@ import "../styles/collection-pdf-export.css";
 	let keydownWired = false;
 	let currentTurns: AskExportTurnView[] = [];
 	let currentSharePath: string | undefined;
+	let currentResearch = false;
 
 	function escapeHtml(value: string): string {
 		return value
@@ -473,6 +474,9 @@ import "../styles/collection-pdf-export.css";
 		if (!dlg) return;
 		currentTurns = detail.turns || [];
 		currentSharePath = detail.sharePath;
+		currentResearch =
+			detail.research === true ||
+			currentTurns.some((turn) => turn.research === true);
 		if (currentTurns.length === 0) return;
 
 		const tree = dlg.querySelector("#ask-pdf-tree-scroll");
@@ -480,8 +484,11 @@ import "../styles/collection-pdf-export.css";
 
 		const subject = dlg.querySelector<HTMLElement>("[data-ask-export-subject]");
 		if (subject) {
-			subject.textContent =
-				currentTurns.length === 1
+			subject.textContent = currentResearch
+				? currentTurns.length > 1
+					? "Research reports"
+					: "Research report"
+				: currentTurns.length === 1
 					? currentTurns[0]?.question || "Ask"
 					: "Ask conversation";
 		}
@@ -587,6 +594,7 @@ import "../styles/collection-pdf-export.css";
 			};
 			if (currentSharePath) postBody.sharePath = currentSharePath;
 			if (currentTurns[0]?.question) postBody.title = currentTurns[0].question;
+			if (currentResearch) postBody.kind = "research";
 			if (includeImages) {
 				const mode = dlg.querySelector<HTMLInputElement>(
 					'input[name="ask-viz-mode"]:checked',

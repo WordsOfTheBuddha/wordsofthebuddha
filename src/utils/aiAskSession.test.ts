@@ -14,6 +14,7 @@ import {
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
 	mergeAskHistoryEntries,
+	preservePendingResearchHistory,
 	normalizeAskQuestionKey,
 	pinnedAskHistoryEntries,
 	readActiveAskThread,
@@ -101,6 +102,82 @@ describe("trimAskHistoryEntries", () => {
 		assert.equal(trimmed.length, AI_ASK_SESSION_LIMIT);
 		assert.ok(trimmed.some((item) => item.question === "saved old" && item.saved));
 		assert.ok(trimmed.some((item) => item.question === "newest"));
+	});
+});
+
+describe("sanitizeAskHistoryEntry research", () => {
+	it("round-trips a Research history badge", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				researchJobId: "job-1",
+			}),
+		);
+		assert.equal(clean?.research, true);
+		assert.equal(clean?.researchJobId, "job-1");
+	});
+
+	it("round-trips in-progress and unread research", () => {
+		const pending = sanitizeAskHistoryEntry({
+			question: "Who is a sekha?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			at: 1,
+			research: true,
+			researchJobId: "job-2",
+			researchPending: true,
+		});
+		assert.equal(pending?.researchPending, true);
+		assert.equal(pending?.researchJobId, "job-2");
+		const unread = sanitizeAskHistoryEntry(
+			entry("Who is a sekha?", 2, {
+				research: true,
+				researchJobId: "job-2",
+				researchUnread: true,
+			}),
+		);
+		assert.equal(unread?.researchUnread, true);
+	});
+
+	it("round-trips a research report", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				report: "## Feeling\n\nSN 36.1",
+			}),
+		);
+		assert.match(clean?.report || "", /## Feeling/);
+	});
+});
+
+describe("preservePendingResearchHistory", () => {
+	it("keeps a local in-flight research job the server list dropped", () => {
+		const pending = sanitizeAskHistoryEntry({
+			question: "Who is a sekha?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			at: 9,
+			research: true,
+			researchJobId: "job-keep",
+			researchPending: true,
+		});
+		assert.ok(pending);
+		const remote = [entry("older ask", 1)];
+		const kept = preservePendingResearchHistory([pending], remote);
+		assert.equal(
+			kept.some((item) => item.researchJobId === "job-keep" && item.researchPending),
+			true,
+		);
 	});
 });
 

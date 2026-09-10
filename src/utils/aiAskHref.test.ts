@@ -5,8 +5,33 @@ import {
 	askAuthReturnTo,
 	isAskSearchMode,
 	openAskHistoryHref,
+	openAskResearchHref,
 	searchAskHref,
+	withAskResearchParam,
 } from "./aiAskHref";
+
+describe("openAskResearchHref", () => {
+	it("opens a private research job on Ask", () => {
+		assert.equal(
+			openAskResearchHref("job-1"),
+			"/search?mode=ai&research=job-1",
+		);
+	});
+});
+
+describe("withAskResearchParam", () => {
+	it("sets and clears the research param on Ask", () => {
+		assert.equal(
+			withAskResearchParam("mode=ai", "job-1").get("research"),
+			"job-1",
+		);
+		assert.equal(
+			withAskResearchParam("mode=ai&research=job-1", null).get("research"),
+			null,
+		);
+		assert.equal(withAskResearchParam("q=anger", "job-2").get("mode"), "ai");
+	});
+});
 
 describe("openAskHistoryHref", () => {
 	it("targets a stored ask via the open param", () => {

@@ -13,11 +13,13 @@ export type AskExportTurnView = {
 	question: string;
 	summary: string;
 	discourses: AskExportDiscourseView[];
+	research?: boolean;
 };
 
 export type AskExportOpenDetail = {
 	turns: AskExportTurnView[];
 	sharePath?: string;
+	research?: boolean;
 };
 
 type ExportableTurn = {
@@ -26,6 +28,8 @@ type ExportableTurn = {
 	offTopic?: boolean;
 	question: string;
 	summary?: string;
+	report?: string;
+	research?: boolean;
 	results: AiDiscourseHit[];
 	sharePath?: string;
 };
@@ -46,14 +50,17 @@ export function askTurnsForExport(
 			continue;
 		}
 		out.push({
-			question: turn.question.trim() || "Ask",
-			summary: (turn.summary || "").trim(),
+			question: turn.question.trim() || (turn.research ? "Research report" : "Ask"),
+			summary: (turn.report || turn.summary || "").trim(),
 			discourses: turn.results.map((hit) => ({
 				slug: hit.slug,
 				title: hit.title,
 				description: hit.description || "",
 				isReference: hit.referenceOnly === true,
 			})),
+			...(turn.research || turn.report
+				? { research: true }
+				: {}),
 		});
 	}
 	return out;

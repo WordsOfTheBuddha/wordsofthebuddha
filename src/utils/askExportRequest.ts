@@ -1,4 +1,5 @@
 import { ASK_SHARE_SLUG_MAX, ASK_SHARE_SLUG_MIN } from "./aiAskShare";
+import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const MAX_ASK_EXPORT_TURNS = 20;
@@ -17,6 +18,7 @@ export type ParsedAskExportRequest = {
 	turns: AskExportTurnRequest[];
 	sharePath?: string;
 	title?: string;
+	kind?: "ask" | "research";
 };
 
 function normalizeDiscourseSlug(id: string): string {
@@ -98,12 +100,15 @@ export function parseAskExportRequest(
 			typeof row.question === "string"
 				? clipText(row.question, MAX_ASK_EXPORT_QUESTION)
 				: "";
-		const summary =
-			typeof row.summary === "string"
-				? normalizeAskSummaryProse(row.summary, MAX_ASK_EXPORT_SUMMARY)
+		const rawSummary = typeof row.summary === "string" ? row.summary : "";
+		const research = body.kind === "research";
+		const summary = research
+			? rawSummary.replace(/\r\n/g, "\n").trim().slice(0, RESEARCH_REPORT_MAX_CHARS)
+			: rawSummary
+				? normalizeAskSummaryProse(rawSummary, MAX_ASK_EXPORT_SUMMARY)
 				: "";
 		turns.push({
-			question: question || "Ask",
+			question: question || (research ? "Research report" : "Ask"),
 			summary,
 			selectedDiscourseSlugs: slugs,
 		});
@@ -118,6 +123,7 @@ export function parseAskExportRequest(
 		typeof body.title === "string"
 			? clipText(body.title, MAX_ASK_EXPORT_TITLE)
 			: "";
+	const kind = body.kind === "research" ? "research" : "ask";
 
 	return {
 		ok: true,
@@ -125,6 +131,7 @@ export function parseAskExportRequest(
 			turns,
 			...(sharePath ? { sharePath } : {}),
 			...(title ? { title } : {}),
+			kind,
 		},
 	};
 }

@@ -340,13 +340,20 @@ export async function rewriteAskQuestion(options: {
 	/** Clear streamed thinking from a discarded planner attempt. */
 	onReasoningReset?: () => void;
 	signal?: AbortSignal;
+	/**
+	 * Explicit OpenRouter queue (Research uses GLM only). When omitted, use
+	 * the usual requested → free → paid fallback chain.
+	 */
+	models?: readonly string[];
+	attemptTimeoutMs?: number;
 }): Promise<AiAskRewriteResult> {
 	const history = options.history || [];
 	const requested = options.model;
 	const parentSignal = options.signal;
+	const attemptMs = options.attemptTimeoutMs ?? PLANNER_ATTEMPT_MS;
 
 	const attemptSignal = (): AbortSignal => {
-		const timeout = AbortSignal.timeout(PLANNER_ATTEMPT_MS);
+		const timeout = AbortSignal.timeout(attemptMs);
 		if (!parentSignal) return timeout;
 		if (typeof AbortSignal.any === "function") {
 			return AbortSignal.any([parentSignal, timeout]);
@@ -354,26 +361,40 @@ export async function rewriteAskQuestion(options: {
 		return parentSignal.aborted ? parentSignal : timeout;
 	};
 
-	const fullOrder = plannerModelAttempts(
-		requested,
-		ASK_PLANNER_FALLBACK_ORDER,
-		ASK_PLANNER_FALLBACK_ORDER.length + 1,
-	);
-	const queue = plannerModelAttempts(
-		requested,
-		ASK_PLANNER_FALLBACK_ORDER,
-		MAX_PLANNER_OPENROUTER_ATTEMPTS,
-		{
-			isExcluded: (id) =>
-				isAskPlannerPaidFallbackModelId(id)
-					? false
-					: plannerModelHealth.isExcluded(id),
-		},
-	);
-	const skippedCooldown = fullOrder.filter(
-		(id) =>
-			plannerModelHealth.isExcluded(id) && !queue.includes(id),
-	);
+	const explicitModels = (options.models || [])
+		.map((id) => id.trim())
+		.filter(Boolean)
+		.filter((id, index, all) => all.indexOf(id) === index)
+		.slice(0, MAX_PLANNER_OPENROUTER_ATTEMPTS);
+	const fullOrder =
+		explicitModels.length > 0
+			? explicitModels
+			: plannerModelAttempts(
+					requested,
+					ASK_PLANNER_FALLBACK_ORDER,
+					ASK_PLANNER_FALLBACK_ORDER.length + 1,
+				);
+	const queue =
+		explicitModels.length > 0
+			? explicitModels
+			: plannerModelAttempts(
+					requested,
+					ASK_PLANNER_FALLBACK_ORDER,
+					MAX_PLANNER_OPENROUTER_ATTEMPTS,
+					{
+						isExcluded: (id) =>
+							isAskPlannerPaidFallbackModelId(id)
+								? false
+								: plannerModelHealth.isExcluded(id),
+					},
+				);
+	const skippedCooldown =
+		explicitModels.length > 0
+			? []
+			: fullOrder.filter(
+					(id) =>
+						plannerModelHealth.isExcluded(id) && !queue.includes(id),
+				);
 	const failed: AiAskPlannerRouting["failed"] = [];
 	const called: string[] = [];
 

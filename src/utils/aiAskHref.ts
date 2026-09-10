@@ -36,6 +36,26 @@ export function askAuthPageHref(
  * The Ask UI matches `open` against the stored history and restores it;
  * if nothing matches it only prefills the question.
  */
+export function withAskResearchParam(
+	search: string | URLSearchParams | null | undefined,
+	jobId: string | null,
+): URLSearchParams {
+	const params =
+		typeof search === "string"
+			? new URLSearchParams(search.startsWith("?") ? search.slice(1) : search)
+			: new URLSearchParams(search || "");
+	params.set("mode", ASK_SEARCH_MODE);
+	const id = (jobId || "").replace(/\s+/g, "").trim();
+	if (id) params.set("research", id);
+	else params.delete("research");
+	return params;
+}
+
+export function openAskResearchHref(jobId: string): string {
+	const params = withAskResearchParam("", jobId);
+	return `/search?${params.toString()}`;
+}
+
 export function openAskHistoryHref(question: string): string {
 	const params = new URLSearchParams();
 	params.set("mode", ASK_SEARCH_MODE);

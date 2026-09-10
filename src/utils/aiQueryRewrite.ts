@@ -1,5 +1,6 @@
 import type { OpenRouterChatMessage } from "./openrouter";
 import { getAiLibraryHintsText } from "./aiLibraryHintsServer";
+import { extractJsonObject } from "./extractJsonObject";
 import {
 	ASK_HISTORY_MAX_TURNS,
 	ASK_HISTORY_PARSE_CAP,
@@ -18,6 +19,8 @@ import {
 	repairCommonAskTypos,
 	topicalFallbackQueries,
 } from "./aiSearchQuery";
+
+export { extractJsonObject };
 
 export type AiRewriteHistoryTurn = AiAskFollowUpHistoryTurn;
 
@@ -153,21 +156,6 @@ const MAX_QUERY_CHARS = 100;
 
 export function clipAiQuestion(question: string): string {
 	return question.replace(/\s+/g, " ").trim().slice(0, MAX_QUESTION_CHARS);
-}
-
-export function extractJsonObject(text: string): unknown {
-	const stripped = text
-		.replace(/<think\b[^>]*>[\s\S]*?<\/think>/gi, "")
-		.replace(/```(?:json)?/gi, "")
-		.trim();
-	const start = stripped.indexOf("{");
-	const end = stripped.lastIndexOf("}");
-	if (start === -1 || end <= start) return null;
-	try {
-		return JSON.parse(stripped.slice(start, end + 1));
-	} catch {
-		return null;
-	}
 }
 
 function asStringArray(value: unknown, limit = MAX_QUERIES): string[] {

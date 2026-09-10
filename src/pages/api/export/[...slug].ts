@@ -868,10 +868,14 @@ async function runAskExport(
 		summary: turn.summary,
 		slugs: turn.selectedDiscourseSlugs,
 	}));
-	const coverTitle = parsed.value.title || turnInputs[0]?.question || "Ask";
+	const kind = parsed.value.kind === "research" ? "research" : "ask";
+	const coverTitle =
+		parsed.value.title ||
+		turnInputs[0]?.question ||
+		(kind === "research" ? "Research report" : "Ask");
 
 	console.log(
-		`[${format === "epub" ? "EPUB" : "PDF"} Export] Generating ${format.toUpperCase()} for Ask (${turnInputs.length} turn(s), ${turnInputs.reduce((n, t) => n + t.slugs.length, 0)} discourses)`,
+		`[${format === "epub" ? "EPUB" : "PDF"} Export] Generating ${format.toUpperCase()} for ${kind === "research" ? "Research" : "Ask"} (${turnInputs.length} turn(s), ${turnInputs.reduce((n, t) => n + t.slugs.length, 0)} discourses)`,
 	);
 
 	try {
@@ -881,6 +885,7 @@ async function runAskExport(
 				imageMode,
 				pdfContentOptions,
 				coverTitle,
+				kind,
 			);
 			return await respondWithEpub(collectionData, {
 				collectionUrl,
@@ -888,7 +893,7 @@ async function runAskExport(
 				title: coverTitle,
 				emptyMessage: "Select at least one discourse.",
 				coverKind: "topic",
-				titleKindLabel: "Ask",
+				titleKindLabel: kind === "research" ? "Research report" : "Ask",
 				vizImageMode,
 			});
 		}
@@ -903,6 +908,7 @@ async function runAskExport(
 					imageMode,
 					pdfContentOptions,
 					coverTitle,
+					kind,
 				),
 				launchBrowser(),
 			]);

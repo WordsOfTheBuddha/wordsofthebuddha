@@ -18,6 +18,8 @@ export interface AiAskTelemetryAskEvent {
 	summary: string;
 	offTopic: boolean;
 	ms: number;
+	mode?: "ask" | "research";
+	jobId?: string;
 }
 
 export interface AiAskTelemetryFeedbackEvent {
@@ -103,6 +105,8 @@ export function buildAiAskTelemetryAskEvent(input: {
 	summary?: string;
 	offTopic?: boolean;
 	ms?: number;
+	mode?: "ask" | "research";
+	jobId?: string;
 }): AiAskTelemetryAskEvent {
 	const slugs = stringList(input.resultSlugs, MAX_SLUGS, 64);
 	return {
@@ -119,6 +123,8 @@ export function buildAiAskTelemetryAskEvent(input: {
 		summary: clip(input.summary || "", MAX_SUMMARY),
 		offTopic: input.offTopic === true,
 		ms: Math.max(0, Math.round(input.ms || 0)),
+		...(input.mode === "research" ? { mode: "research" as const } : {}),
+		...(input.jobId ? { jobId: clip(input.jobId, 80) } : {}),
 	};
 }
 

@@ -1,12 +1,31 @@
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { normalizeAskQuestionKey } from "./aiAskSession";
+import {
+	RESEARCH_REPORT_MAX_CHARS,
+	stripResearchSourcesSection,
+} from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const ASK_SHARE_SLUG_MIN = 8;
 export const ASK_SHARE_SLUG_MAX = 48;
 export const ASK_SHARE_COLLECTION = "askShares";
-/** Walk `-2`, `-3`, … this many times before a timestamp fallback. */
+/** Last-resort numeric walk after date / hour suffixes are taken. */
 export const ASK_SHARE_SLUG_SUFFIX_LIMIT = 1000;
+
+const ASK_SHARE_SLUG_MONTHS = [
+	"jan",
+	"feb",
+	"mar",
+	"apr",
+	"may",
+	"jun",
+	"jul",
+	"aug",
+	"sep",
+	"oct",
+	"nov",
+	"dec",
+] as const;
 
 const STOP = new Set([
 	"a",
@@ -55,6 +74,9 @@ export interface AiAskShareTurn {
 	model: string;
 	requestId?: string;
 	candidateCount?: number;
+	research?: boolean;
+	report?: string;
+	reasoning?: string;
 }
 
 export interface AiAskShareSnapshot {
@@ -67,6 +89,10 @@ export interface AiAskShareSnapshot {
 	results: AiDiscourseHit[];
 	model: string;
 	requestId?: string;
+	research?: boolean;
+	report?: string;
+	reasoning?: string;
+	candidateCount?: number;
 	createdAt: number;
 	/**
 	 * Full conversation through the shared turn (oldest → newest).
@@ -81,6 +107,7 @@ export interface AskShareIdentityInput {
 	summary: string;
 	results: readonly { slug: string }[];
 	requestId?: string;
+	report?: string;
 }
 
 const ASK_SHARE_THREAD_LIMIT = 6;
@@ -142,6 +169,39 @@ export function resolveAskShareSlug(
 	);
 }
 
+/** Clip `base-suffix` so the result stays a valid public slug. */
+export function askShareSlugWithTextSuffix(
+	base: string,
+	suffix: string,
+): string {
+	const cleanSuffix = suffix
+		.toLowerCase()
+		.replace(/^-+|-+$/g, "")
+		.replace(/[^a-z0-9-]+/g, "-")
+		.replace(/-{2,}/g, "-");
+	const root = normalizeAskShareSlug(base) || base;
+	if (!cleanSuffix) return root;
+	const budget = ASK_SHARE_SLUG_MAX - cleanSuffix.length - 1;
+	const trimmed = root
+		.slice(0, Math.max(ASK_SHARE_SLUG_MIN, budget))
+		.replace(/-+$/g, "");
+	const candidate = `${trimmed}-${cleanSuffix}`;
+	return normalizeAskShareSlug(candidate) || candidate;
+}
+
+/** UTC `sep-10-2026` — collision suffix for a distinct snapshot. */
+export function formatAskShareSlugUtcDate(now = Date.now()): string {
+	const date = new Date(now);
+	const month = ASK_SHARE_SLUG_MONTHS[date.getUTCMonth()] || "jan";
+	return `${month}-${date.getUTCDate()}-${date.getUTCFullYear()}`;
+}
+
+/** UTC `sep-10-2026-14h` when the date suffix is already taken that day. */
+export function formatAskShareSlugUtcHour(now = Date.now()): string {
+	const date = new Date(now);
+	return `${formatAskShareSlugUtcDate(now)}-${date.getUTCHours()}h`;
+}
+
 /** `base-2`, `base-3`, … clipped so the result stays a valid public slug. */
 export function askShareSlugWithNumericSuffix(
 	base: string,
@@ -149,13 +209,7 @@ export function askShareSlugWithNumericSuffix(
 ): string {
 	const root = normalizeAskShareSlug(base) || base;
 	if (!Number.isFinite(n) || n < 2) return root;
-	const suffix = String(Math.floor(n));
-	const budget = ASK_SHARE_SLUG_MAX - suffix.length - 1;
-	const trimmed = root
-		.slice(0, Math.max(ASK_SHARE_SLUG_MIN, budget))
-		.replace(/-+$/g, "");
-	const candidate = `${trimmed}-${suffix}`;
-	return normalizeAskShareSlug(candidate) || candidate;
+	return askShareSlugWithTextSuffix(root, String(Math.floor(n)));
 }
 
 /** n=1 is the unsuffixed theme slug; n=2 is `-2`, and so on. */
@@ -163,6 +217,23 @@ export function askShareSlugCandidate(base: string, n: number): string {
 	const root = normalizeAskShareSlug(base) || base;
 	if (!Number.isFinite(n) || n <= 1) return root;
 	return askShareSlugWithNumericSuffix(root, n);
+}
+
+/**
+ * Clean theme, then `sep-10-2026`, then `sep-10-2026-14h`.
+ * Numeric `-2` is a last resort after these (see uniquify).
+ */
+export function askShareSlugCollisionCandidates(
+	base: string,
+	now = Date.now(),
+): string[] {
+	const root = normalizeAskShareSlug(base) || base;
+	const dated = askShareSlugWithTextSuffix(root, formatAskShareSlugUtcDate(now));
+	const hourly = askShareSlugWithTextSuffix(root, formatAskShareSlugUtcHour(now));
+	const out = [root];
+	if (dated && !out.includes(dated)) out.push(dated);
+	if (hourly && !out.includes(hourly)) out.push(hourly);
+	return out;
 }
 
 export function askShareResultFingerprint(
@@ -193,6 +264,9 @@ export function askShareIsSameSnapshot(
 	) {
 		return false;
 	}
+	if ((existing.report || "").trim() !== (incoming.report || "").trim()) {
+		return false;
+	}
 	return (
 		normalizeAskSummaryProse(existing.summary || "") ===
 		normalizeAskSummaryProse(incoming.summary || "")
@@ -200,7 +274,8 @@ export function askShareIsSameSnapshot(
 }
 
 /**
- * Reuse a slug only for the same snapshot; otherwise append `-2`, `-3`, …
+ * Reuse a slug only for the same snapshot; otherwise append a UTC date
+ * (`-sep-10-2026`), then hour (`-sep-10-2026-14h`), then `-2`, `-3`, …
  * `getExisting` may be sync (tests) or async (Firestore).
  */
 export async function uniquifyAskShareSlug<T extends AskShareIdentityInput>(
@@ -208,28 +283,80 @@ export async function uniquifyAskShareSlug<T extends AskShareIdentityInput>(
 	incoming: AskShareIdentityInput,
 	getExisting: (slug: string) => T | null | Promise<T | null>,
 	lookingFor = "",
+	options?: { now?: number },
 ): Promise<{ slug: string; existing: T | null }> {
+	const now = options?.now ?? Date.now();
 	const base = resolveAskShareSlug(
 		preferred,
 		lookingFor,
 		incoming.question,
 	);
-	for (let n = 1; n <= ASK_SHARE_SLUG_SUFFIX_LIMIT; n++) {
-		const candidate = askShareSlugCandidate(base, n);
+	const seen = new Set<string>();
+	const trySlug = async (
+		candidate: string,
+	): Promise<{ slug: string; existing: T | null } | null> => {
+		if (!candidate || seen.has(candidate)) return null;
+		seen.add(candidate);
 		const existing = await getExisting(candidate);
 		if (!existing) return { slug: candidate, existing: null };
 		if (askShareIsSameSnapshot(existing, incoming)) {
 			return { slug: candidate, existing };
 		}
+		return null;
+	};
+
+	for (const candidate of askShareSlugCollisionCandidates(base, now)) {
+		const hit = await trySlug(candidate);
+		if (hit) return hit;
+	}
+	for (let n = 2; n <= ASK_SHARE_SLUG_SUFFIX_LIMIT; n++) {
+		const hit = await trySlug(askShareSlugWithNumericSuffix(base, n));
+		if (hit) return hit;
 	}
 	return {
-		slug: askShareSlugWithNumericSuffix(base, Date.now()),
+		slug: askShareSlugWithNumericSuffix(base, now),
 		existing: null,
 	};
 }
 
 export function askSharePath(slug: string): string {
 	return `/ask/${slug}`;
+}
+
+function shareSeoPlainText(markdown: string): string {
+	return stripResearchSourcesSection(markdown)
+		.replace(/^#{1,3}\s+/gm, "")
+		.replace(/[*_>`]/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+/** Title and description for a public share page. */
+export function askShareSeo(
+	share: Pick<
+		AiAskShareSnapshot,
+		"question" | "summary" | "lookingFor" | "research" | "report"
+	>,
+): { title: string; description: string } {
+	if (share.research) {
+		const fromReport = shareSeoPlainText(share.report || "");
+		return {
+			title: `${share.question.slice(0, 60)} · Research Report`,
+			description: (
+				fromReport ||
+				share.lookingFor ||
+				"Shared research report from the discourses of the Buddha."
+			).slice(0, 160),
+		};
+	}
+	return {
+		title: `${share.question.slice(0, 80)} · Ask`,
+		description: (
+			share.summary ||
+			share.lookingFor ||
+			"Shared Ask results from the discourses of the Buddha."
+		).slice(0, 160),
+	};
 }
 
 export function sanitizeAskShareResults(raw: unknown): AiDiscourseHit[] {
@@ -296,12 +423,35 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 		),
 		queries,
 		fallbackQueries,
-		summary: normalizeAskSummaryProse(
-			typeof record.summary === "string" ? record.summary : "",
-			4800,
-		),
+		summary:
+			record.research === true && typeof record.report === "string"
+				? clip(
+						(record.summary as string) || "",
+						4800,
+					)
+				: normalizeAskSummaryProse(
+						typeof record.summary === "string" ? record.summary : "",
+						4800,
+					),
 		results,
 		model: clip(typeof record.model === "string" ? record.model : "", 120),
+		...(record.research === true ? { research: true } : {}),
+		...(typeof record.report === "string" && record.report.trim()
+			? {
+					report: record.report
+						.replace(/\r\n/g, "\n")
+						.trim()
+						.slice(0, RESEARCH_REPORT_MAX_CHARS),
+				}
+			: {}),
+		...(typeof record.reasoning === "string" && record.reasoning.trim()
+			? {
+					reasoning: record.reasoning
+						.replace(/\r\n/g, "\n")
+						.trim()
+						.slice(0, 4000),
+				}
+			: {}),
 		...(typeof record.requestId === "string" && record.requestId.trim()
 			? { requestId: clip(record.requestId, 80) }
 			: {}),
@@ -348,6 +498,10 @@ export function sanitizeAskShareSnapshot(
 		results: head.results,
 		model: head.model,
 		...(head.requestId ? { requestId: head.requestId } : {}),
+		...(head.research ? { research: true } : {}),
+		...(head.report ? { report: head.report } : {}),
+		...(head.reasoning ? { reasoning: head.reasoning } : {}),
+		...(head.candidateCount ? { candidateCount: head.candidateCount } : {}),
 		createdAt,
 		...(thread.length > 1 ? { thread } : {}),
 	};
@@ -370,6 +524,12 @@ export function askShareTurnsForRestore(
 			results: share.results,
 			model: share.model,
 			...(share.requestId ? { requestId: share.requestId } : {}),
+			...(share.research ? { research: true } : {}),
+			...(share.report ? { report: share.report } : {}),
+			...(share.reasoning ? { reasoning: share.reasoning } : {}),
+			...(share.candidateCount
+				? { candidateCount: share.candidateCount }
+				: {}),
 		},
 	];
 }

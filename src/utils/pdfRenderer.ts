@@ -40,6 +40,7 @@ import {
 	groupDiscoursesByVaggaSection,
 } from "./vaggaSections";
 import { linkifyAskSummaryHtml } from "./linkifyAskSummary";
+import { renderResearchReportHtml } from "./aiAskResearchReport";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -353,8 +354,14 @@ export interface CollectionPdf {
 	chapters: ChapterPdf[];
 	/** True when the collection has named sub-collections (e.g. SN 1-11 → SN 1, SN 2 …) */
 	hasChapters: boolean;
-	/** Ask exports: question + briefing + per-turn ToC before each turn's discourses. */
-	layout?: "collection" | "ask";
+	/** Ask / Research exports: question + briefing + per-turn ToC before discourses. */
+	layout?: "collection" | "ask" | "research";
+}
+
+export function isAskExportLayout(
+	layout?: CollectionPdf["layout"],
+): boolean {
+	return layout === "ask" || layout === "research";
 }
 
 /** Discourse count for one chapter, including vagga-grouped discourses. */
@@ -872,6 +879,7 @@ export async function fetchAskPdfData(
 	imageMode: PdfImageMode = "svgPrimaryOnly",
 	options?: PdfExportContentOptions,
 	coverTitle?: string,
+	kind: "ask" | "research" = "ask",
 ): Promise<CollectionPdf> {
 	const paliOptions = options?.paliOptions;
 	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
@@ -902,14 +910,16 @@ export async function fetchAskPdfData(
 		});
 	}
 
-	const title = (coverTitle || turns[0]?.question || "Ask").trim() || "Ask";
+	const title =
+		(coverTitle || turns[0]?.question || (kind === "research" ? "Research report" : "Ask")).trim() ||
+		(kind === "research" ? "Research report" : "Ask");
 	return {
-		slug: "ask",
+		slug: kind === "research" ? "research" : "ask",
 		title,
 		description: "",
 		chapters,
 		hasChapters: true,
-		layout: "ask",
+		layout: kind === "research" ? "research" : "ask",
 	};
 }
 
@@ -968,28 +978,34 @@ function buildChapterToc(chapter: ChapterPdf): string {
 	return chapter.discourses.map((d) => buildTocDiscourseEntry(d)).join("");
 }
 
-function askSummaryHtml(summary: string, slugs: string[]): string {
+function askSummaryHtml(
+	summary: string,
+	slugs: string[],
+	research: boolean,
+): string {
 	const text = summary.trim();
 	if (!text) return "";
-	return `<div class="ask-summary">${linkifyAskSummaryHtml(
-		text,
-		slugs.map((slug) => ({ slug, href: `/${slug}` })),
-	)}</div>`;
+	const hits = slugs.map((slug) => ({ slug, href: `/${slug}` }));
+	if (research) {
+		return `<div class="ask-summary ask-report">${renderResearchReportHtml(text, hits)}</div>`;
+	}
+	return `<div class="ask-summary">${linkifyAskSummaryHtml(text, hits)}</div>`;
 }
 
 function buildAskContent(collection: CollectionPdf): string {
+	const research = collection.layout === "research";
 	let html = "";
 	collection.chapters.forEach((ch, index) => {
 		const breakAttr = index === 0 ? "" : ' style="page-break-before:always"';
 		const slugs = ch.discourses.map((d) => d.slug);
 		html += `<section class="ask-turn"${breakAttr}>
   <div class="ask-preface">
-    <p class="ask-preface-kicker">Question</p>
+    <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
     <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
-    ${askSummaryHtml(ch.description, slugs)}
+    ${askSummaryHtml(ch.description, slugs, research)}
   </div>
   <div class="ask-turn-toc">
-    <h2 class="toc-heading">Discourses in this answer</h2>
+    <h2 class="toc-heading">${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
     ${buildChapterToc(ch)}
   </div>
 `;
@@ -1141,7 +1157,7 @@ export function buildPdfHtml(
 		options.vizImageMode === "thermal"
 			? options.vizImageMode
 			: "dark";
-	const isAsk = collection.layout === "ask";
+	const isAsk = isAskExportLayout(collection.layout);
 	const toc = isAsk ? "" : buildToc(collection);
 	const content = isAsk ? buildAskContent(collection) : buildContent(collection);
 
@@ -1156,9 +1172,13 @@ export function buildPdfHtml(
 	}
 
 	const subtitleLine = isAsk
-		? collection.chapters.length > 1
-			? `Ask \u00B7 ${collection.chapters.length} questions`
-			: "Ask"
+		? collection.layout === "research"
+			? collection.chapters.length > 1
+				? `Research report \u00B7 ${collection.chapters.length} questions`
+				: "Research report"
+			: collection.chapters.length > 1
+				? `Ask \u00B7 ${collection.chapters.length} questions`
+				: "Ask"
 		: (() => {
 				const formattedId = formatSlugId(collection.slug);
 				const subtitleParts: string[] = [];
@@ -1435,6 +1455,43 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
 }
 .ask-summary a {
   color: #000;
+}
+.ask-report h2,
+.ask-report h3 {
+  font-size: 12.5pt;
+  font-weight: bold;
+  margin: 1.1em 0 0.45em;
+  line-height: 1.35;
+}
+.ask-report h2:first-child,
+.ask-report h3:first-child {
+  margin-top: 0.2em;
+}
+.ask-report p,
+.ask-report ul,
+.ask-report ol {
+  font-size: 11pt;
+  line-height: 1.7;
+  margin: 0 0 0.7em;
+}
+.ask-report li {
+  margin: 0.15em 0;
+}
+.ask-report table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10pt;
+  margin: 0 0 0.9em;
+}
+.ask-report th,
+.ask-report td {
+  border: 1px solid #ccc;
+  padding: 0.35em 0.5em;
+  text-align: left;
+  vertical-align: top;
+}
+.ask-report th {
+  font-weight: bold;
 }
 .vagga-heading {
   font-size: 13pt;

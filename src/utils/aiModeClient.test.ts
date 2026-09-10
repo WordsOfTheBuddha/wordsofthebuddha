@@ -9,6 +9,7 @@ import {
 	askShouldSurviveDisconnect,
 	buildAskProcessSteps,
 	displayAskReasoning,
+	researchSourcesBlockHtml,
 	formatAskRoutingDevHtml,
 	isAskSendShortcut,
 	mergeAskTurnReasoning,
@@ -215,6 +216,27 @@ describe("askResultsCaption", () => {
 		);
 		assert.equal(askResultsCaption({ resultCount: 1 }), "Showing 1 discourse");
 		assert.equal(askResultsCaption({ resultCount: 0, candidateCount: 40 }), "");
+		assert.equal(
+			askResultsCaption({
+				resultCount: 12,
+				candidateCount: 186,
+				research: true,
+			}),
+			"Sources · 12 discourses · picked from 186",
+		);
+	});
+});
+
+describe("researchSourcesBlockHtml", () => {
+	it("wraps hits in a collapsed details block", () => {
+		const html = researchSourcesBlockHtml(
+			"Sources · 2 discourses",
+			`<div data-result-type="discourse">MN 70</div>`,
+		);
+		assert.match(html, /<details class="ai-sources">/);
+		assert.match(html, /<summary>Sources · 2 discourses<\/summary>/);
+		assert.doesNotMatch(html, /\sopen[\s>]/);
+		assert.match(html, /MN 70/);
 	});
 });
 
@@ -260,7 +282,88 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(done[0]?.text, "Understood · mindfulness");
 		assert.match(done[1]?.text || "", /Searched the library · 186 discourses/);
 		assert.equal(done[2]?.text, "Crunched 186 discourses");
-		assert.doesNotMatch(done[2]?.text || "", /showing/);
+	});
+
+	it("shows research continue notes as live progress", () => {
+		const review = buildAskProcessSteps({
+			pending: true,
+			phase: "answer",
+			question: "feeling?",
+			research: true,
+			progressNote: "Reviewing the report…",
+			candidateCount: 80,
+			showCount: 12,
+		});
+		assert.equal(review[3]?.state, "active");
+		assert.equal(review[3]?.text, "Reviewing the report…");
+
+		const deeper = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "feeling?",
+			research: true,
+			progressNote: "Going deeper…",
+			candidateCount: 80,
+		});
+		assert.equal(deeper[1]?.state, "active");
+		assert.equal(deeper[1]?.text, "Going deeper…");
+	});
+
+	it("does not insert a scout-verify step for Research", () => {
+		const pending = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+		});
+		assert.equal(pending.length, 4);
+		assert.equal(pending[0]?.state, "done");
+		assert.equal(pending[1]?.state, "active");
+		assert.equal(pending[1]?.text, "Searching widely…");
+		assert.equal(pending[3]?.text, "Write the report");
+
+		const done = buildAskProcessSteps({
+			pending: false,
+			phase: "done",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+			candidateCount: 186,
+			resultCount: 18,
+		});
+		assert.equal(done.length, 3);
+		assert.match(done[1]?.text || "", /Searched widely/);
+	});
+
+	it("names the clarifying wait on the first Research step", () => {
+		const steps = buildAskProcessSteps({
+			pending: true,
+			phase: "rewrite",
+			question: "feeling?",
+			research: true,
+			clarifyPending: true,
+		});
+		assert.equal(steps[0]?.text, "Understanding the research request…");
+		assert.equal(steps[0]?.state, "active");
+	});
+
+	it("surfaces live research progress on the active step", () => {
+		const searching = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "feeling?",
+			research: true,
+			progressNote: "Searching · 3 of 8 queries · 40 so far",
+		});
+		assert.equal(searching[1]?.text, "Searching · 3 of 8 queries · 40 so far");
+		const planning = buildAskProcessSteps({
+			pending: true,
+			phase: "rewrite",
+			question: "feeling?",
+			research: true,
+		});
+		assert.equal(planning[0]?.text, "Planning searches…");
 	});
 });
 

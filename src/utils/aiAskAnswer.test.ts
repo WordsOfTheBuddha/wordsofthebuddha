@@ -6,7 +6,9 @@ import {
 	ASK_WRITER_MAX_MS,
 	ASK_WRITER_MIN_MS,
 	askAnswerHints,
+	buildAskAnswerEvidence,
 	buildAskAnswerUserPrompt,
+	composeFullDiscourseText,
 	createWatchdogAbortSignal,
 	formatAskAnswerEvidenceBlock,
 	parseAskAnswerSummary,
@@ -134,6 +136,19 @@ describe("createWatchdogAbortSignal", () => {
 	});
 });
 
+describe("composeFullDiscourseText", () => {
+	it("returns the whole discourse when it fits", () => {
+		assert.equal(composeFullDiscourseText("Short sutta.", 80), "Short sutta.");
+	});
+
+	it("keeps the opening and a later matching paragraph when clipped", () => {
+		const text = `${"Opening narrative without the later term. ".repeat(8)}\n\nThe faith-follower saddhanusari is defined here.\n\nClosing.`;
+		const out = composeFullDiscourseText(text, 220, ["saddhanusari"]);
+		assert.match(out, /Opening narrative/);
+		assert.match(out, /saddhanusari/);
+	});
+});
+
 describe("formatAskAnswerEvidenceBlock", () => {
 	it("labels reference translations and lists overflow IDs", () => {
 		const block = formatAskAnswerEvidenceBlock({
@@ -155,6 +170,145 @@ describe("formatAskAnswerEvidenceBlock", () => {
 		assert.match(block, /DN 10 \[reference\]/);
 		assert.match(block, /Pali:\nariyo samādhikkhandho/);
 		assert.match(block, /Also selected \(no excerpt in this prompt\): AN 5\.22/);
+	});
+
+	it("marks full-text passages", () => {
+		const block = formatAskAnswerEvidenceBlock({
+			expanded: [
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					referenceOnly: false,
+					full: true,
+					passages: [{ source: "English (full text)", text: "Opening." }],
+				},
+			],
+		});
+		assert.match(block, /MN 70 \[full text\]/);
+		assert.match(block, /English \(full text\):\nOpening/);
+	});
+});
+
+describe("buildAskAnswerEvidence", () => {
+	const english = [
+		"AAA opening that does not mention the later term.",
+		"BBB the confidence-follower saddhanusari is defined here.",
+		"CCC close.",
+	].join("\n\n");
+
+	it("full reads clip from the start instead of hint-picking", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			["saddhanusari"],
+			async () =>
+				({
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					content: english,
+				}) as const,
+			4,
+			{ fullSlugs: ["mn70"], fullChars: 50 },
+		);
+		assert.equal(pack.expanded[0]?.full, true);
+		assert.match(pack.expanded[0]?.passages[0]?.source || "", /full text/);
+		assert.match(pack.expanded[0]?.passages[0]?.text || "", /AAA opening/);
+		assert.doesNotMatch(
+			pack.expanded[0]?.passages[0]?.text || "",
+			/saddhanusari/,
+		);
+	});
+
+	it("ordinary excerpts still pick the matching paragraph", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			["saddhanusari"],
+			async () =>
+				({
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					content: english,
+				}) as const,
+			4,
+			{ excerptChars: 80, excerptParas: 1 },
+		);
+		assert.equal(pack.expanded[0]?.full, undefined);
+		assert.match(pack.expanded[0]?.passages[0]?.text || "", /saddhanusari/);
+		assert.doesNotMatch(pack.expanded[0]?.passages[0]?.text || "", /AAA opening/);
+	});
+
+	it("keeps later hint-matched paragraphs when a full read is clipped", async () => {
+		const long = [
+			`${"AAA opening that does not mention the later term. ".repeat(6)}`,
+			"BBB the confidence-follower saddhanusari is defined here.",
+			"CCC close without the term.",
+		].join("\n\n");
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/mn70",
+				},
+			],
+			["saddhanusari"],
+			async () => ({
+				slug: "mn70",
+				title: "At Kīṭāgiri",
+				description: "",
+				content: long,
+			}),
+			4,
+			{ fullSlugs: ["mn70"], fullChars: 220 },
+		);
+		assert.match(pack.expanded[0]?.passages[0]?.text || "", /AAA opening/);
+		assert.match(pack.expanded[0]?.passages[0]?.text || "", /saddhanusari/);
+	});
+
+	it("keeps the rest of the selected set as IDs when the writer cap is 28", async () => {
+		const hits = Array.from({ length: 30 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+			title: `Discourse ${index + 1}`,
+			description: "",
+			contentSnippet: null,
+			referenceOnly: false,
+			href: `/mn${index + 1}`,
+		}));
+		const pack = await buildAskAnswerEvidence(
+			hits,
+			[],
+			async (slug) => ({
+				slug,
+				title: slug,
+				description: "",
+				content: `${slug} body`,
+			}),
+			28,
+		);
+		assert.equal(pack.expanded.length, 28);
+		assert.deepEqual(pack.listedOnly, ["mn29", "mn30"]);
 	});
 });
 

@@ -141,12 +141,26 @@ async function mapPool<T, R>(
 async function searchBatchesConcurrently(
 	queries: readonly string[],
 	perQueryLimit: number,
+	onProgress?: (info: {
+		done: number;
+		total: number;
+		query: string;
+		slugs: string[];
+	}) => void,
 ): Promise<{ query: string; hits: SearchResult[] }[]> {
 	const list = uniqueQueries(queries).slice(0, MAX_SEARCH_CALLS);
-	return mapPool(list, SEARCH_CONCURRENCY, async (query) => ({
-		query,
-		hits: await searchHitsForAiQuery(query, perQueryLimit),
-	}));
+	let done = 0;
+	return mapPool(list, SEARCH_CONCURRENCY, async (query) => {
+		const hits = await searchHitsForAiQuery(query, perQueryLimit);
+		done += 1;
+		onProgress?.({
+			done,
+			total: list.length,
+			query,
+			slugs: hits.map((hit) => hit.slug).filter(Boolean),
+		});
+		return { query, hits };
+	});
 }
 
 export interface AiDiscourseSearchBatch {
@@ -290,11 +304,22 @@ function finishAskSearch(
 export async function searchDiscoursesForQueries(
 	queries: readonly string[],
 	fallbackQueries: readonly string[] = [],
-	options: { mergeLimit?: number; question?: string; termQueries?: readonly string[] } = {},
+	options: {
+		mergeLimit?: number;
+		question?: string;
+		termQueries?: readonly string[];
+		onProgress?: (info: {
+			done: number;
+			total: number;
+			query: string;
+			slugs: string[];
+		}) => void;
+	} = {},
 ): Promise<AiDiscourseSearchResult> {
 	const mergeLimit = options.mergeLimit ?? AI_SEARCH_CANDIDATE_LIMIT;
 	const question = options.question || "";
 	const termQueries = options.termQueries || [];
+	const onProgress = options.onProgress;
 	const wide = mergeLimit >= 100;
 	const perQueryLimit = wide ? PER_QUERY_LIMIT_WIDE : PER_QUERY_LIMIT_NARROW;
 
@@ -308,7 +333,11 @@ export async function searchDiscoursesForQueries(
 			...fallbackQueries,
 			...uniqueQueries(queries).map(relaxSearchQuery),
 		]);
-		const batches = await searchBatchesConcurrently(pool, perQueryLimit);
+		const batches = await searchBatchesConcurrently(
+			pool,
+			perQueryLimit,
+			onProgress,
+		);
 		return finishAskSearch(
 			mergeDiscourseHits(batches, mergeLimit),
 			batches,
@@ -323,6 +352,11 @@ export async function searchDiscoursesForQueries(
 		hits: SearchResult[];
 	}[] = [];
 	const tried = new Set<string>();
+	const planned = uniqueQueries([
+		...queries,
+		...fallbackQueries,
+		...uniqueQueries(queries).map(relaxSearchQuery),
+	]).slice(0, MAX_SEARCH_CALLS);
 
 	async function run(
 		next: readonly string[],
@@ -334,6 +368,12 @@ export async function searchDiscoursesForQueries(
 			tried.add(query);
 			const hits = await searchHitsForAiQuery(query, perQueryLimit);
 			batches.push({ query, hits });
+			onProgress?.({
+				done: tried.size,
+				total: Math.max(planned.length, tried.size),
+				query,
+				slugs: hits.map((hit) => hit.slug).filter(Boolean),
+			});
 			if (
 				typeof runOptions.stopWhenMerged === "number" &&
 				mergeDiscourseHits(batches, mergeLimit).length >=

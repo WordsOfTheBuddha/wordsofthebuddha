@@ -130,6 +130,45 @@ export function normalizeAskSummaryProse(value: string, max?: number): string {
 	return text.slice(0, Math.max(0, max));
 }
 
+export function discourseIdLinkIndex(
+	results: readonly { slug: string; href?: string }[],
+): { byKey: Map<string, string>; pattern: RegExp | null } {
+	type Alias = { alias: string; href: string };
+	const aliases: Alias[] = [];
+	const seenAlias = new Set<string>();
+	for (const hit of results) {
+		const slug = (hit.slug || "").trim().toLowerCase();
+		if (!slug) continue;
+		const href = (hit.href || `/${slug}`).trim() || `/${slug}`;
+		for (const alias of discourseIdAliases(slug)) {
+			const key = alias.toLowerCase();
+			if (seenAlias.has(key)) continue;
+			seenAlias.add(key);
+			aliases.push({ alias, href });
+		}
+	}
+	aliases.sort((a, b) => b.alias.length - a.alias.length);
+	const pattern =
+		aliases.length > 0
+			? new RegExp(
+					`\\b(?:${aliases.map((item) => escapeRegExp(item.alias)).join("|")})\\b`,
+					"gi",
+				)
+			: null;
+	const byKey = new Map(
+		aliases.map((item) => [item.alias.toLowerCase(), item.href] as const),
+	);
+	return { byKey, pattern };
+}
+
+export function linkifyDiscourseIdText(
+	text: string,
+	results: readonly { slug: string; href?: string }[],
+): string {
+	const { byKey, pattern } = discourseIdLinkIndex(results);
+	return linkifySummaryParagraph(text, byKey, pattern);
+}
+
 function linkifySummaryParagraph(
 	text: string,
 	byKey: Map<string, string>,
@@ -170,31 +209,7 @@ export function linkifyAskSummaryHtml(
 	const text = normalizeAskSummaryProse(summary);
 	if (!text) return "";
 
-	type Alias = { alias: string; href: string };
-	const aliases: Alias[] = [];
-	const seenAlias = new Set<string>();
-	for (const hit of results) {
-		const slug = (hit.slug || "").trim().toLowerCase();
-		if (!slug) continue;
-		const href = (hit.href || `/${slug}`).trim() || `/${slug}`;
-		for (const alias of discourseIdAliases(slug)) {
-			const key = alias.toLowerCase();
-			if (seenAlias.has(key)) continue;
-			seenAlias.add(key);
-			aliases.push({ alias, href });
-		}
-	}
-	aliases.sort((a, b) => b.alias.length - a.alias.length);
-	const pattern =
-		aliases.length > 0
-			? new RegExp(
-					`\\b(?:${aliases.map((item) => escapeRegExp(item.alias)).join("|")})\\b`,
-					"gi",
-				)
-			: null;
-	const byKey = new Map(
-		aliases.map((item) => [item.alias.toLowerCase(), item.href] as const),
-	);
+	const { byKey, pattern } = discourseIdLinkIndex(results);
 
 	return text
 		.split("\n\n")

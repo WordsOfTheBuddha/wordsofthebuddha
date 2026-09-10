@@ -60,6 +60,24 @@ describe("parseAskExportRequest", () => {
 		});
 		assert.equal(parsed.ok, false);
 	});
+
+	it("keeps research markdown instead of flattening it to Ask prose", () => {
+		const parsed = parseAskExportRequest({
+			kind: "research",
+			turns: [
+				{
+					question: "Who is a trainee?",
+					summary: "## Thesis\n\nSee **MN 53**.\n\n- one\n- two",
+					selectedDiscourseSlugs: ["mn53"],
+				},
+			],
+		});
+		assert.equal(parsed.ok, true);
+		if (!parsed.ok) return;
+		assert.equal(parsed.value.kind, "research");
+		assert.match(parsed.value.turns[0]?.summary || "", /## Thesis/);
+		assert.match(parsed.value.turns[0]?.summary || "", /\n- one\n/);
+	});
 });
 
 describe("sanitizeAskExportSharePath", () => {

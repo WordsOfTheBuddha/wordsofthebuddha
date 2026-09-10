@@ -915,7 +915,7 @@ import Layout from "../layouts/Layout.astro";
 				);
 				if (!existing) {
 					await withTimeout(
-						navigator.serviceWorker.register("/sw.js?v=10"),
+						navigator.serviceWorker.register("/sw.js?v=11"),
 						3000,
 					);
 				}

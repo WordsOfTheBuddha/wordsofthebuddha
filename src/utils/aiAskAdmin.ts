@@ -18,3 +18,14 @@ export function isAskAdminEmail(
 	const normalized = email.trim().toLowerCase();
 	return allowlist.includes(normalized);
 }
+
+/** Admin Ask APIs: allowlisted email, or a 403 payload. */
+export function askAdminApiGate(email: string | null | undefined): {
+	ok: true;
+	email: string;
+} | { ok: false; status: 403; error: string } {
+	if (!isAskAdminEmail(email)) {
+		return { ok: false, status: 403, error: "Forbidden" };
+	}
+	return { ok: true, email: email!.trim().toLowerCase() };
+}

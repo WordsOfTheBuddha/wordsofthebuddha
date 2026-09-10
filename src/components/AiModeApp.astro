@@ -5,6 +5,7 @@ import {
 	getConfiguredOpenRouterModel,
 	shouldShowAiModelPicker,
 } from "../utils/openrouter";
+import { RESEARCH_CHIP_TITLE, RESEARCH_EXAMPLES } from "../utils/aiAskResearchUi";
 import "../styles/ai-mode.css";
 import AskExportModal from "./AskExportModal.astro";
 
@@ -126,32 +127,63 @@ const examples = [
 				placeholder="Ask a question about the discourses…"
 				enterkeyhint="enter"
 			></textarea>
-			<button
-				type="button"
-				class="ai-icon-btn"
-				data-ai-mic
-				aria-label="Voice input"
-				aria-pressed="false"
-				title="Speak"
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-				</svg>
-			</button>
-			<button
-				type="submit"
-				class="ai-send"
-				aria-label="Ask"
-				title="Send (⌘Enter or Ctrl+Enter)"
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
-				</svg>
-			</button>
+			<div class="ai-box-bar">
+				<div class="ai-box-tools">
+					<button
+						type="button"
+						class="ai-research-chip"
+						data-ai-research-chip
+						hidden
+						aria-pressed="false"
+						title={RESEARCH_CHIP_TITLE}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+						</svg>
+						Research
+					</button>
+				</div>
+				<div class="ai-box-actions">
+					<button
+						type="button"
+						class="ai-icon-btn"
+						data-ai-mic
+						aria-label="Voice input"
+						aria-pressed="false"
+						title="Speak"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+						</svg>
+					</button>
+					<button
+						type="submit"
+						class="ai-send"
+						aria-label="Ask"
+						title="Send (⌘Enter or Ctrl+Enter)"
+					>
+						<svg class="ai-send-go" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
+						</svg>
+						<svg class="ai-send-stop" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+							<rect x="6.5" y="6.5" width="11" height="11" rx="1.5" />
+						</svg>
+					</button>
+				</div>
+			</div>
 		</div>
-		<div class="ai-examples">
+		<div class="ai-examples" data-ai-examples="ask">
 			{
 				examples.map((example) => (
+					<button type="button" data-ai-example={example}>
+						{example}
+					</button>
+				))
+			}
+		</div>
+		<div class="ai-examples" data-ai-examples="research" hidden>
+			{
+				RESEARCH_EXAMPLES.map((example) => (
 					<button type="button" data-ai-example={example}>
 						{example}
 					</button>
@@ -178,37 +210,71 @@ const examples = [
 				placeholder="Follow up in this conversation"
 				enterkeyhint="enter"
 			></textarea>
-			<button
-				type="button"
-				class="ai-icon-btn"
-				data-ai-mic
-				aria-label="Voice follow-up"
-				aria-pressed="false"
-				title="Speak"
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-				</svg>
-			</button>
-			<button
-				type="submit"
-				class="ai-send"
-				aria-label="Ask follow-up"
-				title="Send (⌘Enter or Ctrl+Enter)"
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
-				</svg>
-			</button>
+			<div class="ai-box-bar">
+				<div class="ai-box-tools">
+					<button
+						type="button"
+						class="ai-research-chip"
+						data-ai-research-chip
+						hidden
+						aria-pressed="false"
+						title={RESEARCH_CHIP_TITLE}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+						</svg>
+						Research
+					</button>
+				</div>
+				<div class="ai-box-actions">
+					<button
+						type="button"
+						class="ai-icon-btn"
+						data-ai-mic
+						aria-label="Voice follow-up"
+						aria-pressed="false"
+						title="Speak"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+						</svg>
+					</button>
+					<button
+						type="submit"
+						class="ai-send"
+						aria-label="Ask follow-up"
+						title="Send (⌘Enter or Ctrl+Enter)"
+					>
+						<svg class="ai-send-go" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 12 4.5 4.5 7.5 12l-3 7.5Z" />
+						</svg>
+						<svg class="ai-send-stop" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+							<rect x="6.5" y="6.5" width="11" height="11" rx="1.5" />
+						</svg>
+					</button>
+				</div>
+			</div>
 		</div>
 		<div class="ai-meta-row">
 			<button type="button" class="ai-new" data-ai-new>
 				New question
 			</button>
+			<button type="button" class="ai-research-stop" data-ai-research-stop hidden>
+				Stop
+			</button>
 			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
 		</div>
 		<p class="ai-status" data-ai-status hidden></p>
 	</form>
+
+	<div class="ai-shell ai-clarify-bar" data-ai-clarify-bar hidden>
+		<button type="button" class="ai-clarify-cancel" data-ai-clarify-cancel>
+			Cancel
+		</button>
+		<button type="button" class="ai-clarify-start" data-ai-clarify-start disabled>
+			Start research
+		</button>
+	</div>
 
 	<div class="ai-dialog" data-ai-quota-dialog hidden>
 		<div class="ai-dialog-sheet" role="dialog" aria-modal="true" aria-labelledby="ai-quota-title">
@@ -258,6 +324,16 @@ const examples = [
 					<button type="button" class="ai-dialog-tertiary" data-ai-quota-close>
 						Not now
 					</button>
+				</div>
+			</div>
+			<div data-ai-quota-panel="research" hidden>
+				<h2 class="ai-dialog-title">You’ve used today’s researches</h2>
+				<p class="ai-dialog-body">
+					Come back tomorrow for two more. Regular Asks still use the daily Ask
+					allowance.
+				</p>
+				<div class="ai-dialog-actions">
+					<button type="button" class="ai-dialog-primary" data-ai-quota-close>OK</button>
 				</div>
 			</div>
 		</div>

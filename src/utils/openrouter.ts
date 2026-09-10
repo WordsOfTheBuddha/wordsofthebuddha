@@ -81,6 +81,21 @@ export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
 /** GLM 5.3 Flash accepts low / high / max, not medium. */
 export const ASK_PLANNER_PAID_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"high";
+/** Scout/verify pass — cheap check that the plan is on track. */
+export const ASK_RESEARCH_VERIFY_REASONING_EFFORT: OpenRouterReasoningEffort =
+	"low";
+
+/**
+ * GLM rejects `medium` (often treated as `max`). Map it to `high`.
+ */
+export function resolveReasoningEffort(
+	model: string,
+	requested: OpenRouterReasoningEffort = DEFAULT_OPENROUTER_REASONING_EFFORT,
+): OpenRouterReasoningEffort {
+	if (!isAskPlannerPaidFallbackModelId(model)) return requested;
+	if (requested === "medium") return ASK_PLANNER_PAID_REASONING_EFFORT;
+	return requested;
+}
 /** Planner needs room for medium reasoning + the JSON object. */
 export const ASK_PLANNER_MAX_TOKENS = 4096;
 /**
@@ -88,6 +103,8 @@ export const ASK_PLANNER_MAX_TOKENS = 4096;
  * medium/high effort spends the whole window on thinking and never emits JSON.
  */
 export const ASK_WRITER_MAX_TOKENS = 2048;
+/** Research report — headings, tables, and citations; still finish in-budget. */
+export const RESEARCH_WRITER_MAX_TOKENS = 6144;
 /** Write from excerpts — do not reuse the planner’s high-effort setting. */
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
@@ -103,7 +120,10 @@ export function askPlannerChatOptions(model: string): {
 	if (isAskPlannerPaidFallbackModelId(model)) {
 		return {
 			jsonMode: false,
-			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
+			reasoningEffort: resolveReasoningEffort(
+				model,
+				ASK_PLANNER_PAID_REASONING_EFFORT,
+			),
 		};
 	}
 	return {
@@ -366,7 +386,10 @@ export async function openRouterChat(options: {
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
 			reasoning: openRouterReasoningBody(
-				options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				resolveReasoningEffort(
+					model,
+					options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				),
 				options.reasoningMaxTokens,
 			),
 			...(options.jsonMode
@@ -586,7 +609,10 @@ export async function* openRouterChatStream(options: {
 			temperature: 0.2,
 			stream: true,
 			reasoning: openRouterReasoningBody(
-				options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				resolveReasoningEffort(
+					model,
+					options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
+				),
 				options.reasoningMaxTokens,
 			),
 			...(options.jsonMode

@@ -1,6 +1,7 @@
 ---
 import AiModeApp from "./AiModeApp.astro";
 import type { AiAskShareSnapshot } from "../utils/aiAskShare";
+import { askAuthPageHref, searchAskHref } from "../utils/aiAskHref";
 import "../styles/ai-mode.css";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const { share } = Astro.props;
+const registerHref = askAuthPageHref("/register", null, searchAskHref());
 ---
 
 <main class="container mx-auto px-3 sm:px-4 pt-2">
@@ -18,8 +20,19 @@ const { share } = Astro.props;
 			<a class="is-active" href="/search?mode=ai" aria-current="page">Ask</a>
 		</nav>
 		<p class="ai-share-banner">
-			Shared Ask · ask a follow-up below, or{" "}
-			<a href="/search?mode=ai">ask your own question</a>
+			{share.research ? (
+				<>
+					Shared Research Report · ask a follow-up below, or{" "}
+					<a href={registerHref}>
+						create an account to generate your own research report
+					</a>
+				</>
+			) : (
+				<>
+					Shared Ask · ask a follow-up below, or{" "}
+					<a href="/search?mode=ai">ask your own question</a>
+				</>
+			)}
 		</p>
 	</header>
 	<AiModeApp
