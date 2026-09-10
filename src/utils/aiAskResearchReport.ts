@@ -8,7 +8,8 @@ import {
 } from "./linkifyAskSummary";
 import { transformId } from "./transformId";
 
-export const RESEARCH_REPORT_MAX_CHARS = 20_000;
+/** Storage ceiling only — large enough for a finished 16k-token report plus Sources. */
+export const RESEARCH_REPORT_MAX_CHARS = 100_000;
 
 export const RESEARCH_REPORT_SYSTEM = `You write a research report from early Buddhist discourses already selected for the reader. You do not search. You do not invent citations.
 

@@ -1,6 +1,7 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
+import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export interface AiAskSessionEntry {
@@ -192,7 +193,12 @@ export function sanitizeAskHistoryEntry(
 			? { summary: normalizeAskSummaryProse(record.summary, MAX_SUMMARY) }
 			: {}),
 		...(typeof record.report === "string" && record.report.trim()
-			? { report: record.report.replace(/\r\n/g, "\n").trim().slice(0, 20_000) }
+			? {
+					report: record.report
+						.replace(/\r\n/g, "\n")
+						.trim()
+						.slice(0, RESEARCH_REPORT_MAX_CHARS),
+				}
 			: {}),
 		...(typeof record.shareSlug === "string" && record.shareSlug.trim()
 			? { shareSlug: clip(record.shareSlug.toLowerCase(), 48) }

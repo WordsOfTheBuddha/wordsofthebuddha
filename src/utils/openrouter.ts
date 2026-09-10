@@ -103,8 +103,8 @@ export const ASK_PLANNER_MAX_TOKENS = 4096;
  * medium/high effort spends the whole window on thinking and never emits JSON.
  */
 export const ASK_WRITER_MAX_TOKENS = 2048;
-/** Research report — headings, tables, and citations; still finish in-budget. */
-export const RESEARCH_WRITER_MAX_TOKENS = 6144;
+/** Research report — enough to finish a thorough survey; the model may stop sooner. */
+export const RESEARCH_WRITER_MAX_TOKENS = 16_384;
 /** Write from excerpts — do not reuse the planner’s high-effort setting. */
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 

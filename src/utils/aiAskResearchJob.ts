@@ -1,6 +1,7 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
+import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const RESEARCH_JOB_ID_MAX = 80;
@@ -189,7 +190,12 @@ export function sanitizeResearchJobResult(
 			? { summary: normalizeAskSummaryProse(record.summary, 4800) }
 			: {}),
 		...(typeof record.report === "string" && record.report.trim()
-			? { report: record.report.replace(/\r\n/g, "\n").trim().slice(0, 20_000) }
+			? {
+					report: record.report
+						.replace(/\r\n/g, "\n")
+						.trim()
+						.slice(0, RESEARCH_REPORT_MAX_CHARS),
+				}
 			: {}),
 		...(typeof record.shareSlug === "string" && record.shareSlug.trim()
 			? { shareSlug: clip(record.shareSlug.toLowerCase(), 48) }
