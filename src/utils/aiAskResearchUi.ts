@@ -10,6 +10,20 @@ export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
 export const RESEARCH_PLACEHOLDER =
 	"Ask for a wider briefing from the discourses…";
 export const ASK_PLACEHOLDER = "Ask a question about the discourses…";
+export const ASK_WAITING_PLACEHOLDER = "Waiting for an answer…";
+export const ASK_FOLLOW_PLACEHOLDER = "Follow up in this conversation";
+export const RESEARCH_FOLLOW_PLACEHOLDER = "Follow up with a wider search";
+
+/** Follow-up copy only after the current question has an answer. */
+export function askFollowPlaceholder(input: {
+	pending: boolean;
+	researchFollow?: boolean;
+}): string {
+	if (input.pending) return ASK_WAITING_PLACEHOLDER;
+	return input.researchFollow
+		? RESEARCH_FOLLOW_PLACEHOLDER
+		: ASK_FOLLOW_PLACEHOLDER;
+}
 export const RESEARCH_CHIP_TITLE =
 	"A few questions first, then a longer cited report. 2 per day. We’ll email you when it’s ready.";
 export const RESEARCH_EMAIL_PENDING_NOTE =

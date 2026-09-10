@@ -228,15 +228,22 @@ describe("askResultsCaption", () => {
 });
 
 describe("researchSourcesBlockHtml", () => {
-	it("wraps hits in a collapsed details block", () => {
-		const html = researchSourcesBlockHtml(
+	it("wraps Ask and Research hits in a collapsed details block", () => {
+		const research = researchSourcesBlockHtml(
 			"Sources · 2 discourses",
 			`<div data-result-type="discourse">MN 70</div>`,
 		);
-		assert.match(html, /<details class="ai-sources">/);
-		assert.match(html, /<summary>Sources · 2 discourses<\/summary>/);
-		assert.doesNotMatch(html, /\sopen[\s>]/);
-		assert.match(html, /MN 70/);
+		assert.match(research, /<details class="ai-sources">/);
+		assert.match(research, /<summary>Sources · 2 discourses<\/summary>/);
+		assert.doesNotMatch(research, /\sopen[\s>]/);
+		assert.match(research, /MN 70/);
+
+		const ask = researchSourcesBlockHtml(
+			"Showing 12 discourses · picked from 186",
+			`<div data-result-type="discourse">MN 10</div>`,
+		);
+		assert.match(ask, /<details class="ai-sources">/);
+		assert.match(ask, /<summary>Showing 12 discourses · picked from 186<\/summary>/);
 	});
 });
 

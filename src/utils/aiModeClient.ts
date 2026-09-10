@@ -20,6 +20,7 @@ import {
 	ASK_PLACEHOLDER,
 	applyResearchJobToTurn,
 	askComposerMeterIsResearch,
+	askFollowPlaceholder,
 	askMeterLabel,
 	canShowResearchChip,
 	RESEARCH_CHIP_STORAGE_KEY,
@@ -483,7 +484,7 @@ export function askResultsCaption(input: {
 		: `Showing ${shown} ${noun}`;
 }
 
-/** Collapsed-by-default source list for a research report. */
+/** Collapsed-by-default source list for Ask matches and research reports. */
 export function researchSourcesBlockHtml(
 	caption: string,
 	hitsHtml: string,
@@ -1425,9 +1426,10 @@ export function attachAiMode(options: {
 		const placeholder = pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
 		if (input) input.placeholder = placeholder;
 		if (followInput) {
-			followInput.placeholder = pressed
-				? "Follow up with a wider search"
-				: "Follow up in this conversation";
+			followInput.placeholder = askFollowPlaceholder({
+				pending: turns.some((turn) => turn.pending),
+				researchFollow: pressed,
+			});
 		}
 		renderMeters();
 	}
@@ -2602,11 +2604,11 @@ export function attachAiMode(options: {
 			research ? formatResearchHitTitle(hit.title) : hit.title,
 		);
 		const description = hit.description
-			? `<p class="mt-2 text-text line-clamp-4 text-sm sm:text-base">${escapeHtml(stripHtml(hit.description))}</p>`
+			? `<p class="ai-hit-desc">${escapeHtml(stripHtml(hit.description))}</p>`
 			: "";
 		const snippet =
 			!research && hit.contentSnippet
-				? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${escapeHtml(stripHtml(hit.contentSnippet))}</p>`
+				? `<p class="ai-hit-snippet${hit.description ? " ai-hit-snippet-extra" : ""}">${escapeHtml(stripHtml(hit.contentSnippet))}</p>`
 				: "";
 		const badge = hit.referenceOnly
 			? `<span class="inline-block ml-1.5 px-1 py-0 text-[0.65rem] font-semibold uppercase tracking-wide text-[var(--text-muted)] align-middle">Reference</span>`
@@ -2794,23 +2796,27 @@ export function attachAiMode(options: {
 			pinBtn || deleteBtn
 				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
 				: "";
+		const tip = turnIndex === turns.length - 1;
+		const copyBtn =
+			(turn.report || "").trim()
+				? `<button type="button" class="ai-share-btn ai-copy-report-btn" data-ai-copy-report data-turn-index="${turnIndex}" title="Copy report as Markdown">
+					${COPY_REPORT_ICON_SVG}<span class="ai-share-label-full">Copy</span><span class="ai-share-label-short">Copy</span>
+				</button>`
+				: "";
+		const downloadBtn =
+			tip && turn.results.length > 0
+				? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
+				: "";
+		const shareBtn = tip
+			? `<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>`
+			: "";
+		if (!startBtns && !copyBtn && !downloadBtn && !sampleSaveBtn && !shareBtn) {
+			return "";
+		}
 		return `<div class="ai-share-actions">
 			${startBtns}
 			<div class="ai-share-actions-end">
-				${
-					(turn.report || "").trim()
-						? `<button type="button" class="ai-share-btn ai-copy-report-btn" data-ai-copy-report data-turn-index="${turnIndex}" title="Copy report as Markdown">
-					${COPY_REPORT_ICON_SVG}<span class="ai-share-label-full">Copy</span><span class="ai-share-label-short">Copy</span>
-				</button>`
-						: ""
-				}
-				${
-					turn.results.length > 0
-						? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
-						: ""
-				}
-				${sampleSaveBtn}
-				<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>
+				${copyBtn}${downloadBtn}${sampleSaveBtn}${shareBtn}
 			</div>
 		</div>`;
 	}
@@ -3057,8 +3063,6 @@ export function attachAiMode(options: {
 				: "";
 		const cacheNote = turn.fromSample
 			? `<p class="ai-cache-note">${escapeHtml(ASK_SAMPLE_NOTE)}</p>`
-			: turn.fromCache
-			? `<p class="ai-cache-note" title="You asked this before, so the saved answer is shown again.">Saved answer from an earlier Ask</p>`
 			: "";
 		// Latest lines stay visible; older reasoning is clipped unless expanded.
 		const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
@@ -3127,10 +3131,6 @@ export function attachAiMode(options: {
 					research: turn.research === true,
 				})
 			: "";
-		const caption =
-			hasHits && captionText && turn.research !== true
-				? `<p class="ai-results-caption">${escapeHtml(captionText)}</p>`
-				: "";
 		const hideQueryChips = turn.offTopic || !hasHits;
 		const queryBlock = hideQueryChips ? "" : primaryQueries;
 		const fallbackBlock = hideQueryChips ? "" : fallbackQueries;
@@ -3181,14 +3181,14 @@ export function attachAiMode(options: {
 							.join("")
 					: "";
 			const hits =
-				hitCards && turn.research === true && captionText
+				hitCards && captionText
 					? researchSourcesBlockHtml(escapeHtml(captionText), hitCards)
 					: hitCards
 						? `<div class="ai-hits">${hitCards}</div>`
 						: personBlock
 							? ""
 							: emptyHitsHtml(turn);
-			body = `${cacheNote}${process}${summary}${queryBlock}${fallbackBlock}${personBlock}${caption}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
+			body = `${cacheNote}${process}${summary}${queryBlock}${fallbackBlock}${personBlock}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
 		}
 		const backLabel = shareMode ? "Ask your own question" : "Back to earlier questions";
 		const backBtn =
@@ -3200,7 +3200,7 @@ export function attachAiMode(options: {
 				</button>`
 				: "";
 		// Failed turns stay editable so the reader can fix wording or retry.
-		// Shared snapshots themselves stay fixed; follow-ups on a share page stay editable.
+		// Shared snapshots stay fixed — follow-up is not offered on a share page.
 		const canEdit =
 			!turn.fromShare &&
 			!turn.pending &&
@@ -3209,18 +3209,21 @@ export function attachAiMode(options: {
 		const editTitle = retryResearch
 			? "Edit and research again"
 			: "Edit and ask again";
-		const questionEl = canEdit
-			? `<button type="button" class="ai-question ai-question-btn" data-ai-edit-question data-turn-index="${turnIndex}" title="${editTitle}">${escapeHtml(turn.question)}</button>
-				<button type="button" class="ai-edit-btn" data-ai-edit-question data-turn-index="${turnIndex}" aria-label="Edit question" title="${editTitle}">
+		const editBtn = canEdit
+			? `<button type="button" class="ai-edit-btn" data-ai-edit-question data-turn-index="${turnIndex}" aria-label="Edit question" title="${editTitle}">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="14" height="14" aria-hidden="true">
 						<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
 					</svg>
 				</button>`
-			: `<p class="ai-question">${escapeHtml(turn.question)}</p>`;
+			: "";
 		return `<section class="ai-turn" data-pending="${turn.pending ? "1" : "0"}">
 			<div class="ai-question-row">
 				${backBtn}
-				${questionEl}
+				<div class="ai-question-wrap" data-ai-question>
+					<p class="ai-question" data-ai-question-text>${escapeHtml(turn.question)}</p>
+					<button type="button" class="ai-question-more" data-ai-question-more hidden aria-expanded="false">Show more</button>
+				</div>
+				${editBtn}
 			</div>
 			${body}
 		</section>`;
@@ -3465,20 +3468,26 @@ export function attachAiMode(options: {
 		const researchBusy = turns.some(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
 		);
-		root.classList.toggle("is-research-busy", researchBusy);
-		syncStopButtons(researchBusy);
-		if (followInput) followInput.disabled = researchBusy;
-		const followBox = followForm?.querySelector<HTMLElement>(".ai-box");
-		if (followBox) followBox.hidden = researchBusy;
-		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-stop]").forEach(
-			(button) => {
-				button.hidden = !researchBusy;
-			},
+		const reportDock = Boolean(
+			last?.research && !last.pending && !clarifying && !declinedOpen,
 		);
+		root.classList.toggle("is-research-busy", researchBusy);
+		root.classList.toggle("is-report-dock", reportDock);
+		syncStopButtons(researchBusy);
+		const threadPending = turns.some((turn) => turn.pending);
+		if (followInput) followInput.disabled = threadPending;
+		followForm
+			?.querySelectorAll<HTMLButtonElement>("[data-ai-mic]")
+			.forEach((button) => {
+				button.disabled = threadPending;
+			});
 		syncResearchChip();
 		empty.hidden = hasThread || shareMode;
 		composer.hidden = hasThread || shareMode;
-		if (followForm) followForm.hidden = !hasThread || clarifying || declinedOpen;
+		if (followForm) {
+			followForm.hidden =
+				shareMode || !hasThread || clarifying || declinedOpen;
+		}
 		syncClarifyBar();
 		if (historyEl && shareMode) historyEl.hidden = true;
 		thread.innerHTML = turns.map((turn, index) => renderTurn(turn, index)).join("");
@@ -3629,7 +3638,37 @@ export function attachAiMode(options: {
 				});
 			});
 		if (thread) pinClampedAskThinking(thread);
+		bindQuestionExpand();
 		if (!shareMode) renderHistory();
+	}
+
+	function syncQuestionExpandState(wrap: HTMLElement): void {
+		const text = wrap.querySelector<HTMLElement>("[data-ai-question-text]");
+		const more = wrap.querySelector<HTMLButtonElement>("[data-ai-question-more]");
+		if (!text || !more) return;
+		const expanded = wrap.classList.contains("is-expanded");
+		if (expanded) {
+			more.hidden = false;
+			more.textContent = "Show less";
+			more.setAttribute("aria-expanded", "true");
+			return;
+		}
+		const overflowing = text.scrollHeight > text.clientHeight + 2;
+		more.hidden = !overflowing;
+		more.textContent = "Show more";
+		more.setAttribute("aria-expanded", "false");
+	}
+
+	function bindQuestionExpand(): void {
+		thread.querySelectorAll<HTMLElement>("[data-ai-question]").forEach((wrap) => {
+			const more = wrap.querySelector<HTMLButtonElement>("[data-ai-question-more]");
+			if (!more) return;
+			more.addEventListener("click", () => {
+				wrap.classList.toggle("is-expanded");
+				syncQuestionExpandState(wrap);
+			});
+			requestAnimationFrame(() => syncQuestionExpandState(wrap));
+		});
 	}
 
 	function beginEditQuestion(turnIndex: number): void {
@@ -3642,8 +3681,8 @@ export function attachAiMode(options: {
 		if (!row) return;
 		const existing = row.querySelector(".ai-question-edit");
 		if (existing) return;
-		row.querySelectorAll("[data-ai-edit-question]").forEach((el) => el.remove());
-		row.querySelector(".ai-question")?.remove();
+		row.querySelector("[data-ai-question]")?.remove();
+		row.querySelector("[data-ai-edit-question]")?.remove();
 		const wrap = document.createElement("div");
 		wrap.className = "ai-question-edit";
 		const retryResearch = isIncompleteResearchTurn(turn);
@@ -3755,8 +3794,8 @@ export function attachAiMode(options: {
 		root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
 			if (researchBusy) {
 				button.setAttribute("data-ai-stop", "1");
-				button.setAttribute("aria-label", "Stop research");
-				button.title = "Stop research";
+				button.setAttribute("aria-label", "Pause research");
+				button.title = "Pause research";
 			} else {
 				button.removeAttribute("data-ai-stop");
 				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : "Ask");
@@ -4782,13 +4821,6 @@ export function attachAiMode(options: {
 			leaveAskHome();
 		});
 	});
-	root.querySelectorAll<HTMLButtonElement>("[data-ai-research-stop]").forEach(
-		(button) => {
-			button.addEventListener("click", () => {
-				void cancelActiveResearch();
-			});
-		},
-	);
 
 	thread.addEventListener("click", (event) => {
 		const target = event.target;
@@ -4887,8 +4919,9 @@ export function attachAiMode(options: {
 
 	micButtons.forEach((button) => {
 		button.addEventListener("click", () => {
+			if (button.disabled) return;
 			const target = button.closest("form")?.querySelector("textarea");
-			if (target) startListening(target);
+			if (target && !target.disabled) startListening(target);
 		});
 		if (!speechRecognitionCtor()) {
 			button.hidden = true;
@@ -4904,6 +4937,11 @@ export function attachAiMode(options: {
 			}
 		}
 		persistActiveThread();
+	});
+	window.addEventListener("resize", () => {
+		thread.querySelectorAll<HTMLElement>("[data-ai-question]").forEach((wrap) => {
+			syncQuestionExpandState(wrap);
+		});
 	});
 
 	// Prefill only — never auto-submit. Mode switches must not spend credits.

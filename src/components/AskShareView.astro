@@ -22,15 +22,17 @@ const registerHref = askAuthPageHref("/register", null, searchAskHref());
 		<p class="ai-share-banner">
 			{share.research ? (
 				<>
-					Shared Research Report · ask a follow-up below, or{" "}
+					Shared Research Report
+					{" · "}
 					<a href={registerHref}>
-						create an account to generate your own research report
+						Create an account to generate your own
 					</a>
 				</>
 			) : (
 				<>
-					Shared Ask · ask a follow-up below, or{" "}
-					<a href="/search?mode=ai">ask your own question</a>
+					Shared Ask
+					{" · "}
+					<a href="/search?mode=ai">Ask your own question</a>
 				</>
 			)}
 		</p>

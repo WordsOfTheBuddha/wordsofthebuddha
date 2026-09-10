@@ -14,7 +14,15 @@
 
 .ai-mode.has-thread {
 	min-height: auto;
+}
+
+.ai-mode.has-thread:not(.ai-mode-share):not(.is-report-dock) {
 	padding-bottom: 7.5rem;
+}
+
+.ai-mode.has-thread.is-report-dock,
+.ai-mode.has-thread.ai-mode-share {
+	padding-bottom: 2.5rem;
 }
 
 .ai-shell {
@@ -128,7 +136,7 @@
 
 .ai-question-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	gap: 0.45rem;
 	margin: 0 0 0.75rem;
 }
@@ -161,10 +169,44 @@
 	border-color: var(--primary-color);
 }
 
-.ai-question-row .ai-question {
-	margin: 0;
+.ai-question-wrap {
 	flex: 1;
 	min-width: 0;
+}
+
+.ai-question-row .ai-question {
+	margin: 0;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+}
+
+@media (min-width: 640px) {
+	.ai-question-row .ai-question {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+}
+
+.ai-question-wrap.is-expanded .ai-question {
+	display: block;
+	-webkit-line-clamp: unset;
+	line-clamp: unset;
+	overflow: visible;
+}
+
+.ai-question-more {
+	appearance: none;
+	background: none;
+	border: 0;
+	padding: 0.2rem 0 0;
+	margin: 0;
+	font: inherit;
+	font-size: 0.82rem;
+	color: var(--link-color);
+	cursor: pointer;
 }
 
 .ai-limits-note {
@@ -480,7 +522,7 @@
 	position: sticky;
 	bottom: 0;
 	z-index: 6;
-	background: var(--background-color);
+	background: none;
 	flex: 0 0 auto;
 }
 
@@ -695,27 +737,6 @@
 	margin: 0;
 	margin-left: auto;
 	text-align: right;
-}
-
-.ai-question-btn {
-	appearance: none;
-	background: none;
-	border: 0;
-	padding: 0;
-	margin: 0;
-	font: inherit;
-	color: inherit;
-	text-align: left;
-	cursor: pointer;
-	flex: 1;
-	min-width: 0;
-}
-
-.ai-question-btn:hover {
-	color: var(--text-color);
-	text-decoration: underline;
-	text-decoration-color: color-mix(in srgb, var(--text-muted) 55%, transparent);
-	text-underline-offset: 0.15em;
 }
 
 .ai-question-edit {
@@ -1156,6 +1177,51 @@
 	margin: 0.5rem 0;
 }
 
+/* Collection PostCard clamp={5}: 6 lines on mobile, 5 from md. */
+.ai-hit-desc,
+.ai-hit-snippet {
+	margin: 0.5rem 0 0;
+	color: var(--text-color);
+	font-size: 0.875rem;
+	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ai-hit-desc {
+	-webkit-line-clamp: 6;
+	line-clamp: 6;
+}
+
+.ai-hit-snippet {
+	color: var(--text-muted);
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+}
+
+.ai-hit-snippet-extra {
+	display: none;
+}
+
+@media (min-width: 768px) {
+	.ai-hit-desc {
+		font-size: 1rem;
+		-webkit-line-clamp: 5;
+		line-clamp: 5;
+	}
+
+	.ai-hit-snippet {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+
+	.ai-hit-snippet-extra {
+		display: -webkit-box;
+	}
+}
+
 .ai-cache-note {
 	color: var(--text-muted);
 	font-size: 0.8rem;
@@ -1245,13 +1311,17 @@
 	position: sticky;
 	bottom: 0;
 	z-index: 6;
-	padding: 0.75rem 0 1rem;
+	padding: 1.1rem 0 0.75rem;
 	/*
-	 * Page color, not a distinct chrome. At rest this matches the page so
-	 * “New question” / remaining Asks look like plain text; when the bar is
-	 * stuck over results it keeps those labels readable.
+	 * Stay transparent. A solid --background-color fill sits on top of the
+	 * page wash (body::before) and reads as a separate footer slab.
 	 */
-	background: var(--background-color);
+	background: none;
+}
+
+.ai-mode.is-report-dock .ai-follow {
+	position: relative;
+	bottom: auto;
 }
 
 .ai-new {
@@ -1259,25 +1329,8 @@
 	border: 0;
 	color: var(--link-color);
 	cursor: pointer;
-	padding: 0 0.8rem;
+	padding: 0.1rem 0.15rem;
 	font-size: inherit;
-}
-
-.ai-research-stop {
-	background: none;
-	border: 0;
-	color: var(--text-muted);
-	cursor: pointer;
-	padding: 0 0.8rem;
-	font-size: inherit;
-}
-
-.ai-research-stop:hover {
-	color: var(--text-color);
-}
-
-.ai-mode.is-research-busy .ai-follow .ai-box {
-	display: none !important;
 }
 
 .ai-send .ai-send-stop {
@@ -1298,7 +1351,21 @@
 }
 
 .ai-mode.is-research-busy .ai-send {
-	background: color-mix(in srgb, var(--text-muted) 35%, var(--primary-color));
+	background: var(--text-color);
+	color: var(--background-color);
+}
+
+.ai-mode.is-busy .ai-follow textarea:disabled {
+	color: var(--text-muted);
+}
+
+.ai-mode.is-busy .ai-follow .ai-box-tools {
+	visibility: hidden;
+}
+
+.ai-mode.is-busy .ai-follow [data-ai-mic]:disabled {
+	opacity: 0.4;
+	pointer-events: none;
 }
 
 .ai-kicker-picker-only {
@@ -1380,7 +1447,8 @@
 .ai-mode-share .ai-composer,
 .ai-mode-share .ai-history,
 .ai-mode-share .ai-empty,
-.ai-mode-share .ai-model-picker-row {
+.ai-mode-share .ai-model-picker-row,
+.ai-mode-share .ai-follow {
 	display: none !important;
 }
 

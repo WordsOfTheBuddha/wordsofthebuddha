@@ -201,13 +201,13 @@ const examples = [
 	</form>
 
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
-		<label class="sr-only" for="ai-follow-input">Follow up in this conversation</label>
+		<label class="sr-only" for="ai-follow-input">Ask another question</label>
 		<div class="ai-box">
 			<textarea
 				id="ai-follow-input"
 				data-ai-follow-input
 				rows="2"
-				placeholder="Follow up in this conversation"
+				placeholder="Waiting for an answer…"
 				enterkeyhint="enter"
 			></textarea>
 			<div class="ai-box-bar">
@@ -258,9 +258,6 @@ const examples = [
 		<div class="ai-meta-row">
 			<button type="button" class="ai-new" data-ai-new>
 				New question
-			</button>
-			<button type="button" class="ai-research-stop" data-ai-research-stop hidden>
-				Stop
 			</button>
 			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
 		</div>

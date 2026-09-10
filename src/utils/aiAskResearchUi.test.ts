@@ -4,7 +4,11 @@ import { toResearchJobPublic } from "./aiAskResearchJob";
 import {
 	applyResearchJobToTurn,
 	askComposerMeterIsResearch,
+	askFollowPlaceholder,
 	askMeterLabel,
+	ASK_FOLLOW_PLACEHOLDER,
+	ASK_WAITING_PLACEHOLDER,
+	RESEARCH_FOLLOW_PLACEHOLDER,
 	canShowResearchChip,
 	isAskResearchEnabled,
 	RESEARCH_EMAIL_PENDING_NOTE,
@@ -30,6 +34,30 @@ function withResearchFlag(value: string | undefined, fn: () => void): void {
 		else process.env[RESEARCH_FLAG] = prev;
 	}
 }
+
+describe("askFollowPlaceholder", () => {
+	it("does not invite a follow-up while the question is still open", () => {
+		assert.equal(
+			askFollowPlaceholder({ pending: true }),
+			ASK_WAITING_PLACEHOLDER,
+		);
+		assert.equal(
+			askFollowPlaceholder({ pending: true, researchFollow: true }),
+			ASK_WAITING_PLACEHOLDER,
+		);
+	});
+
+	it("uses follow-up copy after the question is resolved", () => {
+		assert.equal(
+			askFollowPlaceholder({ pending: false }),
+			ASK_FOLLOW_PLACEHOLDER,
+		);
+		assert.equal(
+			askFollowPlaceholder({ pending: false, researchFollow: true }),
+			RESEARCH_FOLLOW_PLACEHOLDER,
+		);
+	});
+});
 
 describe("askComposerMeterIsResearch", () => {
 	it("uses Ask credits after a finished report unless Research is on again", () => {
