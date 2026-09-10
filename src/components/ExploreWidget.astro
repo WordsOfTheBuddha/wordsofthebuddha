@@ -1271,7 +1271,7 @@ const isSearchOnly = mode === "search-only";
 		formatSearchResultsQueryLabel,
 	} from "../utils/searchRanking";
 	import { normalizeSearchQuery, queryHasContentField, type HighlightTerm } from "../utils/fuseQueryParser";
-	import { highlightSnippetText } from "../utils/searchSnippetHighlight";
+	import { formatSearchCardSnippet, highlightSnippetText } from "../utils/searchSnippetHighlight";
 
 	function setSearchInsideStatus(message: string | null) {
 		if (!searchInsideStatusEl) return;
@@ -2460,16 +2460,10 @@ const isSearchOnly = mode === "search-only";
 		return stripAnnotations(html || "");
 	}
 
-	// Process content snippet: strip tooltips, convert headings to bold, convert MD links
+	// Process snippet/description HTML for a whole-card <a>: no nested anchors.
 	function processSnippet(html: string): string {
 		if (!html) return "";
-		// Strip tooltip context first
-		let processed = stripTooltipContext(html);
-		// Convert section headings (##, ###, ####, etc.) to bold text
-		processed = processed.replace(/^(#{2,6})\s+(.+)$/gm, '<strong>$2</strong>');
-		// Convert markdown links [text](url) to HTML links
-		processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-link-color hover:underline">$1</a>');
-		return processed;
+		return formatSearchCardSnippet(stripTooltipContext(html));
 	}
 
 	// Strip search operators from a term (' ^ ! $ ")

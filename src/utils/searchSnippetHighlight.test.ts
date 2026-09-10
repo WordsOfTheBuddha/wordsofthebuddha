@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import type { HighlightTerm } from "./fuseQueryParser";
 import {
 	clipSnippetAroundHighlight,
 	countSnippetHighlightTerms,
+	formatSearchCardSnippet,
 	highlightSnippetText,
 	mergeAdjacentMarks,
 } from "./searchSnippetHighlight";
@@ -152,5 +154,59 @@ describe("mergeAdjacentMarks", () => {
 			html,
 			'<mark class="x" data-hl-count="2">aggregate of</mark>',
 		);
+	});
+});
+
+describe("formatSearchCardSnippet", () => {
+	it("keeps markdown link text and does not emit nested anchors", () => {
+		const html = formatSearchCardSnippet(
+			"The chapter gets its name from the [AN 2.36](/an2.36) discourse.",
+		);
+		assert.equal(
+			html,
+			"The chapter gets its name from the AN 2.36 discourse.",
+		);
+		assert.equal(html.includes("<a"), false);
+	});
+
+	it("unwraps existing anchors, including highlighted link text", () => {
+		const html = formatSearchCardSnippet(
+			'See <a href="/an8.21" class="text-link-color hover:underline"><mark>AN 8.21</mark></a>.',
+		);
+		assert.equal(html, "See <mark>AN 8.21</mark>.");
+	});
+
+	it("turns section headings into bold text", () => {
+		assert.equal(
+			formatSearchCardSnippet("#### 2.36\n\nNext line"),
+			"<strong>2.36</strong>\n\nNext line",
+		);
+	});
+
+	it("keeps the search card in one piece in the HTML parser", () => {
+		const card = (inner: string) =>
+			new JSDOM(`<a href="/an2.32-41" class="search-discourse-card">
+				<h2>AN 2.32-41</h2>
+				<p>The chapter gets its name from the ${inner} discourse.</p>
+				<p>sekho ca asekho ca</p>
+			</a>`).window.document;
+
+		const broken = card('<a href="/an2.36">AN 2.36</a>');
+		assert.equal(
+			broken.querySelectorAll("a.search-discourse-card").length,
+			2,
+		);
+		assert.equal(
+			broken
+				.querySelector("a.search-discourse-card")
+				?.textContent?.includes("sekho"),
+			false,
+		);
+
+		const fixed = card(formatSearchCardSnippet("[AN 2.36](/an2.36)"));
+		const el = fixed.querySelector("a.search-discourse-card");
+		assert.equal(fixed.querySelectorAll("a.search-discourse-card").length, 1);
+		assert.match(el?.textContent || "", /AN 2\.36 discourse/);
+		assert.match(el?.textContent || "", /sekho/);
 	});
 });

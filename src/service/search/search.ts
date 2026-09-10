@@ -25,6 +25,7 @@ import {
 	createHighlightPattern,
 	highlightSnippetText,
 	clipSnippetAroundHighlight,
+	formatSearchCardSnippet,
 } from "../../utils/searchSnippetHighlight";
 import {
 	getPtsDisplay,
@@ -560,20 +561,11 @@ function findBestMatchingParagraph(
 		}
 	}
 
-	let result = clipSnippetAroundHighlight(
+	const result = clipSnippetAroundHighlight(
 		highlightSnippetText(snippetText, termsToHighlight, paliMode),
 	).trim();
 
-	// Post-process: Convert section headings (###, ####, etc.) to bold text
-	result = result.replace(/^(#{2,6})\s+(.+)$/gm, "<strong>$2</strong>");
-
-	// Post-process: Convert markdown links [text](url) to HTML links
-	result = result.replace(
-		/\[([^\]]+)\]\(([^)]+)\)/g,
-		'<a href="$2" class="text-link-color hover:underline">$1</a>',
-	);
-
-	return result;
+	return formatSearchCardSnippet(result);
 }
 
 function termMatchesInText(

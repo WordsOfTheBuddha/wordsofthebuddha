@@ -590,3 +590,16 @@ export function clipSnippetAroundHighlight(
 	const suffix = end < html.length ? "..." : "";
 	return `${prefix}${html.slice(start, end).trim()}${suffix}`;
 }
+
+/**
+ * Format snippet/description HTML that will sit inside a whole-card `<a>`.
+ * Nested anchors are invalid HTML: browsers close the card early and the
+ * result splits (title in one box, body leaking outside).
+ */
+export function formatSearchCardSnippet(html: string): string {
+	if (!html) return "";
+	let processed = html.replace(/^(#{2,6})\s+(.+)$/gm, "<strong>$2</strong>");
+	processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+	processed = processed.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, "$1");
+	return processed;
+}
