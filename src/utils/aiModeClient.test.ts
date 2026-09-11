@@ -348,8 +348,61 @@ describe("buildAskProcessSteps", () => {
 			candidateCount: 186,
 			resultCount: 18,
 		});
-		assert.equal(done.length, 3);
+		assert.equal(done.length, 5);
 		assert.match(done[1]?.text || "", /Searched widely/);
+		assert.equal(done[3]?.text, "Reviewed the evidence");
+		assert.equal(done[4]?.text, "Wrote the report");
+	});
+
+	it("keeps further searches and reads on the finished research strip", () => {
+		const done = buildAskProcessSteps({
+			pending: false,
+			phase: "done",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+			candidateCount: 186,
+			resultCount: 18,
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70, SN 48.53 in Pāli and English…",
+				"Reading MN 70 in full…",
+			],
+		});
+		assert.deepEqual(
+			done.map((step) => step.text),
+			[
+				"Understood · vedanā",
+				"Searched widely · 186 discourses",
+				"Crunched 186 discourses",
+				"Reviewed the evidence",
+				"Searched again · 3 of 3 queries",
+				"Read MN 70, SN 48.53 in Pāli and English",
+				"Read MN 70 in full",
+				"Wrote the report",
+			],
+		);
+
+		const writing = buildAskProcessSteps({
+			pending: true,
+			phase: "answer",
+			question: "feeling?",
+			research: true,
+			progressNote: "Reading MN 70 in full…",
+			candidateCount: 80,
+			showCount: 12,
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in full…",
+			],
+		});
+		assert.equal(writing[3]?.text, "Reviewed the evidence");
+		assert.equal(writing[4]?.text, "Searched again · 3 of 3 queries");
+		assert.equal(writing[5]?.text, "Reading MN 70 in full…");
+		assert.equal(
+			writing.some((step) => step.text === "Read MN 70 in full"),
+			false,
+		);
 	});
 
 	it("names the clarifying wait on the first Research step", () => {

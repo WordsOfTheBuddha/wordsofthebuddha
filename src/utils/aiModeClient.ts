@@ -9,7 +9,10 @@ import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
 import type { ResearchQuotaView } from "./aiResearchQuota";
-import type { ResearchJobPublic } from "./aiAskResearchJob";
+import {
+	researchProcessHopLabels,
+	type ResearchJobPublic,
+} from "./aiAskResearchJob";
 import {
 	answersFromClarifyState,
 	canStartResearchClarify,
@@ -36,6 +39,7 @@ import {
 	isIncompleteResearchTurn,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
+	researchEditAskInsteadLabel,
 	researchRetrySubmitLabel,
 	wrapAskAnswerHtml,
 	sameResearchRetryQuestion,
@@ -173,6 +177,7 @@ export interface AiAskTurn {
 	verifyNote?: string;
 	onTrack?: boolean;
 	progressNote?: string;
+	processNotes?: string[];
 	/** Markdown research document. */
 	report?: string;
 	researchClarify?: {
@@ -359,6 +364,7 @@ export function buildAskProcessSteps(input: {
 	verifyNote?: string;
 	onTrack?: boolean;
 	progressNote?: string;
+	processNotes?: readonly string[];
 }): AskProcessStep[] {
 	const question = (input.question || "").replace(/\s+/g, " ").trim();
 	const looking = (input.lookingFor || "")
@@ -475,8 +481,22 @@ export function buildAskProcessSteps(input: {
 	}
 
 	const prefix: AskProcessStep[] = [understood];
+	const hopSteps: AskProcessStep[] = researchProcessHopLabels(
+		input.processNotes,
+		input.pending ? note : undefined,
+	).map((text) => ({ state: "done", text }));
 
-	if (phase === "done") return [...prefix, searched, crunched];
+	if (phase === "done") {
+		if (!input.research) return [...prefix, searched, crunched];
+		return [
+			...prefix,
+			searched,
+			crunched,
+			{ state: "done", text: "Reviewed the evidence" },
+			...hopSteps,
+			{ state: "done", text: "Wrote the report" },
+		];
+	}
 	const writeStep: AskProcessStep =
 		phase === "answer"
 			? {
@@ -500,7 +520,10 @@ export function buildAskProcessSteps(input: {
 			: phase === "answer" || (phase === "search" && alreadyCrunched)
 				? { state: "done", text: "Reviewed the evidence" }
 				: { state: "todo", text: "Review evidence" };
-	return [...prefix, searched, crunched, reviewed, writeStep];
+	if (reviewed.state === "todo") {
+		return [...prefix, searched, crunched, reviewed, writeStep];
+	}
+	return [...prefix, searched, crunched, reviewed, ...hopSteps, writeStep];
 }
 
 /** Caption shown with the answer once results are in (“Showing 12 discourses”). */
@@ -806,6 +829,7 @@ export function askProcessStepsFromTurn(
 		| "verifyNote"
 		| "onTrack"
 		| "progressNote"
+		| "processNotes"
 	>,
 ): AskProcessStep[] {
 	return buildAskProcessSteps({
@@ -824,6 +848,7 @@ export function askProcessStepsFromTurn(
 		verifyNote: turn.verifyNote,
 		onTrack: turn.onTrack,
 		progressNote: turn.progressNote,
+		processNotes: turn.processNotes,
 	});
 }
 
@@ -858,6 +883,7 @@ export function applyAskProcessStreamPatch(
 		| "verifyNote"
 		| "onTrack"
 		| "progressNote"
+		| "processNotes"
 		| "reasoning"
 		| "reasoningExpanded"
 	>,
@@ -1132,6 +1158,9 @@ function turnToSessionEntry(
 		...(thread ? { thread } : {}),
 		...(turn.research ? { research: true } : {}),
 		...(turn.researchJobId ? { researchJobId: turn.researchJobId } : {}),
+		...(turn.processNotes && turn.processNotes.length > 0
+			? { processNotes: turn.processNotes }
+			: {}),
 	};
 }
 
@@ -1168,6 +1197,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		...(entry.research ? { research: true } : {}),
 		...(entry.researchJobId ? { researchJobId: entry.researchJobId } : {}),
 		...(entry.research && entry.at ? { researchStartedAt: entry.at } : {}),
+		...(entry.processNotes && entry.processNotes.length > 0
+			? { processNotes: entry.processNotes }
+			: {}),
 	};
 }
 
@@ -3858,6 +3890,33 @@ export function attachAiMode(options: {
 		if (thread) pinClampedAskThinking(thread);
 		bindQuestionExpand();
 		if (!shareMode) renderHistory();
+		scheduleFollowDockFrost();
+	}
+
+	let followDockFrostRaf = 0;
+
+	function followDockOverlapsThread(): boolean {
+		if (!followForm || followForm.hidden) return false;
+		const dock = followForm.getBoundingClientRect();
+		for (const child of thread.children) {
+			const rect = child.getBoundingClientRect();
+			if (rect.bottom > dock.top + 2 && rect.top < dock.bottom - 2) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function syncFollowDockFrost(): void {
+		followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
+	}
+
+	function scheduleFollowDockFrost(): void {
+		if (followDockFrostRaf) return;
+		followDockFrostRaf = window.requestAnimationFrame(() => {
+			followDockFrostRaf = 0;
+			syncFollowDockFrost();
+		});
 	}
 
 	function syncQuestionExpandState(wrap: HTMLElement): void {
@@ -3903,14 +3962,36 @@ export function attachAiMode(options: {
 		row.querySelector("[data-ai-edit-question]")?.remove();
 		const wrap = document.createElement("div");
 		wrap.className = "ai-question-edit";
-		const retryResearch = isIncompleteResearchTurn(turn);
-		const submitLabel = researchRetrySubmitLabel(retryResearch);
+		const researchEdit = turn.research === true;
+		const submitLabel = researchRetrySubmitLabel(researchEdit);
+		const researchLeft =
+			researchEdit &&
+			quota?.signedIn &&
+			typeof researchQuota?.remaining === "number"
+				? askMeterLabel({
+						signedIn: true,
+						needsEmailVerification: quota.needsEmailVerification,
+						researchOn: true,
+						askRemaining: quota.remaining,
+						researchRemaining: researchQuota.remaining,
+					})
+				: "";
 		wrap.innerHTML = `
 			<label class="sr-only" for="ai-edit-question">Edit question</label>
 			<textarea id="ai-edit-question" data-ai-edit-input rows="2"></textarea>
 			<div class="ai-question-edit-actions">
 				<button type="button" data-ai-edit-submit>${submitLabel}</button>
+				${
+					researchEdit
+						? `<button type="button" data-ai-edit-ask-instead>${researchEditAskInsteadLabel()}</button>`
+						: ""
+				}
 				<button type="button" data-ai-edit-cancel>Cancel</button>
+				${
+					researchLeft
+						? `<span class="ai-question-edit-meter" aria-live="polite">${escapeHtml(researchLeft)}</span>`
+						: ""
+				}
 			</div>
 		`;
 		row.append(wrap);
@@ -3924,17 +4005,38 @@ export function attachAiMode(options: {
 		const cancel = (): void => {
 			syncLayout();
 		};
-		const submit = (): void => {
-			const next = editInput.value.replace(/\s+/g, " ").trim();
+		const editedQuestion = (): string =>
+			editInput.value.replace(/\s+/g, " ").trim();
+		const submitResearch = (): void => {
+			const next = editedQuestion();
 			if (!next || busy) return;
-			if (retryResearch) {
+			if (isIncompleteResearchTurn(turn)) {
 				void retryIncompleteResearchTurn(turnIndex, next);
 				return;
 			}
+			setResearchChipOn(true);
+			void ask(next, null, { replaceTurnIndex: turnIndex, forceResearch: true });
+		};
+		const submitAsk = (): void => {
+			const next = editedQuestion();
+			if (!next || busy) return;
+			setResearchChipOn(false);
+			void ask(next, null, { replaceTurnIndex: turnIndex, forceAsk: true });
+		};
+		const submit = (): void => {
+			if (researchEdit) {
+				submitResearch();
+				return;
+			}
+			const next = editedQuestion();
+			if (!next || busy) return;
 			void ask(next, null, { replaceTurnIndex: turnIndex });
 		};
 		wrap.querySelector("[data-ai-edit-cancel]")?.addEventListener("click", cancel);
 		wrap.querySelector("[data-ai-edit-submit]")?.addEventListener("click", submit);
+		wrap
+			.querySelector("[data-ai-edit-ask-instead]")
+			?.addEventListener("click", submitAsk);
 		editInput.addEventListener("input", () => fitTextarea(editInput));
 		editInput.addEventListener("keydown", (event) => {
 			if (event.key === "Escape") {
@@ -4074,7 +4176,7 @@ export function attachAiMode(options: {
 					turn.error = data.error || "Research not found.";
 					break;
 				}
-				const key = `${data.job.status}\0${data.job.progressNote || ""}`;
+				const key = `${data.job.status}\0${data.job.progressNote || ""}\0${(data.job.processNotes || []).join("|")}`;
 				if (key !== stallKey) {
 					stallKey = key;
 					stallSince = Date.now();
@@ -4447,7 +4549,11 @@ export function attachAiMode(options: {
 	async function ask(
 		question: string,
 		target: HTMLTextAreaElement | null,
-		options?: { replaceTurnIndex?: number; forceResearch?: boolean },
+		options?: {
+			replaceTurnIndex?: number;
+			forceResearch?: boolean;
+			forceAsk?: boolean;
+		},
 	): Promise<void> {
 		const q = question.replace(/\s+/g, " ").trim();
 		if (!q || busy) return;
@@ -4471,8 +4577,10 @@ export function attachAiMode(options: {
 			lastTurnResearch:
 				lastTurnIsResearch() || Boolean(replacingTurn?.research),
 			retryIncompleteResearch:
-				options?.forceResearch === true ||
-				Boolean(replacingTurn && isIncompleteResearchTurn(replacingTurn)),
+				options?.forceAsk !== true &&
+				(options?.forceResearch === true ||
+					Boolean(replacingTurn && isIncompleteResearchTurn(replacingTurn))),
+			forceAsk: options?.forceAsk === true,
 		});
 
 		// Follow-ups must always hit the model (diversity / refinement).
@@ -5192,7 +5300,9 @@ export function attachAiMode(options: {
 		thread.querySelectorAll<HTMLElement>("[data-ai-question]").forEach((wrap) => {
 			syncQuestionExpandState(wrap);
 		});
+		scheduleFollowDockFrost();
 	});
+	window.addEventListener("scroll", scheduleFollowDockFrost, { passive: true });
 
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);
@@ -5274,4 +5384,5 @@ export function attachAiMode(options: {
 			}
 		});
 	}
+	scheduleFollowDockFrost();
 }

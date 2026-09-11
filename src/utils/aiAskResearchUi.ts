@@ -82,6 +82,7 @@ export interface ResearchTurnFields {
 	verifyNote?: string;
 	onTrack?: boolean;
 	progressNote?: string;
+	processNotes?: string[];
 }
 
 /**
@@ -140,7 +141,9 @@ export function shouldUseResearchAsk(input: {
 	followUp: boolean;
 	lastTurnResearch: boolean;
 	retryIncompleteResearch?: boolean;
+	forceAsk?: boolean;
 }): boolean {
+	if (input.forceAsk) return false;
 	if (input.retryIncompleteResearch) return true;
 	return input.chipOn === true;
 }
@@ -160,6 +163,10 @@ export function isIncompleteResearchTurn(turn: {
 
 export function researchRetrySubmitLabel(research: boolean): string {
 	return research ? "Research again" : "Ask again";
+}
+
+export function researchEditAskInsteadLabel(): string {
+	return "Ask instead";
 }
 
 export function sameResearchRetryQuestion(
@@ -222,6 +229,7 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	turn.pending = job.pending;
 	turn.phase = job.phase;
 	turn.progressNote = job.progressNote || "";
+	turn.processNotes = job.processNotes || [];
 	if (typeof job.candidateCount === "number" && job.candidateCount > 0) {
 		turn.rerankCandidateCount = job.candidateCount;
 	}
@@ -347,6 +355,9 @@ export function researchJobToHistoryEntry(
 		}),
 		research: true,
 		researchJobId: job.id,
+		...(job.processNotes && job.processNotes.length > 0
+			? { processNotes: job.processNotes }
+			: {}),
 		...(job.pending ? { researchPending: true } : {}),
 		...(typeof job.candidateCount === "number" && job.candidateCount > 0
 			? { candidateCount: job.candidateCount }

@@ -145,6 +145,24 @@ describe("sanitizeAskHistoryEntry research", () => {
 		assert.equal(unread?.researchUnread, true);
 	});
 
+	it("round-trips research process hops", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				researchJobId: "job-hops",
+				processNotes: [
+					"Searching again · 3 of 3 queries",
+					"Reading MN 70 in full…",
+					"Searching · 2 of 8 queries",
+				],
+			}),
+		);
+		assert.deepEqual(clean?.processNotes, [
+			"Searching again · 3 of 3 queries",
+			"Reading MN 70 in full…",
+		]);
+	});
+
 	it("round-trips a research report", () => {
 		const clean = sanitizeAskHistoryEntry(
 			entry("survey feeling", 1, {

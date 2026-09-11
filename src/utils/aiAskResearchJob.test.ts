@@ -4,8 +4,10 @@ import {
 	isResearchJobRetryable,
 	isResearchJobTerminal,
 	parseResearchJobStatus,
+	rememberResearchProcessNote,
 	researchJobPhase,
 	researchJobRetryReusesCredit,
+	researchProcessHopLabels,
 	toResearchJobPublic,
 } from "./aiAskResearchJob";
 
@@ -98,6 +100,85 @@ describe("research job status machine", () => {
 		assert.equal(view.phase, "search");
 	});
 
+	it("exposes durable process hops on the public job", () => {
+		const view = toResearchJobPublic({
+			id: "job-7",
+			status: "complete",
+			question: "feeling?",
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in Pāli and English…",
+				"Reading MN 70 in full…",
+			],
+		});
+		assert.deepEqual(view.processNotes, [
+			"Searching again · 3 of 3 queries",
+			"Reading MN 70 in Pāli and English…",
+			"Reading MN 70 in full…",
+		]);
+	});
+});
+
+describe("rememberResearchProcessNote", () => {
+	it("skips first-pass search, crunch, and write notes", () => {
+		assert.deepEqual(
+			rememberResearchProcessNote([], "Searching · 2 of 8 queries"),
+			[],
+		);
+		assert.deepEqual(
+			rememberResearchProcessNote([], "Crunching 80 discourses…"),
+			[],
+		);
+		assert.deepEqual(
+			rememberResearchProcessNote([], "Writing the report…"),
+			[],
+		);
+		assert.deepEqual(
+			rememberResearchProcessNote([], "Reviewing the evidence…"),
+			[],
+		);
+	});
+
+	it("replaces the last search-again note and keeps distinct reads", () => {
+		let notes = rememberResearchProcessNote([], "Searching again…");
+		notes = rememberResearchProcessNote(notes, "Searching again · 1 of 3 queries");
+		notes = rememberResearchProcessNote(notes, "Searching again · 3 of 3 queries");
+		notes = rememberResearchProcessNote(notes, "Reading MN 70 in full…");
+		notes = rememberResearchProcessNote(
+			notes,
+			"Reading MN 70, SN 48.53 in Pāli and English…",
+		);
+		assert.deepEqual(notes, [
+			"Searching again · 3 of 3 queries",
+			"Reading MN 70 in full…",
+			"Reading MN 70, SN 48.53 in Pāli and English…",
+		]);
+	});
+
+	it("labels finished hops in the past tense", () => {
+		assert.deepEqual(
+			researchProcessHopLabels(
+				[
+					"Reviewing the evidence…",
+					"Searching again · 3 of 3 queries",
+					"Going deeper · 2 of 2 queries",
+					"Reading MN 70 in Pāli and English…",
+					"Reading MN 70 in full…",
+					"Reviewing the report…",
+				],
+				"Reading MN 70 in full…",
+			),
+			[
+				"Searched again · 3 of 3 queries",
+				"Going deeper · 2 of 2 queries",
+				"Read MN 70 in Pāli and English",
+				"Reviewed the report",
+			],
+		);
+	});
+});
+
+describe("research job public extras", () => {
 	it("exposes createdAt for history recency", () => {
 		const view = toResearchJobPublic({
 			id: "job-6",

@@ -66,6 +66,8 @@ export interface ResearchJobPublic {
 	result?: ResearchJobResult;
 	/** Live status line for the process strip (e.g. “Searching · 3 of 8”). */
 	progressNote?: string;
+	/** Durable hops (further searches, full reads) kept after the job finishes. */
+	processNotes?: string[];
 	/** When the reader started this research — history `at` should keep this. */
 	createdAt?: number;
 }
@@ -103,6 +105,125 @@ export function researchJobPhase(status: ResearchJobStatus): ResearchAskPhase {
 
 export function clipResearchJobId(value: string): string {
 	return value.replace(/\s+/g, "").trim().slice(0, RESEARCH_JOB_ID_MAX);
+}
+
+export const RESEARCH_PROCESS_NOTES_MAX = 10;
+export const RESEARCH_PROCESS_NOTE_CHARS = 160;
+
+function clipProcessNote(value: string): string {
+	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_PROCESS_NOTE_CHARS);
+}
+
+export function clipResearchProcessNotes(value: unknown): string[] {
+	if (!Array.isArray(value)) return [];
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const item of value) {
+		if (typeof item !== "string") continue;
+		const note = clipProcessNote(item);
+		if (!note) continue;
+		const family = researchProcessNoteFamily(note);
+		if (
+			family === "skip" ||
+			family === "write" ||
+			family === "start" ||
+			family === "review"
+		) {
+			continue;
+		}
+		const key = note.toLowerCase();
+		if (seen.has(key)) continue;
+		seen.add(key);
+		out.push(note);
+		if (out.length >= RESEARCH_PROCESS_NOTES_MAX) break;
+	}
+	return out;
+}
+
+export function researchProcessNoteFamily(note: string): string {
+	const n = clipProcessNote(note);
+	if (/^review(?:ing|ed) the evidence/i.test(n)) return "review";
+	if (/^review(?:ing|ed) the report/i.test(n)) return "review-report";
+	if (/^(?:searching again|searched again)/i.test(n)) return "search-again";
+	if (/^going deeper/i.test(n)) return "go-deeper";
+	if (/\bin pāli\b/i.test(n)) return "read-pali";
+	if (/^(?:reading|read)\b/i.test(n)) return "read-full";
+	if (/^(?:writing|wrote|rewriting) the report/i.test(n)) return "write";
+	if (/^starting/i.test(n)) return "start";
+	if (
+		/^(?:planning|opening the library|searching ·|crunching|understood|checking for gaps)/i.test(
+			n,
+		)
+	) {
+		return "skip";
+	}
+	return `note:${n.toLowerCase()}`;
+}
+
+export function rememberResearchProcessNote(
+	notes: readonly string[] | undefined,
+	note: string,
+): string[] {
+	const next = clipProcessNote(note);
+	const current = clipResearchProcessNotes(notes);
+	if (!next) return current;
+	const family = researchProcessNoteFamily(next);
+	if (
+		family === "skip" ||
+		family === "write" ||
+		family === "start" ||
+		family === "review"
+	) {
+		return current;
+	}
+	const last = current[current.length - 1];
+	if (
+		last &&
+		researchProcessNoteFamily(last) === family &&
+		(family === "search-again" ||
+			family === "go-deeper" ||
+			family === "review-report")
+	) {
+		return clipResearchProcessNotes([...current.slice(0, -1), next]);
+	}
+	return clipResearchProcessNotes([...current, next]);
+}
+
+/** Finished-strip label for a recorded hop. */
+export function formatResearchProcessHopLabel(note: string): string {
+	return clipProcessNote(note)
+		.replace(/^Reviewing the report/i, "Reviewed the report")
+		.replace(/^Searching again/i, "Searched again")
+		.replace(/^Reading\b/i, "Read")
+		.replace(/…$/, "")
+		.trim();
+}
+
+export function researchProcessHopLabels(
+	notes: readonly string[] = [],
+	hideNote?: string,
+): string[] {
+	const hideFamily = hideNote ? researchProcessNoteFamily(hideNote) : "";
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const note of notes) {
+		const family = researchProcessNoteFamily(note);
+		if (
+			family === "skip" ||
+			family === "write" ||
+			family === "start" ||
+			family === "review"
+		) {
+			continue;
+		}
+		if (hideFamily && family === hideFamily) continue;
+		const label = formatResearchProcessHopLabel(note);
+		const key = label.toLowerCase();
+		if (!label || seen.has(key)) continue;
+		seen.add(key);
+		out.push(label);
+	}
+	return out;
 }
 
 function clip(value: string, max: number): string {
@@ -246,6 +367,7 @@ export function toResearchJobPublic(input: {
 	emailSent?: boolean;
 	result?: unknown;
 	progressNote?: string;
+	processNotes?: readonly string[];
 	createdAt?: number;
 }): ResearchJobPublic {
 	const status = input.status;
@@ -270,6 +392,10 @@ export function toResearchJobPublic(input: {
 		...(input.progressNote
 			? { progressNote: clip(input.progressNote, 160) }
 			: {}),
+		...(() => {
+			const processNotes = clipResearchProcessNotes(input.processNotes);
+			return processNotes.length > 0 ? { processNotes } : {};
+		})(),
 		...(typeof input.candidateCount === "number" && input.candidateCount > 0
 			? { candidateCount: Math.floor(input.candidateCount) }
 			: result?.candidateCount

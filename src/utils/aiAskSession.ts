@@ -1,6 +1,7 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
+import { clipResearchProcessNotes } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
@@ -44,6 +45,8 @@ export interface AiAskSessionEntry {
 	researchPending?: boolean;
 	/** Finished research the reader has not opened yet. */
 	researchUnread?: boolean;
+	/** Durable research hops kept on the finished process strip. */
+	processNotes?: string[];
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -227,6 +230,10 @@ export function sanitizeAskHistoryEntry(
 			: {}),
 		...(record.researchPending === true ? { researchPending: true } : {}),
 		...(record.researchUnread === true ? { researchUnread: true } : {}),
+		...(() => {
+			const processNotes = clipResearchProcessNotes(record.processNotes);
+			return processNotes.length > 0 ? { processNotes } : {};
+		})(),
 	};
 }
 

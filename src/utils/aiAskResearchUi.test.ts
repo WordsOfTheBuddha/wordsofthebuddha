@@ -17,6 +17,7 @@ import {
 	wrapAskAnswerHtml,
 	researchVerifyStepText,
 	isIncompleteResearchTurn,
+	researchEditAskInsteadLabel,
 	researchRetrySubmitLabel,
 	sameResearchRetryQuestion,
 	shouldUseResearchAsk,
@@ -237,6 +238,16 @@ describe("shouldUseResearchAsk", () => {
 			}),
 			true,
 		);
+		assert.equal(
+			shouldUseResearchAsk({
+				chipOn: true,
+				followUp: true,
+				lastTurnResearch: true,
+				retryIncompleteResearch: true,
+				forceAsk: true,
+			}),
+			false,
+		);
 	});
 });
 
@@ -272,6 +283,7 @@ describe("research retry copy", () => {
 	it("names the same operation the reader already started", () => {
 		assert.equal(researchRetrySubmitLabel(true), "Research again");
 		assert.equal(researchRetrySubmitLabel(false), "Ask again");
+		assert.equal(researchEditAskInsteadLabel(), "Ask instead");
 		assert.equal(
 			sameResearchRetryQuestion("Who is a trainee?", {
 				question: "Who is a trainee?",
@@ -347,6 +359,35 @@ describe("applyResearchJobToTurn", () => {
 		assert.equal(turn.pending, true);
 		assert.equal("runToken" in turn, false);
 	});
+
+	it("copies process hops onto the turn", () => {
+		const job = toResearchJobPublic({
+			id: "job-hops",
+			status: "complete",
+			question: "feeling?",
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in full…",
+			],
+		});
+		const turn: ResearchTurnFields = {
+			question: "feeling?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: true,
+			phase: "rewrite",
+		};
+		applyResearchJobToTurn(turn, job);
+		assert.deepEqual(turn.processNotes, [
+			"Searching again · 3 of 3 queries",
+			"Reading MN 70 in full…",
+		]);
+	});
 });
 
 describe("researchJobToHistoryEntry", () => {
@@ -362,8 +403,26 @@ describe("researchJobToHistoryEntry", () => {
 		assert.equal(entry.researchJobId, "job-3");
 		assert.equal(entry.researchPending, true);
 		assert.equal(entry.question, "Who is a sekha?");
+		assert.equal(entry.processNotes, undefined);
 		assert.equal(entry.results.length, 0);
 		assert.equal(entry.at, 1_700_000_000_000);
+	});
+
+	it("keeps process hops on a finished research history entry", () => {
+		const job = toResearchJobPublic({
+			id: "job-hops",
+			status: "complete",
+			question: "Who is a sekha?",
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in full…",
+			],
+		});
+		const entry = researchJobToHistoryEntry(job);
+		assert.deepEqual(entry.processNotes, [
+			"Searching again · 3 of 3 queries",
+			"Reading MN 70 in full…",
+		]);
 	});
 
 	it("does not restamp when a later poll updates the same job", () => {

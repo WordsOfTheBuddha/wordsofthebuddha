@@ -41,6 +41,8 @@ import {
 	isResearchJobRetryable,
 	isResearchJobTerminal,
 	parseResearchJobStatus,
+	clipResearchProcessNotes,
+	rememberResearchProcessNote,
 	researchJobRetryReusesCredit,
 	sanitizeResearchJobResult,
 	toResearchJobPublic,
@@ -130,6 +132,7 @@ interface ResearchJobRecord {
 	result?: unknown;
 	requestId?: string;
 	progressNote?: string;
+	processNotes?: string[];
 	createdAt?: number;
 	/** Credit decision already made; do not re-evaluate later. */
 	quotaSettled?: boolean;
@@ -230,6 +233,7 @@ function recordFromData(
 		requestId: typeof data.requestId === "string" ? data.requestId : undefined,
 		progressNote:
 			typeof data.progressNote === "string" ? data.progressNote : undefined,
+		processNotes: clipResearchProcessNotes(data.processNotes),
 		createdAt: timestampMillis(data.createdAt),
 		quotaSettled: data.quotaSettled === true,
 		quotaRefunded: data.quotaRefunded === true,
@@ -298,11 +302,24 @@ async function writeJob(
 	) {
 		return existingMem;
 	}
-	const next = { ...record, ...patch };
+	const processNotes =
+		typeof patch.progressNote === "string"
+			? rememberResearchProcessNote(
+					patch.processNotes ?? record.processNotes,
+					patch.progressNote,
+				)
+			: patch.processNotes !== undefined
+				? patch.processNotes
+				: record.processNotes;
+	const merged: Partial<ResearchJobRecord> = {
+		...patch,
+		...(processNotes !== undefined ? { processNotes } : {}),
+	};
+	const next = { ...record, ...merged };
 	const stored: Record<string, unknown> = {
 		updatedAt: FieldValue.serverTimestamp(),
 	};
-	for (const [keyName, value] of Object.entries(patch)) {
+	for (const [keyName, value] of Object.entries(merged)) {
 		if (keyName === "id" || keyName === "uid") continue;
 		if (value === undefined) continue;
 		stored[keyName] = value;
@@ -374,6 +391,7 @@ export async function createResearchJob(options: {
 		cancelRequested: false,
 		requestId: newAiAskRequestId(),
 		progressNote: "Starting…",
+		processNotes: [],
 		createdAt: Date.now(),
 		...(options.clarifyBrief
 			? { clarifyBrief: options.clarifyBrief.slice(0, 1200) }
@@ -597,6 +615,7 @@ export async function retryResearchJob(options: {
 		continueGuidance: "",
 		continueReadFull: [],
 		continueReadPali: [],
+		processNotes: [],
 		result: null,
 		reasoning: "",
 		lookingFor: "",
@@ -2110,6 +2129,9 @@ async function persistHistory(
 				candidateCount: result.candidateCount,
 				research: true,
 				researchJobId: record.id,
+				...(record.processNotes && record.processNotes.length > 0
+					? { processNotes: record.processNotes }
+					: {}),
 			},
 		);
 	} catch (error) {
