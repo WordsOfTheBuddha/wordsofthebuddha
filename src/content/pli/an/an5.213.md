@@ -1,9 +1,9 @@
 ---
+title: Sīla sutta - Ethical Conduct
+description: The Buddha sets out five dangers for an unprincipled person who fails in ethical conduct—loss of wealth, a bad reputation, shyness in assemblies, a bewildered death, and rebirth in hell—and five corresponding benefits for a virtuous person who succeeds in ethical conduct.
+qualities: ethical conduct, unprincipled conduct, diligence, negligence
+theme: principle, wisdom
 slug: an5.213
-source: suttacentral/bilara-data
-title: Sīlasutta
-edition: ms
-granularity: paragraph
 ---
 
 “Pañcime, bhikkhave, ādīnavā dussīlassa sīlavipattiyā. Katame pañca?
@@ -29,5 +29,3 @@ Puna caparaṁ, bhikkhave, sīlavā sīlasampanno asammūḷho kālaṁ karoti. 
 Puna caparaṁ, bhikkhave, sīlavā sīlasampanno kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjati. Ayaṁ, bhikkhave, pañcamo ānisaṁso sīlavato sīlasampadāya.
 
 Ime kho, bhikkhave, pañca ānisaṁsā sīlavato sīlasampadāyā”ti.
-
-Tatiyaṁ.
