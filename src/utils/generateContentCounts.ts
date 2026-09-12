@@ -11,7 +11,7 @@ function main() {
 	try {
 		const __dirname = path.dirname(fileURLToPath(import.meta.url));
 		const scriptPath = path.join(__dirname, "addContentCounts.ts");
-		execSync(`npx tsx ${scriptPath}`, { stdio: "inherit" });
+		execSync(`tsx ${scriptPath}`, { stdio: "inherit" });
 	} catch (error) {
 		console.error("Error generating content counts:", error);
 		process.exit(1);
