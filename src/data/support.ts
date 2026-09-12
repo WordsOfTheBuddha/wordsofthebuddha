@@ -5,6 +5,20 @@ export type SupportArea = {
 	note: string;
 };
 
+export type SupportOtherWay = {
+	item: string;
+	note: string;
+	href?: string;
+};
+
+/** Causal sentence above the category list. No amounts. */
+export const supportAreasLede =
+	"Gifts go toward time for translating and recording, and toward keeping the site and tools freely available.";
+
+/** Sentence above the other-ways list, so the two columns can run in parallel. */
+export const supportOtherWaysLede =
+	"Help others find the translations and other ways to support the work.";
+
 /** What support goes toward. No amounts — categories only. Edit as the work changes. */
 export const supportAreas: SupportArea[] = [
 	{
@@ -13,15 +27,32 @@ export const supportAreas: SupportArea[] = [
 	},
 	{
 		item: "Audio",
-		note: "Recording and preparing narration for listen mode",
+		note: "Preparing narration and audio hosting for listen mode",
 	},
 	{
 		item: "Study tools",
-		note: "Pāli lookup, Ask, search, highlights, and exports",
+		note: "Pāli lookup, Ask, research reports, learning stats, and more",
 	},
 	{
 		item: "Hosting and development",
 		note: "Keeping the site running, fast, and available offline",
+	},
+];
+
+/** Non-financial ways to help. Named actions; no fundraising tone. */
+export const supportOtherWays: SupportOtherWay[] = [
+	{
+		item: "Share a discourse",
+		note: "If a teaching was useful, passing it on is enough",
+	},
+	{
+		item: "Point someone here",
+		note: "The translations are public domain; a link helps others find them",
+	},
+	{
+		item: "Write to us",
+		note: "Have a bright idea or feedback? Write to us.",
+		href: "mailto:hello@wordsofthebuddha.org",
 	},
 ];
 

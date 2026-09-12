@@ -222,3 +222,36 @@ export function recentSummary(count: number, filters: RecentFilters): string {
 	}
 	return `${count} newly added ${collectionChipLabel(filters.collection)} ${noun}`;
 }
+
+/** Support reach block: same window as `/recent?range=30d`. */
+export const SUPPORT_RECENT_HREF = "/recent?range=30d";
+export const SUPPORT_RECENT_FILTERS: RecentFilters = {
+	range: "30d",
+	collection: "all",
+};
+
+export type SupportRecentWork = {
+	href: string;
+	count: number;
+	value: string;
+	label: string;
+};
+
+/** Count of newly added discourses in the last 30 days, for the Support reach row. */
+export function supportRecentWork(
+	items: RecentDiscourseItem[],
+	now: Date = new Date(),
+): SupportRecentWork {
+	const count = filterRecentDiscourses(
+		items,
+		SUPPORT_RECENT_FILTERS,
+		now,
+	).length;
+	const formatted = new Intl.NumberFormat("en-US").format(count);
+	return {
+		href: SUPPORT_RECENT_HREF,
+		count,
+		value: count > 0 ? `+${formatted}` : formatted,
+		label: count === 1 ? "discourse added" : "discourses added",
+	};
+}

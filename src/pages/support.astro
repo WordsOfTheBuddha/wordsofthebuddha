@@ -3,9 +3,16 @@ export const prerender = true;
 
 import Layout from "../layouts/Layout.astro";
 import DonateWidget from "../components/DonateWidget.astro";
-import { supportAreas } from "../data/support";
+import {
+	supportAreas,
+	supportAreasLede,
+	supportOtherWays,
+	supportOtherWaysLede,
+} from "../data/support";
 import { getSupportImpact } from "../data/analytics";
 import { thanksPeople, thanksPlaces } from "../data/thanks";
+import { loadRecentlyAddedFeed } from "../utils/loadRecentlyAddedFeed";
+import { supportRecentWork } from "../utils/recentDiscourses";
 import { transformId } from "../utils/transformId";
 
 const FALLBACK_GIFT_EXCERPT =
@@ -15,6 +22,11 @@ const giftHref = "/an5.148";
 const giftId = transformId("an5.148");
 const giftExcerpt = FALLBACK_GIFT_EXCERPT;
 const supportImpact = await getSupportImpact();
+const recentWork = supportRecentWork(await loadRecentlyAddedFeed());
+const impactLabel = [
+	supportImpact.dateLine ? `Reach, ${supportImpact.dateLine}` : "Reach",
+	`${recentWork.value} ${recentWork.label}`,
+].join(". ");
 ---
 
 <Layout
@@ -39,23 +51,31 @@ const supportImpact = await getSupportImpact();
 
 				<DonateWidget />
 			</div>
+		</section>
 
-			<div class="support-areas not-prose mt-10" aria-labelledby="support-areas-heading">
+		<div class="support-paths">
+			<section
+				class="support-areas not-prose"
+				aria-labelledby="support-areas-heading"
+			>
 				<h2
 					id="support-areas-heading"
 					class="mt-0 mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100"
 				>
 					Where support goes
 				</h2>
-				<div class="support-areas-list flex w-full flex-col border-b border-[var(--surface-border)]">
+				<p class="support-path-lede">
+					{supportAreasLede}
+				</p>
+				<div class="support-lined-list flex w-full flex-col border-b border-[var(--surface-border)]">
 					{
 						supportAreas.map((row) => (
-							<div class="support-areas-row w-full border-t border-[var(--surface-border)] py-2.5">
-								<div class="support-areas-item font-medium leading-snug">
+							<div class="support-lined-row w-full border-t border-[var(--surface-border)] py-2.5">
+								<div class="support-lined-item font-medium leading-snug">
 									{row.item}
 								</div>
 								{row.note && (
-									<div class="support-areas-note mt-0.5 text-sm leading-snug">
+									<div class="support-lined-note mt-0.5 text-sm leading-snug">
 										{row.note}
 									</div>
 								)}
@@ -63,14 +83,47 @@ const supportImpact = await getSupportImpact();
 						))
 					}
 				</div>
-			</div>
-		</section>
+			</section>
+
+			<section
+				class="support-other not-prose"
+				aria-labelledby="support-other-heading"
+			>
+				<h2
+					id="support-other-heading"
+					class="mt-0 mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100"
+				>
+					Other ways to support
+				</h2>
+				<p class="support-path-lede">
+					{supportOtherWaysLede}
+				</p>
+				<div class="support-lined-list flex w-full flex-col border-b border-[var(--surface-border)]">
+					{
+						supportOtherWays.map((row) => (
+							<div class="support-lined-row w-full border-t border-[var(--surface-border)] py-2.5">
+								<div class="support-lined-item font-medium leading-snug">
+									{row.href ? (
+										<a href={row.href}>{row.item}</a>
+									) : (
+										row.item
+									)}
+								</div>
+								{row.note && (
+									<div class="support-lined-note mt-0.5 text-sm leading-snug">
+										{row.note}
+									</div>
+								)}
+							</div>
+						))
+					}
+				</div>
+			</section>
+		</div>
 
 		<section
 			class="support-impact not-prose mt-10"
-			aria-label={supportImpact.dateLine
-				? `Reach, ${supportImpact.dateLine}`
-				: "Reach"}
+			aria-label={impactLabel}
 		>
 			{
 				supportImpact.dateLine && (
@@ -78,8 +131,22 @@ const supportImpact = await getSupportImpact();
 				)
 			}
 			{
-				supportImpact.stats.length > 0 && (
-					<ul class="support-impact-stats grid grid-cols-2">
+				(supportImpact.stats.length > 0 || recentWork) && (
+					<ul
+						class:list={[
+							"support-impact-stats",
+							supportImpact.stats.length > 0 && "support-impact-stats--reach",
+						]}
+					>
+						<li class="support-impact-stat support-impact-recent">
+							<a
+								href={recentWork.href}
+								class="support-impact-recent-link"
+							>
+								<span class="support-impact-value">{recentWork.value}</span>
+								<span class="support-impact-label">{recentWork.label}</span>
+							</a>
+						</li>
 						{supportImpact.stats.map((stat) => (
 							<li class="support-impact-stat">
 								<span class="support-impact-value">{stat.value}</span>
@@ -94,24 +161,6 @@ const supportImpact = await getSupportImpact();
 					<p class="support-impact-note">{supportImpact.note}</p>
 				)
 			}
-		</section>
-
-		<section
-			class="support-other not-prose mt-14"
-			aria-labelledby="support-other-heading"
-		>
-			<h2
-				id="support-other-heading"
-				class="mt-0 mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100"
-			>
-				Other ways to support
-			</h2>
-			<p class="support-other-lede m-0 text-[1.05rem] font-normal leading-relaxed">
-				If you have any bright idea to improve Words of the Buddha, or would like to support with your time, expertise, or resources in any way, large or small,{" "}
-				<a href="mailto:hello@wordsofthebuddha.org">
-					write to us by email
-				</a>.
-			</p>
 		</section>
 
 		<section class="support-quiet not-prose mt-14" aria-labelledby="support-thanks">
@@ -200,11 +249,47 @@ const supportImpact = await getSupportImpact();
 	}
 
 	.support-page.not-prose .support-intro,
-	.support-page.not-prose .support-other-lede {
+	.support-page.not-prose .support-path-lede {
 		font-size: 1.05rem;
 		font-weight: 400;
 		line-height: 1.625;
 		color: var(--text-color);
+	}
+
+	.support-page.not-prose .support-path-lede {
+		margin: 0 0 0.75rem;
+	}
+
+	.support-page.not-prose .support-paths {
+		display: grid;
+		gap: 2.5rem;
+		margin-top: 2.5rem;
+		min-width: 0;
+	}
+
+	@media (min-width: 768px) {
+		.support-page.not-prose .support-paths {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			grid-template-rows: auto auto auto;
+			column-gap: 2.5rem;
+			row-gap: 0;
+			align-items: start;
+		}
+
+		.support-page.not-prose .support-paths > section {
+			display: grid;
+			grid-template-rows: subgrid;
+			grid-row: span 3;
+			min-width: 0;
+		}
+
+		.support-page.not-prose .support-paths h2 {
+			margin-bottom: 0.5rem;
+		}
+
+		.support-page.not-prose .support-path-lede {
+			margin-bottom: 0.75rem;
+		}
 	}
 
 	.support-page.not-prose .support-impact-dates {
@@ -219,20 +304,33 @@ const supportImpact = await getSupportImpact();
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		column-gap: 1.5rem;
-		row-gap: 0.85rem;
+		display: grid;
+		grid-template-columns: max-content max-content;
+		justify-content: start;
+		align-items: baseline;
+		column-gap: 0.55em;
+		row-gap: 0.5rem;
 	}
 
 	.support-page.not-prose .support-impact-stat {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
 		align-items: baseline;
-		gap: 0.15em 0.45em;
 		margin: 0;
-		min-width: 0;
+	}
+
+	.support-page.not-prose .support-impact-recent-link {
+		display: grid;
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
+		align-items: baseline;
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.support-page.not-prose .support-impact-value {
+		text-align: end;
 		font-size: 1.2rem;
 		font-weight: 600;
 		line-height: 1.3;
@@ -245,7 +343,35 @@ const supportImpact = await getSupportImpact();
 		font-weight: 400;
 		line-height: 1.4;
 		color: var(--text-muted);
-		min-width: 0;
+		white-space: nowrap;
+	}
+
+	@media (min-width: 768px) {
+		.support-page.not-prose .support-impact-stats--reach {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			column-gap: 1.5rem;
+			row-gap: 0.85rem;
+		}
+
+		.support-page.not-prose .support-impact-stat,
+		.support-page.not-prose .support-impact-recent-link {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.15em 0.45em;
+			grid-column: auto;
+		}
+
+		.support-page.not-prose .support-impact-value {
+			text-align: start;
+		}
+	}
+
+	.support-page.not-prose .support-impact-recent-link .support-impact-label {
+		color: var(--link-color);
+	}
+
+	.support-page.not-prose .support-impact-recent-link:hover .support-impact-label {
+		text-decoration: underline;
 	}
 
 	.support-page.not-prose .support-impact-note {
@@ -267,11 +393,11 @@ const supportImpact = await getSupportImpact();
 		color: inherit;
 	}
 
-	.support-page.not-prose .support-areas-item {
+	.support-page.not-prose .support-lined-item {
 		font-weight: 500;
 	}
 
-	.support-page.not-prose .support-areas-note {
+	.support-page.not-prose .support-lined-note {
 		font-size: 0.875rem;
 		font-weight: 400;
 		color: var(--text-muted);

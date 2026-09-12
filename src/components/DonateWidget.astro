@@ -49,15 +49,20 @@ const monthlyHref =
 	{
 		isSandbox && (
 			<p class="donate-note">
-				Sandbox checkout — Polar will not process a live payment. You
-				will be taken to Polar to complete the gift.
+				Sandbox checkout — Polar will not process a live payment.
 			</p>
 		)
 	}
 	{
-		!isSandbox && polarConfigured && (
+		polarConfigured && (
 			<p class="donate-note">
-				You will be taken to Polar to complete the gift.
+				You will complete the gift on Polar.
+				{monthlyHref ? (
+					<>
+						{" "}
+						A monthly gift can be stopped anytime — the link is in their emails.
+					</>
+				) : null}
 			</p>
 		)
 	}
@@ -132,4 +137,5 @@ const monthlyHref =
 		line-height: 1.5;
 		color: var(--text-muted);
 	}
+
 </style>

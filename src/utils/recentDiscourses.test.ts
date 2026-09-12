@@ -12,6 +12,7 @@ import {
 	recentSummary,
 	serializeDiscourseAdditions,
 	slugFromEnglishPath,
+	supportRecentWork,
 	type DiscourseMeta,
 } from "./recentDiscourses";
 
@@ -268,5 +269,38 @@ describe("recentSummary", () => {
 			}),
 			"1 newly added SN discourse",
 		);
+	});
+});
+
+describe("supportRecentWork", () => {
+	it("counts 30-day additions and points at the recent 30d feed", () => {
+		const items = buildAddedItems(
+			[meta({ slug: "sn1.1" }), meta({ slug: "mn1" }), meta({ slug: "an1.1" })],
+			{
+				"sn1.1": "2026-08-20T00:00:00.000Z",
+				mn1: "2026-07-01T00:00:00.000Z",
+				"an1.1": "2026-08-31T00:00:00.000Z",
+			},
+		);
+		assert.deepEqual(supportRecentWork(items, now), {
+			href: "/recent?range=30d",
+			count: 2,
+			value: "+2",
+			label: "discourses added",
+		});
+	});
+
+	it("uses a singular label for one addition", () => {
+		const items = buildAddedItems(
+			[meta({ slug: "ud1.1" })],
+			{ "ud1.1": "2026-08-20T00:00:00.000Z" },
+		);
+		const work = supportRecentWork(items, now);
+		assert.equal(work.value, "+1");
+		assert.equal(work.label, "discourse added");
+	});
+
+	it("does not prefix zero", () => {
+		assert.equal(supportRecentWork([], now).value, "0");
 	});
 });
