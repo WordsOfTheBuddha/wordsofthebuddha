@@ -50,14 +50,15 @@ function uniqueSlugs(raw: unknown): string[] {
 export function sanitizeAskExportSharePath(raw: unknown): string | undefined {
 	if (typeof raw !== "string") return undefined;
 	const path = raw.trim();
-	const share = path.match(/^\/ask\/([a-z0-9-]+)$/i);
+	const share = path.match(/^\/(ask|research)\/([a-z0-9-]+)$/i);
 	if (share) {
-		const slug = share[1] ?? "";
+		const prefix = (share[1] ?? "ask").toLowerCase();
+		const slug = share[2] ?? "";
 		if (
 			slug.length >= ASK_SHARE_SLUG_MIN &&
 			slug.length <= ASK_SHARE_SLUG_MAX
 		) {
-			return `/ask/${slug.toLowerCase()}`;
+			return `/${prefix}/${slug.toLowerCase()}`;
 		}
 		return undefined;
 	}

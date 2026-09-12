@@ -44,17 +44,28 @@ if ((originalId || "").replace(/\/+$/, "") === "research") {
 	return Astro.redirect(`/search?${params.toString()}`);
 }
 
-// /ask/:slug and /shared-ask/:slug are dedicated routes (middleware rewrites the
-// public URL). Never soft-404 them into discourse search.
+// /ask/:slug, /research/:slug, and /shared-ask/:slug are dedicated routes
+// (middleware rewrites the public URL). Never soft-404 them into discourse search.
 if (
 	originalId?.startsWith("ask/") ||
-	originalId?.startsWith("shared-ask/")
+	originalId?.startsWith("shared-ask/") ||
+	originalId?.startsWith("research/")
 ) {
-	const raw = originalId.replace(/^(?:shared-)?ask\//, "").replace(/\/+$/, "");
+	const raw = originalId
+		.replace(/^(?:shared-ask|ask|research)\//, "")
+		.replace(/\/+$/, "");
 	if (raw && !raw.includes("/")) {
-		return Astro.rewrite(`/shared-ask/${raw}`);
+		const from = originalId.startsWith("research/") ? "research" : "ask";
+		const target = new URL(`/shared-ask/${raw}`, Astro.url);
+		target.search = Astro.url.search;
+		target.searchParams.set("shareFrom", from);
+		return Astro.rewrite(target.pathname + target.search);
 	}
-	return Astro.redirect("/search?mode=ask");
+	return Astro.redirect(
+		originalId.startsWith("research/")
+			? "/search?mode=research"
+			: "/search?mode=ask",
+	);
 }
 
 // /listen/:slug is a dedicated route. Prerendered listen pages only exist for

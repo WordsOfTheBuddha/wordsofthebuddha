@@ -75,8 +75,10 @@ export function shouldRefundResearchCredit(input: {
 	status: string;
 	createdAt?: number;
 	now?: number;
+	resultCount?: number;
 }): boolean {
 	if (input.status === "failed") return true;
+	if (input.status === "complete" && input.resultCount === 0) return true;
 	if (input.status !== "cancelled") return false;
 	const createdAt = input.createdAt || 0;
 	if (createdAt <= 0) return true;

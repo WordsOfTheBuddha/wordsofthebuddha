@@ -74,6 +74,24 @@ describe("research quota", () => {
 			false,
 		);
 		assert.equal(
+			shouldRefundResearchCredit({
+				status: "complete",
+				resultCount: 0,
+				createdAt: t0,
+				now: t0,
+			}),
+			true,
+		);
+		assert.equal(
+			shouldRefundResearchCredit({
+				status: "complete",
+				resultCount: 12,
+				createdAt: t0,
+				now: t0,
+			}),
+			false,
+		);
+		assert.equal(
 			shouldRefundResearchCredit({ status: "cancelled", now: t0 }),
 			true,
 		);

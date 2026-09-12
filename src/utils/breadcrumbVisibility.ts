@@ -40,8 +40,12 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 export function hideBreadcrumbsForPath(path: string): boolean {
 	const normalized = normalizePathForBreadcrumbs(path);
 	if (HIDE_BREADCRUMBS_PATHS.has(normalized)) return true;
-	// Shared Ask pages: /ask/:slug and internal /shared-ask/:slug
-	if (normalized.startsWith("/ask/") || normalized.startsWith("/shared-ask/")) {
+	// Shared Ask / Research pages: /ask/:slug, /research/:slug, /shared-ask/:slug
+	if (
+		normalized.startsWith("/ask/") ||
+		normalized.startsWith("/research/") ||
+		normalized.startsWith("/shared-ask/")
+	) {
 		return true;
 	}
 	return false;

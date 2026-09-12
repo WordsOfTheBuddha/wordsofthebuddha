@@ -218,6 +218,7 @@ describe("topicalFallbackQueries", () => {
 		const terms = topicalFallbackQueries(
 			"I would like an enumeration of other mindfulness kinds and techniques",
 		);
+		assert.ok(terms.some((term) => /mindfulness/i.test(term)));
 		assert.ok(terms.some((term) => /satipa/i.test(term)));
 	});
 });

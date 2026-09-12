@@ -363,7 +363,7 @@ const THEME_CLUSTER_SEEDS: readonly { match: RegExp; seeds: readonly string[] }[
 	[
 		{
 			match: /\bmindfulness\b|\bsati\b|\bsatipa/i,
-			seeds: ["satipaṭṭhāna", "ānāpānasati", "sati"],
+			seeds: ["mindfulness", "satipaṭṭhāna", "ānāpānasati"],
 		},
 	];
 

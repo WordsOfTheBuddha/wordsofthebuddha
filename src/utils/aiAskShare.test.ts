@@ -4,6 +4,7 @@ import {
 	ASK_SHARE_SLUG_MAX,
 	askShareIsSameSnapshot,
 	askSharePath,
+	askSharePageRedirect,
 	askShareSeo,
 	askShareSlugCandidate,
 	askShareSlugCollisionCandidates,
@@ -341,6 +342,10 @@ describe("sanitizeAskShareSnapshot", () => {
 		assert.ok(snap);
 		assert.equal(snap?.slug, "mindfulness-of-the-body");
 		assert.equal(askSharePath(snap!.slug), "/ask/mindfulness-of-the-body");
+		assert.equal(
+			askSharePath(snap!.slug, { research: true }),
+			"/research/mindfulness-of-the-body",
+		);
 	});
 
 	it("accepts a date collision suffix on the public slug", () => {
@@ -485,5 +490,41 @@ describe("sanitizeAskShareSnapshot", () => {
 		const seo = askShareSeo(snap!);
 		assert.match(seo.title, /Research Report/);
 		assert.match(seo.description, /trainee/i);
+	});
+});
+
+describe("askSharePageRedirect", () => {
+	it("sends missing research shares to Research mode", () => {
+		assert.equal(
+			askSharePageRedirect("/research/yonisomanasikara", null),
+			"/search?mode=research",
+		);
+		assert.equal(
+			askSharePageRedirect("/ask/missing-share", null),
+			"/search?mode=ask",
+		);
+	});
+
+	it("moves a research snapshot off the Ask prefix", () => {
+		assert.equal(
+			askSharePageRedirect("/ask/yonisomanasikara", {
+				slug: "yonisomanasikara",
+				research: true,
+			}),
+			"/research/yonisomanasikara",
+		);
+		assert.equal(
+			askSharePageRedirect("/research/yonisomanasikara", {
+				slug: "yonisomanasikara",
+				research: true,
+			}),
+			null,
+		);
+		assert.equal(
+			askSharePageRedirect("/research/an-ask-share", {
+				slug: "an-ask-share",
+			}),
+			"/ask/an-ask-share",
+		);
 	});
 });

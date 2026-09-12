@@ -64,5 +64,5 @@ export function researchHistoryStatusLabel(entry: {
 	if (!entry.research) return "";
 	if (entry.researchPending) return "Researching…";
 	if (entry.researchUnread) return "Research ready";
-	return "Research";
+	return "";
 }

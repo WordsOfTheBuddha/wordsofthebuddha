@@ -221,4 +221,32 @@ describe("research job public extras", () => {
 		assert.match(view.result?.results[0]?.description || "", /Nigaṇṭhas/);
 		assert.equal("draftResult" in view, false);
 	});
+
+	it("keeps a Research-sized hit list, not Ask’s survey 55", () => {
+		const hits = Array.from({ length: 80 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+			title: `Discourse ${index + 1}`,
+			description: "body",
+			contentSnippet: null,
+			referenceOnly: false,
+			href: `/mn${index + 1}`,
+		}));
+		const view = toResearchJobPublic({
+			id: "job-wide",
+			status: "complete",
+			question: "mindfulness?",
+			result: {
+				question: "mindfulness?",
+				lookingFor: "satipaṭṭhāna",
+				queries: ["satipaṭṭhāna"],
+				fallbackQueries: [],
+				offTopic: false,
+				results: hits,
+				model: "glm",
+				reasoning: "",
+				report: "## Report\n",
+			},
+		});
+		assert.equal(view.result?.results.length, 80);
+	});
 });

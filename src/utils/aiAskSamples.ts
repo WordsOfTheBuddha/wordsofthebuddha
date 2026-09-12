@@ -1,4 +1,9 @@
-import { normalizeAskQuestionKey } from "./aiAskSession";
+import { clipResearchProcessNotes } from "./aiAskResearchJob";
+import {
+	AI_ASK_SESSION_LIMIT,
+	normalizeAskQuestionKey,
+	type AiAskSessionEntry,
+} from "./aiAskSession";
 import {
 	sanitizeAskShareTurn,
 	type AiAskShareTurn,
@@ -12,6 +17,13 @@ export const ASK_SAMPLE_NOTE =
 export const RESEARCH_SAMPLE_NOTE =
 	"This is an illustration from a prior research run. It does not use your Research credits.";
 export const RESEARCH_SAMPLE_KICKER = "Illustration — not your run";
+export const ASK_SAMPLE_MENU_LABEL = "Sample";
+export const ASK_SAMPLE_HIDE_TITLE = "Hide this sample from your list?";
+export const ASK_SAMPLE_HIDE_CONFIRM =
+	"It stays available for others.";
+/** Samples fill Recent until the reader has this many of their own in the lane. */
+export const ASK_SAMPLE_SHOW_UNTIL_OWN = 17;
+export const HIDDEN_ASK_SAMPLES_KEY = "ai-ask-hidden-samples-v1";
 
 export type AskSamplePlaybackPhase = "rewrite" | "search" | "rerank" | "done";
 
@@ -73,6 +85,7 @@ export interface AiAskSamplePublic extends AiAskShareTurn {
 	slug: string;
 	questionKey: string;
 	updatedAt: number;
+	processNotes?: string[];
 }
 
 export function deriveAskSampleSlug(question: string): string {
@@ -129,7 +142,7 @@ export function findAskSample(
 	);
 }
 
-/** Chip click hydrates a stored sample. Ask chips ignore research samples. */
+/** Hydrate a stored sample for this lane. Ask ignores research samples. */
 export function findAskSampleForExample(
 	samples: readonly AiAskSamplePublic[],
 	question: string,
@@ -177,11 +190,13 @@ export function sanitizeAskSamplePublic(raw: unknown): AiAskSamplePublic | null 
 		typeof record.updatedAt === "number" && Number.isFinite(record.updatedAt)
 			? Math.max(0, Math.round(record.updatedAt))
 			: Date.now();
+	const processNotes = clipResearchProcessNotes(record.processNotes);
 	return {
 		...turn,
 		slug,
 		questionKey,
 		updatedAt,
+		...(processNotes.length > 0 ? { processNotes } : {}),
 	};
 }
 
@@ -238,6 +253,101 @@ export function researchAskSamples(
 	samples: readonly AiAskSamplePublic[],
 ): AiAskSamplePublic[] {
 	return samples.filter((sample) => isResearchAskSample(sample) && sample.question);
+}
+
+export function askPaneSamples(
+	samples: readonly AiAskSamplePublic[],
+): AiAskSamplePublic[] {
+	return samples.filter((sample) => !isResearchAskSample(sample) && sample.question);
+}
+
+export function askSampleHideKey(
+	sample: Pick<AiAskSamplePublic, "questionKey">,
+	research: boolean,
+): string {
+	return `${research ? "r" : "a"}:${sample.questionKey}`;
+}
+
+export function readHiddenAskSampleKeys(
+	storage?: Pick<Storage, "getItem"> | null,
+): Set<string> {
+	try {
+		const raw = storage?.getItem(HIDDEN_ASK_SAMPLES_KEY);
+		if (!raw) return new Set();
+		const parsed = JSON.parse(raw) as unknown;
+		if (!Array.isArray(parsed)) return new Set();
+		return new Set(
+			parsed.filter(
+				(item): item is string =>
+					typeof item === "string" && Boolean(item.trim()),
+			),
+		);
+	} catch {
+		return new Set();
+	}
+}
+
+export function hideAskSampleKey(
+	key: string,
+	storage?: Pick<Storage, "getItem" | "setItem"> | null,
+): Set<string> {
+	const next = readHiddenAskSampleKeys(storage);
+	const trimmed = key.replace(/\s+/g, " ").trim();
+	if (trimmed) next.add(trimmed);
+	try {
+		storage?.setItem(HIDDEN_ASK_SAMPLES_KEY, JSON.stringify([...next]));
+	} catch {
+		/* ignore quota / private mode */
+	}
+	return next;
+}
+
+export function visibleHistorySamples(input: {
+	samples: readonly AiAskSamplePublic[];
+	research: boolean;
+	ownCount: number;
+	ownQuestionKeys: ReadonlySet<string>;
+	hiddenKeys?: ReadonlySet<string>;
+}): AiAskSamplePublic[] {
+	if (input.ownCount > ASK_SAMPLE_SHOW_UNTIL_OWN) return [];
+	const slots = Math.max(0, AI_ASK_SESSION_LIMIT - input.ownCount);
+	const lane = input.research
+		? researchAskSamples(input.samples)
+		: askPaneSamples(input.samples);
+	const hidden = input.hiddenKeys || new Set<string>();
+	return lane
+		.filter((sample) => {
+			if (input.ownQuestionKeys.has(sample.questionKey)) return false;
+			if (hidden.has(askSampleHideKey(sample, input.research))) return false;
+			return true;
+		})
+		.slice(0, slots);
+}
+
+export function sampleToHistoryEntry(
+	sample: AiAskSamplePublic,
+): AiAskSessionEntry {
+	return {
+		question: sample.question,
+		lookingFor: sample.lookingFor,
+		queries: sample.queries,
+		fallbackQueries: sample.fallbackQueries,
+		offTopic: false,
+		results: sample.results,
+		model: sample.model,
+		reasoning: "",
+		summary: sample.summary,
+		at: sample.updatedAt,
+		...(sample.requestId ? { requestId: sample.requestId } : {}),
+		...(typeof sample.candidateCount === "number" && sample.candidateCount > 0
+			? { candidateCount: sample.candidateCount }
+			: {}),
+		...(isResearchAskSample(sample) ? { research: true } : {}),
+		...(sample.report ? { report: sample.report } : {}),
+		...(sample.processNotes && sample.processNotes.length > 0
+			? { processNotes: sample.processNotes }
+			: {}),
+	};
 }
 
 export function sampleToShareTurn(sample: AiAskSamplePublic): AiAskShareTurn {

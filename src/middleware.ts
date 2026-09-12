@@ -140,17 +140,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		}
 	}
 
-	// Public share URLs are /ask/:slug. The root [...id] catch-all steals nested
-	// paths and drops Vite CSS, so rewrite to a dedicated SSR segment.
-	if (pathname.startsWith("/ask/")) {
-		const slug = pathname.slice("/ask/".length).replace(/\/+$/, "");
+	// Public share URLs are /ask/:slug and /research/:slug. The root [...id]
+	// catch-all steals nested paths and drops Vite CSS, so rewrite to a
+	// dedicated SSR segment. Bare /research is redirected above.
+	if (pathname.startsWith("/ask/") || pathname.startsWith("/research/")) {
+		const prefix = pathname.startsWith("/research/") ? "/research/" : "/ask/";
+		const slug = pathname.slice(prefix.length).replace(/\/+$/, "");
 		if (slug && !slug.includes("/")) {
-			return withNoindexIfNeeded(
-				context.url,
-				await context.rewrite(
-					rewriteURL(`/shared-ask/${slug}`, context.url),
-				),
+			const target = rewriteURL(`/shared-ask/${slug}`, context.url);
+			target.searchParams.set(
+				"shareFrom",
+				prefix === "/research/" ? "research" : "ask",
 			);
+			(
+				context.locals as { wotbSharePublicPath?: string }
+			).wotbSharePublicPath = pathname;
+			return withNoindexIfNeeded(context.url, await context.rewrite(target));
 		}
 	}
 

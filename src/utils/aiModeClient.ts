@@ -40,6 +40,8 @@ import {
 	ASK_OPTIONS_ARIA,
 	ASK_PIN_ACCOUNT_BODY,
 	ASK_PIN_ACCOUNT_TITLE,
+	ASK_SHARE_ACCOUNT_BODY,
+	ASK_SHARE_ACCOUNT_TITLE,
 	ASK_NEW_LABEL,
 	applyResearchJobToTurn,
 	askComposerMeterIsResearch,
@@ -64,6 +66,8 @@ import {
 	RESEARCH_PLACEHOLDER,
 	RESEARCH_SIGNIN_BODY,
 	RESEARCH_SIGNIN_TITLE,
+	RESEARCH_SHARE_ACCOUNT_BODY,
+	RESEARCH_SHARE_ACCOUNT_TITLE,
 	RESEARCH_UNPIN_ACTION,
 	RESEARCH_NEW_LABEL,
 	isIncompleteResearchTurn,
@@ -88,19 +92,25 @@ import {
 	type AiAskShareTurn,
 } from "./aiAskShare";
 import {
+	ASK_SAMPLE_HIDE_CONFIRM,
+	ASK_SAMPLE_HIDE_TITLE,
+	ASK_SAMPLE_MENU_LABEL,
 	ASK_SAMPLE_NOTE,
 	ASK_SAMPLE_PLAYBACK,
 	askSampleConfirmMessage,
+	askSampleHideKey,
 	askSamplePlaybackPatch,
 	canMarkAskAsSample,
-	findAskSample,
 	findAskSampleForExample,
-	researchAskSamples,
+	hideAskSampleKey,
+	readHiddenAskSampleKeys,
 	RESEARCH_SAMPLE_KICKER,
 	RESEARCH_SAMPLE_NOTE,
+	sampleToHistoryEntry,
 	sanitizeAskSamplePublic,
 	sampleToShareTurn,
 	upsertAskSampleLocal,
+	visibleHistorySamples,
 	type AiAskSamplePublic,
 	type AskSamplePlaybackPhase,
 } from "./aiAskSamples";
@@ -1222,7 +1232,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		summary: entry.summary || "",
 		report: entry.report || "",
 		shareSlug: entry.shareSlug,
-		sharePath: entry.shareSlug ? askSharePath(entry.shareSlug) : undefined,
+		sharePath: entry.shareSlug
+			? askSharePath(entry.shareSlug, { research: entry.research === true })
+			: undefined,
 		pending: entry.researchPending === true,
 		phase: entry.researchPending === true ? "search" : "done",
 		...(typeof entry.candidateCount === "number" && entry.candidateCount > 0
@@ -1262,7 +1274,9 @@ function shareTurnToAiAskTurn(
 		reasoning: turn.reasoning || "",
 		summary: turn.summary,
 		shareSlug: share.slug,
-		sharePath: askSharePath(share.slug),
+		sharePath: askSharePath(share.slug, {
+			research: share.research === true || turn.research === true,
+		}),
 		fromShare: true,
 		fromSample: false,
 		pending: false,
@@ -1296,6 +1310,9 @@ function sampleToAiAskTurn(sample: AiAskSamplePublic): AiAskTurn {
 	turn.fromSample = true;
 	turn.shareSlug = undefined;
 	turn.sharePath = undefined;
+	if (sample.processNotes && sample.processNotes.length > 0) {
+		turn.processNotes = sample.processNotes;
+	}
 	return turn;
 }
 
@@ -1393,6 +1410,7 @@ export function attachAiMode(options: {
 	const statuses = [...root.querySelectorAll<HTMLElement>("[data-ai-status]")];
 	const meterEls = [...root.querySelectorAll<HTMLElement>("[data-ai-meter]")];
 	const quotaDialog = root.querySelector<HTMLElement>("[data-ai-quota-dialog]");
+	const confirmDialog = root.querySelector<HTMLElement>("[data-ai-confirm-dialog]");
 	const feedbackDialog = root.querySelector<HTMLElement>("[data-ai-feedback-dialog]");
 	const feedbackText = root.querySelector<HTMLTextAreaElement>("[data-ai-feedback-text]");
 	const feedbackError = root.querySelector<HTMLElement>("[data-ai-feedback-error]");
@@ -1418,6 +1436,9 @@ export function attachAiMode(options: {
 	let researchQuota: ResearchQuotaView | null = null;
 	let isAskAdmin = false;
 	let askSamples: AiAskSamplePublic[] = [];
+	let hiddenSampleKeys = readHiddenAskSampleKeys(
+		typeof localStorage === "undefined" ? null : localStorage,
+	);
 	let signedInForHistory = false;
 	let pendingReplaceQuestions: string[] | null = null;
 	let busy = false;
@@ -1685,14 +1706,6 @@ export function attachAiMode(options: {
 				chip.classList.toggle("is-on", pressed && !pane);
 			},
 		);
-		root.querySelectorAll<HTMLElement>("[data-ai-examples]").forEach((group) => {
-			const kind = group.getAttribute("data-ai-examples");
-			if (kind === "research") {
-				group.hidden = !pane || group.childElementCount === 0;
-			} else {
-				group.hidden = pane;
-			}
-		});
 		const placeholder = pane || pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
 		if (input) input.placeholder = placeholder;
 		const composerLabel = root.querySelector<HTMLLabelElement>(
@@ -1747,11 +1760,41 @@ export function attachAiMode(options: {
 		if (quotaDialog) quotaDialog.hidden = true;
 	}
 
+	let pendingConfirm: (() => void) | null = null;
+
+	function closeConfirmDialog(): void {
+		pendingConfirm = null;
+		if (confirmDialog) confirmDialog.hidden = true;
+	}
+
+	function openConfirmDialog(
+		title: string,
+		body: string,
+		onOk: () => void,
+	): void {
+		if (!confirmDialog) {
+			onOk();
+			return;
+		}
+		closeQuotaDialog();
+		pendingConfirm = onOk;
+		const titleEl = confirmDialog.querySelector<HTMLElement>(
+			"[data-ai-confirm-title]",
+		);
+		const bodyEl = confirmDialog.querySelector<HTMLElement>(
+			"[data-ai-confirm-body]",
+		);
+		if (titleEl) titleEl.textContent = title;
+		if (bodyEl) bodyEl.textContent = body;
+		confirmDialog.hidden = false;
+	}
+
 	function openQuotaDialog(
-		kind: "signin" | "tomorrow" | "save" | "verify" | "research",
+		kind: "signin" | "tomorrow" | "save" | "share" | "verify" | "research",
 		question?: string | null,
 	): void {
 		if (!quotaDialog) return;
+		closeConfirmDialog();
 		const signin = quotaDialog.querySelector<HTMLElement>(
 			'[data-ai-quota-panel="signin"]',
 		);
@@ -1764,7 +1807,7 @@ export function attachAiMode(options: {
 		const research = quotaDialog.querySelector<HTMLElement>(
 			'[data-ai-quota-panel="research"]',
 		);
-		const showSignin = kind === "signin" || kind === "save";
+		const showSignin = kind === "signin" || kind === "save" || kind === "share";
 		if (signin) signin.hidden = !showSignin;
 		if (tomorrow) tomorrow.hidden = kind !== "tomorrow";
 		if (verify) verify.hidden = kind !== "verify";
@@ -1783,6 +1826,13 @@ export function attachAiMode(options: {
 				body.textContent = researchPaneOn()
 					? RESEARCH_PIN_ACCOUNT_BODY
 					: ASK_PIN_ACCOUNT_BODY;
+			} else if (kind === "share") {
+				title.textContent = researchPaneOn()
+					? RESEARCH_SHARE_ACCOUNT_TITLE
+					: ASK_SHARE_ACCOUNT_TITLE;
+				body.textContent = researchPaneOn()
+					? RESEARCH_SHARE_ACCOUNT_BODY
+					: ASK_SHARE_ACCOUNT_BODY;
 			} else if (kind === "signin" && researchPaneOn()) {
 				title.textContent = RESEARCH_SIGNIN_TITLE;
 				body.textContent = RESEARCH_SIGNIN_BODY;
@@ -1796,7 +1846,7 @@ export function attachAiMode(options: {
 			"[data-ai-quota-register]",
 		);
 		const link = quotaDialog.querySelector<HTMLAnchorElement>("[data-ai-quota-signin]");
-		const pending = kind === "save" ? "" : question;
+		const pending = kind === "save" || kind === "share" ? "" : question;
 		if (register) register.href = registerHref(pending);
 		if (link) link.href = signInHref(pending);
 		const verifyStatus = quotaDialog.querySelector<HTMLElement>(
@@ -2385,27 +2435,10 @@ export function attachAiMode(options: {
 			askSamples = data.samples
 				.map((item) => sanitizeAskSamplePublic(item))
 				.filter((item): item is AiAskSamplePublic => Boolean(item));
-			fillResearchExampleChips();
+			renderHistory();
 		} catch {
 			/* samples are optional until an admin marks one */
 		}
-	}
-
-	function fillResearchExampleChips(): void {
-		const group = root.querySelector<HTMLElement>(
-			'[data-ai-examples="research"]',
-		);
-		if (!group) return;
-		const samples = researchAskSamples(askSamples);
-		group.replaceChildren();
-		for (const sample of samples.slice(0, 6)) {
-			const button = document.createElement("button");
-			button.type = "button";
-			button.setAttribute("data-ai-example", sample.question);
-			button.textContent = sample.question;
-			group.append(button);
-		}
-		syncResearchChip();
 	}
 
 	function stopSamplePlayback(): void {
@@ -2449,7 +2482,8 @@ export function attachAiMode(options: {
 		turns = [turn];
 		busy = true;
 		root.classList.add("is-busy");
-		syncLayoutAndReveal();
+		syncLayout();
+		thread.firstElementChild?.scrollIntoView({ block: "start" });
 
 		const playFrom = (index: number): void => {
 			if (token !== samplePlaybackToken) return;
@@ -2459,11 +2493,10 @@ export function attachAiMode(options: {
 			if (step.phase === "done") {
 				busy = false;
 				root.classList.remove("is-busy");
-				syncLayoutAndReveal();
-				followInput?.focus();
+				syncLayout();
 				return;
 			}
-			syncLayoutAndReveal();
+			syncLayout();
 			const next = ASK_SAMPLE_PLAYBACK[index + 1];
 			if (!next) return;
 			samplePlaybackTimer = window.setTimeout(
@@ -2513,6 +2546,9 @@ export function attachAiMode(options: {
 					candidateCount: turn.rerankCandidateCount,
 					...(turn.research ? { research: true } : {}),
 					...(turn.report ? { report: turn.report } : {}),
+					...(turn.processNotes && turn.processNotes.length > 0
+						? { processNotes: turn.processNotes }
+						: {}),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -2527,7 +2563,7 @@ export function attachAiMode(options: {
 			const saved = sanitizeAskSamplePublic(data.sample);
 			if (saved) {
 				askSamples = upsertAskSampleLocal(askSamples, saved);
-				fillResearchExampleChips();
+				renderHistory();
 			}
 			setStatus("Saved as the example for this question.");
 		} catch {
@@ -2792,6 +2828,10 @@ export function attachAiMode(options: {
 		button: HTMLButtonElement,
 	): Promise<void> {
 		if (entry.results.length === 0) return;
+		if (!signedInForHistory) {
+			openQuotaDialog("share");
+			return;
+		}
 		const previous = button.textContent || "Share link";
 		button.disabled = true;
 		button.textContent = "Sharing…";
@@ -2827,6 +2867,8 @@ export function attachAiMode(options: {
 					model: entry.model,
 					requestId: entry.requestId,
 					shareSlug: entry.shareSlug,
+					...(entry.research ? { research: true } : {}),
+					...(entry.report ? { report: entry.report } : {}),
 					...(thread ? { thread } : {}),
 				}),
 			});
@@ -3328,7 +3370,6 @@ export function attachAiMode(options: {
 		turnIndex: number,
 	): Promise<void> {
 		if (turn.results.length === 0) return;
-		button.disabled = true;
 		const index =
 			Number.isFinite(turnIndex) && turnIndex >= 0
 				? turnIndex
@@ -3338,6 +3379,7 @@ export function attachAiMode(options: {
 		// Exception: if this local thread is longer than a bare single-turn share,
 		// re-publish so the public page can upgrade to the full conversation.
 		if (turn.sharePath && turn.fromShare && thread.length <= 1) {
+			button.disabled = true;
 			try {
 				await navigator.clipboard.writeText(
 					new URL(turn.sharePath, window.location.origin).toString(),
@@ -3349,6 +3391,11 @@ export function attachAiMode(options: {
 			window.setTimeout(() => restoreShareLinkButton(button), 1600);
 			return;
 		}
+		if (!signedInForHistory) {
+			openQuotaDialog("share");
+			return;
+		}
+		button.disabled = true;
 		button.textContent = "Sharing…";
 		try {
 			const response = await fetch("/api/ai/share", {
@@ -3658,78 +3705,105 @@ export function attachAiMode(options: {
 	let historyTab: AskHistoryTab = "recent";
 	let historyExpanded = false;
 
-	function renderHistory(options?: { focusTab?: boolean }): void {
-		if (!historyEl) return;
-		if (root.classList.contains("is-restoring-research")) {
-			historyEl.hidden = true;
-			return;
-		}
-		if (turns.length > 0 || historyLane().length === 0) {
-			historyEl.hidden = true;
-			historyEl.innerHTML = "";
-			return;
-		}
+	function laneHistorySamples(): AiAskSamplePublic[] {
 		const lane = historyLane();
+		return visibleHistorySamples({
+			samples: askSamples,
+			research: researchPaneOn(),
+			ownCount: lane.length,
+			ownQuestionKeys: new Set(
+				lane.map((item) => normalizeAskQuestionKey(item.question)),
+			),
+			hiddenKeys: hiddenSampleKeys,
+		});
+	}
+
+	function historyCardHtml(
+		entry: AiAskSessionEntry,
+		options?: { sampleSlug?: string },
+	): string {
 		const paneResearch = researchPaneOn();
-		const pinned = pinnedAskHistoryEntries(lane);
-		const activeTab = resolveAskHistoryTab(lane, historyTab);
-		historyTab = activeTab;
-		const ordered = askHistoryEntriesForTab(lane, activeTab);
-		const hiddenCount =
-			activeTab === "pinned"
-				? 0
-				: Math.max(0, ordered.length - ASK_HISTORY_PREVIEW_LIMIT);
-		const visible = visibleAskHistoryEntries(
-			lane,
-			activeTab,
-			historyExpanded,
-		);
-		const items = visible
-			.map((entry) => {
-				const when = formatAskRelativeTime(entry.at);
-				const threadCount = entry.thread?.length || 0;
-				const pinMark = entry.saved
-					? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
-					: "";
-				const resultIds = entry.results
-					.slice(0, 6)
-					.map((hit) => transformId(hit.slug))
-					.filter(Boolean)
-					.join(" · ");
-				const resultsRow = resultIds
-					? `<span class="ai-history-results">${escapeHtml(resultIds)}</span>`
-					: "";
-				const threadRow =
-					threadCount > 1
-						? `<span class="ai-history-thread">${threadCount} turns in this conversation</span>`
-						: "";
-				const researchLabel = researchHistoryStatusLabel(entry);
-				const researchRow = researchLabel
-					? `<span class="ai-history-research${entry.researchPending ? " is-pending" : ""}${entry.researchUnread ? " is-ready" : ""}">${escapeHtml(researchLabel)}</span>`
-					: "";
-				const unreadDot = entry.researchUnread
-					? `<span class="ai-history-unread" aria-label="Unread"></span>`
-					: "";
-				const rootQuestion =
-					threadCount > 1 && entry.thread?.[0]?.question
-						? entry.thread[0].question
-						: "";
-				const rootRow =
-					rootQuestion &&
-					normalizeAskQuestionKey(rootQuestion) !==
-						normalizeAskQuestionKey(entry.question)
-						? `<span class="ai-history-root">Started with: ${escapeHtml(rootQuestion)}</span>`
-						: "";
-				const q = escapeHtml(entry.question);
-				const pinAction = entry.saved
-					? paneResearch
-						? RESEARCH_UNPIN_ACTION
-						: "Unpin"
-					: paneResearch
-						? RESEARCH_PIN_ACTION
-						: "Pin";
-				return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}${entry.researchUnread ? " is-unread" : ""}${entry.researchPending ? " is-research-pending" : ""}">
-						<button type="button" class="ai-history-item" data-ai-history-q="${q}">
+		const sample = Boolean(options?.sampleSlug);
+		const when = formatAskRelativeTime(entry.at);
+		const threadCount = entry.thread?.length || 0;
+		const pinMark = entry.saved
+			? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
+			: "";
+		const resultIds = entry.results
+			.slice(0, 6)
+			.map((hit) => transformId(hit.slug))
+			.filter(Boolean)
+			.join(" · ");
+		const resultsRow = resultIds
+			? `<span class="ai-history-results">${escapeHtml(resultIds)}</span>`
+			: "";
+		const threadRow =
+			!sample && threadCount > 1
+				? `<span class="ai-history-thread">${threadCount} turns in this conversation</span>`
+				: "";
+		const researchLabel = sample
+			? ASK_SAMPLE_MENU_LABEL
+			: researchHistoryStatusLabel(entry);
+		const statusMods = sample
+			? ""
+			: `${entry.researchPending ? " is-pending" : ""}${entry.researchUnread ? " is-ready" : ""}`;
+		const researchRow = researchLabel
+			? `<span class="ai-history-research${statusMods}">${escapeHtml(researchLabel)}</span>`
+			: "";
+		const unreadDot =
+			!sample && entry.researchUnread
+				? `<span class="ai-history-unread" aria-label="Unread"></span>`
+				: "";
+		const rootQuestion =
+			threadCount > 1 && entry.thread?.[0]?.question
+				? entry.thread[0].question
+				: "";
+		const rootRow =
+			!sample &&
+			rootQuestion &&
+			normalizeAskQuestionKey(rootQuestion) !==
+				normalizeAskQuestionKey(entry.question)
+				? `<span class="ai-history-root">Started with: ${escapeHtml(rootQuestion)}</span>`
+				: "";
+		const q = escapeHtml(entry.question);
+		const sampleAttr = options?.sampleSlug
+			? ` data-ai-history-sample="${escapeHtml(options.sampleSlug)}"`
+			: "";
+		const pinAction = entry.saved
+			? paneResearch
+				? RESEARCH_UNPIN_ACTION
+				: "Unpin"
+			: paneResearch
+				? RESEARCH_PIN_ACTION
+				: "Pin";
+		const showPin = signedInForHistory;
+		const showShare = !sample || signedInForHistory;
+		const showDelete = !sample || signedInForHistory;
+		const menuItems = [
+			showPin
+				? `<button type="button" role="menuitem" data-ai-history-pin data-ai-history-q="${q}"${sampleAttr}>${pinAction}</button>`
+				: "",
+			showShare
+				? `<button type="button" role="menuitem" data-ai-history-share data-ai-history-q="${q}"${sampleAttr}>Share link</button>`
+				: "",
+			showDelete
+				? `<button type="button" role="menuitem" class="is-danger" data-ai-history-delete data-ai-history-q="${q}"${sampleAttr}>Delete</button>`
+				: "",
+		]
+			.filter(Boolean)
+			.join("");
+		const menu = menuItems
+			? `<div class="ai-history-menu">
+							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}"${sampleAttr} aria-label="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}" aria-expanded="false" title="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}">
+								${MORE_ICON_SVG}
+							</button>
+							<div class="ai-history-menu-panel" hidden role="menu">
+								${menuItems}
+							</div>
+						</div>`
+			: "";
+		return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}${entry.researchUnread ? " is-unread" : ""}${entry.researchPending ? " is-research-pending" : ""}${sample ? " is-sample" : ""}">
+						<button type="button" class="ai-history-item" data-ai-history-q="${q}"${sampleAttr}>
 							<span class="ai-history-top">
 								${unreadDot}
 								<span class="ai-history-q">${q}</span>
@@ -3740,19 +3814,66 @@ export function attachAiMode(options: {
 							${researchRow}
 							${resultsRow}
 						</button>
-						<div class="ai-history-menu">
-							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}" aria-label="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}" aria-expanded="false" title="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}">
-								${MORE_ICON_SVG}
-							</button>
-							<div class="ai-history-menu-panel" hidden role="menu">
-								<button type="button" role="menuitem" data-ai-history-pin data-ai-history-q="${q}">${pinAction}</button>
-								<button type="button" role="menuitem" data-ai-history-share data-ai-history-q="${q}">Share link</button>
-								<button type="button" role="menuitem" class="is-danger" data-ai-history-delete data-ai-history-q="${q}">Delete</button>
-							</div>
-						</div>
+						${menu}
 					</div>`;
-			})
-			.join("");
+	}
+
+	function renderHistory(options?: { focusTab?: boolean }): void {
+		if (!historyEl) return;
+		if (root.classList.contains("is-restoring-research")) {
+			historyEl.hidden = true;
+			return;
+		}
+		if (turns.length > 0) {
+			historyEl.hidden = true;
+			historyEl.innerHTML = "";
+			return;
+		}
+		const lane = historyLane();
+		const paneResearch = researchPaneOn();
+		const samples = laneHistorySamples();
+		if (lane.length === 0 && samples.length === 0) {
+			historyEl.hidden = true;
+			historyEl.innerHTML = "";
+			return;
+		}
+		const pinned = pinnedAskHistoryEntries(lane);
+		const activeTab = resolveAskHistoryTab(lane, historyTab);
+		historyTab = activeTab;
+		const ordered = askHistoryEntriesForTab(lane, activeTab);
+		const tabSamples = activeTab === "pinned" ? [] : samples;
+		const ownVisible = visibleAskHistoryEntries(
+			lane,
+			activeTab,
+			historyExpanded,
+		);
+		let shownSamples = tabSamples;
+		let shownOwn = ownVisible;
+		if (activeTab !== "pinned" && !historyExpanded) {
+			shownSamples = tabSamples.slice(0, ASK_HISTORY_PREVIEW_LIMIT);
+			shownOwn = ownVisible.slice(
+				0,
+				Math.max(0, ASK_HISTORY_PREVIEW_LIMIT - shownSamples.length),
+			);
+		}
+		const hiddenCount =
+			activeTab === "pinned"
+				? 0
+				: Math.max(
+						0,
+						ordered.length +
+							tabSamples.length -
+							shownOwn.length -
+							shownSamples.length,
+					);
+		const items = [
+			...shownSamples.map((sample) =>
+				historyCardHtml(sampleToHistoryEntry(sample), {
+					sampleSlug: sample.slug,
+				}),
+			),
+			...shownOwn.map((entry) => historyCardHtml(entry)),
+		].join("");
 		const moreRow =
 			hiddenCount > 0
 				? historyExpanded
@@ -3766,15 +3887,17 @@ export function attachAiMode(options: {
 		const historyAria = paneResearch ? RESEARCH_HISTORY_ARIA : ASK_HISTORY_ARIA;
 		const recentLabel = paneResearch ? RESEARCH_HISTORY_LABEL : ASK_HISTORY_LABEL;
 		const heading =
-			pinned.length > 0
-				? `<div class="ai-history-heading">
+			lane.length === 0 && tabSamples.length === 0
+				? ""
+				: pinned.length > 0
+					? `<div class="ai-history-heading">
 			<div class="ai-history-tabs" role="tablist" aria-label="${historyAria}">
 				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "recent" ? "true" : "false"}" data-ai-history-tab="recent">Recent</button>
 				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "pinned" ? "true" : "false"}" data-ai-history-tab="pinned">Pinned <span class="ai-history-tab-count">${pinned.length}</span></button>
 			</div>
 			<p class="ai-history-hint">${hint}</p>
 		</div>`
-				: `<div class="ai-history-heading">
+					: `<div class="ai-history-heading">
 			<p class="ai-history-label">${recentLabel}</p>
 			<p class="ai-history-hint">${hint}</p>
 		</div>`;
@@ -3822,10 +3945,24 @@ export function attachAiMode(options: {
 				});
 		};
 
+		const sampleFromButton = (
+			button: Element,
+		): AiAskSamplePublic | undefined => {
+			const slug = button.getAttribute("data-ai-history-sample") || "";
+			if (!slug) return undefined;
+			return askSamples.find((item) => item.slug === slug);
+		};
+
 		historyEl.querySelectorAll<HTMLButtonElement>("[data-ai-history-q]").forEach(
 			(button) => {
 				if (!button.classList.contains("ai-history-item")) return;
 				button.addEventListener("click", () => {
+					const sample = sampleFromButton(button);
+					if (sample) {
+						if (busy && !turns.every((turn) => turn.fromSample)) return;
+						openAskSample(sample);
+						return;
+					}
 					const question = button.getAttribute("data-ai-history-q") || "";
 					const entry = findLaneEntry(question);
 					if (!entry) return;
@@ -3854,9 +3991,17 @@ export function attachAiMode(options: {
 			.forEach((button) => {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
+					const sample = sampleFromButton(button);
+					closeAllMenus();
+					if (sample) {
+						toggleHistoryEntryPin({
+							...sampleToHistoryEntry(sample),
+							saved: false,
+						});
+						return;
+					}
 					const question = button.getAttribute("data-ai-history-q") || "";
 					const entry = findLaneEntry(question);
-					closeAllMenus();
 					if (entry) toggleHistoryEntryPin(entry);
 				});
 			});
@@ -3865,6 +4010,12 @@ export function attachAiMode(options: {
 			.forEach((button) => {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
+					if (!signedInForHistory) closeAllMenus();
+					const sample = sampleFromButton(button);
+					if (sample) {
+						void shareHistoryEntry(sampleToHistoryEntry(sample), button);
+						return;
+					}
 					const question = button.getAttribute("data-ai-history-q") || "";
 					const entry = findLaneEntry(question);
 					if (entry) void shareHistoryEntry(entry, button);
@@ -3875,9 +4026,26 @@ export function attachAiMode(options: {
 			.forEach((button) => {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
+					const sample = sampleFromButton(button);
+					closeAllMenus();
+					if (sample) {
+						openConfirmDialog(
+							ASK_SAMPLE_HIDE_TITLE,
+							ASK_SAMPLE_HIDE_CONFIRM,
+							() => {
+								hiddenSampleKeys = hideAskSampleKey(
+									askSampleHideKey(sample, researchPaneOn()),
+									typeof localStorage === "undefined"
+										? null
+										: localStorage,
+								);
+								renderHistory();
+							},
+						);
+						return;
+					}
 					const question = button.getAttribute("data-ai-history-q") || "";
 					const entry = findLaneEntry(question);
-					closeAllMenus();
 					if (entry) deleteHistoryEntry(entry);
 				});
 			});
@@ -5358,35 +5526,7 @@ export function attachAiMode(options: {
 		void startResearchFromClarify();
 	});
 
-	const samplesReady = loadAskSamples();
-	root.addEventListener("click", (event) => {
-		const button = (event.target as Element | null)?.closest?.(
-			"[data-ai-example]",
-		);
-		if (!(button instanceof HTMLButtonElement) || !root.contains(button)) {
-			return;
-		}
-		void samplesReady.then(() => {
-			const text = button.getAttribute("data-ai-example") || "";
-			const sample = findAskSampleForExample(askSamples, text, {
-				research: researchPaneOn(),
-			});
-			if (sample) {
-				if (busy && !turns.every((turn) => turn.fromSample)) return;
-				input.value = "";
-				fitTextarea(input);
-				openAskSample(sample);
-				return;
-			}
-			if (researchPaneOn()) {
-				input.value = text;
-				fitTextarea(input);
-				return;
-			}
-			input.value = text;
-			void ask(text, input);
-		});
-	});
+	void loadAskSamples();
 
 	root.querySelectorAll<HTMLButtonElement>("[data-ai-new]").forEach((button) => {
 		button.addEventListener("click", () => {
@@ -5451,6 +5591,23 @@ export function attachAiMode(options: {
 		event.stopPropagation();
 	});
 
+	confirmDialog?.querySelectorAll("[data-ai-confirm-cancel]").forEach((el) => {
+		el.addEventListener("click", () => closeConfirmDialog());
+	});
+	confirmDialog
+		?.querySelector("[data-ai-confirm-ok]")
+		?.addEventListener("click", () => {
+			const onOk = pendingConfirm;
+			closeConfirmDialog();
+			onOk?.();
+		});
+	confirmDialog?.addEventListener("click", (event) => {
+		if (event.target === confirmDialog) closeConfirmDialog();
+	});
+	confirmDialog?.querySelector(".ai-dialog-sheet")?.addEventListener("click", (event) => {
+		event.stopPropagation();
+	});
+
 	feedbackDialog?.querySelectorAll("[data-ai-feedback-close]").forEach((el) => {
 		el.addEventListener("click", () => {
 			void dismissFeedbackOffer();
@@ -5486,6 +5643,11 @@ export function attachAiMode(options: {
 		if (feedbackDialog && !feedbackDialog.hidden) {
 			event.preventDefault();
 			void dismissFeedbackOffer();
+			return;
+		}
+		if (confirmDialog && !confirmDialog.hidden) {
+			event.preventDefault();
+			closeConfirmDialog();
 			return;
 		}
 		if (quotaDialog && !quotaDialog.hidden) {

@@ -135,7 +135,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			JSON.stringify({
 				success: true,
 				slug: published.slug,
-				path: published.path || askSharePath(published.slug),
+				path: published.path || askSharePath(published.slug, {
+					research: body.research === true,
+				}),
 				created: published.created,
 				share,
 			}),

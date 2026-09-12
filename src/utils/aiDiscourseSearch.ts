@@ -19,6 +19,7 @@ import {
 	prefixedAiDiscourseIdsInQuery,
 	prefixedAiDiscourseIdsInText,
 	relaxSearchQuery,
+	topicalFallbackQueries,
 } from "./aiSearchQuery";
 
 export type { AiDiscourseHit } from "./aiDiscourseHits";
@@ -68,8 +69,8 @@ function uniqueQueries(queries: readonly string[]): string[] {
 	const out: string[] = [];
 	for (const raw of queries) {
 		const query = normalizeAiSearchQuery(raw);
-		if (!query || seen.has(query)) continue;
-		seen.add(query);
+		if (!query || seen.has(query.toLowerCase())) continue;
+		seen.add(query.toLowerCase());
 		out.push(query);
 	}
 	return out;
@@ -168,7 +169,16 @@ async function searchBatchesConcurrently(
 	const list = uniqueQueries(queries).slice(0, MAX_SEARCH_CALLS);
 	let done = 0;
 	return mapPool(list, SEARCH_CONCURRENCY, async (query) => {
-		const hits = await searchHitsForAiQuery(query, perQueryLimit);
+		let hits: SearchResult[] = [];
+		try {
+			hits = await searchHitsForAiQuery(query, perQueryLimit);
+		} catch (error) {
+			console.warn(
+				"[ai/search] query failed",
+				query,
+				error instanceof Error ? error.message : error,
+			);
+		}
 		done += 1;
 		onProgress?.({
 			done,
@@ -344,8 +354,15 @@ export async function searchDiscoursesForQueries(
 	if (wide) {
 		// Inflate shared indexes once before fan-out. Overlapping first searches
 		// used to each copy ~27 MB of body text into normalized maps.
-		await ensureReferenceSearchIndexLoaded();
-		await getNormalizedContentMap(true);
+		try {
+			await ensureReferenceSearchIndexLoaded();
+			await getNormalizedContentMap(true);
+		} catch (error) {
+			console.warn(
+				"[ai/search] index warm failed",
+				error instanceof Error ? error.message : error,
+			);
+		}
 		const pool = uniqueQueries([
 			...namedIds,
 			...queries,
@@ -357,8 +374,29 @@ export async function searchDiscoursesForQueries(
 			perQueryLimit,
 			onProgress,
 		);
+		let merged = mergeDiscourseHits(batches, mergeLimit);
+		if (merged.length === 0 && question) {
+			const extra = uniqueQueries(topicalFallbackQueries(question, 4)).filter(
+				(query) => !pool.some((item) => item.toLowerCase() === query.toLowerCase()),
+			);
+			if (extra.length > 0) {
+				const more = await searchBatchesConcurrently(
+					extra,
+					perQueryLimit,
+					onProgress,
+				);
+				merged = mergeDiscourseHits([...batches, ...more], mergeLimit);
+				return finishAskSearch(
+					merged,
+					[...batches, ...more],
+					queries,
+					question,
+					termQueries,
+				);
+			}
+		}
 		return finishAskSearch(
-			mergeDiscourseHits(batches, mergeLimit),
+			merged,
 			batches,
 			queries,
 			question,

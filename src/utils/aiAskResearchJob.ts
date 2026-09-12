@@ -246,7 +246,7 @@ function stringList(value: unknown, maxItems: number, maxChars: number): string[
 function sanitizeHits(value: unknown): AiDiscourseHit[] {
 	if (!Array.isArray(value)) return [];
 	const out: AiDiscourseHit[] = [];
-	for (const item of value.slice(0, 55)) {
+	for (const item of value.slice(0, 160)) {
 		if (!item || typeof item !== "object") continue;
 		const hit = item as Record<string, unknown>;
 		const slug = clip(typeof hit.slug === "string" ? hit.slug : "", 64);

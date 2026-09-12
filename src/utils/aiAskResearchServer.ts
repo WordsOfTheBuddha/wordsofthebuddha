@@ -442,9 +442,16 @@ export async function getResearchJobForUser(
 ): Promise<ResearchJobPublic | null> {
 	const record = await readJob(uid, jobId);
 	if (!record) return null;
-	// Failed jobs can refund on read (time-independent). Do not re-evaluate
-	// cancelled jobs here: an early stop must keep its credit even after 5 min.
+	// Failed jobs and empty completes refund on read (time-independent). Do
+	// not re-evaluate cancelled jobs here: an early stop must keep its credit
+	// even after the refund window.
 	if (record.status === "failed") {
+		return recordToPublic(await settleResearchJobQuota(record));
+	}
+	if (
+		record.status === "complete" &&
+		(sanitizeResearchJobResult(record.result)?.results.length ?? 0) === 0
+	) {
 		return recordToPublic(await settleResearchJobQuota(record));
 	}
 	return recordToPublic(record);
@@ -490,11 +497,16 @@ async function settleResearchJobQuota(
 	now = Date.now(),
 ): Promise<ResearchJobRecord> {
 	if (record.quotaRefunded || record.quotaSettled) return record;
+	const completeResults =
+		record.status === "complete"
+			? sanitizeResearchJobResult(record.result)?.results.length ?? 0
+			: undefined;
 	if (
 		!shouldRefundResearchCredit({
 			status: record.status,
 			createdAt: record.createdAt,
 			now,
+			resultCount: completeResults,
 		})
 	) {
 		return writeJob(record, { quotaSettled: true });
@@ -566,6 +578,12 @@ export async function requestResearchJobCancel(
 	if (!record) return null;
 	if (isResearchJobTerminal(record.status)) {
 		if (record.status === "failed") {
+			return recordToPublic(await settleResearchJobQuota(record));
+		}
+		if (
+			record.status === "complete" &&
+			(sanitizeResearchJobResult(record.result)?.results.length ?? 0) === 0
+		) {
 			return recordToPublic(await settleResearchJobQuota(record));
 		}
 		return recordToPublic(record);
@@ -1506,6 +1524,9 @@ export async function runResearchJob(options: {
 		});
 		await persistHistory(current, result);
 		await finishEmail(current, ok);
+		if (result.results.length === 0) {
+			current = await settleResearchJobQuota(current);
+		}
 	};
 
 	const completeWithArtifact = async (ok: boolean): Promise<void> => {

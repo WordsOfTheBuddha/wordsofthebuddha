@@ -4,6 +4,7 @@ import {
 	ASK_SAMPLE_NOTE,
 	ASK_SAMPLE_PLAYBACK,
 	askSampleConfirmMessage,
+	askSampleHideKey,
 	askSampleKeyFingerprint,
 	askSampleMatchesQuestion,
 	askSamplePlaybackPatch,
@@ -11,8 +12,12 @@ import {
 	deriveAskSampleSlug,
 	findAskSample,
 	findAskSampleForExample,
+	hideAskSampleKey,
+	readHiddenAskSampleKeys,
+	sampleToHistoryEntry,
 	sanitizeAskSamplePublic,
 	upsertAskSampleLocal,
+	visibleHistorySamples,
 } from "./aiAskSamples";
 
 const HIT = {
@@ -221,5 +226,132 @@ describe("ask sample playback", () => {
 		assert.equal(done.pending, false);
 		assert.equal(done.results.length, 1);
 		assert.match(ASK_SAMPLE_NOTE, /illustrative response from a prior ask/);
+	});
+});
+
+describe("visibleHistorySamples", () => {
+	it("fills Recent until 17 of the reader's own, then hides", () => {
+		const ask = sample("What happens after death for an ordinary person?")!;
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.report = "# Feeling";
+		const hidden = new Set<string>();
+		assert.equal(
+			visibleHistorySamples({
+				samples: [ask, report],
+				research: true,
+				ownCount: 0,
+				ownQuestionKeys: new Set(),
+				hiddenKeys: hidden,
+			}).map((item) => item.question)[0],
+			report.question,
+		);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [ask, report],
+				research: false,
+				ownCount: 0,
+				ownQuestionKeys: new Set(),
+			}).length,
+			1,
+		);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [ask, report],
+				research: true,
+				ownCount: 18,
+				ownQuestionKeys: new Set(),
+			}).length,
+			0,
+		);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [ask, report],
+				research: true,
+				ownCount: 17,
+				ownQuestionKeys: new Set(),
+			}).length,
+			1,
+		);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [ask, report],
+				research: true,
+				ownCount: 2,
+				ownQuestionKeys: new Set([report.questionKey]),
+			}).length,
+			0,
+		);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [
+					report,
+					sanitizeAskSamplePublic({
+						...report,
+						question: "Survey how the discourses describe craving",
+						questionKey: "survey how the discourses describe craving",
+						slug: "survey-how-the-discourses-describe-craving",
+					})!,
+					sanitizeAskSamplePublic({
+						...report,
+						question: "Survey how the discourses describe conceit",
+						questionKey: "survey how the discourses describe conceit",
+						slug: "survey-how-the-discourses-describe-conceit",
+					})!,
+					sanitizeAskSamplePublic({
+						...report,
+						question: "Survey how the discourses describe contact",
+						questionKey: "survey how the discourses describe contact",
+						slug: "survey-how-the-discourses-describe-contact",
+					})!,
+				],
+				research: true,
+				ownCount: 17,
+				ownQuestionKeys: new Set(),
+			}).length,
+			3,
+		);
+	});
+
+	it("hides a sample only for this reader", () => {
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.report = "# Feeling";
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+		};
+		hideAskSampleKey(askSampleHideKey(report, true), storage);
+		assert.equal(
+			visibleHistorySamples({
+				samples: [report],
+				research: true,
+				ownCount: 0,
+				ownQuestionKeys: new Set(),
+				hiddenKeys: readHiddenAskSampleKeys(storage),
+			}).length,
+			0,
+		);
+	});
+});
+
+describe("sanitizeAskSamplePublic process hops", () => {
+	it("keeps research process notes on a saved sample", () => {
+		const demo = sample("Survey how the discourses describe feeling")!;
+		const saved = sanitizeAskSamplePublic({
+			...demo,
+			research: true,
+			report: "# Feeling",
+			processNotes: ["Read MN 2 in full", "Going deeper"],
+		});
+		assert.deepEqual(saved?.processNotes, ["Read MN 2 in full", "Going deeper"]);
+		assert.equal(sampleToHistoryEntry(saved!).research, true);
+		assert.deepEqual(sampleToHistoryEntry(saved!).processNotes, [
+			"Read MN 2 in full",
+			"Going deeper",
+		]);
 	});
 });

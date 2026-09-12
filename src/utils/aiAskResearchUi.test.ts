@@ -14,6 +14,7 @@ import {
 	ASK_HISTORY_LABEL,
 	ASK_LIMITS_NOTE,
 	ASK_PIN_ACCOUNT_TITLE,
+	ASK_SHARE_ACCOUNT_TITLE,
 	ASK_PLACEHOLDER,
 	ASK_WAITING_PLACEHOLDER,
 	ASK_NEW_LABEL,
@@ -32,6 +33,7 @@ import {
 	RESEARCH_PIN_ACCOUNT_TITLE,
 	RESEARCH_PIN_ACTION,
 	RESEARCH_PLACEHOLDER,
+	RESEARCH_SHARE_ACCOUNT_TITLE,
 	RESEARCH_SIGNIN_BODY,
 	RESEARCH_SIGNIN_EMPTY_NOTE,
 	RESEARCH_SIGNIN_TITLE,
@@ -613,23 +615,31 @@ describe("Research pane copy", () => {
 		assert.equal(RESEARCH_UNPIN_ACTION, "Unpin this report");
 		assert.equal(RESEARCH_DELETE_ACTION, "Delete this report");
 		assert.equal(ASK_PIN_ACCOUNT_TITLE, "Create an account to pin Asks");
-		assert.equal(RESEARCH_PIN_ACCOUNT_TITLE, "Create an account to pin reports");
+		assert.equal(
+			RESEARCH_PIN_ACCOUNT_TITLE,
+			"Create an account to pin this report",
+		);
+		assert.equal(ASK_SHARE_ACCOUNT_TITLE, "Create an account to share this Ask");
+		assert.equal(
+			RESEARCH_SHARE_ACCOUNT_TITLE,
+			"Create an account to share this report",
+		);
 		assert.equal(RESEARCH_SIGNIN_TITLE, "Sign in to run Research");
 		assert.match(RESEARCH_SIGNIN_BODY, /do not use your credits/);
 		assert.equal(
 			RESEARCH_SIGNIN_EMPTY_NOTE,
-			"Sign in to run Research (2 per day). Samples below are illustrations.",
+			"Create an account or sign in to run Research.",
 		);
 		assert.equal(
 			RESEARCH_INVITE_AFTER_ASK,
 			"Looking for a wider search and a longer cited report? Try Research.",
 		);
 		assert.equal(ASK_NEW_LABEL, "+ New Ask");
-		assert.equal(RESEARCH_NEW_LABEL, "+ New report");
+		assert.equal(RESEARCH_NEW_LABEL, "+ New Research");
 		assert.equal(REVIEW_ROOM_ASK_NEW_LABEL, "+ Ask");
-		assert.equal(REVIEW_ROOM_REPORT_NEW_LABEL, "+ Report");
+		assert.equal(REVIEW_ROOM_REPORT_NEW_LABEL, "+ Research");
 		assert.equal(REVIEW_ROOM_ASK_EMPTY, "No asks yet.");
-		assert.equal(REVIEW_ROOM_REPORT_EMPTY, "No reports yet.");
+		assert.equal(REVIEW_ROOM_REPORT_EMPTY, "No research reports yet.");
 	});
 });
 

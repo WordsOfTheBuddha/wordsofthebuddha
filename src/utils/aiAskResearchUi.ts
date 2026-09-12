@@ -34,27 +34,34 @@ export const ASK_DELETE_CONFIRM =
 export const RESEARCH_DELETE_CONFIRM =
 	"Delete this report from Recent reports? This cannot be undone.";
 export const RESEARCH_SIGNIN_EMPTY_NOTE =
-	"Sign in to run Research (2 per day). Samples below are illustrations.";
+	"Create an account or sign in to run Research.";
 export const RESEARCH_SIGNIN_TITLE = "Sign in to run Research";
 export const RESEARCH_SIGNIN_BODY =
 	"Research is 2 cited reports per day. Create a free account to start one — samples on this page are illustrations and do not use your credits.";
 export const RESEARCH_INVITE_AFTER_ASK =
 	"Looking for a wider search and a longer cited report? Try Research.";
-export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin reports";
+export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin this report";
 export const RESEARCH_PIN_ACCOUNT_BODY =
-	"Recent reports are temporary. Pinning keeps a report at hand when older ones drop off — and an account syncs your history across devices.";
+	"Recent research reports are temporary. Pinning keeps a report at hand when older ones drop off.";
 export const ASK_PIN_ACCOUNT_TITLE = "Create an account to pin Asks";
 export const ASK_PIN_ACCOUNT_BODY =
-	"Recent Asks are temporary. Pinning keeps a question at hand when older ones drop off — and an account syncs your history across devices.";
+	"Recent Asks are temporary. Pinning keeps a question at hand when older ones drop off.";
+export const RESEARCH_SHARE_ACCOUNT_TITLE =
+	"Create an account to share this report";
+export const RESEARCH_SHARE_ACCOUNT_BODY =
+	"Sharing publishes a public link to this report. Create a free account to copy a link you can send.";
+export const ASK_SHARE_ACCOUNT_TITLE = "Create an account to share this Ask";
+export const ASK_SHARE_ACCOUNT_BODY =
+	"Sharing publishes a public link to this Ask. Create a free account to copy a link you can send.";
 export const RESEARCH_PIN_ACTION = "Pin this report";
 export const RESEARCH_UNPIN_ACTION = "Unpin this report";
 export const RESEARCH_DELETE_ACTION = "Delete this report";
 export const ASK_NEW_LABEL = "+ New Ask";
-export const RESEARCH_NEW_LABEL = "+ New report";
+export const RESEARCH_NEW_LABEL = "+ New Research";
 export const REVIEW_ROOM_ASK_NEW_LABEL = "+ Ask";
-export const REVIEW_ROOM_REPORT_NEW_LABEL = "+ Report";
+export const REVIEW_ROOM_REPORT_NEW_LABEL = "+ Research";
 export const REVIEW_ROOM_ASK_EMPTY = "No asks yet.";
-export const REVIEW_ROOM_REPORT_EMPTY = "No reports yet.";
+export const REVIEW_ROOM_REPORT_EMPTY = "No research reports yet.";
 /** First lines of a report in Review Room — not discourse ID chips. */
 export const RESEARCH_HISTORY_EXCERPT_MAX = 180;
 

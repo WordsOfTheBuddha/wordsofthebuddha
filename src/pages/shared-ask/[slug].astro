@@ -1,14 +1,19 @@
 ---
 /**
- * Internal SSR target for public Ask shares.
- * Public URL stays /ask/:slug via middleware rewrite (the root catch-all would
- * otherwise steal /ask/* and omit Vite CSS).
+ * Internal SSR target for public Ask and Research shares.
+ * Public URLs stay /ask/:slug and /research/:slug via middleware rewrite
+ * (the root catch-all would otherwise steal those paths and omit Vite CSS).
  */
 export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import AskShareView from "../../components/AskShareView.astro";
 import { loadAskShare } from "../../utils/aiAskShareServer";
-import { askShareSeo, normalizeAskShareSlug } from "../../utils/aiAskShare";
+import {
+	askSharePageRedirect,
+	askSharePath,
+	askShareSeo,
+	normalizeAskShareSlug,
+} from "../../utils/aiAskShare";
 import "../../styles/global.css";
 import "../../styles/ai-mode.css";
 import "../../styles/content.css";
@@ -16,7 +21,20 @@ import "../../styles/content.css";
 const rawSlug = Astro.params.slug || "";
 const slug = normalizeAskShareSlug(rawSlug);
 const share = slug ? await loadAskShare(slug) : null;
-
+const localsPath = (Astro.locals as { wotbSharePublicPath?: string })
+	.wotbSharePublicPath;
+const shareFrom = Astro.url.searchParams.get("shareFrom");
+const publicPath =
+	localsPath ||
+	(shareFrom === "research"
+		? `/research/${slug}`
+		: shareFrom === "ask"
+			? `/ask/${slug}`
+			: Astro.url.pathname);
+const bounce = askSharePageRedirect(publicPath, share);
+if (bounce) {
+	return Astro.redirect(bounce);
+}
 if (!share) {
 	return Astro.redirect("/search?mode=ask");
 }
@@ -24,12 +42,16 @@ if (!share) {
 const seo = askShareSeo(share);
 const seoTitle = seo.title;
 const seoDescription = seo.description;
+const canonicalPath = askSharePath(share.slug, {
+	research: share.research === true,
+});
 ---
 
 <Layout
 	title=""
 	seoTitle={seoTitle}
 	seoDescription={seoDescription}
+	canonicalPath={canonicalPath}
 	showAuth={true}
 	showSearch={false}
 >

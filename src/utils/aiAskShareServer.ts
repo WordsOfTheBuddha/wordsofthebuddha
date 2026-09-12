@@ -98,8 +98,10 @@ export async function publishAskShare(options: {
 	if (!draft) {
 		throw new Error("Invalid share snapshot.");
 	}
+	const pathFor = (slug: string) =>
+		askSharePath(slug, { research: draft.research === true });
 	if (!isFirebaseInitialized || !db) {
-		return { slug: draft.slug, path: askSharePath(draft.slug), created: false };
+		return { slug: draft.slug, path: pathFor(draft.slug), created: false };
 	}
 
 	const MAX_CREATE_ATTEMPTS = 6;
@@ -122,7 +124,7 @@ export async function publishAskShare(options: {
 					{ merge: true },
 				);
 			}
-			return { slug, path: askSharePath(slug), created: false };
+			return { slug, path: pathFor(slug), created: false };
 		}
 
 		const payload = {
@@ -133,7 +135,7 @@ export async function publishAskShare(options: {
 		};
 		try {
 			await shareRef(slug).create(payload);
-			return { slug, path: askSharePath(slug), created: true };
+			return { slug, path: pathFor(slug), created: true };
 		} catch (error) {
 			if (
 				attempt + 1 < MAX_CREATE_ATTEMPTS &&

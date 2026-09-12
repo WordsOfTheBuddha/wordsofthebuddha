@@ -319,8 +319,33 @@ export async function uniquifyAskShareSlug<T extends AskShareIdentityInput>(
 	};
 }
 
-export function askSharePath(slug: string): string {
-	return `/ask/${slug}`;
+export function askSharePath(
+	slug: string,
+	options?: { research?: boolean },
+): string {
+	const clean = normalizeAskShareSlug(slug) || slug.trim().toLowerCase();
+	return options?.research ? `/research/${clean}` : `/ask/${clean}`;
+}
+
+/** Redirect when a public share URL is missing or on the wrong lane prefix. */
+export function askSharePageRedirect(
+	pathname: string,
+	share: Pick<AiAskShareSnapshot, "slug" | "research"> | null,
+): string | null {
+	const path = pathname.replace(/\/+$/, "") || "/";
+	const researchUrl = /^\/research\/[^/]+$/.test(path);
+	const askUrl = /^\/ask\/[^/]+$/.test(path);
+	if (!share) {
+		if (researchUrl) return "/search?mode=research";
+		if (askUrl || path.startsWith("/shared-ask/")) return "/search?mode=ask";
+		return null;
+	}
+	const canonical = askSharePath(share.slug, {
+		research: share.research === true,
+	});
+	if (researchUrl && !share.research) return canonical;
+	if (askUrl && share.research) return canonical;
+	return null;
 }
 
 function shareSeoPlainText(markdown: string): string {

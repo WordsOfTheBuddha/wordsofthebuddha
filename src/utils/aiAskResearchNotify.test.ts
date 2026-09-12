@@ -26,7 +26,7 @@ describe("researchHistoryStatusLabel", () => {
 	it("names pending, unread, and finished research", () => {
 		assert.equal(researchHistoryStatusLabel({ research: true, researchPending: true }), "Researching…");
 		assert.equal(researchHistoryStatusLabel({ research: true, researchUnread: true }), "Research ready");
-		assert.equal(researchHistoryStatusLabel({ research: true }), "Research");
+		assert.equal(researchHistoryStatusLabel({ research: true }), "");
 		assert.equal(researchHistoryStatusLabel({}), "");
 	});
 });

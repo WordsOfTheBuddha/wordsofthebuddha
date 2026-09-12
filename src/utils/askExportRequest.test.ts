@@ -86,6 +86,10 @@ describe("sanitizeAskExportSharePath", () => {
 			sanitizeAskExportSharePath("/ask/mindfulness-of-the-body"),
 			"/ask/mindfulness-of-the-body",
 		);
+		assert.equal(
+			sanitizeAskExportSharePath("/research/yonisomanasikara"),
+			"/research/yonisomanasikara",
+		);
 		assert.equal(sanitizeAskExportSharePath("/search?mode=ai"), "/search?mode=ask");
 		assert.equal(sanitizeAskExportSharePath("/search?mode=ask"), "/search?mode=ask");
 		assert.equal(

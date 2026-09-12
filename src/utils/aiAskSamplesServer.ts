@@ -9,6 +9,7 @@ import {
 	sanitizeAskSamplePublic,
 	type AiAskSamplePublic,
 } from "./aiAskSamples";
+import { clipResearchProcessNotes } from "./aiAskResearchJob";
 import { normalizeAskQuestionKey } from "./aiAskSession";
 import { sanitizeAskShareTurn } from "./aiAskShare";
 
@@ -119,12 +120,18 @@ export async function upsertAskSample(options: {
 		existing,
 		research,
 	);
+	const processNotes = clipResearchProcessNotes(
+		options.body && typeof options.body === "object"
+			? (options.body as Record<string, unknown>).processNotes
+			: undefined,
+	);
 	const payload = {
 		...turn,
 		slug,
 		questionKey,
 		updatedBy: options.updatedBy,
 		updatedAt: FieldValue.serverTimestamp(),
+		processNotes,
 	};
 	await sampleRef(slug).set(payload, { merge: true });
 	const sample = sanitizeAskSamplePublic({
@@ -132,6 +139,7 @@ export async function upsertAskSample(options: {
 		slug,
 		questionKey,
 		updatedAt: Date.now(),
+		processNotes,
 	});
 	if (!sample) {
 		return { ok: false, error: "Could not save this example." };
