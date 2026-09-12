@@ -374,6 +374,15 @@
 		padding: 0;
 		min-inline-size: 0;
 	}
+	.collection-pdf-format--stack {
+		grid-template-columns: 1fr;
+	}
+	.collection-pdf-format-option[hidden],
+	.collection-pdf-contents-select[hidden],
+	.collection-pdf-options[hidden],
+	.collection-pdf-large-export-note[hidden] {
+		display: none;
+	}
 	.collection-pdf-format-option {
 		display: flex;
 		align-items: flex-start;

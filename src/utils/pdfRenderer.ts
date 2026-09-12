@@ -43,6 +43,7 @@ import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
+import { askExportCitationHits } from "./askExportTurns";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -381,6 +382,15 @@ export function countCollectionDiscourses(collection: CollectionPdf): number {
 	return collection.chapters.reduce(
 		(acc, chapter) => acc + countChapterDiscourses(chapter),
 		0,
+	);
+}
+
+/** Discourses, or a research write-up with none attached. */
+export function collectionHasExportContent(collection: CollectionPdf): boolean {
+	if (countCollectionDiscourses(collection) > 0) return true;
+	return (
+		collection.layout === "research" &&
+		collection.chapters.some((chapter) => chapter.description.trim().length > 0)
 	);
 }
 
@@ -987,10 +997,14 @@ function askSummaryHtml(
 ): string {
 	const text = summary.trim();
 	if (!text) return "";
-	const hits = discourses.map((d) => ({
-		slug: d.slug,
-		href: `#d-${discourseAnchor(d)}`,
-	}));
+	const hits = askExportCitationHits(
+		text,
+		discourses.map((d) => ({
+			slug: d.slug,
+			href: `#d-${discourseAnchor(d)}`,
+		})),
+		research,
+	);
 	const html = research
 		? renderResearchReportHtml(text, hits)
 		: renderAskBriefingHtml(text, hits);
@@ -1002,17 +1016,21 @@ function buildAskContent(collection: CollectionPdf): string {
 	let html = "";
 	collection.chapters.forEach((ch, index) => {
 		const breakAttr = index === 0 ? "" : ' style="page-break-before:always"';
+		const toc =
+			ch.discourses.length === 0
+				? ""
+				: `  <div class="ask-turn-toc">
+    <h2 class="toc-heading">${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
+    ${buildChapterToc(ch)}
+  </div>
+`;
 		html += `<section class="ask-turn"${breakAttr}>
   <div class="ask-preface">
     <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
     <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
     ${askSummaryHtml(ch.description, ch.discourses, research)}
   </div>
-  <div class="ask-turn-toc">
-    <h2 class="toc-heading">${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
-    ${buildChapterToc(ch)}
-  </div>
-`;
+${toc}`;
 		for (const d of ch.discourses) {
 			html += buildDiscourseSection(
 				d,

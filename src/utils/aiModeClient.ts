@@ -3153,7 +3153,9 @@ export function attachAiMode(options: {
 	}
 
 	function openAskDownload(): void {
-		const exportTurns = askTurnsForExport(turns);
+		const exportTurns = askTurnsForExport(turns).filter(
+			(turn) => turn.research === true,
+		);
 		if (exportTurns.length === 0) return;
 		const sharePath = askExportSharePathFromTurns(
 			turns,
@@ -3163,10 +3165,8 @@ export function attachAiMode(options: {
 			new CustomEvent(ASK_EXPORT_OPEN_EVENT, {
 				detail: {
 					turns: exportTurns,
+					research: true,
 					...(sharePath ? { sharePath } : {}),
-					...(exportTurns.some((turn) => turn.research)
-						? { research: true }
-						: {}),
 				},
 			}),
 		);
@@ -3258,7 +3258,9 @@ export function attachAiMode(options: {
 				: "";
 		const tip = turnIndex === turns.length - 1;
 		const downloadBtn =
-			tip && turn.results.length > 0
+			tip &&
+			turn.research === true &&
+			(turn.results.length > 0 || Boolean((turn.report || "").trim()))
 				? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
 				: "";
 		const shareBtn = tip

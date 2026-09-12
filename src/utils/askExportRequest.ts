@@ -91,6 +91,7 @@ export function parseAskExportRequest(
 		};
 	}
 
+	const research = body.kind === "research";
 	const turns: AskExportTurnRequest[] = [];
 	let discourseTotal = 0;
 
@@ -98,25 +99,27 @@ export function parseAskExportRequest(
 		if (!item || typeof item !== "object") continue;
 		const row = item as Record<string, unknown>;
 		const slugs = uniqueSlugs(row.selectedDiscourseSlugs);
-		if (slugs.length === 0) continue;
-		discourseTotal += slugs.length;
-		if (discourseTotal > MAX_ASK_EXPORT_DISCOURSES) {
-			return {
-				ok: false,
-				error: `Select at most ${MAX_ASK_EXPORT_DISCOURSES} discourses.`,
-			};
-		}
 		const question =
 			typeof row.question === "string"
 				? clipText(row.question, MAX_ASK_EXPORT_QUESTION)
 				: "";
 		const rawSummary = typeof row.summary === "string" ? row.summary : "";
-		const research = body.kind === "research";
 		const summary = research
 			? rawSummary.replace(/\r\n/g, "\n").trim().slice(0, RESEARCH_REPORT_MAX_CHARS)
 			: rawSummary
 				? normalizeAskSummaryProse(rawSummary, MAX_ASK_EXPORT_SUMMARY)
 				: "";
+		if (slugs.length === 0) {
+			if (!research || !summary) continue;
+		} else {
+			discourseTotal += slugs.length;
+			if (discourseTotal > MAX_ASK_EXPORT_DISCOURSES) {
+				return {
+					ok: false,
+					error: `Select at most ${MAX_ASK_EXPORT_DISCOURSES} discourses.`,
+				};
+			}
+		}
 		turns.push({
 			question: question || (research ? "Research report" : "Ask"),
 			summary,
@@ -125,7 +128,10 @@ export function parseAskExportRequest(
 	}
 
 	if (turns.length === 0) {
-		return { ok: false, error: "Select at least one discourse." };
+		return {
+			ok: false,
+			error: research ? "Nothing to download." : "Select at least one discourse.",
+		};
 	}
 
 	const sharePath = sanitizeAskExportSharePath(body.sharePath);

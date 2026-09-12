@@ -1,7 +1,7 @@
 ---
 /**
- * Ask PDF/EPUB download modal. Opened from the Ask action row via
- * `ask-export-open`. Tree (turns → discourses) is filled in by the script.
+ * Research PDF/EPUB download modal. Opened from the report action row via
+ * `ask-export-open`. Ask answers are copy/share only.
  */
 import "../styles/collection-pdf-export.css";
 ---
@@ -29,6 +29,67 @@ import "../styles/collection-pdf-export.css";
 
 		<div class="collection-pdf-dialog-body">
 			<div class="collection-pdf-main">
+				<section
+					id="ask-pdf-research-contents"
+					class="collection-pdf-contents-select"
+					aria-label="Choose what to include"
+					hidden
+				>
+					<h3 class="collection-pdf-section-label">Contents</h3>
+					<fieldset
+						class="collection-pdf-format collection-pdf-format--stack"
+						id="ask-export-contents-fieldset"
+					>
+						<legend class="sr-only">What to include</legend>
+						<label class="collection-pdf-format-option">
+							<input type="radio" name="ask-export-contents" value="report" />
+							<span>
+								<strong>Report only</strong>
+								<span class="collection-pdf-format-desc">
+									The write-up, no full discourses
+								</span>
+							</span>
+						</label>
+						<label
+							class="collection-pdf-format-option"
+							data-contents-option="cited"
+						>
+							<input
+								type="radio"
+								name="ask-export-contents"
+								value="cited"
+								checked
+							/>
+							<span>
+								<strong>Report and cited discourses</strong>
+								<span
+									class="collection-pdf-format-desc"
+									data-contents-cited-desc
+								></span>
+							</span>
+						</label>
+						<label
+							class="collection-pdf-format-option"
+							data-contents-option="all"
+						>
+							<input type="radio" name="ask-export-contents" value="all" />
+							<span>
+								<strong>Report and all sources</strong>
+								<span
+									class="collection-pdf-format-desc"
+									data-contents-all-desc
+								></span>
+							</span>
+						</label>
+					</fieldset>
+					<p
+						class="collection-pdf-large-export-note"
+						id="ask-pdf-large-export-note"
+						hidden
+					>
+						Large exports may take a minute or two.
+					</p>
+				</section>
 				<section
 					id="ask-pdf-contents"
 					class="collection-pdf-contents-select"
@@ -159,7 +220,15 @@ import "../styles/collection-pdf-export.css";
 </div>
 
 <script>
-	import { ASK_EXPORT_OPEN_EVENT, type AskExportOpenDetail, type AskExportTurnView } from "../utils/askExportTurns";
+	import {
+		ASK_EXPORT_OPEN_EVENT,
+		type AskExportOpenDetail,
+		type AskExportTurnView,
+		type ResearchExportContents,
+		researchExportContentsCounts,
+		researchExportContentsDescription,
+		slugsForResearchExportContents,
+	} from "../utils/askExportTurns";
 	import { transformId } from "../utils/transformId";
 
 	let toastTimer: ReturnType<typeof setTimeout>;
@@ -223,14 +292,106 @@ import "../styles/collection-pdf-export.css";
 		);
 	}
 
+	function getSelectedResearchContents(
+		dlg: HTMLDialogElement,
+	): ResearchExportContents {
+		const input = dlg.querySelector<HTMLInputElement>(
+			'input[name="ask-export-contents"]:checked',
+		);
+		if (input?.value === "report" || input?.value === "all") return input.value;
+		return "cited";
+	}
+
+	function updateGenerateButton(dlg: HTMLDialogElement): void {
+		const gen = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
+		if (!gen) return;
+		if (currentResearch) {
+			gen.disabled = currentTurns.length === 0;
+			return;
+		}
+		gen.disabled = getDiscourseCheckboxes(dlg).every((cb) => !cb.checked);
+	}
+
+	function applyResearchContentsUi(dlg: HTMLDialogElement): void {
+		const researchEl = dlg.querySelector<HTMLElement>(
+			"#ask-pdf-research-contents",
+		);
+		const treeEl = dlg.querySelector<HTMLElement>("#ask-pdf-contents");
+		const optionsEl = dlg.querySelector<HTMLElement>("#ask-pdf-options");
+		const largeNote = dlg.querySelector<HTMLElement>(
+			"#ask-pdf-large-export-note",
+		);
+		const citedOpt = dlg.querySelector<HTMLElement>(
+			'[data-contents-option="cited"]',
+		);
+		const allOpt = dlg.querySelector<HTMLElement>(
+			'[data-contents-option="all"]',
+		);
+		const citedDesc = dlg.querySelector("[data-contents-cited-desc]");
+		const allDesc = dlg.querySelector("[data-contents-all-desc]");
+		if (researchEl) researchEl.hidden = !currentResearch;
+		if (treeEl) treeEl.hidden = currentResearch;
+		if (!currentResearch) {
+			if (optionsEl) optionsEl.hidden = false;
+			if (largeNote) largeNote.hidden = true;
+			updateGenerateButton(dlg);
+			return;
+		}
+
+		const counts = researchExportContentsCounts(currentTurns);
+		const turnCount = currentTurns.length;
+		if (citedOpt) citedOpt.hidden = !counts.showCited;
+		if (allOpt) allOpt.hidden = !counts.showAll;
+		if (citedDesc) {
+			citedDesc.textContent = researchExportContentsDescription(
+				"cited",
+				counts.cited,
+				turnCount,
+			);
+		}
+		if (allDesc) {
+			allDesc.textContent = researchExportContentsDescription(
+				"all",
+				counts.all,
+				turnCount,
+			);
+		}
+
+		const selected = getSelectedResearchContents(dlg);
+		const next: ResearchExportContents =
+			selected === "cited" && !counts.showCited
+				? counts.defaultContents
+				: selected === "all" && !counts.showAll
+					? counts.showCited
+						? "cited"
+						: "report"
+					: selected;
+		if (next !== selected) {
+			const radio = dlg.querySelector<HTMLInputElement>(
+				`input[name="ask-export-contents"][value="${next}"]`,
+			);
+			if (radio) radio.checked = true;
+		}
+
+		const contents = getSelectedResearchContents(dlg);
+		if (optionsEl) optionsEl.hidden = contents === "report";
+		const discourseCount =
+			contents === "report"
+				? 0
+				: contents === "cited"
+					? counts.cited
+					: counts.all;
+		if (largeNote) largeNote.hidden = discourseCount <= 100;
+		updateGenerateButton(dlg);
+	}
+
 	function updateSelectionUi(dlg: HTMLDialogElement): void {
 		const boxes = getDiscourseCheckboxes(dlg);
 		const total = boxes.length;
 		const sel = boxes.filter((cb) => cb.checked).length;
 		const countEl = dlg.querySelector("#ask-pdf-selection-count");
 		if (countEl) countEl.textContent = `${sel} of ${total} selected`;
-		const gen = dlg.querySelector<HTMLButtonElement>("#ask-pdf-generate");
-		if (gen) gen.disabled = sel === 0;
+		updateGenerateButton(dlg);
 	}
 
 	function syncChapterFromChildren(chapterEl: Element): void {
@@ -342,6 +503,7 @@ import "../styles/collection-pdf-export.css";
 		) {
 			gen.textContent = generateButtonLabel(dlg, format);
 		}
+		applyResearchContentsUi(dlg);
 	}
 
 	function applyDefaultsFromPage(dlg: HTMLDialogElement): void {
@@ -480,7 +642,7 @@ import "../styles/collection-pdf-export.css";
 		if (currentTurns.length === 0) return;
 
 		const tree = dlg.querySelector("#ask-pdf-tree-scroll");
-		if (tree) tree.innerHTML = renderTree(currentTurns);
+		if (tree && !currentResearch) tree.innerHTML = renderTree(currentTurns);
 
 		const subject = dlg.querySelector<HTMLElement>("[data-ask-export-subject]");
 		if (subject) {
@@ -493,6 +655,14 @@ import "../styles/collection-pdf-export.css";
 					: "Ask conversation";
 		}
 
+		if (currentResearch) {
+			const counts = researchExportContentsCounts(currentTurns);
+			const radio = dlg.querySelector<HTMLInputElement>(
+				`input[name="ask-export-contents"][value="${counts.defaultContents}"]`,
+			);
+			if (radio) radio.checked = true;
+		}
+
 		applyDefaultsFromPage(dlg);
 		if (!dlg.open) dlg.showModal();
 	}
@@ -502,6 +672,23 @@ import "../styles/collection-pdf-export.css";
 		summary: string;
 		selectedDiscourseSlugs: string[];
 	}[] {
+		if (currentResearch) {
+			const contents = getSelectedResearchContents(dlg);
+			return currentTurns
+				.map((turn) => ({
+					question: turn.question,
+					summary: turn.summary,
+					selectedDiscourseSlugs: slugsForResearchExportContents(
+						turn.discourses,
+						contents,
+					),
+				}))
+				.filter(
+					(turn) =>
+						turn.summary.trim().length > 0 ||
+						turn.selectedDiscourseSlugs.length > 0,
+				);
+		}
 		const byTurn = new Map<number, string[]>();
 		getDiscourseCheckboxes(dlg)
 			.filter((cb) => cb.checked)
@@ -566,12 +753,14 @@ import "../styles/collection-pdf-export.css";
 			const year = d.getFullYear();
 			const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
 
-			const includeImages = !!vizShowInput?.checked;
+			const includeDiscourses =
+				!currentResearch || getSelectedResearchContents(dlg) !== "report";
+			const includeImages = includeDiscourses && !!vizShowInput?.checked;
 			const layoutEl = dlg.querySelector<HTMLInputElement>(
 				'input[name="ask-layout"]:checked',
 			);
 			const lay =
-				format === "epub"
+				!includeDiscourses || format === "epub"
 					? "interleaved"
 					: layoutEl?.value === "split"
 						? "split"
@@ -579,7 +768,11 @@ import "../styles/collection-pdf-export.css";
 
 			const turns = selectedTurnsPayload(dlg);
 			if (turns.length === 0) {
-				showToast("Select at least one discourse.");
+				showToast(
+					currentResearch
+						? "Nothing to download."
+						: "Select at least one discourse.",
+				);
 				return;
 			}
 
@@ -588,9 +781,9 @@ import "../styles/collection-pdf-export.css";
 				date,
 				format,
 				images: includeImages ? "svgPrimaryOnly" : "none",
-				pli: pliInput.checked,
+				pli: includeDiscourses && pliInput.checked,
 				layout: lay,
-				keyTerms: keyTermsInput.checked,
+				keyTerms: includeDiscourses && keyTermsInput.checked,
 			};
 			if (currentSharePath) postBody.sharePath = currentSharePath;
 			if (currentTurns[0]?.question) postBody.title = currentTurns[0].question;
@@ -649,7 +842,8 @@ import "../styles/collection-pdf-export.css";
 			showToast(`${kind} generation failed: ${msg}`);
 		} finally {
 			generateBtn.textContent = generateButtonLabel(dlg, format);
-			updateSelectionUi(dlg);
+			if (currentResearch) applyResearchContentsUi(dlg);
+			else updateSelectionUi(dlg);
 		}
 	}
 
@@ -701,6 +895,10 @@ import "../styles/collection-pdf-export.css";
 				const ch = el.closest(".pdf-tree-chapter");
 				if (ch) syncChapterFromChildren(ch);
 				updateSelectionUi(dlg);
+				return;
+			}
+			if ((el as HTMLInputElement).name === "ask-export-contents") {
+				applyResearchContentsUi(dlg);
 				return;
 			}
 			if (el.id === "ask-pdf-opt-pli" || el.id === "ask-pdf-opt-viz-show") {

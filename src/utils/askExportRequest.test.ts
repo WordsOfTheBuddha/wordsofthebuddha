@@ -37,6 +37,8 @@ describe("parseAskExportRequest", () => {
 			turns: [{ question: "Hi", selectedDiscourseSlugs: [] }],
 		});
 		assert.equal(empty.ok, false);
+		if (empty.ok) return;
+		assert.match(empty.error, /at least one discourse/);
 
 		const mixed = parseAskExportRequest({
 			turns: [
@@ -77,6 +79,34 @@ describe("parseAskExportRequest", () => {
 		assert.equal(parsed.value.kind, "research");
 		assert.match(parsed.value.turns[0]?.summary || "", /## Thesis/);
 		assert.match(parsed.value.turns[0]?.summary || "", /\n- one\n/);
+	});
+
+	it("allows a research report with no discourses", () => {
+		const parsed = parseAskExportRequest({
+			kind: "research",
+			turns: [
+				{
+					question: "What is sati?",
+					summary: "## Thesis\n\nMindfulness is established.",
+					selectedDiscourseSlugs: [],
+				},
+			],
+		});
+		assert.equal(parsed.ok, true);
+		if (!parsed.ok) return;
+		assert.equal(parsed.value.turns.length, 1);
+		assert.deepEqual(parsed.value.turns[0]?.selectedDiscourseSlugs, []);
+		assert.match(parsed.value.turns[0]?.summary || "", /## Thesis/);
+	});
+
+	it("rejects a research request with neither report nor discourses", () => {
+		const parsed = parseAskExportRequest({
+			kind: "research",
+			turns: [{ question: "Empty", selectedDiscourseSlugs: [] }],
+		});
+		assert.equal(parsed.ok, false);
+		if (parsed.ok) return;
+		assert.match(parsed.error, /Nothing to download/);
 	});
 });
 

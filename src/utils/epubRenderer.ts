@@ -8,6 +8,7 @@
 
 import type { CollectionPdf, DiscoursePdf } from "./pdfRenderer";
 import { isAskExportLayout } from "./pdfRenderer";
+import { askExportCitationHits } from "./askExportTurns";
 import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
@@ -378,25 +379,25 @@ function askTurnPrefaceBody(
 	summary: string,
 	items: { label: string; href: string; slug: string }[],
 	research: boolean,
+	citationItems: { slug: string; href: string }[],
 ): string {
-	const toc = items
-		.map(
-			(item) =>
-				`    <li><a href="${escapeXml(item.href)}">${escapeXml(item.label)}</a></li>`,
-		)
-		.join("\n");
+	const toc =
+		items.length === 0
+			? ""
+			: `  <h2>${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
+  <ol class="ask-turn-toc">
+${items
+	.map(
+		(item) =>
+			`    <li><a href="${escapeXml(item.href)}">${escapeXml(item.label)}</a></li>`,
+	)
+	.join("\n")}
+  </ol>`;
 	return `<section class="ask-preface">
   <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
   <h1 class="ask-question">${escapeXml(question)}</h1>
-  ${askSummaryXhtml(
-		summary,
-		research,
-		items,
-	)}
-  <h2>${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
-  <ol class="ask-turn-toc">
+  ${askSummaryXhtml(summary, research, citationItems)}
 ${toc}
-  </ol>
 </section>`;
 }
 
@@ -432,6 +433,11 @@ function collectSpineAndNav(collection: CollectionPdf): {
 				};
 			});
 			const prefaceHref = `ask-turn-${index + 1}.xhtml`;
+			const tocItems = discItems.map((item) => ({
+				label: item.title,
+				href: item.href,
+				slug: item.d.slug,
+			}));
 			pushItem(
 				xmlId("ask", String(index + 1)),
 				prefaceHref,
@@ -440,12 +446,16 @@ function collectSpineAndNav(collection: CollectionPdf): {
 					askTurnPrefaceBody(
 						ch.title,
 						ch.description,
-						discItems.map((item) => ({
-							label: item.title,
-							href: item.href,
-							slug: item.d.slug,
-						})),
+						tocItems,
 						research,
+						askExportCitationHits(
+							ch.description,
+							tocItems.map((item) => ({
+								slug: item.slug,
+								href: item.href,
+							})),
+							research,
+						),
 					),
 				),
 			);

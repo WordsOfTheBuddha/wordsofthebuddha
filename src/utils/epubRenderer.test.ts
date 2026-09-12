@@ -323,6 +323,46 @@ describe("buildCollectionEpub", () => {
 		assert.match(titlePage, />Ask</);
 	});
 
+	it("builds a research report EPUB with no discourse files", async () => {
+		const report: CollectionPdf = {
+			slug: "research",
+			title: "What is mindfulness?",
+			description: "",
+			hasChapters: true,
+			layout: "research",
+			chapters: [
+				{
+					slug: "ask-turn-1",
+					title: "What is mindfulness?",
+					description: "## Thesis\n\nSee MN 10.",
+					discourses: [],
+				},
+			],
+		};
+		const buf = await buildCollectionEpub(report, {
+			collectionUrl: "www.wordsofthebuddha.org/search?mode=research",
+			date: "12 September 2026",
+			identifier: "urn:uuid:test-research-report",
+			modified: "2026-09-12T00:00:00Z",
+			coverKind: "topic",
+			titleKindLabel: "Research report",
+		});
+		const names = listZipEntryNames(buf);
+		assert.ok(names.includes("EPUB/ask-turn-1.xhtml"));
+		assert.equal(
+			names.some((name) => name.startsWith("EPUB/d-")),
+			false,
+		);
+		const preface = extractZipEntry(buf, "EPUB/ask-turn-1.xhtml")?.toString(
+			"utf8",
+		);
+		assert.ok(preface);
+		assert.match(preface, /Research report/);
+		assert.match(preface, /What is mindfulness\?/);
+		assert.match(preface, /href="https:\/\/www\.wordsofthebuddha\.org\/mn10"/);
+		assert.doesNotMatch(preface, /Discourses in this report/);
+	});
+
 	it("turns commentary markers into EPUB noterefs and keeps Notes", async () => {
 		const withNotes: CollectionPdf = {
 			...sample,

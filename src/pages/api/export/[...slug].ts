@@ -30,6 +30,7 @@ import {
 	fetchOnPagePdfData,
 	fetchAskPdfData,
 	buildPdfHtml,
+	collectionHasExportContent,
 	countCollectionDiscourses,
 	AskExportDiscourseError,
 	type PdfPaliOptions,
@@ -199,8 +200,7 @@ async function respondWithEpub(
 		vizImageMode?: ExportVizImageMode;
 	},
 ): Promise<Response> {
-	const totalDiscourses = countCollectionDiscourses(collectionData);
-	if (totalDiscourses === 0) {
+	if (!collectionHasExportContent(collectionData)) {
 		return errorResponse(opts.emptyMessage, 404);
 	}
 
@@ -894,7 +894,10 @@ async function runAskExport(
 				collectionUrl,
 				date: downloadDate,
 				title: coverTitle,
-				emptyMessage: "Select at least one discourse.",
+				emptyMessage:
+					kind === "research"
+						? "Nothing to download."
+						: "Select at least one discourse.",
 				coverKind: "topic",
 				titleKindLabel: kind === "research" ? "Research report" : "Ask",
 				vizImageMode,
@@ -917,9 +920,13 @@ async function runAskExport(
 			]);
 			browser = launchedBrowser;
 
-			const totalDiscourses = countCollectionDiscourses(collectionData);
-			if (totalDiscourses === 0) {
-				return errorResponse("Select at least one discourse.", 404);
+			if (!collectionHasExportContent(collectionData)) {
+				return errorResponse(
+					kind === "research"
+						? "Nothing to download."
+						: "Select at least one discourse.",
+					404,
+				);
 			}
 
 			const html = buildPdfHtml(collectionData, {
