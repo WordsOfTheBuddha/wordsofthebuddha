@@ -90,10 +90,10 @@ const NAMED_DISCOURSE_ID_IN_TEXT = new RegExp(
 const MAX_NAMED_DISCOURSE_IDS = 12;
 
 /**
- * Prefixed discourse IDs the person wrote in prose (MN 70, SN 12.49, SN48.9).
- * Harness-side — does not depend on the planner putting IDs in queries[].
+ * Unique prefixed discourse IDs in prose (MN 70, SN 12.49, SN48.9).
+ * Uncapped — report stats need the full citation set.
  */
-export function prefixedAiDiscourseIdsInText(text: string): string[] {
+export function uniquePrefixedDiscourseIdsInText(text: string): string[] {
 	const out: string[] = [];
 	const seen = new Set<string>();
 	const source = (text || "").replace(/\u2019/g, "'");
@@ -104,9 +104,19 @@ export function prefixedAiDiscourseIdsInText(text: string): string[] {
 		if (seen.has(key)) continue;
 		seen.add(key);
 		out.push(compact);
-		if (out.length >= MAX_NAMED_DISCOURSE_IDS) break;
 	}
 	return out;
+}
+
+/**
+ * Prefixed discourse IDs the person wrote in prose (MN 70, SN 12.49, SN48.9).
+ * Harness-side — does not depend on the planner putting IDs in queries[].
+ */
+export function prefixedAiDiscourseIdsInText(text: string): string[] {
+	return uniquePrefixedDiscourseIdsInText(text).slice(
+		0,
+		MAX_NAMED_DISCOURSE_IDS,
+	);
 }
 
 /** Named IDs from the question first, then any ID-only search chips. */

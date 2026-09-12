@@ -35,7 +35,7 @@ import {
 	ASK_HISTORY_HINT_RECENT,
 	ASK_HISTORY_LABEL,
 	isAskResearchEnabled,
-	researchHistoryExcerpt,
+	researchHistoryStatsLabel,
 	REVIEW_ROOM_ASK_EMPTY,
 	REVIEW_ROOM_ASK_NEW_LABEL,
 	REVIEW_ROOM_REPORT_EMPTY,
@@ -927,9 +927,10 @@ try {
 										hidden
 									>
 										{researchLaneEntries.map((entry) => {
-											const excerpt =
-												researchHistoryExcerpt(
+											const stats =
+												researchHistoryStatsLabel(
 													entry.report,
+													entry.results,
 												);
 											const status =
 												entry.researchPending
@@ -1003,9 +1004,9 @@ try {
 															{status}
 														</p>
 													)}
-													{excerpt && (
-														<p class="ask-row-summary">
-															{excerpt}
+													{stats && (
+														<p class="ask-row-results">
+															{stats}
 														</p>
 													)}
 												</a>

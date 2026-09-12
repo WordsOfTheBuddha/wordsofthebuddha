@@ -23,6 +23,7 @@ import {
 	queryOccursAsTermInQuestion,
 	relaxSearchQuery,
 	topicalFallbackQueries,
+	uniquePrefixedDiscourseIdsInText,
 } from "./aiSearchQuery";
 
 function hit(slug: string): { slug: string; title: string; description: string; contentSnippet: string | null } {
@@ -189,6 +190,9 @@ describe("prefixed discourse ID queries", () => {
 			formatDirectDiscourseIds({ question: "See MN 70 and SN 12.49." }),
 			"MN 70, SN 12.49",
 		);
+		const many = Array.from({ length: 15 }, (_, i) => `MN ${i + 1}`).join(", ");
+		assert.equal(prefixedAiDiscourseIdsInText(many).length, 12);
+		assert.equal(uniquePrefixedDiscourseIdsInText(many).length, 15);
 	});
 });
 

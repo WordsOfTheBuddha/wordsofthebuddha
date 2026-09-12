@@ -75,6 +75,7 @@ import {
 	RESEARCH_UNPIN_ACTION,
 	RESEARCH_NEW_LABEL,
 	isIncompleteResearchTurn,
+	researchHistoryStatsLabel,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
 	researchEditAskInsteadLabel,
@@ -3736,13 +3737,19 @@ export function attachAiMode(options: {
 		const pinMark = entry.saved
 			? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
 			: "";
-		const resultIds = entry.results
-			.slice(0, 6)
-			.map((hit) => transformId(hit.slug))
-			.filter(Boolean)
-			.join(" · ");
-		const resultsRow = resultIds
-			? `<span class="ai-history-results">${escapeHtml(resultIds)}</span>`
+		const statsLabel = paneResearch
+			? researchHistoryStatsLabel(entry.report, entry.results)
+			: "";
+		const resultIds = paneResearch
+			? ""
+			: entry.results
+					.slice(0, 6)
+					.map((hit) => transformId(hit.slug))
+					.filter(Boolean)
+					.join(" · ");
+		const resultsText = paneResearch ? statsLabel : resultIds;
+		const resultsRow = resultsText
+			? `<span class="ai-history-results">${escapeHtml(resultsText)}</span>`
 			: "";
 		const threadRow =
 			!sample && threadCount > 1

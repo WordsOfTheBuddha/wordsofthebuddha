@@ -19,6 +19,7 @@ import {
 	ASK_WAITING_PLACEHOLDER,
 	ASK_NEW_LABEL,
 	researchHistoryExcerpt,
+	researchHistoryStatsLabel,
 	REVIEW_ROOM_ASK_EMPTY,
 	REVIEW_ROOM_ASK_NEW_LABEL,
 	REVIEW_ROOM_REPORT_EMPTY,
@@ -656,5 +657,55 @@ describe("researchHistoryExcerpt", () => {
 		const excerpt = researchHistoryExcerpt(long, 40);
 		assert.ok(excerpt.length <= 40);
 		assert.equal(excerpt.includes("end"), false);
+	});
+});
+
+describe("researchHistoryStatsLabel", () => {
+	it("reports word count, unique discourses cited, and leftover sources", () => {
+		assert.equal(researchHistoryStatsLabel(""), "");
+		assert.equal(researchHistoryStatsLabel("   "), "");
+		const report = `## Attention
+
+MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments. MN 10 again.
+
+## Sources
+
+- MN 10 — Kayagata-sati
+- SN 47.1 — Ambapali
+- SN 46.2 — Food
+`;
+		assert.equal(
+			researchHistoryStatsLabel(report),
+			"18 words · 2 discourses cited",
+		);
+		assert.equal(
+			researchHistoryStatsLabel(report, [
+				{ slug: "mn10" },
+				{ slug: "sn47.1" },
+				{ slug: "sn46.2" },
+			]),
+			"18 words · 2 discourses cited · 1 additional source",
+		);
+		assert.equal(
+			researchHistoryStatsLabel(report, [
+				{ slug: "mn10" },
+				{ slug: "sn47.1" },
+				{ slug: "sn46.2" },
+				{ slug: "sn46.51" },
+			]),
+			"18 words · 2 discourses cited · 2 additional sources",
+		);
+		assert.equal(
+			researchHistoryStatsLabel("See MN 10.", [{ slug: "mn10" }]),
+			"3 words · 1 discourse cited",
+		);
+		assert.equal(researchHistoryStatsLabel("No citations here."), "3 words");
+		assert.equal(
+			researchHistoryStatsLabel("No citations here.", [
+				{ slug: "mn10" },
+				{ slug: "sn47.1" },
+			]),
+			"3 words · 2 sources",
+		);
 	});
 });
