@@ -4,6 +4,7 @@ description: The Buddha maps the stages of awakening to fulfilling ethical condu
 qualities: trainee, ethical conduct, wisdom, stream-entry
 theme: wisdom
 slug: an3.86
+priority: 1.2
 ---
 
 “Sādhikamidaṁ, bhikkhave, diyaḍḍhasikkhāpadasataṁ anvaddhamāsaṁ uddesaṁ āgacchati, yattha attakāmā kulaputtā sikkhanti. Tisso imā, bhikkhave, sikkhā yatthetaṁ sabbaṁ samodhānaṁ gacchati. Katamā tisso? Adhisīlasikkhā, adhicittasikkhā adhipaññāsikkhā— imā kho, bhikkhave, tisso sikkhā, yatthetaṁ sabbaṁ samodhānaṁ gacchati.
