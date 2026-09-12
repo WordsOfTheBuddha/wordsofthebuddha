@@ -1018,6 +1018,21 @@ describe("slim Ask history for Firestore", () => {
 		assert.equal(slim.candidateCount, 40);
 		assert.equal(researchHistoryNeedsJobRestore(slim), true);
 		assert.equal(researchHistoryNeedsJobRestore(fat), false);
+		assert.equal(
+			researchHistoryNeedsJobRestore({
+				...fat,
+				results: Array.from({ length: 50 }, (_, i) => ({
+					slug: `mn${i + 1}`,
+					title: `Discourse ${i + 1}`,
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: `/mn${i + 1}`,
+				})),
+				candidateCount: 264,
+			}),
+			true,
+		);
 	});
 
 	it("does not resurrect unread when both copies are slim finished jobs", () => {

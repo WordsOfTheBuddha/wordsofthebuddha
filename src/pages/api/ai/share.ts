@@ -3,6 +3,8 @@ import type { APIRoute } from "astro";
 import { verifyUser } from "../../../middleware/auth";
 import {
 	askSharePath,
+	askShareResultMax,
+	isAskShareResearchInput,
 	sanitizeAskShareResults,
 	sanitizeAskShareSnapshot,
 } from "../../../utils/aiAskShare";
@@ -67,7 +69,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
 	const question =
 		typeof body.question === "string" ? body.question.trim() : "";
-	const results = sanitizeAskShareResults(body.results);
+	const research = isAskShareResearchInput(body);
+	const results = sanitizeAskShareResults(
+		body.results,
+		askShareResultMax(body),
+	);
 	if (!question || results.length === 0) {
 		return new Response(
 			JSON.stringify({
@@ -104,7 +110,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			model: typeof body.model === "string" ? body.model : "",
 			requestId:
 				typeof body.requestId === "string" ? body.requestId : undefined,
-			research: body.research === true,
+			research,
 			report: typeof body.report === "string" ? body.report : undefined,
 			reasoning: typeof body.reasoning === "string" ? body.reasoning : undefined,
 			candidateCount:
@@ -124,7 +130,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			results,
 			model: body.model,
 			requestId: body.requestId,
-			research: body.research === true,
+			research,
 			report: body.report,
 			reasoning: body.reasoning,
 			candidateCount: body.candidateCount,
@@ -136,7 +142,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				success: true,
 				slug: published.slug,
 				path: published.path || askSharePath(published.slug, {
-					research: body.research === true,
+					research,
 				}),
 				created: published.created,
 				share,

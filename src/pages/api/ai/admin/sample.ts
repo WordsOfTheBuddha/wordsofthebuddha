@@ -12,7 +12,9 @@ async function adminFromCookies(
 ) {
 	const session = cookies.get("__session")?.value;
 	const user = await verifyUser(session, { cookies });
-	return askAdminApiGate(user?.email || null);
+	const gate = askAdminApiGate(user?.email || null);
+	if (!gate.ok) return gate;
+	return { ...gate, uid: user?.uid || "" };
 }
 
 function jsonError(error: string, status: number) {
@@ -42,6 +44,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	const result = await upsertAskSample({
 		body,
 		updatedBy: gate.email,
+		uid: gate.uid,
 	});
 	if (!result.ok) {
 		const unavailable = result.error === "Ask samples are unavailable.";

@@ -116,6 +116,22 @@ export const ASK_SHARE_RESULT_MAX = 50;
 /** Match Research selected-set cap (`RESEARCH_RERANK_HARD_LIMIT`). */
 export const RESEARCH_SHARE_RESULT_MAX = 160;
 
+/** Research snapshots carry `research: true` and/or a report body. */
+export function isAskShareResearchInput(raw: unknown): boolean {
+	if (!raw || typeof raw !== "object") return false;
+	const record = raw as Record<string, unknown>;
+	return (
+		record.research === true ||
+		(typeof record.report === "string" && Boolean(record.report.trim()))
+	);
+}
+
+export function askShareResultMax(raw: unknown): number {
+	return isAskShareResearchInput(raw)
+		? RESEARCH_SHARE_RESULT_MAX
+		: ASK_SHARE_RESULT_MAX;
+}
+
 function clip(value: string, max: number): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, max);
 }
@@ -401,10 +417,8 @@ export function sanitizeAskShareResults(
 		if (!item || typeof item !== "object") continue;
 		const hit = item as Record<string, unknown>;
 		const slug = clip(typeof hit.slug === "string" ? hit.slug : "", 64);
-		const href = clip(
-			typeof hit.href === "string" ? hit.href : slug ? `/${slug}` : "",
-			120,
-		);
+		const rawHref = typeof hit.href === "string" ? hit.href.trim() : "";
+		const href = clip(rawHref || (slug ? `/${slug}` : ""), 120);
 		if (!slug || !href) continue;
 		out.push({
 			slug,
@@ -434,12 +448,10 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 		typeof record.question === "string" ? record.question : "",
 		500,
 	);
-	const research =
-		record.research === true ||
-		(typeof record.report === "string" && Boolean(record.report.trim()));
+	const research = isAskShareResearchInput(record);
 	const results = sanitizeAskShareResults(
 		record.results,
-		research ? RESEARCH_SHARE_RESULT_MAX : ASK_SHARE_RESULT_MAX,
+		askShareResultMax(record),
 	);
 	if (!question || results.length === 0) return null;
 	const queries = Array.isArray(record.queries)
@@ -465,7 +477,7 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 		queries,
 		fallbackQueries,
 		summary:
-			record.research === true && typeof record.report === "string"
+			research && typeof record.report === "string"
 				? clip(
 						(record.summary as string) || "",
 						4800,
@@ -476,7 +488,7 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 					),
 		results,
 		model: clip(typeof record.model === "string" ? record.model : "", 120),
-		...(record.research === true ? { research: true } : {}),
+		...(research ? { research: true } : {}),
 		...(typeof record.report === "string" && record.report.trim()
 			? {
 					report: record.report

@@ -4,15 +4,20 @@ import {
 	ASK_SAMPLE_COLLECTION,
 	ASK_SAMPLE_SLUG_MAX,
 	askSampleKeyFingerprint,
+	askSampleTurnFromBody,
 	deriveAskSampleSlug,
 	isAskSampleSlug,
 	isResearchAskSample,
+	pickAskSampleSourceResults,
 	sanitizeAskSamplePublic,
 	type AiAskSamplePublic,
 } from "./aiAskSamples";
-import { clipResearchProcessNotes } from "./aiAskResearchJob";
+import {
+	clipResearchJobId,
+	clipResearchProcessNotes,
+	sanitizeResearchJobResult,
+} from "./aiAskResearchJob";
 import { normalizeAskQuestionKey } from "./aiAskSession";
-import { sanitizeAskShareTurn } from "./aiAskShare";
 
 function sampleRef(slug: string) {
 	return db!.collection(ASK_SAMPLE_COLLECTION).doc(slug);
@@ -89,14 +94,54 @@ function allocateSampleSlug(
 	return `${trimmed}-${fingerprint}`;
 }
 
+async function loadResearchJobHits(
+	uid: string,
+	jobId: string,
+): Promise<unknown[] | null> {
+	const id = clipResearchJobId(jobId);
+	if (!isFirebaseInitialized || !db || !uid || !id) return null;
+	try {
+		const snap = await db
+			.collection("users")
+			.doc(uid)
+			.collection("researchJobs")
+			.doc(id)
+			.get();
+		if (!snap.exists) return null;
+		const data = snap.data() || {};
+		const resultHits = sanitizeResearchJobResult(data.result)?.results || [];
+		const draftHits = sanitizeResearchJobResult(data.draftResult)?.results || [];
+		return pickAskSampleSourceResults(resultHits, draftHits);
+	} catch {
+		return null;
+	}
+}
+
 export async function upsertAskSample(options: {
 	body: unknown;
 	updatedBy: string;
+	uid?: string;
 }): Promise<
 	| { ok: true; sample: AiAskSamplePublic; replaced: boolean }
 	| { ok: false; error: string }
 > {
-	const turn = sanitizeAskShareTurn(options.body);
+	if (!options.body || typeof options.body !== "object") {
+		return {
+			ok: false,
+			error: "A question with discourse results is required.",
+		};
+	}
+	const raw = options.body as Record<string, unknown>;
+	const jobId =
+		typeof raw.researchJobId === "string" ? raw.researchJobId.trim() : "";
+	const jobHits =
+		options.uid && jobId
+			? await loadResearchJobHits(options.uid, jobId)
+			: null;
+	const turn = askSampleTurnFromBody({
+		...raw,
+		results: pickAskSampleSourceResults(raw.results, jobHits),
+	});
 	if (!turn) {
 		return {
 			ok: false,
@@ -121,11 +166,7 @@ export async function upsertAskSample(options: {
 		existing,
 		research,
 	);
-	const processNotes = clipResearchProcessNotes(
-		options.body && typeof options.body === "object"
-			? (options.body as Record<string, unknown>).processNotes
-			: undefined,
-	);
+	const processNotes = clipResearchProcessNotes(raw.processNotes);
 	const payload = {
 		...turn,
 		slug,
@@ -134,7 +175,7 @@ export async function upsertAskSample(options: {
 		updatedAt: FieldValue.serverTimestamp(),
 		processNotes,
 	};
-	await sampleRef(slug).set(payload, { merge: true });
+	await sampleRef(slug).set(payload);
 	const sample = sanitizeAskSamplePublic({
 		...turn,
 		slug,

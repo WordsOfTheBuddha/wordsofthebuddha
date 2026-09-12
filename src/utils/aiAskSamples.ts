@@ -6,6 +6,7 @@ import {
 	type AiAskSessionEntry,
 } from "./aiAskSession";
 import {
+	isAskShareResearchInput,
 	sanitizeAskShareTurn,
 	type AiAskShareTurn,
 } from "./aiAskShare";
@@ -204,10 +205,30 @@ export function removeAskSampleLocal(
 	return samples.filter((sample) => sample.slug !== id);
 }
 
+/** Prefer the longer source list when republishing a live Research job. */
+export function pickAskSampleSourceResults(
+	bodyResults: unknown,
+	jobResults?: readonly unknown[] | null,
+): unknown[] {
+	const body = Array.isArray(bodyResults) ? bodyResults : [];
+	const job = Array.isArray(jobResults) ? [...jobResults] : [];
+	return job.length > body.length ? job : body;
+}
+
+/** Force the Research lane before sanitizing so samples are not clipped to 50. */
+export function askSampleTurnFromBody(body: unknown): AiAskShareTurn | null {
+	if (!body || typeof body !== "object") return null;
+	const record = body as Record<string, unknown>;
+	return sanitizeAskShareTurn({
+		...record,
+		...(isAskShareResearchInput(record) ? { research: true } : {}),
+	});
+}
+
 export function sanitizeAskSamplePublic(raw: unknown): AiAskSamplePublic | null {
 	if (!raw || typeof raw !== "object") return null;
 	const record = raw as Record<string, unknown>;
-	const turn = sanitizeAskShareTurn(record);
+	const turn = askSampleTurnFromBody(record);
 	if (!turn) return null;
 	const questionKey = normalizeAskQuestionKey(
 		typeof record.questionKey === "string" && record.questionKey.trim()

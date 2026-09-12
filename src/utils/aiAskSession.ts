@@ -589,16 +589,28 @@ export function slimAskHistoryEntriesForSync(
 	);
 }
 
-/** Finished research whose report is not in this row — restore from the job. */
+/** Finished research whose report is not in this row — restore from the job.
+ * Also restore when the local copy was clipped to Ask’s 50-hit cap. */
 export function researchHistoryNeedsJobRestore(
 	entry: Pick<
 		AiAskSessionEntry,
-		"researchJobId" | "researchPending" | "report"
+		| "researchJobId"
+		| "researchPending"
+		| "report"
+		| "results"
+		| "candidateCount"
 	>,
 ): boolean {
 	if (!(entry.researchJobId || "").trim()) return false;
 	if (entry.researchPending === true) return true;
-	return !Boolean((entry.report || "").trim());
+	if (!Boolean((entry.report || "").trim())) return true;
+	const n = Array.isArray(entry.results) ? entry.results.length : 0;
+	const pool =
+		typeof entry.candidateCount === "number" &&
+		Number.isFinite(entry.candidateCount)
+			? entry.candidateCount
+			: 0;
+	return n === MAX_ASK_RESULTS && pool > n;
 }
 
 export function readAiAskSession(

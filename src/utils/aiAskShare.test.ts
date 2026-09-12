@@ -19,6 +19,9 @@ import {
 	sanitizeAskShareTurn,
 	ASK_SHARE_RESULT_MAX,
 	RESEARCH_SHARE_RESULT_MAX,
+	askShareResultMax,
+	isAskShareResearchInput,
+	sanitizeAskShareResults,
 	uniquifyAskShareSlug,
 	type AskShareIdentityInput,
 } from "./aiAskShare";
@@ -573,10 +576,52 @@ describe("sanitizeAskShareTurn result caps", () => {
 			report: "## Radical attention",
 		});
 		assert.equal(snap?.results.length, 69);
+		assert.equal(snap?.research, true);
 		const clipped = sanitizeAskShareTurn({
 			...snap,
 			results: hits(180),
 		});
 		assert.equal(clipped?.results.length, 160);
+	});
+
+	it("treats a report body as Research even without the research flag", () => {
+		assert.equal(
+			isAskShareResearchInput({
+				report: "## Radical attention",
+			}),
+			true,
+		);
+		assert.equal(askShareResultMax({ report: "## Radical attention" }), 160);
+		assert.equal(askShareResultMax({ question: "What is feeling?" }), 50);
+		const snap = sanitizeAskShareTurn({
+			question: "Survey radical attention",
+			lookingFor: "yoniso",
+			queries: ["yoniso"],
+			fallbackQueries: [],
+			summary: "",
+			results: hits(69),
+			model: "test",
+			report: "## Radical attention",
+		});
+		assert.equal(snap?.results.length, 69);
+		assert.equal(snap?.research, true);
+	});
+
+	it("fills an empty href from the slug so Research hits are not dropped", () => {
+		const kept = sanitizeAskShareResults(
+			[
+				{
+					slug: "mn10",
+					title: "Satipaṭṭhāna",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "",
+				},
+			],
+			RESEARCH_SHARE_RESULT_MAX,
+		);
+		assert.equal(kept.length, 1);
+		assert.equal(kept[0]?.href, "/mn10");
 	});
 });

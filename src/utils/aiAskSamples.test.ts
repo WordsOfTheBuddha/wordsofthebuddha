@@ -12,6 +12,7 @@ import {
 	askSampleMatchesQuestion,
 	askSamplePlaybackPatch,
 	askSampleRemoveConfirmMessage,
+	askSampleTurnFromBody,
 	canMarkAskAsSample,
 	canRemoveAskSample,
 	deriveAskSampleSlug,
@@ -19,6 +20,7 @@ import {
 	findAskSampleForExample,
 	hideAskSampleKey,
 	isAskSampleSlug,
+	pickAskSampleSourceResults,
 	publishedAskSample,
 	readHiddenAskSampleKeys,
 	removeAskSampleLocal,
@@ -486,5 +488,49 @@ describe("sanitizeAskSamplePublic process hops", () => {
 			"Read MN 2 in full",
 			"Going deeper",
 		]);
+	});
+});
+
+describe("ask sample source lists", () => {
+	it("keeps the longer of the posted list and the live job", () => {
+		const body = Array.from({ length: 50 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+		}));
+		const job = Array.from({ length: 69 }, (_, index) => ({
+			slug: `sn${index + 1}`,
+		}));
+		assert.equal(pickAskSampleSourceResults(body, job).length, 69);
+		assert.equal(pickAskSampleSourceResults(job, body).length, 69);
+		assert.equal(pickAskSampleSourceResults(body, null).length, 50);
+	});
+
+	it("does not clip a Research sample to the Ask 50-hit cap", () => {
+		const hits = Array.from({ length: 69 }, (_, index) => ({
+			slug: `mn${index + 1}`,
+			title: `MN ${index + 1}`,
+			description: "",
+			contentSnippet: null,
+			referenceOnly: false,
+			href: `/mn${index + 1}`,
+		}));
+		const turn = askSampleTurnFromBody({
+			question: "Survey radical attention",
+			lookingFor: "yoniso",
+			queries: ["yoniso"],
+			fallbackQueries: [],
+			summary: "",
+			results: hits,
+			model: "test",
+			report: "## Radical attention",
+		});
+		assert.equal(turn?.results.length, 69);
+		assert.equal(turn?.research, true);
+		const saved = sanitizeAskSamplePublic({
+			...turn,
+			slug: "survey-radical-attention-report",
+			questionKey: "survey radical attention",
+			updatedAt: 1,
+		});
+		assert.equal(saved?.results.length, 69);
 	});
 });

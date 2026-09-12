@@ -2788,6 +2788,8 @@ export function attachAiMode(options: {
 			}),
 		);
 		if (!window.confirm(askSampleConfirmMessage(replacing, { research: turn.research === true }))) return;
+		const research =
+			turn.research === true || Boolean((turn.report || "").trim());
 		try {
 			const response = await fetch("/api/ai/admin/sample", {
 				method: "POST",
@@ -2799,12 +2801,21 @@ export function attachAiMode(options: {
 					queries: turn.queries,
 					fallbackQueries: turn.fallbackQueries,
 					summary: turn.summary || "",
-					results: turn.results,
+					results: turn.results.map((hit) => ({
+						slug: hit.slug,
+						title: hit.title,
+						description: hit.description,
+						contentSnippet: hit.contentSnippet,
+						referenceOnly: hit.referenceOnly === true,
+						href: hit.href || (hit.slug ? `/${hit.slug}` : ""),
+						...(hit.volpage ? { volpage: hit.volpage } : {}),
+					})),
 					model: turn.model,
 					requestId: turn.requestId,
 					candidateCount: turn.rerankCandidateCount,
-					...(turn.research ? { research: true } : {}),
+					...(research ? { research: true } : {}),
 					...(turn.report ? { report: turn.report } : {}),
+					...(turn.researchJobId ? { researchJobId: turn.researchJobId } : {}),
 					...(turn.processNotes && turn.processNotes.length > 0
 						? { processNotes: turn.processNotes }
 						: {}),
@@ -3776,7 +3787,7 @@ export function attachAiMode(options: {
 					model: turn.model,
 					requestId: turn.requestId,
 					shareSlug: turn.shareSlug,
-					...(turn.research ? { research: true } : {}),
+					...(turn.research || turn.report ? { research: true } : {}),
 					...(turn.report ? { report: turn.report } : {}),
 					...(turn.reasoning ? { reasoning: turn.reasoning } : {}),
 					...(typeof turn.rerankCandidateCount === "number" &&
