@@ -89,6 +89,56 @@ const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
 	seoDescription="An index of people who appear in the discourses — disciples, wanderers, kings, and householders — linked to the suttas in which each appears."
 	showAuth={true}
 >
+	<script is:inline>
+		(function () {
+			try {
+				if (window.__suttaPersonShowMoreBound) return;
+				window.__suttaPersonShowMoreBound = true;
+			} catch (err) {}
+
+			function collapsedLabel(extra) {
+				if (extra <= 0) return "[+ Show More]";
+				return extra === 1
+					? "[+ 1 discourse - Show More]"
+					: "[+ " + extra + " discourses - Show More]";
+			}
+
+			function moreButton(target) {
+				if (!target || !target.closest) return null;
+				return target.closest(".person-discourses-more");
+			}
+
+			document.addEventListener(
+				"mousedown",
+				function (event) {
+					if (moreButton(event.target)) event.preventDefault();
+				},
+				true,
+			);
+
+			document.addEventListener("click", function (event) {
+				var button = moreButton(event.target);
+				if (!button) return;
+				event.preventDefault();
+				var list = button.closest(".person-discourses");
+				if (!list) return;
+				var expanded = list.classList.toggle("is-expanded");
+				list.querySelectorAll(".person-discourse-extra").forEach(
+					function (row) {
+						row.classList.toggle("hidden", !expanded);
+					},
+				);
+				button.setAttribute(
+					"aria-expanded",
+					expanded ? "true" : "false",
+				);
+				var extra = Number(button.getAttribute("data-extra") || "0");
+				button.textContent = expanded
+					? "[- Show Less]"
+					: collapsedLabel(extra);
+			});
+		})();
+	</script>
 	<main class="container mx-auto py-8">
 		<div class="flex justify-between items-baseline mb-4 border-b pb-2">
 			<h3 class="text-2xl font-bold flex-grow mr-4">
@@ -282,6 +332,7 @@ const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
 															<button
 																type="button"
 																class="person-discourses-more mt-1 text-sm text-[var(--primary-color)] hover:text-[var(--link-hover-color)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 rounded"
+																aria-expanded="false"
 																data-extra={
 																	sortedDiscourses.length -
 																	DISCOURSE_LIST_PREVIEW_COUNT
@@ -311,10 +362,6 @@ const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
 		plainLinesFromPersonSelection,
 		writePersonIndexClipboard,
 	} from "../../utils/personIndexCopy";
-	import {
-		DISCOURSE_LIST_PREVIEW_COUNT,
-		discourseShowMoreLabel,
-	} from "../../utils/discourseListPreview";
 
 	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 		anchor.addEventListener(
@@ -416,23 +463,6 @@ const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
 
 	document.addEventListener("copy", onPersonCopy, true);
 	window.addEventListener("copy", onPersonCopy, true);
-
-	document.querySelectorAll(".person-discourses-more").forEach((button) => {
-		button.addEventListener("click", () => {
-			const list = button.closest(".person-discourses");
-			if (!list) return;
-			const expanded = list.classList.toggle("is-expanded");
-			list.querySelectorAll(".person-discourse-extra").forEach((row) => {
-				row.classList.toggle("hidden", !expanded);
-			});
-			const extra = Number(button.getAttribute("data-extra") || "0");
-			button.textContent = expanded
-				? "[- Show Less]"
-				: discourseShowMoreLabel(
-						DISCOURSE_LIST_PREVIEW_COUNT + extra,
-					);
-		});
-	});
 </script>
 
 <style>
@@ -456,5 +486,19 @@ const classFilters = PERSON_FILTER_CLASSES.filter((name) =>
 	.person-discourses .popover-trigger {
 		user-select: text;
 		-webkit-user-select: text;
+	}
+
+	.person-discourses-more {
+		user-select: none;
+		-webkit-user-select: none;
+		cursor: pointer;
+	}
+
+	.person-discourses:not(.is-expanded) .person-discourse-extra {
+		display: none;
+	}
+
+	.person-discourses.is-expanded .person-discourse-extra {
+		display: block;
 	}
 </style>

@@ -71,14 +71,65 @@ describe("plainLinesFromPersonSelection", () => {
 		);
 	});
 
-	it("includes the card title when only the sutta line is selected", () => {
+	it("copies only the sutta line when the heading is not selected", () => {
 		const { document } = installDom(PERSON_HTML);
 		const link = document.getElementById("mn94")!;
 		const range = document.createRange();
 		range.selectNodeContents(link);
 		assert.deepEqual(plainLinesFromPersonSelection(range, document), [
-			"Venerable Udena Bhikkhu",
 			"MN 94 - Ghoṭamukha sutta - With Ghoṭamukha",
+		]);
+	});
+
+	it("does not copy collapsed extra discourses or the previous card", () => {
+		const { document } = installDom(`
+<div class="person-item" data-copy-heading="Wanderer Jambukhādaka Wanderer">
+  <h3><a>Wanderer Jambukhādaka</a><span class="person-class-label"> Wanderer</span></h3>
+  <div class="person-discourses">
+    <div data-copy-line="SN 38.1 - Nibbānapañhā sutta - A Question On Nibbāna">
+      <a>SN 38.1 - Nibbānapañhā sutta - A Question On Nibbāna</a>
+    </div>
+    <div class="person-discourse-extra hidden" data-copy-line="SN 38.16 - Dukkarapañhā sutta - Questions on What is Difficult to Do">
+      <a>SN 38.16 - Dukkarapañhā sutta - Questions on What is Difficult to Do</a>
+    </div>
+  </div>
+</div>
+<div class="person-item" data-copy-heading="Deity Jantu Deities & Gods">
+  <h3><a>Deity Jantu</a><span class="person-class-label"> Deities & Gods</span></h3>
+  <div class="person-discourses">
+    <div data-copy-line="SN 2.25 - Jantu sutta - With Jantu">
+      <a id="sn225">SN 2.25 - Jantu sutta - With Jantu</a>
+    </div>
+  </div>
+</div>
+`);
+		const link = document.getElementById("sn225")!;
+		const range = document.createRange();
+		range.selectNodeContents(link);
+		assert.deepEqual(plainLinesFromPersonSelection(range, document), [
+			"SN 2.25 - Jantu sutta - With Jantu",
+		]);
+	});
+
+	it("copies expanded extra discourses when they are selected", () => {
+		const { document } = installDom(`
+<div class="person-item" data-copy-heading="Layman Isidatta Lay follower">
+  <h3><a>Layman Isidatta</a><span class="person-class-label"> Lay follower</span></h3>
+  <div class="person-discourses is-expanded">
+    <div data-copy-line="AN 6.44 - Migasālā sutta - Migasālā">
+      <a>AN 6.44 - Migasālā sutta - Migasālā</a>
+    </div>
+    <div class="person-discourse-extra" data-copy-line="SN 55.6 - Thapati sutta - The Chamberlains">
+      <a id="sn556">SN 55.6 - Thapati sutta - The Chamberlains</a>
+    </div>
+  </div>
+</div>
+`);
+		const link = document.getElementById("sn556")!;
+		const range = document.createRange();
+		range.selectNodeContents(link);
+		assert.deepEqual(plainLinesFromPersonSelection(range, document), [
+			"SN 55.6 - Thapati sutta - The Chamberlains",
 		]);
 	});
 

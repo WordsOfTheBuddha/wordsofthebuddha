@@ -352,6 +352,48 @@
 			return false;
 		}
 
+		function __suttaPersonRowIsCopyable(row) {
+			if (!row || !row.classList) return false;
+			if (row.classList.contains("hidden")) return false;
+			if (
+				row.classList.contains("person-discourse-extra") &&
+				!(
+					row.closest &&
+					row.closest(".person-discourses") &&
+					row.closest(".person-discourses").classList.contains("is-expanded")
+				)
+			) {
+				return false;
+			}
+			return true;
+		}
+
+		function __suttaPersonSelectedLines(item, range) {
+			var rows = item.querySelectorAll(
+				".person-discourses > [data-copy-line]",
+			);
+			var selected = [];
+			for (var i = 0; i < rows.length; i++) {
+				if (
+					!__suttaPersonRowIsCopyable(rows[i]) ||
+					!__suttaRangeIntersectsNode(range, rows[i])
+				) {
+					continue;
+				}
+				var line = rows[i].getAttribute("data-copy-line") || "";
+				if (line) selected.push(line);
+			}
+			return selected;
+		}
+
+		function __suttaPersonItemIntersects(item, range) {
+			var headingEl = item.querySelector("h3");
+			if (headingEl && __suttaRangeIntersectsNode(range, headingEl)) {
+				return true;
+			}
+			return __suttaPersonSelectedLines(item, range).length > 0;
+		}
+
 		function __suttaPersonCopyLines(range) {
 			var ancestor = range.commonAncestorContainer;
 			var ancestorEl =
@@ -360,29 +402,36 @@
 			if (ancestorEl.closest(".popover-content")) {
 				var popover = ancestorEl.closest(".popover-content");
 				var popoverLine = popover.getAttribute("data-copy-line") || "";
-				var item = ancestorEl.closest(".person-item");
-				var name = item ? __suttaPersonHeadingLine(item) : "";
-				if (name && popoverLine) return [name, popoverLine];
-				if (name) return [name];
-				if (popoverLine) return [popoverLine];
-				return null;
+				return popoverLine ? [popoverLine] : null;
 			}
 			var inside = ancestorEl.closest(".person-item");
-			if (!inside) return null;
-			var heading = __suttaPersonHeadingLine(inside);
-			var rows = inside.querySelectorAll(
-				".person-discourses > [data-copy-line]",
-			);
-			var selected = [];
-			for (var i = 0; i < rows.length; i++) {
-				if (__suttaRangeIntersectsNode(range, rows[i])) {
-					var line = rows[i].getAttribute("data-copy-line") || "";
-					if (line) selected.push(line);
+			var items = [];
+			if (inside) {
+				items = [inside];
+			} else {
+				var all = document.querySelectorAll(".person-item");
+				for (var p = 0; p < all.length; p++) {
+					if (__suttaPersonItemIntersects(all[p], range)) {
+						items.push(all[p]);
+					}
 				}
 			}
+			if (!items.length) return null;
 			var lines = [];
-			if (heading) lines.push(heading);
-			for (var j = 0; j < selected.length; j++) lines.push(selected[j]);
+			for (var n = 0; n < items.length; n++) {
+				var item = items[n];
+				var headingEl = item.querySelector("h3");
+				var headingSelected = !!(
+					headingEl && __suttaRangeIntersectsNode(range, headingEl)
+				);
+				var selected = __suttaPersonSelectedLines(item, range);
+				if (!headingSelected && !selected.length) continue;
+				if (headingSelected) {
+					var heading = __suttaPersonHeadingLine(item);
+					if (heading) lines.push(heading);
+				}
+				for (var j = 0; j < selected.length; j++) lines.push(selected[j]);
+			}
 			return lines.length ? lines : null;
 		}
 

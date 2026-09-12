@@ -1258,4 +1258,50 @@ describe("person index copy isolation", () => {
 			"Venerable Udena Bhikkhu\nMN 94 - Ghoṭamukha sutta - With Ghoṭamukha",
 		);
 	});
+
+	it("inline copy does not add the card title when only the sutta is selected", () => {
+		resetDiscoursePlainCopyForTests();
+		const { document, window } = installDom(`
+			<div class="person-item" data-copy-heading="Deity Jantu Deities & Gods">
+				<h3><a>Deity Jantu</a><span class="person-class-label"> Deities & Gods</span></h3>
+				<div class="person-discourses">
+					<div data-copy-line="SN 2.25 - Jantu sutta - With Jantu">
+						<a id="sn225">SN 2.25 - Jantu sutta - With Jantu</a>
+					</div>
+				</div>
+			</div>
+		`);
+		const inlineSrc = readFileSync(
+			path.join(
+				path.dirname(fileURLToPath(import.meta.url)),
+				"discoursePlainCopyInline.js",
+			),
+			"utf8",
+		);
+		(window as unknown as { eval: (code: string) => void }).eval(inlineSrc);
+
+		const link = document.getElementById("sn225")!;
+		const range = document.createRange();
+		range.selectNodeContents(link);
+		const selection = window.getSelection();
+		assert.ok(selection);
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		const stored: Record<string, string> = {};
+		const event = new window.Event("copy", {
+			bubbles: true,
+			cancelable: true,
+		});
+		Object.defineProperty(event, "clipboardData", {
+			value: {
+				setData(type: string, value: string) {
+					stored[type] = value;
+				},
+			},
+		});
+		document.dispatchEvent(event);
+		assert.equal(event.defaultPrevented, true);
+		assert.equal(stored["text/plain"], "SN 2.25 - Jantu sutta - With Jantu");
+	});
 });

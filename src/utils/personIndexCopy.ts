@@ -1,6 +1,6 @@
 /**
- * Plain copy for /person: visible name + class and selected discourse lines,
- * never hover-description popovers.
+ * Plain copy for /person: only the selected heading and discourse lines,
+ * never hover-description popovers or neighboring cards.
  */
 
 function rangeIntersectsNode(range: Range, node: Node): boolean {
@@ -29,6 +29,33 @@ function headingLine(item: Element): string {
 	return (heading?.textContent || "").replace(/\s+/g, " ").trim();
 }
 
+function isCopyableDiscourseRow(row: Element): boolean {
+	if (row.classList.contains("hidden")) return false;
+	if (
+		row.classList.contains("person-discourse-extra") &&
+		!row.closest(".person-discourses")?.classList.contains("is-expanded")
+	) {
+		return false;
+	}
+	return true;
+}
+
+function selectedDiscourseLines(item: Element, range: Range): string[] {
+	return [...item.querySelectorAll(".person-discourses > [data-copy-line]")]
+		.filter(
+			(row) =>
+				isCopyableDiscourseRow(row) && rangeIntersectsNode(range, row),
+		)
+		.map((row) => row.getAttribute("data-copy-line") || "")
+		.filter(Boolean);
+}
+
+function personItemIntersects(item: Element, range: Range): boolean {
+	const heading = item.querySelector("h3");
+	if (heading && rangeIntersectsNode(range, heading)) return true;
+	return selectedDiscourseLines(item, range).length > 0;
+}
+
 /** Lines to put on the clipboard for a selection on the person index, or null. */
 export function plainLinesFromPersonSelection(
 	range: Range,
@@ -40,44 +67,30 @@ export function plainLinesFromPersonSelection(
 	if (ancestorEl?.closest(".popover-content")) {
 		const popover = ancestorEl.closest(".popover-content");
 		const popoverLine = popover?.getAttribute("data-copy-line") || "";
-		const row = popoverLine
-			? root.querySelector(
-					`.person-item [data-copy-line="${CSS.escape(popoverLine)}"]`,
-				)
-			: null;
-		const item = row?.closest(".person-item") || ancestorEl.closest(".person-item");
-		if (!item) return popoverLine ? [popoverLine] : null;
-		const name = headingLine(item);
-		return name && popoverLine ? [name, popoverLine] : name ? [name] : [popoverLine];
+		return popoverLine ? [popoverLine] : null;
 	}
 
 	const inside = ancestorEl?.closest(".person-item");
 	const items = inside
 		? [inside]
-		: [...root.querySelectorAll(".person-item")].filter((item) => {
-				const heading = item.querySelector("h3");
-				if (heading && rangeIntersectsNode(range, heading)) return true;
-				return [
-					...item.querySelectorAll(".person-discourses > [data-copy-line]"),
-				].some((row) => rangeIntersectsNode(range, row));
-			});
+		: [...root.querySelectorAll(".person-item")].filter((item) =>
+				personItemIntersects(item, range),
+			);
 	if (items.length === 0) return null;
 
 	const lines: string[] = [];
 	for (const item of items) {
-		const name = headingLine(item);
-		const selected = [
-			...item.querySelectorAll(".person-discourses > [data-copy-line]"),
-		]
-			.filter((row) => rangeIntersectsNode(range, row))
-			.map((row) => row.getAttribute("data-copy-line") || "")
-			.filter(Boolean);
-		if (selected.length > 0) {
+		const heading = item.querySelector("h3");
+		const headingSelected = Boolean(
+			heading && rangeIntersectsNode(range, heading),
+		);
+		const selected = selectedDiscourseLines(item, range);
+		if (!headingSelected && selected.length === 0) continue;
+		if (headingSelected) {
+			const name = headingLine(item);
 			if (name) lines.push(name);
-			lines.push(...selected);
-			continue;
 		}
-		if (name) lines.push(name);
+		lines.push(...selected);
 	}
 	return lines.length > 0 ? lines : null;
 }
