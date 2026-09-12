@@ -26,6 +26,7 @@ import {
 	REVIEW_ROOM_REPORT_EMPTY,
 	REVIEW_ROOM_REPORT_NEW_LABEL,
 	RESEARCH_COMPOSER_LABEL,
+	RESEARCH_CHIP_TITLE,
 	RESEARCH_DELETE_ACTION,
 	RESEARCH_DELETE_CONFIRM,
 	RESEARCH_FOLLOW_PLACEHOLDER,
@@ -808,10 +809,14 @@ describe("Research pane copy", () => {
 		assert.equal(ASK_PLACEHOLDER, "Ask a question about the discourses…");
 		assert.equal(
 			RESEARCH_PLACEHOLDER,
-			"Ask for a cited report from the discourses…",
+			"Ask for a cited report based on the Words of the Buddha…",
 		);
 		assert.equal(ASK_COMPOSER_LABEL, "Ask a question");
 		assert.equal(RESEARCH_COMPOSER_LABEL, "Ask for a cited report");
+		assert.equal(
+			RESEARCH_CHIP_TITLE,
+			"A few questions first, then a cited report based on the Words of the Buddha. We’ll email you when it’s ready.",
+		);
 		assert.equal(ASK_HISTORY_LABEL, "Recent Asks");
 		assert.equal(RESEARCH_HISTORY_LABEL, "Recent reports");
 		assert.equal(ASK_LIMITS_NOTE, "Experimental AI search · limited free Asks");
@@ -845,15 +850,18 @@ describe("Research pane copy", () => {
 			RESEARCH_SHARE_ACCOUNT_TITLE,
 			"Create an account to share this report",
 		);
-		assert.equal(RESEARCH_SIGNIN_TITLE, "Sign in to run Research");
-		assert.match(RESEARCH_SIGNIN_BODY, /do not use your credits/);
+		assert.equal(RESEARCH_SIGNIN_TITLE, "Run Research");
+		assert.equal(
+			RESEARCH_SIGNIN_BODY,
+			"Perform a deep search of the Words of the Buddha and get a cited report. Create a free account to get started with Research.",
+		);
 		assert.equal(
 			RESEARCH_SIGNIN_EMPTY_NOTE,
 			"Create an account or sign in to run Research.",
 		);
 		assert.equal(
 			RESEARCH_INVITE_AFTER_ASK,
-			"Looking for a wider search and a longer cited report? Try Research.",
+			"Looking for a wider search and a cited report based on the Words of the Buddha? Try Research.",
 		);
 		assert.equal(ASK_NEW_LABEL, "+ New Ask");
 		assert.equal(RESEARCH_NEW_LABEL, "+ New Research");

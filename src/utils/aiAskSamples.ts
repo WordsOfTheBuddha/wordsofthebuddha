@@ -19,9 +19,14 @@ export const RESEARCH_SAMPLE_NOTE =
 	"This is an illustration from a prior research run. It does not use your Research credits.";
 export const RESEARCH_SAMPLE_KICKER = "Illustration — not your run";
 export const ASK_SAMPLE_MENU_LABEL = "Sample";
+export const ASK_SAMPLE_SAVE_LABEL = "Use as sample";
+export const ASK_SAMPLE_SAVE_LABEL_SHORT = "Sample";
+export const ASK_SAMPLE_REMOVE_LABEL = "Remove as Sample";
+export const ASK_SAMPLE_REMOVE_LABEL_SHORT = "Remove";
 export const ASK_SAMPLE_HIDE_TITLE = "Hide this sample from your list?";
 export const ASK_SAMPLE_HIDE_CONFIRM =
 	"It stays available for others.";
+export const ASK_SAMPLE_REMOVE_TITLE = "Remove this sample for everyone?";
 /** Samples fill Recent until the reader has this many of their own in the lane. */
 export const ASK_SAMPLE_SHOW_UNTIL_OWN = 17;
 export const HIDDEN_ASK_SAMPLES_KEY = "ai-ask-hidden-samples-v1";
@@ -147,21 +152,56 @@ export function findAskSampleForExample(
 	options?: { research?: boolean; researchChipOn?: boolean },
 ): AiAskSamplePublic | null {
 	const research = options?.research === true || options?.researchChipOn === true;
-	const sample = findAskSample(samples, question);
-	if (!sample) return null;
-	const isResearch = sample.research === true || Boolean((sample.report || "").trim());
-	if (research) return isResearch ? sample : null;
-	return isResearch ? null : sample;
+	const lane = research ? researchAskSamples(samples) : askPaneSamples(samples);
+	return findAskSample(lane, question);
+}
+
+/** Published example for this open turn (slug wins, else question + lane). */
+export function publishedAskSample(
+	samples: readonly AiAskSamplePublic[],
+	input: {
+		question: string;
+		originalQuestion?: string;
+		sampleSlug?: string;
+		research?: boolean;
+	},
+): AiAskSamplePublic | null {
+	const slug = (input.sampleSlug || "").trim().toLowerCase();
+	if (slug) {
+		const bySlug = samples.find((sample) => sample.slug === slug);
+		if (bySlug) return bySlug;
+	}
+	const research = input.research === true;
+	return (
+		findAskSampleForExample(samples, input.question, { research }) ||
+		(input.originalQuestion
+			? findAskSampleForExample(samples, input.originalQuestion, { research })
+			: null)
+	);
 }
 
 export function upsertAskSampleLocal(
 	samples: readonly AiAskSamplePublic[],
 	next: AiAskSamplePublic,
 ): AiAskSamplePublic[] {
+	const research = isResearchAskSample(next);
 	const without = samples.filter(
-		(sample) => sample.questionKey !== next.questionKey,
+		(sample) =>
+			!(
+				sample.questionKey === next.questionKey &&
+				isResearchAskSample(sample) === research
+			),
 	);
 	return [next, ...without];
+}
+
+export function removeAskSampleLocal(
+	samples: readonly AiAskSamplePublic[],
+	slug: string,
+): AiAskSamplePublic[] {
+	const id = slug.trim().toLowerCase();
+	if (!id) return [...samples];
+	return samples.filter((sample) => sample.slug !== id);
 }
 
 export function sanitizeAskSamplePublic(raw: unknown): AiAskSamplePublic | null {
@@ -219,6 +259,39 @@ export function canMarkAskAsSample(input: {
 		return Boolean(input.hasReport) && input.resultCount > 0;
 	}
 	return input.resultCount > 0;
+}
+
+export function canRemoveAskSample(input: {
+	isAdmin: boolean;
+	pending?: boolean;
+	fromShare?: boolean;
+	hasSample: boolean;
+}): boolean {
+	return Boolean(
+		input.isAdmin &&
+			!input.pending &&
+			input.fromShare !== true &&
+			input.hasSample,
+	);
+}
+
+/** One admin control: remove replaces save when this question is already an example. */
+export function askSampleAdminAction(input: {
+	canSave: boolean;
+	canRemove: boolean;
+}): "save" | "remove" | null {
+	if (input.canRemove) return "remove";
+	if (input.canSave) return "save";
+	return null;
+}
+
+export function askSampleRemoveConfirmMessage(options?: {
+	research?: boolean;
+}): string {
+	if (options?.research) {
+		return "Readers will no longer see this illustration. Their own reports are unchanged.";
+	}
+	return "Readers will no longer see this illustration. Their own Asks are unchanged.";
 }
 
 export function askSampleConfirmMessage(

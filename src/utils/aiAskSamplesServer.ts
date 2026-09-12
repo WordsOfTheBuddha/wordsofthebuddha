@@ -5,6 +5,7 @@ import {
 	ASK_SAMPLE_SLUG_MAX,
 	askSampleKeyFingerprint,
 	deriveAskSampleSlug,
+	isAskSampleSlug,
 	isResearchAskSample,
 	sanitizeAskSamplePublic,
 	type AiAskSamplePublic,
@@ -145,4 +146,25 @@ export async function upsertAskSample(options: {
 		return { ok: false, error: "Could not save this example." };
 	}
 	return { ok: true, sample, replaced: Boolean(prior) };
+}
+
+export async function deleteAskSample(options: {
+	slug: string;
+}): Promise<
+	| { ok: true; slug: string }
+	| { ok: false; error: string }
+> {
+	const slug = options.slug.trim().toLowerCase();
+	if (!slug || !isAskSampleSlug(slug)) {
+		return { ok: false, error: "A sample slug is required." };
+	}
+	if (!isFirebaseInitialized || !db) {
+		return { ok: false, error: "Ask samples are unavailable." };
+	}
+	const existing = await loadAskSampleBySlug(slug);
+	if (!existing) {
+		return { ok: false, error: "That example is no longer published." };
+	}
+	await sampleRef(slug).delete();
+	return { ok: true, slug: existing.slug };
 }

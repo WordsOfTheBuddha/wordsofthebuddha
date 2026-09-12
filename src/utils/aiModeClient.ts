@@ -113,14 +113,23 @@ import {
 	ASK_SAMPLE_MENU_LABEL,
 	ASK_SAMPLE_NOTE,
 	ASK_SAMPLE_PLAYBACK,
+	ASK_SAMPLE_REMOVE_LABEL,
+	ASK_SAMPLE_REMOVE_LABEL_SHORT,
+	ASK_SAMPLE_REMOVE_TITLE,
+	ASK_SAMPLE_SAVE_LABEL,
+	ASK_SAMPLE_SAVE_LABEL_SHORT,
 	askSampleConfirmMessage,
 	askSampleHideKey,
 	askSamplePlaybackPatch,
+	askSampleRemoveConfirmMessage,
 	canMarkAskAsSample,
-	findAskSampleForExample,
+	canRemoveAskSample,
+	askSampleAdminAction,
 	hideAskSampleKey,
 	isResearchAskSample,
+	publishedAskSample,
 	readHiddenAskSampleKeys,
+	removeAskSampleLocal,
 	RESEARCH_SAMPLE_KICKER,
 	RESEARCH_SAMPLE_NOTE,
 	sampleToHistoryEntry,
@@ -2653,6 +2662,7 @@ export function attachAiMode(options: {
 				.map((item) => sanitizeAskSamplePublic(item))
 				.filter((item): item is AiAskSamplePublic => Boolean(item));
 			renderHistory();
+			if (turns.length > 0) syncLayout();
 		} catch {
 			/* samples are optional until an admin marks one */
 		}
@@ -2771,7 +2781,9 @@ export function attachAiMode(options: {
 			return;
 		}
 		const replacing = Boolean(
-			findAskSampleForExample(askSamples, turn.question, {
+			publishedAskSample(askSamples, {
+				question: turn.question,
+				originalQuestion: turn.originalQuestion,
 				research: turn.research === true,
 			}),
 		);
@@ -2811,11 +2823,69 @@ export function attachAiMode(options: {
 			if (saved) {
 				askSamples = upsertAskSampleLocal(askSamples, saved);
 				renderHistory();
+				syncLayout();
 			}
 			setStatus("Saved as the example for this question.");
 		} catch {
 			setStatus("Could not save this example.");
 		}
+	}
+
+	async function removePublishedSample(slug: string, fromSample: boolean): Promise<void> {
+		try {
+			const response = await fetch("/api/ai/admin/sample", {
+				method: "DELETE",
+				credentials: "same-origin",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ slug }),
+			});
+			const data = (await response.json()) as {
+				success?: boolean;
+				error?: string;
+			};
+			if (!response.ok || !data.success) {
+				setStatus(data.error || "Could not remove this example.");
+				return;
+			}
+			askSamples = removeAskSampleLocal(askSamples, slug);
+			if (fromSample) {
+				leaveAskHome({ url: "replace" });
+			} else {
+				renderHistory();
+				syncLayout();
+			}
+			setStatus("Removed this example.");
+		} catch {
+			setStatus("Could not remove this example.");
+		}
+	}
+
+	function removeTurnSample(turn: AiAskTurn): void {
+		const published = publishedAskSample(askSamples, {
+			question: turn.question,
+			originalQuestion: turn.originalQuestion,
+			sampleSlug: turn.sampleSlug,
+			research: turn.research === true,
+		});
+		const slug = published?.slug || (turn.fromSample ? turn.sampleSlug : "") || "";
+		if (
+			!slug ||
+			!canRemoveAskSample({
+				isAdmin: isAskAdmin,
+				pending: turn.pending,
+				fromShare: turn.fromShare,
+				hasSample: true,
+			})
+		) {
+			return;
+		}
+		openConfirmDialog(
+			ASK_SAMPLE_REMOVE_TITLE,
+			askSampleRemoveConfirmMessage({ research: turn.research === true }),
+			() => {
+				void removePublishedSample(slug, turn.fromSample === true);
+			},
+		);
 	}
 
 	function persistSaveState(turn: AiAskTurn): void {
@@ -3497,45 +3567,76 @@ export function attachAiMode(options: {
 							: "Delete this Ask"
 				}">Delete</button>`
 				: "";
-		const showSampleSave =
-			tip &&
-			canMarkAskAsSample({
-				isAdmin: isAskAdmin,
-				pending: turn.pending,
-				error: turn.error,
-				offTopic: turn.offTopic,
-				resultCount: turn.results.length,
-				fromShare: turn.fromShare,
-				fromSample: turn.fromSample,
-				research: turn.research,
-				hasReport: Boolean((turn.report || "").trim()),
-			});
-		const sampleSaveBtn = showSampleSave
-			? `<button type="button" class="ai-share-btn" data-ai-sample-save data-turn-index="${turnIndex}" title="${
-				turn.research
-					? "Use this report as the example for this question"
-					: "Use this run as the example for this question"
-			}">
-				<span class="ai-share-label-full">Use as sample</span><span class="ai-share-label-short">Sample</span>
+		const publishedSample = publishedAskSample(askSamples, {
+			question: turn.question,
+			originalQuestion: turn.originalQuestion,
+			sampleSlug: turn.sampleSlug,
+			research: turn.research === true,
+		});
+		const sampleAction = askSampleAdminAction({
+			canSave: Boolean(
+				tip &&
+					canMarkAskAsSample({
+						isAdmin: isAskAdmin,
+						pending: turn.pending,
+						error: turn.error,
+						offTopic: turn.offTopic,
+						resultCount: turn.results.length,
+						fromShare: turn.fromShare,
+						fromSample: turn.fromSample,
+						research: turn.research,
+						hasReport: Boolean((turn.report || "").trim()),
+					}),
+			),
+			canRemove: Boolean(
+				tip &&
+					canRemoveAskSample({
+						isAdmin: isAskAdmin,
+						pending: turn.pending,
+						fromShare: turn.fromShare,
+						hasSample: Boolean(
+							publishedSample || (turn.fromSample && turn.sampleSlug),
+						),
+					}),
+			),
+		});
+		const sampleSaveBtn =
+			sampleAction === "save"
+				? `<button type="button" class="ai-share-btn" data-ai-sample-save data-turn-index="${turnIndex}" title="${
+					turn.research
+						? "Use this report as the example for this question"
+						: "Use this run as the example for this question"
+				}">
+				<span class="ai-share-label-full">${ASK_SAMPLE_SAVE_LABEL}</span><span class="ai-share-label-short">${ASK_SAMPLE_SAVE_LABEL_SHORT}</span>
 			</button>`
-			: "";
+				: "";
+		const sampleRemoveBtn =
+			sampleAction === "remove"
+				? `<button type="button" class="ai-share-btn" data-ai-sample-remove data-turn-index="${turnIndex}" title="${
+					turn.research
+						? "Stop showing this as the research example for this question"
+						: "Stop showing this as the Ask example for this question"
+				}">
+				<span class="ai-share-label-full">${ASK_SAMPLE_REMOVE_LABEL}</span><span class="ai-share-label-short">${ASK_SAMPLE_REMOVE_LABEL_SHORT}</span>
+			</button>`
+				: "";
 		const startBtns =
 			pinBtn || deleteBtn
 				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
 				: "";
 		const downloadBtn = flags.showDownload
-				? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
-				: "";
+			? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
+			: "";
 		const shareBtn = flags.showShare
 			? `<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>`
 			: "";
-		if (!startBtns && !downloadBtn && !sampleSaveBtn && !shareBtn) {
+		if (!startBtns && !downloadBtn && !sampleSaveBtn && !sampleRemoveBtn && !shareBtn) {
 			return "";
 		}
 		return `<div class="ai-share-actions">
 			${startBtns}
 			<div class="ai-share-actions-end">
-				${downloadBtn}${sampleSaveBtn}${shareBtn}
+				${downloadBtn}${sampleSaveBtn}${sampleRemoveBtn}${shareBtn}
 			</div>
 		</div>`;
 	}
@@ -4426,6 +4527,15 @@ export function attachAiMode(options: {
 					const index = Number(button.getAttribute("data-turn-index"));
 					const turn = turns[index];
 					if (turn) void saveTurnAsSample(turn);
+				});
+			},
+		);
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-sample-remove]").forEach(
+			(button) => {
+				button.addEventListener("click", () => {
+					const index = Number(button.getAttribute("data-turn-index"));
+					const turn = turns[index];
+					if (turn) removeTurnSample(turn);
 				});
 			},
 		);

@@ -111,6 +111,10 @@ export interface AskShareIdentityInput {
 }
 
 const ASK_SHARE_THREAD_LIMIT = 6;
+/** Match Ask display cap (`AI_RERANK_MAX_LIMIT`). */
+export const ASK_SHARE_RESULT_MAX = 50;
+/** Match Research selected-set cap (`RESEARCH_RERANK_HARD_LIMIT`). */
+export const RESEARCH_SHARE_RESULT_MAX = 160;
 
 function clip(value: string, max: number): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, max);
@@ -370,7 +374,7 @@ export function askShareSeo(
 			description: (
 				fromReport ||
 				share.lookingFor ||
-				"Shared research report from the discourses of the Buddha."
+				"Shared research report based on the Words of the Buddha."
 			).slice(0, 160),
 		};
 	}
@@ -384,10 +388,16 @@ export function askShareSeo(
 	};
 }
 
-export function sanitizeAskShareResults(raw: unknown): AiDiscourseHit[] {
+export function sanitizeAskShareResults(
+	raw: unknown,
+	max = ASK_SHARE_RESULT_MAX,
+): AiDiscourseHit[] {
 	if (!Array.isArray(raw)) return [];
+	const limit = Number.isFinite(max)
+		? Math.max(0, Math.floor(max))
+		: ASK_SHARE_RESULT_MAX;
 	const out: AiDiscourseHit[] = [];
-	for (const item of raw.slice(0, 50)) {
+	for (const item of raw.slice(0, limit)) {
 		if (!item || typeof item !== "object") continue;
 		const hit = item as Record<string, unknown>;
 		const slug = clip(typeof hit.slug === "string" ? hit.slug : "", 64);
@@ -424,7 +434,13 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 		typeof record.question === "string" ? record.question : "",
 		500,
 	);
-	const results = sanitizeAskShareResults(record.results);
+	const research =
+		record.research === true ||
+		(typeof record.report === "string" && Boolean(record.report.trim()));
+	const results = sanitizeAskShareResults(
+		record.results,
+		research ? RESEARCH_SHARE_RESULT_MAX : ASK_SHARE_RESULT_MAX,
+	);
 	if (!question || results.length === 0) return null;
 	const queries = Array.isArray(record.queries)
 		? record.queries

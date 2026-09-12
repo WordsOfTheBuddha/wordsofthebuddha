@@ -16,7 +16,7 @@ export {
 
 export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
 export const RESEARCH_PLACEHOLDER =
-	"Ask for a cited report from the discourses…";
+	"Ask for a cited report based on the Words of the Buddha…";
 export const ASK_PLACEHOLDER = "Ask a question about the discourses…";
 export const ASK_COMPOSER_LABEL = "Ask a question";
 export const RESEARCH_COMPOSER_LABEL = "Ask for a cited report";
@@ -40,11 +40,11 @@ export const RESEARCH_DELETE_CONFIRM =
 	"Delete this report from Recent reports? This cannot be undone.";
 export const RESEARCH_SIGNIN_EMPTY_NOTE =
 	"Create an account or sign in to run Research.";
-export const RESEARCH_SIGNIN_TITLE = "Sign in to run Research";
+export const RESEARCH_SIGNIN_TITLE = "Run Research";
 export const RESEARCH_SIGNIN_BODY =
-	"Research is 2 cited reports per day. Create a free account to start one — samples on this page are illustrations and do not use your credits.";
+	"Perform a deep search of the Words of the Buddha and get a cited report. Create a free account to get started with Research.";
 export const RESEARCH_INVITE_AFTER_ASK =
-	"Looking for a wider search and a longer cited report? Try Research.";
+	"Looking for a wider search and a cited report based on the Words of the Buddha? Try Research.";
 export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin this report";
 export const RESEARCH_PIN_ACCOUNT_BODY =
 	"Recent research reports are temporary. Pinning keeps a report at hand when older ones drop off.";
@@ -167,7 +167,7 @@ export function askFollowPlaceholder(input: {
 		: ASK_FOLLOW_PLACEHOLDER;
 }
 export const RESEARCH_CHIP_TITLE =
-	"A few questions first, then a longer cited report. 2 per day. We’ll email you when it’s ready.";
+	"A few questions first, then a cited report based on the Words of the Buddha. We’ll email you when it’s ready.";
 export const RESEARCH_EMAIL_PENDING_NOTE =
 	"We’ll email you when this is ready. Feel free to leave.";
 

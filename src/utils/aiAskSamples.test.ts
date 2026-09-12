@@ -3,18 +3,25 @@ import { describe, it } from "node:test";
 import {
 	ASK_SAMPLE_NOTE,
 	ASK_SAMPLE_PLAYBACK,
+	ASK_SAMPLE_REMOVE_LABEL,
+	ASK_SAMPLE_REMOVE_TITLE,
+	askSampleAdminAction,
 	askSampleConfirmMessage,
 	askSampleHideKey,
 	askSampleKeyFingerprint,
 	askSampleMatchesQuestion,
 	askSamplePlaybackPatch,
+	askSampleRemoveConfirmMessage,
 	canMarkAskAsSample,
+	canRemoveAskSample,
 	deriveAskSampleSlug,
 	findAskSample,
 	findAskSampleForExample,
 	hideAskSampleKey,
 	isAskSampleSlug,
+	publishedAskSample,
 	readHiddenAskSampleKeys,
+	removeAskSampleLocal,
 	sampleToHistoryEntry,
 	sanitizeAskSamplePublic,
 	upsertAskSampleLocal,
@@ -138,6 +145,39 @@ describe("findAskSample", () => {
 			),
 		);
 	});
+
+	it("keeps Ask and Research samples for the same question on their own lane", () => {
+		const ask = afterDeath;
+		const report = sample(ask.question, `${ask.slug}-report`)!;
+		report.research = true;
+		report.report = "## After death";
+		assert.equal(
+			findAskSampleForExample([report, ask], ask.question, { research: false })
+				?.slug,
+			ask.slug,
+		);
+		assert.equal(
+			findAskSampleForExample([report, ask], ask.question, { research: true })
+				?.slug,
+			report.slug,
+		);
+		assert.equal(
+			publishedAskSample([report, ask], {
+				question: ask.question,
+				sampleSlug: report.slug,
+				research: true,
+			})?.report,
+			"## After death",
+		);
+		assert.equal(
+			publishedAskSample([report, ask], {
+				question: "Edited wording of the same report",
+				originalQuestion: ask.question,
+				research: true,
+			})?.slug,
+			report.slug,
+		);
+	});
 });
 
 describe("canMarkAskAsSample", () => {
@@ -191,6 +231,70 @@ describe("canMarkAskAsSample", () => {
 	});
 });
 
+describe("canRemoveAskSample", () => {
+	it("is for admins on a published example, including the sample itself", () => {
+		assert.equal(
+			canRemoveAskSample({
+				isAdmin: true,
+				hasSample: true,
+			}),
+			true,
+		);
+		assert.equal(
+			canRemoveAskSample({
+				isAdmin: false,
+				hasSample: true,
+			}),
+			false,
+		);
+		assert.equal(
+			canRemoveAskSample({
+				isAdmin: true,
+				hasSample: false,
+			}),
+			false,
+		);
+		assert.equal(
+			canRemoveAskSample({
+				isAdmin: true,
+				hasSample: true,
+				pending: true,
+			}),
+			false,
+		);
+		assert.equal(
+			canRemoveAskSample({
+				isAdmin: true,
+				hasSample: true,
+				fromShare: true,
+			}),
+			false,
+		);
+	});
+});
+
+describe("askSampleAdminAction", () => {
+	it("replaces Use as sample with Remove as Sample when already published", () => {
+		assert.equal(
+			askSampleAdminAction({ canSave: true, canRemove: false }),
+			"save",
+		);
+		assert.equal(
+			askSampleAdminAction({ canSave: true, canRemove: true }),
+			"remove",
+		);
+		assert.equal(
+			askSampleAdminAction({ canSave: false, canRemove: true }),
+			"remove",
+		);
+		assert.equal(
+			askSampleAdminAction({ canSave: false, canRemove: false }),
+			null,
+		);
+		assert.equal(ASK_SAMPLE_REMOVE_LABEL, "Remove as Sample");
+	});
+});
+
 describe("askSampleConfirmMessage", () => {
 	it("warns when replacing an existing example", () => {
 		assert.match(askSampleConfirmMessage(false), /does not use their Ask credits/);
@@ -199,6 +303,12 @@ describe("askSampleConfirmMessage", () => {
 			askSampleConfirmMessage(false, { research: true }),
 			/does not use their Research credits/,
 		);
+		assert.match(
+			askSampleRemoveConfirmMessage({ research: true }),
+			/Their own reports are unchanged/,
+		);
+		assert.match(askSampleRemoveConfirmMessage(), /Their own Asks are unchanged/);
+		assert.equal(ASK_SAMPLE_REMOVE_TITLE, "Remove this sample for everyone?");
 	});
 });
 
@@ -210,6 +320,22 @@ describe("upsertAskSampleLocal", () => {
 		const next = upsertAskSampleLocal([first], second);
 		assert.equal(next.length, 1);
 		assert.equal(next[0]?.summary, "A later run.");
+	});
+
+	it("does not drop the other lane when the question matches", () => {
+		const ask = sample("Survey how the discourses describe feeling")!;
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.report = "# Feeling";
+		report.slug = `${ask.slug}-report`;
+		const next = upsertAskSampleLocal([ask], report);
+		assert.equal(next.length, 2);
+		assert.equal(
+			next.filter((item) => item.slug === ask.slug).length,
+			1,
+		);
+		assert.equal(removeAskSampleLocal(next, report.slug).length, 1);
+		assert.equal(removeAskSampleLocal(next, report.slug)[0]?.slug, ask.slug);
 	});
 });
 

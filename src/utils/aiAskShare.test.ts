@@ -16,9 +16,16 @@ import {
 	normalizeAskShareSlug,
 	resolveAskShareSlug,
 	sanitizeAskShareSnapshot,
+	sanitizeAskShareTurn,
+	ASK_SHARE_RESULT_MAX,
+	RESEARCH_SHARE_RESULT_MAX,
 	uniquifyAskShareSlug,
 	type AskShareIdentityInput,
 } from "./aiAskShare";
+import {
+	AI_RERANK_MAX_LIMIT,
+	RESEARCH_RERANK_HARD_LIMIT,
+} from "./aiResultRerank";
 
 const SEP_10_2026_14H = Date.UTC(2026, 8, 10, 14, 0, 0);
 
@@ -526,5 +533,50 @@ describe("askSharePageRedirect", () => {
 			}),
 			"/ask/an-ask-share",
 		);
+	});
+});
+
+describe("sanitizeAskShareTurn result caps", () => {
+	it("tracks the Ask and Research display caps", () => {
+		assert.equal(ASK_SHARE_RESULT_MAX, AI_RERANK_MAX_LIMIT);
+		assert.equal(RESEARCH_SHARE_RESULT_MAX, RESEARCH_RERANK_HARD_LIMIT);
+	});
+	function hits(count: number) {
+		return Array.from({ length: count }, (_, index) =>
+			shareHit(`mn${index + 1}`),
+		);
+	}
+
+	it("keeps Ask shares at the 50-hit display cap", () => {
+		const snap = sanitizeAskShareTurn({
+			question: "What is mindfulness of the body?",
+			lookingFor: "body",
+			queries: ["kayagata"],
+			fallbackQueries: [],
+			summary: "These discourses treat mindfulness of the body.",
+			results: hits(69),
+			model: "test",
+		});
+		assert.equal(snap?.results.length, 50);
+	});
+
+	it("keeps Research shares and samples at the selected-set cap", () => {
+		const snap = sanitizeAskShareTurn({
+			question: "Survey radical attention",
+			lookingFor: "yoniso",
+			queries: ["yoniso"],
+			fallbackQueries: [],
+			summary: "",
+			results: hits(69),
+			model: "test",
+			research: true,
+			report: "## Radical attention",
+		});
+		assert.equal(snap?.results.length, 69);
+		const clipped = sanitizeAskShareTurn({
+			...snap,
+			results: hits(180),
+		});
+		assert.equal(clipped?.results.length, 160);
 	});
 });
