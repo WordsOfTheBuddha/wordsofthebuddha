@@ -92,6 +92,10 @@ export default defineConfig({
 			commonjsOptions: {
 				include: [/rangy/],
 			},
+			// Vite 8's default lightningcss minify drops unprefixed backdrop-filter
+			// when the -webkit- prefix is also present, so Chromium loses frost/glass
+			// in prod. https://github.com/vitejs/vite/issues/22649
+			cssMinify: "esbuild",
 		},
 		logLevel: "error",
 		clearScreen: false,

@@ -24,7 +24,11 @@ export default defineConfig({
 	],
 	vite: {
 		optimizeDeps: { include: ["rangy"] },
-		build: { commonjsOptions: { include: [/rangy/] } },
+		build: {
+			commonjsOptions: { include: [/rangy/] },
+			// See astro.config.mjs — lightningcss drops unprefixed backdrop-filter.
+			cssMinify: "esbuild",
+		},
 		logLevel: "error",
 		clearScreen: false,
 		ssr: { noExternal: ["rangy"] },
