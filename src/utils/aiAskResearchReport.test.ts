@@ -38,6 +38,28 @@ MN 10 sets out the four establishments.
 		assert.match(html, /<strong>sati<\/strong>/);
 		assert.match(html, /<ul>/);
 		assert.doesNotMatch(html, /<script>/);
+		assert.doesNotMatch(html, /data-cite-title/);
+	});
+
+	it("annotates on-screen citations with title and description", () => {
+		const html = renderResearchReportHtml(
+			"MN 58 answers the dilemma.",
+			[
+				{
+					slug: "mn58",
+					href: "/mn58",
+					title: "Abhayarājakumāra sutta - To Prince Abhaya",
+					description:
+						"Prince Abhaya, coached by Nigaṇṭha Nāṭaputta, tries to trap the Buddha.",
+				},
+			],
+			{ citationPopovers: true },
+		);
+		assert.match(
+			html,
+			/data-cite-title="MN 58 - Abhayarājakumāra sutta - To Prince Abhaya"/,
+		);
+		assert.match(html, /data-cite-desc="Prince Abhaya, coached/);
 	});
 
 	it("keeps export hrefs so PDF and EPUB citations stay clickable", () => {

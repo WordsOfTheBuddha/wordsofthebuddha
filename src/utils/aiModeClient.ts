@@ -29,6 +29,10 @@ import {
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
 import {
+	hideDiscourseCitationPopover,
+	installDiscourseCitationPopovers,
+} from "./discourseCitationPopover";
+import {
 	ASK_PLACEHOLDER,
 	ASK_COMPOSER_LABEL,
 	ASK_DELETE_CONFIRM,
@@ -1418,6 +1422,7 @@ export function attachAiMode(options: {
 		...root.querySelectorAll<HTMLButtonElement>("[data-ai-mic]"),
 	];
 	if (!form || !input || !thread || !empty || !composer) return;
+	installDiscourseCitationPopovers(thread);
 
 	function setRestoringResearch(on: boolean): void {
 		root.classList.toggle("is-restoring-research", on);
@@ -3578,7 +3583,9 @@ export function attachAiMode(options: {
 						? RESEARCH_SAMPLE_KICKER
 						: "Research report",
 					turnIndex,
-					bodyHtml: renderResearchReportHtml(reportText, turn.results),
+					bodyHtml: renderResearchReportHtml(reportText, turn.results, {
+						citationPopovers: true,
+					}),
 				})
 			: hasHits && summaryText
 				? wrapAskAnswerHtml({
@@ -4100,6 +4107,7 @@ export function attachAiMode(options: {
 		}
 		syncClarifyBar();
 		if (historyEl && shareMode) historyEl.hidden = true;
+		hideDiscourseCitationPopover();
 		thread.innerHTML = turns.map((turn, index) => renderTurn(turn, index)).join("");
 		thread.querySelectorAll<HTMLElement>("[data-ai-feedback-turn]").forEach((row) => {
 			const index = Number(row.getAttribute("data-ai-feedback-turn"));

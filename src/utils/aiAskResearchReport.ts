@@ -1,6 +1,10 @@
 import { Marked, Renderer } from "marked";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
+	annotateResearchCitationLinks,
+	type CitationPopoverHit,
+} from "./discourseCitationPopover";
+import {
 	linkifyAskSummaryHtml,
 	linkifyDiscourseIdsInHtml,
 	looksLikeAskMarkdown,
@@ -254,15 +258,18 @@ export function renderAskBriefingHtml(
 
 export function renderResearchReportHtml(
 	markdown: string,
-	results: readonly { slug: string; href?: string }[] = [],
+	results: readonly CitationPopoverHit[] = [],
+	options?: { citationPopovers?: boolean },
 ): string {
 	const text = stripResearchSourcesSection(markdown);
 	if (!text) return "";
 	const html = reportMarked.parse(text);
-	return linkifyDiscourseIdsInHtml(
+	const linked = linkifyDiscourseIdsInHtml(
 		flattenSoftBreaks(typeof html === "string" ? html : ""),
 		results,
 	);
+	if (!options?.citationPopovers) return linked;
+	return annotateResearchCitationLinks(linked, results);
 }
 
 export function fallbackResearchReport(options: {

@@ -744,6 +744,107 @@
 	color: var(--link-hover-color, var(--link-color));
 }
 
+/* Persons-page-style citation hover; fixed so table overflow cannot clip it. */
+.ai-citation-popover {
+	position: fixed;
+	width: max-content;
+	max-width: min(42rem, calc(100vw - 2rem));
+	max-height: var(--popover-max-height, 400px);
+	padding: 0.875rem 1rem;
+	background-color: var(--surface-elevated, #ffffff);
+	border: 1px solid var(--popover-border, #e5e7eb);
+	border-radius: 0.5rem;
+	box-shadow:
+		0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	color: var(--surface-ink, #1f2937);
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	text-align: left;
+	z-index: 1200;
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-select: none;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-4px);
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease,
+		visibility 0.2s;
+}
+
+.ai-citation-popover-body {
+	max-height: calc(var(--popover-max-height, 400px) - 1.75rem);
+	overflow: auto;
+	min-height: 0;
+	scrollbar-width: thin;
+	scrollbar-color: var(--gray-300, #d1d5db) transparent;
+}
+
+.ai-citation-popover.is-shown {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.ai-citation-popover.opens-down {
+	transform: translateY(4px);
+}
+
+.ai-citation-popover.opens-down.is-shown {
+	transform: translateY(0);
+}
+
+.ai-citation-popover-title {
+	margin: 0;
+	font-family: Spectral, "Source Serif 4", serif;
+	font-size: 1.05rem;
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--surface-ink, #111827);
+}
+
+.ai-citation-popover:has(.ai-citation-popover-desc:not([hidden]))
+	.ai-citation-popover-title {
+	margin-bottom: 0.55rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--surface-border, #f3f4f6);
+}
+
+.ai-citation-popover-title[hidden],
+.ai-citation-popover-desc[hidden] {
+	display: none;
+}
+
+.ai-citation-popover-desc {
+	margin: 0;
+	color: var(--text-color, #374151);
+}
+
+.ai-citation-popover-arrow {
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	transform: translateX(-50%);
+	border-width: 6px;
+	border-style: solid;
+	border-color: var(--surface-elevated, #ffffff) transparent transparent
+		transparent;
+	filter: drop-shadow(0 1px 0 var(--popover-border, #e5e7eb));
+	pointer-events: none;
+}
+
+.ai-citation-popover.opens-down .ai-citation-popover-arrow {
+	top: auto;
+	bottom: 100%;
+	border-color: transparent transparent var(--surface-elevated, #ffffff)
+		transparent;
+	filter: drop-shadow(0 -1px 0 var(--popover-border, #e5e7eb));
+}
+
 .ai-report p,
 .ai-report ul,
 .ai-report ol,
