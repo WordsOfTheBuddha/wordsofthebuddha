@@ -130,6 +130,10 @@ describe("rememberResearchProcessNote", () => {
 			[],
 		);
 		assert.deepEqual(
+			rememberResearchProcessNote([], "Ranking 80 discourses…"),
+			[],
+		);
+		assert.deepEqual(
 			rememberResearchProcessNote([], "Writing the report…"),
 			[],
 		);

@@ -275,9 +275,13 @@ export function linkifyDiscourseIdText(
 	return linkifySummaryParagraph(text, byKey, pattern);
 }
 
+function unwrapHtmlAnchors(html: string): string {
+	return html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, "$1");
+}
+
 /**
- * Link discourse IDs in already-escaped HTML text nodes. Skips tags and
- * existing anchors so marked output is not double-escaped or nested.
+ * Link discourse IDs in already-escaped HTML text nodes. Skips tags,
+ * existing anchors, and heading text so titles stay unlinked.
  */
 export function linkifyDiscourseIdsInHtml(
 	html: string,
@@ -285,10 +289,28 @@ export function linkifyDiscourseIdsInHtml(
 ): string {
 	const { byKey, pattern } = discourseIdLinkIndex(results);
 	if (!pattern) return html;
+	let headingDepth = 0;
 	return html.replace(
-		/(<a\b[^>]*>[\s\S]*?<\/a>)|(<[^>]+>)|([^<]+)/gi,
-		(chunk, _anchor: string | undefined, _tag: string | undefined, text: string | undefined) => {
-			if (!text) return chunk;
+		/(<a\b[^>]*>[\s\S]*?<\/a>)|(<\/?h[1-6]\b[^>]*>)|(<[^>]+>)|([^<]+)/gi,
+		(
+			chunk,
+			anchor: string | undefined,
+			headingTag: string | undefined,
+			_tag: string | undefined,
+			text: string | undefined,
+		) => {
+			if (headingTag) {
+				if (/^<\/h/i.test(headingTag)) {
+					headingDepth = Math.max(0, headingDepth - 1);
+				} else {
+					headingDepth += 1;
+				}
+				return chunk;
+			}
+			if (anchor) {
+				return headingDepth > 0 ? unwrapHtmlAnchors(anchor) : chunk;
+			}
+			if (!text || headingDepth > 0) return chunk;
 			pattern.lastIndex = 0;
 			return text.replace(pattern, (token) => {
 				const href = byKey.get(token.toLowerCase());

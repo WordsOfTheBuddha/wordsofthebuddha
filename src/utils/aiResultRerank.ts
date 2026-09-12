@@ -29,7 +29,7 @@ import { DEFAULT_SNIPPET_CLIP } from "./searchSnippetHighlight";
 import { transformId } from "./transformId";
 
 /** Match the search candidate pool — Gemini’s context can handle this easily. */
-export const AI_RERANK_CANDIDATE_LIMIT = 500;
+export const AI_RERANK_CANDIDATE_LIMIT = 1000;
 export const AI_RERANK_DEFAULT_LIMIT = 10;
 /** Typical survey size / planner hint. Not a pad-to quota. */
 export const AI_RERANK_MAX_LIMIT = 50;

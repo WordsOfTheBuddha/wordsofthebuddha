@@ -24,7 +24,7 @@ Write GitHub-flavored markdown only (no JSON, no HTML tags). Use:
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
 - no ## Sources section — the harness appends a bilingual source list
 
-Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what the passages support and which IDs carry the claim.
+Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what the passages support and which IDs carry the claim. In thinking, settle English renderings from core translations for this report's topics, then keep those renderings in the markdown.
 
 If a claim turns on Pāli wording (a compound, inflection, or a distinction English does not settle), add a final line the harness will strip:
 readPali: MN 70, SN 12.49
@@ -33,6 +33,8 @@ Use only IDs you were given. The harness then opens those discourses in Pāli an
 Rules:
 - Write only from the passages you were given (excerpts, full English, and Pāli when present). If a discourse merely lists terms, say that — do not claim it defines them.
 - Do not import stock Dhamma unless the excerpt states it.
+- Form English terms from core translations (IDs marked [core], passages labeled English), not from Sujato reference translations (IDs marked [reference], passages labeled Sujato English). Reference English may support a claim; it does not set the glossary.
+- Within one topic or section, keep a single English rendering for each Pāli term. Do not swap near-synonyms mid-discussion. A different topic (another doctrinal list or practice) may use a different rendering if the core passages there do.
 - Write a thorough report when the passages support it. Prefer a readable document over padding. Tables should have a header row.
 - Space after sentence punctuation. Never glue a discourse ID to the period.
 - Hard / controversial questions: report what the excerpts say and what they do not declare. No safety sermon.
@@ -68,7 +70,10 @@ function safeReportHref(href: string | null | undefined): string | null {
 const reportRenderer = new Renderer();
 
 reportRenderer.heading = function ({ tokens, depth }) {
-	const html = this.parser.parseInline(tokens);
+	const html = this.parser.parseInline(tokens).replace(
+		/<a\b[^>]*>([\s\S]*?)<\/a>/gi,
+		"$1",
+	);
 	const tag = depth <= 2 ? "h2" : "h3";
 	return `<${tag}>${html}</${tag}>\n`;
 };

@@ -474,10 +474,16 @@ export async function buildAskAnswerEvidence(
 export function formatAskAnswerEvidenceBlock(input: {
 	expanded: readonly AskAnswerHitEvidence[];
 	listedOnly?: readonly string[];
+	/** Label non-Sujato hits as [core] (research writer evidence). */
+	markCore?: boolean;
 }): string {
 	const blocks = input.expanded.map((hit) => {
 		const id = transformId(hit.slug) || hit.slug;
-		const ref = hit.referenceOnly ? " [reference]" : "";
+		const ref = hit.referenceOnly
+			? " [reference]"
+			: input.markCore
+				? " [core]"
+				: "";
 		const title = (hit.title || "").replace(/\s+/g, " ").trim().slice(0, 100);
 		const body =
 			hit.passages.length > 0

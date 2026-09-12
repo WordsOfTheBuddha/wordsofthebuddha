@@ -52,10 +52,10 @@ const MAX_SEARCH_CALLS = 12;
  */
 const SEARCH_CONCURRENCY = 3;
 /**
- * Wide pool for Gemini rescoring. Search overfits easily; send a large
- * candidate set and let the reranker pick the best 10–50.
+ * Wide pool for rescoring. Search overfits easily; send a large
+ * candidate set (up to this many unique hits) and let the reranker pick.
  */
-export const AI_SEARCH_CANDIDATE_LIMIT = 500;
+export const AI_SEARCH_CANDIDATE_LIMIT = 1000;
 
 /** Ask search must request snippets — the ranker/writer have no other body text. */
 export const AI_ASK_SEARCH_OPTIONS = {
@@ -199,6 +199,22 @@ export interface AiDiscourseSearchResult {
 	hits: AiDiscourseHit[];
 	/** Normalized batches used for merge (for fallback contribution checks). */
 	batches: AiDiscourseSearchBatch[];
+	/** Unique discourses that matched any query, before the merge cap. */
+	foundCount: number;
+}
+
+/** Unique slugs across query batches (duplicates across queries count once). */
+export function uniqueSearchMatchCount(
+	batches: readonly AiDiscourseSearchBatch[],
+): number {
+	const seen = new Set<string>();
+	for (const batch of batches) {
+		for (const slug of batch.slugs) {
+			const key = slug.trim().toLowerCase();
+			if (key) seen.add(key);
+		}
+	}
+	return seen.size;
 }
 
 /**
@@ -317,9 +333,11 @@ function finishAskSearch(
 		primaryQueries: queries,
 		termQueries,
 	});
+	const searchBatches = toSearchBatches(batches);
 	return {
 		hits: annotated.map(toAiDiscourseHit),
-		batches: toSearchBatches(batches),
+		batches: searchBatches,
+		foundCount: uniqueSearchMatchCount(searchBatches),
 	};
 }
 

@@ -7,6 +7,7 @@ import {
 	annotateAskSearchHits,
 	fallbackQueriesForResultSlugs,
 	queriesForResultSlugs,
+	uniqueSearchMatchCount,
 } from "./aiDiscourseSearch";
 import {
 	collectDirectDiscourseIds,
@@ -35,9 +36,22 @@ function hit(slug: string): { slug: string; title: string; description: string; 
 	};
 }
 
+describe("uniqueSearchMatchCount", () => {
+	it("counts unique slugs across overlapping query batches", () => {
+		assert.equal(
+			uniqueSearchMatchCount([
+				{ query: "vedanā", slugs: ["sn36.1", "mn10", "sn36.31"] },
+				{ query: "feeling", slugs: ["mn10", "sn36.1", "dn22"] },
+			]),
+			4,
+		);
+		assert.equal(uniqueSearchMatchCount([]), 0);
+	});
+});
+
 describe("AI_SEARCH_CANDIDATE_LIMIT", () => {
 	it("is wide enough for Gemini rerank pools", () => {
-		assert.ok(AI_SEARCH_CANDIDATE_LIMIT >= 500);
+		assert.ok(AI_SEARCH_CANDIDATE_LIMIT >= 1000);
 	});
 });
 

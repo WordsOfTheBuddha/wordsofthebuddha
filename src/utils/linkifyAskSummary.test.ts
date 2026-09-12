@@ -4,6 +4,7 @@ import {
 	discourseIdAliases,
 	joinAskSummaryParagraphs,
 	linkifyAskSummaryHtml,
+	linkifyDiscourseIdsInHtml,
 	looksLikeAskMarkdown,
 	normalizeAskSummaryProse,
 } from "./linkifyAskSummary";
@@ -109,5 +110,29 @@ describe("normalizeAskSummaryProse", () => {
 		assert.match(text, /AN 4\.41/);
 		assert.doesNotMatch(text, /i\. e\./);
 		assert.doesNotMatch(text, /4\. 41/);
+	});
+});
+
+describe("linkifyDiscourseIdsInHtml", () => {
+	it("leaves discourse IDs in headings as plain text", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<h2>Chapter 6 — SN 47.42's analysis</h2><p>SN 47.42 teaches it.</p>`,
+			[{ slug: "sn47.42", href: "/sn47.42" }],
+		);
+		assert.match(html, /<h2>Chapter 6 — SN 47\.42's analysis<\/h2>/);
+		assert.doesNotMatch(html, /<h2>[^<]*<a\b/);
+		assert.match(
+			html,
+			/<p><a class="ai-summary-ref" href="\/sn47\.42">SN 47\.42<\/a> teaches it\.<\/p>/,
+		);
+	});
+
+	it("unwraps markdown links already inside a heading", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<h3>Body: <a class="ai-summary-ref" href="/mn10">MN 10</a></h3><p>Keep going.</p>`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(html, /<h3>Body: MN 10<\/h3>/);
+		assert.doesNotMatch(html, /<h3>[^<]*<a\b/);
 	});
 });

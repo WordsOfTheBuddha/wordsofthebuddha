@@ -151,7 +151,7 @@ export function researchProcessNoteFamily(note: string): string {
 	if (/^(?:writing|wrote|rewriting) the report/i.test(n)) return "write";
 	if (/^starting/i.test(n)) return "start";
 	if (
-		/^(?:planning|opening the library|searching ·|crunching|understood|checking for gaps)/i.test(
+		/^(?:planning|opening the library|searching ·|crunching|ranking|understood|checking for gaps)/i.test(
 			n,
 		)
 	) {

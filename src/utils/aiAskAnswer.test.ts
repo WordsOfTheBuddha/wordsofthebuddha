@@ -226,6 +226,30 @@ describe("formatAskAnswerEvidenceBlock", () => {
 		assert.match(block, /¶ 1–3, ¶ 12/);
 		assert.match(block, /English \(full text\):\nOpening/);
 	});
+
+	it("labels core translations when markCore is set", () => {
+		const block = formatAskAnswerEvidenceBlock({
+			expanded: [
+				{
+					slug: "mn70",
+					title: "At Kīṭāgiri",
+					referenceOnly: false,
+					full: true,
+					passages: [{ source: "English (full text)", text: "Opening." }],
+				},
+				{
+					slug: "dn10",
+					title: "Subha",
+					referenceOnly: true,
+					passages: [{ source: "Sujato English", text: "Collectedness." }],
+				},
+			],
+			markCore: true,
+		});
+		assert.match(block, /MN 70 \[core\] \[full text\]/);
+		assert.match(block, /DN 10 \[reference\]/);
+		assert.doesNotMatch(block, /DN 10 \[core\]/);
+	});
 });
 
 describe("buildAskAnswerEvidence", () => {

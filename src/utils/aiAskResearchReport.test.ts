@@ -41,6 +41,34 @@ MN 10 sets out the four establishments.
 		assert.doesNotMatch(html, /data-cite-title/);
 	});
 
+	it("does not link discourse IDs in headings", () => {
+		const html = renderResearchReportHtml(
+			`## Chapter 6 — Arising and Passing: SN 47.42's Conditional Analysis
+
+SN 47.42 teaches the arising.
+
+## Body: [MN 10](/mn10)
+
+MN 10 sets out the four establishments.
+`,
+			[
+				{ slug: "sn47.42", href: "/sn47.42" },
+				{ slug: "mn10", href: "/mn10" },
+			],
+		);
+		const headingIds = [...html.matchAll(/<h[23]>([\s\S]*?)<\/h[23]>/g)].map(
+			(match) => match[1] || "",
+		);
+		assert.equal(headingIds.length, 2);
+		for (const heading of headingIds) {
+			assert.doesNotMatch(heading, /<a\b/);
+		}
+		assert.match(headingIds[0] || "", /SN 47\.42/);
+		assert.match(headingIds[1] || "", /MN 10/);
+		assert.match(html, /<p><a class="ai-summary-ref" href="\/sn47\.42">SN 47\.42<\/a>/);
+		assert.match(html, /<p><a class="ai-summary-ref" href="\/mn10">MN 10<\/a>/);
+	});
+
 	it("annotates on-screen citations with title and description", () => {
 		const html = renderResearchReportHtml(
 			"MN 58 answers the dilemma.",
@@ -285,5 +313,18 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 		assert.match(RESEARCH_REPORT_SYSTEM, /readPali:/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /thorough report/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /other selected titles as further sources/);
+		assert.match(
+			RESEARCH_REPORT_SYSTEM,
+			/form english terms from core translations/i,
+		);
+		assert.match(RESEARCH_REPORT_SYSTEM, /\[core\].*\[reference\]/s);
+		assert.match(
+			RESEARCH_REPORT_SYSTEM,
+			/keep a single english rendering for each/i,
+		);
+		assert.match(
+			RESEARCH_REPORT_SYSTEM,
+			/a different topic.*may use a different rendering/i,
+		);
 	});
 });

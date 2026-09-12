@@ -67,7 +67,7 @@ export async function buildResearchReportEvidence(options: {
 			labelParagraphs: true,
 		},
 	);
-	return formatAskAnswerEvidenceBlock(pack);
+	return formatAskAnswerEvidenceBlock({ ...pack, markCore: true });
 }
 
 export async function writeResearchReport(options: {
@@ -128,7 +128,7 @@ export async function writeResearchReport(options: {
 				role: "user" as const,
 				content: `Question: ${options.question.replace(/\s+/g, " ").trim()}
 ${brief ? `Clarifying brief:\n${brief}\n` : ""}${guidance ? `Guidance: ${guidance}\n` : ""}${prior ? `Previous draft to improve (keep what still holds; revise from the new passages):\n${prior}\n` : ""}
-Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English):
+Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English). [core] / English is the site's core translation; [reference] / Sujato English is Bhikkhu Sujato's reference translation:
 ${evidence}
 
 Markdown report:`,

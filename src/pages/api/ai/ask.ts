@@ -286,6 +286,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					},
 				);
 				const candidates = searched.hits;
+				const foundCount = Math.max(
+					searched.foundCount || 0,
+					candidates.length,
+				);
 				// Prompt target (10 brief / 50 survey). The rescorer owns the
 				// final count — results.length is sent as showCount below.
 				const showCount = resolveAskResultLimit(
@@ -296,7 +300,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					type: "status",
 					phase: "rerank",
 					requestId,
-					candidateCount: candidates.length,
+					candidateCount: foundCount,
 					showCount,
 				});
 				const ranked = await rerankDiscourseHits({
@@ -377,10 +381,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				if (import.meta.env.DEV) {
 					console.info("[ai/ask] rerank debug", debug);
 				}
-				const candidateCount =
+				const candidateCount = Math.max(
+					foundCount,
 					ranked.candidateCount > 0
 						? ranked.candidateCount
-						: candidates.length;
+						: candidates.length,
+				);
 				const sendResults = (partial: boolean) => {
 					send({
 						type: "results",
