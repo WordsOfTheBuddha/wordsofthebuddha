@@ -10,6 +10,7 @@ import {
 	AI_SEARCH_CANDIDATE_LIMIT,
 	queriesForResultSlugs,
 	searchDiscoursesForQueries,
+	uniqueSearchMatchCount,
 	warmAskSearchIndexes,
 	type AiDiscourseSearchBatch,
 } from "./aiDiscourseSearch";
@@ -32,7 +33,7 @@ import {
 	type AiRewritePlan,
 } from "./aiQueryRewrite";
 import { collectAskHistoryShownSlugs } from "./aiAskHistory";
-import { upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
+import { loadUserAskHistory, upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
 import {
 	buildAiAskTelemetryAskEvent,
 	newAiAskRequestId,
@@ -104,6 +105,18 @@ const RESEARCH_RERANK_CAPS = {
 	hardLimit: RESEARCH_RERANK_HARD_LIMIT,
 	snippetCandidates: RESEARCH_RERANK_SNIPPET_CANDIDATES,
 } as const;
+
+/** Unique matches across search queries, never smaller than the ranking pool. */
+function researchFoundCount(
+	batches: readonly AiDiscourseSearchBatch[] | undefined,
+	poolSize: number,
+	previous?: number,
+): number {
+	const fromBatches = batches?.length ? uniqueSearchMatchCount(batches) : 0;
+	const prior =
+		typeof previous === "number" && Number.isFinite(previous) ? previous : 0;
+	return Math.max(fromBatches, poolSize, prior);
+}
 
 class ResearchCancelledError extends Error {
 	constructor() {
@@ -1019,6 +1032,11 @@ async function runResearchChainPass(
 		brief,
 	);
 	let pool: AiDiscourseHit[] = [...draft.results];
+	let foundCount = researchFoundCount(
+		undefined,
+		pool.length,
+		draft.candidateCount || current.candidateCount,
+	);
 	let results = [...draft.results];
 	let report = draft.report;
 	let reasoning = current.reasoning || draft.reasoning || "";
@@ -1087,6 +1105,11 @@ async function runResearchChainPass(
 				pool.push(hit);
 				freshHits.push(hit);
 			}
+			foundCount = researchFoundCount(
+				searched.batches,
+				pool.length,
+				foundCount,
+			);
 			if (
 				freshHits.length === 0 &&
 				readFull.length === 0 &&
@@ -1098,8 +1121,8 @@ async function runResearchChainPass(
 			if (timeLeft(startedAt) > RESEARCH_ASSEMBLE_MS + 40_000) {
 				current = await writeJob(current, {
 					status: "crunching",
-					candidateCount: pool.length,
-					progressNote: `Crunching ${pool.length.toLocaleString()} discourses…`,
+					candidateCount: foundCount,
+					progressNote: `Ranking ${pool.length.toLocaleString()} discourses…`,
 				});
 				try {
 					const ranked = await rerankDiscourseHits({
@@ -1169,7 +1192,7 @@ async function runResearchChainPass(
 		current = await writeJob(current, {
 			status: "answering",
 			showCount: results.length,
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			progressNote: "Rewriting the report…",
 		});
 		await throwIfCancelled(current);
@@ -1292,7 +1315,7 @@ async function runResearchChainPass(
 			...(summary ? { summary } : {}),
 			report,
 			...(shareSlug ? { shareSlug } : {}),
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			requestId,
 		};
 		const alreadyRead = [
@@ -1335,7 +1358,7 @@ async function runResearchChainPass(
 				queries: result.queries,
 				fallbackQueries: result.fallbackQueries,
 				showCount: results.length,
-				candidateCount: pool.length,
+				candidateCount: foundCount,
 				reasoning,
 			});
 			return "chained";
@@ -1346,7 +1369,7 @@ async function runResearchChainPass(
 			queries: result.queries,
 			fallbackQueries: result.fallbackQueries,
 			showCount: results.length,
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			reasoning,
 			progressNote: "",
 			result,
@@ -1441,6 +1464,7 @@ export async function runResearchJob(options: {
 	let reasoning = "";
 	let usedModel = ASK_PLANNER_PAID_FALLBACK_MODEL;
 	let pool: AiDiscourseHit[] = [];
+	let foundCount = 0;
 	let searchBatches: AiDiscourseSearchBatch[] = [];
 	let results: AiDiscourseHit[] = [];
 	let report = "";
@@ -1486,7 +1510,7 @@ export async function runResearchJob(options: {
 			...(summary ? { summary } : {}),
 			...(report ? { report } : {}),
 			...(shareSlug ? { shareSlug } : {}),
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			requestId,
 		};
 	};
@@ -1505,7 +1529,7 @@ export async function runResearchJob(options: {
 			queries: result.queries,
 			fallbackQueries: result.fallbackQueries,
 			showCount: results.length,
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			reasoning,
 			progressNote: "",
 			result,
@@ -1616,7 +1640,7 @@ export async function runResearchJob(options: {
 			queries: artifact.queries,
 			fallbackQueries: artifact.fallbackQueries,
 			showCount: artifact.results.length,
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			reasoning,
 		});
 		return true;
@@ -1732,6 +1756,11 @@ export async function runResearchJob(options: {
 			);
 			pool = searched.hits;
 			searchBatches = searched.batches;
+			foundCount = researchFoundCount(
+				searchBatches,
+				pool.length,
+				Math.max(seenSlugs.size, current.candidateCount || 0),
+			);
 		} catch (error) {
 			console.warn(
 				"[ai/research] search failed",
@@ -1742,17 +1771,17 @@ export async function runResearchJob(options: {
 		}
 
 		const searchedNote =
-			pool.length > 0
-				? `Searched · ${pool.length.toLocaleString()} discourses`
+			foundCount > 0
+				? `Searched · ${foundCount.toLocaleString()} discourses`
 				: "Searched · no matching discourses yet";
 		const showCount = RESEARCH_RERANK_MAX_LIMIT;
 		const crunchNote =
 			pool.length > 0
-				? `Crunching ${pool.length.toLocaleString()} discourses…`
-				: "Crunching candidates…";
+				? `Ranking ${pool.length.toLocaleString()} discourses…`
+				: "Ranking discourses…";
 		current = await writeJob(current, {
 			status: "crunching",
-			candidateCount: pool.length,
+			candidateCount: foundCount,
 			showCount,
 			progressNote: timeLeft(startedAt) > RESEARCH_ASSEMBLE_MS + 40_000 && pool.length > 0
 				? crunchNote
@@ -1785,7 +1814,7 @@ export async function runResearchJob(options: {
 						}),
 					() => {
 						void writeJob(current, {
-							progressNote: "Crunching again…",
+							progressNote: "Ranking again…",
 						});
 					},
 				);
@@ -1855,7 +1884,7 @@ export async function runResearchJob(options: {
 			current = await writeJob(current, {
 				status: "reviewing",
 				showCount: results.length,
-				candidateCount: pool.length,
+				candidateCount: foundCount,
 				progressNote: "Reviewing the evidence…",
 			});
 			const refine = await planResearchRefine({
@@ -1896,14 +1925,19 @@ export async function runResearchJob(options: {
 						pool.push(hit);
 					}
 					searchBatches = [...searchBatches, ...second.batches];
+					foundCount = researchFoundCount(
+						searchBatches,
+						pool.length,
+						foundCount,
+					);
 					if (
 						second.hits.length > 0 &&
 						timeLeft(startedAt) > RESEARCH_ASSEMBLE_MS + 50_000
 					) {
 						current = await writeJob(current, {
 							status: "crunching",
-							candidateCount: pool.length,
-							progressNote: `Crunching ${pool.length.toLocaleString()} discourses…`,
+							candidateCount: foundCount,
+							progressNote: `Ranking ${pool.length.toLocaleString()} discourses…`,
 						});
 						try {
 							const ranked = await rerankDiscourseHits({
@@ -1986,7 +2020,7 @@ export async function runResearchJob(options: {
 			current = await writeJob(current, {
 				status: "answering",
 				showCount: results.length,
-				candidateCount: pool.length,
+				candidateCount: foundCount,
 				unreadFull: opening.unreadFull,
 				fullReadSlugs: openingFull,
 				progressNote:
@@ -2152,6 +2186,15 @@ async function persistHistory(
 ): Promise<void> {
 	if (result.results.length === 0 && !result.report) return;
 	try {
+		const existing = (await loadUserAskHistory({ uid: record.uid } as UserRecord)).find(
+			(item) => item.researchJobId === record.id,
+		);
+		const alreadyRead =
+			Boolean(existing) &&
+			existing.researchPending !== true &&
+			existing.researchUnread !== true &&
+			(Boolean((existing.report || "").trim()) ||
+				Boolean((existing.researchJobId || "").trim()));
 		await upsertUserAskHistoryEntry(
 			{ uid: record.uid } as UserRecord,
 			{
@@ -2176,6 +2219,8 @@ async function persistHistory(
 				candidateCount: result.candidateCount,
 				research: true,
 				researchJobId: record.id,
+				saved: existing?.saved === true,
+				...(alreadyRead ? {} : { researchUnread: true }),
 				...(record.processNotes && record.processNotes.length > 0
 					? { processNotes: record.processNotes }
 					: {}),

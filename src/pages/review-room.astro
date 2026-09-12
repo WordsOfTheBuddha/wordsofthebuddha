@@ -26,6 +26,7 @@ import {
 } from "../utils/aiAskSession";
 import {
 	openAskHistoryHref,
+	openAskResearchHref,
 	openResearchHistoryHref,
 	searchAskHref,
 	searchResearchHref,
@@ -941,9 +942,15 @@ try {
 														: "";
 											return (
 												<a
-													href={openResearchHistoryHref(
-														entry.question,
-													)}
+													href={
+														entry.researchJobId
+															? openAskResearchHref(
+																	entry.researchJobId,
+																)
+															: openResearchHistoryHref(
+																	entry.question,
+																)
+													}
 													class:list={[
 														"ask-row",
 														"is-report",
@@ -1206,8 +1213,10 @@ try {
 	} from "../utils/listenActivityClient";
 	import {
 		normalizeAskQuestionKey,
+		preservePendingResearchHistory,
 		readAiAskSession,
 		sanitizeAskHistoryEntries,
+		slimAskHistoryEntriesForSync,
 		writeAiAskSession,
 	} from "../utils/aiAskSession";
 	import {
@@ -1561,7 +1570,10 @@ try {
 				method: "POST",
 				credentials: "same-origin",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ action: "sync", entries: local }),
+				body: JSON.stringify({
+					action: "sync",
+					entries: slimAskHistoryEntriesForSync(local),
+				}),
 			});
 			const data = (await response.json()) as {
 				success?: boolean;
@@ -1570,7 +1582,10 @@ try {
 			if (!response.ok || !data.success || !Array.isArray(data.entries)) {
 				return;
 			}
-			const merged = sanitizeAskHistoryEntries(data.entries);
+			const merged = preservePendingResearchHistory(
+				local,
+				sanitizeAskHistoryEntries(data.entries),
+			);
 			writeAiAskSession(merged);
 			sessionStorage.setItem(ASK_SYNC_FLAG, "1");
 			const known = new Set(boot.askKeys);

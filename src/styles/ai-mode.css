@@ -699,6 +699,13 @@
 
 .ai-answer-copy.is-copied {
 	color: var(--text-color);
+	font-weight: 650;
+	white-space: nowrap;
+}
+
+.ai-answer-copy.is-copy-error {
+	color: var(--warning-heading, #b45309);
+	white-space: nowrap;
 }
 
 .ai-answer-copy:disabled {
@@ -1859,6 +1866,14 @@
 .ai-share-btn:disabled {
 	opacity: 0.7;
 	cursor: default;
+}
+
+.ai-share-btn.is-copied {
+	color: var(--text-color);
+}
+
+.ai-share-btn.is-copy-error {
+	color: var(--warning-heading, #b45309);
 }
 
 .ai-pin-btn {

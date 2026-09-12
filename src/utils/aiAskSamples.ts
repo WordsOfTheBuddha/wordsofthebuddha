@@ -1,4 +1,5 @@
 import { clipResearchProcessNotes } from "./aiAskResearchJob";
+import { isAskSampleSlug } from "./aiAskHref";
 import {
 	AI_ASK_SESSION_LIMIT,
 	normalizeAskQuestionKey,
@@ -24,6 +25,8 @@ export const ASK_SAMPLE_HIDE_CONFIRM =
 /** Samples fill Recent until the reader has this many of their own in the lane. */
 export const ASK_SAMPLE_SHOW_UNTIL_OWN = 17;
 export const HIDDEN_ASK_SAMPLES_KEY = "ai-ask-hidden-samples-v1";
+
+export { isAskSampleSlug };
 
 export type AskSamplePlaybackPhase = "rewrite" | "search" | "rerank" | "done";
 
@@ -99,12 +102,7 @@ export function deriveAskSampleSlug(question: string): string {
 		.replace(/-{2,}/g, "-")
 		.slice(0, ASK_SAMPLE_SLUG_MAX)
 		.replace(/-+$/g, "");
-	if (
-		slug.length >= ASK_SAMPLE_SLUG_MIN &&
-		/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
-	) {
-		return slug;
-	}
+	if (isAskSampleSlug(slug)) return slug;
 	return `ask-${askSampleKeyFingerprint(normalizeAskQuestionKey(question))}`;
 }
 
@@ -179,13 +177,9 @@ export function sanitizeAskSamplePublic(raw: unknown): AiAskSamplePublic | null 
 	if (!questionKey) return null;
 	const slugRaw =
 		typeof record.slug === "string" ? record.slug.trim().toLowerCase() : "";
-	const slug =
-		slugRaw &&
-		slugRaw.length >= ASK_SAMPLE_SLUG_MIN &&
-		slugRaw.length <= ASK_SAMPLE_SLUG_MAX &&
-		/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slugRaw)
-			? slugRaw
-			: deriveAskSampleSlug(turn.question);
+	const slug = isAskSampleSlug(slugRaw)
+		? slugRaw
+		: deriveAskSampleSlug(turn.question);
 	const updatedAt =
 		typeof record.updatedAt === "number" && Number.isFinite(record.updatedAt)
 			? Math.max(0, Math.round(record.updatedAt))

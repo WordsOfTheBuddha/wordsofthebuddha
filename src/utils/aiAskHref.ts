@@ -61,11 +61,6 @@ export function askAuthPageHref(
 	)}`;
 }
 
-/**
- * Reopen a past Ask from the reader's history without spending a credit.
- * The Ask UI matches `open` against the stored history and restores it;
- * if nothing matches it only prefills the question.
- */
 export function withAskResearchParam(
 	search: string | URLSearchParams | null | undefined,
 	jobId: string | null,
@@ -75,8 +70,106 @@ export function withAskResearchParam(
 	if (id) {
 		params.set("mode", RESEARCH_SEARCH_MODE);
 		params.set("research", id);
+		params.delete("open");
+		params.delete("sample");
 	} else {
 		params.delete("research");
+	}
+	return params;
+}
+
+/** Reopen a stored Ask from the reader's history without spending a credit. */
+export function withAskHistoryOpenParam(
+	search: string | URLSearchParams | null | undefined,
+	question: string | null,
+): URLSearchParams {
+	const params = modeParams(search);
+	const trimmed = (question || "").replace(/\s+/g, " ").trim();
+	if (trimmed) {
+		params.set("open", trimmed);
+		params.delete("research");
+		params.delete("sample");
+	} else {
+		params.delete("open");
+	}
+	return params;
+}
+
+function clipAskSampleSlug(slug: string | null | undefined): string {
+	const id = (slug || "").replace(/\s+/g, "").trim().toLowerCase();
+	return isAskSampleSlug(id) ? id : "";
+}
+
+const ASK_SAMPLE_SLUG_MIN = 8;
+const ASK_SAMPLE_SLUG_MAX = 80;
+const ASK_SAMPLE_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isAskSampleSlug(value: string): boolean {
+	return (
+		value.length >= ASK_SAMPLE_SLUG_MIN &&
+		value.length <= ASK_SAMPLE_SLUG_MAX &&
+		ASK_SAMPLE_SLUG_RE.test(value)
+	);
+}
+
+/** Curated sample from Recent — Back returns to the menu. */
+export function withAskSampleParam(
+	search: string | URLSearchParams | null | undefined,
+	slug: string | null,
+): URLSearchParams {
+	const params = modeParams(search);
+	const id = clipAskSampleSlug(slug);
+	if (id) {
+		params.set("sample", id);
+		params.delete("research");
+		params.delete("open");
+	} else {
+		params.delete("sample");
+	}
+	return params;
+}
+
+export function askSampleParam(
+	search: string | URLSearchParams | null | undefined,
+): string {
+	return clipAskSampleSlug(modeParams(search).get("sample"));
+}
+
+export function askHistoryOpenParam(
+	search: string | URLSearchParams | null | undefined,
+): string {
+	return (modeParams(search).get("open") || "").replace(/\s+/g, " ").trim();
+}
+
+/** Menu ↔ item URL for Ask/Research. `undefined` leaves that param as-is. */
+export function withAskSurfaceParams(
+	search: string | URLSearchParams | null | undefined,
+	input: {
+		jobId?: string | null;
+		open?: string | null;
+		sample?: string | null;
+	},
+): URLSearchParams {
+	let params = modeParams(search);
+	const jobId =
+		input.jobId === undefined ? undefined : (input.jobId || "").trim();
+	const sample =
+		input.sample === undefined ? undefined : clipAskSampleSlug(input.sample);
+	const open =
+		input.open === undefined
+			? undefined
+			: (input.open || "").replace(/\s+/g, " ").trim();
+	if (jobId) return withAskResearchParam(params, jobId);
+	if (sample) return withAskSampleParam(params, sample);
+	if (open) return withAskHistoryOpenParam(params, open);
+	if (input.jobId !== undefined) {
+		params = withAskResearchParam(params, null);
+	}
+	if (input.sample !== undefined) {
+		params = withAskSampleParam(params, null);
+	}
+	if (input.open !== undefined) {
+		params = withAskHistoryOpenParam(params, null);
 	}
 	return params;
 }
@@ -93,6 +186,11 @@ export function askResearchJobParam(
 	return (modeParams(search).get("research") || "").replace(/\s+/g, "").trim();
 }
 
+/**
+ * Reopen a past Ask from the reader's history without spending a credit.
+ * The Ask UI matches `open` against the stored history and restores it;
+ * if nothing matches it only prefills the question.
+ */
 export function openAskHistoryHref(question: string): string {
 	const params = new URLSearchParams();
 	params.set("mode", ASK_SEARCH_MODE);

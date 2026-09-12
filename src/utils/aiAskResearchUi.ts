@@ -61,6 +61,67 @@ export const ASK_SHARE_ACCOUNT_BODY =
 export const RESEARCH_PIN_ACTION = "Pin this report";
 export const RESEARCH_UNPIN_ACTION = "Unpin this report";
 export const RESEARCH_DELETE_ACTION = "Delete this report";
+
+/** Pin / Share / Delete on an open Ask or Research turn. */
+export function openAskTurnActionFlags(input: {
+	pending?: boolean;
+	error?: string;
+	fromShare?: boolean;
+	fromSample?: boolean;
+	isTip: boolean;
+	research?: boolean;
+	researchJobId?: string;
+	resultCount: number;
+	hasReport?: boolean;
+	isPinnableTip?: boolean;
+}): {
+	showPin: boolean;
+	showDelete: boolean;
+	showShare: boolean;
+	showDownload: boolean;
+} {
+	const pending = input.pending === true;
+	const error = Boolean((input.error || "").trim());
+	const fromShare = input.fromShare === true;
+	const fromSample = input.fromSample === true;
+	const hasHits = input.resultCount > 0;
+	const jobId = (input.researchJobId || "").trim();
+	const showPin = !pending && !error && input.isPinnableTip === true;
+	// Research jobs are keyed by id — empty / failed reports still need Delete.
+	const showDelete =
+		!pending &&
+		!fromShare &&
+		!fromSample &&
+		input.isTip &&
+		((input.research === true && Boolean(jobId)) ||
+			input.isPinnableTip === true);
+	const showShare =
+		!pending &&
+		!error &&
+		input.isTip &&
+		(hasHits || input.hasReport === true);
+	const showDownload =
+		!pending &&
+		!error &&
+		input.isTip &&
+		input.research === true &&
+		(hasHits || input.hasReport === true);
+	return { showPin, showDelete, showShare, showDownload };
+}
+
+/** Overflow menu on a Recent card. Signed-in only gates sample hide/share. */
+export function askHistoryCardMenuFlags(input: {
+	sample?: boolean;
+	signedInForHistory?: boolean;
+}): { showPin: boolean; showShare: boolean; showDelete: boolean } {
+	const sample = input.sample === true;
+	const signedIn = input.signedInForHistory === true;
+	return {
+		showPin: signedIn,
+		showShare: !sample || signedIn,
+		showDelete: !sample || signedIn,
+	};
+}
 export const ASK_NEW_LABEL = "+ New Ask";
 export const RESEARCH_NEW_LABEL = "+ New Research";
 export const REVIEW_ROOM_ASK_NEW_LABEL = "+ Ask";
@@ -357,6 +418,92 @@ export function researchHistoryTimestamp(input: {
 }
 
 const ASK_COPY_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" /></svg>`;
+
+const ASK_BUTTON_FEEDBACK_LABEL_SELECTOR =
+	".ai-answer-copy-label, .ai-share-label-full, .ai-share-label-short";
+
+export const ASK_CLIPBOARD_COPIED_LABEL = "Copied";
+export const ASK_CLIPBOARD_FAILED_LABEL = "Could not copy";
+export const ASK_SHARE_COPIED_LABEL = "Link copied";
+export const ASK_SHARE_FAILED_LABEL = "Could not share";
+export const ASK_CLIPBOARD_COPIED_MS = 1600;
+export const ASK_CLIPBOARD_FAILED_MS = 1800;
+
+export type AskButtonIdleState = {
+	html: string;
+	ariaLabel: string | null;
+	title: string | null;
+};
+
+export type AskButtonFeedbackKind = "copied" | "error" | "busy";
+
+export function readAskButtonIdle(
+	button: HTMLButtonElement,
+): AskButtonIdleState {
+	return {
+		html: button.innerHTML,
+		ariaLabel: button.getAttribute("aria-label"),
+		title: button.getAttribute("title"),
+	};
+}
+
+function askButtonFeedbackLabels(button: HTMLButtonElement): HTMLElement[] {
+	return [
+		...button.querySelectorAll<HTMLElement>(ASK_BUTTON_FEEDBACK_LABEL_SELECTOR),
+	];
+}
+
+/** Swap a Copy/Share control to a status word without rebuilding the thread. */
+export function applyAskButtonFeedback(
+	button: HTMLButtonElement,
+	message: string,
+	kind: AskButtonFeedbackKind,
+): void {
+	button.disabled = true;
+	const labels = askButtonFeedbackLabels(button);
+	if (labels.length > 0) {
+		for (const label of labels) {
+			label.textContent = message;
+			label.hidden = false;
+			label.removeAttribute("hidden");
+		}
+	} else {
+		button.textContent = message;
+	}
+	button.setAttribute("aria-label", message);
+	button.setAttribute("title", message);
+	button.classList.toggle("is-copied", kind === "copied");
+	button.classList.toggle("is-copy-error", kind === "error");
+}
+
+export function restoreAskButtonIdle(
+	button: HTMLButtonElement,
+	idle: AskButtonIdleState,
+): void {
+	button.disabled = false;
+	button.innerHTML = idle.html;
+	button.classList.remove("is-copied", "is-copy-error");
+	if (idle.ariaLabel) button.setAttribute("aria-label", idle.ariaLabel);
+	else button.removeAttribute("aria-label");
+	if (idle.title) button.setAttribute("title", idle.title);
+	else button.removeAttribute("title");
+}
+
+export function flashAskButtonFeedback(
+	button: HTMLButtonElement,
+	message: string,
+	kind: Exclude<AskButtonFeedbackKind, "busy">,
+	idle: AskButtonIdleState = readAskButtonIdle(button),
+	schedule: (fn: () => void, ms: number) => void = (fn, ms) => {
+		window.setTimeout(fn, ms);
+	},
+): void {
+	applyAskButtonFeedback(button, message, kind);
+	schedule(
+		() => restoreAskButtonIdle(button, idle),
+		kind === "copied" ? ASK_CLIPBOARD_COPIED_MS : ASK_CLIPBOARD_FAILED_MS,
+	);
+}
 
 export function askAnswerCopyButtonHtml(input: {
 	turnIndex: number;

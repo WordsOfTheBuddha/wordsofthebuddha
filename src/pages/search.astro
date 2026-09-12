@@ -98,12 +98,18 @@ const researchEnabled = isAskResearchEnabled();
 						next.searchParams.set("mode", "ask");
 						next.searchParams.delete("q");
 						next.searchParams.delete("research");
+						next.searchParams.delete("open");
+						next.searchParams.delete("sample");
 					} else if (kind === "research") {
 						next.searchParams.set("mode", "research");
 						next.searchParams.delete("q");
+						next.searchParams.delete("open");
+						next.searchParams.delete("sample");
 					} else {
 						next.searchParams.delete("mode");
 						next.searchParams.delete("research");
+						next.searchParams.delete("open");
+						next.searchParams.delete("sample");
 					}
 					link.setAttribute("href", next.pathname + next.search);
 					var active =

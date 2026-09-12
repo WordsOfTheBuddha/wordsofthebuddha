@@ -7,7 +7,9 @@ import {
 	isAskSearchMode,
 	isAskSurfaceMode,
 	isResearchSearchMode,
+	askHistoryOpenParam,
 	askResearchJobParam,
+	askSampleParam,
 	openAskHistoryHref,
 	openAskResearchHref,
 	reviewRoomAsksHashId,
@@ -16,7 +18,10 @@ import {
 	REVIEW_ROOM_REPORTS_HASH,
 	searchAskHref,
 	searchResearchHref,
+	withAskHistoryOpenParam,
 	withAskResearchParam,
+	withAskSampleParam,
+	withAskSurfaceParams,
 } from "./aiAskHref";
 
 describe("openAskResearchHref", () => {
@@ -46,6 +51,92 @@ describe("withAskResearchParam", () => {
 			withAskResearchParam("mode=research&research=job-1", null).get("mode"),
 			"research",
 		);
+		assert.equal(
+			withAskResearchParam("mode=research&open=feeling", "job-1").get("open"),
+			null,
+		);
+		assert.equal(
+			withAskResearchParam("mode=research&sample=what-is-radical-attention", "job-1").get(
+				"sample",
+			),
+			null,
+		);
+	});
+});
+
+describe("withAskSampleParam", () => {
+	it("puts a sample on the current pane and clears job/open", () => {
+		const params = withAskSampleParam(
+			"mode=research&research=job-1&open=feeling",
+			"what-is-radical-attention",
+		);
+		assert.equal(params.get("sample"), "what-is-radical-attention");
+		assert.equal(params.get("research"), null);
+		assert.equal(params.get("open"), null);
+		assert.equal(params.get("mode"), "research");
+		assert.equal(
+			withAskSampleParam("mode=research&sample=what-is-radical-attention", null).get(
+				"sample",
+			),
+			null,
+		);
+		assert.equal(askSampleParam("mode=research&sample=short"), "");
+	});
+});
+
+describe("withAskSurfaceParams", () => {
+	it("opens a report from the Research menu without dropping other flags", () => {
+		const opened = withAskSurfaceParams("mode=research&pli=true&ref=true", {
+			jobId: "job-1",
+			open: null,
+		});
+		assert.equal(opened.get("mode"), "research");
+		assert.equal(opened.get("research"), "job-1");
+		assert.equal(opened.get("pli"), "true");
+		assert.equal(opened.get("ref"), "true");
+		assert.equal(opened.get("open"), null);
+	});
+
+	it("returns to the menu by clearing job, sample, and open params", () => {
+		const menu = withAskSurfaceParams(
+			"mode=research&research=job-1&pli=true",
+			{ jobId: null, open: null, sample: null },
+		);
+		assert.equal(menu.get("mode"), "research");
+		assert.equal(menu.get("research"), null);
+		assert.equal(menu.get("open"), null);
+		assert.equal(menu.get("sample"), null);
+		assert.equal(menu.get("pli"), "true");
+		const fromSample = withAskSurfaceParams(
+			"mode=research&sample=what-is-radical-attention&pli=true",
+			{ jobId: null, open: null, sample: null },
+		);
+		assert.equal(fromSample.get("sample"), null);
+		assert.equal(fromSample.get("pli"), "true");
+	});
+
+	it("opens a stored Ask from the Ask menu", () => {
+		const opened = withAskSurfaceParams("mode=ask", {
+			jobId: null,
+			open: "why anger",
+		});
+		assert.equal(opened.get("open"), "why anger");
+		assert.equal(askHistoryOpenParam(opened), "why anger");
+		assert.equal(opened.get("research"), null);
+		assert.equal(opened.get("sample"), null);
+	});
+
+	it("opens a curated sample without dropping other flags", () => {
+		const opened = withAskSurfaceParams("mode=research&pli=true", {
+			sample: "what-is-radical-attention",
+			jobId: null,
+			open: null,
+		});
+		assert.equal(opened.get("sample"), "what-is-radical-attention");
+		assert.equal(askSampleParam(opened), "what-is-radical-attention");
+		assert.equal(opened.get("research"), null);
+		assert.equal(opened.get("open"), null);
+		assert.equal(opened.get("pli"), "true");
 	});
 });
 
@@ -117,6 +208,13 @@ describe("askAuthPageHref", () => {
 			askAuthPageHref("/signin", "why anger"),
 			"/signin?returnTo=%2Fsearch%3Fmode%3Dask%26q%3Dwhy%2Banger",
 		);
+	});
+});
+
+describe("askHistoryOpenParam", () => {
+	it("reads the stored Ask to reopen", () => {
+		assert.equal(askHistoryOpenParam("mode=ask&open=why+anger"), "why anger");
+		assert.equal(askHistoryOpenParam("mode=research"), "");
 	});
 });
 

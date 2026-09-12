@@ -13,6 +13,7 @@ import {
 	findAskSample,
 	findAskSampleForExample,
 	hideAskSampleKey,
+	isAskSampleSlug,
 	readHiddenAskSampleKeys,
 	sampleToHistoryEntry,
 	sanitizeAskSamplePublic,
@@ -45,6 +46,12 @@ function sample(question: string, slug?: string) {
 }
 
 describe("deriveAskSampleSlug", () => {
+	it("accepts kebab slugs in the public length range", () => {
+		assert.equal(isAskSampleSlug("what-is-radical-attention"), true);
+		assert.equal(isAskSampleSlug("short"), false);
+		assert.equal(isAskSampleSlug("Not_Kebab"), false);
+	});
+
 	it("slugifies the full question, not a short theme", () => {
 		assert.equal(
 			deriveAskSampleSlug(

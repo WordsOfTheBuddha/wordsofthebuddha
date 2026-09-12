@@ -1,11 +1,13 @@
 import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
 import {
 	askAuthPageHref,
+	askHistoryOpenParam,
 	askResearchJobParam,
+	askSampleParam,
 	isAskSurfaceMode,
 	isResearchSearchMode,
 	searchResearchHref,
-	withAskResearchParam,
+	withAskSurfaceParams,
 } from "./aiAskHref";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
@@ -74,7 +76,16 @@ import {
 	RESEARCH_SHARE_ACCOUNT_TITLE,
 	RESEARCH_UNPIN_ACTION,
 	RESEARCH_NEW_LABEL,
+	ASK_CLIPBOARD_COPIED_LABEL,
+	ASK_CLIPBOARD_FAILED_LABEL,
+	ASK_SHARE_COPIED_LABEL,
+	ASK_SHARE_FAILED_LABEL,
+	askHistoryCardMenuFlags,
+	applyAskButtonFeedback,
+	flashAskButtonFeedback,
 	isIncompleteResearchTurn,
+	openAskTurnActionFlags,
+	readAskButtonIdle,
 	researchHistoryStatsLabel,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
@@ -108,6 +119,7 @@ import {
 	canMarkAskAsSample,
 	findAskSampleForExample,
 	hideAskSampleKey,
+	isResearchAskSample,
 	readHiddenAskSampleKeys,
 	RESEARCH_SAMPLE_KICKER,
 	RESEARCH_SAMPLE_NOTE,
@@ -133,12 +145,18 @@ import {
 	normalizeAskQuestionKey,
 	pinnedAskHistoryEntries,
 	preservePendingResearchHistory,
+	priorResearchJobIdsInThread,
 	readActiveAskThread,
 	readAiAskSession,
+	removeAskHistoryEntriesByJobIds,
 	removeAskHistoryEntriesByQuestions,
+	researchHistoryNeedsJobRestore,
 	resolveAskHistoryTab,
 	shouldRestoreActiveAskThread,
+	shouldRestoreDroppedResearchJob,
 	shouldResumeAskFromDiscourse,
+	slimAskHistoryEntriesForSync,
+	slimAskHistoryEntryForSync,
 	attachResearchToHistoryThread,
 	upsertAiAskSessionEntry,
 	visibleAskHistoryEntries,
@@ -195,6 +213,8 @@ export interface AiAskTurn {
 	fromShare?: boolean;
 	/** Curated sample chip — no quota, not the reader's own Ask. */
 	fromSample?: boolean;
+	/** Public sample slug when this turn is a curated illustration. */
+	sampleSlug?: string;
 	pending: boolean;
 	phase: "rewrite" | "verify" | "search" | "rerank" | "review" | "answer" | "done";
 	/** Candidate pool size while rescoring (status event). */
@@ -480,14 +500,17 @@ export function buildAskProcessSteps(input: {
 		}
 		return input.research ? "Searching widely…" : "Searching the library…";
 	})();
-	const searchDone =
-		pool > 0
-			? input.research
-				? `Searched widely · ${pool.toLocaleString()} discourses`
-				: `Searched the library · ${pool.toLocaleString()} discourses`
-			: input.research
-				? "Searched widely"
-				: "Searched the library";
+	const searchDone = (() => {
+		const found = pool > 0 ? pool : shown;
+		if (found <= 0) {
+			return input.research ? "Searched widely" : "Searched the library";
+		}
+		if (input.research) {
+			const noun = found === 1 ? "discourse match" : "discourse matches";
+			return `Searched widely, found ${found.toLocaleString()} ${noun}`;
+		}
+		return `Searched the library · ${found.toLocaleString()} discourses`;
+	})();
 	const searched: AskProcessStep =
 		phase === "rewrite" || phase === "verify"
 			? { state: "todo", text: searchIdle }
@@ -498,8 +521,8 @@ export function buildAskProcessSteps(input: {
 						text: searchDone,
 					};
 
-	// Crunching (rescoring the pool) and showing (the final picks) are two
-	// distinct moments. The strip carries the crunch; the “Showing N” caption
+	// Ranking the search pool and showing the final picks are two
+	// distinct moments. The strip carries the rank; the “Showing N” caption
 	// sits with the answer (see askResultsCaption).
 	const alreadyCrunched = input.research === true && shown > 0;
 	let crunched: AskProcessStep;
@@ -508,23 +531,29 @@ export function buildAskProcessSteps(input: {
 		phase === "verify" ||
 		(phase === "search" && !alreadyCrunched)
 	) {
-		crunched = { state: "todo", text: "Crunch the candidates" };
+		crunched = {
+			state: "todo",
+			text: input.research ? "Rank and pick" : "Crunch the candidates",
+		};
 	} else if (phase === "rerank") {
 		crunched = {
 			state: "active",
 			text:
 				note ||
 				(pool > 0
-					? `Crunching ${pool.toLocaleString()} discourses…`
-					: "Crunching discourses…"),
+					? input.research
+						? `Ranking ${pool.toLocaleString()} discourses…`
+						: `Crunching ${pool.toLocaleString()} discourses…`
+					: input.research
+						? "Ranking discourses…"
+						: "Crunching discourses…"),
 		};
 	} else if (shown > 0) {
 		crunched = {
 			state: "done",
-			text:
-				pool > 0
-					? `Crunched ${pool.toLocaleString()} discourses`
-					: "Crunched the candidates",
+			text: input.research
+				? `Ranked and picked ${shown.toLocaleString()} discourses`
+				: `Picked ${shown.toLocaleString()} discourses`,
 		};
 	} else {
 		crunched = { state: "done", text: "No matching discourses" };
@@ -1313,6 +1342,7 @@ function sampleToAiAskTurn(sample: AiAskSamplePublic): AiAskTurn {
 	});
 	turn.fromShare = false;
 	turn.fromSample = true;
+	turn.sampleSlug = sample.slug;
 	turn.shareSlug = undefined;
 	turn.sharePath = undefined;
 	if (sample.processNotes && sample.processNotes.length > 0) {
@@ -1447,6 +1477,8 @@ export function attachAiMode(options: {
 	);
 	let signedInForHistory = false;
 	let pendingReplaceQuestions: string[] | null = null;
+	let pendingReplaceJobIds: string[] | null = null;
+	let applyingAskSurfaceUrl = false;
 	let busy = false;
 	let researchChipOn = false;
 	let researchPollTimer = 0;
@@ -1462,7 +1494,17 @@ export function attachAiMode(options: {
 		return askHistoryLaneEntries(sessionEntries, researchPaneOn());
 	}
 
-	function findLaneEntry(question: string): AiAskSessionEntry | undefined {
+	function findLaneEntry(
+		question: string,
+		jobId?: string,
+	): AiAskSessionEntry | undefined {
+		if (jobId) {
+			const byJob = findAiAskSessionEntry(sessionEntries, question, {
+				research: researchPaneOn(),
+				researchJobId: jobId,
+			});
+			if (byJob) return byJob;
+		}
 		return findAiAskSessionEntry(sessionEntries, question, {
 			research: researchPaneOn(),
 		});
@@ -1481,10 +1523,6 @@ export function attachAiMode(options: {
 	const SHARE_LINK_IDLE_HTML =
 		'<span class="ai-share-label-full">Share link</span><span class="ai-share-label-short">Share</span>';
 
-	function restoreShareLinkButton(button: HTMLButtonElement): void {
-		button.disabled = false;
-		button.innerHTML = SHARE_LINK_IDLE_HTML;
-	}
 	if (showModelPicker) {
 		try {
 			const stored = localStorage.getItem(MODEL_STORAGE_KEY);
@@ -1648,39 +1686,86 @@ export function attachAiMode(options: {
 			window.clearTimeout(researchPollTimer);
 			researchPollTimer = 0;
 		}
-		try {
-			sessionStorage.removeItem(RESEARCH_CHIP_STORAGE_KEY + "-job");
-		} catch {
-			/* ignore */
-		}
 	}
 
-	function rememberResearchJobId(jobId: string): void {
-		try {
-			sessionStorage.setItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`, jobId);
-		} catch {
-			/* ignore */
-		}
+	function askSurfaceHistoryState(fromMenu: boolean): object {
+		const prior =
+			window.history.state && typeof window.history.state === "object"
+				? window.history.state
+				: {};
+		return { ...prior, aiAskSurface: 1, fromMenu };
 	}
 
-	function readRememberedResearchJobId(): string {
-		try {
-			return sessionStorage.getItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`) || "";
-		} catch {
-			return "";
+	function askSurfaceCameFromMenu(): boolean {
+		const state = window.history.state;
+		return Boolean(
+			state &&
+				typeof state === "object" &&
+				(state as { fromMenu?: boolean }).fromMenu === true,
+		);
+	}
+
+	function currentAskSurfaceHref(input: {
+		jobId?: string | null;
+		open?: string | null;
+		sample?: string | null;
+	}): string {
+		const params = withAskSurfaceParams(window.location.search, input);
+		const qs = params.toString();
+		return `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`;
+	}
+
+	function syncAskSurfaceUrl(input: {
+		jobId?: string | null;
+		open?: string | null;
+		sample?: string | null;
+		push?: boolean;
+	}): void {
+		if (shareMode || applyingAskSurfaceUrl) return;
+		if (window.location.pathname.replace(/\/$/, "") !== "/search") return;
+		const next = currentAskSurfaceHref({
+			jobId: input.jobId,
+			open: input.open,
+			sample: input.sample,
+		});
+		const current =
+			window.location.pathname + window.location.search + window.location.hash;
+		const currentJob = askResearchJobParam(window.location.search);
+		const currentOpen = askHistoryOpenParam(window.location.search);
+		const currentSample = askSampleParam(window.location.search);
+		const nextJob =
+			input.jobId === undefined ? currentJob : (input.jobId || "").trim();
+		const nextOpen =
+			input.open === undefined ? currentOpen : (input.open || "").trim();
+		const nextSample =
+			input.sample === undefined
+				? currentSample
+				: (input.sample || "").replace(/\s+/g, "").trim().toLowerCase();
+		const openingItem =
+			Boolean(nextJob || nextOpen || nextSample) &&
+			!currentJob &&
+			!currentOpen &&
+			!currentSample;
+		const push = input.push === true || (input.push !== false && openingItem);
+		if (next === current) {
+			if (openingItem) {
+				window.history.replaceState(askSurfaceHistoryState(true), "", next);
+			}
+			return;
 		}
+		if (push) {
+			window.history.pushState(askSurfaceHistoryState(true), "", next);
+			return;
+		}
+		window.history.replaceState(askSurfaceHistoryState(false), "", next);
 	}
 
 	function syncResearchJobUrl(jobId: string | null): void {
-		if (shareMode) return;
-		if (window.location.pathname.replace(/\/$/, "") !== "/search") return;
-		const params = withAskResearchParam(window.location.search, jobId);
-		const next = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-		const current =
-			window.location.pathname + window.location.search + window.location.hash;
-		if (next !== current) {
-			window.history.replaceState(window.history.state, "", next);
-		}
+		syncAskSurfaceUrl({
+			jobId,
+			open: jobId ? null : undefined,
+			sample: jobId ? null : undefined,
+		});
 	}
 
 	function syncLimitsNotes(): void {
@@ -2117,14 +2202,24 @@ export function attachAiMode(options: {
 		}
 	}
 
-	function leaveAskHome(): void {
+	function leaveAskHome(options?: { url?: "back" | "replace" | "none" }): void {
 		for (const turn of turns) {
 			if (turn.research && turn.pending && turn.researchJobId) {
 				persistResearchHistory(turn, { pending: true, unread: false });
 			}
 		}
 		persistActiveThread();
-		syncResearchJobUrl(null);
+		const urlMode = options?.url ?? "back";
+		const hasItemUrl = Boolean(
+			askResearchJobParam(window.location.search) ||
+				askHistoryOpenParam(window.location.search) ||
+				askSampleParam(window.location.search),
+		);
+		const popToMenu =
+			urlMode === "back" && hasItemUrl && askSurfaceCameFromMenu();
+		if (urlMode !== "none" && !popToMenu) {
+			syncAskSurfaceUrl({ jobId: null, open: null, sample: null, push: false });
+		}
 		stopResearchPoll();
 		stopSamplePlayback();
 		busy = false;
@@ -2133,9 +2228,62 @@ export function attachAiMode(options: {
 		turns = [];
 		setStatus("");
 		syncResearchChip();
+		if (popToMenu) window.history.back();
 		syncLayout();
 		watchPendingResearchHistory();
 		input.focus();
+	}
+
+	function applyAskSurfaceFromUrl(): void {
+		if (shareMode) return;
+		if (window.location.pathname.replace(/\/$/, "") !== "/search") return;
+		if (!isAskSurfaceMode(window.location.search)) return;
+		applyingAskSurfaceUrl = true;
+		try {
+			const jobId = askResearchJobParam(window.location.search);
+			const sampleSlug = askSampleParam(window.location.search);
+			const open = askHistoryOpenParam(window.location.search);
+			if (jobId) {
+				const already =
+					turns.length > 0 &&
+					turns.some((turn) => turn.researchJobId === jobId);
+				if (already) return;
+				void restoreResearchJob(
+					jobId,
+					sessionEntries.find((item) => item.researchJobId === jobId),
+				);
+				return;
+			}
+			if (sampleSlug) {
+				const tip = turns[turns.length - 1];
+				if (tip?.fromSample && tip.sampleSlug === sampleSlug) return;
+				if (!openSampleFromUrl(sampleSlug) && turns.length > 0) {
+					leaveAskHome({ url: "none" });
+				}
+				return;
+			}
+			if (open) {
+				const tip = turns[turns.length - 1];
+				const openKey = normalizeAskQuestionKey(open);
+				if (
+					tip &&
+					(normalizeAskQuestionKey(tip.question) === openKey ||
+						normalizeAskQuestionKey(tip.originalQuestion || "") ===
+							openKey)
+				) {
+					return;
+				}
+				if (!openFromHistory(open) && turns.length > 0) {
+					leaveAskHome({ url: "none" });
+				}
+				return;
+			}
+			if (turns.length > 0) {
+				leaveAskHome({ url: "none" });
+			}
+		} finally {
+			applyingAskSurfaceUrl = false;
+		}
 	}
 
 	function markLeavingAskForDiscourse(): void {
@@ -2182,17 +2330,12 @@ export function attachAiMode(options: {
 		entry.researchJobId = turn.researchJobId;
 		if (flags.pending) entry.researchPending = true;
 		if (flags.unread) entry.researchUnread = true;
-		const replaceQuestions =
-			entry.thread && entry.thread.length > 1
-				? entry.thread.flatMap((item) =>
-						[item.question, item.originalQuestion || ""].filter(Boolean),
-					)
-				: [];
-		if (replaceQuestions.length > 0) {
-			sessionEntries = removeAskHistoryEntriesByQuestions(
+		else delete entry.researchUnread;
+		const replaceJobIds = priorResearchJobIdsInThread(entry);
+		if (replaceJobIds.length > 0) {
+			sessionEntries = removeAskHistoryEntriesByJobIds(
 				sessionEntries,
-				replaceQuestions,
-				{ research: true },
+				replaceJobIds,
 			);
 		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
@@ -2203,25 +2346,54 @@ export function attachAiMode(options: {
 			credentials: "same-origin",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
-				entry,
-				...(replaceQuestions.length > 0 ? { replaceQuestions } : {}),
+				entry: slimAskHistoryEntryForSync(entry) || entry,
+				...(replaceJobIds.length > 0 ? { replaceJobIds } : {}),
 			}),
 		}).catch(() => {
 			/* history sync is best-effort */
 		});
 	}
 
+	function postHistoryEntry(
+		entry: AiAskSessionEntry,
+		extra?: { replaceQuestions?: string[]; replaceJobIds?: string[] },
+	): void {
+		void fetch("/api/ai/history", {
+			method: "POST",
+			credentials: "same-origin",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				entry: slimAskHistoryEntryForSync(entry) || entry,
+				...(extra?.replaceQuestions && extra.replaceQuestions.length > 0
+					? { replaceQuestions: extra.replaceQuestions }
+					: {}),
+				...(extra?.replaceJobIds && extra.replaceJobIds.length > 0
+					? { replaceJobIds: extra.replaceJobIds }
+					: {}),
+			}),
+		})
+			.then(async (response) => {
+				if (response.status === 401) {
+					signedInForHistory = false;
+					return;
+				}
+				if (response.ok) signedInForHistory = true;
+			})
+			.catch(() => {
+				/* history sync is best-effort */
+			});
+	}
+
 	function markResearchHistoryRead(entry: AiAskSessionEntry): void {
 		if (!entry.researchUnread && !entry.researchPending) return;
 		const next = {
 			...entry,
-			researchUnread: undefined,
 			researchPending: entry.researchPending,
 		};
 		delete next.researchUnread;
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, next);
 		writeAiAskSession(sessionEntries);
-		renderHistory();
+		postHistoryEntry(next);
 	}
 
 	function watchPendingResearchHistory(): void {
@@ -2294,7 +2466,23 @@ export function attachAiMode(options: {
 					changed = true;
 					continue;
 				}
-				if (!existing) continue;
+				if (!existing) {
+					if (
+						!shouldRestoreDroppedResearchJob(sessionEntries, {
+							id: job.id,
+							question: job.result?.question || job.question,
+							originalQuestion: job.result?.originalQuestion,
+						})
+					) {
+						continue;
+					}
+					sessionEntries = upsertAiAskSessionEntry(
+						sessionEntries,
+						researchJobToHistoryEntry(job),
+					);
+					changed = true;
+					continue;
+				}
 				const nextAt = researchHistoryTimestamp({
 					existingAt: existing.at,
 					createdAt: job.createdAt,
@@ -2310,15 +2498,39 @@ export function attachAiMode(options: {
 			writeAiAskSession(sessionEntries);
 			renderHistory();
 			watchPendingResearchHistory();
+			void fetch("/api/ai/history", {
+				method: "POST",
+				credentials: "same-origin",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					action: "sync",
+					entries: slimAskHistoryEntriesForSync(sessionEntries),
+				}),
+			}).catch(() => {
+				/* recovered rows stay local until the next visit */
+			});
 		} catch {
 			/* listing is best-effort */
 		}
 	}
 
 	function openHistoryEntry(entry: AiAskSessionEntry): void {
+		if (entry.researchJobId) {
+			syncAskSurfaceUrl({
+				jobId: entry.researchJobId,
+				open: null,
+				sample: null,
+			});
+		} else if (!researchPaneOn()) {
+			syncAskSurfaceUrl({
+				jobId: null,
+				open: entry.question,
+				sample: null,
+			});
+		}
 		if (entry.researchUnread) markResearchHistoryRead(entry);
-		if (entry.researchJobId && (entry.researchPending || (entry.research && entry.results.length === 0 && !entry.report))) {
-			void restoreResearchJob(entry.researchJobId, entry);
+		if (researchHistoryNeedsJobRestore(entry)) {
+			void restoreResearchJob(entry.researchJobId || "", entry);
 			return;
 		}
 		const restored = askHistoryEntriesForRestore(entry);
@@ -2385,15 +2597,24 @@ export function attachAiMode(options: {
 				createdAt: turn.researchStartedAt,
 			});
 		}
-		const replaceQuestions = [
-			...(pendingReplaceQuestions || []),
-			...(extendPin
-				? completedBefore.flatMap((item) =>
-						[item.question, item.originalQuestion || ""].filter(Boolean),
-					)
-				: []),
-		];
+		const replaceQuestions = turn.research
+			? []
+			: [
+					...(pendingReplaceQuestions || []),
+					...(extendPin
+						? completedBefore.flatMap((item) =>
+								[item.question, item.originalQuestion || ""].filter(Boolean),
+							)
+						: []),
+				];
+		const replaceJobIds = turn.research
+			? [
+					...(pendingReplaceJobIds || []),
+					...priorResearchJobIdsInThread(entry),
+				]
+			: [...(pendingReplaceJobIds || [])];
 		pendingReplaceQuestions = null;
+		pendingReplaceJobIds = null;
 		if (replaceQuestions.length > 0) {
 			sessionEntries = removeAskHistoryEntriesByQuestions(
 				sessionEntries,
@@ -2401,30 +2622,20 @@ export function attachAiMode(options: {
 				{ research: turn.research === true },
 			);
 		}
+		if (replaceJobIds.length > 0) {
+			sessionEntries = removeAskHistoryEntriesByJobIds(
+				sessionEntries,
+				replaceJobIds,
+			);
+		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
 		writeAiAskSession(sessionEntries);
 		persistActiveThread();
 		renderHistory();
-		// Always attempt server write — signedInForHistory can lag the first Ask.
-		void fetch("/api/ai/history", {
-			method: "POST",
-			credentials: "same-origin",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				entry,
-				...(replaceQuestions.length > 0 ? { replaceQuestions } : {}),
-			}),
-		})
-			.then(async (response) => {
-				if (response.status === 401) {
-					signedInForHistory = false;
-					return;
-				}
-				if (response.ok) signedInForHistory = true;
-			})
-			.catch(() => {
-				/* history sync is best-effort */
-			});
+		postHistoryEntry(entry, {
+			replaceQuestions,
+			replaceJobIds,
+		});
 	}
 
 	async function loadAskSamples(): Promise<void> {
@@ -2478,12 +2689,42 @@ export function attachAiMode(options: {
 		}
 	}
 
-	function openAskSample(sample: AiAskSamplePublic): void {
+	function openSampleFromUrl(
+		slug: string,
+		options?: { playback?: boolean },
+	): boolean {
+		const sample = askSamples.find((item) => item.slug === slug);
+		if (!sample) return false;
+		if (isResearchAskSample(sample) !== researchPaneOn()) return false;
+		openAskSample(sample, { playback: options?.playback === true });
+		return true;
+	}
+
+	function openAskSample(
+		sample: AiAskSamplePublic,
+		options?: { playback?: boolean },
+	): void {
 		stopSamplePlayback();
 		const token = samplePlaybackToken;
 		pendingReplaceQuestions = null;
+		pendingReplaceJobIds = null;
 		clearAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
+		syncAskSurfaceUrl({
+			sample: sample.slug,
+			jobId: null,
+			open: null,
+		});
 		const turn = sampleToAiAskTurn(sample);
+		const playback = options?.playback !== false;
+		if (!playback) {
+			applySamplePlayback(turn, sample, "done");
+			turns = [turn];
+			busy = false;
+			root.classList.remove("is-busy");
+			syncLayout();
+			thread.firstElementChild?.scrollIntoView({ block: "start" });
+			return;
+		}
 		applySamplePlayback(turn, sample, "rewrite");
 		turns = [turn];
 		busy = true;
@@ -2592,12 +2833,16 @@ export function attachAiMode(options: {
 				? completed.map((item) => turnToSessionEntry(item))
 				: threadSnapshotForTurn(turn);
 		const entry = turnToSessionEntry(turn, { thread });
-		// Drop shorter/stale rows for earlier turns in this conversation.
-		const replaceQuestions = completed
-			.filter((item) => item !== turn)
-			.flatMap((item) =>
-				[item.question, item.originalQuestion || ""].filter(Boolean),
-			);
+		const replaceQuestions = turn.research
+			? []
+			: completed
+					.filter((item) => item !== turn)
+					.flatMap((item) =>
+						[item.question, item.originalQuestion || ""].filter(Boolean),
+					);
+		const replaceJobIds = turn.research
+			? priorResearchJobIdsInThread(entry)
+			: [];
 		if (replaceQuestions.length > 0) {
 			sessionEntries = removeAskHistoryEntriesByQuestions(
 				sessionEntries,
@@ -2605,29 +2850,17 @@ export function attachAiMode(options: {
 				{ research: turn.research === true },
 			);
 		}
+		if (replaceJobIds.length > 0) {
+			sessionEntries = removeAskHistoryEntriesByJobIds(
+				sessionEntries,
+				replaceJobIds,
+			);
+		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
 		writeAiAskSession(sessionEntries);
 		persistActiveThread();
 		renderHistory();
-		void fetch("/api/ai/history", {
-			method: "POST",
-			credentials: "same-origin",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				entry,
-				...(replaceQuestions.length > 0 ? { replaceQuestions } : {}),
-			}),
-		})
-			.then(async (response) => {
-				if (response.status === 401) {
-					signedInForHistory = false;
-					return;
-				}
-				if (response.ok) signedInForHistory = true;
-			})
-			.catch(() => {
-				/* history sync is best-effort */
-			});
+		postHistoryEntry(entry, { replaceQuestions, replaceJobIds });
 	}
 
 	function toggleSaveTurn(turn: AiAskTurn): void {
@@ -2677,53 +2910,79 @@ export function attachAiMode(options: {
 
 	async function deleteHistoryQuestions(
 		questions: readonly string[],
-		options?: { clearOpenThread?: boolean },
+		options?: { clearOpenThread?: boolean; researchJobId?: string },
 	): Promise<void> {
+		const jobId = (options?.researchJobId || "").trim();
 		const keys = questions.map((q) => q.replace(/\s+/g, " ").trim()).filter(Boolean);
-		if (keys.length === 0) return;
+		if (!jobId && keys.length === 0) return;
 		const clearOpen =
-			options?.clearOpenThread === true || openThreadMatchesQuestions(keys);
-		sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys, {
-			research: researchPaneOn(),
-		});
+			options?.clearOpenThread === true ||
+			(jobId
+				? turns.some((turn) => turn.researchJobId === jobId)
+				: openThreadMatchesQuestions(keys));
+		if (jobId) {
+			sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [jobId]);
+		} else {
+			sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys, {
+				research: researchPaneOn(),
+			});
+		}
 		writeAiAskSession(sessionEntries);
+		if (signedInForHistory) {
+			void fetch("/api/ai/history", {
+				method: "POST",
+				credentials: "same-origin",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(
+					jobId
+						? { action: "delete", researchJobId: jobId, research: true }
+						: {
+								action: "delete",
+								questions: keys,
+								research: researchPaneOn(),
+							},
+				),
+			})
+				.then(async (response) => {
+					if (response.status === 401) {
+						signedInForHistory = false;
+						return;
+					}
+					const data = (await response.json()) as {
+						success?: boolean;
+						entries?: AiAskSessionEntry[];
+					};
+					if (response.ok && data.success && Array.isArray(data.entries)) {
+						sessionEntries = preservePendingResearchHistory(
+							sessionEntries,
+							data.entries,
+						);
+						if (jobId) {
+							sessionEntries = removeAskHistoryEntriesByJobIds(
+								sessionEntries,
+								[jobId],
+							);
+						} else {
+							sessionEntries = removeAskHistoryEntriesByQuestions(
+								sessionEntries,
+								keys,
+								{ research: researchPaneOn() },
+							);
+						}
+						writeAiAskSession(sessionEntries);
+						if (turns.length === 0) renderHistory();
+					}
+				})
+				.catch(() => {
+					/* local delete already applied */
+				});
+		}
 		if (clearOpen) {
-			leaveAskHome();
+			leaveAskHome({ url: "replace" });
 			return;
 		}
 		renderHistory();
 		syncLayout();
-		if (!signedInForHistory) return;
-		try {
-			const response = await fetch("/api/ai/history", {
-				method: "POST",
-				credentials: "same-origin",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					action: "delete",
-					questions: keys,
-					research: researchPaneOn(),
-				}),
-			});
-			if (response.status === 401) {
-				signedInForHistory = false;
-				return;
-			}
-			const data = (await response.json()) as {
-				success?: boolean;
-				entries?: AiAskSessionEntry[];
-			};
-			if (response.ok && data.success && Array.isArray(data.entries)) {
-				sessionEntries = preservePendingResearchHistory(
-					sessionEntries,
-					data.entries,
-				);
-				writeAiAskSession(sessionEntries);
-				renderHistory();
-			}
-		} catch {
-			/* local delete already applied */
-		}
 	}
 
 	function deleteHistoryEntry(entry: AiAskSessionEntry): void {
@@ -2734,14 +2993,28 @@ export function attachAiMode(options: {
 		) {
 			return;
 		}
-		void deleteHistoryQuestions(entryQuestionKeys(entry));
+		void deleteHistoryQuestions(entryQuestionKeys(entry), {
+			researchJobId: entry.researchJobId,
+		});
 	}
 
 	function deleteOpenAskTurn(turn: AiAskTurn): void {
-		if (busy || turn.fromShare || turn.pending || turn.error) return;
+		if (busy) return;
 		const index = turns.indexOf(turn);
 		if (index < 0 || index !== turns.length - 1) return;
-		if (index !== latestPinnableTurnIndex()) return;
+		const flags = openAskTurnActionFlags({
+			pending: turn.pending,
+			error: turn.error,
+			fromShare: turn.fromShare,
+			fromSample: turn.fromSample,
+			isTip: true,
+			research: turn.research,
+			researchJobId: turn.researchJobId,
+			resultCount: turn.results.length,
+			hasReport: Boolean((turn.report || "").trim()),
+			isPinnableTip: index === latestPinnableTurnIndex(),
+		});
+		if (!flags.showDelete) return;
 
 		let previousTip: AiAskTurn | undefined;
 		for (let i = index - 1; i >= 0; i--) {
@@ -2777,6 +3050,7 @@ export function attachAiMode(options: {
 				previousTip.saved = true;
 			}
 			pendingReplaceQuestions = removedQuestions;
+			pendingReplaceJobIds = turn.researchJobId ? [turn.researchJobId] : null;
 			persistSessionFromTurn(previousTip);
 			syncLayout();
 			return;
@@ -2791,7 +3065,7 @@ export function attachAiMode(options: {
 		}
 		void deleteHistoryQuestions(
 			[turn.question, turn.originalQuestion || ""].filter(Boolean),
-			{ clearOpenThread: true },
+			{ clearOpenThread: true, researchJobId: turn.researchJobId },
 		);
 	}
 
@@ -2818,7 +3092,9 @@ export function attachAiMode(options: {
 			method: "POST",
 			credentials: "same-origin",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ entry: next }),
+			body: JSON.stringify({
+				entry: slimAskHistoryEntryForSync(next) || next,
+			}),
 		})
 			.then(async (response) => {
 				if (response.status === 401) {
@@ -2841,9 +3117,8 @@ export function attachAiMode(options: {
 			openQuotaDialog("share");
 			return;
 		}
-		const previous = button.textContent || "Share link";
-		button.disabled = true;
-		button.textContent = "Sharing…";
+		const idle = readAskButtonIdle(button);
+		applyAskButtonFeedback(button, "Sharing…", "busy");
 		const thread =
 			entry.thread && entry.thread.length > 1
 				? entry.thread.map((item) => ({
@@ -2887,26 +3162,19 @@ export function attachAiMode(options: {
 				error?: string;
 			};
 			if (!response.ok || !data.success || !data.path) {
-				button.textContent = data.error || "Could not share";
-				window.setTimeout(() => {
-					button.disabled = false;
-					button.textContent = previous;
-				}, 1800);
+				flashAskButtonFeedback(
+					button,
+					data.error || ASK_SHARE_FAILED_LABEL,
+					"error",
+					idle,
+				);
 				return;
 			}
 			const url = new URL(data.path, window.location.origin).toString();
 			await navigator.clipboard.writeText(url);
-			button.textContent = "Link copied";
-			window.setTimeout(() => {
-				button.disabled = false;
-				button.textContent = previous;
-			}, 1600);
+			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
 		} catch {
-			button.textContent = "Could not share";
-			window.setTimeout(() => {
-				button.disabled = false;
-				button.textContent = previous;
-			}, 1800);
+			flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
 		}
 	}
 
@@ -2931,7 +3199,7 @@ export function attachAiMode(options: {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					action: "sync",
-					entries: sessionEntries,
+					entries: slimAskHistoryEntriesForSync(sessionEntries),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -2959,7 +3227,7 @@ export function attachAiMode(options: {
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						action: "sync",
-						entries: latestLocal,
+						entries: slimAskHistoryEntriesForSync(latestLocal),
 					}),
 				});
 				const catchUpData = (await catchUp.json()) as {
@@ -3173,19 +3441,23 @@ export function attachAiMode(options: {
 	}
 
 	function shareActionsHtml(turn: AiAskTurn, turnIndex: number): string {
-		if (
-			turn.pending ||
-			turn.error ||
-			(turn.results.length === 0 && !(turn.report || "").trim())
-		) {
-			return "";
-		}
-		const pinIndex = latestPinnableTurnIndex();
-		const showPin = turnIndex === pinIndex;
+		const tip = turnIndex === turns.length - 1;
+		const flags = openAskTurnActionFlags({
+			pending: turn.pending,
+			error: turn.error,
+			fromShare: turn.fromShare,
+			fromSample: turn.fromSample,
+			isTip: tip,
+			research: turn.research,
+			researchJobId: turn.researchJobId,
+			resultCount: turn.results.length,
+			hasReport: Boolean((turn.report || "").trim()),
+			isPinnableTip: turnIndex === latestPinnableTurnIndex(),
+		});
 		const conversation = turns.length > 1;
 		// Only the current tip counts — an earlier pin must not look pinned after
 		// a new follow-up until that fuller thread is saved on this tip.
-		const pinned = showPin && turn.saved === true;
+		const pinned = flags.showPin && turn.saved === true;
 		const pinTitle = pinned
 			? conversation
 				? "Unpin — allow this conversation to drop off with older ones"
@@ -3211,17 +3483,12 @@ export function attachAiMode(options: {
 					? RESEARCH_PIN_ACTION
 					: "Pin this Ask";
 		const pinShortLabel = pinned ? "Pinned" : "Pin";
-		const pinBtn = showPin
+		const pinBtn = flags.showPin
 			? `<button type="button" class="ai-share-btn ai-pin-btn${pinned ? " is-pinned" : ""}" data-ai-pin data-turn-index="${turnIndex}" aria-pressed="${pinned ? "true" : "false"}" title="${pinTitle}" aria-label="${pinTitle}">
 				${PIN_ICON_SVG}<span class="ai-share-label-full">${pinLabel}</span><span class="ai-share-label-short">${pinShortLabel}</span>
 			</button>`
 			: "";
-		const showDelete =
-			!turn.fromShare &&
-			!turn.fromSample &&
-			showPin &&
-			turnIndex === turns.length - 1;
-		const deleteBtn = showDelete
+		const deleteBtn = flags.showDelete
 				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}" title="${
 					conversation
 						? "Remove this last follow-up"
@@ -3231,7 +3498,7 @@ export function attachAiMode(options: {
 				}">Delete</button>`
 				: "";
 		const showSampleSave =
-			turnIndex === turns.length - 1 &&
+			tip &&
 			canMarkAskAsSample({
 				isAdmin: isAskAdmin,
 				pending: turn.pending,
@@ -3256,14 +3523,10 @@ export function attachAiMode(options: {
 			pinBtn || deleteBtn
 				? `<div class="ai-share-actions-start">${pinBtn}${deleteBtn}</div>`
 				: "";
-		const tip = turnIndex === turns.length - 1;
-		const downloadBtn =
-			tip &&
-			turn.research === true &&
-			(turn.results.length > 0 || Boolean((turn.report || "").trim()))
+		const downloadBtn = flags.showDownload
 				? `<button type="button" class="ai-share-btn" data-ai-download data-turn-index="${turnIndex}" aria-haspopup="dialog" aria-controls="ask-pdf-export-dialog" title="Download PDF or EPUB">Download</button>`
 				: "";
-		const shareBtn = tip
+		const shareBtn = flags.showShare
 			? `<button type="button" class="ai-share-btn" data-ai-share data-turn-index="${turnIndex}">${SHARE_LINK_IDLE_HTML}</button>`
 			: "";
 		if (!startBtns && !downloadBtn && !sampleSaveBtn && !shareBtn) {
@@ -3342,37 +3605,23 @@ export function attachAiMode(options: {
 				? (turn.report || "").trim()
 				: (turn.summary || "").trim();
 		if (!text) return;
-		const index = Number(button.getAttribute("data-turn-index"));
-		const buttons = thread.querySelectorAll<HTMLButtonElement>(
-			`[data-ai-copy-answer][data-turn-index="${index}"]`,
-		);
-		const idles = new Map<HTMLButtonElement, string>();
-		for (const btn of buttons) {
-			idles.set(btn, btn.innerHTML);
-			btn.disabled = true;
-		}
+		const idle = readAskButtonIdle(button);
 		try {
 			await navigator.clipboard.writeText(text);
-			for (const btn of buttons) {
-				btn.classList.add("is-copied");
-				const label = btn.querySelector(".ai-answer-copy-label");
-				if (label) label.textContent = "Copied";
-				btn.setAttribute("aria-label", "Copied");
-			}
+			flashAskButtonFeedback(
+				button,
+				ASK_CLIPBOARD_COPIED_LABEL,
+				"copied",
+				idle,
+			);
 		} catch {
-			for (const btn of buttons) {
-				const label = btn.querySelector(".ai-answer-copy-label");
-				if (label) label.textContent = "Could not copy";
-				btn.setAttribute("aria-label", "Could not copy");
-			}
+			flashAskButtonFeedback(
+				button,
+				ASK_CLIPBOARD_FAILED_LABEL,
+				"error",
+				idle,
+			);
 		}
-		window.setTimeout(() => {
-			for (const btn of buttons) {
-				btn.disabled = false;
-				btn.classList.remove("is-copied");
-				btn.innerHTML = idles.get(btn) || btn.innerHTML;
-			}
-		}, 1600);
 	}
 
 	async function copyShareLink(
@@ -3389,25 +3638,28 @@ export function attachAiMode(options: {
 		// Already published (e.g. viewing a share page): no need to re-publish.
 		// Exception: if this local thread is longer than a bare single-turn share,
 		// re-publish so the public page can upgrade to the full conversation.
+		const idle = readAskButtonIdle(button);
 		if (turn.sharePath && turn.fromShare && thread.length <= 1) {
-			button.disabled = true;
 			try {
 				await navigator.clipboard.writeText(
 					new URL(turn.sharePath, window.location.origin).toString(),
 				);
-				button.textContent = "Link copied";
+				flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
 			} catch {
-				button.textContent = "Could not copy";
+				flashAskButtonFeedback(
+					button,
+					ASK_CLIPBOARD_FAILED_LABEL,
+					"error",
+					idle,
+				);
 			}
-			window.setTimeout(() => restoreShareLinkButton(button), 1600);
 			return;
 		}
 		if (!signedInForHistory) {
 			openQuotaDialog("share");
 			return;
 		}
-		button.disabled = true;
-		button.textContent = "Sharing…";
+		applyAskButtonFeedback(button, "Sharing…", "busy");
 		try {
 			const response = await fetch("/api/ai/share", {
 				method: "POST",
@@ -3440,20 +3692,22 @@ export function attachAiMode(options: {
 				error?: string;
 			};
 			if (!response.ok || !data.success || !data.path) {
-				button.textContent = data.error || "Could not share";
-				window.setTimeout(() => restoreShareLinkButton(button), 1800);
+				flashAskButtonFeedback(
+					button,
+					data.error || ASK_SHARE_FAILED_LABEL,
+					"error",
+					idle,
+				);
 				return;
 			}
 			turn.shareSlug = data.slug || turn.shareSlug;
 			turn.sharePath = data.path;
 			const url = new URL(data.path, window.location.origin).toString();
 			await navigator.clipboard.writeText(url);
-			button.textContent = "Link copied";
+			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
 			persistSessionFromTurn(turn);
-			window.setTimeout(() => restoreShareLinkButton(button), 1600);
 		} catch {
-			button.textContent = "Could not share";
-			window.setTimeout(() => restoreShareLinkButton(button), 1800);
+			flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
 		}
 	}
 
@@ -3641,7 +3895,7 @@ export function attachAiMode(options: {
 					: "";
 			// Keep the process strip + any streamed thinking so a timeout or
 			// refusal stall is still inspectable after the error lands.
-			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${retry}`;
+			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${retry}${shareActionsHtml(turn, turnIndex)}`;
 		} else if (turn.pending && !hasHits) {
 			const emailNote =
 				turn.research && turn.researchJobId
@@ -3792,6 +4046,10 @@ export function attachAiMode(options: {
 		const sampleAttr = options?.sampleSlug
 			? ` data-ai-history-sample="${escapeHtml(options.sampleSlug)}"`
 			: "";
+		const jobAttr =
+			!sample && entry.researchJobId
+				? ` data-ai-history-job="${escapeHtml(entry.researchJobId)}"`
+				: "";
 		const pinAction = entry.saved
 			? paneResearch
 				? RESEARCH_UNPIN_ACTION
@@ -3799,25 +4057,26 @@ export function attachAiMode(options: {
 			: paneResearch
 				? RESEARCH_PIN_ACTION
 				: "Pin";
-		const showPin = signedInForHistory;
-		const showShare = !sample || signedInForHistory;
-		const showDelete = !sample || signedInForHistory;
+		const { showPin, showShare, showDelete } = askHistoryCardMenuFlags({
+			sample,
+			signedInForHistory,
+		});
 		const menuItems = [
 			showPin
-				? `<button type="button" role="menuitem" data-ai-history-pin data-ai-history-q="${q}"${sampleAttr}>${pinAction}</button>`
+				? `<button type="button" role="menuitem" data-ai-history-pin data-ai-history-q="${q}"${sampleAttr}${jobAttr}>${pinAction}</button>`
 				: "",
 			showShare
-				? `<button type="button" role="menuitem" data-ai-history-share data-ai-history-q="${q}"${sampleAttr}>Share link</button>`
+				? `<button type="button" role="menuitem" data-ai-history-share data-ai-history-q="${q}"${sampleAttr}${jobAttr}>Share link</button>`
 				: "",
 			showDelete
-				? `<button type="button" role="menuitem" class="is-danger" data-ai-history-delete data-ai-history-q="${q}"${sampleAttr}>Delete</button>`
+				? `<button type="button" role="menuitem" class="is-danger" data-ai-history-delete data-ai-history-q="${q}"${sampleAttr}${jobAttr}>Delete</button>`
 				: "",
 		]
 			.filter(Boolean)
 			.join("");
 		const menu = menuItems
 			? `<div class="ai-history-menu">
-							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}"${sampleAttr} aria-label="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}" aria-expanded="false" title="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}">
+							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}"${jobAttr}${sampleAttr} aria-label="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}" aria-expanded="false" title="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}">
 								${MORE_ICON_SVG}
 							</button>
 							<div class="ai-history-menu-panel" hidden role="menu">
@@ -3826,7 +4085,7 @@ export function attachAiMode(options: {
 						</div>`
 			: "";
 		return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}${entry.researchUnread ? " is-unread" : ""}${entry.researchPending ? " is-research-pending" : ""}${sample ? " is-sample" : ""}">
-						<button type="button" class="ai-history-item" data-ai-history-q="${q}"${sampleAttr}>
+						<button type="button" class="ai-history-item" data-ai-history-q="${q}"${jobAttr}${sampleAttr}>
 							<span class="ai-history-top">
 								${unreadDot}
 								<span class="ai-history-q">${q}</span>
@@ -3976,6 +4235,12 @@ export function attachAiMode(options: {
 			return askSamples.find((item) => item.slug === slug);
 		};
 
+		const entryFromButton = (button: Element): AiAskSessionEntry | undefined => {
+			const question = button.getAttribute("data-ai-history-q") || "";
+			const jobId = button.getAttribute("data-ai-history-job") || "";
+			return findLaneEntry(question, jobId || undefined);
+		};
+
 		historyEl.querySelectorAll<HTMLButtonElement>("[data-ai-history-q]").forEach(
 			(button) => {
 				if (!button.classList.contains("ai-history-item")) return;
@@ -3986,8 +4251,7 @@ export function attachAiMode(options: {
 						openAskSample(sample);
 						return;
 					}
-					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findLaneEntry(question);
+					const entry = entryFromButton(button);
 					if (!entry) return;
 					openHistoryEntry(entry);
 				});
@@ -4023,8 +4287,7 @@ export function attachAiMode(options: {
 						});
 						return;
 					}
-					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findLaneEntry(question);
+					const entry = entryFromButton(button);
 					if (entry) toggleHistoryEntryPin(entry);
 				});
 			});
@@ -4039,8 +4302,7 @@ export function attachAiMode(options: {
 						void shareHistoryEntry(sampleToHistoryEntry(sample), button);
 						return;
 					}
-					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findLaneEntry(question);
+					const entry = entryFromButton(button);
 					if (entry) void shareHistoryEntry(entry, button);
 				});
 			});
@@ -4067,8 +4329,7 @@ export function attachAiMode(options: {
 						);
 						return;
 					}
-					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findLaneEntry(question);
+					const entry = entryFromButton(button);
 					if (entry) deleteHistoryEntry(entry);
 				});
 			});
@@ -4116,13 +4377,18 @@ export function attachAiMode(options: {
 		const restoring = root.classList.contains("is-restoring-research");
 		empty.hidden = hasThread || shareMode || restoring;
 		composer.hidden = hasThread || shareMode || restoring;
-		if (historyEl && restoring) historyEl.hidden = true;
+		if (historyEl) {
+			if (hasThread || restoring || shareMode) {
+				historyEl.hidden = true;
+			} else if (historyEl.hidden) {
+				renderHistory();
+			}
+		}
 		if (followForm) {
 			followForm.hidden =
 				shareMode || !hasThread || clarifying || declinedOpen;
 		}
 		syncClarifyBar();
-		if (historyEl && shareMode) historyEl.hidden = true;
 		hideDiscourseCitationPopover();
 		thread.innerHTML = turns.map((turn, index) => renderTurn(turn, index)).join("");
 		thread.querySelectorAll<HTMLElement>("[data-ai-feedback-turn]").forEach((row) => {
@@ -4539,7 +4805,6 @@ export function attachAiMode(options: {
 	async function pollResearchTurn(turn: AiAskTurn): Promise<void> {
 		const token = researchPollToken;
 		if (!turn.researchJobId) return;
-		rememberResearchJobId(turn.researchJobId);
 		let stallKey = "";
 		let stallSince = Date.now();
 		while (turn.pending && turn.researchJobId && token === researchPollToken) {
@@ -4600,11 +4865,6 @@ export function attachAiMode(options: {
 		if (token !== researchPollToken) return;
 		if (!turn.pending) {
 			void refreshQuota();
-			try {
-				sessionStorage.removeItem(`${RESEARCH_CHIP_STORAGE_KEY}-job`);
-			} catch {
-				/* ignore */
-			}
 		}
 		if (!turn.pending && turn.error && turn.research) {
 			setResearchChipOn(true);
@@ -5025,12 +5285,19 @@ export function attachAiMode(options: {
 		const restoreOnFail = replacing ? turns.slice() : null;
 		if (replacing) {
 			const previous = turns[replaceTurnIndex];
-			pendingReplaceQuestions = previous
-				? [previous.question, previous.originalQuestion || ""].filter(Boolean)
+			pendingReplaceQuestions =
+				previous && !previous.research && !useResearch
+					? [previous.question, previous.originalQuestion || ""].filter(
+							Boolean,
+						)
+					: null;
+			pendingReplaceJobIds = previous?.researchJobId
+				? [previous.researchJobId]
 				: null;
 			turns = turns.slice(0, replaceTurnIndex);
 		} else {
 			pendingReplaceQuestions = null;
+			pendingReplaceJobIds = null;
 		}
 		const turn: AiAskTurn = {
 			question: q,
@@ -5054,6 +5321,7 @@ export function attachAiMode(options: {
 			if (restoreOnFail) {
 				turns = restoreOnFail;
 				pendingReplaceQuestions = null;
+				pendingReplaceJobIds = null;
 			} else {
 				turns = turns.filter((item) => item !== turn);
 			}
@@ -5550,7 +5818,7 @@ export function attachAiMode(options: {
 		void startResearchFromClarify();
 	});
 
-	void loadAskSamples();
+	const samplesReady = loadAskSamples();
 
 	root.querySelectorAll<HTMLButtonElement>("[data-ai-new]").forEach((button) => {
 		button.addEventListener("click", () => {
@@ -5559,7 +5827,8 @@ export function attachAiMode(options: {
 				return;
 			}
 			pendingReplaceQuestions = null;
-			leaveAskHome();
+			pendingReplaceJobIds = null;
+			leaveAskHome({ url: "replace" });
 		});
 	});
 
@@ -5701,6 +5970,9 @@ export function attachAiMode(options: {
 		}
 		persistActiveThread();
 	});
+	window.addEventListener("popstate", () => {
+		applyAskSurfaceFromUrl();
+	});
 	window.addEventListener("resize", () => {
 		thread.querySelectorAll<HTMLElement>("[data-ai-question]").forEach((wrap) => {
 			syncQuestionExpandState(wrap);
@@ -5721,15 +5993,15 @@ export function attachAiMode(options: {
 
 	const researchJobParam =
 		shareMode || !askSurfaceVisible ? "" : askResearchJobParam(params);
-	const rememberedResearchJob =
+	const sampleParam =
 		shareMode || !askSurfaceVisible || researchJobParam
 			? ""
-			: readRememberedResearchJobId();
-	const restoreResearchId = researchJobParam || rememberedResearchJob;
+			: askSampleParam(params);
+	const restoreResearchId = researchJobParam;
 
 	// `open` reopens a stored ask (e.g. from the Review Room) without a credit.
 	const openQuestion =
-		shareMode || !askSurfaceVisible || restoreResearchId
+		shareMode || !askSurfaceVisible || restoreResearchId || sampleParam
 			? ""
 			: params.get("open")?.replace(/\s+/g, " ").trim() || "";
 	function openFromHistory(question: string): boolean {
@@ -5737,6 +6009,17 @@ export function attachAiMode(options: {
 		if (!entry) return false;
 		openHistoryEntry(entry);
 		return true;
+	}
+
+	if (!shareMode && onSearchPage) {
+		const state = window.history.state as { aiAskSurface?: number } | null;
+		if (!state || state.aiAskSurface !== 1) {
+			window.history.replaceState(
+				askSurfaceHistoryState(false),
+				"",
+				window.location.pathname + window.location.search + window.location.hash,
+			);
+		}
 	}
 
 	if (!askSurfaceVisible) {
@@ -5754,6 +6037,10 @@ export function attachAiMode(options: {
 			sessionEntries.find((item) => item.researchJobId === restoreResearchId),
 		);
 		void refreshQuota();
+	} else if (sampleParam) {
+		void samplesReady.then(() => {
+			if (turns.length === 0) openSampleFromUrl(sampleParam);
+		});
 	} else if (openQuestion) {
 		if (!openFromHistory(openQuestion)) {
 			// Not on this device yet — prefill while the server copy loads.

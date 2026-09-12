@@ -3,7 +3,10 @@ import { describe, it } from "node:test";
 import {
 	AI_ASK_SESSION_LIMIT,
 	AI_RESEARCH_SESSION_LIMIT,
+	ASK_HISTORY_FIRESTORE_LIMIT_BYTES,
+	ASK_HISTORY_FIRESTORE_TARGET_BYTES,
 	ASK_HISTORY_PREVIEW_LIMIT,
+	askHistoryFirestoreBytes,
 	askHistoryLaneEntries,
 	attachResearchToHistoryThread,
 	askHistoryEntriesForRestore,
@@ -13,17 +16,25 @@ import {
 	clearAskThreadResumeIntent,
 	markAskResumeFromDiscourse,
 	shouldRestoreActiveAskThread,
+	shouldRestoreDroppedResearchJob,
 	shouldResumeAskFromDiscourse,
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
 	mergeAskHistoryEntries,
+	mergeResearchUnreadFlag,
 	preservePendingResearchHistory,
 	normalizeAskQuestionKey,
 	pinnedAskHistoryEntries,
+	priorResearchJobIdsInThread,
 	readActiveAskThread,
 	resolveAskHistoryTab,
+	removeAskHistoryEntriesByJobIds,
 	removeAskHistoryEntriesByQuestions,
+	isAskHistoryDocumentSizeError,
+	researchHistoryNeedsJobRestore,
 	sanitizeAskHistoryEntry,
+	slimAskHistoryEntriesForSync,
+	slimAskHistoryEntryForSync,
 	trimAskHistoryEntries,
 	upsertAiAskSessionEntry,
 	visibleAskHistoryEntries,
@@ -120,6 +131,30 @@ describe("sanitizeAskHistoryEntry research", () => {
 		assert.equal(clean?.researchJobId, "job-1");
 	});
 
+	it("keeps a finished empty-result Research job restorable by id", () => {
+		const clean = sanitizeAskHistoryEntry({
+			question: "What is satipaṭṭhāna?",
+			lookingFor: "",
+			queries: ["satipaṭṭhāna", "ānāpānasati", "sati"],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			at: 1,
+			research: true,
+			researchJobId: "0305ad4a-56cb-409f-835d-2683530a7dac",
+		});
+		assert.ok(clean);
+		assert.equal(clean.results.length, 0);
+		assert.equal(clean.researchJobId, "0305ad4a-56cb-409f-835d-2683530a7dac");
+		const slim = slimAskHistoryEntryForSync(clean);
+		assert.ok(slim);
+		assert.equal(slim.report, undefined);
+		assert.equal(slim.researchJobId, clean.researchJobId);
+		assert.equal(researchHistoryNeedsJobRestore(slim), true);
+	});
+
 	it("round-trips in-progress and unread research", () => {
 		const pending = sanitizeAskHistoryEntry({
 			question: "Who is a sekha?",
@@ -173,6 +208,21 @@ describe("sanitizeAskHistoryEntry research", () => {
 			}),
 		);
 		assert.match(clean?.report || "", /## Feeling/);
+	});
+
+	it("round-trips a research card excerpt", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				researchJobId: "job-ex",
+				reportExcerpt: "The discourses treat vedanā as feeling tone.",
+			}),
+		);
+		assert.equal(
+			clean?.reportExcerpt,
+			"The discourses treat vedanā as feeling tone.",
+		);
+		assert.equal(clean?.report, undefined);
 	});
 
 	it("round-trips stored report stats without the full report", () => {
@@ -391,6 +441,47 @@ describe("mergeAskHistoryEntries", () => {
 		assert.equal(merged.length, 1);
 		assert.equal(merged[0]?.lookingFor, "fresh");
 	});
+
+	it("keeps separate research jobs with the same question", () => {
+		const first = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## A",
+		});
+		const second = entry("Who is a trainee?", 20, {
+			research: true,
+			researchJobId: "job-b",
+			report: "## B",
+			researchUnread: true,
+		});
+		const merged = mergeAskHistoryEntries([first], [second]);
+		assert.equal(merged.length, 2);
+		assert.deepEqual(
+			merged.map((item) => item.researchJobId).sort(),
+			["job-a", "job-b"],
+		);
+	});
+
+	it("does not resurrect unread after a report has been opened", () => {
+		const read = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## A",
+		});
+		const unread = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## A",
+			researchUnread: true,
+		});
+		const merged = mergeAskHistoryEntries([read], [unread]);
+		assert.equal(merged.length, 1);
+		assert.equal(merged[0]?.researchUnread, undefined);
+		assert.equal(
+			mergeResearchUnreadFlag(read, unread),
+			false,
+		);
+	});
 });
 
 describe("removeAskHistoryEntriesByQuestions", () => {
@@ -586,6 +677,183 @@ describe("Ask vs Research history lanes", () => {
 		);
 	});
 
+	it("keeps separate Research jobs that share a question", () => {
+		let entries: AiAskSessionEntry[] = [];
+		for (const id of ["job-a", "job-b", "job-c"]) {
+			entries = upsertAiAskSessionEntry(
+				entries,
+				entry("Who is a trainee?", 1, {
+					research: true,
+					researchJobId: id,
+					report: "## Report",
+				}),
+			);
+		}
+		assert.equal(askHistoryLaneEntries(entries, true).length, 3);
+		const first = entry("Who is a trainee?", 1, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## First",
+		});
+		const second = entry("Who is a trainee?", 2, {
+			research: true,
+			researchJobId: "job-b",
+			report: "## Second",
+			researchUnread: true,
+		});
+		assert.equal(mergeAskHistoryEntries([first], [second]).length, 2);
+	});
+
+	it("replaces the same Research job without dropping an older job", () => {
+		const first = entry("Who is a trainee?", 1, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## First",
+		});
+		const pending = entry("Who is a trainee?", 2, {
+			research: true,
+			researchJobId: "job-b",
+			researchPending: true,
+		});
+		const ready = entry("Who is a trainee?", 2, {
+			research: true,
+			researchJobId: "job-b",
+			report: "## Ready",
+			researchUnread: true,
+		});
+		const merged = upsertAiAskSessionEntry(
+			upsertAiAskSessionEntry(upsertAiAskSessionEntry([], first), pending),
+			ready,
+		);
+		assert.equal(merged.length, 2);
+		const jobB = merged.find((item) => item.researchJobId === "job-b");
+		assert.equal(jobB?.report, "## Ready");
+		assert.equal(jobB?.researchUnread, true);
+		assert.equal(jobB?.researchPending, undefined);
+		assert.ok(merged.some((item) => item.researchJobId === "job-a"));
+	});
+
+	it("does not resurrect Research ready after the report was opened", () => {
+		const unread = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## Ready",
+			researchUnread: true,
+		});
+		const read = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## Ready",
+		});
+		const afterOpen = upsertAiAskSessionEntry([unread], read);
+		assert.equal(afterOpen[0]?.researchUnread, undefined);
+		const synced = mergeAskHistoryEntries(afterOpen, [unread]);
+		assert.equal(synced.length, 1);
+		assert.equal(synced[0]?.researchUnread, undefined);
+	});
+
+	it("deletes one Research job without removing another with the same question", () => {
+		const entries = [
+			entry("Who is a trainee?", 1, {
+				research: true,
+				researchJobId: "job-a",
+				report: "## A",
+			}),
+			entry("Who is a trainee?", 2, {
+				research: true,
+				researchJobId: "job-b",
+				report: "## B",
+			}),
+		];
+		const next = removeAskHistoryEntriesByJobIds(entries, ["job-b"]);
+		assert.equal(next.length, 1);
+		assert.equal(next[0]?.researchJobId, "job-a");
+	});
+
+	it("deletes an empty-result Research job without removing a same-question sibling", () => {
+		const empty = sanitizeAskHistoryEntry({
+			question: "Who is a trainee?",
+			lookingFor: "",
+			queries: ["sati"],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			at: 2,
+			research: true,
+			researchJobId: "job-empty",
+		});
+		assert.ok(empty);
+		const entries = [
+			entry("Who is a trainee?", 1, {
+				research: true,
+				researchJobId: "job-a",
+				report: "## A",
+			}),
+			empty,
+		];
+		const next = removeAskHistoryEntriesByJobIds(entries, ["job-empty"]);
+		assert.equal(next.length, 1);
+		assert.equal(next[0]?.researchJobId, "job-a");
+		assert.equal(
+			removeAskHistoryEntriesByQuestions(entries, ["Who is a trainee?"], {
+				research: true,
+			}).length,
+			0,
+		);
+	});
+
+	it("restores a missing job only when another report still has that question", () => {
+		const kept = entry("Who is a trainee?", 1, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## A",
+		});
+		assert.equal(
+			shouldRestoreDroppedResearchJob([kept], {
+				id: "job-b",
+				question: "Who is a trainee?",
+			}),
+			true,
+		);
+		assert.equal(
+			shouldRestoreDroppedResearchJob([kept], {
+				id: "job-c",
+				question: "What is radical attention?",
+			}),
+			false,
+		);
+		assert.equal(
+			shouldRestoreDroppedResearchJob([], {
+				id: "job-b",
+				question: "Who is a trainee?",
+			}),
+			false,
+		);
+	});
+
+	it("lists earlier jobs in a follow-up thread so they can be folded into the tip", () => {
+		const follow = entry("And stream-entry?", 2, {
+			research: true,
+			researchJobId: "job-follow",
+			report: "## Follow",
+			thread: [
+				entry("Who is a trainee?", 1, {
+					research: true,
+					researchJobId: "job-root",
+					report: "## Root",
+				}),
+				entry("And stream-entry?", 2, {
+					research: true,
+					researchJobId: "job-follow",
+					report: "## Follow",
+				}),
+			],
+		});
+		assert.deepEqual(priorResearchJobIdsInThread(follow), ["job-root"]);
+	});
+
 	it("trims 20 Asks and 20 reports independently", () => {
 		let entries: AiAskSessionEntry[] = [];
 		for (let i = 0; i < AI_ASK_SESSION_LIMIT + 2; i++) {
@@ -701,5 +969,239 @@ describe("Ask vs Research history lanes", () => {
 		assert.equal(shouldResumeAskFromDiscourse(storage, { research: true }), true);
 		clearAskResumeFromDiscourse(storage, { research: true });
 		assert.equal(shouldResumeAskFromDiscourse(storage, { research: true }), false);
+	});
+});
+
+describe("slim Ask history for Firestore", () => {
+	it("drops the full research report and keeps card fields", () => {
+		const fat = entry("survey feeling", 1, {
+			research: true,
+			researchJobId: "job-slim",
+			researchUnread: true,
+			saved: true,
+			report: "## Feeling\n\nThe discourses treat **vedanā** as a feeling tone ([SN 36.1](/sn36.1)).",
+			reasoning: "hidden chain of thought ".repeat(80),
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in full…",
+			],
+			results: Array.from({ length: 40 }, (_, i) => ({
+				slug: `mn${i + 1}`,
+				title: `Discourse ${i + 1}`,
+				description: "x".repeat(200),
+				contentSnippet: "y".repeat(200),
+				referenceOnly: false,
+				href: `/mn${i + 1}`,
+			})),
+		});
+		const slim = slimAskHistoryEntryForSync(fat);
+		assert.ok(slim);
+		assert.equal(slim.report, undefined);
+		assert.equal(slim.reasoning, "");
+		assert.equal(slim.processNotes, undefined);
+		assert.equal(slim.researchJobId, "job-slim");
+		assert.equal(slim.researchUnread, true);
+		assert.equal(slim.saved, true);
+		assert.match(slim.reportExcerpt || "", /feeling tone/i);
+		assert.ok(slim.reportStats);
+		assert.equal(slim.reportStats?.cited, 1);
+		assert.ok((slim.reportStats?.words || 0) > 0);
+		assert.equal(slim.reportStats?.additional, 40);
+		const slimAgain = sanitizeAskHistoryEntry({
+			...slim,
+			report: undefined,
+			results: slim.results,
+		});
+		assert.deepEqual(slimAgain?.reportStats, slim.reportStats);
+		assert.ok((slim.results.length || 0) <= 6);
+		assert.ok(slim.results.every((hit) => hit.contentSnippet === null));
+		assert.equal(slim.candidateCount, 40);
+		assert.equal(researchHistoryNeedsJobRestore(slim), true);
+		assert.equal(researchHistoryNeedsJobRestore(fat), false);
+	});
+
+	it("does not resurrect unread when both copies are slim finished jobs", () => {
+		const unread = slimAskHistoryEntryForSync(
+			entry("Who is a trainee?", 10, {
+				research: true,
+				researchJobId: "job-a",
+				report: "## Ready",
+				researchUnread: true,
+			}),
+		);
+		const read = slimAskHistoryEntryForSync(
+			entry("Who is a trainee?", 10, {
+				research: true,
+				researchJobId: "job-a",
+				report: "## Ready",
+			}),
+		);
+		assert.ok(unread);
+		assert.ok(read);
+		assert.equal(unread.report, undefined);
+		assert.equal(read.researchUnread, undefined);
+		const afterOpen = upsertAiAskSessionEntry([unread], read);
+		assert.equal(afterOpen[0]?.researchUnread, undefined);
+		const synced = mergeAskHistoryEntries(afterOpen, [unread]);
+		assert.equal(synced[0]?.researchUnread, undefined);
+		assert.equal(mergeResearchUnreadFlag(read, unread), false);
+	});
+
+	it("keeps a local full report when merging a slim server copy", () => {
+		const local = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-a",
+			report: "## Full local report",
+		});
+		const remote = slimAskHistoryEntryForSync(local);
+		assert.ok(remote);
+		assert.equal(remote.report, undefined);
+		const merged = preservePendingResearchHistory([local], [remote]);
+		assert.equal(merged[0]?.report, "## Full local report");
+		assert.equal(merged[0]?.researchJobId, "job-a");
+	});
+
+	it("clips Ask thread snapshots on the server payload", () => {
+		const root = entry("What is mindfulness?", 1, {
+			reasoning: "long ".repeat(200),
+			results: Array.from({ length: 20 }, (_, i) => ({
+				slug: `sn47.${i + 1}`,
+				title: "Satipatthana",
+				description: "d".repeat(80),
+				contentSnippet: "s".repeat(200),
+				referenceOnly: false,
+				href: `/sn47.${i + 1}`,
+			})),
+		});
+		const follow = entry("What about the second one?", 2, {
+			thread: [root, entry("What about the second one?", 2)],
+			reasoning: "more ".repeat(200),
+		});
+		const slim = slimAskHistoryEntryForSync(follow);
+		assert.ok(slim);
+		assert.ok((slim.reasoning || "").length <= 400);
+		assert.ok((slim.thread?.length || 0) <= 6);
+		assert.ok(
+			(slim.thread || []).every(
+				(turn) =>
+					!turn.report &&
+					(turn.results || []).every((hit) => hit.contentSnippet === null),
+			),
+		);
+	});
+
+	it("keeps 20 fat research rows under the Firestore budget", () => {
+		const fat = Array.from({ length: AI_RESEARCH_SESSION_LIMIT }, (_, i) =>
+			entry(`report ${i}`, i + 1, {
+				research: true,
+				researchJobId: `job-${i}`,
+				researchUnread: i % 2 === 0,
+				report: `# Title\n\n${"word ".repeat(18_000)}`,
+				reasoning: "r".repeat(4000),
+				processNotes: Array.from({ length: 8 }, () => "Reading MN 70 in full…"),
+				results: Array.from({ length: 80 }, (_, j) => ({
+					slug: `mn${j + 1}`,
+					title: "T".repeat(80),
+					description: "D".repeat(80),
+					contentSnippet: "S".repeat(200),
+					referenceOnly: false,
+					href: `/mn${j + 1}`,
+				})),
+			}),
+		);
+		assert.ok(
+			askHistoryFirestoreBytes(fat) > ASK_HISTORY_FIRESTORE_LIMIT_BYTES,
+		);
+		const slim = slimAskHistoryEntriesForSync(fat);
+		assert.equal(slim.length, AI_RESEARCH_SESSION_LIMIT);
+		assert.ok(
+			askHistoryFirestoreBytes(slim) < ASK_HISTORY_FIRESTORE_TARGET_BYTES,
+		);
+		assert.ok(slim.every((item) => !item.report));
+		assert.ok(slim.every((item) => Boolean(item.researchJobId)));
+		assert.equal(slim.filter((item) => item.researchUnread).length, 10);
+	});
+
+	it("recognizes Firestore document-size errors", () => {
+		assert.equal(
+			isAskHistoryDocumentSizeError({
+				code: 3,
+				message:
+					"3 INVALID_ARGUMENT: Document 'projects/x/documents/users/u/askHistory/entries' cannot be written because its size (1276657 bytes) exceeds the maximum allowed size of 1048576 bytes.",
+			}),
+			true,
+		);
+		assert.equal(isAskHistoryDocumentSizeError(new Error("permission-denied")), false);
+	});
+
+	it("keeps in-flight process hops on a pending slim row", () => {
+		const pending = slimAskHistoryEntryForSync({
+			question: "Who is a sekha?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "thinking",
+			at: 1,
+			research: true,
+			researchJobId: "job-pending",
+			researchPending: true,
+			processNotes: [
+				"Searching again · 3 of 3 queries",
+				"Reading MN 70 in full…",
+				"Going deeper…",
+			],
+		});
+		assert.ok(pending);
+		assert.equal(pending.researchPending, true);
+		assert.equal(pending.report, undefined);
+		assert.ok((pending.processNotes || []).length > 0);
+		assert.ok((pending.processNotes || []).length <= 2);
+	});
+
+	it("keeps 20 Asks plus 20 reports under the Firestore budget", () => {
+		const mixed = [
+			...Array.from({ length: AI_ASK_SESSION_LIMIT }, (_, i) =>
+				entry(`ask ${i}`, i, {
+					summary: "briefing ".repeat(200),
+					reasoning: "think ".repeat(200),
+					thread: [
+						entry(`ask ${i} root`, i, {
+							results: Array.from({ length: 20 }, (_, j) => ({
+								slug: `an${j + 1}`,
+								title: "T",
+								description: "d".repeat(80),
+								contentSnippet: "s".repeat(200),
+								referenceOnly: false,
+								href: `/an${j + 1}`,
+							})),
+						}),
+						entry(`ask ${i}`, i),
+					],
+				}),
+			),
+			...Array.from({ length: AI_RESEARCH_SESSION_LIMIT }, (_, i) =>
+				entry(`report ${i}`, 100 + i, {
+					research: true,
+					researchJobId: `job-mix-${i}`,
+					report: `# Title\n\n${"word ".repeat(8_000)}`,
+					results: Array.from({ length: 40 }, (_, j) => ({
+						slug: `mn${j + 1}`,
+						title: "T",
+						description: "d".repeat(80),
+						contentSnippet: "s".repeat(200),
+						referenceOnly: false,
+						href: `/mn${j + 1}`,
+					})),
+				}),
+			),
+		];
+		const slim = slimAskHistoryEntriesForSync(mixed);
+		assert.equal(slim.length, AI_ASK_SESSION_LIMIT + AI_RESEARCH_SESSION_LIMIT);
+		assert.ok(
+			askHistoryFirestoreBytes(slim) < ASK_HISTORY_FIRESTORE_TARGET_BYTES,
+		);
 	});
 });

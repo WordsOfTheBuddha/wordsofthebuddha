@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import { toResearchJobPublic } from "./aiAskResearchJob";
 import {
 	applyResearchJobToTurn,
@@ -42,10 +43,20 @@ import {
 	RESEARCH_NEW_LABEL,
 	canShowResearchChip,
 	isAskResearchEnabled,
+	askHistoryCardMenuFlags,
+	openAskTurnActionFlags,
 	RESEARCH_EMAIL_PENDING_NOTE,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
 	wrapAskAnswerHtml,
+	askAnswerCopyButtonHtml,
+	ASK_CLIPBOARD_COPIED_LABEL,
+	ASK_CLIPBOARD_FAILED_LABEL,
+	ASK_CLIPBOARD_COPIED_MS,
+	ASK_CLIPBOARD_FAILED_MS,
+	flashAskButtonFeedback,
+	readAskButtonIdle,
+	restoreAskButtonIdle,
 	researchVerifyStepText,
 	isIncompleteResearchTurn,
 	researchEditAskInsteadLabel,
@@ -306,6 +317,118 @@ describe("isIncompleteResearchTurn", () => {
 				pending: false,
 			}),
 			false,
+		);
+	});
+});
+
+describe("openAskTurnActionFlags", () => {
+	const emptyResearch = {
+		isTip: true,
+		research: true,
+		researchJobId: "job-empty",
+		resultCount: 0,
+		isPinnableTip: false,
+	};
+
+	it("shows Delete on an empty-result Research job", () => {
+		const flags = openAskTurnActionFlags(emptyResearch);
+		assert.equal(flags.showDelete, true);
+		assert.equal(flags.showPin, false);
+		assert.equal(flags.showShare, false);
+		assert.equal(flags.showDownload, false);
+	});
+
+	it("keeps Share and Download when the empty job still has a report", () => {
+		const flags = openAskTurnActionFlags({
+			...emptyResearch,
+			hasReport: true,
+		});
+		assert.equal(flags.showDelete, true);
+		assert.equal(flags.showShare, true);
+		assert.equal(flags.showDownload, true);
+		assert.equal(flags.showPin, false);
+	});
+
+	it("shows Download on a finished Research job with sources", () => {
+		const flags = openAskTurnActionFlags({
+			isTip: true,
+			research: true,
+			researchJobId: "job-hits",
+			resultCount: 4,
+			hasReport: true,
+			isPinnableTip: true,
+		});
+		assert.equal(flags.showDownload, true);
+		assert.equal(flags.showShare, true);
+	});
+
+	it("does not show Download on Ask — Copy and Share are enough", () => {
+		assert.equal(
+			openAskTurnActionFlags({
+				isTip: true,
+				research: false,
+				resultCount: 6,
+				hasReport: false,
+				isPinnableTip: true,
+			}).showDownload,
+			false,
+		);
+	});
+
+	it("shows Delete on a failed Research job", () => {
+		const flags = openAskTurnActionFlags({
+			...emptyResearch,
+			error: "Research could not finish. Try again shortly.",
+		});
+		assert.equal(flags.showDelete, true);
+		assert.equal(flags.showShare, false);
+		assert.equal(flags.showPin, false);
+	});
+
+	it("hides Delete on samples, shares, and in-flight jobs", () => {
+		assert.equal(
+			openAskTurnActionFlags({ ...emptyResearch, fromSample: true }).showDelete,
+			false,
+		);
+		assert.equal(
+			openAskTurnActionFlags({ ...emptyResearch, fromShare: true }).showDelete,
+			false,
+		);
+		assert.equal(
+			openAskTurnActionFlags({ ...emptyResearch, pending: true }).showDelete,
+			false,
+		);
+	});
+
+	it("does not show Delete on an Ask with no results", () => {
+		assert.equal(
+			openAskTurnActionFlags({
+				isTip: true,
+				research: false,
+				resultCount: 0,
+				isPinnableTip: false,
+			}).showDelete,
+			false,
+		);
+	});
+});
+
+describe("askHistoryCardMenuFlags", () => {
+	it("shows Delete on a Recent Research card even when signed out", () => {
+		const flags = askHistoryCardMenuFlags({ sample: false, signedInForHistory: false });
+		assert.equal(flags.showDelete, true);
+		assert.equal(flags.showShare, true);
+		assert.equal(flags.showPin, false);
+	});
+
+	it("hides sample Delete unless signed in", () => {
+		assert.equal(
+			askHistoryCardMenuFlags({ sample: true, signedInForHistory: false }).showDelete,
+			false,
+		);
+		assert.equal(
+			askHistoryCardMenuFlags({ sample: true, signedInForHistory: true }).showDelete,
+			true,
 		);
 	});
 });
@@ -580,6 +703,103 @@ describe("wrapAskAnswerHtml", () => {
 		assert.doesNotMatch(html, /ai-answer-toolbar-start/);
 		assert.match(html, /ai-answer-toolbar-end/);
 		assert.equal([...html.matchAll(/data-ai-copy-answer/g)].length, 1);
+	});
+});
+
+describe("flashAskButtonFeedback", () => {
+	function copyButton(placement: "start" | "end"): HTMLButtonElement {
+		const html = askAnswerCopyButtonHtml({
+			turnIndex: 0,
+			kind: "report",
+			placement,
+		});
+		const { window } = new JSDOM(`<!doctype html><html><body>${html}</body></html>`);
+		const button = window.document.querySelector("button");
+		assert.ok(button);
+		return button;
+	}
+
+	it("unhides the icon-only Copy control and shows Copied", () => {
+		const button = copyButton("start");
+		const idle = readAskButtonIdle(button);
+		const scheduled: Array<[() => void, number]> = [];
+		flashAskButtonFeedback(
+			button,
+			ASK_CLIPBOARD_COPIED_LABEL,
+			"copied",
+			idle,
+			(fn, ms) => scheduled.push([fn, ms]),
+		);
+		const label = button.querySelector<HTMLElement>(".ai-answer-copy-label");
+		assert.ok(label);
+		assert.equal(label.hidden, false);
+		assert.equal(label.textContent, "Copied");
+		assert.equal(button.getAttribute("aria-label"), "Copied");
+		assert.equal(button.getAttribute("title"), "Copied");
+		assert.equal(button.classList.contains("is-copied"), true);
+		assert.equal(button.classList.contains("is-copy-error"), false);
+		assert.equal(button.disabled, true);
+		assert.equal(scheduled[0]?.[1], ASK_CLIPBOARD_COPIED_MS);
+		scheduled[0]?.[0]();
+		const restored = button.querySelector<HTMLElement>(".ai-answer-copy-label");
+		assert.ok(restored);
+		assert.equal(restored.hidden, true);
+		assert.equal(restored.textContent, "Copy");
+		assert.equal(button.getAttribute("aria-label"), "Copy report");
+		assert.equal(button.disabled, false);
+		assert.equal(button.classList.contains("is-copied"), false);
+	});
+
+	it("shows a distinct error state on Copy report", () => {
+		const button = copyButton("end");
+		const idle = readAskButtonIdle(button);
+		const scheduled: Array<[() => void, number]> = [];
+		flashAskButtonFeedback(
+			button,
+			ASK_CLIPBOARD_FAILED_LABEL,
+			"error",
+			idle,
+			(fn, ms) => scheduled.push([fn, ms]),
+		);
+		const label = button.querySelector<HTMLElement>(".ai-answer-copy-label");
+		assert.equal(label?.textContent, "Could not copy");
+		assert.equal(button.classList.contains("is-copied"), false);
+		assert.equal(button.classList.contains("is-copy-error"), true);
+		assert.equal(scheduled[0]?.[1], ASK_CLIPBOARD_FAILED_MS);
+		scheduled[0]?.[0]();
+		assert.equal(
+			button.querySelector(".ai-answer-copy-label")?.textContent,
+			"Copy",
+		);
+		assert.equal(button.classList.contains("is-copy-error"), false);
+	});
+
+	it("restores a Share link control after Link copied", () => {
+		const { window } = new JSDOM(
+			`<!doctype html><html><body>
+				<button type="button">
+					<span class="ai-share-label-full">Share link</span>
+					<span class="ai-share-label-short">Share</span>
+				</button>
+			</body></html>`,
+		);
+		const button = window.document.querySelector("button");
+		assert.ok(button);
+		const idle = readAskButtonIdle(button);
+		flashAskButtonFeedback(button, "Link copied", "copied", idle, () => {});
+		assert.equal(
+			button.querySelector(".ai-share-label-full")?.textContent,
+			"Link copied",
+		);
+		assert.equal(
+			button.querySelector(".ai-share-label-short")?.textContent,
+			"Link copied",
+		);
+		restoreAskButtonIdle(button, idle);
+		assert.equal(
+			button.querySelector(".ai-share-label-full")?.textContent,
+			"Share link",
+		);
 	});
 });
 

@@ -274,7 +274,7 @@ describe("buildAskProcessSteps", () => {
 			showCount: 12,
 		});
 		assert.equal(writing[2]?.state, "done");
-		assert.equal(writing[2]?.text, "Crunched 186 discourses");
+		assert.equal(writing[2]?.text, "Picked 12 discourses");
 		assert.equal(writing[3]?.state, "active");
 		assert.match(writing[3]?.text || "", /Writing from the selected discourses/);
 
@@ -289,7 +289,7 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(done.length, 3);
 		assert.equal(done[0]?.text, "Understood · mindfulness");
 		assert.match(done[1]?.text || "", /Searched the library · 186 discourses/);
-		assert.equal(done[2]?.text, "Crunched 186 discourses");
+		assert.equal(done[2]?.text, "Picked 12 discourses");
 	});
 
 	it("shows research continue notes as live progress", () => {
@@ -331,6 +331,7 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(pending[0]?.state, "done");
 		assert.equal(pending[1]?.state, "active");
 		assert.equal(pending[1]?.text, "Searching widely…");
+		assert.equal(pending[2]?.text, "Rank and pick");
 		assert.equal(pending[3]?.text, "Review evidence");
 		assert.equal(pending[3]?.state, "todo");
 		assert.equal(pending[4]?.text, "Write the report");
@@ -349,7 +350,11 @@ describe("buildAskProcessSteps", () => {
 			resultCount: 18,
 		});
 		assert.equal(done.length, 5);
-		assert.match(done[1]?.text || "", /Searched widely/);
+		assert.equal(
+			done[1]?.text,
+			"Searched widely, found 186 discourse matches",
+		);
+		assert.equal(done[2]?.text, "Ranked and picked 18 discourses");
 		assert.equal(done[3]?.text, "Reviewed the evidence");
 		assert.equal(done[4]?.text, "Wrote the report");
 	});
@@ -373,8 +378,8 @@ describe("buildAskProcessSteps", () => {
 			done.map((step) => step.text),
 			[
 				"Understood · vedanā",
-				"Searched widely · 186 discourses",
-				"Crunched 186 discourses",
+				"Searched widely, found 186 discourse matches",
+				"Ranked and picked 18 discourses",
 				"Reviewed the evidence",
 				"Searched again · 3 of 3 queries",
 				"Read MN 70, SN 48.53 in Pāli and English",
@@ -403,6 +408,23 @@ describe("buildAskProcessSteps", () => {
 			writing.some((step) => step.text === "Read MN 70 in full"),
 			false,
 		);
+	});
+
+	it("shows unique search matches separately from the ranked set", () => {
+		const done = buildAskProcessSteps({
+			pending: false,
+			phase: "done",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+			candidateCount: 546,
+			resultCount: 146,
+		});
+		assert.equal(
+			done[1]?.text,
+			"Searched widely, found 546 discourse matches",
+		);
+		assert.equal(done[2]?.text, "Ranked and picked 146 discourses");
 	});
 
 	it("names the clarifying wait on the first Research step", () => {
@@ -675,7 +697,7 @@ describe("applyAskProcessStreamPatch", () => {
 					<ol class="ai-process">
 						<li class="is-done"><span class="ai-process-mark">✓</span><span>Understood the question</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Search widely</span></li>
-						<li class="is-todo"><span class="ai-process-mark">○</span><span>Crunch the candidates</span></li>
+						<li class="is-todo"><span class="ai-process-mark">○</span><span>Rank and pick</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Review evidence</span></li>
 						<li class="is-todo"><span class="ai-process-mark">○</span><span>Write the report</span></li>
 					</ol>
