@@ -361,18 +361,16 @@ function discourseBody(d: DiscoursePdf): {
 function askSummaryXhtml(
 	summary: string,
 	research: boolean,
-	slugs: string[],
+	items: { slug: string; href: string }[],
 ): string {
 	const text = summary.trim();
 	if (!text) return "";
-	const hits = slugs.map((slug) => ({ slug, href: `/${slug}` }));
-	if (research) {
-		const html = renderResearchReportHtml(text, hits);
-		return `<div class="ask-summary ask-report">${html}</div>`;
-	}
-	const html = renderAskBriefingHtml(text, hits);
+	const hits = items.map((item) => ({ slug: item.slug, href: item.href }));
+	const html = research
+		? renderResearchReportHtml(text, hits)
+		: renderAskBriefingHtml(text, hits);
 	if (!html) return "";
-	return `<div class="ask-summary">${html}</div>`;
+	return `<div class="ask-summary${research ? " ask-report" : ""}">${html}</div>`;
 }
 
 function askTurnPrefaceBody(
@@ -393,7 +391,7 @@ function askTurnPrefaceBody(
   ${askSummaryXhtml(
 		summary,
 		research,
-		items.map((item) => item.slug),
+		items,
 	)}
   <h2>${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
   <ol class="ask-turn-toc">
@@ -820,6 +818,10 @@ h1.cover-title {
 .ask-summary p {
   margin: 0.5em 0;
   line-height: 1.7;
+}
+.ask-summary a {
+  color: #1a365d;
+  text-decoration: underline;
 }
 .ask-report h2, .ask-report h3 {
   font-size: 1.1em;

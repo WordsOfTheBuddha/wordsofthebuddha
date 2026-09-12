@@ -862,13 +862,16 @@ async function runAskExport(
 
 	const { downloadDate, imageMode, vizImageMode, pdfContentOptions } =
 		params;
-	const collectionUrl = askExportCollectionUrl(parsed.value.sharePath);
+	const kind = parsed.value.kind === "research" ? "research" : "ask";
+	const collectionUrl = askExportCollectionUrl(
+		parsed.value.sharePath,
+		kind,
+	);
 	const turnInputs = parsed.value.turns.map((turn) => ({
 		question: turn.question,
 		summary: turn.summary,
 		slugs: turn.selectedDiscourseSlugs,
 	}));
-	const kind = parsed.value.kind === "research" ? "research" : "ask";
 	const coverTitle =
 		parsed.value.title ||
 		turnInputs[0]?.question ||

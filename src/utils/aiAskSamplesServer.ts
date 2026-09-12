@@ -5,6 +5,7 @@ import {
 	ASK_SAMPLE_SLUG_MAX,
 	askSampleKeyFingerprint,
 	deriveAskSampleSlug,
+	isResearchAskSample,
 	sanitizeAskSamplePublic,
 	type AiAskSamplePublic,
 } from "./aiAskSamples";
@@ -62,15 +63,27 @@ function allocateSampleSlug(
 	question: string,
 	questionKey: string,
 	existing: readonly AiAskSamplePublic[],
+	research: boolean,
 ): string {
-	const prior = existing.find((sample) => sample.questionKey === questionKey);
+	const prior = existing.find(
+		(sample) =>
+			sample.questionKey === questionKey &&
+			isResearchAskSample(sample) === research,
+	);
 	if (prior) return prior.slug;
 	const base = deriveAskSampleSlug(question);
-	const occupant = existing.find((sample) => sample.slug === base);
-	if (!occupant || occupant.questionKey === questionKey) return base;
-	const fingerprint = askSampleKeyFingerprint(questionKey);
+	const preferred = research ? `${base}-report`.replace(/-+$/g, "") : base;
+	const occupant = existing.find((sample) => sample.slug === preferred);
+	if (!occupant || occupant.questionKey === questionKey) {
+		if (preferred.length >= 8) return preferred.slice(0, ASK_SAMPLE_SLUG_MAX);
+	}
+	const fingerprint = askSampleKeyFingerprint(
+		`${research ? "r:" : "a:"}${questionKey}`,
+	);
 	const budget = ASK_SAMPLE_SLUG_MAX - fingerprint.length - 1;
-	const trimmed = base.slice(0, Math.max(8, budget)).replace(/-+$/g, "");
+	const trimmed = (research ? `${base}-report` : base)
+		.slice(0, Math.max(8, budget))
+		.replace(/-+$/g, "");
 	return `${trimmed}-${fingerprint}`;
 }
 
@@ -94,8 +107,18 @@ export async function upsertAskSample(options: {
 
 	const questionKey = normalizeAskQuestionKey(turn.question);
 	const existing = await loadAskSamples();
-	const prior = existing.find((sample) => sample.questionKey === questionKey);
-	const slug = allocateSampleSlug(turn.question, questionKey, existing);
+	const research = isResearchAskSample(turn);
+	const prior = existing.find(
+		(sample) =>
+			sample.questionKey === questionKey &&
+			isResearchAskSample(sample) === research,
+	);
+	const slug = allocateSampleSlug(
+		turn.question,
+		questionKey,
+		existing,
+		research,
+	);
 	const payload = {
 		...turn,
 		slug,

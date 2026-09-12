@@ -23,7 +23,7 @@ export function publicResearchEmailOrigin(origin?: string | null): string {
 export function researchResultHref(jobId: string, origin = OPENROUTER_SITE_URL): string {
 	const id = jobId.replace(/\s+/g, "").trim();
 	const base = publicResearchEmailOrigin(origin);
-	return `${base}/search?mode=ai&research=${encodeURIComponent(id)}`;
+	return `${base}/search?mode=research&research=${encodeURIComponent(id)}`;
 }
 
 export function researchEmailFromAddress(

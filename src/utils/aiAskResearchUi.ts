@@ -11,11 +11,53 @@ import type {
 
 export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
 export const RESEARCH_PLACEHOLDER =
-	"Ask for a wider briefing from the discourses…";
+	"Ask for a cited report from the discourses…";
 export const ASK_PLACEHOLDER = "Ask a question about the discourses…";
+export const ASK_COMPOSER_LABEL = "Ask a question";
+export const RESEARCH_COMPOSER_LABEL = "Ask for a cited report";
 export const ASK_WAITING_PLACEHOLDER = "Waiting for an answer…";
 export const ASK_FOLLOW_PLACEHOLDER = "Follow up in this conversation";
 export const RESEARCH_FOLLOW_PLACEHOLDER = "Follow up with a wider search";
+export const ASK_LIMITS_NOTE = "Experimental AI search · limited free Asks";
+export const RESEARCH_LIMITS_NOTE =
+	"Experimental AI research";
+export const ASK_HISTORY_LABEL = "Recent Asks";
+export const RESEARCH_HISTORY_LABEL = "Recent reports";
+export const ASK_HISTORY_ARIA = "Ask history";
+export const RESEARCH_HISTORY_ARIA = "Research history";
+export const ASK_OPTIONS_ARIA = "Ask options";
+export const RESEARCH_OPTIONS_ARIA = "Research options";
+export const ASK_HISTORY_HINT_RECENT = "Older ones drop off · pin to keep";
+export const ASK_HISTORY_HINT_PINNED = "Stay until you unpin";
+export const ASK_DELETE_CONFIRM =
+	"Delete this Ask from Recent Asks? This cannot be undone.";
+export const RESEARCH_DELETE_CONFIRM =
+	"Delete this report from Recent reports? This cannot be undone.";
+export const RESEARCH_SIGNIN_EMPTY_NOTE =
+	"Sign in to run Research (2 per day). Samples below are illustrations.";
+export const RESEARCH_SIGNIN_TITLE = "Sign in to run Research";
+export const RESEARCH_SIGNIN_BODY =
+	"Research is 2 cited reports per day. Create a free account to start one — samples on this page are illustrations and do not use your credits.";
+export const RESEARCH_INVITE_AFTER_ASK =
+	"Looking for a wider search and a longer cited report? Try Research.";
+export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin reports";
+export const RESEARCH_PIN_ACCOUNT_BODY =
+	"Recent reports are temporary. Pinning keeps a report at hand when older ones drop off — and an account syncs your history across devices.";
+export const ASK_PIN_ACCOUNT_TITLE = "Create an account to pin Asks";
+export const ASK_PIN_ACCOUNT_BODY =
+	"Recent Asks are temporary. Pinning keeps a question at hand when older ones drop off — and an account syncs your history across devices.";
+export const RESEARCH_PIN_ACTION = "Pin this report";
+export const RESEARCH_UNPIN_ACTION = "Unpin this report";
+export const RESEARCH_DELETE_ACTION = "Delete this report";
+export const ASK_NEW_LABEL = "+ New Ask";
+export const RESEARCH_NEW_LABEL = "+ New report";
+
+/** Fallback prompts for tests and docs. The Research pane chips come from saved samples. */
+export const RESEARCH_EXAMPLES = [
+	"Survey how the discourses describe mindfulness of the body",
+	"Which suttas treat the five aggregates in depth?",
+	"How do the early discourses talk about death and rebirth?",
+] as const;
 
 /** Follow-up copy only after the current question has an answer. */
 export function askFollowPlaceholder(input: {
@@ -31,12 +73,6 @@ export const RESEARCH_CHIP_TITLE =
 	"A few questions first, then a longer cited report. 2 per day. We’ll email you when it’s ready.";
 export const RESEARCH_EMAIL_PENDING_NOTE =
 	"We’ll email you when this is ready. Feel free to leave.";
-
-export const RESEARCH_EXAMPLES = [
-	"Survey how the discourses describe mindfulness of the body",
-	"Which suttas treat the five aggregates in depth?",
-	"How do the early discourses talk about death and rebirth?",
-] as const;
 
 function envFlag(name: string): string {
 	const meta = (
@@ -115,8 +151,8 @@ export function askMeterLabel(input: {
 	if (input.hideResearchRemaining) return "";
 	if (input.researchOn && typeof input.researchRemaining === "number") {
 		const n = Math.max(0, Math.floor(input.researchRemaining));
-		const unit = n === 1 ? "research" : "researches";
-		return `${n} ${unit} left today`;
+		const unit = n === 1 ? "research report" : "research reports";
+		return `${n} ${unit} available today`;
 	}
 	const n = Math.max(0, Math.floor(input.askRemaining));
 	const unit = n === 1 ? "Ask" : "Asks";

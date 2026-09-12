@@ -296,7 +296,7 @@ describe("buildCollectionEpub", () => {
 			],
 		};
 		const buf = await buildCollectionEpub(ask, {
-			collectionUrl: "www.wordsofthebuddha.org/search?mode=ai",
+			collectionUrl: "www.wordsofthebuddha.org/search?mode=ask",
 			date: "7 September 2026",
 			identifier: "urn:uuid:test-ask",
 			modified: "2026-09-07T00:00:00Z",
@@ -313,8 +313,8 @@ describe("buildCollectionEpub", () => {
 		);
 		assert.ok(preface);
 		assert.match(preface, /What is mindfulness\?/);
-		assert.match(preface, /Start with MN 10/);
-		assert.match(preface, /href="d-t0-mn10.xhtml"/);
+		assert.match(preface, /Start with[\s\S]*MN 10/);
+		assert.match(preface, /href="d-t0-mn10.xhtml">MN 10</);
 		const titlePage = extractZipEntry(buf, "EPUB/title.xhtml")?.toString(
 			"utf8",
 		);

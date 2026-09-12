@@ -3,6 +3,7 @@ import type { UserRecord } from "firebase-admin/auth";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
 import {
 	AI_ASK_SESSION_LIMIT,
+	isResearchHistoryEntry,
 	mergeAskHistoryEntries,
 	removeAskHistoryEntriesByQuestions,
 	sanitizeAskHistoryEntries,
@@ -48,7 +49,9 @@ export async function upsertUserAskHistoryEntry(
 	const current = snap.exists
 		? sanitizeAskHistoryEntries((snap.data() as { entries?: unknown }).entries)
 		: [];
-	const pruned = removeAskHistoryEntriesByQuestions(current, replaceQuestions);
+	const pruned = removeAskHistoryEntriesByQuestions(current, replaceQuestions, {
+		research: isResearchHistoryEntry(clean),
+	});
 	const entries = upsertAiAskSessionEntry(pruned, clean);
 	await ref.set(
 		{
@@ -88,8 +91,9 @@ export async function syncUserAskHistory(
 export async function removeUserAskHistoryByQuestions(
 	user: UserRecord,
 	questions: readonly string[],
+	options?: { research?: boolean },
 ): Promise<AiAskSessionEntry[]> {
 	const current = await loadUserAskHistory(user);
-	const next = removeAskHistoryEntriesByQuestions(current, questions);
+	const next = removeAskHistoryEntriesByQuestions(current, questions, options);
 	return replaceUserAskHistory(user, next);
 }

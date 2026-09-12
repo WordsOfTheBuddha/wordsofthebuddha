@@ -32,7 +32,14 @@ let id: string = originalId || "";
 if ((originalId || "").replace(/\/+$/, "") === "ai") {
 	const question = Astro.url.searchParams.get("q");
 	const params = new URLSearchParams();
-	params.set("mode", "ai");
+	params.set("mode", "ask");
+	if (question?.trim()) params.set("q", question.trim());
+	return Astro.redirect(`/search?${params.toString()}`);
+}
+if ((originalId || "").replace(/\/+$/, "") === "research") {
+	const question = Astro.url.searchParams.get("q");
+	const params = new URLSearchParams();
+	params.set("mode", "research");
 	if (question?.trim()) params.set("q", question.trim());
 	return Astro.redirect(`/search?${params.toString()}`);
 }
@@ -47,7 +54,7 @@ if (
 	if (raw && !raw.includes("/")) {
 		return Astro.rewrite(`/shared-ask/${raw}`);
 	}
-	return Astro.redirect("/search?mode=ai");
+	return Astro.redirect("/search?mode=ask");
 }
 
 // /listen/:slug is a dedicated route. Prerendered listen pages only exist for

@@ -52,8 +52,16 @@ export interface AiAskSessionEntry {
 const SESSION_KEY = "ai-ask-session-v1";
 /** In-tab active Ask thread — restored when the user returns via Back. */
 const ACTIVE_THREAD_KEY = "ai-ask-active-thread-v1";
+/** In-tab active Research thread — separate so Ask Back does not reopen a report. */
+const ACTIVE_RESEARCH_THREAD_KEY = "ai-research-active-thread-v1";
+
+function activeThreadKey(research?: boolean): string {
+	return research ? ACTIVE_RESEARCH_THREAD_KEY : ACTIVE_THREAD_KEY;
+}
 /** Rolling history for signed-in (and local) Ask sessions. */
 export const AI_ASK_SESSION_LIMIT = 20;
+/** Same 20-row cap as Ask, on its own lane. Unpinned rows drop first. */
+export const AI_RESEARCH_SESSION_LIMIT = AI_ASK_SESSION_LIMIT;
 /** Recent-Asks preview above the composer; the Pinned tab shows every pin. */
 export const ASK_HISTORY_PREVIEW_LIMIT = 5;
 export type AskHistoryTab = "recent" | "pinned";
@@ -68,7 +76,9 @@ const MAX_REASONING = 4000;
 /** Match Ask briefing cap (adaptive up to AI_RERANK_SUMMARY_MAX). */
 const MAX_SUMMARY = 4800;
 /** Match Ask display cap (adaptive up to AI_RERANK_MAX_LIMIT). */
-const MAX_RESULTS = 50;
+const MAX_ASK_RESULTS = 50;
+/** Research selected set (up to RESEARCH_RERANK_HARD_LIMIT). */
+const MAX_RESEARCH_RESULTS = 160;
 const MAX_SNIPPET = 280;
 const MAX_TITLE = 160;
 const MAX_DESCRIPTION = 280;
@@ -111,7 +121,9 @@ export function sanitizeAskHistoryEntry(
 	if (!question) return null;
 	const resultsRaw = Array.isArray(record.results) ? record.results : [];
 	const results: AiDiscourseHit[] = [];
-	for (const item of resultsRaw.slice(0, MAX_RESULTS)) {
+	const maxResults =
+		record.research === true ? MAX_RESEARCH_RESULTS : MAX_ASK_RESULTS;
+	for (const item of resultsRaw.slice(0, maxResults)) {
 		if (!item || typeof item !== "object") continue;
 		const hit = item as Record<string, unknown>;
 		const slug = clip(typeof hit.slug === "string" ? hit.slug : "", 64);
@@ -281,17 +293,28 @@ export function askHistoryEntriesForRestore(
 	return [solo];
 }
 
-/**
- * Newest-first trim. When over the cap, drop unsaved entries from the end
- * before touching favorites.
- */
-export function trimAskHistoryEntries(
+export function isResearchHistoryEntry(
+	entry: Pick<AiAskSessionEntry, "research" | "researchJobId" | "report">,
+): boolean {
+	return (
+		entry.research === true ||
+		Boolean(entry.researchJobId) ||
+		Boolean((entry.report || "").trim())
+	);
+}
+
+export function askHistoryLaneEntries(
 	entries: readonly AiAskSessionEntry[],
-	limit = AI_ASK_SESSION_LIMIT,
+	research: boolean,
 ): AiAskSessionEntry[] {
-	const out = entries
-		.map((entry) => sanitizeAskHistoryEntry(entry))
-		.filter((entry): entry is AiAskSessionEntry => Boolean(entry));
+	return entries.filter((entry) => isResearchHistoryEntry(entry) === research);
+}
+
+function trimHistoryLane(
+	entries: readonly AiAskSessionEntry[],
+	limit: number,
+): AiAskSessionEntry[] {
+	const out = [...entries];
 	while (out.length > limit) {
 		let dropIndex = -1;
 		for (let i = out.length - 1; i >= 0; i--) {
@@ -304,6 +327,32 @@ export function trimAskHistoryEntries(
 		else out.splice(dropIndex, 1);
 	}
 	return out;
+}
+
+/**
+ * Newest-first trim. Ask and Research each keep `limit` unsaved rows.
+ * Pinned rows are kept until unpinned (same rule as Ask).
+ */
+export function trimAskHistoryEntries(
+	entries: readonly AiAskSessionEntry[],
+	limit = AI_ASK_SESSION_LIMIT,
+): AiAskSessionEntry[] {
+	const out = entries
+		.map((entry) => sanitizeAskHistoryEntry(entry))
+		.filter((entry): entry is AiAskSessionEntry => Boolean(entry));
+	const ask = new Set(
+		trimHistoryLane(
+			out.filter((entry) => !isResearchHistoryEntry(entry)),
+			limit,
+		),
+	);
+	const research = new Set(
+		trimHistoryLane(
+			out.filter((entry) => isResearchHistoryEntry(entry)),
+			limit,
+		),
+	);
+	return out.filter((entry) => ask.has(entry) || research.has(entry));
 }
 
 export function sanitizeAskHistoryEntries(
@@ -374,33 +423,53 @@ export function upsertAiAskSessionEntry(
 		normalizeAskQuestionKey(clean.question),
 		normalizeAskQuestionKey(clean.originalQuestion || ""),
 	].filter(Boolean);
-	const rest = entries.filter(
-		(item) => !keys.some((key) => entryMatchesQuestionKey(item, key)),
-	);
+	const rest = entries.filter((item) => {
+		if (isResearchHistoryEntry(clean) !== isResearchHistoryEntry(item)) {
+			return true;
+		}
+		return !keys.some((key) => entryMatchesQuestionKey(item, key));
+	});
 	return trimAskHistoryEntries([clean, ...rest], limit);
 }
 
 export function findAiAskSessionEntry(
 	entries: readonly AiAskSessionEntry[],
 	question: string,
+	options?: { research?: boolean },
 ): AiAskSessionEntry | undefined {
 	const key = normalizeAskQuestionKey(question);
 	if (!key) return undefined;
-	return entries.find((entry) => entryMatchesQuestionKey(entry, key));
+	return entries.find((entry) => {
+		if (
+			options &&
+			typeof options.research === "boolean" &&
+			isResearchHistoryEntry(entry) !== options.research
+		) {
+			return false;
+		}
+		return entryMatchesQuestionKey(entry, key);
+	});
 }
 
 /** Drop history rows matching any of the given question strings. */
 export function removeAskHistoryEntriesByQuestions(
 	entries: readonly AiAskSessionEntry[],
 	questions: readonly string[],
+	options?: { research?: boolean },
 ): AiAskSessionEntry[] {
 	const keys = questions
 		.map((question) => normalizeAskQuestionKey(question))
 		.filter(Boolean);
 	if (keys.length === 0) return [...entries];
-	return entries.filter(
-		(entry) => !keys.some((key) => entryMatchesQuestionKey(entry, key)),
-	);
+	return entries.filter((entry) => {
+		if (
+			typeof options?.research === "boolean" &&
+			isResearchHistoryEntry(entry) !== options.research
+		) {
+			return true;
+		}
+		return !keys.some((key) => entryMatchesQuestionKey(entry, key));
+	});
 }
 
 /** Merge lists by question key; the newer `at` wins. Newest first. */
@@ -413,10 +482,11 @@ export function mergeAskHistoryEntries(
 	const consider = (raw: AiAskSessionEntry): void => {
 		const entry = sanitizeAskHistoryEntry(raw);
 		if (!entry) return;
+		const lane = isResearchHistoryEntry(entry) ? "r:" : "a:";
 		const keys = [
-			normalizeAskQuestionKey(entry.question),
-			normalizeAskQuestionKey(entry.originalQuestion || ""),
-		].filter(Boolean);
+			`${lane}${normalizeAskQuestionKey(entry.question)}`,
+			`${lane}${normalizeAskQuestionKey(entry.originalQuestion || "")}`,
+		].filter((key) => key.length > 2);
 		let prior: AiAskSessionEntry | undefined;
 		for (const key of keys) {
 			const existing = byKey.get(key);
@@ -532,26 +602,32 @@ function sessionStorageOrNull(): Storage | null {
 }
 
 /**
- * Remember the open Ask thread so Back from a discourse restores it on
- * `/search?mode=ai` without forcing every Ask into a public /ask/:slug URL.
+ * Remember the open Ask or Research thread so Back from a discourse restores
+ * it on the matching pane without forcing a public /ask/:slug URL.
  */
 export function writeActiveAskThread(
 	entries: readonly AiAskSessionEntry[],
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): void {
 	if (!storage) return;
+	const key = activeThreadKey(options?.research);
 	const turns = entries
 		.map((entry) => sanitizeAskHistoryEntry(entry))
 		.filter((entry): entry is AiAskSessionEntry => Boolean(entry))
 		.slice(-ACTIVE_THREAD_TURN_LIMIT);
 	if (turns.length === 0) {
-		clearActiveAskThread(storage);
+		clearActiveAskThread(storage, options);
 		return;
 	}
 	try {
 		storage.setItem(
-			ACTIVE_THREAD_KEY,
-			JSON.stringify({ turns, at: Date.now() }),
+			key,
+			JSON.stringify({
+				turns,
+				at: Date.now(),
+				research: options?.research === true,
+			}),
 		);
 	} catch {
 		/* quota / private mode */
@@ -560,10 +636,11 @@ export function writeActiveAskThread(
 
 export function readActiveAskThread(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): AiAskSessionEntry[] {
 	if (!storage) return [];
 	try {
-		const raw = storage.getItem(ACTIVE_THREAD_KEY);
+		const raw = storage.getItem(activeThreadKey(options?.research));
 		if (!raw) return [];
 		const parsed = JSON.parse(raw) as { turns?: unknown };
 		return sanitizeAskHistoryEntries(
@@ -577,24 +654,39 @@ export function readActiveAskThread(
 
 export function clearActiveAskThread(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): void {
 	if (!storage) return;
 	try {
-		storage.removeItem(ACTIVE_THREAD_KEY);
+		if (options && typeof options.research === "boolean") {
+			storage.removeItem(activeThreadKey(options.research));
+		} else {
+			storage.removeItem(ACTIVE_THREAD_KEY);
+			storage.removeItem(ACTIVE_RESEARCH_THREAD_KEY);
+		}
 	} catch {
 		/* ignore */
 	}
 }
 
-/** Set when the reader leaves an open Ask for a discourse hit (expect Back). */
+/** Set when the reader leaves an open Ask or Research thread for a discourse. */
 const ASK_RESUME_FROM_DISCOURSE_KEY = "ai-ask-resume-from-discourse-v1";
+const RESEARCH_RESUME_FROM_DISCOURSE_KEY =
+	"ai-research-resume-from-discourse-v1";
+
+function resumeFromDiscourseKey(research?: boolean): string {
+	return research
+		? RESEARCH_RESUME_FROM_DISCOURSE_KEY
+		: ASK_RESUME_FROM_DISCOURSE_KEY;
+}
 
 export function markAskResumeFromDiscourse(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): void {
 	if (!storage) return;
 	try {
-		storage.setItem(ASK_RESUME_FROM_DISCOURSE_KEY, "1");
+		storage.setItem(resumeFromDiscourseKey(options?.research), "1");
 	} catch {
 		/* quota / private mode */
 	}
@@ -602,28 +694,36 @@ export function markAskResumeFromDiscourse(
 
 export function shouldResumeAskFromDiscourse(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): boolean {
 	if (!storage) return false;
-	return storage.getItem(ASK_RESUME_FROM_DISCOURSE_KEY) === "1";
+	return storage.getItem(resumeFromDiscourseKey(options?.research)) === "1";
 }
 
 export function clearAskResumeFromDiscourse(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): void {
 	if (!storage) return;
 	try {
-		storage.removeItem(ASK_RESUME_FROM_DISCOURSE_KEY);
+		if (options && typeof options.research === "boolean") {
+			storage.removeItem(resumeFromDiscourseKey(options.research));
+		} else {
+			storage.removeItem(ASK_RESUME_FROM_DISCOURSE_KEY);
+			storage.removeItem(RESEARCH_RESUME_FROM_DISCOURSE_KEY);
+		}
 	} catch {
 		/* ignore */
 	}
 }
 
-/** Drop both the in-tab thread and any pending Back-from-discourse resume. */
+/** Drop the in-tab thread and any pending Back-from-discourse resume for that pane. */
 export function clearAskThreadResumeIntent(
 	storage: Storage | null | undefined = sessionStorageOrNull(),
+	options?: { research?: boolean },
 ): void {
-	clearActiveAskThread(storage);
-	clearAskResumeFromDiscourse(storage);
+	clearActiveAskThread(storage, options);
+	clearAskResumeFromDiscourse(storage, options);
 }
 
 /**

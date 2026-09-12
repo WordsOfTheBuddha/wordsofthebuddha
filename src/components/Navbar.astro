@@ -13,7 +13,7 @@ interface Props {
 const { showAuth = false, showSearch = true, showBrand = true } = Astro.props;
 const authEnabled = Boolean(showAuth);
 const hideGuestAuth = showAuth === "signed-in";
-/** Path + query so Ask (`/search?mode=ai`) survives sign-in / sign-out. */
+/** Path + query so Ask (`/search?mode=ask`) survives sign-in / sign-out. */
 const currentPath = `${Astro.url.pathname}${Astro.url.search}`;
 const pathOnly = Astro.url.pathname;
 const isInReviewSection =

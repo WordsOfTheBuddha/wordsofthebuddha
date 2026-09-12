@@ -82,8 +82,14 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 	{
 		kind: "page",
 		title: "Ask the discourses",
-		href: "/search?mode=ai",
+		href: "/search?mode=ask",
 		aliases: ["ask", "ai mode", "ask a question"],
+	},
+	{
+		kind: "page",
+		title: "Research the discourses",
+		href: "/search?mode=research",
+		aliases: ["research", "research report", "cited report", "deep research"],
 	},
 	{
 		kind: "page",

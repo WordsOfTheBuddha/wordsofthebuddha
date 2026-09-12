@@ -69,7 +69,7 @@ export function refundResearchQuotaState(state: ResearchQuotaState): {
 }
 
 /** A stop after this long is treated as a failed run, not a spent credit. */
-export const RESEARCH_CREDIT_REFUND_AFTER_MS = 5 * 60 * 1000;
+export const RESEARCH_CREDIT_REFUND_AFTER_MS = 12 * 60 * 1000;
 
 export function shouldRefundResearchCredit(input: {
 	status: string;

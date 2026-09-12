@@ -64,6 +64,7 @@ export async function buildResearchReportEvidence(options: {
 			),
 			excerptChars: RESEARCH_EXCERPT_CHARS,
 			excerptParas: RESEARCH_EXCERPT_PARAS,
+			labelParagraphs: true,
 		},
 	);
 	return formatAskAnswerEvidenceBlock(pack);

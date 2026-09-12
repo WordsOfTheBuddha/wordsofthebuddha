@@ -20,7 +20,9 @@ import {
 } from "./aiAskAnswer";
 import {
 	rerankDiscourseHits,
-	resolveAskResultLimit,
+	RESEARCH_RERANK_HARD_LIMIT,
+	RESEARCH_RERANK_MAX_LIMIT,
+	RESEARCH_RERANK_SNIPPET_CANDIDATES,
 } from "./aiResultRerank";
 import {
 	parseAskHistory,
@@ -57,10 +59,16 @@ import {
 } from "./aiAskResearchReport";
 import {
 	formatResearchReadProgress,
+	logResearchHop,
+	nextResearchHop,
+	nextUnreadFullBatch,
+	openingResearchFullSlugs,
 	parseResearchContinueDecision,
-	resolveResearchReadFullSlugs,
+	parseResearchHop,
 	RESEARCH_CONTINUE_SYSTEM,
+	resolveResearchReadFullSlugs,
 	shouldEvaluateResearchContinue,
+	unreadFullAfterReads,
 } from "./aiAskResearchContinue";
 import {
 	parseResearchRefinePlan,
@@ -91,6 +99,11 @@ import {
 
 const RESEARCH_PLAN_MS = 60_000;
 const RESEARCH_ASSEMBLE_MS = 20_000;
+const RESEARCH_RERANK_CAPS = {
+	typicalLimit: RESEARCH_RERANK_MAX_LIMIT,
+	hardLimit: RESEARCH_RERANK_HARD_LIMIT,
+	snippetCandidates: RESEARCH_RERANK_SNIPPET_CANDIDATES,
+} as const;
 
 class ResearchCancelledError extends Error {
 	constructor() {
@@ -137,8 +150,9 @@ interface ResearchJobRecord {
 	/** Credit decision already made; do not re-evaluate later. */
 	quotaSettled?: boolean;
 	quotaRefunded?: boolean;
-	/** 2 = one extra function run after the first report. Never 3. */
+	/** 2 = extra function run after the first report. 3 = optional third hop. */
 	chainPass?: 1 | 2;
+	hop?: 1 | 2 | 3;
 	chainStarted?: boolean;
 	/** First-pass report; not exposed on the public GET. */
 	draftResult?: unknown;
@@ -147,6 +161,8 @@ interface ResearchJobRecord {
 	continueGuidance?: string;
 	continueReadFull?: string[];
 	continueReadPali?: string[];
+	unreadFull?: string[];
+	fullReadSlugs?: string[];
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -238,6 +254,7 @@ function recordFromData(
 		quotaSettled: data.quotaSettled === true,
 		quotaRefunded: data.quotaRefunded === true,
 		chainPass: data.chainPass === 2 ? 2 : data.chainPass === 1 ? 1 : undefined,
+		hop: parseResearchHop(data.hop),
 		chainStarted: data.chainStarted === true,
 		draftResult: data.draftResult,
 		continueQueries: Array.isArray(data.continueQueries)
@@ -255,6 +272,12 @@ function recordFromData(
 			: undefined,
 		continueReadPali: Array.isArray(data.continueReadPali)
 			? (data.continueReadPali as string[])
+			: undefined,
+		unreadFull: Array.isArray(data.unreadFull)
+			? (data.unreadFull as string[])
+			: undefined,
+		fullReadSlugs: Array.isArray(data.fullReadSlugs)
+			? (data.fullReadSlugs as string[])
 			: undefined,
 	};
 }
@@ -281,6 +304,7 @@ function jobPatchNeedsLease(patch: Partial<ResearchJobRecord>): boolean {
 		patch.draftResult !== undefined ||
 		patch.cancelRequested !== undefined ||
 		patch.chainPass !== undefined ||
+		patch.hop !== undefined ||
 		patch.quotaSettled !== undefined ||
 		"error" in patch
 	);
@@ -393,6 +417,8 @@ export async function createResearchJob(options: {
 		progressNote: "Starting…",
 		processNotes: [],
 		createdAt: Date.now(),
+		chainPass: 1,
+		hop: 1,
 		...(options.clarifyBrief
 			? { clarifyBrief: options.clarifyBrief.slice(0, 1200) }
 			: {}),
@@ -608,6 +634,7 @@ export async function retryResearchJob(options: {
 		progressNote: "Starting…",
 		emailSent: false,
 		chainPass: 1,
+		hop: 1,
 		chainStarted: false,
 		draftResult: null,
 		continueQueries: [],
@@ -615,6 +642,8 @@ export async function retryResearchJob(options: {
 		continueGuidance: "",
 		continueReadFull: [],
 		continueReadPali: [],
+		unreadFull: [],
+		fullReadSlugs: [],
 		processNotes: [],
 		result: null,
 		reasoning: "",
@@ -852,25 +881,27 @@ async function enqueueResearchContinue(options: {
 }): Promise<boolean> {
 	const base = (options.requestUrl || options.origin || "").replace(/\/+$/, "");
 	if (!base) return false;
-	try {
-		const runUrl = new URL("/api/ai/research/run", `${base}/`);
-		const res = await fetch(runUrl, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				uid: options.uid,
-				jobId: options.jobId,
-				runToken: options.runToken,
-			}),
-		});
-		return res.ok;
-	} catch (error) {
-		console.warn(
-			"[ai/research] continue enqueue failed",
-			error instanceof Error ? error.message : error,
-		);
-		return false;
+	for (let attempt = 0; attempt < 2; attempt++) {
+		try {
+			const runUrl = new URL("/api/ai/research/run", `${base}/`);
+			const res = await fetch(runUrl, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					uid: options.uid,
+					jobId: options.jobId,
+					runToken: options.runToken,
+				}),
+			});
+			if (res.ok) return true;
+		} catch (error) {
+			console.warn(
+				"[ai/research] continue enqueue failed",
+				error instanceof Error ? error.message : error,
+			);
+		}
 	}
+	return false;
 }
 
 export async function runResearchJobAndMaybeChain(options: {
@@ -884,11 +915,12 @@ export async function runResearchJobAndMaybeChain(options: {
 	const record = await readJob(options.uid, options.jobId);
 	if (
 		!record ||
-		record.chainPass !== 2 ||
 		isResearchJobTerminal(record.status)
 	) {
 		return;
 	}
+	const hop = parseResearchHop(record.hop);
+	if (hop < 2 && record.chainPass !== 2) return;
 	const enqueued = await enqueueResearchContinue({
 		uid: options.uid,
 		jobId: options.jobId,
@@ -897,11 +929,7 @@ export async function runResearchJobAndMaybeChain(options: {
 		origin: record.origin,
 	});
 	if (enqueued) return;
-	if (!process.env.VERCEL) {
-		await runResearchJob(options);
-		return;
-	}
-	await finalizeFromDraft(options.uid, options.jobId, record.runToken);
+	await runResearchJob(options);
 }
 
 function surveyPlan(
@@ -931,7 +959,7 @@ function surveyPlan(
 
 async function runResearchChainPass(
 	record: ResearchJobRecord,
-): Promise<void> {
+): Promise<"chained" | "done"> {
 	let current = record;
 	const startedAt = Date.now();
 	const draft = sanitizeResearchJobResult(current.draftResult);
@@ -940,15 +968,18 @@ async function runResearchChainPass(
 		return;
 	}
 	const continueQueries = (current.continueQueries || []).filter(Boolean);
-	const readFull = (current.continueReadFull || []).filter(Boolean);
+	let readFull = (current.continueReadFull || []).filter(Boolean);
 	const readPali = (current.continueReadPali || []).filter(Boolean);
+	if (readFull.length === 0 && (current.unreadFull || []).length > 0) {
+		readFull = nextUnreadFullBatch(current.unreadFull || []).batch;
+	}
 	if (
 		continueQueries.length === 0 &&
 		readFull.length === 0 &&
 		readPali.length === 0
 	) {
 		await finalizeFromDraft(current.uid, current.id, current.runToken);
-		return;
+		return "done";
 	}
 
 	const history: readonly AiRewriteHistoryTurn[] = parseAskHistory(
@@ -978,10 +1009,7 @@ async function runResearchChainPass(
 	const shareSlug = draft.shareSlug || "";
 	const requestId = current.requestId || draft.requestId || newAiAskRequestId();
 	const showCount = Math.max(
-		resolveAskResultLimit(
-			`${current.question} ${question} ${brief}`,
-			"survey",
-		),
+		RESEARCH_RERANK_MAX_LIMIT,
 		draft.results.length,
 	);
 
@@ -1047,7 +1075,7 @@ async function runResearchChainPass(
 				readPali.length === 0
 			) {
 				await commitDraft();
-				return;
+				return "done";
 			}
 			if (timeLeft(startedAt) > RESEARCH_ASSEMBLE_MS + 40_000) {
 				current = await writeJob(current, {
@@ -1072,6 +1100,7 @@ async function runResearchChainPass(
 						planningNotes: reasoning,
 						primaryQueries: [...draft.queries, ...plan.queries],
 						termQueries: plan.termQueries,
+						...RESEARCH_RERANK_CAPS,
 					});
 					results = ranked.results.map(toPublicAskHit);
 					if (ranked.summary) summary = ranked.summary;
@@ -1104,7 +1133,7 @@ async function runResearchChainPass(
 			);
 			if (readFull.length === 0 && readPali.length === 0) {
 				await commitDraft();
-				return;
+				return "done";
 			}
 		}
 		}
@@ -1117,7 +1146,7 @@ async function runResearchChainPass(
 			writerBudget <= 0
 		) {
 			await commitDraft();
-			return;
+			return "done";
 		}
 		current = await writeJob(current, {
 			status: "answering",
@@ -1200,7 +1229,7 @@ async function runResearchChainPass(
 			});
 			if (!followed.report) {
 				await commitDraft();
-				return;
+				return "done";
 			}
 			report = followed.report;
 			usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
@@ -1211,12 +1240,12 @@ async function runResearchChainPass(
 				error instanceof Error ? error.message : error,
 			);
 			await commitDraft();
-			return;
+			return "done";
 		}
 
 		await throwIfCancelled(current);
 		const fresh = await readJob(current.uid, current.id);
-		if (!fresh || isResearchJobTerminal(fresh.status)) return;
+		if (!fresh || isResearchJobTerminal(fresh.status)) return "done";
 		current = fresh;
 		if (!summary && report) {
 			summary = report.replace(/\s+/g, " ").trim().slice(0, 4800);
@@ -1248,6 +1277,51 @@ async function runResearchChainPass(
 			candidateCount: pool.length,
 			requestId,
 		};
+		const alreadyRead = [
+			...(current.fullReadSlugs || []),
+			...readFull,
+			...readPali,
+		];
+		const unread = unreadFullAfterReads(
+			(current.unreadFull || []).length > 0
+				? current.unreadFull || []
+				: results.map((hit) => hit.slug),
+			alreadyRead,
+		);
+		const hop = parseResearchHop(current.hop);
+		const nextHop = nextResearchHop(hop);
+		logResearchHop({
+			hop,
+			pool: pool.length,
+			selected: results.length,
+			fullRead: readFull.length,
+			unreadFull: unread.length,
+			continue: continueQueries.length > 0,
+		});
+		if (nextHop && unread.length > 0) {
+			const { batch, rest } = nextUnreadFullBatch(unread);
+			current = await writeJob(current, {
+				status: "searching",
+				chainPass: 2,
+				hop: nextHop,
+				chainStarted: false,
+				draftResult: { ...result, report, reasoning },
+				continueQueries: [],
+				continueFallbackQueries: [],
+				continueReadFull: batch,
+				continueReadPali: [],
+				unreadFull: rest,
+				fullReadSlugs: alreadyRead,
+				progressNote: formatResearchReadProgress({ readFull: batch }),
+				lookingFor: result.lookingFor,
+				queries: result.queries,
+				fallbackQueries: result.fallbackQueries,
+				showCount: results.length,
+				candidateCount: pool.length,
+				reasoning,
+			});
+			return "chained";
+		}
 		current = await writeJob(current, {
 			status: "complete",
 			lookingFor: result.lookingFor,
@@ -1259,20 +1333,22 @@ async function runResearchChainPass(
 			progressNote: "",
 			result,
 		});
-		if (current.runToken !== record.runToken) return;
+		if (current.runToken !== record.runToken) return "done";
 		await persistHistory(current, result);
 		await finishEmail(current, true);
+		return "done";
 	} catch (error) {
-		if (error instanceof ResearchStaleWorkerError) return;
+		if (error instanceof ResearchStaleWorkerError) return "done";
 		if (error instanceof ResearchCancelledError) {
 			await settleCancelledJob();
-			return;
+			return "done";
 		}
 		console.warn(
 			"[ai/research] continue pass failed — keeping first report",
 			error instanceof Error ? error.message : error,
 		);
 		await commitDraft();
+		return "done";
 	}
 }
 
@@ -1286,15 +1362,14 @@ export async function runResearchJob(options: {
 	if (!record) return "done";
 	if (record.runToken !== options.runToken) return "done";
 	if (isResearchJobTerminal(record.status)) return "done";
-	if (record.chainPass === 2) {
+	if ((record.hop && record.hop >= 2) || record.chainPass === 2) {
 		if (record.chainStarted) return "done";
 		const current = await writeJob(record, {
 			chainStarted: true,
 			status: "searching",
 			progressNote: "Going deeper…",
 		});
-		await runResearchChainPass(current);
-		return "done";
+		return runResearchChainPass(current);
 	}
 	if (record.status !== "queued") return "done";
 
@@ -1438,138 +1513,83 @@ export async function runResearchJob(options: {
 	};
 
 	const queueContinueIfNeeded = async (): Promise<boolean> => {
-		if (!shouldEvaluateResearchContinue(timeLeft(startedAt))) return false;
 		const artifact = assembleArtifact();
 		if (!artifact.report || artifact.results.length === 0) return false;
-		current = await writeJob(current, {
-			status: "answering",
-			progressNote: "Reviewing the report…",
-		});
-		await throwIfCancelled(current);
-		const decision = await evaluateResearchContinue({
-			question: artifact.question,
-			brief,
-			report: artifact.report,
-			hits: artifact.results,
-			triedQueries: [
-				...plan.queries,
-				...plan.fallbackQueries,
-				...shownQueries,
-			],
-		});
-		if (!decision.continue) return false;
-		if (
-			decision.queries.length === 0 &&
-			(decision.readFull.length > 0 || decision.readPali.length > 0)
-		) {
-			const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
-			if (writerBudget > 0 && getOpenRouterApiKey() && results.length > 0) {
-				current = await writeJob(current, {
-					status: "answering",
-					progressNote: formatResearchReadProgress({
-						readFull: decision.readFull,
-						readPali: decision.readPali,
-					}),
+		const alreadyRead = current.fullReadSlugs || [];
+		const unread = unreadFullAfterReads(
+			(current.unreadFull || []).length > 0
+				? current.unreadFull || []
+				: artifact.results.map((hit) => hit.slug),
+			alreadyRead,
+		);
+		let extraQueries: string[] = [];
+		let extraFallback: string[] = [];
+		let extraPali: string[] = [];
+		let extraFull: string[] = [];
+		let guidance = "";
+		if (shouldEvaluateResearchContinue(timeLeft(startedAt))) {
+			current = await writeJob(current, {
+				status: "answering",
+				progressNote: "Reviewing the report…",
+			});
+			await throwIfCancelled(current);
+			try {
+				const decision = await evaluateResearchContinue({
+					question: artifact.question,
+					brief,
+					report: artifact.report,
+					hits: artifact.results,
+					triedQueries: [
+						...plan.queries,
+						...plan.fallbackQueries,
+						...shownQueries,
+					],
 				});
-				await throwIfCancelled(current);
-				try {
-					const written = await writeResearchReport({
-						question: artifact.question,
-						brief,
-						hits: results,
-						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-						termQueries: plan.termQueries,
-						guidance: decision.guidance || plan.rankingGuidance,
-						history,
-						timeoutMs: writerBudget,
-						priorReport: artifact.report,
-						namedQueries: [
-							...collectDirectDiscourseIds({
-								question: artifact.question,
-							}),
-							...decision.queries,
-							...decision.fallbackQueries,
-						],
-						readFullSlugs: decision.readFull,
-						readPaliSlugs: decision.readPali,
-						onReasoning: (delta) => {
-							const next = `${current.reasoning || ""}${delta}`;
-							current = { ...current, reasoning: next };
-							void writeJob(current, { reasoning: next });
-						},
-					});
-					const followed = await followUpResearchPaliRead({
-						written,
-						startedAt,
-						onProgress: async (slugs) => {
-							current = await writeJob(current, {
-								status: "answering",
-								progressNote: formatResearchReadProgress({
-									readPali: slugs,
-								}),
-							});
-							await throwIfCancelled(current);
-						},
-						write: (timeoutMs) =>
-							writeResearchReport({
-								question: artifact.question,
-								brief,
-								hits: results,
-								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-								termQueries: plan.termQueries,
-								guidance: decision.guidance || plan.rankingGuidance,
-								history,
-								timeoutMs,
-								priorReport: written.report,
-								namedQueries: [
-									...collectDirectDiscourseIds({
-										question: artifact.question,
-									}),
-									...decision.queries,
-									...decision.fallbackQueries,
-								],
-								readFullSlugs: [
-									...decision.readFull,
-									...(written.readPali || []),
-								],
-								readPaliSlugs: written.readPali,
-								onReasoning: (delta) => {
-									const next = `${current.reasoning || ""}${delta}`;
-									current = { ...current, reasoning: next };
-									void writeJob(current, { reasoning: next });
-								},
-							}),
-					});
-					if (followed.report) {
-						report = followed.report;
-						usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
-						if (followed.reasoning) reasoning = followed.reasoning;
-						return false;
-					}
-				} catch (error) {
-					console.warn(
-						"[ai/research] in-process full read failed",
-						error instanceof Error ? error.message : error,
-					);
-				}
+				extraQueries = decision.queries;
+				extraFallback = decision.fallbackQueries;
+				extraPali = decision.readPali;
+				extraFull = unreadFullAfterReads(decision.readFull, alreadyRead);
+				guidance = decision.guidance;
+			} catch (error) {
+				console.warn(
+					"[ai/research] continue review skipped",
+					error instanceof Error ? error.message : error,
+				);
 			}
 		}
+		const { batch, rest } = nextUnreadFullBatch([...extraFull, ...unread]);
+		const wantChain =
+			batch.length > 0 || extraQueries.length > 0 || extraPali.length > 0;
+		logResearchHop({
+			hop: 1,
+			pool: pool.length,
+			selected: artifact.results.length,
+			expanded: Math.min(artifact.results.length, 28),
+			fullRead: alreadyRead.length,
+			unreadFull: unread.length,
+			continue: extraQueries.length > 0,
+			runPosted: wantChain,
+		});
+		if (!wantChain) return false;
 		current = await writeJob(current, {
 			status: "searching",
 			chainPass: 2,
+			hop: 2,
 			chainStarted: false,
 			draftResult: { ...artifact, report, reasoning },
-			continueQueries: decision.queries,
-			continueFallbackQueries: decision.fallbackQueries,
-			continueReadFull: decision.readFull,
-			continueReadPali: decision.readPali,
-			continueGuidance: decision.guidance,
+			continueQueries: extraQueries,
+			continueFallbackQueries: extraFallback,
+			continueReadFull: batch,
+			continueReadPali: extraPali,
+			continueGuidance: guidance,
+			unreadFull: rest,
+			fullReadSlugs: alreadyRead,
 			progressNote:
-				decision.queries.length > 0
+				extraQueries.length > 0
 					? "Going deeper…"
 					: formatResearchReadProgress({
-							readFull: decision.readFull,
-							readPali: decision.readPali,
+							readFull: batch,
+							readPali: extraPali,
 						}),
 			lookingFor: artifact.lookingFor,
 			queries: artifact.queries,
@@ -1704,10 +1724,7 @@ export async function runResearchJob(options: {
 			pool.length > 0
 				? `Searched · ${pool.length.toLocaleString()} discourses`
 				: "Searched · no matching discourses yet";
-		const showCount = resolveAskResultLimit(
-			`${current.question} ${plan.correctedQuestion || ""} ${brief}`,
-			"survey",
-		);
+		const showCount = RESEARCH_RERANK_MAX_LIMIT;
 		const crunchNote =
 			pool.length > 0
 				? `Crunching ${pool.length.toLocaleString()} discourses…`
@@ -1743,6 +1760,7 @@ export async function runResearchJob(options: {
 								collectAskHistoryShownSlugs(history),
 								plan.correctedQuestion || current.question,
 							),
+							...RESEARCH_RERANK_CAPS,
 						}),
 					() => {
 						void writeJob(current, {
@@ -1892,6 +1910,7 @@ export async function runResearchJob(options: {
 									collectAskHistoryShownSlugs(history),
 									plan.correctedQuestion || current.question,
 								),
+								...RESEARCH_RERANK_CAPS,
 							});
 							results = ranked.results.map(toPublicAskHit);
 						} catch (error) {
@@ -1933,15 +1952,22 @@ export async function runResearchJob(options: {
 				.filter(Boolean)
 				.join(" ");
 			const writerNamedQueries = [...namedQueries, ...scoutQueries];
-			const openingFull = resolveResearchReadFullSlugs(
+			const namedAndScout = resolveResearchReadFullSlugs(
 				writerNamedQueries,
 				results.map((hit) => hit.slug),
 				scoutReadFull,
 			);
+			const opening = openingResearchFullSlugs({
+				namedAndScout,
+				selected: results.map((hit) => hit.slug),
+			});
+			const openingFull = opening.readNow;
 			current = await writeJob(current, {
 				status: "answering",
 				showCount: results.length,
 				candidateCount: pool.length,
+				unreadFull: opening.unreadFull,
+				fullReadSlugs: openingFull,
 				progressNote:
 					openingFull.length > 0 || scoutReadPali.length > 0
 						? formatResearchReadProgress({
@@ -1965,7 +1991,7 @@ export async function runResearchJob(options: {
 							history,
 							timeoutMs: writerBudget,
 							namedQueries: writerNamedQueries,
-							readFullSlugs: scoutReadFull,
+							readFullSlugs: openingFull,
 							readPaliSlugs: scoutReadPali,
 							onReasoning: (delta) => {
 								const next = `${current.reasoning || ""}${delta}`;
@@ -2006,7 +2032,7 @@ export async function runResearchJob(options: {
 								priorReport: written.report,
 								namedQueries: writerNamedQueries,
 								readFullSlugs: [
-									...scoutReadFull,
+									...openingFull,
 									...(written.readPali || []),
 								],
 								readPaliSlugs: written.readPali,

@@ -42,7 +42,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 	}
 
 	const origin = new URL(request.url).origin;
-	const continueUrl = `${origin}/search?mode=ai`;
+	const continueUrl = `${origin}/search?mode=ask`;
 
 	try {
 		const customToken = await getAuth(app).createCustomToken(user.uid);

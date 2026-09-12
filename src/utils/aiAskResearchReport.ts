@@ -17,7 +17,7 @@ Write GitHub-flavored markdown only (no JSON, no HTML tags). Use:
 - ## / ### / #### headings
 - short paragraphs and lists
 - markdown tables when a comparison, map of collections, or survey of facets helps
-- ordinary discourse IDs in prose (MN 10, SN 22.59) — only IDs whose excerpts or full text you were given
+- ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
 - no ## Sources section — the harness appends a bilingual source list
 
 Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what the passages support and which IDs carry the claim.

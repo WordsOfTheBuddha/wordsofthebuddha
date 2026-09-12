@@ -5,6 +5,7 @@ import {
 	formatResearchClarifyBrief,
 	parseResearchClarify,
 	parseResearchClarifyAnswers,
+	RESEARCH_CLARIFY_MAX_OTHER,
 	RESEARCH_CLARIFY_NO_PREF_ID,
 	RESEARCH_CLARIFY_OTHER_ID,
 	RESEARCH_CLARIFY_SYSTEM,
@@ -232,5 +233,29 @@ describe("parseResearchClarifyAnswers", () => {
 		assert.equal(parsed.length, 2);
 		assert.equal(parsed[0]?.choiceId, "survey");
 		assert.equal(parsed[1]?.otherText, "householders");
+	});
+
+	it("keeps line breaks in Other notes", () => {
+		const parsed = parseResearchClarifyAnswers([
+			{
+				questionId: "pali",
+				choiceId: "other",
+				otherText: "householders\nlay practice",
+			},
+		]);
+		assert.equal(parsed[0]?.otherText, "householders\nlay practice");
+	});
+
+	it("clips Other text to the raised note cap", () => {
+		const long = "householder practice ".repeat(40);
+		const parsed = parseResearchClarifyAnswers([
+			{
+				questionId: "pali",
+				choiceId: "other",
+				otherText: long,
+			},
+		]);
+		assert.ok((parsed[0]?.otherText || "").length <= RESEARCH_CLARIFY_MAX_OTHER);
+		assert.equal((parsed[0]?.otherText || "").length, RESEARCH_CLARIFY_MAX_OTHER);
 	});
 });

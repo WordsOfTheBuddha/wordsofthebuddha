@@ -9,6 +9,9 @@ export const ASK_SAMPLE_SLUG_MIN = 8;
 export const ASK_SAMPLE_SLUG_MAX = 80;
 export const ASK_SAMPLE_NOTE =
 	"This is an illustrative response from a prior ask. Edit the question for a fresh ask.";
+export const RESEARCH_SAMPLE_NOTE =
+	"This is an illustration from a prior research run. It does not use your Research credits.";
+export const RESEARCH_SAMPLE_KICKER = "Illustration — not your run";
 
 export type AskSamplePlaybackPhase = "rewrite" | "search" | "rerank" | "done";
 
@@ -36,6 +39,8 @@ export function askSamplePlaybackPatch(
 	results: AiAskSamplePublic["results"];
 	rerankCandidateCount?: number;
 	rerankShowCount?: number;
+	report?: string;
+	research?: boolean;
 } {
 	const done = phase === "done";
 	const afterRewrite = phase !== "rewrite";
@@ -51,6 +56,9 @@ export function askSamplePlaybackPatch(
 		fallbackQueries: afterRewrite ? sample.fallbackQueries : [],
 		summary: done ? sample.summary : "",
 		results: done ? sample.results : [],
+		...(done && sample.report
+			? { report: sample.report, research: true as const }
+			: {}),
 		...(afterRewrite && pool > 0
 			? {
 					rerankCandidateCount: pool,
@@ -121,14 +129,18 @@ export function findAskSample(
 	);
 }
 
-/** Chip click hydrates only for ordinary Ask, and only on an exact question match. */
+/** Chip click hydrates a stored sample. Ask chips ignore research samples. */
 export function findAskSampleForExample(
 	samples: readonly AiAskSamplePublic[],
 	question: string,
-	options?: { researchChipOn?: boolean },
+	options?: { research?: boolean; researchChipOn?: boolean },
 ): AiAskSamplePublic | null {
-	if (options?.researchChipOn) return null;
-	return findAskSample(samples, question);
+	const research = options?.research === true || options?.researchChipOn === true;
+	const sample = findAskSample(samples, question);
+	if (!sample) return null;
+	const isResearch = sample.research === true || Boolean((sample.report || "").trim());
+	if (research) return isResearch ? sample : null;
+	return isResearch ? null : sample;
 }
 
 export function upsertAskSampleLocal(
@@ -182,24 +194,50 @@ export function canMarkAskAsSample(input: {
 	fromShare?: boolean;
 	fromSample?: boolean;
 	research?: boolean;
+	hasReport?: boolean;
 }): boolean {
-	return (
-		input.isAdmin &&
-		!input.pending &&
-		!input.error &&
-		input.offTopic !== true &&
-		input.resultCount > 0 &&
-		input.fromShare !== true &&
-		input.fromSample !== true &&
-		input.research !== true
-	);
+	if (
+		!input.isAdmin ||
+		input.pending ||
+		input.error ||
+		input.offTopic === true ||
+		input.fromShare === true ||
+		input.fromSample === true
+	) {
+		return false;
+	}
+	if (input.research) {
+		return Boolean(input.hasReport) && input.resultCount > 0;
+	}
+	return input.resultCount > 0;
 }
 
-export function askSampleConfirmMessage(replacing: boolean): string {
+export function askSampleConfirmMessage(
+	replacing: boolean,
+	options?: { research?: boolean },
+): string {
+	if (options?.research) {
+		if (replacing) {
+			return "Replace the current research example for this question? Readers will see this report instead. It does not use their Research credits.";
+		}
+		return "Use this report as the example for this question? Readers will see it when they tap this sample. It does not use their Research credits.";
+	}
 	if (replacing) {
 		return "Replace the current example for this question? Readers will see this run instead. It does not use their Ask credits.";
 	}
 	return "Use this run as the example for this question? Readers will see it when they tap this sample. It does not use their Ask credits.";
+}
+
+export function isResearchAskSample(
+	sample: Pick<AiAskSamplePublic, "research" | "report">,
+): boolean {
+	return sample.research === true || Boolean((sample.report || "").trim());
+}
+
+export function researchAskSamples(
+	samples: readonly AiAskSamplePublic[],
+): AiAskSamplePublic[] {
+	return samples.filter((sample) => isResearchAskSample(sample) && sample.question);
 }
 
 export function sampleToShareTurn(sample: AiAskSamplePublic): AiAskShareTurn {
@@ -215,5 +253,7 @@ export function sampleToShareTurn(sample: AiAskSamplePublic): AiAskShareTurn {
 		...(typeof sample.candidateCount === "number"
 			? { candidateCount: sample.candidateCount }
 			: {}),
+		...(isResearchAskSample(sample) ? { research: true } : {}),
+		...(sample.report ? { report: sample.report } : {}),
 	};
 }

@@ -74,7 +74,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				{ status: 400, headers: { "Content-Type": "application/json" } },
 			);
 		}
-		const entries = await removeUserAskHistoryByQuestions(user, questions);
+		const research = body.research === true;
+		const entries = await removeUserAskHistoryByQuestions(user, questions, {
+			research,
+		});
 		return new Response(
 			JSON.stringify({ success: true, signedIn: true, entries }),
 			{ status: 200, headers: { "Content-Type": "application/json" } },

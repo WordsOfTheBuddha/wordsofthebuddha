@@ -5,7 +5,7 @@ import {
 	getConfiguredOpenRouterModel,
 	shouldShowAiModelPicker,
 } from "../utils/openrouter";
-import { RESEARCH_CHIP_TITLE, RESEARCH_EXAMPLES } from "../utils/aiAskResearchUi";
+import { ASK_LIMITS_NOTE, RESEARCH_CHIP_TITLE, RESEARCH_SIGNIN_EMPTY_NOTE } from "../utils/aiAskResearchUi";
 import "../styles/ai-mode.css";
 import AskExportModal from "./AskExportModal.astro";
 
@@ -105,22 +105,7 @@ const examples = [
 		)
 	}
 
-	<div class="ai-empty ai-shell" data-ai-empty>
-		{
-			!showTitle && (
-				<p class="ai-limits-note ai-limits-note-empty">
-					Experimental AI search · limited free Asks
-				</p>
-			)
-		}
-		{
-			showTitle && (
-				<p class="ai-limits-note">
-					Experimental AI search · limited free Asks
-				</p>
-			)
-		}
-	</div>
+	<div class="ai-empty ai-shell" data-ai-empty></div>
 
 	<div class="ai-restore ai-shell" data-ai-restore>
 		<p class="ai-restore-status" role="status" aria-live="polite">
@@ -192,6 +177,9 @@ const examples = [
 				</div>
 			</div>
 		</div>
+		<p class="ai-research-signin" data-ai-research-signin hidden>
+			{RESEARCH_SIGNIN_EMPTY_NOTE}
+		</p>
 		<div class="ai-examples" data-ai-examples="ask">
 			{
 				examples.map((example) => (
@@ -201,17 +189,9 @@ const examples = [
 				))
 			}
 		</div>
-		<div class="ai-examples" data-ai-examples="research" hidden>
-			{
-				RESEARCH_EXAMPLES.map((example) => (
-					<button type="button" data-ai-example={example}>
-						{example}
-					</button>
-				))
-			}
-		</div>
+		<div class="ai-examples" data-ai-examples="research" hidden></div>
 		<p class="ai-limits-note ai-limits-note-composer">
-			Experimental AI search · limited free Asks
+			{ASK_LIMITS_NOTE}
 		</p>
 		<div class="ai-meta-row">
 			<span class="ai-meta-spacer" aria-hidden="true"></span>

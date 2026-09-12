@@ -17,7 +17,7 @@ const slug = normalizeAskShareSlug(rawSlug);
 const share = slug ? await loadAskShare(slug) : null;
 
 if (!share) {
-	return Astro.redirect("/search?mode=ai");
+	return Astro.redirect("/search?mode=ask");
 }
 
 const seo = askShareSeo(share);

@@ -3,7 +3,8 @@ import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const MAX_ASK_EXPORT_TURNS = 20;
-export const MAX_ASK_EXPORT_DISCOURSES = 80;
+/** Match Research’s selected-set hard cap so a full report can download. */
+export const MAX_ASK_EXPORT_DISCOURSES = 160;
 export const MAX_ASK_EXPORT_QUESTION = 2000;
 export const MAX_ASK_EXPORT_SUMMARY = 4800;
 export const MAX_ASK_EXPORT_TITLE = 200;
@@ -60,7 +61,15 @@ export function sanitizeAskExportSharePath(raw: unknown): string | undefined {
 		}
 		return undefined;
 	}
-	if (path === "/search?mode=ai") return path;
+	if (
+		path === "/search?mode=ask" ||
+		path === "/search?mode=ai" ||
+		path === "/search?mode=research"
+	) {
+		return path === "/search?mode=research"
+			? "/search?mode=research"
+			: "/search?mode=ask";
+	}
 	return undefined;
 }
 
@@ -136,7 +145,12 @@ export function parseAskExportRequest(
 	};
 }
 
-export function askExportCollectionUrl(sharePath?: string): string {
+export function askExportCollectionUrl(
+	sharePath?: string,
+	kind: "ask" | "research" = "ask",
+): string {
 	if (sharePath) return `www.wordsofthebuddha.org${sharePath}`;
-	return "www.wordsofthebuddha.org/search?mode=ai";
+	return kind === "research"
+		? "www.wordsofthebuddha.org/search?mode=research"
+		: "www.wordsofthebuddha.org/search?mode=ask";
 }

@@ -286,10 +286,6 @@
 	margin: 0.85rem 0 0;
 }
 
-.ai-limits-note-empty {
-	margin: 0;
-}
-
 .ai-empty-hits {
 	color: var(--text-muted);
 	margin: 0.75rem 0;
@@ -479,11 +475,20 @@
 	background: color-mix(in srgb, var(--primary-color) 16%, transparent);
 }
 
-.ai-research-note {
+.ai-research-note,
+.ai-research-invite,
+.ai-research-signin {
 	margin: 0.35rem 0 0.75rem;
 	color: var(--text-muted);
 	font-size: 0.88rem;
 	line-height: 1.4;
+}
+
+.ai-research-invite a,
+.ai-research-signin a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
 }
 
 .ai-clarify {
@@ -556,7 +561,18 @@
 	color: var(--text-color);
 	font: inherit;
 	font-size: 16px;
-	line-height: 1.4;
+	line-height: 1.45;
+	min-height: calc(1.45em * 2 + 1.1rem);
+	max-height: calc(1.45em * 6 + 1.1rem);
+	resize: vertical;
+	overflow-y: auto;
+	field-sizing: content;
+}
+
+@media (max-width: 639px) {
+	.ai-clarify-other {
+		min-height: calc(1.45em * 3 + 1.1rem);
+	}
 }
 
 .ai-clarify-other:focus {

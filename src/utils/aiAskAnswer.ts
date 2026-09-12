@@ -68,6 +68,9 @@ export interface AskAnswerHitEvidence {
 	referenceOnly: boolean;
 	passages: AskAnswerPassage[];
 	full?: boolean;
+	clipped?: boolean;
+	paraCount?: number;
+	paraNumbers?: number[];
 }
 
 /** Research excerpts are longer than Ask; full reads skip hint-picking. */
@@ -98,6 +101,44 @@ function splitParagraphs(text: string): string[] {
 		.split(/\n{2,}|\n(?=\S)/)
 		.map((part) => part.replace(/\s+/g, " ").trim())
 		.filter((part) => part.length >= MIN_PARA);
+}
+
+/** Collapse 1-based ¶ numbers into “¶ 1–3, ¶ 12”. */
+export function formatParagraphRangeLabel(
+	numbers: readonly number[],
+): string {
+	const sorted = [...new Set(numbers.filter((n) => n >= 1))].sort((a, b) => a - b);
+	if (sorted.length === 0) return "";
+	const ranges: string[] = [];
+	let start = sorted[0]!;
+	let prev = sorted[0]!;
+	for (let i = 1; i < sorted.length; i++) {
+		const n = sorted[i]!;
+		if (n === prev + 1) {
+			prev = n;
+			continue;
+		}
+		ranges.push(start === prev ? `¶ ${start}` : `¶ ${start}–${prev}`);
+		start = n;
+		prev = n;
+	}
+	ranges.push(start === prev ? `¶ ${start}` : `¶ ${start}–${prev}`);
+	return ranges.join(", ");
+}
+
+export function discourseParagraphMeta(
+	english: string,
+	passages: readonly AskAnswerPassage[],
+): { paraCount: number; paraNumbers: number[] } {
+	const paras = splitParagraphs(english || "");
+	if (paras.length === 0) return { paraCount: 0, paraNumbers: [] };
+	const hay = passages.map((passage) => passage.text).join("\n\n");
+	const paraNumbers: number[] = [];
+	paras.forEach((para, index) => {
+		const needle = para.slice(0, Math.min(80, para.length));
+		if (needle && hay.includes(needle)) paraNumbers.push(index + 1);
+	});
+	return { paraCount: paras.length, paraNumbers };
 }
 
 function hintKeys(hint: string): string[] {
@@ -353,6 +394,7 @@ export async function buildAskAnswerEvidence(
 		excerptChars?: number;
 		excerptParas?: number;
 		fullChars?: number;
+		labelParagraphs?: boolean;
 	},
 ): Promise<{
 	expanded: AskAnswerHitEvidence[];
@@ -417,6 +459,13 @@ export async function buildAskAnswerEvidence(
 			referenceOnly: hit.referenceOnly === true || doc?.referenceOnly === true,
 			passages,
 			...(wantFull ? { full: true } : {}),
+			...(wantFull &&
+			stripMarkup(doc?.content || "").length > fullChars
+				? { clipped: true }
+				: {}),
+			...(options?.labelParagraphs
+				? discourseParagraphMeta(doc?.content || "", passages)
+				: {}),
 		});
 	}
 	return { expanded, listedOnly };
@@ -437,7 +486,14 @@ export function formatAskAnswerEvidenceBlock(input: {
 						.join("\n\n")
 				: "(no excerpt)";
 		const mark = hit.full ? " [full text]" : "";
-		return `${id}${ref}${mark} — ${title || "(untitled)"}\n${body}`;
+		const clip = hit.clipped ? " [clipped]" : "";
+		const count =
+			typeof hit.paraCount === "number" && hit.paraCount > 0
+				? ` — ${hit.paraCount} paragraphs`
+				: "";
+		const ranges = formatParagraphRangeLabel(hit.paraNumbers || []);
+		const range = ranges ? ` — ${ranges}` : "";
+		return `${id}${ref}${mark}${clip}${count}${range} — ${title || "(untitled)"}\n${body}`;
 	});
 	const listed = (input.listedOnly || [])
 		.map((slug) => transformId(slug) || slug)

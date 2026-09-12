@@ -193,3 +193,66 @@ export function parseResearchContinueDecision(
 		reason: clipNote(record.reason, 240),
 	};
 }
+
+export const RESEARCH_MAX_HOP = 3;
+
+export function uniqueDiscourseSlugs(slugs: readonly string[]): string[] {
+	const out: string[] = [];
+	const seen = new Set<string>();
+	for (const raw of slugs) {
+		const slug = raw.replace(/\s+/g, "").trim().toLowerCase();
+		if (!slug || seen.has(slug)) continue;
+		seen.add(slug);
+		out.push(slug);
+	}
+	return out;
+}
+
+export function unreadFullAfterReads(
+	selected: readonly string[],
+	alreadyRead: readonly string[],
+): string[] {
+	const read = new Set(uniqueDiscourseSlugs(alreadyRead));
+	return uniqueDiscourseSlugs(selected).filter((slug) => !read.has(slug));
+}
+
+export function nextUnreadFullBatch(
+	unread: readonly string[],
+	size = RESEARCH_CONTINUE_MAX_READ_FULL,
+): { batch: string[]; rest: string[] } {
+	const list = uniqueDiscourseSlugs(unread);
+	const n = Math.max(1, Math.floor(size));
+	return { batch: list.slice(0, n), rest: list.slice(n) };
+}
+
+/** Named/scout IDs first, then fill the hop-1 batch from unread selected slugs. */
+export function openingResearchFullSlugs(input: {
+	namedAndScout: readonly string[];
+	selected: readonly string[];
+	max?: number;
+}): { readNow: string[]; unreadFull: string[] } {
+	const max = input.max ?? RESEARCH_CONTINUE_MAX_READ_FULL;
+	const named = uniqueDiscourseSlugs(input.namedAndScout).slice(0, max);
+	const unread = unreadFullAfterReads(input.selected, named);
+	const fill = Math.max(0, max - named.length);
+	const readNow = uniqueDiscourseSlugs([...named, ...unread.slice(0, fill)]);
+	return {
+		readNow,
+		unreadFull: unreadFullAfterReads(input.selected, readNow),
+	};
+}
+
+export function parseResearchHop(value: unknown): 1 | 2 | 3 {
+	if (value === 2 || value === 3) return value;
+	return 1;
+}
+
+export function nextResearchHop(current: 1 | 2 | 3): 2 | 3 | null {
+	if (current === 1) return 2;
+	if (current === 2) return 3;
+	return null;
+}
+
+export function logResearchHop(payload: Record<string, unknown>): void {
+	console.info("[ai/research] hop", JSON.stringify(payload));
+}

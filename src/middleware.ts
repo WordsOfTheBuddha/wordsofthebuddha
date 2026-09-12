@@ -119,9 +119,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		return withNoindexIfNeeded(context.url, await next());
 	}
 
-	// Bare /ask → Ask mode (same as /ai).
+	// Bare /ask → Ask mode (same as /ai). Bare /research → Research.
 	if (pathname === "/ask" || pathname === "/ask/") {
-		return context.redirect("/search?mode=ai");
+		return context.redirect("/search?mode=ask");
+	}
+	if (pathname === "/research" || pathname === "/research/") {
+		const next = new URL("/search", context.url);
+		next.search = context.url.search;
+		next.searchParams.set("mode", "research");
+		return context.redirect(next.pathname + next.search + next.hash);
+	}
+
+	if (pathname === "/search" || pathname === "/search/") {
+		if (context.url.searchParams.get("mode") === "ai") {
+			const canonical = new URL(context.url);
+			canonical.searchParams.set("mode", "ask");
+			return context.redirect(
+				canonical.pathname + canonical.search + canonical.hash,
+			);
+		}
 	}
 
 	// Public share URLs are /ask/:slug. The root [...id] catch-all steals nested

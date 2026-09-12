@@ -6,6 +6,8 @@ import {
 	AI_RERANK_MAX_LIMIT,
 	AI_RERANK_SUMMARY_MAX,
 	AI_RERANK_SNIPPET_CANDIDATES,
+	RESEARCH_RERANK_HARD_LIMIT,
+	RESEARCH_RERANK_MAX_LIMIT,
 	RERANK_SYSTEM,
 	applyRerankOrder,
 	askRerankCap,
@@ -229,6 +231,14 @@ describe("askRerankCap", () => {
 		assert.equal(clampAskResultLimit(AI_RERANK_HARD_LIMIT), AI_RERANK_HARD_LIMIT);
 		assert.equal(clampAskResultLimit(80), AI_RERANK_HARD_LIMIT);
 		assert.equal(
+			clampAskResultLimit(180, RESEARCH_RERANK_HARD_LIMIT),
+			RESEARCH_RERANK_HARD_LIMIT,
+		);
+		assert.equal(
+			askRerankCap(RESEARCH_RERANK_MAX_LIMIT, RESEARCH_RERANK_HARD_LIMIT),
+			RESEARCH_RERANK_HARD_LIMIT,
+		);
+		assert.equal(
 			resolveAskResultLimit("what is mindfulness?", "survey"),
 			AI_RERANK_MAX_LIMIT,
 		);
@@ -372,13 +382,29 @@ describe("buildRerankUserPrompt", () => {
 		assert.match(prompt, /do not pad to a round number/);
 		assert.match(prompt, /stretch to 50 for quota/);
 		assert.doesNotMatch(prompt, /the full target, not a top-10/);
-		assert.match(RERANK_SYSTEM, /Typical size is 20–50/);
-		assert.match(RERANK_SYSTEM, /Do not stretch to 50 to fill a round number/);
-		assert.match(RERANK_SYSTEM, /hard cap about 55/);
+		assert.match(RERANK_SYSTEM, /Target result count/);
+		assert.match(RERANK_SYSTEM, /not a generic 50\/55/);
+		assert.doesNotMatch(RERANK_SYSTEM, /hard cap about 55/);
+		assert.doesNotMatch(RERANK_SYSTEM, /Typical size is 20–50/);
 		assert.doesNotMatch(
 			RERANK_SYSTEM,
 			/If the pool has 50 relevant discourses, return 50/,
 		);
+	});
+
+	it("asks Research to keep 100–150, not Ask’s survey 50", () => {
+		const prompt = buildRerankUserPrompt(
+			"research feeling with citations",
+			[{ slug: "sn36.1", title: "Concentration", description: "" }],
+			{
+				limit: RESEARCH_RERANK_MAX_LIMIT,
+				typicalLimit: RESEARCH_RERANK_MAX_LIMIT,
+				hardLimit: RESEARCH_RERANK_HARD_LIMIT,
+			},
+		);
+		assert.match(prompt, /typically 100–150/);
+		assert.match(prompt, /hard cap 160/);
+		assert.match(prompt, /not a generic 50\/55/);
 	});
 
 	it("forwards planning guidance and notes to the rescorer", () => {

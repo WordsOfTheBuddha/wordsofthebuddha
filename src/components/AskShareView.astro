@@ -17,7 +17,7 @@ const registerHref = askAuthPageHref("/register", null, searchAskHref());
 		<h1 class="ai-title text-gradient-accent">Ask</h1>
 		<nav class="ai-mode-switch" aria-label="Mode">
 			<a href="/search">Search</a>
-			<a class="is-active" href="/search?mode=ai" aria-current="page">Ask</a>
+			<a class="is-active" href={searchAskHref()} aria-current="page">Ask</a>
 		</nav>
 		<p class="ai-share-banner">
 			{share.research ? (
@@ -32,7 +32,7 @@ const registerHref = askAuthPageHref("/register", null, searchAskHref());
 				<>
 					Shared Ask
 					{" · "}
-					<a href="/search?mode=ai">Ask your own question</a>
+					<a href={searchAskHref()}>Ask your own question</a>
 				</>
 			)}
 		</p>

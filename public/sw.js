@@ -764,7 +764,7 @@ self.addEventListener("notificationclick", (event) => {
 	const target =
 		event.notification.data && typeof event.notification.data.url === "string"
 			? event.notification.data.url
-			: "/search?mode=ai";
+			: "/search?mode=ask";
 	event.waitUntil(
 		(async () => {
 			const windows = await self.clients.matchAll({

@@ -144,7 +144,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		});
 		console.log(`[${opId}] Session cookie set`);
 
-		// Build redirect URL (keep query so Ask can return to /search?mode=ai)
+		// Build redirect URL (keep query so Ask can return to /search?mode=ask)
 		const url = new URL(request.url);
 		const redirectUrl = safeAuthReturnUrl(
 			url.searchParams.get("returnTo"),

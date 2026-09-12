@@ -6,7 +6,7 @@ export function researchNotifyBody(question: string): string {
 
 export function researchNotifyUrl(jobId: string): string {
 	const id = jobId.replace(/\s+/g, "").trim();
-	return `/search?mode=ai&research=${encodeURIComponent(id)}`;
+	return `/search?mode=research&research=${encodeURIComponent(id)}`;
 }
 
 export async function requestResearchNotifyPermission(): Promise<boolean> {

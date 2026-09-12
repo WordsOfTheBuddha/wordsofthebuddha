@@ -8,7 +8,7 @@ export const RESEARCH_CLARIFY_MIN_QUESTIONS = 1;
 export const RESEARCH_CLARIFY_MAX_CHOICES = 5;
 export const RESEARCH_CLARIFY_MAX_PROMPT = 180;
 export const RESEARCH_CLARIFY_MAX_LABEL = 72;
-export const RESEARCH_CLARIFY_MAX_OTHER = 280;
+export const RESEARCH_CLARIFY_MAX_OTHER = 480;
 export const RESEARCH_CLARIFY_OTHER_ID = "other";
 export const RESEARCH_CLARIFY_NO_PREF_ID = "no_preference";
 export const RESEARCH_CLARIFY_OTHER_LABEL = "Other";
@@ -100,6 +100,15 @@ export const RESEARCH_FALLBACK_QUESTIONS: ResearchClarifyQuestion[] = [
 
 function clip(value: string, max: number): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function clipOtherNote(value: string): string {
+	return value
+		.replace(/\r\n/g, "\n")
+		.replace(/[^\S\n]+/g, " ")
+		.replace(/\n{3,}/g, "\n\n")
+		.trim()
+		.slice(0, RESEARCH_CLARIFY_MAX_OTHER);
 }
 
 function slugId(value: string, fallback: string): string {
@@ -311,9 +320,8 @@ export function parseResearchClarifyAnswers(
 		);
 		if (!questionId || !choiceId || seen.has(questionId)) continue;
 		seen.add(questionId);
-		const otherText = clip(
+		const otherText = clipOtherNote(
 			typeof record.otherText === "string" ? record.otherText : "",
-			RESEARCH_CLARIFY_MAX_OTHER,
 		);
 		out.push({
 			questionId,

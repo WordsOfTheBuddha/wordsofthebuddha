@@ -86,7 +86,12 @@ describe("sanitizeAskExportSharePath", () => {
 			sanitizeAskExportSharePath("/ask/mindfulness-of-the-body"),
 			"/ask/mindfulness-of-the-body",
 		);
-		assert.equal(sanitizeAskExportSharePath("/search?mode=ai"), "/search?mode=ai");
+		assert.equal(sanitizeAskExportSharePath("/search?mode=ai"), "/search?mode=ask");
+		assert.equal(sanitizeAskExportSharePath("/search?mode=ask"), "/search?mode=ask");
+		assert.equal(
+			sanitizeAskExportSharePath("/search?mode=research"),
+			"/search?mode=research",
+		);
 		assert.equal(sanitizeAskExportSharePath("/mn10"), undefined);
 		assert.equal(sanitizeAskExportSharePath("https://evil.example/"), undefined);
 	});
@@ -100,7 +105,11 @@ describe("askExportCollectionUrl", () => {
 		);
 		assert.equal(
 			askExportCollectionUrl(),
-			"www.wordsofthebuddha.org/search?mode=ai",
+			"www.wordsofthebuddha.org/search?mode=ask",
+		);
+		assert.equal(
+			askExportCollectionUrl(undefined, "research"),
+			"www.wordsofthebuddha.org/search?mode=research",
 		);
 	});
 });

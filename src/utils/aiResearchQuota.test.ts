@@ -47,7 +47,7 @@ describe("research quota", () => {
 		assert.equal(empty.state.used, 0);
 	});
 
-	it("refunds a failed job and a stop after five minutes, not an early stop", () => {
+	it("refunds a failed job and a stop after the refund window, not an early stop", () => {
 		const t0 = Date.parse("2026-09-09T12:00:00.000Z");
 		assert.equal(
 			shouldRefundResearchCredit({ status: "failed", createdAt: t0, now: t0 }),

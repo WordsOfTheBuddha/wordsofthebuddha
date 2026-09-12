@@ -23,6 +23,7 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 	"/recent",
 	"/ai",
 	"/ask",
+	"/research",
 	"/admin/ask",
 	"/explorer",
 	"/offline",

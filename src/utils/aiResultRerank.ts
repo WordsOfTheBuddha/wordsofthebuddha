@@ -35,6 +35,14 @@ export const AI_RERANK_DEFAULT_LIMIT = 10;
 export const AI_RERANK_MAX_LIMIT = 50;
 /** Hard clip: a few extra on-topic survey hits may overshoot the typical 50. */
 export const AI_RERANK_HARD_LIMIT = 55;
+/** Research keeps a wider selected set than Ask’s survey 50. */
+export const RESEARCH_RERANK_MAX_LIMIT = 150;
+export const RESEARCH_RERANK_HARD_LIMIT = 160;
+/**
+ * Ranker snippet window for Research so 150 can be chosen from more than 150
+ * inspected passages.
+ */
+export const RESEARCH_RERANK_SNIPPET_CANDIDATES = 250;
 /**
  * Hard clip for summary prose. Ordinary asks stay shorter in the prompt;
  * research / detailed asks may use more of this budget.
@@ -70,23 +78,32 @@ export function isExpansiveAskQuestion(question: string): boolean {
 	return EXPANSIVE_RESULT_RE.test(text) || EXPLICIT_COUNT_RE.test(text);
 }
 
-export function clampAskResultLimit(value: number): number {
+export function clampAskResultLimit(
+	value: number,
+	hardCap = AI_RERANK_HARD_LIMIT,
+): number {
 	if (!Number.isFinite(value)) return AI_RERANK_DEFAULT_LIMIT;
-	return Math.min(
-		AI_RERANK_HARD_LIMIT,
-		Math.max(1, Math.floor(value)),
-	);
+	const hard =
+		Number.isFinite(hardCap) && hardCap > 0
+			? Math.floor(hardCap)
+			: AI_RERANK_HARD_LIMIT;
+	return Math.min(hard, Math.max(1, Math.floor(value)));
 }
 
 /**
  * Cap applied to the rescorer’s slug list. Brief stays at ~10; survey may
  * overshoot the typical 50 up to AI_RERANK_HARD_LIMIT.
  */
-export function askRerankCap(limit: number): number {
-	const target = clampAskResultLimit(limit);
-	return target > AI_RERANK_DEFAULT_LIMIT
-		? AI_RERANK_HARD_LIMIT
-		: target;
+export function askRerankCap(
+	limit: number,
+	hardCap = AI_RERANK_HARD_LIMIT,
+): number {
+	const hard =
+		Number.isFinite(hardCap) && hardCap > 0
+			? Math.floor(hardCap)
+			: AI_RERANK_HARD_LIMIT;
+	const target = clampAskResultLimit(limit, hard);
+	return target > AI_RERANK_DEFAULT_LIMIT ? hard : target;
 }
 
 /**
@@ -117,7 +134,7 @@ Rules:
 - Order slugs best-first for answering the person's question (technique / practical application when they asked for that).
 - Only use slugs from the candidate list. Never invent IDs.
 - Ordinary questions (target around 10): return only as many as are needed. A specific story, named sutta, or “which discourse” lookup may need 3–6. Do not stretch to 10 for padding.
-- Survey / research / extensive / citations: select every distinct on-topic discourse, best-first. Typical size is 20–50 — not a pad-to quota. Do not stop at a top-10 shortlist. Do not stretch to 50 to fill a round number. If the pool is thin, fewer than 20 is fine. If a few more than 50 are clearly on-topic, include them (hard cap about 55). Drop only near-duplicates, reference-only copies of a native hit, and clearly off-topic items.
+- Survey / research / extensive / citations: select every distinct on-topic discourse, best-first. Typical size and hard cap are in the user message (Target result count) — not a pad-to quota and not a generic 50/55. Do not stop at a top-10 shortlist. Do not stretch to the typical high end to fill a round number. If the pool is thin, fewer than the typical low end is fine. A few more than the typical size is OK when they are clearly on-topic, up to the hard cap. Drop only near-duplicates, reference-only copies of a native hit, and clearly off-topic items.
 - Prefer native translations over reference-only when both cover the same teaching.
 - Candidates tagged [term: …] were retrieved by the planning model’s lexical-target searches (termQueries). Named-term matches are listed first. Prefer them when answering about those terms. Do not substitute famous discourses that only matched a backup or a looser query.
 - A tagged hit with a real passage (including Pāli) is stronger evidence than a famous title or a list-catalogue. Do not drop a [reference] card when it is the only candidate whose passage actually contains or defines the term.
@@ -159,6 +176,9 @@ export interface AiRerankPromptOptions {
 	 * omitted means the candidate-pool heuristic may still apply.
 	 */
 	excludeSlugs?: readonly string[];
+	typicalLimit?: number;
+	hardLimit?: number;
+	snippetCandidates?: number;
 }
 
 const PLANNING_NOTES_DRAFT_LINE =
@@ -354,6 +374,7 @@ function candidateLine(
 	hit: AiRerankCandidate,
 	index: number,
 	namedKeys: ReadonlySet<string>,
+	snippetCandidates = AI_RERANK_SNIPPET_CANDIDATES,
 ): string {
 	const id = transformId(hit.slug);
 	const title = (hit.title || "").replace(/\s+/g, " ").trim().slice(0, 100);
@@ -366,7 +387,7 @@ function candidateLine(
 	const tags = namedTermTags(hit, namedKeys);
 	const mark = tags.length > 0 ? ` [term: ${tags.join("; ")}]` : "";
 	const snippet =
-		(tags.length > 0 || index < AI_RERANK_SNIPPET_CANDIDATES) &&
+		(tags.length > 0 || index < snippetCandidates) &&
 		hit.contentSnippet
 			? passageText(hit)
 			: "";
@@ -488,13 +509,23 @@ export function buildRerankUserPrompt(
 	);
 	const ordered = orderNamedTermHitsFirst(candidates, namedKeys);
 	const namedBlock = formatNamedTermBlock(ordered, namedQueries, namedKeys);
+	const snippetCandidates =
+		options.snippetCandidates ?? AI_RERANK_SNIPPET_CANDIDATES;
+	const typical = options.typicalLimit ?? AI_RERANK_MAX_LIMIT;
+	const hard = options.hardLimit ?? AI_RERANK_HARD_LIMIT;
 	const body = ordered
-		.map((hit, index) => candidateLine(hit, index, namedKeys))
+		.map((hit, index) =>
+			candidateLine(hit, index, namedKeys, snippetCandidates),
+		)
 		.join("\n");
-	const target = clampAskResultLimit(options.limit ?? AI_RERANK_DEFAULT_LIMIT);
+	const target = clampAskResultLimit(
+		options.limit ?? AI_RERANK_DEFAULT_LIMIT,
+		hard,
+	);
 	const survey = target > AI_RERANK_DEFAULT_LIMIT;
+	const typicalLow = typical >= 100 ? 100 : 20;
 	const coverage = survey
-		? `Coverage: they asked to research / survey / cite thoroughly. Select every distinct on-topic discourse. Typical size is 20–${AI_RERANK_MAX_LIMIT} — do not pad to a round number or stretch to ${AI_RERANK_MAX_LIMIT} for quota. If the pool is thin, fewer than 20 is fine. A few more than ${AI_RERANK_MAX_LIMIT} is OK when they are clearly on-topic (hard cap about ${AI_RERANK_HARD_LIMIT}). Write a fuller summary that treats the question.`
+		? `Coverage: they asked to research / survey / cite thoroughly. Select every distinct on-topic discourse. Typical size is ${typicalLow}–${typical} — do not pad to a round number or stretch to ${typical} for quota. If the pool is thin, fewer is fine. A few more than ${typical} is OK when they are clearly on-topic (hard cap about ${hard}). Use this target, not a generic 50/55. Write a fuller summary that treats the question.`
 		: `Coverage: return only as many as are needed (ceiling ${target}). A single-discourse lookup may be 3–6. Write a real briefing, not a caption.`;
 	const guidance = (options.guidance || "").replace(/\s+/g, " ").trim();
 	const guidanceBlock = guidance
@@ -514,7 +545,7 @@ export function buildRerankUserPrompt(
 		(options.history || []).length > 0,
 	);
 	const targetLine = survey
-		? `Target result count: typically 20–${AI_RERANK_MAX_LIMIT} (hard cap ${AI_RERANK_HARD_LIMIT})`
+		? `Target result count: typically ${typicalLow}–${typical} (hard cap ${hard})`
 		: `Target result count: up to ${target}`;
 	return `Question: ${question.replace(/\s+/g, " ").trim()}
 ${targetLine}
@@ -531,8 +562,9 @@ export function applyRerankOrder<T extends { slug: string }>(
 	orderedSlugs: readonly string[],
 	limit = AI_RERANK_DEFAULT_LIMIT,
 	minCount = 0,
+	hardCap = AI_RERANK_HARD_LIMIT,
 ): T[] {
-	const cap = clampAskResultLimit(limit);
+	const cap = clampAskResultLimit(limit, hardCap);
 	const bySlug = new Map(
 		candidates.map((hit) => [hit.slug.toLowerCase(), hit] as const),
 	);
@@ -577,8 +609,9 @@ export interface AiRerankResult {
 function emptyRerank(
 	candidates: readonly AiDiscourseHit[],
 	limit: number = AI_RERANK_DEFAULT_LIMIT,
+	hardCap = AI_RERANK_HARD_LIMIT,
 ): AiRerankResult {
-	const target = clampAskResultLimit(limit);
+	const target = clampAskResultLimit(limit, hardCap);
 	return {
 		results: candidates.slice(0, target),
 		summary: "",
@@ -598,18 +631,21 @@ function finishRerank(
 	provider: Exclude<AiRerankProvider, "">,
 	model: string,
 	limit: number,
+	hardCap = AI_RERANK_HARD_LIMIT,
 ): AiRerankResult {
-	const target = clampAskResultLimit(limit);
+	const target = clampAskResultLimit(limit, hardCap);
 	if (parsed.slugs.length === 0) {
-		return emptyRerank(candidates, target);
+		return emptyRerank(candidates, target, hardCap);
 	}
 	// Trust the rescorer’s slug list. Brief stays at ~10; survey may
-	// overshoot the typical 50 up to the hard cap. Never pad from leftovers.
+	// overshoot the typical size up to the hard cap. Never pad from leftovers.
 	return {
 		results: applyRerankOrder(
 			candidates,
 			parsed.slugs,
-			askRerankCap(target),
+			askRerankCap(target, hardCap),
+			0,
+			hardCap,
 		),
 		summary: parsed.summary,
 		...(parsed.shareSlug ? { shareSlug: parsed.shareSlug } : {}),
@@ -635,6 +671,9 @@ interface RerankProviderOptions {
 	primaryQueries?: readonly string[];
 	termQueries?: readonly string[];
 	signal?: AbortSignal;
+	typicalLimit?: number;
+	hardLimit?: number;
+	snippetCandidates?: number;
 }
 
 async function rerankWithGemini(
@@ -659,6 +698,9 @@ async function rerankWithGemini(
 					excludeSlugs: options.excludeSlugs,
 					primaryQueries: options.primaryQueries,
 					termQueries: options.termQueries,
+					typicalLimit: options.typicalLimit,
+					hardLimit: options.hardLimit,
+					snippetCandidates: options.snippetCandidates,
 				}),
 			},
 		],
@@ -669,7 +711,7 @@ async function rerankWithGemini(
 	const parsed = parseRerankResponse(
 		generated.content,
 		allowed,
-		askRerankCap(options.limit),
+		askRerankCap(options.limit, options.hardLimit ?? AI_RERANK_HARD_LIMIT),
 		options.fallbackQueries,
 	);
 	return finishRerank(
@@ -678,6 +720,7 @@ async function rerankWithGemini(
 		"gemini",
 		generated.model || model,
 		options.limit,
+		options.hardLimit ?? AI_RERANK_HARD_LIMIT,
 	);
 }
 
@@ -685,7 +728,11 @@ async function rerankWithOpenRouter(
 	options: RerankProviderOptions & { openRouterModel?: string },
 ): Promise<AiRerankResult> {
 	if (!getOpenRouterApiKey()) {
-		return emptyRerank(options.candidates, options.limit);
+		return emptyRerank(
+			options.candidates,
+			options.limit,
+			options.hardLimit ?? AI_RERANK_HARD_LIMIT,
+		);
 	}
 	const model =
 		options.openRouterModel?.trim() || getConfiguredOpenRouterModel();
@@ -707,6 +754,9 @@ async function rerankWithOpenRouter(
 					excludeSlugs: options.excludeSlugs,
 					primaryQueries: options.primaryQueries,
 					termQueries: options.termQueries,
+					typicalLimit: options.typicalLimit,
+					hardLimit: options.hardLimit,
+					snippetCandidates: options.snippetCandidates,
 				}),
 			},
 		],
@@ -716,7 +766,7 @@ async function rerankWithOpenRouter(
 	const parsed = parseRerankResponse(
 		generated.content,
 		allowed,
-		askRerankCap(options.limit),
+		askRerankCap(options.limit, options.hardLimit ?? AI_RERANK_HARD_LIMIT),
 		options.fallbackQueries,
 	);
 	return finishRerank(
@@ -725,6 +775,7 @@ async function rerankWithOpenRouter(
 		"openrouter",
 		generated.model || model,
 		options.limit,
+		options.hardLimit ?? AI_RERANK_HARD_LIMIT,
 	);
 }
 
@@ -757,6 +808,9 @@ export async function rerankDiscourseHits(options: {
 	/** Planner lexical-target subset of `primaryQueries`. */
 	termQueries?: readonly string[];
 	signal?: AbortSignal;
+	typicalLimit?: number;
+	hardLimit?: number;
+	snippetCandidates?: number;
 }): Promise<AiRerankResult> {
 	const history = options.history || [];
 	const candidates = candidatesForAskFollowUp(
@@ -768,11 +822,18 @@ export async function rerankDiscourseHits(options: {
 	const fallbackQueries = options.fallbackQueries || [];
 	const primaryQueries = options.primaryQueries || [];
 	const termQueries = options.termQueries || [];
+	const hardLimit = options.hardLimit ?? AI_RERANK_HARD_LIMIT;
 	const limit = clampAskResultLimit(
 		options.limit ?? resolveAskResultLimit(options.question),
+		hardLimit,
 	);
+	const capFields = {
+		typicalLimit: options.typicalLimit,
+		hardLimit,
+		snippetCandidates: options.snippetCandidates,
+	};
 	if (candidates.length <= 1) {
-		return emptyRerank(candidates, limit);
+		return emptyRerank(candidates, limit, hardLimit);
 	}
 
 	if (isGeminiConfigured()) {
@@ -789,11 +850,12 @@ export async function rerankDiscourseHits(options: {
 				primaryQueries,
 				termQueries,
 				signal: options.signal,
+				...capFields,
 			});
 		} catch (error) {
 			if (!shouldFallbackRerankToOpenRouter(error)) {
 				console.error("[ai/ask] gemini rerank failed", error);
-				return emptyRerank(candidates, limit);
+				return emptyRerank(candidates, limit, hardLimit);
 			}
 			console.warn(
 				"[ai/ask] gemini rerank quota/error — trying OpenRouter",
@@ -816,10 +878,11 @@ export async function rerankDiscourseHits(options: {
 			termQueries,
 			openRouterModel: options.openRouterModel,
 			signal: options.signal,
+			...capFields,
 		});
 	} catch (error) {
 		console.error("[ai/ask] openrouter rerank failed", error);
-		return emptyRerank(candidates, limit);
+		return emptyRerank(candidates, limit, hardLimit);
 	}
 }
 

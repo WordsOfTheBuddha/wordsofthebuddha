@@ -982,16 +982,19 @@ function buildChapterToc(chapter: ChapterPdf): string {
 
 function askSummaryHtml(
 	summary: string,
-	slugs: string[],
+	discourses: readonly { slug: string; exportKey?: string }[],
 	research: boolean,
 ): string {
 	const text = summary.trim();
 	if (!text) return "";
-	const hits = slugs.map((slug) => ({ slug, href: `/${slug}` }));
-	if (research) {
-		return `<div class="ask-summary ask-report">${renderResearchReportHtml(text, hits)}</div>`;
-	}
-	return `<div class="ask-summary">${renderAskBriefingHtml(text, hits)}</div>`;
+	const hits = discourses.map((d) => ({
+		slug: d.slug,
+		href: `#d-${discourseAnchor(d)}`,
+	}));
+	const html = research
+		? renderResearchReportHtml(text, hits)
+		: renderAskBriefingHtml(text, hits);
+	return `<div class="ask-summary${research ? " ask-report" : ""}">${html}</div>`;
 }
 
 function buildAskContent(collection: CollectionPdf): string {
@@ -999,12 +1002,11 @@ function buildAskContent(collection: CollectionPdf): string {
 	let html = "";
 	collection.chapters.forEach((ch, index) => {
 		const breakAttr = index === 0 ? "" : ' style="page-break-before:always"';
-		const slugs = ch.discourses.map((d) => d.slug);
 		html += `<section class="ask-turn"${breakAttr}>
   <div class="ask-preface">
     <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
     <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
-    ${askSummaryHtml(ch.description, slugs, research)}
+    ${askSummaryHtml(ch.description, ch.discourses, research)}
   </div>
   <div class="ask-turn-toc">
     <h2 class="toc-heading">${research ? "Discourses in this report" : "Discourses in this answer"}</h2>
@@ -1456,7 +1458,9 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   line-height: 1.7;
 }
 .ask-summary a {
-  color: #000;
+  color: #1a365d;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
 }
 .ask-report h2,
 .ask-report h3 {

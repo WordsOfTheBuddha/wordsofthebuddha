@@ -6,12 +6,15 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
 import AiModeApp from "../components/AiModeApp.astro";
+import { isAskResearchEnabled } from "../utils/aiAskResearchUi";
 import "../styles/ai-mode.css";
 
 Astro.response.headers.set(
 	"Cache-Control",
 	"public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
 );
+
+const researchEnabled = isAskResearchEnabled();
 ---
 
 <Layout
@@ -21,12 +24,23 @@ Astro.response.headers.set(
 	showAuth={true}
 	showSearch={false}
 >
-	<main class="container mx-auto px-3 sm:px-4 pt-2" data-search-ask>
+	<main
+		class="container mx-auto px-3 sm:px-4 pt-2"
+		data-search-ask
+		data-research-enabled={researchEnabled ? "1" : "0"}
+	>
 		<header class="search-ask-top">
 			<h1 class="ai-title text-gradient-accent" data-search-ask-title>Search</h1>
 			<nav class="ai-mode-switch" aria-label="Mode">
 				<a data-search-mode-link="search" href="/search">Search</a>
-				<a data-search-mode-link="ask" href="/search?mode=ai">Ask</a>
+				<a data-search-mode-link="ask" href="/search?mode=ask">Ask</a>
+				{
+					researchEnabled && (
+						<a data-search-mode-link="research" href="/search?mode=research">
+							Research
+						</a>
+					)
+				}
 			</nav>
 		</header>
 		<div data-mode-search>
@@ -38,32 +52,68 @@ Astro.response.headers.set(
 		<script is:inline>
 			(function () {
 				var params = new URLSearchParams(location.search);
-				var ask = params.get("mode") === "ai";
+				var root = document.querySelector("[data-search-ask]");
+				var researchEnabled =
+					root && root.getAttribute("data-research-enabled") === "1";
+				var researchId = (params.get("research") || "").replace(/\s+/g, "");
+				var mode = params.get("mode");
+				if (mode === "ai") {
+					params.set("mode", "ask");
+					history.replaceState(
+						history.state,
+						"",
+						location.pathname + "?" + params.toString() + location.hash,
+					);
+					mode = "ask";
+				}
+				if (researchEnabled && researchId && mode !== "research") {
+					params.set("mode", "research");
+					history.replaceState(
+						history.state,
+						"",
+						location.pathname + "?" + params.toString() + location.hash,
+					);
+					mode = "research";
+				}
+				var research = Boolean(researchEnabled && mode === "research");
+				var ask = mode === "ask" || mode === "ai" || research;
+				if (!researchEnabled && mode === "research") {
+					ask = true;
+					research = false;
+				}
 				var searchPane = document.querySelector("[data-mode-search]");
 				var askPane = document.querySelector("[data-mode-ask]");
 				var title = document.querySelector("[data-search-ask-title]");
 				if (searchPane) searchPane.hidden = ask;
 				if (askPane) askPane.hidden = !ask;
-				if (title) title.textContent = ask ? "Ask" : "Search";
-				var researchId = (params.get("research") || "").replace(/\s+/g, "");
+				if (title) title.textContent = research ? "Research" : ask ? "Ask" : "Search";
 				var askRoot = askPane && askPane.querySelector("[data-ai-mode]");
 				if (ask && researchId && askRoot) {
 					askRoot.classList.add("is-restoring-research");
 				}
 				document.querySelectorAll("[data-search-mode-link]").forEach(function (link) {
-					var mode = link.getAttribute("data-search-mode-link");
+					var kind = link.getAttribute("data-search-mode-link");
 					var next = new URL(location.href);
-					if (mode === "ask") {
-						next.searchParams.set("mode", "ai");
-						// Do not carry a keyword `q` into Ask — that would spend credits.
+					if (kind === "ask") {
+						next.searchParams.set("mode", "ask");
+						next.searchParams.delete("q");
+						next.searchParams.delete("research");
+					} else if (kind === "research") {
+						next.searchParams.set("mode", "research");
 						next.searchParams.delete("q");
 					} else {
 						next.searchParams.delete("mode");
 						next.searchParams.delete("research");
 					}
 					link.setAttribute("href", next.pathname + next.search);
-					link.classList.toggle("is-active", (mode === "ask") === ask);
-					if ((mode === "ask") === ask) link.setAttribute("aria-current", "page");
+					var active =
+						kind === "research"
+							? research
+							: kind === "ask"
+								? ask && !research
+								: !ask;
+					link.classList.toggle("is-active", active);
+					if (active) link.setAttribute("aria-current", "page");
 					else link.removeAttribute("aria-current");
 				});
 			})();

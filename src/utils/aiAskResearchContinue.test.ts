@@ -4,6 +4,9 @@ import {
 	formatResearchReadFullProgress,
 	formatResearchReadPaliProgress,
 	formatResearchReadProgress,
+	nextResearchHop,
+	nextUnreadFullBatch,
+	openingResearchFullSlugs,
 	parseResearchContinueDecision,
 	resolveResearchReadFullSlugs,
 	RESEARCH_CONTINUE_SYSTEM,
@@ -145,6 +148,34 @@ describe("formatResearchReadPaliProgress", () => {
 			}),
 			"Reading MN 70 in Pāli and English…",
 		);
+	});
+});
+
+describe("unread full-read batches", () => {
+	it("fills hop 1 with named IDs then unread selected slugs", () => {
+		const opening = openingResearchFullSlugs({
+			namedAndScout: ["mn70", "mn70"],
+			selected: ["mn70", "an3.85", "sn22.59", "dn22"],
+			max: 2,
+		});
+		assert.deepEqual(opening.readNow, ["mn70", "an3.85"]);
+		assert.deepEqual(opening.unreadFull, ["sn22.59", "dn22"]);
+		const next = nextUnreadFullBatch(opening.unreadFull, 1);
+		assert.deepEqual(next.batch, ["sn22.59"]);
+		assert.deepEqual(next.rest, ["dn22"]);
+		assert.equal(nextResearchHop(1), 2);
+		assert.equal(nextResearchHop(2), 3);
+		assert.equal(nextResearchHop(3), null);
+	});
+
+	it("still has unread full-reads after continue:false", () => {
+		const decision = parseResearchContinueDecision(
+			'{"continue":false,"reason":"already covered"}',
+		);
+		assert.equal(decision.continue, false);
+		const next = nextUnreadFullBatch(["sn22.59", "dn22", "mn10"]);
+		assert.deepEqual(next.batch, ["sn22.59", "dn22", "mn10"]);
+		assert.deepEqual(next.rest, []);
 	});
 });
 

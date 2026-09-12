@@ -5,16 +5,16 @@ import { safeAuthReturnUrl } from "./authReturnTo";
 const REQUEST = "https://www.wordsofthebuddha.org/api/auth/signin";
 
 describe("safeAuthReturnUrl", () => {
-	it("keeps Ask mode on /search", () => {
+	it("rewrites leftover Ask mode=ai onto mode=ask", () => {
 		const url = safeAuthReturnUrl("/search?mode=ai", REQUEST);
 		assert.equal(url.pathname, "/search");
-		assert.equal(url.searchParams.get("mode"), "ai");
+		assert.equal(url.searchParams.get("mode"), "ask");
 	});
 
 	it("keeps a prefilled Ask question on /search", () => {
 		const url = safeAuthReturnUrl("/search?mode=ai&q=why+anger", REQUEST);
 		assert.equal(url.pathname, "/search");
-		assert.equal(url.searchParams.get("mode"), "ai");
+		assert.equal(url.searchParams.get("mode"), "ask");
 		assert.equal(url.searchParams.get("q"), "why anger");
 	});
 
@@ -41,6 +41,6 @@ describe("safeAuthReturnUrl", () => {
 			"/",
 		);
 		assert.equal(url.pathname, "/search");
-		assert.equal(url.searchParams.get("mode"), "ai");
+		assert.equal(url.searchParams.get("mode"), "ask");
 	});
 });

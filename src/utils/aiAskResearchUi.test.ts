@@ -6,9 +6,32 @@ import {
 	askComposerMeterIsResearch,
 	askFollowPlaceholder,
 	askMeterLabel,
+	ASK_COMPOSER_LABEL,
+	ASK_DELETE_CONFIRM,
 	ASK_FOLLOW_PLACEHOLDER,
+	ASK_HISTORY_HINT_PINNED,
+	ASK_HISTORY_HINT_RECENT,
+	ASK_HISTORY_LABEL,
+	ASK_LIMITS_NOTE,
+	ASK_PIN_ACCOUNT_TITLE,
+	ASK_PLACEHOLDER,
 	ASK_WAITING_PLACEHOLDER,
+	ASK_NEW_LABEL,
+	RESEARCH_COMPOSER_LABEL,
+	RESEARCH_DELETE_ACTION,
+	RESEARCH_DELETE_CONFIRM,
 	RESEARCH_FOLLOW_PLACEHOLDER,
+	RESEARCH_HISTORY_LABEL,
+	RESEARCH_INVITE_AFTER_ASK,
+	RESEARCH_LIMITS_NOTE,
+	RESEARCH_PIN_ACCOUNT_TITLE,
+	RESEARCH_PIN_ACTION,
+	RESEARCH_PLACEHOLDER,
+	RESEARCH_SIGNIN_BODY,
+	RESEARCH_SIGNIN_EMPTY_NOTE,
+	RESEARCH_SIGNIN_TITLE,
+	RESEARCH_UNPIN_ACTION,
+	RESEARCH_NEW_LABEL,
 	canShowResearchChip,
 	isAskResearchEnabled,
 	RESEARCH_EMAIL_PENDING_NOTE,
@@ -121,7 +144,7 @@ describe("askMeterLabel", () => {
 				askRemaining: 13,
 				researchRemaining: 1,
 			}),
-			"1 research left today",
+			"1 research report available today",
 		);
 		assert.equal(
 			askMeterLabel({
@@ -549,5 +572,54 @@ describe("wrapAskAnswerHtml", () => {
 		assert.doesNotMatch(html, /ai-answer-toolbar-start/);
 		assert.match(html, /ai-answer-toolbar-end/);
 		assert.equal([...html.matchAll(/data-ai-copy-answer/g)].length, 1);
+	});
+});
+
+describe("Research pane copy", () => {
+	it("keeps Ask and Research wording on separate lanes", () => {
+		assert.equal(ASK_PLACEHOLDER, "Ask a question about the discourses…");
+		assert.equal(
+			RESEARCH_PLACEHOLDER,
+			"Ask for a cited report from the discourses…",
+		);
+		assert.equal(ASK_COMPOSER_LABEL, "Ask a question");
+		assert.equal(RESEARCH_COMPOSER_LABEL, "Ask for a cited report");
+		assert.equal(ASK_HISTORY_LABEL, "Recent Asks");
+		assert.equal(RESEARCH_HISTORY_LABEL, "Recent reports");
+		assert.equal(ASK_LIMITS_NOTE, "Experimental AI search · limited free Asks");
+		assert.equal(
+			RESEARCH_LIMITS_NOTE,
+			"Experimental AI research",
+		);
+		assert.equal(
+			ASK_HISTORY_HINT_RECENT,
+			"Older ones drop off · pin to keep",
+		);
+		assert.equal(ASK_HISTORY_HINT_PINNED, "Stay until you unpin");
+		assert.equal(
+			ASK_DELETE_CONFIRM,
+			"Delete this Ask from Recent Asks? This cannot be undone.",
+		);
+		assert.equal(
+			RESEARCH_DELETE_CONFIRM,
+			"Delete this report from Recent reports? This cannot be undone.",
+		);
+		assert.equal(RESEARCH_PIN_ACTION, "Pin this report");
+		assert.equal(RESEARCH_UNPIN_ACTION, "Unpin this report");
+		assert.equal(RESEARCH_DELETE_ACTION, "Delete this report");
+		assert.equal(ASK_PIN_ACCOUNT_TITLE, "Create an account to pin Asks");
+		assert.equal(RESEARCH_PIN_ACCOUNT_TITLE, "Create an account to pin reports");
+		assert.equal(RESEARCH_SIGNIN_TITLE, "Sign in to run Research");
+		assert.match(RESEARCH_SIGNIN_BODY, /do not use your credits/);
+		assert.equal(
+			RESEARCH_SIGNIN_EMPTY_NOTE,
+			"Sign in to run Research (2 per day). Samples below are illustrations.",
+		);
+		assert.equal(
+			RESEARCH_INVITE_AFTER_ASK,
+			"Looking for a wider search and a longer cited report? Try Research.",
+		);
+		assert.equal(ASK_NEW_LABEL, "+ New Ask");
+		assert.equal(RESEARCH_NEW_LABEL, "+ New report");
 	});
 });

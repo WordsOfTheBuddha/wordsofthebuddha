@@ -94,7 +94,22 @@ describe("findAskSample", () => {
 		);
 	});
 
-	it("does not hydrate a sample chip while Research is on", () => {
+	it("hydrates a research sample only on the Research pane", () => {
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.report = "## Feeling";
+		assert.equal(
+			findAskSampleForExample([report], report.question, { research: false }),
+			null,
+		);
+		assert.equal(
+			findAskSampleForExample([report], report.question, { research: true })
+				?.report,
+			"## Feeling",
+		);
+	});
+
+	it("does not hydrate an Ask sample as Research", () => {
 		assert.equal(
 			findAskSampleForExample(
 				[afterDeath],
@@ -148,6 +163,15 @@ describe("canMarkAskAsSample", () => {
 		assert.equal(
 			canMarkAskAsSample({
 				isAdmin: true,
+				resultCount: 3,
+				research: true,
+				hasReport: true,
+			}),
+			true,
+		);
+		assert.equal(
+			canMarkAskAsSample({
+				isAdmin: true,
 				resultCount: 0,
 			}),
 			false,
@@ -159,6 +183,10 @@ describe("askSampleConfirmMessage", () => {
 	it("warns when replacing an existing example", () => {
 		assert.match(askSampleConfirmMessage(false), /does not use their Ask credits/);
 		assert.match(askSampleConfirmMessage(true), /Replace the current example/);
+		assert.match(
+			askSampleConfirmMessage(false, { research: true }),
+			/does not use their Research credits/,
+		);
 	});
 });
 

@@ -11,7 +11,7 @@ describe("research notify helpers", () => {
 	it("builds a relative result URL", () => {
 		assert.equal(
 			researchNotifyUrl("job-1"),
-			"/search?mode=ai&research=job-1",
+			"/search?mode=research&research=job-1",
 		);
 	});
 

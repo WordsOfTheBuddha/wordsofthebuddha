@@ -40,6 +40,19 @@ MN 10 sets out the four establishments.
 		assert.doesNotMatch(html, /<script>/);
 	});
 
+	it("keeps export hrefs so PDF and EPUB citations stay clickable", () => {
+		const html = renderResearchReportHtml(
+			"MN 10 sets out the four establishments, and SN 47.19 is the simile.",
+			[
+				{ slug: "mn10", href: "#d-t0-mn10" },
+				{ slug: "sn47.19", href: "d-t0-sn47.19.xhtml" },
+			],
+		);
+		assert.match(html, /href="#d-t0-mn10"/);
+		assert.match(html, /href="d-t0-sn47\.19\.xhtml"/);
+		assert.doesNotMatch(html, /href="\/mn10"/);
+	});
+
 	it("renders block quotes and bold that contains italics", () => {
 		const html = renderResearchReportHtml(
 			`The Buddha's answer is brief:
@@ -249,5 +262,6 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 		assert.match(RESEARCH_REPORT_SYSTEM, /When you can/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /readPali:/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /thorough report/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /other selected titles as further sources/);
 	});
 });

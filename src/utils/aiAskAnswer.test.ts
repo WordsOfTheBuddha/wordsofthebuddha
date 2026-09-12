@@ -215,11 +215,15 @@ describe("formatAskAnswerEvidenceBlock", () => {
 					title: "At Kīṭāgiri",
 					referenceOnly: false,
 					full: true,
+					paraCount: 84,
+					paraNumbers: [1, 2, 3, 12],
 					passages: [{ source: "English (full text)", text: "Opening." }],
 				},
 			],
 		});
 		assert.match(block, /MN 70 \[full text\]/);
+		assert.match(block, /84 paragraphs/);
+		assert.match(block, /¶ 1–3, ¶ 12/);
 		assert.match(block, /English \(full text\):\nOpening/);
 	});
 });

@@ -427,7 +427,19 @@ describe("composeNavSuggestions", () => {
 				SITE_PAGE_SUGGESTIONS,
 			);
 			assert.equal(items[0]?.type, "page", query);
-			assert.equal(items[0]?.hit.href, "/search?mode=ai", query);
+			assert.equal(items[0]?.hit.href, "/search?mode=ask", query);
+		}
+	});
+
+	it("shows Research the discourses on research aliases", () => {
+		for (const query of ["research", "cited report"]) {
+			const items = composeNavSuggestions(
+				query,
+				[],
+				SITE_PAGE_SUGGESTIONS,
+			);
+			assert.equal(items[0]?.type, "page", query);
+			assert.equal(items[0]?.hit.href, "/search?mode=research", query);
 		}
 	});
 

@@ -682,6 +682,7 @@ const isSearchOnly = mode === "search-only";
 
 <script>
 	import { DiscoverRenderer } from "../utils/discover-renderer";
+	import { isAskSurfaceMode } from "../utils/aiAskHref";
 	import type { UnifiedContentItem } from "../types/discover";
 	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
 	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
@@ -830,7 +831,7 @@ const isSearchOnly = mode === "search-only";
 
 		const urlParams = new URLSearchParams(window.location.search);
 		const queryFromUrl = urlParams.get("q");
-		const askMode = urlParams.get("mode") === "ai";
+		const askMode = isAskSurfaceMode(urlParams);
 
 		if (askMode) {
 			if (loadingEl) loadingEl.classList.add("hidden");

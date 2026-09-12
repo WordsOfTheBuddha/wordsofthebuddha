@@ -2,7 +2,9 @@ import { formatAskDebugDevHtml, type AskDebugView } from "./aiAskDebug";
 import {
 	askAuthPageHref,
 	askResearchJobParam,
-	isAskSearchMode,
+	isAskSurfaceMode,
+	isResearchSearchMode,
+	searchResearchHref,
 	withAskResearchParam,
 } from "./aiAskHref";
 import type { AiAskPersonHit } from "./aiAskPersons";
@@ -18,6 +20,7 @@ import {
 	canStartResearchClarify,
 	RESEARCH_CLARIFY_TITLE,
 	RESEARCH_CLARIFY_OTHER_ID,
+	RESEARCH_CLARIFY_MAX_OTHER,
 	type ResearchClarifyQuestion,
 } from "./aiAskResearchClarify";
 import {
@@ -27,15 +30,42 @@ import {
 } from "./aiAskResearchReport";
 import {
 	ASK_PLACEHOLDER,
+	ASK_COMPOSER_LABEL,
+	ASK_DELETE_CONFIRM,
+	ASK_HISTORY_ARIA,
+	ASK_HISTORY_HINT_PINNED,
+	ASK_HISTORY_HINT_RECENT,
+	ASK_HISTORY_LABEL,
+	ASK_LIMITS_NOTE,
+	ASK_OPTIONS_ARIA,
+	ASK_PIN_ACCOUNT_BODY,
+	ASK_PIN_ACCOUNT_TITLE,
+	ASK_NEW_LABEL,
 	applyResearchJobToTurn,
 	askComposerMeterIsResearch,
 	askFollowPlaceholder,
 	askMeterLabel,
 	canShowResearchChip,
+	isAskResearchEnabled,
 	RESEARCH_CHIP_STORAGE_KEY,
 	RESEARCH_CHIP_TITLE,
+	RESEARCH_COMPOSER_LABEL,
+	RESEARCH_DELETE_ACTION,
+	RESEARCH_DELETE_CONFIRM,
 	RESEARCH_EMAIL_PENDING_NOTE,
+	RESEARCH_HISTORY_ARIA,
+	RESEARCH_HISTORY_LABEL,
+	RESEARCH_INVITE_AFTER_ASK,
+	RESEARCH_LIMITS_NOTE,
+	RESEARCH_OPTIONS_ARIA,
+	RESEARCH_PIN_ACCOUNT_BODY,
+	RESEARCH_PIN_ACCOUNT_TITLE,
+	RESEARCH_PIN_ACTION,
 	RESEARCH_PLACEHOLDER,
+	RESEARCH_SIGNIN_BODY,
+	RESEARCH_SIGNIN_TITLE,
+	RESEARCH_UNPIN_ACTION,
+	RESEARCH_NEW_LABEL,
 	isIncompleteResearchTurn,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
@@ -65,6 +95,9 @@ import {
 	canMarkAskAsSample,
 	findAskSample,
 	findAskSampleForExample,
+	researchAskSamples,
+	RESEARCH_SAMPLE_KICKER,
+	RESEARCH_SAMPLE_NOTE,
 	sanitizeAskSamplePublic,
 	sampleToShareTurn,
 	upsertAskSampleLocal,
@@ -75,6 +108,7 @@ import {
 	ASK_HISTORY_PREVIEW_LIMIT,
 	askHistoryEntriesForRestore,
 	askHistoryEntriesForTab,
+	askHistoryLaneEntries,
 	clearAskResumeFromDiscourse,
 	clearAskThreadResumeIntent,
 	findAiAskSessionEntry,
@@ -270,7 +304,8 @@ export interface AskPlannerRoutingView {
 }
 
 const MODEL_STORAGE_KEY = "ai-mode-model";
-const ASK_HOME_HREF = "/search?mode=ai";
+const ASK_HOME_HREF = "/search?mode=ask";
+const RESEARCH_HOME_HREF = "/search?mode=research";
 
 /** Filled thumbtack — reads clearly at small sizes. */
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
@@ -1111,6 +1146,14 @@ function fitTextarea(el: HTMLTextAreaElement): void {
 	el.style.height = `${Math.min(Math.max(el.scrollHeight, 28), 160)}px`;
 }
 
+function fitClarifyOther(el: HTMLTextAreaElement): void {
+	el.style.height = "auto";
+	const line = 16 * 1.45;
+	const pad = 1.1 * 16;
+	const cap = line * 6 + pad;
+	el.style.height = `${Math.min(el.scrollHeight, cap)}px`;
+}
+
 function skeletonHtml(): string {
 	return `<div class="ai-skel" aria-hidden="true">
 		<div class="ai-skel-card"></div>
@@ -1380,6 +1423,23 @@ export function attachAiMode(options: {
 	let busy = false;
 	let researchChipOn = false;
 	let researchPollTimer = 0;
+
+	function researchPaneOn(): boolean {
+		return (
+			isAskResearchEnabled() &&
+			isResearchSearchMode(window.location.search)
+		);
+	}
+
+	function historyLane(): AiAskSessionEntry[] {
+		return askHistoryLaneEntries(sessionEntries, researchPaneOn());
+	}
+
+	function findLaneEntry(question: string): AiAskSessionEntry | undefined {
+		return findAiAskSessionEntry(sessionEntries, question, {
+			research: researchPaneOn(),
+		});
+	}
 	let researchPollToken = 0;
 	let samplePlaybackTimer = 0;
 	let samplePlaybackToken = 0;
@@ -1436,6 +1496,9 @@ export function attachAiMode(options: {
 	}
 
 	function researchUiOn(): boolean {
+		if (researchPaneOn() && turns.length === 0) {
+			return Boolean(quota?.signedIn && !quota.needsEmailVerification);
+		}
 		if (!researchChipAvailable()) return false;
 		if (researchChipOn) return true;
 		const last = turns[turns.length - 1];
@@ -1593,29 +1656,67 @@ export function attachAiMode(options: {
 		}
 	}
 
+	function syncLimitsNotes(): void {
+		const research = researchPaneOn();
+		const note = research ? RESEARCH_LIMITS_NOTE : ASK_LIMITS_NOTE;
+		root.querySelectorAll<HTMLElement>(".ai-limits-note").forEach((el) => {
+			el.textContent = note;
+		});
+		const signin = root.querySelector<HTMLElement>("[data-ai-research-signin]");
+		if (signin) {
+			signin.hidden = !(
+				research &&
+				turns.length === 0 &&
+				quota &&
+				!quota.signedIn
+			);
+		}
+	}
+
 	function syncResearchChip(): void {
+		const pane = researchPaneOn();
 		const available = researchChipAvailable();
-		const pressed = available && (researchChipOn || researchFlowLocksChip());
+		const pressed = pane || (available && (researchChipOn || researchFlowLocksChip()));
 		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
 			(chip) => {
-				chip.hidden = !available;
+				chip.hidden = !available || pane;
 				chip.title = RESEARCH_CHIP_TITLE;
 				chip.setAttribute("aria-pressed", pressed ? "true" : "false");
-				chip.classList.toggle("is-on", pressed);
+				chip.classList.toggle("is-on", pressed && !pane);
 			},
 		);
 		root.querySelectorAll<HTMLElement>("[data-ai-examples]").forEach((group) => {
 			const kind = group.getAttribute("data-ai-examples");
-			group.hidden = pressed ? kind !== "research" : kind !== "ask";
+			if (kind === "research") {
+				group.hidden = !pane || group.childElementCount === 0;
+			} else {
+				group.hidden = pane;
+			}
 		});
-		const placeholder = pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
+		const placeholder = pane || pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
 		if (input) input.placeholder = placeholder;
+		const composerLabel = root.querySelector<HTMLLabelElement>(
+			'label[for="ai-input"]',
+		);
+		if (composerLabel) {
+			composerLabel.textContent = pane
+				? RESEARCH_COMPOSER_LABEL
+				: ASK_COMPOSER_LABEL;
+		}
+		root.querySelectorAll<HTMLButtonElement>("[data-ai-new]").forEach((button) => {
+			button.textContent = pane ? RESEARCH_NEW_LABEL : ASK_NEW_LABEL;
+		});
 		if (followInput) {
 			followInput.placeholder = askFollowPlaceholder({
 				pending: turns.some((turn) => turn.pending),
-				researchFollow: pressed,
+				researchFollow: pressed && !pane ? true : pane && turns.length === 0,
 			});
 		}
+		syncLimitsNotes();
+		const researchBusy = turns.some(
+			(turn) => turn.pending && turn.research && turn.researchJobId,
+		);
+		syncStopButtons(researchBusy);
 		renderMeters();
 	}
 
@@ -1676,9 +1777,15 @@ export function attachAiMode(options: {
 		);
 		if (title && body) {
 			if (kind === "save") {
-				title.textContent = "Create an account to pin Asks";
-				body.textContent =
-					"Recent Asks are temporary. Pinning keeps a question at hand when older ones drop off — and an account syncs your history across devices.";
+				title.textContent = researchPaneOn()
+					? RESEARCH_PIN_ACCOUNT_TITLE
+					: ASK_PIN_ACCOUNT_TITLE;
+				body.textContent = researchPaneOn()
+					? RESEARCH_PIN_ACCOUNT_BODY
+					: ASK_PIN_ACCOUNT_BODY;
+			} else if (kind === "signin" && researchPaneOn()) {
+				title.textContent = RESEARCH_SIGNIN_TITLE;
+				body.textContent = RESEARCH_SIGNIN_BODY;
 			} else {
 				title.textContent = "You’ve used today’s free Asks";
 				body.textContent =
@@ -1898,7 +2005,7 @@ export function attachAiMode(options: {
 			turns.every((turn) => turn.fromSample) &&
 			!turns.some((turn) => turn.saved)
 		) {
-			writeActiveAskThread([]);
+			writeActiveAskThread([], undefined, { research: researchPaneOn() });
 			return;
 		}
 		const entries = turns
@@ -1918,7 +2025,7 @@ export function attachAiMode(options: {
 				}
 				return entry;
 			});
-		writeActiveAskThread(entries);
+		writeActiveAskThread(entries, undefined, { research: researchPaneOn() });
 	}
 
 	function navigationEntryType(): PerformanceNavigationTiming["type"] | "" {
@@ -1929,7 +2036,9 @@ export function attachAiMode(options: {
 	}
 
 	function restoreActiveThreadFromStorage(): void {
-		const active = readActiveAskThread();
+		const active = readActiveAskThread(undefined, {
+			research: researchPaneOn(),
+		});
 		if (active.length === 0) return;
 		turns = active.map((entry) => {
 			const turn = sessionEntryToTurn(entry);
@@ -1964,7 +2073,7 @@ export function attachAiMode(options: {
 		stopSamplePlayback();
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy");
-		clearAskThreadResumeIntent();
+		clearAskThreadResumeIntent(undefined, { research: researchPaneOn() });
 		turns = [];
 		setStatus("");
 		syncResearchChip();
@@ -1975,7 +2084,7 @@ export function attachAiMode(options: {
 
 	function markLeavingAskForDiscourse(): void {
 		if (shareMode || turns.length === 0) return;
-		markAskResumeFromDiscourse();
+		markAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
 		persistActiveThread();
 	}
 
@@ -2027,6 +2136,7 @@ export function attachAiMode(options: {
 			sessionEntries = removeAskHistoryEntriesByQuestions(
 				sessionEntries,
 				replaceQuestions,
+				{ research: true },
 			);
 		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
@@ -2157,7 +2267,7 @@ export function attachAiMode(options: {
 		}
 		const restored = askHistoryEntriesForRestore(entry);
 		if (restored.length === 0) return;
-		clearAskResumeFromDiscourse();
+		clearAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
 		turns = restored.map((item, index) => {
 			const turn = sessionEntryToTurn(item);
 			// Multi-turn restore is a conversation resume, not a silent cache hit.
@@ -2197,10 +2307,13 @@ export function attachAiMode(options: {
 		} else if (!turn.saved && completedBefore.length === 0) {
 			// Re-asking the same solo topic shouldn’t clear a favorite.
 			const prior =
-				findAiAskSessionEntry(sessionEntries, turn.question) ||
+				findAiAskSessionEntry(sessionEntries, turn.question, {
+					research: turn.research === true,
+				}) ||
 				findAiAskSessionEntry(
 					sessionEntries,
 					turn.originalQuestion || "",
+					{ research: turn.research === true },
 				);
 			if (prior?.saved) turn.saved = true;
 		}
@@ -2229,6 +2342,7 @@ export function attachAiMode(options: {
 			sessionEntries = removeAskHistoryEntriesByQuestions(
 				sessionEntries,
 				replaceQuestions,
+				{ research: turn.research === true },
 			);
 		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
@@ -2271,9 +2385,27 @@ export function attachAiMode(options: {
 			askSamples = data.samples
 				.map((item) => sanitizeAskSamplePublic(item))
 				.filter((item): item is AiAskSamplePublic => Boolean(item));
+			fillResearchExampleChips();
 		} catch {
 			/* samples are optional until an admin marks one */
 		}
+	}
+
+	function fillResearchExampleChips(): void {
+		const group = root.querySelector<HTMLElement>(
+			'[data-ai-examples="research"]',
+		);
+		if (!group) return;
+		const samples = researchAskSamples(askSamples);
+		group.replaceChildren();
+		for (const sample of samples.slice(0, 6)) {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.setAttribute("data-ai-example", sample.question);
+			button.textContent = sample.question;
+			group.append(button);
+		}
+		syncResearchChip();
 	}
 
 	function stopSamplePlayback(): void {
@@ -2295,6 +2427,9 @@ export function attachAiMode(options: {
 		turn.fallbackQueries = patch.fallbackQueries;
 		turn.summary = patch.summary;
 		turn.results = patch.results;
+		if (patch.research) turn.research = true;
+		if (patch.report) turn.report = patch.report;
+		else if (!patch.pending) turn.report = sample.report;
 		if (patch.rerankCandidateCount) {
 			turn.rerankCandidateCount = patch.rerankCandidateCount;
 			turn.rerankShowCount = patch.rerankShowCount;
@@ -2308,7 +2443,7 @@ export function attachAiMode(options: {
 		stopSamplePlayback();
 		const token = samplePlaybackToken;
 		pendingReplaceQuestions = null;
-		clearAskResumeFromDiscourse();
+		clearAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
 		const turn = sampleToAiAskTurn(sample);
 		applySamplePlayback(turn, sample, "rewrite");
 		turns = [turn];
@@ -2350,12 +2485,17 @@ export function attachAiMode(options: {
 				fromShare: turn.fromShare,
 				fromSample: turn.fromSample,
 				research: turn.research,
+				hasReport: Boolean((turn.report || "").trim()),
 			})
 		) {
 			return;
 		}
-		const replacing = Boolean(findAskSample(askSamples, turn.question));
-		if (!window.confirm(askSampleConfirmMessage(replacing))) return;
+		const replacing = Boolean(
+			findAskSampleForExample(askSamples, turn.question, {
+				research: turn.research === true,
+			}),
+		);
+		if (!window.confirm(askSampleConfirmMessage(replacing, { research: turn.research === true }))) return;
 		try {
 			const response = await fetch("/api/ai/admin/sample", {
 				method: "POST",
@@ -2371,6 +2511,8 @@ export function attachAiMode(options: {
 					model: turn.model,
 					requestId: turn.requestId,
 					candidateCount: turn.rerankCandidateCount,
+					...(turn.research ? { research: true } : {}),
+					...(turn.report ? { report: turn.report } : {}),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -2383,7 +2525,10 @@ export function attachAiMode(options: {
 				return;
 			}
 			const saved = sanitizeAskSamplePublic(data.sample);
-			if (saved) askSamples = upsertAskSampleLocal(askSamples, saved);
+			if (saved) {
+				askSamples = upsertAskSampleLocal(askSamples, saved);
+				fillResearchExampleChips();
+			}
 			setStatus("Saved as the example for this question.");
 		} catch {
 			setStatus("Could not save this example.");
@@ -2415,6 +2560,7 @@ export function attachAiMode(options: {
 			sessionEntries = removeAskHistoryEntriesByQuestions(
 				sessionEntries,
 				replaceQuestions,
+				{ research: turn.research === true },
 			);
 		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
@@ -2495,7 +2641,9 @@ export function attachAiMode(options: {
 		if (keys.length === 0) return;
 		const clearOpen =
 			options?.clearOpenThread === true || openThreadMatchesQuestions(keys);
-		sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys);
+		sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys, {
+			research: researchPaneOn(),
+		});
 		writeAiAskSession(sessionEntries);
 		if (clearOpen) {
 			leaveAskHome();
@@ -2509,7 +2657,11 @@ export function attachAiMode(options: {
 				method: "POST",
 				credentials: "same-origin",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ action: "delete", questions: keys }),
+				body: JSON.stringify({
+					action: "delete",
+					questions: keys,
+					research: researchPaneOn(),
+				}),
 			});
 			if (response.status === 401) {
 				signedInForHistory = false;
@@ -2532,7 +2684,7 @@ export function attachAiMode(options: {
 	function deleteHistoryEntry(entry: AiAskSessionEntry): void {
 		if (
 			!window.confirm(
-				"Delete this Ask from Recent Asks? This cannot be undone.",
+				researchPaneOn() ? RESEARCH_DELETE_CONFIRM : ASK_DELETE_CONFIRM,
 			)
 		) {
 			return;
@@ -2587,7 +2739,7 @@ export function attachAiMode(options: {
 
 		if (
 			!window.confirm(
-				"Delete this Ask from Recent Asks? This cannot be undone.",
+				turn.research ? RESEARCH_DELETE_CONFIRM : ASK_DELETE_CONFIRM,
 			)
 		) {
 			return;
@@ -2787,10 +2939,13 @@ export function attachAiMode(options: {
 					continue;
 				}
 				const match =
-					findAiAskSessionEntry(sessionEntries, item.question) ||
+					findAiAskSessionEntry(sessionEntries, item.question, {
+						research: item.research === true,
+					}) ||
 					findAiAskSessionEntry(
 						sessionEntries,
 						item.originalQuestion || "",
+						{ research: item.research === true },
 					);
 				item.saved = match?.saved === true;
 			}
@@ -2983,19 +3138,27 @@ export function attachAiMode(options: {
 		const pinTitle = pinned
 			? conversation
 				? "Unpin — allow this conversation to drop off with older ones"
-				: "Unpin — allow this Ask to drop off with older ones"
+				: turn.research
+					? "Unpin — allow this report to drop off with older ones"
+					: "Unpin — allow this Ask to drop off with older ones"
 			: signedInForHistory
 				? conversation
 					? "Pin this conversation so the whole thread stays under Pinned"
-					: "Pin so it stays when older Asks drop off"
-				: "Create an account to pin Asks";
+					: turn.research
+						? "Pin so it stays when older reports drop off"
+						: "Pin so it stays when older Asks drop off"
+				: turn.research
+					? RESEARCH_PIN_ACCOUNT_TITLE
+					: ASK_PIN_ACCOUNT_TITLE;
 		const pinLabel = pinned
 			? conversation
 				? "Pinned conversation"
 				: "Pinned"
 			: conversation
 				? "Pin conversation"
-				: "Pin this Ask";
+				: turn.research
+					? RESEARCH_PIN_ACTION
+					: "Pin this Ask";
 		const pinShortLabel = pinned ? "Pinned" : "Pin";
 		const pinBtn = showPin
 			? `<button type="button" class="ai-share-btn ai-pin-btn${pinned ? " is-pinned" : ""}" data-ai-pin data-turn-index="${turnIndex}" aria-pressed="${pinned ? "true" : "false"}" title="${pinTitle}" aria-label="${pinTitle}">
@@ -3011,7 +3174,9 @@ export function attachAiMode(options: {
 				? `<button type="button" class="ai-delete-link" data-ai-delete-turn data-turn-index="${turnIndex}" title="${
 					conversation
 						? "Remove this last follow-up"
-						: "Delete this Ask"
+						: turn.research
+							? RESEARCH_DELETE_ACTION
+							: "Delete this Ask"
 				}">Delete</button>`
 				: "";
 		const showSampleSave =
@@ -3025,9 +3190,14 @@ export function attachAiMode(options: {
 				fromShare: turn.fromShare,
 				fromSample: turn.fromSample,
 				research: turn.research,
+				hasReport: Boolean((turn.report || "").trim()),
 			});
 		const sampleSaveBtn = showSampleSave
-			? `<button type="button" class="ai-share-btn" data-ai-sample-save data-turn-index="${turnIndex}" title="Use this run as the example for this question">
+			? `<button type="button" class="ai-share-btn" data-ai-sample-save data-turn-index="${turnIndex}" title="${
+				turn.research
+					? "Use this report as the example for this question"
+					: "Use this run as the example for this question"
+			}">
 				<span class="ai-share-label-full">Use as sample</span><span class="ai-share-label-short">Sample</span>
 			</button>`
 			: "";
@@ -3285,7 +3455,7 @@ export function attachAiMode(options: {
 					.join("");
 				const otherField =
 					selected === RESEARCH_CLARIFY_OTHER_ID
-						? `<input class="ai-clarify-other" data-ai-clarify-other data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" type="text" maxlength="280" placeholder="Add a short note" value="${escapeHtml(otherText)}" />`
+						? `<textarea class="ai-clarify-other" data-ai-clarify-other data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" rows="2" maxlength="${RESEARCH_CLARIFY_MAX_OTHER}" placeholder="Add a short note">${escapeHtml(otherText)}</textarea>`
 						: "";
 				return `<div class="ai-clarify-q" role="radiogroup" aria-label="${escapeHtml(question.prompt)}">
 					<p class="ai-clarify-prompt">${qIndex + 1}. ${escapeHtml(question.prompt)}</p>
@@ -3320,7 +3490,9 @@ export function attachAiMode(options: {
 				? `<div class="ai-fallbacks"><span class="ai-fallbacks-label">Also tried</span>${queryChipsHtml(turn.fallbackQueries, "ai-queries ai-queries-fallback")}</div>`
 				: "";
 		const cacheNote = turn.fromSample
-			? `<p class="ai-cache-note">${escapeHtml(ASK_SAMPLE_NOTE)}</p>`
+			? `<p class="ai-cache-note">${escapeHtml(
+					turn.research ? RESEARCH_SAMPLE_NOTE : ASK_SAMPLE_NOTE,
+				)}</p>`
 			: "";
 		// Latest lines stay visible; older reasoning is clipped unless expanded.
 		const reasoningText = displayAskReasoning(turn.reasoning, turn.pending);
@@ -3355,7 +3527,9 @@ export function attachAiMode(options: {
 		const summary = reportText
 			? wrapAskAnswerHtml({
 					kind: "report",
-					kicker: "Research report",
+					kicker: turn.fromSample
+						? RESEARCH_SAMPLE_KICKER
+						: "Research report",
 					turnIndex,
 					bodyHtml: renderResearchReportHtml(reportText, turn.results),
 				})
@@ -3364,7 +3538,15 @@ export function attachAiMode(options: {
 						kind: "answer",
 						turnIndex,
 						bodyHtml: renderAskBriefingHtml(summaryText, turn.results),
-					})
+					}) +
+					(!quota?.signedIn &&
+					isAskResearchEnabled() &&
+					!researchPaneOn() &&
+					!turn.research &&
+					!turn.fromSample &&
+					turnIndex === turns.length - 1
+						? `<p class="ai-research-invite"><a href="${escapeHtml(searchResearchHref())}">${escapeHtml(RESEARCH_INVITE_AFTER_ASK)}</a></p>`
+						: "")
 				: !turn.pending && turn.rankedBySearchOnly && hasHits
 					? `<p class="ai-result-meta">Ranked by library search only — the rescorer was unavailable, so there is no briefing this time.</p>`
 					: "";
@@ -3482,21 +3664,23 @@ export function attachAiMode(options: {
 			historyEl.hidden = true;
 			return;
 		}
-		if (turns.length > 0 || sessionEntries.length === 0) {
+		if (turns.length > 0 || historyLane().length === 0) {
 			historyEl.hidden = true;
 			historyEl.innerHTML = "";
 			return;
 		}
-		const pinned = pinnedAskHistoryEntries(sessionEntries);
-		const activeTab = resolveAskHistoryTab(sessionEntries, historyTab);
+		const lane = historyLane();
+		const paneResearch = researchPaneOn();
+		const pinned = pinnedAskHistoryEntries(lane);
+		const activeTab = resolveAskHistoryTab(lane, historyTab);
 		historyTab = activeTab;
-		const ordered = askHistoryEntriesForTab(sessionEntries, activeTab);
+		const ordered = askHistoryEntriesForTab(lane, activeTab);
 		const hiddenCount =
 			activeTab === "pinned"
 				? 0
 				: Math.max(0, ordered.length - ASK_HISTORY_PREVIEW_LIMIT);
 		const visible = visibleAskHistoryEntries(
-			sessionEntries,
+			lane,
 			activeTab,
 			historyExpanded,
 		);
@@ -3537,7 +3721,13 @@ export function attachAiMode(options: {
 						? `<span class="ai-history-root">Started with: ${escapeHtml(rootQuestion)}</span>`
 						: "";
 				const q = escapeHtml(entry.question);
-				const pinAction = entry.saved ? "Unpin" : "Pin";
+				const pinAction = entry.saved
+					? paneResearch
+						? RESEARCH_UNPIN_ACTION
+						: "Unpin"
+					: paneResearch
+						? RESEARCH_PIN_ACTION
+						: "Pin";
 				return `<div class="ai-history-card${entry.saved ? " is-pinned" : ""}${entry.researchUnread ? " is-unread" : ""}${entry.researchPending ? " is-research-pending" : ""}">
 						<button type="button" class="ai-history-item" data-ai-history-q="${q}">
 							<span class="ai-history-top">
@@ -3551,7 +3741,7 @@ export function attachAiMode(options: {
 							${resultsRow}
 						</button>
 						<div class="ai-history-menu">
-							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}" aria-label="Ask options" aria-expanded="false" title="Ask options">
+							<button type="button" class="ai-history-menu-btn" data-ai-history-menu-toggle data-ai-history-q="${q}" aria-label="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}" aria-expanded="false" title="${paneResearch ? RESEARCH_OPTIONS_ARIA : ASK_OPTIONS_ARIA}">
 								${MORE_ICON_SVG}
 							</button>
 							<div class="ai-history-menu-panel" hidden role="menu">
@@ -3571,19 +3761,21 @@ export function attachAiMode(options: {
 				: "";
 		const hint =
 			activeTab === "pinned"
-				? "Stay until you unpin"
-				: "Older ones drop off · pin to keep";
+				? ASK_HISTORY_HINT_PINNED
+				: ASK_HISTORY_HINT_RECENT;
+		const historyAria = paneResearch ? RESEARCH_HISTORY_ARIA : ASK_HISTORY_ARIA;
+		const recentLabel = paneResearch ? RESEARCH_HISTORY_LABEL : ASK_HISTORY_LABEL;
 		const heading =
 			pinned.length > 0
 				? `<div class="ai-history-heading">
-			<div class="ai-history-tabs" role="tablist" aria-label="Ask history">
+			<div class="ai-history-tabs" role="tablist" aria-label="${historyAria}">
 				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "recent" ? "true" : "false"}" data-ai-history-tab="recent">Recent</button>
 				<button type="button" class="ai-history-tab" role="tab" aria-selected="${activeTab === "pinned" ? "true" : "false"}" data-ai-history-tab="pinned">Pinned <span class="ai-history-tab-count">${pinned.length}</span></button>
 			</div>
 			<p class="ai-history-hint">${hint}</p>
 		</div>`
 				: `<div class="ai-history-heading">
-			<p class="ai-history-label">Recent Asks</p>
+			<p class="ai-history-label">${recentLabel}</p>
 			<p class="ai-history-hint">${hint}</p>
 		</div>`;
 		historyEl.innerHTML = `${heading}<div class="ai-history-list">${items}</div>${moreRow}`;
@@ -3635,7 +3827,7 @@ export function attachAiMode(options: {
 				if (!button.classList.contains("ai-history-item")) return;
 				button.addEventListener("click", () => {
 					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findAiAskSessionEntry(sessionEntries, question);
+					const entry = findLaneEntry(question);
 					if (!entry) return;
 					openHistoryEntry(entry);
 				});
@@ -3663,7 +3855,7 @@ export function attachAiMode(options: {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
 					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findAiAskSessionEntry(sessionEntries, question);
+					const entry = findLaneEntry(question);
 					closeAllMenus();
 					if (entry) toggleHistoryEntryPin(entry);
 				});
@@ -3674,7 +3866,7 @@ export function attachAiMode(options: {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
 					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findAiAskSessionEntry(sessionEntries, question);
+					const entry = findLaneEntry(question);
 					if (entry) void shareHistoryEntry(entry, button);
 				});
 			});
@@ -3684,7 +3876,7 @@ export function attachAiMode(options: {
 				button.addEventListener("click", (event) => {
 					event.stopPropagation();
 					const question = button.getAttribute("data-ai-history-q") || "";
-					const entry = findAiAskSessionEntry(sessionEntries, question);
+					const entry = findLaneEntry(question);
 					closeAllMenus();
 					if (entry) deleteHistoryEntry(entry);
 				});
@@ -3842,17 +4034,18 @@ export function attachAiMode(options: {
 					};
 					syncLayout();
 					if (choiceId === RESEARCH_CLARIFY_OTHER_ID) {
-						thread
-							.querySelector<HTMLInputElement>(
-								`[data-ai-clarify-other][data-question-id="${questionId}"]`,
-							)
-							?.focus();
+						const other = thread.querySelector<HTMLTextAreaElement>(
+							`[data-ai-clarify-other][data-question-id="${questionId}"]`,
+						);
+						other?.focus();
+						if (other) fitClarifyOther(other);
 					}
 				});
 			},
 		);
-		thread.querySelectorAll<HTMLInputElement>("[data-ai-clarify-other]").forEach(
+		thread.querySelectorAll<HTMLTextAreaElement>("[data-ai-clarify-other]").forEach(
 			(inputEl) => {
+				fitClarifyOther(inputEl);
 				inputEl.addEventListener("input", () => {
 					const index = Number(inputEl.getAttribute("data-turn-index"));
 					const questionId = inputEl.getAttribute("data-question-id") || "";
@@ -3866,9 +4059,10 @@ export function attachAiMode(options: {
 						[questionId]: {
 							...currentAnswer,
 							choiceId: RESEARCH_CLARIFY_OTHER_ID,
-							otherText: inputEl.value,
+							otherText: inputEl.value.slice(0, RESEARCH_CLARIFY_MAX_OTHER),
 						},
 					};
+					fitClarifyOther(inputEl);
 					syncClarifyBar();
 				});
 			},
@@ -4118,7 +4312,7 @@ export function attachAiMode(options: {
 				button.title = "Pause research";
 			} else {
 				button.removeAttribute("data-ai-stop");
-				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : "Ask");
+				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : researchPaneOn() ? "Research" : "Ask");
 				button.title = sendHint;
 			}
 		});
@@ -4568,11 +4762,13 @@ export function attachAiMode(options: {
 		const replacingTurn = replacing ? turns[replaceTurnIndex] : undefined;
 
 		if (!replacing && turns.length === 0) {
-			clearAskResumeFromDiscourse();
+			clearAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
 		}
 
 		const useResearch = shouldUseResearchAsk({
-			chipOn: researchChipOn && researchChipAvailable(),
+			chipOn:
+				(researchPaneOn() && turns.length === 0 && !replacing) ||
+				(!researchPaneOn() && researchChipOn && researchChipAvailable()),
 			followUp: replacing || turns.length > 0,
 			lastTurnResearch:
 				lastTurnIsResearch() || Boolean(replacingTurn?.research),
@@ -4588,7 +4784,7 @@ export function attachAiMode(options: {
 		// Edits always re-ask so the stored answer matches the new wording.
 		const cached =
 			!useResearch && !replacing && turns.length === 0
-				? findAiAskSessionEntry(sessionEntries, q)
+				? findAiAskSessionEntry(sessionEntries, q, { research: false })
 				: undefined;
 		if (cached && cached.results.length > 0) {
 			turns.push(sessionEntryToTurn(cached));
@@ -4602,6 +4798,14 @@ export function attachAiMode(options: {
 		}
 
 		if (useResearch) {
+			if (!quota?.signedIn) {
+				openQuotaDialog("signin", q);
+				return;
+			}
+			if (quota.needsEmailVerification) {
+				openQuotaDialog("verify", q);
+				return;
+			}
 			if (researchQuota && !researchQuota.allowed) {
 				openQuotaDialog("research", q);
 				return;
@@ -5126,8 +5330,14 @@ export function attachAiMode(options: {
 	root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
 		(chip) => {
 			chip.addEventListener("click", () => {
+				if (researchPaneOn()) return;
 				if (researchFlowLocksChip()) return;
-				setResearchChipOn(!researchChipOn);
+				const text = (
+					followInput && !followInput.closest("form")?.hidden
+						? followInput.value
+						: input?.value || ""
+				).replace(/\s+/g, " ").trim();
+				window.location.assign(searchResearchHref(text || undefined));
 			});
 		},
 	);
@@ -5149,23 +5359,32 @@ export function attachAiMode(options: {
 	});
 
 	const samplesReady = loadAskSamples();
-	root.querySelectorAll<HTMLButtonElement>("[data-ai-example]").forEach((button) => {
-		button.addEventListener("click", () => {
-			void samplesReady.then(() => {
-				const text = button.getAttribute("data-ai-example") || "";
-				const sample = findAskSampleForExample(askSamples, text, {
-					researchChipOn,
-				});
-				if (sample) {
-					if (busy && !turns.every((turn) => turn.fromSample)) return;
-					input.value = "";
-					fitTextarea(input);
-					openAskSample(sample);
-					return;
-				}
-				input.value = text;
-				void ask(text, input);
+	root.addEventListener("click", (event) => {
+		const button = (event.target as Element | null)?.closest?.(
+			"[data-ai-example]",
+		);
+		if (!(button instanceof HTMLButtonElement) || !root.contains(button)) {
+			return;
+		}
+		void samplesReady.then(() => {
+			const text = button.getAttribute("data-ai-example") || "";
+			const sample = findAskSampleForExample(askSamples, text, {
+				research: researchPaneOn(),
 			});
+			if (sample) {
+				if (busy && !turns.every((turn) => turn.fromSample)) return;
+				input.value = "";
+				fitTextarea(input);
+				openAskSample(sample);
+				return;
+			}
+			if (researchPaneOn()) {
+				input.value = text;
+				fitTextarea(input);
+				return;
+			}
+			input.value = text;
+			void ask(text, input);
 		});
 	});
 
@@ -5307,9 +5526,9 @@ export function attachAiMode(options: {
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);
 	const onSearchPage = window.location.pathname.replace(/\/$/, "") === "/search";
-	const askSurfaceVisible = !onSearchPage || isAskSearchMode(params);
+	const askSurfaceVisible = !onSearchPage || isAskSurfaceMode(params);
 	const initial = params.get("q");
-	if (initial?.trim() && (!onSearchPage || isAskSearchMode(params))) {
+	if (initial?.trim() && askSurfaceVisible) {
 		input.value = initial;
 		fitTextarea(input);
 	}
@@ -5328,7 +5547,7 @@ export function attachAiMode(options: {
 			? ""
 			: params.get("open")?.replace(/\s+/g, " ").trim() || "";
 	function openFromHistory(question: string): boolean {
-		const entry = findAiAskSessionEntry(sessionEntries, question);
+		const entry = findLaneEntry(question);
 		if (!entry) return false;
 		openHistoryEntry(entry);
 		return true;
@@ -5356,16 +5575,20 @@ export function attachAiMode(options: {
 			fitTextarea(input);
 		}
 	} else if (!shareMode && turns.length === 0) {
-		const active = readActiveAskThread();
+		const active = readActiveAskThread(undefined, {
+			research: researchPaneOn(),
+		});
 		const navType = navigationEntryType();
-		const resumeFromDiscourse = shouldResumeAskFromDiscourse();
+		const resumeFromDiscourse = shouldResumeAskFromDiscourse(undefined, {
+			research: researchPaneOn(),
+		});
 		if (
 			active.length > 0 &&
 			shouldRestoreActiveAskThread(navType, resumeFromDiscourse)
 		) {
 			restoreActiveThreadFromStorage();
 		} else if (active.length > 0 && navType === "navigate") {
-			clearAskThreadResumeIntent();
+			clearAskThreadResumeIntent(undefined, { research: researchPaneOn() });
 		}
 	}
 

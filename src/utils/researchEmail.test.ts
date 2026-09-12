@@ -11,7 +11,7 @@ describe("research email payload", () => {
 	it("builds a signed-in-only result link", () => {
 		assert.equal(
 			researchResultHref("abc-1", "https://www.wordsofthebuddha.org"),
-			"https://www.wordsofthebuddha.org/search?mode=ai&research=abc-1",
+			"https://www.wordsofthebuddha.org/search?mode=research&research=abc-1",
 		);
 	});
 
@@ -30,7 +30,7 @@ describe("research email payload", () => {
 		);
 		assert.equal(
 			researchResultHref("abc-1", "http://localhost:4321"),
-			"https://www.wordsofthebuddha.org/search?mode=ai&research=abc-1",
+			"https://www.wordsofthebuddha.org/search?mode=research&research=abc-1",
 		);
 	});
 
@@ -81,7 +81,7 @@ describe("research email payload", () => {
 		});
 		assert.equal(
 			mail.href,
-			"https://www.wordsofthebuddha.org/search?mode=ai&research=job-3",
+			"https://www.wordsofthebuddha.org/search?mode=research&research=job-3",
 		);
 		assert.doesNotMatch(mail.text, /localhost|127\.0\.0\.1/i);
 		assert.doesNotMatch(mail.html, /localhost|127\.0\.0\.1/i);

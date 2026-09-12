@@ -1,4 +1,6 @@
-/** Same-origin post-auth redirect. Preserves query (e.g. `/search?mode=ai`). */
+/** Same-origin post-auth redirect. Preserves query (e.g. `/search?mode=ask`). */
+import { canonicalizeAskSearchHref } from "./aiAskHref";
+
 export function safeAuthReturnUrl(
 	returnTo: string | null | undefined,
 	requestUrl: string,
@@ -14,7 +16,10 @@ export function safeAuthReturnUrl(
 			return fallback;
 		}
 		parsed.hash = "";
-		return parsed;
+		const canonical = canonicalizeAskSearchHref(
+			parsed.pathname + parsed.search,
+		);
+		return new URL(canonical, requestUrl);
 	} catch {
 		return fallback;
 	}

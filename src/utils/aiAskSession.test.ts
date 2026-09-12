@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	AI_ASK_SESSION_LIMIT,
+	AI_RESEARCH_SESSION_LIMIT,
 	ASK_HISTORY_PREVIEW_LIMIT,
+	askHistoryLaneEntries,
 	attachResearchToHistoryThread,
 	askHistoryEntriesForRestore,
 	askHistoryEntriesForTab,
@@ -530,5 +532,158 @@ describe("ask history tabs", () => {
 			),
 			"recent",
 		);
+	});
+});
+
+describe("Ask vs Research history lanes", () => {
+	it("uses the same 20-row cap as Ask", () => {
+		assert.equal(AI_RESEARCH_SESSION_LIMIT, AI_ASK_SESSION_LIMIT);
+		assert.equal(AI_ASK_SESSION_LIMIT, 20);
+	});
+
+	it("keeps an Ask and a Research with the same question as separate rows", () => {
+		const ask = entry("What is feeling?", 1);
+		const report = entry("What is feeling?", 2, {
+			research: true,
+			researchJobId: "job-feeling",
+			report: "## Feeling",
+		});
+		const merged = upsertAiAskSessionEntry(
+			upsertAiAskSessionEntry([], ask),
+			report,
+		);
+		assert.equal(merged.length, 2);
+		assert.equal(
+			askHistoryLaneEntries(merged, false).map((item) => item.question)[0],
+			"What is feeling?",
+		);
+		assert.equal(askHistoryLaneEntries(merged, true).length, 1);
+		assert.equal(
+			findAiAskSessionEntry(merged, "What is feeling?", { research: true })
+				?.researchJobId,
+			"job-feeling",
+		);
+		assert.equal(
+			findAiAskSessionEntry(merged, "What is feeling?", { research: false })
+				?.research,
+			undefined,
+		);
+	});
+
+	it("trims 20 Asks and 20 reports independently", () => {
+		let entries: AiAskSessionEntry[] = [];
+		for (let i = 0; i < AI_ASK_SESSION_LIMIT + 2; i++) {
+			entries = upsertAiAskSessionEntry(entries, entry(`ask ${i}`, i));
+		}
+		for (let i = 0; i < AI_RESEARCH_SESSION_LIMIT + 2; i++) {
+			entries = upsertAiAskSessionEntry(
+				entries,
+				entry(`report ${i}`, 100 + i, {
+					research: true,
+					researchJobId: `job-${i}`,
+					report: "## Report",
+				}),
+			);
+		}
+		assert.equal(askHistoryLaneEntries(entries, false).length, AI_ASK_SESSION_LIMIT);
+		assert.equal(
+			askHistoryLaneEntries(entries, true).length,
+			AI_RESEARCH_SESSION_LIMIT,
+		);
+		assert.equal(
+			entries.length,
+			AI_ASK_SESSION_LIMIT + AI_RESEARCH_SESSION_LIMIT,
+		);
+	});
+
+	it("deletes only the matching lane", () => {
+		const entries = [
+			entry("same", 1),
+			entry("same", 2, {
+				research: true,
+				researchJobId: "job-same",
+				report: "## Same",
+			}),
+		];
+		const afterAsk = removeAskHistoryEntriesByQuestions(entries, ["same"], {
+			research: false,
+		});
+		assert.equal(afterAsk.length, 1);
+		assert.equal(afterAsk[0]?.research, true);
+		const afterReport = removeAskHistoryEntriesByQuestions(entries, ["same"], {
+			research: true,
+		});
+		assert.equal(afterReport.length, 1);
+		assert.equal(afterReport[0]?.research, undefined);
+	});
+
+	it("keeps a pinned report when newer unpinned reports overflow", () => {
+		let entries: AiAskSessionEntry[] = [
+			entry("pinned report", 1, {
+				research: true,
+				researchJobId: "job-pin",
+				report: "## Pinned",
+				saved: true,
+			}),
+		];
+		for (let i = 0; i < AI_RESEARCH_SESSION_LIMIT; i++) {
+			entries = upsertAiAskSessionEntry(
+				entries,
+				entry(`new report ${i}`, 10 + i, {
+					research: true,
+					researchJobId: `job-n-${i}`,
+					report: "## New",
+				}),
+			);
+		}
+		const reports = askHistoryLaneEntries(entries, true);
+		assert.equal(reports.length, AI_RESEARCH_SESSION_LIMIT);
+		assert.ok(
+			reports.some((item) => item.question === "pinned report" && item.saved),
+		);
+	});
+
+	it("does not restore a Research thread from the Ask key", () => {
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+			removeItem: (key: string) => {
+				store.delete(key);
+			},
+		} as Storage;
+		writeActiveAskThread(
+			[
+				entry("survey feeling", 1, {
+					research: true,
+					researchJobId: "job-1",
+					report: "## Feeling",
+				}),
+			],
+			storage,
+			{ research: true },
+		);
+		assert.equal(readActiveAskThread(storage).length, 0);
+		assert.equal(readActiveAskThread(storage, { research: true }).length, 1);
+	});
+
+	it("keeps Back-from-discourse resume on the matching pane", () => {
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+			removeItem: (key: string) => {
+				store.delete(key);
+			},
+		} as Storage;
+		markAskResumeFromDiscourse(storage, { research: true });
+		assert.equal(shouldResumeAskFromDiscourse(storage), false);
+		assert.equal(shouldResumeAskFromDiscourse(storage, { research: true }), true);
+		clearAskResumeFromDiscourse(storage, { research: true });
+		assert.equal(shouldResumeAskFromDiscourse(storage, { research: true }), false);
 	});
 });
