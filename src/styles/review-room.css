@@ -574,12 +574,24 @@
 	margin-right: auto;
 }
 
+#dashboard-container .ask-panel-chrome {
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+	margin-bottom: 0.75rem;
+}
+
+#dashboard-container .ask-panel-lanes {
+	display: flex;
+	justify-content: center;
+}
+
 #dashboard-container .ask-panel-bar {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: 0.75rem;
-	margin-bottom: 0.75rem;
+	flex-wrap: wrap;
 }
 
 #dashboard-container .ask-panel-meta {
@@ -590,6 +602,10 @@
 	margin-left: auto;
 	text-align: right;
 	min-width: 0;
+}
+
+#dashboard-container .ask-panel-meta[hidden] {
+	display: none;
 }
 
 #dashboard-container .ask-new-btn {
@@ -630,8 +646,15 @@
 	font-size: 0.8rem;
 }
 
+#dashboard-container .ask-history-tabs[hidden] {
+	display: none;
+}
+
 #dashboard-container .ask-history-tab {
 	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
 	border: 0;
 	background: transparent;
 	color: var(--text-muted, #9ca3af);
@@ -668,6 +691,10 @@
 	color: var(--text-muted, #9ca3af);
 }
 
+#dashboard-container .ask-history-label[hidden] {
+	display: none;
+}
+
 #dashboard-container .ask-history-label {
 	font-size: 0.8rem;
 }
@@ -676,6 +703,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+}
+
+#dashboard-container .ask-history-list[hidden] {
+	display: none;
 }
 
 #dashboard-container .ask-row {
@@ -712,6 +743,8 @@
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
+	flex: 1;
+	min-width: 0;
 }
 
 #dashboard-container .ask-row.is-pinned .ask-row-q {
@@ -744,6 +777,31 @@
 #dashboard-container .ask-row-when {
 	color: var(--text-muted, #9ca3af);
 	font-size: 0.78rem;
+}
+
+#dashboard-container .ask-row-unread {
+	display: inline-block;
+	width: 0.45rem;
+	height: 0.45rem;
+	margin-top: 0.35rem;
+	border-radius: 999px;
+	background: #3b82f6;
+	flex-shrink: 0;
+}
+
+#dashboard-container .ask-row-status {
+	margin: 0.35rem 0 0;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: var(--text-muted, #9ca3af);
+}
+
+#dashboard-container .ask-row-status.is-ready {
+	color: #3b82f6;
+}
+
+#dashboard-container .ask-row.is-unread {
+	border-color: color-mix(in srgb, var(--primary-color) 45%, var(--surface-border, rgba(128, 128, 128, 0.28)));
 }
 
 #dashboard-container .ask-row-summary {

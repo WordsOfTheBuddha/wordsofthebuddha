@@ -10,6 +10,10 @@ import {
 	askResearchJobParam,
 	openAskHistoryHref,
 	openAskResearchHref,
+	reviewRoomAsksHashId,
+	reviewRoomHistoryLaneFromHash,
+	REVIEW_ROOM_ASKS_HASH,
+	REVIEW_ROOM_REPORTS_HASH,
 	searchAskHref,
 	searchResearchHref,
 	withAskResearchParam,
@@ -124,6 +128,17 @@ describe("askResearchJobParam", () => {
 		);
 		assert.equal(askResearchJobParam("mode=ask"), "");
 		assert.equal(askResearchJobParam("?research=  job-1  "), "job-1");
+	});
+});
+
+describe("reviewRoomHistoryLaneFromHash", () => {
+	it("maps Review Room hashes onto the inner Asks | Reports lane", () => {
+		assert.equal(reviewRoomHistoryLaneFromHash("#asks"), "ask");
+		assert.equal(reviewRoomHistoryLaneFromHash("reports"), "research");
+		assert.equal(reviewRoomHistoryLaneFromHash("#Reports"), "research");
+		assert.equal(reviewRoomHistoryLaneFromHash("#overview"), null);
+		assert.equal(reviewRoomAsksHashId(false), REVIEW_ROOM_ASKS_HASH);
+		assert.equal(reviewRoomAsksHashId(true), REVIEW_ROOM_REPORTS_HASH);
 	});
 });
 

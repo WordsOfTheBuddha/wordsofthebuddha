@@ -17,6 +17,11 @@ import {
 	ASK_PLACEHOLDER,
 	ASK_WAITING_PLACEHOLDER,
 	ASK_NEW_LABEL,
+	researchHistoryExcerpt,
+	REVIEW_ROOM_ASK_EMPTY,
+	REVIEW_ROOM_ASK_NEW_LABEL,
+	REVIEW_ROOM_REPORT_EMPTY,
+	REVIEW_ROOM_REPORT_NEW_LABEL,
 	RESEARCH_COMPOSER_LABEL,
 	RESEARCH_DELETE_ACTION,
 	RESEARCH_DELETE_CONFIRM,
@@ -621,5 +626,25 @@ describe("Research pane copy", () => {
 		);
 		assert.equal(ASK_NEW_LABEL, "+ New Ask");
 		assert.equal(RESEARCH_NEW_LABEL, "+ New report");
+		assert.equal(REVIEW_ROOM_ASK_NEW_LABEL, "+ Ask");
+		assert.equal(REVIEW_ROOM_REPORT_NEW_LABEL, "+ Report");
+		assert.equal(REVIEW_ROOM_ASK_EMPTY, "No asks yet.");
+		assert.equal(REVIEW_ROOM_REPORT_EMPTY, "No reports yet.");
+	});
+});
+
+describe("researchHistoryExcerpt", () => {
+	it("keeps the opening lines of a report, not citation chips", () => {
+		assert.equal(researchHistoryExcerpt(""), "");
+		assert.equal(
+			researchHistoryExcerpt(
+				"# Body\n\nThe discourses treat **mindfulness of the body** as a path ([MN 10](/mn10)).",
+			),
+			"Body The discourses treat mindfulness of the body as a path (MN 10).",
+		);
+		const long = `${"word ".repeat(80)}end`;
+		const excerpt = researchHistoryExcerpt(long, 40);
+		assert.ok(excerpt.length <= 40);
+		assert.equal(excerpt.includes("end"), false);
 	});
 });

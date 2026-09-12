@@ -158,3 +158,20 @@ export function canonicalizeAskSearchHref(href: string): string {
 	if (!qs && !search) return withoutHash + hash;
 	return `${path}${qs ? `?${qs}` : ""}${hash}`;
 }
+
+/** Review Room Asks tab. Reports live in the same tab as an inner lane. */
+export const REVIEW_ROOM_ASKS_HASH = "asks";
+export const REVIEW_ROOM_REPORTS_HASH = "reports";
+
+export function reviewRoomHistoryLaneFromHash(
+	hash: string | null | undefined,
+): "ask" | "research" | null {
+	const id = (hash || "").replace(/^#/, "").trim().toLowerCase();
+	if (id === REVIEW_ROOM_REPORTS_HASH) return "research";
+	if (id === REVIEW_ROOM_ASKS_HASH) return "ask";
+	return null;
+}
+
+export function reviewRoomAsksHashId(research: boolean): string {
+	return research ? REVIEW_ROOM_REPORTS_HASH : REVIEW_ROOM_ASKS_HASH;
+}

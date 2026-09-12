@@ -51,6 +51,30 @@ export const RESEARCH_UNPIN_ACTION = "Unpin this report";
 export const RESEARCH_DELETE_ACTION = "Delete this report";
 export const ASK_NEW_LABEL = "+ New Ask";
 export const RESEARCH_NEW_LABEL = "+ New report";
+export const REVIEW_ROOM_ASK_NEW_LABEL = "+ Ask";
+export const REVIEW_ROOM_REPORT_NEW_LABEL = "+ Report";
+export const REVIEW_ROOM_ASK_EMPTY = "No asks yet.";
+export const REVIEW_ROOM_REPORT_EMPTY = "No reports yet.";
+/** First lines of a report in Review Room — not discourse ID chips. */
+export const RESEARCH_HISTORY_EXCERPT_MAX = 180;
+
+export function researchHistoryExcerpt(
+	report?: string | null,
+	max = RESEARCH_HISTORY_EXCERPT_MAX,
+): string {
+	const text = (report || "")
+		.replace(/```[\s\S]*?```/g, " ")
+		.replace(/^#{1,6}\s+/gm, "")
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+		.replace(/[*_~`>#]+/g, " ")
+		.replace(/\s+/g, " ")
+		.trim();
+	if (!text) return "";
+	if (text.length <= max) return text;
+	const sliced = text.slice(0, max);
+	const clipped = sliced.replace(/\s+\S*$/, "").trim();
+	return clipped || sliced.trim();
+}
 
 /** Fallback prompts for tests and docs. The Research pane chips come from saved samples. */
 export const RESEARCH_EXAMPLES = [
