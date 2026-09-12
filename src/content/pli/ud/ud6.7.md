@@ -1,6 +1,6 @@
 ---
 title: Subhūti sutta - Subhūti
-description: Venerable Subhūti is sitting in meditation posture, aligning his body upright, having entered collectedness free of thinking. The Blessed One sees this and expresses an inspired utterance.
+description: Venerable Subhūti is sitting in meditation posture, aligning his body upright, having entered collectedness free from thought. The Blessed One sees this and expresses an inspired utterance.
 qualities: formless, collectedness
 slug: ud6.7
 commentary: "[1] The four bonds are - 1.) the bond of sensual pleasures, 2.) the bond of continued existence, 3.) the bond of views, and 4.) the bond of ignorance."

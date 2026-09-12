@@ -936,5 +936,11 @@
 	"bhavanettinirodhoti": ["bhavanetti", "nirodho"],
 	"tadaṅganibbutoti": ["tadaṅga", "nibbuta"],
 	"bhiyyassuppajjate": ["bhiyyo", "assa", "uppajjate"],
-	"anusārī": ["adj. following, acting according to"]
+	"anusārī": ["adj. following, acting according to"],
+	"somanassampāhaṁ": ["somanassa", "api", "ahaṁ"],
+	"domanassampāhaṁ": ["domanassa", "api", "ahaṁ"],
+	"upekkhampāhaṁ": ["upekkha", "api", "ahaṁ"],
+	"kāyasamācārampāhaṁ": ["kāyasamācāra", "api", "ahaṁ"],
+	"vacīsamācārampāhaṁ": ["vacīsamācāra", "api", "ahaṁ"],
+	"pariyesanaṁpāhaṁ": ["pariyesana", "api", "ahaṁ"]
 }
