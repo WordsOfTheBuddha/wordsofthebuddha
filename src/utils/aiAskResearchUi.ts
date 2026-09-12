@@ -8,7 +8,11 @@ import type {
 	ResearchAskPhase,
 	ResearchJobPublic,
 } from "./aiAskResearchJob";
-import { uniquePrefixedDiscourseIdsInText } from "./aiSearchQuery";
+
+export {
+	researchHistoryStatsLabel,
+	type ResearchHistoryReportStats,
+} from "./aiAskResearchHistoryStats";
 
 export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
 export const RESEARCH_PLACEHOLDER =
@@ -82,85 +86,6 @@ export function researchHistoryExcerpt(
 	const sliced = text.slice(0, max);
 	const clipped = sliced.replace(/\s+\S*$/, "").trim();
 	return clipped || sliced.trim();
-}
-
-/** Body of a stored report, without the harness Sources appendix. */
-function researchReportStatsBody(report?: string | null): string {
-	return (report || "")
-		.replace(/\r\n/g, "\n")
-		.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
-		.replace(/^readPali:\s*.+$/gim, "")
-		.trim();
-}
-
-function researchReportWordCount(body: string): number {
-	const text = body
-		.replace(/```[\s\S]*?```/g, " ")
-		.replace(/^#{1,6}\s+/gm, "")
-		.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-		.replace(/[*_~`>#]+/g, " ")
-		.replace(/\|/g, " ")
-		.replace(/\s+/g, " ")
-		.trim();
-	if (!text) return 0;
-	return text.split(" ").length;
-}
-
-function formatHistoryStatCount(n: number): string {
-	return n.toLocaleString("en-US");
-}
-
-function uniqueSourceSlugs(
-	results?: readonly { slug?: string }[],
-): string[] {
-	const out: string[] = [];
-	const seen = new Set<string>();
-	for (const hit of results || []) {
-		const slug = (hit.slug || "").trim().toLowerCase();
-		if (!slug || seen.has(slug)) continue;
-		seen.add(slug);
-		out.push(slug);
-	}
-	return out;
-}
-
-/** History card last row: length, unique discourses named, leftover sources. */
-export function researchHistoryStatsLabel(
-	report?: string | null,
-	results?: readonly { slug?: string }[],
-): string {
-	const body = researchReportStatsBody(report);
-	if (!body) return "";
-	const words = researchReportWordCount(body);
-	const citedIds = uniquePrefixedDiscourseIdsInText(body);
-	const cited = citedIds.length;
-	const citedSet = new Set(citedIds.map((id) => id.toLowerCase()));
-	const additional = uniqueSourceSlugs(results).filter(
-		(slug) => !citedSet.has(slug),
-	).length;
-	const parts: string[] = [];
-	if (words > 0) {
-		parts.push(
-			`${formatHistoryStatCount(words)} ${words === 1 ? "word" : "words"}`,
-		);
-	}
-	if (cited > 0) {
-		parts.push(
-			`${formatHistoryStatCount(cited)} ${cited === 1 ? "discourse cited" : "discourses cited"}`,
-		);
-	}
-	if (additional > 0) {
-		const extraNoun =
-			cited > 0
-				? additional === 1
-					? "additional source"
-					: "additional sources"
-				: additional === 1
-					? "source"
-					: "sources";
-		parts.push(`${formatHistoryStatCount(additional)} ${extraNoun}`);
-	}
-	return parts.join(" · ");
 }
 
 /** Fallback prompts for tests and docs. The Research pane chips come from saved samples. */

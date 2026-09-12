@@ -2714,7 +2714,10 @@ export function attachAiMode(options: {
 				entries?: AiAskSessionEntry[];
 			};
 			if (response.ok && data.success && Array.isArray(data.entries)) {
-				sessionEntries = data.entries;
+				sessionEntries = preservePendingResearchHistory(
+					sessionEntries,
+					data.entries,
+				);
 				writeAiAskSession(sessionEntries);
 				renderHistory();
 			}
@@ -3738,7 +3741,11 @@ export function attachAiMode(options: {
 			? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
 			: "";
 		const statsLabel = paneResearch
-			? researchHistoryStatsLabel(entry.report, entry.results)
+			? researchHistoryStatsLabel(
+					entry.report,
+					entry.results,
+					entry.reportStats,
+				)
 			: "";
 		const resultIds = paneResearch
 			? ""

@@ -174,6 +174,22 @@ describe("sanitizeAskHistoryEntry research", () => {
 		);
 		assert.match(clean?.report || "", /## Feeling/);
 	});
+
+	it("round-trips stored report stats without the full report", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				researchJobId: "job-stats",
+				reportStats: { words: 4962, cited: 37, additional: 21 },
+			}),
+		);
+		assert.deepEqual(clean?.reportStats, {
+			words: 4962,
+			cited: 37,
+			additional: 21,
+		});
+		assert.equal(clean?.report, undefined);
+	});
 });
 
 describe("preservePendingResearchHistory", () => {

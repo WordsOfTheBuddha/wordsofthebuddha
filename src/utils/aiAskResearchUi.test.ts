@@ -707,5 +707,13 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 			]),
 			"3 words · 2 sources",
 		);
+		assert.equal(
+			researchHistoryStatsLabel("", [], {
+				words: 4962,
+				cited: 37,
+				additional: 21,
+			}),
+			"4,962 words · 37 discourses cited · 21 additional sources",
+		);
 	});
 });

@@ -3,6 +3,11 @@ import { sanitizeAskPersonHits } from "./aiAskPersons";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { clipResearchProcessNotes } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
+import {
+	sanitizeResearchHistoryReportStats,
+	snapshotResearchHistoryStats,
+	type ResearchHistoryReportStats,
+} from "./aiAskResearchHistoryStats";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export interface AiAskSessionEntry {
@@ -41,6 +46,8 @@ export interface AiAskSessionEntry {
 	research?: boolean;
 	researchJobId?: string;
 	report?: string;
+	/** Compact card stats — kept on the history document after the report is written. */
+	reportStats?: ResearchHistoryReportStats;
 	/** Job is still running — show in Recent so it is not lost. */
 	researchPending?: boolean;
 	/** Finished research the reader has not opened yet. */
@@ -215,6 +222,16 @@ export function sanitizeAskHistoryEntry(
 						.slice(0, RESEARCH_REPORT_MAX_CHARS),
 				}
 			: {}),
+		...(() => {
+			const stored = sanitizeResearchHistoryReportStats(record.reportStats);
+			const reportStats =
+				stored ||
+				snapshotResearchHistoryStats(
+					typeof record.report === "string" ? record.report : "",
+					results,
+				);
+			return reportStats ? { reportStats } : {};
+		})(),
 		...(typeof record.shareSlug === "string" && record.shareSlug.trim()
 			? { shareSlug: clip(record.shareSlug.toLowerCase(), 48) }
 			: {}),
