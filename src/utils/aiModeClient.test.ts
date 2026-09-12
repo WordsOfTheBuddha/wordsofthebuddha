@@ -427,6 +427,30 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(done[2]?.text, "Ranked and picked 146 discourses");
 	});
 
+	it("keeps finished hops while Research is still writing", () => {
+		const steps = buildAskProcessSteps({
+			pending: true,
+			phase: "search",
+			question: "Who is a trainee?",
+			lookingFor: "Trainee (sekkha): definition, qualities, minimum attainment",
+			research: true,
+			candidateCount: 505,
+			showCount: 160,
+			processNotes: [
+				"Read AN 3.85, SN 48.53 in full",
+				"Going deeper",
+			],
+		});
+		assert.equal(steps[0]?.state, "done");
+		assert.equal(steps[1]?.state, "active");
+		assert.match(steps[1]?.text || "", /Searching widely/);
+		assert.equal(steps[2]?.text, "Ranked and picked 160 discourses");
+		assert.equal(steps[3]?.text, "Reviewed the evidence");
+		assert.ok(steps.some((step) => step.text === "Going deeper"));
+		assert.equal(steps.at(-1)?.state, "todo");
+		assert.equal(steps.at(-1)?.text, "Write the report");
+	});
+
 	it("names the clarifying wait on the first Research step", () => {
 		const steps = buildAskProcessSteps({
 			pending: true,

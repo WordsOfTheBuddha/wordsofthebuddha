@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	ASK_SAMPLE_NOTE,
 	ASK_SAMPLE_PLAYBACK,
+	RESEARCH_SAMPLE_PLAYBACK,
 	ASK_SAMPLE_REMOVE_LABEL,
 	ASK_SAMPLE_REMOVE_TITLE,
 	askSampleAdminAction,
@@ -11,6 +12,7 @@ import {
 	askSampleKeyFingerprint,
 	askSampleMatchesQuestion,
 	askSamplePlaybackPatch,
+	askSamplePlaybackSteps,
 	askSampleRemoveConfirmMessage,
 	askSampleTurnFromBody,
 	canMarkAskAsSample,
@@ -299,11 +301,14 @@ describe("askSampleAdminAction", () => {
 
 describe("askSampleConfirmMessage", () => {
 	it("warns when replacing an existing example", () => {
-		assert.match(askSampleConfirmMessage(false), /does not use their Ask credits/);
+		assert.match(
+			askSampleConfirmMessage(false),
+			/Use this run as the example for this question/,
+		);
 		assert.match(askSampleConfirmMessage(true), /Replace the current example/);
 		assert.match(
 			askSampleConfirmMessage(false, { research: true }),
-			/does not use their Research credits/,
+			/Use this report as the example for this question/,
 		);
 		assert.match(
 			askSampleRemoveConfirmMessage({ research: true }),
@@ -360,7 +365,38 @@ describe("ask sample playback", () => {
 		const done = askSamplePlaybackPatch(demo, "done");
 		assert.equal(done.pending, false);
 		assert.equal(done.results.length, 1);
-		assert.match(ASK_SAMPLE_NOTE, /illustrative response from a prior ask/);
+		assert.match(ASK_SAMPLE_NOTE, /illustration from a prior ask/);
+	});
+
+	it("paints research hops then the report without a ranking delay", () => {
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.report = "# Feeling";
+		report.candidateCount = 505;
+		report.processNotes = [
+			"Read AN 3.85, SN 48.53 in full",
+			"Going deeper",
+		];
+		const steps = askSamplePlaybackSteps(report);
+		assert.equal(steps[0]?.phase, "search");
+		assert.equal(steps.at(-1)?.phase, "done");
+		assert.equal(steps.at(-1)?.atMs, 800);
+		assert.ok((steps.at(-1)?.atMs || 0) < ASK_SAMPLE_PLAYBACK.at(-1)!.atMs);
+		assert.equal(RESEARCH_SAMPLE_PLAYBACK.length, 2);
+		const searching = askSamplePlaybackPatch(report, "search");
+		assert.equal(searching.pending, true);
+		assert.equal(searching.research, true);
+		assert.equal(searching.report, undefined);
+		assert.equal(searching.results.length, 0);
+		assert.equal(searching.rerankCandidateCount, 505);
+		assert.equal(searching.rerankShowCount, 1);
+		const done = askSamplePlaybackPatch(report, "done");
+		assert.equal(done.pending, false);
+		assert.equal(done.report, "# Feeling");
+		assert.equal(done.research, true);
+		assert.deepEqual(askSamplePlaybackSteps(sample("What is anger?")!), [
+			...ASK_SAMPLE_PLAYBACK,
+		]);
 	});
 });
 

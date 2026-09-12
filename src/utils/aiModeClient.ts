@@ -112,7 +112,6 @@ import {
 	ASK_SAMPLE_HIDE_TITLE,
 	ASK_SAMPLE_MENU_LABEL,
 	ASK_SAMPLE_NOTE,
-	ASK_SAMPLE_PLAYBACK,
 	ASK_SAMPLE_REMOVE_LABEL,
 	ASK_SAMPLE_REMOVE_LABEL_SHORT,
 	ASK_SAMPLE_REMOVE_TITLE,
@@ -121,6 +120,7 @@ import {
 	askSampleConfirmMessage,
 	askSampleHideKey,
 	askSamplePlaybackPatch,
+	askSamplePlaybackSteps,
 	askSampleRemoveConfirmMessage,
 	canMarkAskAsSample,
 	canRemoveAskSample,
@@ -2688,8 +2688,9 @@ export function attachAiMode(options: {
 		turn.summary = patch.summary;
 		turn.results = patch.results;
 		if (patch.research) turn.research = true;
-		if (patch.report) turn.report = patch.report;
-		else if (!patch.pending) turn.report = sample.report;
+		if (patch.pending) turn.report = undefined;
+		else if (patch.report) turn.report = patch.report;
+		else turn.report = sample.report;
 		if (patch.rerankCandidateCount) {
 			turn.rerankCandidateCount = patch.rerankCandidateCount;
 			turn.rerankShowCount = patch.rerankShowCount;
@@ -2726,6 +2727,7 @@ export function attachAiMode(options: {
 		});
 		const turn = sampleToAiAskTurn(sample);
 		const playback = options?.playback !== false;
+		const steps = askSamplePlaybackSteps(sample);
 		if (!playback) {
 			applySamplePlayback(turn, sample, "done");
 			turns = [turn];
@@ -2735,7 +2737,7 @@ export function attachAiMode(options: {
 			thread.firstElementChild?.scrollIntoView({ block: "start" });
 			return;
 		}
-		applySamplePlayback(turn, sample, "rewrite");
+		applySamplePlayback(turn, sample, steps[0]?.phase || "rewrite");
 		turns = [turn];
 		busy = true;
 		root.classList.add("is-busy");
@@ -2744,7 +2746,7 @@ export function attachAiMode(options: {
 
 		const playFrom = (index: number): void => {
 			if (token !== samplePlaybackToken) return;
-			const step = ASK_SAMPLE_PLAYBACK[index];
+			const step = steps[index];
 			if (!step) return;
 			applySamplePlayback(turn, sample, step.phase);
 			if (step.phase === "done") {
@@ -2754,7 +2756,7 @@ export function attachAiMode(options: {
 				return;
 			}
 			syncLayout();
-			const next = ASK_SAMPLE_PLAYBACK[index + 1];
+			const next = steps[index + 1];
 			if (!next) return;
 			samplePlaybackTimer = window.setTimeout(
 				() => playFrom(index + 1),
@@ -4042,7 +4044,11 @@ export function attachAiMode(options: {
 							: emptyHitsHtml(turn);
 			body = `${cacheNote}${process}${summary}${queryBlock}${fallbackBlock}${personBlock}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
 		}
-		const backLabel = shareMode ? "Ask your own question" : "Back to earlier questions";
+		const backLabel = shareMode
+			? turn.research
+				? "Try Research"
+				: "Ask your own question"
+			: "Back to earlier questions";
 		const backBtn =
 			turnIndex === 0
 				? `<button type="button" class="ai-back" data-ai-back aria-label="${backLabel}" title="${backLabel}">
@@ -4519,7 +4525,11 @@ export function attachAiMode(options: {
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-back]").forEach((button) => {
 			button.addEventListener("click", () => {
 				if (shareMode) {
-					window.location.assign(ASK_HOME_HREF);
+					window.location.assign(
+						turns.some((item) => item.research)
+							? RESEARCH_HOME_HREF
+							: ASK_HOME_HREF,
+					);
 					return;
 				}
 				leaveAskHome();
@@ -5944,7 +5954,11 @@ export function attachAiMode(options: {
 	root.querySelectorAll<HTMLButtonElement>("[data-ai-new]").forEach((button) => {
 		button.addEventListener("click", () => {
 			if (shareMode) {
-				window.location.assign(ASK_HOME_HREF);
+				window.location.assign(
+					turns.some((item) => item.research)
+						? RESEARCH_HOME_HREF
+						: ASK_HOME_HREF,
+				);
 				return;
 			}
 			pendingReplaceQuestions = null;

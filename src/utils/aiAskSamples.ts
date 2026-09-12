@@ -15,10 +15,10 @@ export const ASK_SAMPLE_COLLECTION = "askSamples";
 export const ASK_SAMPLE_SLUG_MIN = 8;
 export const ASK_SAMPLE_SLUG_MAX = 80;
 export const ASK_SAMPLE_NOTE =
-	"This is an illustrative response from a prior ask. Edit the question for a fresh ask.";
+	"This is an illustration from a prior ask. Edit the question for a fresh ask.";
 export const RESEARCH_SAMPLE_NOTE =
-	"This is an illustration from a prior research run. It does not use your Research credits.";
-export const RESEARCH_SAMPLE_KICKER = "Illustration — not your run";
+	"This is an illustration from a prior research run.";
+export const RESEARCH_SAMPLE_KICKER = "Sample from a Prior Run";
 export const ASK_SAMPLE_MENU_LABEL = "Sample";
 export const ASK_SAMPLE_SAVE_LABEL = "Use as sample";
 export const ASK_SAMPLE_SAVE_LABEL_SHORT = "Sample";
@@ -47,6 +47,29 @@ export const ASK_SAMPLE_PLAYBACK: readonly {
 	{ atMs: 3000, phase: "done" },
 ];
 
+/**
+ * Research samples already look like a finished run (hops on the strip).
+ * Show that once, then reveal the report — skip the ranking beat.
+ */
+export const RESEARCH_SAMPLE_PLAYBACK: readonly {
+	atMs: number;
+	phase: AskSamplePlaybackPhase;
+}[] = [
+	{ atMs: 0, phase: "search" },
+	{ atMs: 800, phase: "done" },
+];
+
+export function askSamplePlaybackSteps(
+	sample: Pick<AiAskSamplePublic, "research" | "report">,
+): readonly {
+	atMs: number;
+	phase: AskSamplePlaybackPhase;
+}[] {
+	return isResearchAskSample(sample)
+		? RESEARCH_SAMPLE_PLAYBACK
+		: ASK_SAMPLE_PLAYBACK;
+}
+
 export function askSamplePlaybackPatch(
 	sample: AiAskSamplePublic,
 	phase: AskSamplePlaybackPhase,
@@ -69,6 +92,7 @@ export function askSamplePlaybackPatch(
 		typeof sample.candidateCount === "number" && sample.candidateCount > 0
 			? sample.candidateCount
 			: 0;
+	const research = isResearchAskSample(sample);
 	return {
 		pending: !done,
 		phase: done ? "done" : phase,
@@ -77,9 +101,8 @@ export function askSamplePlaybackPatch(
 		fallbackQueries: afterRewrite ? sample.fallbackQueries : [],
 		summary: done ? sample.summary : "",
 		results: done ? sample.results : [],
-		...(done && sample.report
-			? { report: sample.report, research: true as const }
-			: {}),
+		...(research ? { research: true as const } : {}),
+		...(done && sample.report ? { report: sample.report } : {}),
 		...(afterRewrite && pool > 0
 			? {
 					rerankCandidateCount: pool,
@@ -321,14 +344,14 @@ export function askSampleConfirmMessage(
 ): string {
 	if (options?.research) {
 		if (replacing) {
-			return "Replace the current research example for this question? Readers will see this report instead. It does not use their Research credits.";
+			return "Replace the current research example for this question? Readers will see this report instead.";
 		}
-		return "Use this report as the example for this question? Readers will see it when they tap this sample. It does not use their Research credits.";
+		return "Use this report as the example for this question? Readers will see it when they tap this sample.";
 	}
 	if (replacing) {
-		return "Replace the current example for this question? Readers will see this run instead. It does not use their Ask credits.";
+		return "Replace the current example for this question? Readers will see this run instead.";
 	}
-	return "Use this run as the example for this question? Readers will see it when they tap this sample. It does not use their Ask credits.";
+	return "Use this run as the example for this question? Readers will see it when they tap this sample.";
 }
 
 export function isResearchAskSample(

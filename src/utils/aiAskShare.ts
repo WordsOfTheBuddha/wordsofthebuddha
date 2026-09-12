@@ -1,4 +1,9 @@
 import type { AiDiscourseHit } from "./aiDiscourseHits";
+import {
+	askAuthPageHref,
+	searchAskHref,
+	searchResearchHref,
+} from "./aiAskHref";
 import { normalizeAskQuestionKey } from "./aiAskSession";
 import {
 	RESEARCH_REPORT_MAX_CHARS,
@@ -124,6 +129,28 @@ export function isAskShareResearchInput(raw: unknown): boolean {
 		record.research === true ||
 		(typeof record.report === "string" && Boolean(record.report.trim()))
 	);
+}
+
+/** Mode switch + register return for a public /ask or /research share. */
+export function askShareViewChrome(
+	share: Pick<AiAskShareSnapshot, "research" | "report">,
+	options?: { researchEnabled?: boolean },
+): {
+	title: string;
+	researchShare: boolean;
+	showResearchMode: boolean;
+	homeHref: string;
+	registerHref: string;
+} {
+	const researchShare = isAskShareResearchInput(share);
+	const homeHref = researchShare ? searchResearchHref() : searchAskHref();
+	return {
+		title: researchShare ? "Research" : "Ask",
+		researchShare,
+		showResearchMode: researchShare || options?.researchEnabled === true,
+		homeHref,
+		registerHref: askAuthPageHref("/register", null, homeHref),
+	};
 }
 
 export function askShareResultMax(raw: unknown): number {

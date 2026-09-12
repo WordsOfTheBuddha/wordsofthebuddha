@@ -1,7 +1,9 @@
 ---
 import AiModeApp from "./AiModeApp.astro";
 import type { AiAskShareSnapshot } from "../utils/aiAskShare";
-import { askAuthPageHref, searchAskHref } from "../utils/aiAskHref";
+import { askShareViewChrome } from "../utils/aiAskShare";
+import { searchAskHref, searchResearchHref } from "../utils/aiAskHref";
+import { isAskResearchEnabled } from "../utils/aiAskResearchUi";
 import "../styles/ai-mode.css";
 
 interface Props {
@@ -9,22 +11,41 @@ interface Props {
 }
 
 const { share } = Astro.props;
-const registerHref = askAuthPageHref("/register", null, searchAskHref());
+const chrome = askShareViewChrome(share, {
+	researchEnabled: isAskResearchEnabled(),
+});
 ---
 
 <main class="container mx-auto px-3 sm:px-4 pt-2">
 	<header class="search-ask-top">
-		<h1 class="ai-title text-gradient-accent">Ask</h1>
+		<h1 class="ai-title text-gradient-accent">{chrome.title}</h1>
 		<nav class="ai-mode-switch" aria-label="Mode">
 			<a href="/search">Search</a>
-			<a class="is-active" href={searchAskHref()} aria-current="page">Ask</a>
+			<a
+				class:list={[{ "is-active": !chrome.researchShare }]}
+				href={searchAskHref()}
+				aria-current={chrome.researchShare ? undefined : "page"}
+			>
+				Ask
+			</a>
+			{
+				chrome.showResearchMode && (
+					<a
+						class:list={[{ "is-active": chrome.researchShare }]}
+						href={searchResearchHref()}
+						aria-current={chrome.researchShare ? "page" : undefined}
+					>
+						Research
+					</a>
+				)
+			}
 		</nav>
 		<p class="ai-share-banner">
-			{share.research ? (
+			{chrome.researchShare ? (
 				<>
 					Shared Research Report
 					{" · "}
-					<a href={registerHref}>
+					<a href={chrome.registerHref}>
 						Create an account to generate your own
 					</a>
 				</>

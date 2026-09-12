@@ -6,6 +6,7 @@ import {
 	askSharePath,
 	askSharePageRedirect,
 	askShareSeo,
+	askShareViewChrome,
 	askShareSlugCandidate,
 	askShareSlugCollisionCandidates,
 	askShareSlugWithNumericSuffix,
@@ -500,6 +501,40 @@ describe("sanitizeAskShareSnapshot", () => {
 		const seo = askShareSeo(snap!);
 		assert.match(seo.title, /Research Report/);
 		assert.match(seo.description, /trainee/i);
+	});
+});
+
+describe("askShareViewChrome", () => {
+	it("puts a research share on Research with a Research returnTo", () => {
+		const chrome = askShareViewChrome(
+			{ research: true, report: "# Trainee" },
+			{ researchEnabled: false },
+		);
+		assert.equal(chrome.title, "Research");
+		assert.equal(chrome.researchShare, true);
+		assert.equal(chrome.showResearchMode, true);
+		assert.equal(chrome.homeHref, "/search?mode=research");
+		assert.equal(
+			chrome.registerHref,
+			"/register?returnTo=%2Fsearch%3Fmode%3Dresearch",
+		);
+	});
+
+	it("keeps an Ask share on Ask unless Research is enabled", () => {
+		const hidden = askShareViewChrome({ research: false });
+		assert.equal(hidden.title, "Ask");
+		assert.equal(hidden.researchShare, false);
+		assert.equal(hidden.showResearchMode, false);
+		assert.equal(hidden.homeHref, "/search?mode=ask");
+		assert.equal(
+			hidden.registerHref,
+			"/register?returnTo=%2Fsearch%3Fmode%3Dask",
+		);
+		assert.equal(
+			askShareViewChrome({ research: false }, { researchEnabled: true })
+				.showResearchMode,
+			true,
+		);
 	});
 });
 

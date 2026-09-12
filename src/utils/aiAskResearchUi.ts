@@ -44,7 +44,7 @@ export const RESEARCH_SIGNIN_TITLE = "Run Research";
 export const RESEARCH_SIGNIN_BODY =
 	"Perform a deep search of the Words of the Buddha and get a cited report. Create a free account to get started with Research.";
 export const RESEARCH_INVITE_AFTER_ASK =
-	"Looking for a wider search and a cited report based on the Words of the Buddha? Try Research.";
+	"Looking for a wider search and a cited report? Try Research";
 export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin this report";
 export const RESEARCH_PIN_ACCOUNT_BODY =
 	"Recent research reports are temporary. Pinning keeps a report at hand when older ones drop off.";

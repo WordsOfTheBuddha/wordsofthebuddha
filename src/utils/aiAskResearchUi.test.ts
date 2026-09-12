@@ -861,7 +861,7 @@ describe("Research pane copy", () => {
 		);
 		assert.equal(
 			RESEARCH_INVITE_AFTER_ASK,
-			"Looking for a wider search and a cited report based on the Words of the Buddha? Try Research.",
+			"Looking for a wider search and a cited report? Try Research",
 		);
 		assert.equal(ASK_NEW_LABEL, "+ New Ask");
 		assert.equal(RESEARCH_NEW_LABEL, "+ New Research");
