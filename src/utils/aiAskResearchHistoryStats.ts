@@ -1,4 +1,5 @@
 import { uniquePrefixedDiscourseIdsInText } from "./aiSearchQuery";
+import { stripResearchReportLengthNote } from "./aiAskResearchReportLength";
 
 export interface ResearchHistoryReportStats {
 	words: number;
@@ -7,11 +8,12 @@ export interface ResearchHistoryReportStats {
 }
 
 function researchReportStatsBody(report?: string | null): string {
-	return (report || "")
-		.replace(/\r\n/g, "\n")
-		.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
-		.replace(/^readPali:\s*.+$/gim, "")
-		.trim();
+	return stripResearchReportLengthNote(
+		(report || "")
+			.replace(/\r\n/g, "\n")
+			.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
+			.replace(/^readPali:\s*.+$/gim, ""),
+	);
 }
 
 function researchReportWordCount(body: string): number {

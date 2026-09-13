@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import { toResearchJobPublic } from "./aiAskResearchJob";
+import { RESEARCH_REPORT_LENGTH_NOTE_MD } from "./aiAskResearchReportLength";
 import {
 	applyResearchJobToTurn,
 	askComposerMeterIsResearch,
@@ -928,6 +929,12 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 			"3 words · 1 discourse cited",
 		);
 		assert.equal(researchHistoryStatsLabel("No citations here."), "3 words");
+		assert.equal(
+			researchHistoryStatsLabel(
+				`${RESEARCH_REPORT_LENGTH_NOTE_MD}\n\nNo citations here.`,
+			),
+			"3 words",
+		);
 		assert.equal(
 			researchHistoryStatsLabel("No citations here.", [
 				{ slug: "mn10" },

@@ -1202,6 +1202,7 @@ async function runResearchChainPass(
 				() =>
 					writeResearchReport({
 						question,
+						originalQuestion: current.originalQuestion,
 						brief,
 						hits: results,
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
@@ -1245,6 +1246,7 @@ async function runResearchChainPass(
 				write: (timeoutMs) =>
 					writeResearchReport({
 						question,
+						originalQuestion: current.originalQuestion,
 						brief,
 						hits: results,
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
@@ -2036,16 +2038,17 @@ export async function runResearchJob(options: {
 				const written = await retryOnce(
 					"report",
 					() =>
-						writeResearchReport({
-							question: plan.correctedQuestion || current.question,
-							brief,
-							hits: results,
-							model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-							termQueries: plan.termQueries,
-							guidance: writerGuidance,
-							history,
-							timeoutMs: writerBudget,
-							namedQueries: writerNamedQueries,
+					writeResearchReport({
+						question: plan.correctedQuestion || current.question,
+						originalQuestion: current.originalQuestion,
+						brief,
+						hits: results,
+						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+						termQueries: plan.termQueries,
+						guidance: writerGuidance,
+						history,
+						timeoutMs: writerBudget,
+						namedQueries: writerNamedQueries,
 							readFullSlugs: openingFull,
 							readPaliSlugs: scoutReadPali,
 							onReasoning: (delta) => {
@@ -2077,6 +2080,7 @@ export async function runResearchJob(options: {
 							writeResearchReport({
 								question:
 									plan.correctedQuestion || current.question,
+								originalQuestion: current.originalQuestion,
 								brief,
 								hits: results,
 								model: ASK_PLANNER_PAID_FALLBACK_MODEL,

@@ -19,6 +19,11 @@ import {
 	takeResearchReadPaliRequest,
 	type ResearchReportResult,
 } from "./aiAskResearchReport";
+import {
+	finishResearchReportLength,
+	researchReportLengthGuidance,
+	stripResearchReportLengthNote,
+} from "./aiAskResearchReportLength";
 
 import { resolveResearchReadFullSlugs } from "./aiAskResearchContinue";
 import {
@@ -72,6 +77,8 @@ export async function buildResearchReportEvidence(options: {
 
 export async function writeResearchReport(options: {
 	question: string;
+	/** Wording before planner cleanup — may still name a word count. */
+	originalQuestion?: string;
 	brief?: string;
 	hits: readonly AiDiscourseHit[];
 	model?: string;
@@ -120,8 +127,28 @@ export async function writeResearchReport(options: {
 		if (watchdog.signal.aborted) return empty;
 		if (!evidence.trim()) return empty;
 		const brief = (options.brief || "").replace(/\s+/g, " ").trim();
-		const guidance = (options.guidance || "").replace(/\s+/g, " ").trim();
-		const prior = (options.priorReport || "").replace(/\r\n/g, "\n").trim();
+		const originalQuestion = (options.originalQuestion || "")
+			.replace(/\s+/g, " ")
+			.trim();
+		const lengthSources = {
+			question: options.question,
+			originalQuestion,
+			brief,
+		};
+		const guidance = [
+			options.guidance,
+			researchReportLengthGuidance(
+				lengthSources.question,
+				lengthSources.originalQuestion,
+				lengthSources.brief,
+			),
+		]
+			.map((part) => (part || "").replace(/\s+/g, " ").trim())
+			.filter(Boolean)
+			.join(" ");
+		const prior = stripResearchReportLengthNote(
+			(options.priorReport || "").replace(/\r\n/g, "\n"),
+		);
 		const messages = [
 			{ role: "system" as const, content: RESEARCH_REPORT_SYSTEM },
 			{
@@ -164,7 +191,10 @@ Markdown report:`,
 		const taken = takeResearchReadPaliRequest(
 			parseResearchReportMarkdown(content),
 		);
-		const report = replaceResearchSourcesSection(taken.report, options.hits);
+		const report = finishResearchReportLength(
+			replaceResearchSourcesSection(taken.report, options.hits),
+			lengthSources,
+		);
 		const readPali = resolveResearchReadFullSlugs(
 			taken.readPali,
 			options.hits.map((hit) => hit.slug),

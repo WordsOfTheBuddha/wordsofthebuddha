@@ -312,6 +312,9 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 		assert.match(RESEARCH_REPORT_SYSTEM, /When you can/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /readPali:/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /thorough report/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /typically a few thousand words/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /Do not pad to hit a requested word count/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /more than about 8,000 words/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /other selected titles as further sources/);
 		assert.match(
 			RESEARCH_REPORT_SYSTEM,

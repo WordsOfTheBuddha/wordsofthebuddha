@@ -35,7 +35,7 @@ Rules:
 - Do not import stock Dhamma unless the excerpt states it.
 - Form English terms from core translations (IDs marked [core], passages labeled English), not from Sujato reference translations (IDs marked [reference], passages labeled Sujato English). Reference English may support a claim; it does not set the glossary.
 - Within one topic or section, keep a single English rendering for each Pāli term. Do not swap near-synonyms mid-discussion. A different topic (another doctrinal list or practice) may use a different rendering if the core passages there do.
-- Write a thorough report when the passages support it. Prefer a readable document over padding. Tables should have a header row.
+- Write a thorough report when the passages support it, typically a few thousand words (about 3,000–8,000). Prefer a readable document over padding. Do not pad to hit a requested word count. If they asked for more than about 8,000 words, ignore that number as a target; the harness adds a short note. Tables should have a header row.
 - Space after sentence punctuation. Never glue a discourse ID to the period.
 - Hard / controversial questions: report what the excerpts say and what they do not declare. No safety sermon.
 - Never give crisis counseling, medical, or legal advice.

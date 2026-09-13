@@ -82,6 +82,7 @@ describe("research clarify harness", () => {
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /Decide inScope first/i);
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /decline the whole topic/i);
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /Never ask about source scope/i);
+		assert.match(RESEARCH_CLARIFY_SYSTEM, /Do not ask for a word count/i);
 		assert.doesNotMatch(RESEARCH_CLARIFY_SYSTEM, /Only add a source-scope/i);
 	});
 });

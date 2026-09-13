@@ -73,7 +73,7 @@ Rules:
 - inScope false when they want something this library cannot do: open-web research, later commentarial layers as the object of study, other schools, tools/news/weather/coding, or help with their own acute crisis. Then set decline.kind to off_corpus, unrelated, or crisis, put a short polite message, and questions [].
 - A mixed question that needs later layers or the open web to be answered is off_corpus — decline the whole topic. Do not ask them to pick nikāyas vs commentary.
 - Hard teaching questions (killing, sexuality, undeclared points, caste, politics as Dhamma) stay inScope true. Do not refuse them.
-- When inScope, ask only how to shape the report: emphasis, evidence, audience, depth, or how to handle Pali. Never ask about source scope, later layers, Abhidhamma, Visuddhimagga, other schools, or the open web.
+- When inScope, ask only how to shape the report: emphasis, evidence, audience, depth, or how to handle Pali. Never ask about source scope, later layers, Abhidhamma, Visuddhimagga, other schools, or the open web. Do not ask for a word count or page length.
 - 2 or 3 short questions. Each has 2–4 concrete choice labels. Do not add “Other” or “No preference” — the harness appends those.
 - Choice labels are short (a few words). Question prompts are one sentence.
 - Do not search. Do not invent discourse IDs. Do not spend a research credit.`;
