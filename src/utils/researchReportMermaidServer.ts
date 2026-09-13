@@ -2,6 +2,10 @@ import { createRequire } from "node:module";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { replaceMermaidPlaceholdersWithSvg } from "./researchReportMermaid";
+import {
+	isMermaidErrorSvg,
+	normalizeMermaidSource,
+} from "./researchReportMermaidNormalize";
 
 let domReady = false;
 
@@ -162,6 +166,10 @@ export async function hydratePlaywrightMermaid(
 	const bundle = mermaidUmdPath();
 	if (!bundle) return;
 	await page.addScriptTag({ path: bundle });
+	await page.addScriptTag({
+		content: `globalThis.__normalizeMermaidSource = ${normalizeMermaidSource.toString()};
+globalThis.__isMermaidErrorSvg = ${isMermaidErrorSvg.toString()};`,
+	});
 	await page.evaluate(async () => {
 		const mermaid = (
 			globalThis as unknown as {
@@ -178,17 +186,28 @@ export async function hydratePlaywrightMermaid(
 		mermaid.initialize({
 			startOnLoad: false,
 			securityLevel: "strict",
+			suppressErrorRendering: true,
 			theme: "neutral",
-			flowchart: { htmlLabels: false },
+			htmlLabels: true,
+			flowchart: { htmlLabels: true },
 		});
+		const normalize = (globalThis as unknown as {
+			__normalizeMermaidSource?: (source: string) => string;
+		}).__normalizeMermaidSource;
+		const isErrorSvg = (globalThis as unknown as {
+			__isMermaidErrorSvg?: (svg: string) => boolean;
+		}).__isMermaidErrorSvg;
 		for (const node of [
 			...document.querySelectorAll("[data-ai-mermaid]"),
 		]) {
-			const source = (node.textContent || "").trim();
+			const source = (
+				normalize ? normalize(node.textContent || "") : node.textContent || ""
+			).trim();
 			if (!source) continue;
 			try {
 				const id = `pdf-mmd-${Math.random().toString(36).slice(2, 10)}`;
 				const { svg } = await mermaid.render(id, source);
+				if (!svg || isErrorSvg?.(svg)) continue;
 				const wrap = document.createElement("div");
 				wrap.className = "ai-report-diagram";
 				wrap.innerHTML = svg;

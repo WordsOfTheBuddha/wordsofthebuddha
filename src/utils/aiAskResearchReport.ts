@@ -33,7 +33,7 @@ Write GitHub-flavored markdown (no JSON). Use:
 - ## / ### / #### headings
 - short paragraphs and lists
 - markdown tables when a comparison, map of collections, or survey of facets helps
-- a \`\`\`mermaid fence for a flow chart, process map, or state diagram when the question asks for a diagram or the structure is clearer as a chart than as prose
+- a \`\`\`mermaid fence for a flow chart, process map, or state diagram when the question asks for a diagram or the structure is clearer as a chart than as prose. Quote node labels that contain punctuation, citations, or line breaks (\`A["Virtue (SN 47.3)"]\`). Never put a semicolon or HTML tag in an unquoted label
 - inline SVG, a \`\`\`svg fence, or a small HTML figure when mermaid cannot express the diagram
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
 - when a claim quotes a specific paragraph (or range) from the passages, cite it as [MN 21 ¶21](/mn21#21) or [MN 10 ¶6–50](/mn10#6-50), using those ¶ numbers. In any one paragraph, link a given discourse only once
@@ -151,12 +151,17 @@ const reportMarked = new Marked({
 });
 reportMarked.use({ renderer: reportRenderer });
 
-/** GFM soft breaks are spaces; marked leaves the newline in the HTML. */
+/**
+ * GFM soft breaks are spaces; marked leaves the newline in the HTML.
+ * The tag name must be a whole token so `<pre>` is not treated as `<p>`.
+ */
 function flattenSoftBreaks(html: string): string {
 	return html.replace(
-		/<(p|h2|h3|li|td|th)([^>]*)>([\s\S]*?)<\/\1>/gi,
-		(_match, tag: string, attrs: string, inner: string) =>
-			`<${tag}${attrs}>${inner.replace(/[ \t]*\n[ \t]*/g, " ")}</${tag}>`,
+		/<(p|h2|h3|li|td|th)(\s[^>]*)?>([\s\S]*?)<\/\1>/gi,
+		(match, tag: string, attrs: string, inner: string) => {
+			if (/<(?:pre|svg|table|ul|ol)\b/i.test(inner)) return match;
+			return `<${tag}${attrs || ""}>${inner.replace(/[ \t]*\n[ \t]*/g, " ")}</${tag}>`;
+		},
 	);
 }
 

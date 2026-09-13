@@ -1,7 +1,13 @@
 import { sanitizeResearchReportHtml } from "./researchReportSanitize";
+import {
+	isMermaidErrorSvg,
+	normalizeMermaidSource,
+	removeMermaidTempElements,
+} from "./researchReportMermaidNormalize";
 
 type MermaidApi = {
 	initialize: (config: Record<string, unknown>) => void;
+	parse: (text: string) => Promise<unknown>;
 	render: (id: string, text: string) => Promise<{ svg: string }>;
 };
 
@@ -17,6 +23,17 @@ function decodeReportEntities(value: string): string {
 		.replace(/&amp;/g, "&");
 }
 
+function mermaidInitConfig(theme: string): Record<string, unknown> {
+	return {
+		startOnLoad: false,
+		securityLevel: "strict",
+		suppressErrorRendering: true,
+		theme,
+		htmlLabels: true,
+		flowchart: { htmlLabels: true },
+	};
+}
+
 async function loadMermaid(dark: boolean): Promise<MermaidApi> {
 	if (!mermaidMod) {
 		const mod = await import("mermaid");
@@ -24,12 +41,7 @@ async function loadMermaid(dark: boolean): Promise<MermaidApi> {
 	}
 	const theme = dark ? "dark" : "neutral";
 	if (mermaidTheme !== theme) {
-		mermaidMod.initialize({
-			startOnLoad: false,
-			securityLevel: "strict",
-			theme,
-			flowchart: { htmlLabels: false },
-		});
+		mermaidMod.initialize(mermaidInitConfig(theme));
 		mermaidTheme = theme;
 	}
 	return mermaidMod;
@@ -39,12 +51,20 @@ export async function mermaidSourceToSvg(
 	source: string,
 	dark = false,
 ): Promise<string> {
-	const text = source.replace(/\r\n/g, "\n").trim();
+	const text = normalizeMermaidSource(source).trim();
 	if (!text) return "";
 	const mermaid = await loadMermaid(dark);
 	const id = `ai-mmd-${Math.random().toString(36).slice(2, 10)}`;
-	const { svg } = await mermaid.render(id, text);
-	return sanitizeResearchReportHtml(svg, { allowStyle: true });
+	try {
+		await mermaid.parse(text);
+		const { svg } = await mermaid.render(id, text);
+		if (!svg || isMermaidErrorSvg(svg)) return "";
+		return sanitizeResearchReportHtml(svg, { allowStyle: true });
+	} catch {
+		return "";
+	} finally {
+		removeMermaidTempElements(id);
+	}
 }
 
 export async function replaceMermaidPlaceholdersWithSvg(
@@ -90,7 +110,10 @@ export async function hydrateResearchReportMermaid(
 		if (!source) continue;
 		try {
 			const svg = await mermaidSourceToSvg(source, dark);
-			if (!svg) continue;
+			if (!svg) {
+				node.setAttribute("data-ai-mermaid-done", "error");
+				continue;
+			}
 			const wrap = document.createElement("div");
 			wrap.className = "ai-report-diagram";
 			wrap.innerHTML = svg;

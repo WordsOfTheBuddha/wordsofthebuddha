@@ -220,6 +220,24 @@ flowchart TD
 		assert.doesNotMatch(html, /ai-report-code/);
 	});
 
+	it("keeps mermaid line breaks when a paragraph follows the fence", () => {
+		const html = renderResearchReportHtml(
+			`A short lead:
+
+\`\`\`mermaid
+flowchart LR
+  A[Start] --> B[End]
+\`\`\`
+
+Then MN 10 continues.
+`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(html, /<pre class="ai-report-mermaid" data-ai-mermaid>/);
+		assert.match(html, /flowchart LR\n {2}A\[Start\] --&gt; B\[End\]/);
+		assert.doesNotMatch(html, /flowchart LR A\[Start\]/);
+	});
+
 	it("renders #### headings, rules, and italics without eating spaces", () => {
 		const html = renderResearchReportHtml(
 			`### Strict check, qualification by qualification
@@ -404,6 +422,7 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 			/a different topic.*may use a different rendering/i,
 		);
 		assert.match(RESEARCH_REPORT_SYSTEM, /```mermaid/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /Quote node labels/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /inline SVG/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /no scripts, forms, event handlers/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /\[MN 21 ¶21\]\(\/mn21#21\)/);
