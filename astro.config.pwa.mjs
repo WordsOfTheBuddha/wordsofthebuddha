@@ -5,6 +5,7 @@ import mdx from "@astrojs/mdx";
 import { unified } from "@astrojs/markdown-remark";
 import node from "@astrojs/node";
 import rehypeExternalLinks from "rehype-external-links";
+import { mermaidVendorVitePlugin } from "./scripts/copy-mermaid-vendor.mjs";
 
 const externalLinksOptions = {
 	target: "_blank",
@@ -23,7 +24,8 @@ export default defineConfig({
 		mdx(),
 	],
 	vite: {
-		optimizeDeps: { include: ["rangy", "mermaid"] },
+		plugins: [mermaidVendorVitePlugin()],
+		optimizeDeps: { include: ["rangy"] },
 		build: {
 			commonjsOptions: { include: [/rangy/] },
 			// See astro.config.mjs — lightningcss drops unprefixed backdrop-filter.

@@ -22,7 +22,7 @@ import {
 	sanitizeResearchReportHtml,
 	wrapResearchReportHtml,
 } from "./researchReportSanitize";
-import { transformId } from "./transformId";
+import { stampResearchReportHeadingIds } from "./aiAskResearchRevise";
 
 /** Storage ceiling only — large enough for a finished 16k-token report plus Sources. */
 export const RESEARCH_REPORT_MAX_CHARS = 100_000;
@@ -35,6 +35,8 @@ Write GitHub-flavored markdown (no JSON). Use:
 - markdown tables when a comparison, map of collections, or survey of facets helps
 - a \`\`\`mermaid fence for a flow chart, process map, or state diagram when the question asks for a diagram or the structure is clearer as a chart than as prose. Quote node labels that contain punctuation, citations, or line breaks (\`A["Virtue (SN 47.3)"]\`). Never put a semicolon or HTML tag in an unquoted label
 - inline SVG, a \`\`\`svg fence, or a small HTML figure when mermaid cannot express the diagram
+- when a selected discourse is marked [illustrated] or includes Illustration (labels), this site has a diagram of that teaching. Use those labels for mermaid. Prefer reusing its structure, labels, and relationships over inventing a conflicting chart. You may simplify.
+- when a selected discourse includes an Illustration (SVG) block, that is the site SVG markup itself — reuse or adapt it; do not request it again
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
 - when a claim quotes a specific paragraph (or range) from the passages, cite it as [MN 21 ¶21](/mn21#21) or [MN 10 ¶6–50](/mn10#6-50), using those ¶ numbers. In any one paragraph, link a given discourse only once
 - no ## Sources section — the harness appends a bilingual source list
@@ -45,6 +47,10 @@ Hidden thinking is shown to the reader. Think however the excerpts require. When
 If a claim turns on Pāli wording (a compound, inflection, or a distinction English does not settle), add a final line the harness will strip:
 readPali: MN 70, SN 12.49
 Use only IDs you were given. The harness then opens those discourses in Pāli and English and you rewrite. Omit the line when English is enough, and omit it when Pāli (full text) is already in the passages.
+
+If mermaid from the labels is not enough and you need the site SVG markup itself (to reuse or adapt the drawing), add another final line the harness will strip:
+readIllustration: MN 10, SN 36.6
+Use only illustrated IDs you were given, at most two. The harness then inlines those SVG files and you rewrite. Omit the line when Illustration (SVG) markup is already in the passages, and omit it when labels are enough.
 
 Rules:
 - Write only from the passages you were given (excerpts, full English, and Pāli when present). If a discourse merely lists terms, say that — do not claim it defines them.
@@ -63,6 +69,8 @@ export interface ResearchReportResult {
 	reasoning: string;
 	/** Selected-set slugs the writer asked to open in Pāli and English. */
 	readPali?: string[];
+	/** Selected-set slugs the writer asked to inline site SVG markup for. */
+	readIllustration?: string[];
 }
 
 function escapeHtml(value: string): string {
@@ -157,7 +165,7 @@ reportMarked.use({ renderer: reportRenderer });
  */
 function flattenSoftBreaks(html: string): string {
 	return html.replace(
-		/<(p|h2|h3|li|td|th)(\s[^>]*)?>([\s\S]*?)<\/\1>/gi,
+		/<(p|h2|h3|li|td|th)\b(\s[^>]*)?>([\s\S]*?)<\/\1>/gi,
 		(match, tag: string, attrs: string, inner: string) => {
 			if (/<(?:pre|svg|table|ul|ol)\b/i.test(inner)) return match;
 			return `<${tag}${attrs || ""}>${inner.replace(/[ \t]*\n[ \t]*/g, " ")}</${tag}>`;
@@ -196,28 +204,42 @@ export function parseResearchReportMarkdown(raw: string): string {
 	return clipResearchReport(text);
 }
 
-/** Strip a harness `readPali:` line and return the requested IDs. */
+function splitHarnessIdList(value: string): string[] {
+	const ids: string[] = [];
+	for (const part of value.split(/[,;]/)) {
+		const id = part.replace(/\s+/g, " ").trim();
+		if (id) ids.push(id);
+	}
+	return ids;
+}
+
+/** Strip harness `readPali:` / `readIllustration:` lines and return the IDs. */
 export function takeResearchReadPaliRequest(raw: string): {
 	report: string;
 	readPali: string[];
+	readIllustration: string[];
 } {
 	const lines = raw.replace(/\r\n/g, "\n").split("\n");
-	const ids: string[] = [];
+	const readPali: string[] = [];
+	const readIllustration: string[] = [];
 	const kept: string[] = [];
 	for (const line of lines) {
-		const match = line.trim().match(/^readPali:\s*(.+)$/i);
-		if (match) {
-			for (const part of match[1].split(/[,;]/)) {
-				const id = part.replace(/\s+/g, " ").trim();
-				if (id) ids.push(id);
-			}
+		const pali = line.trim().match(/^readPali:\s*(.+)$/i);
+		if (pali) {
+			readPali.push(...splitHarnessIdList(pali[1]));
+			continue;
+		}
+		const illustration = line.trim().match(/^readIllustration:\s*(.+)$/i);
+		if (illustration) {
+			readIllustration.push(...splitHarnessIdList(illustration[1]));
 			continue;
 		}
 		kept.push(line);
 	}
 	return {
 		report: kept.join("\n").replace(/\n{3,}/g, "\n\n").trim(),
-		readPali: ids,
+		readPali,
+		readIllustration,
 	};
 }
 
@@ -318,12 +340,14 @@ export function renderResearchReportHtml(
 	const text = stripDangerousReportMarkup(stripResearchSourcesSection(markdown));
 	if (!text) return "";
 	const html = reportMarked.parse(text);
-	const linked = linkifyDiscourseIdsInHtml(
-		remapResearchCitationHrefs(
-			flattenSoftBreaks(typeof html === "string" ? html : ""),
+	const linked = stampResearchReportHeadingIds(
+		linkifyDiscourseIdsInHtml(
+			remapResearchCitationHrefs(
+				flattenSoftBreaks(typeof html === "string" ? html : ""),
+				results,
+			),
 			results,
 		),
-		results,
 	);
 	if (!options?.citationPopovers) return linked;
 	return annotateResearchCitationLinks(linked, results);
@@ -334,7 +358,7 @@ export function fallbackResearchReport(options: {
 	hits: readonly AiDiscourseHit[];
 	emptyReason?: string;
 }): string {
-	const question = options.question.replace(/\s+/g, " ").trim();
+	const question = options.question.trim();
 	if (options.hits.length === 0) {
 		return `## Report
 

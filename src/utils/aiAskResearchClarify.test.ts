@@ -11,6 +11,7 @@ import {
 	RESEARCH_CLARIFY_SYSTEM,
 	RESEARCH_DECLINE_OFF_CORPUS,
 	researchClarifyAnswersOutOfScope,
+	suggestedClarifyAnswers,
 } from "./aiAskResearchClarify";
 
 describe("parseResearchClarify", () => {
@@ -75,6 +76,57 @@ describe("parseResearchClarify", () => {
 		);
 		assert.equal(parsed.decline?.message, RESEARCH_DECLINE_OFF_CORPUS);
 	});
+
+	it("keeps an explicit empty question list for confirm-only", () => {
+		const parsed = parseResearchClarify(
+			JSON.stringify({
+				inScope: true,
+				interpretation: "Survey the nikāyas on satipaṭṭhāna as asked.",
+				questions: [],
+			}),
+		);
+		assert.equal(parsed.inScope, true);
+		assert.deepEqual(parsed.questions, []);
+		assert.match(parsed.interpretation || "", /satipaṭṭhāna/);
+	});
+
+	it("keeps a single shaping question without padding to three", () => {
+		const parsed = parseResearchClarify(
+			JSON.stringify({
+				inScope: true,
+				questions: [
+					{
+						id: "focus",
+						prompt: "What to emphasize?",
+						suggestedChoiceId: "survey",
+						choices: [
+							{ id: "survey", label: "A wide survey" },
+							{ id: "passages", label: "Key passages" },
+						],
+					},
+				],
+			}),
+		);
+		assert.equal(parsed.questions.length, 1);
+		assert.equal(parsed.questions[0]?.suggestedChoiceId, "survey");
+	});
+
+	it("drops a suggested Other or No preference choice", () => {
+		const parsed = parseResearchClarify(
+			JSON.stringify({
+				inScope: true,
+				questions: [
+					{
+						id: "focus",
+						prompt: "Emphasis?",
+						suggestedChoiceId: "no_preference",
+						choices: [{ id: "survey", label: "Survey" }],
+					},
+				],
+			}),
+		);
+		assert.equal(parsed.questions[0]?.suggestedChoiceId, undefined);
+	});
 });
 
 describe("research clarify harness", () => {
@@ -83,7 +135,10 @@ describe("research clarify harness", () => {
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /decline the whole topic/i);
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /Never ask about source scope/i);
 		assert.match(RESEARCH_CLARIFY_SYSTEM, /Do not ask for a word count/i);
+		assert.match(RESEARCH_CLARIFY_SYSTEM, /3 is the maximum number of questions/i);
 		assert.doesNotMatch(RESEARCH_CLARIFY_SYSTEM, /Only add a source-scope/i);
+		assert.doesNotMatch(RESEARCH_CLARIFY_SYSTEM, /2 or 3 short questions/i);
+		assert.doesNotMatch(RESEARCH_CLARIFY_SYSTEM, /2–3 clarifying/i);
 	});
 });
 
@@ -124,6 +179,10 @@ describe("canStartResearchClarify", () => {
 			]),
 			true,
 		);
+	});
+
+	it("allows starting with no questions", () => {
+		assert.equal(canStartResearchClarify([], []), true);
 	});
 
 	it("requires Other text when Other is selected", () => {
@@ -218,6 +277,18 @@ describe("formatResearchClarifyBrief", () => {
 		assert.match(brief, /A wide survey/);
 		assert.match(brief, /Quote key passages/);
 	});
+
+	it("includes the model's reading when confirming", () => {
+		const brief = formatResearchClarifyBrief(
+			"satipaṭṭhāna",
+			[],
+			[],
+			"A survey of the four establishments as taught in the nikāyas.",
+		);
+		assert.match(brief, /satipaṭṭhāna/);
+		assert.match(brief, /Reading:/);
+		assert.match(brief, /four establishments/);
+	});
 });
 
 describe("parseResearchClarifyAnswers", () => {
@@ -258,5 +329,29 @@ describe("parseResearchClarifyAnswers", () => {
 		]);
 		assert.ok((parsed[0]?.otherText || "").length <= RESEARCH_CLARIFY_MAX_OTHER);
 		assert.equal((parsed[0]?.otherText || "").length, RESEARCH_CLARIFY_MAX_OTHER);
+	});
+});
+
+describe("suggestedClarifyAnswers", () => {
+	it("seeds the suggested choice when it is a real option", () => {
+		const questions = parseResearchClarify(
+			JSON.stringify({
+				inScope: true,
+				questions: [
+					{
+						id: "focus",
+						prompt: "Emphasis?",
+						suggestedChoiceId: "survey",
+						choices: [
+							{ id: "survey", label: "Survey" },
+							{ id: "passages", label: "Passages" },
+						],
+					},
+				],
+			}),
+		).questions;
+		assert.deepEqual(suggestedClarifyAnswers(questions), {
+			focus: { choiceId: "survey" },
+		});
 	});
 });

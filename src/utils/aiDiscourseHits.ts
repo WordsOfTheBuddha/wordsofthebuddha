@@ -13,6 +13,8 @@ export interface AiDiscourseHit {
 	 * rescorer; stripped before the public result payload.
 	 */
 	matchedQueries?: string[];
+	/** Site discourse illustration (SVG or raster) — same cue as Search cards. */
+	hasIllustration?: boolean;
 }
 
 export interface DiscourseHitLike {
@@ -23,6 +25,7 @@ export interface DiscourseHitLike {
 	referenceOnly?: boolean;
 	volpage?: string;
 	matchedQueries?: string[];
+	hasIllustration?: boolean;
 }
 
 const MERGED_LIMIT = 12;
@@ -83,7 +86,14 @@ export function toAiDiscourseHit(hit: DiscourseHitLike): AiDiscourseHit {
 		volpage: hit.volpage,
 		href: `/${slug}`,
 		...(matched.length > 0 ? { matchedQueries: matched } : {}),
+		...publicIllustrationFields(hit),
 	};
+}
+
+export function publicIllustrationFields(hit: {
+	hasIllustration?: boolean;
+}): { hasIllustration?: true } {
+	return hit.hasIllustration === true ? { hasIllustration: true } : {};
 }
 
 /** Drop Ask-pool annotations before sending hits to the browser. */
@@ -96,5 +106,6 @@ export function toPublicAskHit(hit: AiDiscourseHit): AiDiscourseHit {
 		referenceOnly: hit.referenceOnly,
 		href: hit.href,
 		...(hit.volpage ? { volpage: hit.volpage } : {}),
+		...publicIllustrationFields(hit),
 	};
 }

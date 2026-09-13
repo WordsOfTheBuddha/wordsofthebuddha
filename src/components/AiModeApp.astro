@@ -6,6 +6,7 @@ import {
 	shouldShowAiModelPicker,
 } from "../utils/openrouter";
 import { ASK_LIMITS_NOTE, RESEARCH_CHIP_TITLE, RESEARCH_SIGNIN_EMPTY_NOTE } from "../utils/aiAskResearchUi";
+import { MAX_QUESTION_CHARS } from "../utils/aiAskQuestionText";
 import "../styles/ai-mode.css";
 import AskExportModal from "./AskExportModal.astro";
 
@@ -124,6 +125,7 @@ const defaultModel = showModelPicker
 				id="ai-input"
 				data-ai-input
 				rows="2"
+				maxlength={MAX_QUESTION_CHARS}
 				placeholder="Ask a question about the discourses…"
 				enterkeyhint="enter"
 			></textarea>
@@ -192,6 +194,7 @@ const defaultModel = showModelPicker
 				id="ai-follow-input"
 				data-ai-follow-input
 				rows="2"
+				maxlength={MAX_QUESTION_CHARS}
 				placeholder="Waiting for an answer…"
 				enterkeyhint="enter"
 			></textarea>

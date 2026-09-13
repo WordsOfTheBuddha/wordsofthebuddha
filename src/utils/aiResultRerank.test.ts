@@ -315,6 +315,18 @@ describe("buildRerankUserPrompt", () => {
 		assert.doesNotMatch(prompt, /Earlier in this Ask/);
 	});
 
+	it("tags illustrated discourses for the ranker", () => {
+		const prompt = buildRerankUserPrompt("feeling", [
+			{
+				slug: "sn36.6",
+				title: "The Dart",
+				description: "Two kinds of feeling.",
+				hasIllustration: true,
+			},
+		]);
+		assert.match(prompt, /\[illustrated\]/);
+	});
+
 	it("includes earlier conversation context for follow-ups", () => {
 		const prompt = buildRerankUserPrompt(
 			"What about the second one?",

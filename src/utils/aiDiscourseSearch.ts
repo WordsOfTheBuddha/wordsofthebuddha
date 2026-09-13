@@ -12,6 +12,7 @@ import {
 	type AiDiscourseHit,
 	type DiscourseHitLike,
 } from "./aiDiscourseHits";
+import { withIllustrationFlags } from "./discourseSvgForAi";
 import {
 	isPrefixedAiDiscourseIdOnlyQuery,
 	namedTermSearchQueries,
@@ -335,7 +336,7 @@ function finishAskSearch(
 	});
 	const searchBatches = toSearchBatches(batches);
 	return {
-		hits: annotated.map(toAiDiscourseHit),
+		hits: withIllustrationFlags(annotated.map(toAiDiscourseHit)),
 		batches: searchBatches,
 		foundCount: uniqueSearchMatchCount(searchBatches),
 	};

@@ -431,6 +431,35 @@ describe("sanitizeAskHistoryEntry", () => {
 		assert.equal(clean?.results.length, 50);
 		assert.equal(clean?.summary, "First point.\n\nSecond point.");
 	});
+
+	it("keeps paragraph breaks and illustration flags", () => {
+		const clean = sanitizeAskHistoryEntry({
+			question: "Compare two feelings.\n\nInclude the dart simile.",
+			lookingFor: "feeling",
+			queries: ["salla"],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [
+				{
+					slug: "sn36.6",
+					title: "The Dart",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/sn36.6",
+					hasIllustration: true,
+				},
+			],
+			model: "test",
+			reasoning: "",
+			at: 1,
+		});
+		assert.equal(
+			clean?.question,
+			"Compare two feelings.\n\nInclude the dart simile.",
+		);
+		assert.equal(clean?.results[0]?.hasIllustration, true);
+	});
 });
 
 describe("mergeAskHistoryEntries", () => {

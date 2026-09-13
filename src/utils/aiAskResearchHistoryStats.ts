@@ -12,7 +12,8 @@ function researchReportStatsBody(report?: string | null): string {
 		(report || "")
 			.replace(/\r\n/g, "\n")
 			.replace(/(?:^|\n)## Sources\b[\s\S]*$/i, "")
-			.replace(/^readPali:\s*.+$/gim, ""),
+			.replace(/^readPali:\s*.+$/gim, "")
+			.replace(/^readIllustration:\s*.+$/gim, ""),
 	);
 }
 

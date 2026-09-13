@@ -7,8 +7,17 @@ import {
 } from "./aiResultRerank";
 import {
 	extractJsonObject,
+	clipAiQuestion,
 	type AiRewriteHistoryTurn,
 } from "./aiQueryRewrite";
+import {
+	DISCOURSE_SVG_AI_PER_FILE,
+	DISCOURSE_SVG_AI_SUMMARY_CHARS,
+	DISCOURSE_SVG_AI_SUMMARY_TOTAL,
+	DISCOURSE_SVG_AI_TOTAL,
+	loadDiscourseSvgMarkupForAi,
+	loadDiscourseSvgSummaryForAi,
+} from "./discourseSvgForAi";
 import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
@@ -71,6 +80,12 @@ export interface AskAnswerHitEvidence {
 	clipped?: boolean;
 	paraCount?: number;
 	paraNumbers?: number[];
+	/** Compact site-diagram labels (default packing). */
+	svgSummary?: string;
+	/** Full site SVG markup when the research writer requested it. */
+	svgMarkup?: string;
+	/** Raster (or SVG we could not inline) — same cue as Search cards. */
+	illustrated?: true;
 }
 
 /** Research excerpts are longer than Ask; full reads skip hint-picking. */
@@ -391,10 +406,14 @@ export async function buildAskAnswerEvidence(
 		fullSlugs?: readonly string[];
 		/** Full English plus full Pāli for these slugs. */
 		paliSlugs?: readonly string[];
+		/** Selected slugs to inline full SVG markup for (research hop). */
+		svgSlugs?: readonly string[];
 		excerptChars?: number;
 		excerptParas?: number;
 		fullChars?: number;
 		labelParagraphs?: boolean;
+		loadSvgMarkup?: (slug: string, maxChars: number) => string | undefined;
+		loadSvgSummary?: (slug: string, maxChars: number) => string | undefined;
 	},
 ): Promise<{
 	expanded: AskAnswerHitEvidence[];
@@ -421,6 +440,14 @@ export async function buildAskAnswerEvidence(
 	const excerptChars = options?.excerptChars ?? ASK_ANSWER_HIT_CHARS;
 	const excerptParas = options?.excerptParas ?? ASK_ANSWER_MAX_PARAS;
 	const fullChars = options?.fullChars ?? RESEARCH_FULL_TEXT_CHARS;
+	const loadSvg = options?.loadSvgMarkup ?? loadDiscourseSvgMarkupForAi;
+	const loadSummary =
+		options?.loadSvgSummary ?? loadDiscourseSvgSummaryForAi;
+	const svgSet = new Set(
+		(options?.svgSlugs || []).map((slug) => slug.trim().toLowerCase()),
+	);
+	let svgBudget = DISCOURSE_SVG_AI_TOTAL;
+	let svgSummaryBudget = DISCOURSE_SVG_AI_SUMMARY_TOTAL;
 	for (const [index, hit] of ordered.entries()) {
 		if (index >= expandLimit) {
 			listedOnly.push(hit.slug);
@@ -453,6 +480,26 @@ export async function buildAskAnswerEvidence(
 					maxChars: excerptChars,
 					maxParas: excerptParas,
 				});
+		let svgMarkup: string | undefined;
+		let svgSummary: string | undefined;
+		let illustrated: true | undefined;
+		if (hit.hasIllustration === true) {
+			const wantFullSvg = svgSet.has(slug);
+			if (wantFullSvg && svgBudget >= 32) {
+				svgMarkup = loadSvg(
+					hit.slug,
+					Math.min(DISCOURSE_SVG_AI_PER_FILE, svgBudget),
+				);
+				if (svgMarkup) svgBudget -= svgMarkup.length;
+			} else if (!wantFullSvg && svgSummaryBudget >= 24) {
+				svgSummary = loadSummary(
+					hit.slug,
+					Math.min(DISCOURSE_SVG_AI_SUMMARY_CHARS, svgSummaryBudget),
+				);
+				if (svgSummary) svgSummaryBudget -= svgSummary.length;
+			}
+			if (!svgMarkup && !svgSummary) illustrated = true;
+		}
 		expanded.push({
 			slug: hit.slug,
 			title: hit.title || "",
@@ -466,6 +513,9 @@ export async function buildAskAnswerEvidence(
 			...(options?.labelParagraphs
 				? discourseParagraphMeta(doc?.content || "", passages)
 				: {}),
+			...(svgMarkup ? { svgMarkup } : {}),
+			...(svgSummary ? { svgSummary } : {}),
+			...(illustrated ? { illustrated: true } : {}),
 		});
 	}
 	return { expanded, listedOnly };
@@ -499,7 +549,16 @@ export function formatAskAnswerEvidenceBlock(input: {
 				: "";
 		const ranges = formatParagraphRangeLabel(hit.paraNumbers || []);
 		const range = ranges ? ` — ${ranges}` : "";
-		return `${id}${ref}${mark}${clip}${count}${range} — ${title || "(untitled)"}\n${body}`;
+		const illusMark =
+			!hit.svgMarkup && !hit.svgSummary && hit.illustrated
+				? " [illustrated]"
+				: "";
+		const illustration = hit.svgMarkup
+			? `\nIllustration (SVG):\n\`\`\`svg\n${hit.svgMarkup}\n\`\`\``
+			: hit.svgSummary
+				? `\nIllustration (labels):\n${hit.svgSummary}`
+				: "";
+		return `${id}${ref}${mark}${clip}${count}${range}${illusMark} — ${title || "(untitled)"}\n${body}${illustration}`;
 	});
 	const listed = (input.listedOnly || [])
 		.map((slug) => transformId(slug) || slug)
@@ -517,7 +576,7 @@ export function buildAskAnswerUserPrompt(options: {
 	guidance?: string;
 	history?: readonly AiRewriteHistoryTurn[];
 }): string {
-	const question = options.question.replace(/\s+/g, " ").trim();
+	const question = clipAiQuestion(options.question);
 	const guidance = (options.guidance || "").replace(/\s+/g, " ").trim();
 	const guidanceBlock = guidance
 		? `\nGuidance from the planning step: ${guidance}\n`

@@ -56,7 +56,7 @@ MN 10 sets out the four establishments.
 				{ slug: "mn10", href: "/mn10" },
 			],
 		);
-		const headingIds = [...html.matchAll(/<h[23]>([\s\S]*?)<\/h[23]>/g)].map(
+		const headingIds = [...html.matchAll(/<h[23]\b[^>]*>([\s\S]*?)<\/h[23]>/g)].map(
 			(match) => match[1] || "",
 		);
 		assert.equal(headingIds.length, 2);
@@ -314,6 +314,22 @@ readPali: MN 70, SN 12.49
 		assert.match(taken.report, /faith-follower/);
 		assert.doesNotMatch(taken.report, /readPali/);
 		assert.deepEqual(taken.readPali, ["MN 70", "SN 12.49"]);
+		assert.deepEqual(taken.readIllustration, []);
+	});
+
+	it("strips a readIllustration harness line", () => {
+		const taken = takeResearchReadPaliRequest(
+			`## Thesis
+
+SN 36.6 maps two darts.
+
+readIllustration: SN 36.6, MN 10
+`,
+		);
+		assert.match(taken.report, /two darts/);
+		assert.doesNotMatch(taken.report, /readIllustration/);
+		assert.deepEqual(taken.readIllustration, ["SN 36.6", "MN 10"]);
+		assert.deepEqual(taken.readPali, []);
 	});
 
 	it("omits a leaked readPali line from the on-screen report", () => {
@@ -327,6 +343,19 @@ readPali: MN 70`,
 		);
 		assert.match(html, /faith-follower/);
 		assert.doesNotMatch(html, /readPali/i);
+	});
+
+	it("omits a leaked readIllustration line from the on-screen report", () => {
+		const html = renderResearchReportHtml(
+			`## Thesis
+
+SN 36.6 maps two darts.
+
+readIllustration: SN 36.6`,
+			[{ slug: "sn36.6", href: "/sn36.6" }],
+		);
+		assert.match(html, /two darts/);
+		assert.doesNotMatch(html, /readIllustration/i);
 	});
 });
 
@@ -424,6 +453,9 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 		assert.match(RESEARCH_REPORT_SYSTEM, /```mermaid/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /Quote node labels/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /inline SVG/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /Illustration \(SVG\)/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /Illustration \(labels\)/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /readIllustration:/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /no scripts, forms, event handlers/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /\[MN 21 ¶21\]\(\/mn21#21\)/);
 		assert.match(RESEARCH_REPORT_SYSTEM, /link a given discourse only once/);

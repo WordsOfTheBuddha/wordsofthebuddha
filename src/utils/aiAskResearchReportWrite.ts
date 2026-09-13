@@ -12,6 +12,7 @@ import {
 	resolveAskWriterBudgetMs,
 } from "./aiAskAnswer";
 import type { AiRewriteHistoryTurn } from "./aiQueryRewrite";
+import { clipAiQuestion } from "./aiAskQuestionText";
 import {
 	parseResearchReportMarkdown,
 	replaceResearchSourcesSection,
@@ -26,6 +27,7 @@ import {
 } from "./aiAskResearchReportLength";
 
 import { resolveResearchReadFullSlugs } from "./aiAskResearchContinue";
+import { clipDiscourseSvgRequestSlugs } from "./discourseSvgForAi";
 import {
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	ASK_WRITER_REASONING_EFFORT,
@@ -45,6 +47,7 @@ export async function buildResearchReportEvidence(options: {
 	namedQueries?: readonly string[];
 	readFullSlugs?: readonly string[];
 	readPaliSlugs?: readonly string[];
+	readIllustrationSlugs?: readonly string[];
 	loadDoc?: (slug: string) => Promise<SearchData | undefined>;
 	maxExpanded?: number;
 }): Promise<string> {
@@ -66,6 +69,9 @@ export async function buildResearchReportEvidence(options: {
 				[],
 				slugs,
 				options.readPaliSlugs,
+			),
+			svgSlugs: clipDiscourseSvgRequestSlugs(
+				options.readIllustrationSlugs || [],
 			),
 			excerptChars: RESEARCH_EXCERPT_CHARS,
 			excerptParas: RESEARCH_EXCERPT_PARAS,
@@ -94,6 +100,8 @@ export async function writeResearchReport(options: {
 	readFullSlugs?: readonly string[];
 	/** Selected slugs to open in Pāli and English. */
 	readPaliSlugs?: readonly string[];
+	/** Selected slugs to inline site SVG markup for. */
+	readIllustrationSlugs?: readonly string[];
 	/** Search strings that may name already-selected discourse IDs. */
 	namedQueries?: readonly string[];
 }): Promise<ResearchReportResult> {
@@ -121,6 +129,7 @@ export async function writeResearchReport(options: {
 			namedQueries: options.namedQueries,
 			readFullSlugs: options.readFullSlugs,
 			readPaliSlugs: options.readPaliSlugs,
+			readIllustrationSlugs: options.readIllustrationSlugs,
 			loadDoc: options.loadDoc,
 			maxExpanded,
 		});
@@ -153,7 +162,7 @@ export async function writeResearchReport(options: {
 			{ role: "system" as const, content: RESEARCH_REPORT_SYSTEM },
 			{
 				role: "user" as const,
-				content: `Question: ${options.question.replace(/\s+/g, " ").trim()}
+				content: `Question: ${clipAiQuestion(options.question)}
 ${brief ? `Clarifying brief:\n${brief}\n` : ""}${guidance ? `Guidance: ${guidance}\n` : ""}${prior ? `Previous draft to improve (keep what still holds; revise from the new passages):\n${prior}\n` : ""}
 Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English). [core] / English is the site's core translation; [reference] / Sujato English is Bhikkhu Sujato's reference translation:
 ${evidence}
@@ -195,12 +204,18 @@ Markdown report:`,
 			replaceResearchSourcesSection(taken.report, options.hits),
 			lengthSources,
 		);
+		const selected = options.hits.map((hit) => hit.slug);
 		const readPali = resolveResearchReadFullSlugs(
 			taken.readPali,
-			options.hits.map((hit) => hit.slug),
+			selected,
 		);
-		if (!report) return { ...empty, reasoning, model: usedModel, readPali };
-		return { report, model: usedModel, reasoning, readPali };
+		const readIllustration = clipDiscourseSvgRequestSlugs(
+			resolveResearchReadFullSlugs(taken.readIllustration, selected),
+		);
+		if (!report) {
+			return { ...empty, reasoning, model: usedModel, readPali, readIllustration };
+		}
+		return { report, model: usedModel, reasoning, readPali, readIllustration };
 	} finally {
 		watchdog.dispose();
 	}

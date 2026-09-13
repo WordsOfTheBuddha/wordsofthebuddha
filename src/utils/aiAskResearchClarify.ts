@@ -1,19 +1,25 @@
 import { extractJsonObject } from "./extractJsonObject";
+import { clipAiQuestion } from "./aiAskQuestionText";
 
 /** Keep this module free of server-only imports — Ask’s browser bundle loads it. */
 
 export const RESEARCH_CLARIFY_TTL_MS = 15 * 60 * 1000;
 export const RESEARCH_CLARIFY_MAX_QUESTIONS = 3;
-export const RESEARCH_CLARIFY_MIN_QUESTIONS = 1;
+export const RESEARCH_CLARIFY_MIN_QUESTIONS = 0;
 export const RESEARCH_CLARIFY_MAX_CHOICES = 5;
 export const RESEARCH_CLARIFY_MAX_PROMPT = 180;
 export const RESEARCH_CLARIFY_MAX_LABEL = 72;
 export const RESEARCH_CLARIFY_MAX_OTHER = 480;
+export const RESEARCH_CLARIFY_MAX_INTERPRETATION = 400;
+export const RESEARCH_CLARIFY_BRIEF_MAX = 6000;
 export const RESEARCH_CLARIFY_OTHER_ID = "other";
 export const RESEARCH_CLARIFY_NO_PREF_ID = "no_preference";
 export const RESEARCH_CLARIFY_OTHER_LABEL = "Other";
 export const RESEARCH_CLARIFY_NO_PREF_LABEL = "No preference";
 export const RESEARCH_CLARIFY_TITLE = "A few questions first";
+export const RESEARCH_CLARIFY_CONFIRM_TITLE = "Ready to research";
+export const RESEARCH_CLARIFY_CONFIRM_FALLBACK =
+	"We'll research this as asked.";
 
 export type ResearchClarifyDeclineKind =
 	| "off_corpus"
@@ -31,6 +37,8 @@ export interface ResearchClarifyQuestion {
 	id: string;
 	prompt: string;
 	choices: ResearchClarifyChoice[];
+	/** Model's default reading when other directions are also reasonable. */
+	suggestedChoiceId?: string;
 }
 
 export interface ResearchClarifyDecline {
@@ -48,6 +56,7 @@ export interface ResearchClarifyParsed {
 	inScope: boolean;
 	decline?: ResearchClarifyDecline;
 	questions: ResearchClarifyQuestion[];
+	interpretation?: string;
 }
 
 const ID_RE = /^[a-z][a-z0-9_]{0,39}$/;
@@ -61,21 +70,27 @@ export const RESEARCH_DECLINE_UNRELATED =
 export const RESEARCH_DECLINE_CRISIS =
 	"This is not something AI research can help with. Please reach a person nearby or local emergency / crisis resources.";
 
-export const RESEARCH_CLARIFY_SYSTEM = `You prepare 2–3 clarifying questions before a closed-corpus research job on Words of the Buddha.
+export const RESEARCH_CLARIFY_SYSTEM = `You prepare clarifying questions before a closed-corpus research job on Words of the Buddha.
 
 The library is fixed: only the early Buddhist discourses on this site (Pali nikāyas and related early collections). It cannot use the open web, later commentaries (Visuddhimagga, Abhidhamma as a later layer), other Buddhist schools, academic papers, or news. Do not offer those as options and do not ask the reader to accept or reject that limit.
 
 Return JSON only:
-{"inScope":true,"decline":{"kind":"off_corpus","message":""},"questions":[{"id":"focus","prompt":"…","choices":[{"id":"a","label":"…","outOfScope":false}]}]}
+{"inScope":true,"interpretation":"…","questions":[{"id":"focus","prompt":"…","suggestedChoiceId":"survey","choices":[{"id":"a","label":"…","outOfScope":false}]}]}
 
 Rules:
 - Decide inScope first from the question itself.
 - inScope false when they want something this library cannot do: open-web research, later commentarial layers as the object of study, other schools, tools/news/weather/coding, or help with their own acute crisis. Then set decline.kind to off_corpus, unrelated, or crisis, put a short polite message, and questions [].
 - A mixed question that needs later layers or the open web to be answered is off_corpus — decline the whole topic. Do not ask them to pick nikāyas vs commentary.
 - Hard teaching questions (killing, sexuality, undeclared points, caste, politics as Dhamma) stay inScope true. Do not refuse them.
-- When inScope, ask only how to shape the report: emphasis, evidence, audience, depth, or how to handle Pali. Never ask about source scope, later layers, Abhidhamma, Visuddhimagga, other schools, or the open web. Do not ask for a word count or page length.
-- 2 or 3 short questions. Each has 2–4 concrete choice labels. Do not add “Other” or “No preference” — the harness appends those.
-- Choice labels are short (a few words). Question prompts are one sentence.
+- When inScope:
+  - 3 is the maximum number of questions, not a quota. Ask 0, 1, 2, or 3.
+  - If the question is already clear enough to research, set questions to [] and write interpretation: a short statement of the key reading (what you will look for and how you will treat it) so the reader can confirm before the job starts.
+  - Ask only questions that would change the report (emphasis, evidence, audience, depth, Pali, or a real fork in direction). Skip anything you can reasonably infer.
+  - Do not invent a fluffy extra option or a third question to fill a slot. Every choice must be a genuine direction.
+  - Each question has 2–4 concrete choice labels. Do not add “Other” or “No preference” — the harness appends those.
+  - When one choice is the natural reading but another is also a good direction, set suggestedChoiceId to that choice's id so the reader can keep it or switch. Never suggest Other or No preference. Do not suggest a choice unless it is genuinely the default reading.
+  - Choice labels are short (a few words). Question prompts are one sentence. interpretation is at most two sentences.
+  - Never ask about source scope, later layers, Abhidhamma, Visuddhimagga, other schools, or the open web. Do not ask for a word count or page length.
 - Do not search. Do not invent discourse IDs. Do not spend a research credit.`;
 
 export const RESEARCH_FALLBACK_QUESTIONS: ResearchClarifyQuestion[] = [
@@ -100,6 +115,31 @@ export const RESEARCH_FALLBACK_QUESTIONS: ResearchClarifyQuestion[] = [
 
 function clip(value: string, max: number): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function clipInterpretation(value: unknown): string {
+	if (typeof value !== "string") return "";
+	return clip(value, RESEARCH_CLARIFY_MAX_INTERPRETATION);
+}
+
+function suggestedChoiceIdFor(
+	record: Record<string, unknown>,
+	choices: readonly ResearchClarifyChoice[],
+): string | undefined {
+	const raw = clip(
+		typeof record.suggestedChoiceId === "string"
+			? record.suggestedChoiceId.toLowerCase()
+			: "",
+		40,
+	);
+	if (!raw) return undefined;
+	if (
+		raw === RESEARCH_CLARIFY_OTHER_ID ||
+		raw === RESEARCH_CLARIFY_NO_PREF_ID
+	) {
+		return undefined;
+	}
+	return choices.some((choice) => choice.id === raw) ? raw : undefined;
 }
 
 function clipOtherNote(value: string): string {
@@ -216,7 +256,13 @@ function parseQuestion(
 		if (choices.length >= RESEARCH_CLARIFY_MAX_CHOICES - 2) break;
 	}
 	if (choices.length < 1) return null;
-	return { id, prompt, choices: withRequiredChoices(choices) };
+	const suggestedChoiceId = suggestedChoiceIdFor(record, choices);
+	return {
+		id,
+		prompt,
+		choices: withRequiredChoices(choices),
+		...(suggestedChoiceId ? { suggestedChoiceId } : {}),
+	};
 }
 
 export function parseResearchClarify(raw: string): ResearchClarifyParsed {
@@ -256,33 +302,54 @@ export function parseResearchClarify(raw: string): ResearchClarifyParsed {
 	}
 	const seen = new Set<string>();
 	const questions: ResearchClarifyQuestion[] = [];
-	const rawQuestions = Array.isArray(record.questions) ? record.questions : [];
+	const hasQuestionsField = Array.isArray(record.questions);
+	const rawQuestions = hasQuestionsField ? record.questions : [];
 	for (const [index, item] of rawQuestions.entries()) {
 		const question = parseQuestion(item, index, seen);
 		if (!question) continue;
 		questions.push(question);
 		if (questions.length >= RESEARCH_CLARIFY_MAX_QUESTIONS) break;
 	}
-	if (questions.length < RESEARCH_CLARIFY_MIN_QUESTIONS) {
+	const interpretation = clipInterpretation(record.interpretation);
+	if (!hasQuestionsField) {
+		if (interpretation) {
+			return { inScope: true, questions: [], interpretation };
+		}
 		return {
 			inScope: true,
 			questions: RESEARCH_FALLBACK_QUESTIONS.map(cloneQuestion),
 		};
 	}
-	return { inScope: true, questions };
+	if (rawQuestions.length > 0 && questions.length === 0) {
+		return {
+			inScope: true,
+			questions: RESEARCH_FALLBACK_QUESTIONS.map(cloneQuestion),
+			...(interpretation ? { interpretation } : {}),
+		};
+	}
+	return {
+		inScope: true,
+		questions,
+		...(interpretation ? { interpretation } : {}),
+	};
 }
 
 function cloneQuestion(question: ResearchClarifyQuestion): ResearchClarifyQuestion {
+	const modelChoices = question.choices.filter(
+		(choice) =>
+			choice.id !== RESEARCH_CLARIFY_OTHER_ID &&
+			choice.id !== RESEARCH_CLARIFY_NO_PREF_ID,
+	);
+	const suggestedChoiceId =
+		question.suggestedChoiceId &&
+		modelChoices.some((choice) => choice.id === question.suggestedChoiceId)
+			? question.suggestedChoiceId
+			: undefined;
 	return {
 		id: question.id,
 		prompt: question.prompt,
-		choices: withRequiredChoices(
-			question.choices.filter(
-				(choice) =>
-					choice.id !== RESEARCH_CLARIFY_OTHER_ID &&
-					choice.id !== RESEARCH_CLARIFY_NO_PREF_ID,
-			),
-		),
+		choices: withRequiredChoices(modelChoices),
+		...(suggestedChoiceId ? { suggestedChoiceId } : {}),
 	};
 }
 
@@ -356,11 +423,32 @@ export function canStartResearchClarify(
 	questions: readonly ResearchClarifyQuestion[],
 	answers: readonly ResearchClarifyAnswer[],
 ): boolean {
-	if (questions.length === 0) return false;
+	if (questions.length === 0) return true;
 	const byId = new Map(answers.map((item) => [item.questionId, item]));
 	return questions.every((question) =>
 		isClarifyAnswerComplete(question, byId.get(question.id)),
 	);
+}
+
+export function suggestedClarifyAnswers(
+	questions: readonly ResearchClarifyQuestion[],
+): Record<string, { choiceId: string; otherText?: string }> {
+	const out: Record<string, { choiceId: string; otherText?: string }> = {};
+	for (const question of questions) {
+		const suggested = question.suggestedChoiceId;
+		if (!suggested) continue;
+		const choice = findClarifyChoice(question, suggested);
+		if (
+			!choice ||
+			choice.other ||
+			choice.id === RESEARCH_CLARIFY_OTHER_ID ||
+			choice.id === RESEARCH_CLARIFY_NO_PREF_ID
+		) {
+			continue;
+		}
+		out[question.id] = { choiceId: choice.id };
+	}
+	return out;
 }
 
 export function researchClarifyAnswersOutOfScope(
@@ -381,9 +469,12 @@ export function formatResearchClarifyBrief(
 	question: string,
 	questions: readonly ResearchClarifyQuestion[],
 	answers: readonly ResearchClarifyAnswer[],
+	interpretation?: string,
 ): string {
 	const byId = new Map(answers.map((item) => [item.questionId, item]));
-	const lines = [`Topic: ${clip(question, 500)}`];
+	const lines = [`Topic: ${clipAiQuestion(question).slice(0, 1500)}`];
+	const reading = clipInterpretation(interpretation);
+	if (reading) lines.push(`Reading: ${reading}`);
 	for (const item of questions) {
 		const answer = byId.get(item.id);
 		if (!answer) continue;
@@ -395,7 +486,7 @@ export function formatResearchClarifyBrief(
 		if (!label) continue;
 		lines.push(`${item.prompt} → ${label}`);
 	}
-	return lines.join("\n").slice(0, 1200);
+	return lines.join("\n").slice(0, RESEARCH_CLARIFY_BRIEF_MAX);
 }
 
 export function answersFromClarifyState(
@@ -415,11 +506,13 @@ export function toPublicResearchClarify(input: {
 	inScope: boolean;
 	decline?: ResearchClarifyDecline;
 	questions?: readonly ResearchClarifyQuestion[];
+	interpretation?: string;
 }): {
 	clarifyId: string;
 	inScope: boolean;
 	decline?: ResearchClarifyDecline;
 	questions?: ResearchClarifyQuestion[];
+	interpretation?: string;
 } {
 	if (!input.inScope && input.decline) {
 		return {
@@ -428,6 +521,7 @@ export function toPublicResearchClarify(input: {
 			decline: input.decline,
 		};
 	}
+	const interpretation = clipInterpretation(input.interpretation);
 	return {
 		clarifyId: input.id,
 		inScope: true,
@@ -442,6 +536,10 @@ export function toPublicResearchClarify(input: {
 					? { other: true }
 					: {}),
 			})),
+			...(question.suggestedChoiceId
+				? { suggestedChoiceId: question.suggestedChoiceId }
+				: {}),
 		})),
+		...(interpretation ? { interpretation } : {}),
 	};
 }

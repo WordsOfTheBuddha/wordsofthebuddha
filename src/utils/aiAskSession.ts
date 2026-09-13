@@ -1,8 +1,12 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
-import type { AiDiscourseHit } from "./aiDiscourseHits";
+import {
+	publicIllustrationFields,
+	type AiDiscourseHit,
+} from "./aiDiscourseHits";
 import { clipResearchProcessNotes } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
+import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import {
 	sanitizeResearchHistoryReportStats,
 	snapshotResearchHistoryStats,
@@ -77,7 +81,6 @@ export type AskHistoryTab = "recent" | "pinned";
 export const AI_ASK_THREAD_TURN_LIMIT = 6;
 const ACTIVE_THREAD_TURN_LIMIT = AI_ASK_THREAD_TURN_LIMIT;
 
-const MAX_QUESTION = 500;
 const MAX_LOOKING = 280;
 const MAX_QUERY = 100;
 const MAX_QUERIES = 6;
@@ -154,7 +157,10 @@ export function sanitizeAskHistoryEntry(
 	if (!raw || typeof raw !== "object") return null;
 	const allowThread = options?.allowThread !== false;
 	const record = raw as Record<string, unknown>;
-	const question = clip(typeof record.question === "string" ? record.question : "", MAX_QUESTION);
+	const question = clipAiQuestion(
+		typeof record.question === "string" ? record.question : "",
+		MAX_QUESTION_CHARS,
+	);
 	if (!question) return null;
 	const resultsRaw = Array.isArray(record.results) ? record.results : [];
 	const results: AiDiscourseHit[] = [];
@@ -182,6 +188,7 @@ export function sanitizeAskHistoryEntry(
 				? { volpage: clip(hit.volpage, 80) }
 				: {}),
 			href,
+			...publicIllustrationFields(hit),
 		});
 	}
 	const keepEmptyResearch =
@@ -210,7 +217,7 @@ export function sanitizeAskHistoryEntry(
 		: [];
 	const originalQuestion =
 		typeof record.originalQuestion === "string"
-			? clip(record.originalQuestion, MAX_QUESTION)
+			? clipAiQuestion(record.originalQuestion, MAX_QUESTION_CHARS)
 			: "";
 	const at =
 		typeof record.at === "number" && Number.isFinite(record.at)

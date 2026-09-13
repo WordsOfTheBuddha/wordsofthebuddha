@@ -6,6 +6,7 @@ import {
 	buildRewriteMessages,
 	clipAiHistorySummary,
 	clipAiQuestion,
+	MAX_QUESTION_CHARS,
 	extractJsonObject,
 	looksLikeHardTeachingTopic,
 	looksLikePersonalCrisis,
@@ -306,9 +307,13 @@ describe("parseRewritePlan", () => {
 });
 
 describe("clipAiQuestion", () => {
-	it("trims and caps length", () => {
+	it("trims, keeps paragraphs, and caps length", () => {
 		assert.equal(clipAiQuestion("  hello   world  "), "hello world");
-		assert.equal(clipAiQuestion("x".repeat(600)).length, 500);
+		assert.equal(clipAiQuestion("hello\n\n  world"), "hello\n\nworld");
+		assert.equal(
+			clipAiQuestion("x".repeat(MAX_QUESTION_CHARS + 50)).length,
+			MAX_QUESTION_CHARS,
+		);
 	});
 });
 

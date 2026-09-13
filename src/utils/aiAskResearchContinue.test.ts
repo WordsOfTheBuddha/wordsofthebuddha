@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	formatResearchReadFullProgress,
+	formatResearchReadIllustrationProgress,
 	formatResearchReadPaliProgress,
 	formatResearchReadProgress,
 	nextResearchHop,
@@ -147,6 +148,23 @@ describe("formatResearchReadPaliProgress", () => {
 				readPali: ["mn70"],
 			}),
 			"Reading MN 70 in Pāli and English…",
+		);
+		assert.equal(
+			formatResearchReadIllustrationProgress(["sn36.6"]),
+			"Opening site diagrams for SN 36.6…",
+		);
+		assert.equal(
+			formatResearchReadProgress({
+				readIllustration: ["sn36.6"],
+			}),
+			"Opening site diagrams for SN 36.6…",
+		);
+		assert.match(
+			formatResearchReadProgress({
+				readPali: ["mn70"],
+				readIllustration: ["sn36.6"],
+			}),
+			/Pāli and English.*SN 36\.6/,
 		);
 	});
 });

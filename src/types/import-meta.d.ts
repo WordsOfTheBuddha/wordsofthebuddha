@@ -1,4 +1,6 @@
 interface ImportMetaEnv {
+	readonly SSR?: boolean;
+	readonly PROD?: boolean;
 	readonly POLAR_ACCESS_TOKEN?: string;
 	readonly POLAR_SUCCESS_URL?: string;
 	readonly POLAR_SERVER?: string;

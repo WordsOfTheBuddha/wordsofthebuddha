@@ -1,14 +1,18 @@
-import type { AiDiscourseHit } from "./aiDiscourseHits";
+import {
+	RESEARCH_REPORT_MAX_CHARS,
+	stripResearchSourcesSection,
+} from "./aiAskResearchReport";
+import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
+import {
+	publicIllustrationFields,
+	type AiDiscourseHit,
+} from "./aiDiscourseHits";
 import {
 	askAuthPageHref,
 	searchAskHref,
 	searchResearchHref,
 } from "./aiAskHref";
 import { normalizeAskQuestionKey } from "./aiAskSession";
-import {
-	RESEARCH_REPORT_MAX_CHARS,
-	stripResearchSourcesSection,
-} from "./aiAskResearchReport";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const ASK_SHARE_SLUG_MIN = 8;
@@ -473,6 +477,7 @@ export function sanitizeAskShareResults(
 				? { volpage: clip(hit.volpage, 80) }
 				: {}),
 			href,
+			...publicIllustrationFields(hit),
 		});
 	}
 	return out;
@@ -481,9 +486,9 @@ export function sanitizeAskShareResults(
 export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 	if (!raw || typeof raw !== "object") return null;
 	const record = raw as Record<string, unknown>;
-	const question = clip(
+	const question = clipAiQuestion(
 		typeof record.question === "string" ? record.question : "",
-		500,
+		MAX_QUESTION_CHARS,
 	);
 	const research = isAskShareResearchInput(record);
 	const results = sanitizeAskShareResults(

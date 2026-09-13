@@ -8,6 +8,7 @@ import {
 	declineCopy,
 	parseResearchClarify,
 	parseResearchClarifyAnswers,
+	RESEARCH_CLARIFY_MAX_INTERPRETATION,
 	RESEARCH_CLARIFY_SYSTEM,
 	RESEARCH_CLARIFY_TTL_MS,
 	RESEARCH_DECLINE_CRISIS,
@@ -35,6 +36,7 @@ export interface ResearchClarifyDraft {
 	inScope: boolean;
 	decline?: ResearchClarifyDecline;
 	questions: ResearchClarifyQuestion[];
+	interpretation?: string;
 	used: boolean;
 	createdAt: number;
 	expiresAt: number;
@@ -104,6 +106,14 @@ function fromRecord(
 		inScope,
 		...(decline ? { decline } : {}),
 		questions: sanitizeResearchClarifyQuestions(data.questions),
+		...(typeof data.interpretation === "string" && data.interpretation.trim()
+			? {
+					interpretation: data.interpretation
+						.replace(/\s+/g, " ")
+						.trim()
+						.slice(0, RESEARCH_CLARIFY_MAX_INTERPRETATION),
+				}
+			: {}),
 		used: data.used === true,
 		createdAt,
 		expiresAt,
@@ -170,6 +180,9 @@ export async function createResearchClarifyDraft(options: {
 		inScope: options.parsed.inScope,
 		...(options.parsed.decline ? { decline: options.parsed.decline } : {}),
 		questions: options.parsed.questions,
+		...(options.parsed.interpretation
+			? { interpretation: options.parsed.interpretation }
+			: {}),
 		used: false,
 		createdAt: now,
 		expiresAt: now + RESEARCH_CLARIFY_TTL_MS,
@@ -202,7 +215,7 @@ async function generateClarify(
 						Array.isArray(history) && history.length > 0
 							? `\nEarlier turns: ${history.length}`
 							: ""
-					}\nThe corpus is fixed to the early discourses on this site. Decide inScope from the question, then either decline or ask 2–3 questions about how to shape the report. Never ask about commentaries, later layers, or the open web.`,
+					}\nThe corpus is fixed to the early discourses on this site. Decide inScope from the question. If the request is already clear, set questions to [] and put a short interpretation of how you will research it so the reader can confirm. Otherwise ask only the shaping questions that would actually change the report (0–3, never filler). You may set suggestedChoiceId when one option is the natural reading but another direction is also reasonable. Never ask about commentaries, later layers, or the open web.`,
 				},
 			],
 			maxTokens: 900,

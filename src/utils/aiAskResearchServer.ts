@@ -26,6 +26,7 @@ import {
 	RESEARCH_RERANK_SNIPPET_CANDIDATES,
 } from "./aiResultRerank";
 import {
+	clipAiQuestion,
 	parseAskHistory,
 	parseRewritePlan,
 	resolveRewriteExcludeSlugs,
@@ -33,6 +34,7 @@ import {
 	type AiRewritePlan,
 } from "./aiQueryRewrite";
 import { collectAskHistoryShownSlugs } from "./aiAskHistory";
+import { RESEARCH_CLARIFY_BRIEF_MAX } from "./aiAskResearchClarify";
 import { loadUserAskHistory, upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
 import {
 	buildAiAskTelemetryAskEvent,
@@ -82,6 +84,7 @@ import {
 	buildResearchReportEvidence,
 	writeResearchReport,
 } from "./aiAskResearchReportWrite";
+import { seedResearchOpeningVersion } from "./aiAskResearchVersions";
 import { sendResearchEmail } from "./researchEmail";
 import {
 	consumeResearchQuota,
@@ -132,7 +135,7 @@ class ResearchStaleWorkerError extends Error {
 	}
 }
 
-interface ResearchJobRecord {
+export interface ResearchJobRecord {
 	id: string;
 	uid: string;
 	email: string;
@@ -176,6 +179,7 @@ interface ResearchJobRecord {
 	continueReadPali?: string[];
 	unreadFull?: string[];
 	fullReadSlugs?: string[];
+	versionIndex?: unknown;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -292,10 +296,11 @@ function recordFromData(
 		fullReadSlugs: Array.isArray(data.fullReadSlugs)
 			? (data.fullReadSlugs as string[])
 			: undefined,
+		versionIndex: data.versionIndex,
 	};
 }
 
-async function readJob(
+export async function readJob(
 	uid: string,
 	jobId: string,
 ): Promise<ResearchJobRecord | null> {
@@ -323,7 +328,7 @@ function jobPatchNeedsLease(patch: Partial<ResearchJobRecord>): boolean {
 	);
 }
 
-async function writeJob(
+export async function writeJob(
 	record: ResearchJobRecord,
 	patch: Partial<ResearchJobRecord> = {},
 ): Promise<ResearchJobRecord> {
@@ -396,6 +401,21 @@ async function writeJob(
 	return next;
 }
 
+async function attachOpeningResearchVersion(
+	record: ResearchJobRecord,
+): Promise<ResearchJobRecord> {
+	const report = sanitizeResearchJobResult(record.result)?.report || "";
+	const seeded = await seedResearchOpeningVersion({
+		uid: record.uid,
+		jobId: record.id,
+		report,
+		existingIndex: record.versionIndex,
+		at: record.createdAt || Date.now(),
+	});
+	if (!seeded) return record;
+	return writeJob(record, { versionIndex: seeded });
+}
+
 async function throwIfCancelled(record: ResearchJobRecord): Promise<void> {
 	const fresh = await readJob(record.uid, record.id);
 	if (fresh && fresh.runToken && fresh.runToken !== record.runToken) {
@@ -433,7 +453,7 @@ export async function createResearchJob(options: {
 		chainPass: 1,
 		hop: 1,
 		...(options.clarifyBrief
-			? { clarifyBrief: options.clarifyBrief.slice(0, 1200) }
+			? { clarifyBrief: options.clarifyBrief.slice(0, RESEARCH_CLARIFY_BRIEF_MAX) }
 			: {}),
 	};
 	memory.set(jobKey(record.uid, record.id), record);
@@ -687,6 +707,7 @@ export async function retryResearchJob(options: {
 		quotaSettled: false,
 		quotaRefunded: false,
 		createdAt: Date.now(),
+		versionIndex: [],
 	});
 	void startResearchJobWorker({
 		requestUrl: options.requestUrl,
@@ -775,7 +796,7 @@ async function planResearchRefine(input: {
 				{ role: "system", content: RESEARCH_REFINE_SYSTEM },
 				{
 					role: "user",
-					content: `Question: ${input.question.replace(/\s+/g, " ").trim()}
+					content: `Question: ${clipAiQuestion(input.question)}
 ${input.brief ? `Clarifying brief:\n${input.brief}\n` : ""}Tried queries: ${tried || "(none)"}
 Passages from the selected discourses (excerpts, and full text where named IDs were opened):
 ${evidence.trim() || "(none)"}
@@ -822,7 +843,7 @@ async function evaluateResearchContinue(input: {
 				{ role: "system", content: RESEARCH_CONTINUE_SYSTEM },
 				{
 					role: "user",
-					content: `Question: ${input.question.replace(/\s+/g, " ").trim()}
+					content: `Question: ${clipAiQuestion(input.question)}
 ${input.brief ? `Clarifying brief:\n${input.brief}\n` : ""}Tried queries: ${tried || "(none)"}
 Selected discourses:
 ${selected || "(none)"}
@@ -851,14 +872,23 @@ JSON:`,
 async function followUpResearchPaliRead(input: {
 	written: ResearchReportResult;
 	startedAt: number;
-	onProgress: (slugs: readonly string[]) => Promise<void>;
+	onProgress: (reads: {
+		readPali: readonly string[];
+		readIllustration: readonly string[];
+	}) => Promise<void>;
 	write: (timeoutMs: number) => Promise<ResearchReportResult>;
 }): Promise<ResearchReportResult> {
-	const slugs = input.written.readPali || [];
-	if (!input.written.report || slugs.length === 0) return input.written;
+	const readPali = input.written.readPali || [];
+	const readIllustration = input.written.readIllustration || [];
+	if (
+		!input.written.report ||
+		(readPali.length === 0 && readIllustration.length === 0)
+	) {
+		return input.written;
+	}
 	const timeoutMs = resolveAskWriterBudgetMs(Date.now() - input.startedAt);
 	if (timeoutMs <= 0) return input.written;
-	await input.onProgress(slugs);
+	await input.onProgress({ readPali, readIllustration });
 	try {
 		const again = await input.write(timeoutMs);
 		return again.report ? again : input.written;
@@ -899,8 +929,9 @@ async function finalizeFromDraft(
 		progressNote: "",
 		result: draft,
 	});
-	await persistHistory(next, draft);
-	await finishEmail(next, true);
+	const finished = await attachOpeningResearchVersion(next);
+	await persistHistory(finished, draft);
+	await finishEmail(finished, true);
 }
 
 async function enqueueResearchContinue(options: {
@@ -1234,12 +1265,10 @@ async function runResearchChainPass(
 			const followed = await followUpResearchPaliRead({
 				written,
 				startedAt,
-				onProgress: async (slugs) => {
+				onProgress: async (reads) => {
 					current = await writeJob(current, {
 						status: "answering",
-						progressNote: formatResearchReadProgress({
-							readPali: slugs,
-						}),
+						progressNote: formatResearchReadProgress(reads),
 					});
 					await throwIfCancelled(current);
 				},
@@ -1263,6 +1292,7 @@ async function runResearchChainPass(
 						],
 						readFullSlugs: [...readFull, ...(written.readPali || [])],
 						readPaliSlugs: written.readPali,
+						readIllustrationSlugs: written.readIllustration,
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
@@ -1377,6 +1407,7 @@ async function runResearchChainPass(
 			result,
 		});
 		if (current.runToken !== record.runToken) return "done";
+		current = await attachOpeningResearchVersion(current);
 		await persistHistory(current, result);
 		await finishEmail(current, true);
 		return "done";
@@ -1537,6 +1568,7 @@ export async function runResearchJob(options: {
 			result,
 		});
 		if (current.runToken !== options.runToken) return;
+		current = await attachOpeningResearchVersion(current);
 		persistTelemetry({
 			displayQuestion: result.question,
 			lookingFor: result.lookingFor,
@@ -2067,12 +2099,10 @@ export async function runResearchJob(options: {
 					const followed = await followUpResearchPaliRead({
 						written,
 						startedAt,
-						onProgress: async (slugs) => {
+						onProgress: async (reads) => {
 							current = await writeJob(current, {
 								status: "answering",
-								progressNote: formatResearchReadProgress({
-									readPali: slugs,
-								}),
+								progressNote: formatResearchReadProgress(reads),
 							});
 							await throwIfCancelled(current);
 						},
@@ -2095,6 +2125,7 @@ export async function runResearchJob(options: {
 									...(written.readPali || []),
 								],
 								readPaliSlugs: written.readPali,
+								readIllustrationSlugs: written.readIllustration,
 								onReasoning: (delta) => {
 									const next = `${current.reasoning || ""}${delta}`;
 									current = { ...current, reasoning: next };
@@ -2168,7 +2199,7 @@ export async function runResearchJob(options: {
 	}
 }
 
-async function persistHistory(
+export async function persistHistory(
 	record: ResearchJobRecord,
 	result: {
 		question: string;

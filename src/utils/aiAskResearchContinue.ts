@@ -129,12 +129,39 @@ export function formatResearchReadPaliProgress(
 	return `Reading ${listed}${extra} in Pāli and English…`;
 }
 
+/** Live status when the writer is opening a site diagram. */
+export function formatResearchReadIllustrationProgress(
+	slugs: readonly string[] = [],
+): string {
+	const labels = slugs.map((slug) => transformId(slug)).filter(Boolean);
+	if (labels.length === 0) return "Opening site diagrams…";
+	const listed = labels.slice(0, 8).join(", ");
+	const extra = labels.length > 8 ? ` +${labels.length - 8}` : "";
+	return `Opening site diagrams for ${listed}${extra}…`;
+}
+
 export function formatResearchReadProgress(input: {
 	readFull?: readonly string[];
 	readPali?: readonly string[];
+	readIllustration?: readonly string[];
 }): string {
 	const pali = (input.readPali || []).filter(Boolean);
+	const svg = (input.readIllustration || []).filter(Boolean);
+	if (pali.length > 0 && svg.length > 0) {
+		const paliLabels = pali
+			.map((slug) => transformId(slug))
+			.filter(Boolean)
+			.slice(0, 8)
+			.join(", ");
+		const svgLabels = svg
+			.map((slug) => transformId(slug))
+			.filter(Boolean)
+			.slice(0, 8)
+			.join(", ");
+		return `Reading ${paliLabels || "selected discourses"} in Pāli and English, and opening site diagrams${svgLabels ? ` for ${svgLabels}` : ""}…`;
+	}
 	if (pali.length > 0) return formatResearchReadPaliProgress(pali);
+	if (svg.length > 0) return formatResearchReadIllustrationProgress(svg);
 	return formatResearchReadFullProgress(input.readFull);
 }
 

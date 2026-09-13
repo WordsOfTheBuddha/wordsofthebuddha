@@ -250,6 +250,57 @@ describe("formatAskAnswerEvidenceBlock", () => {
 		assert.match(block, /DN 10 \[reference\]/);
 		assert.doesNotMatch(block, /DN 10 \[core\]/);
 	});
+
+	it("includes site SVG illustrations when present", () => {
+		const block = formatAskAnswerEvidenceBlock({
+			expanded: [
+				{
+					slug: "sn36.6",
+					title: "The Dart",
+					referenceOnly: false,
+					passages: [{ source: "English", text: "The uninstructed person." }],
+					svgMarkup: '<svg xmlns="http://www.w3.org/2000/svg"><text>dart</text></svg>',
+				},
+			],
+		});
+		assert.match(block, /Illustration \(SVG\)/);
+		assert.match(block, /```svg/);
+		assert.match(block, /<text>dart<\/text>/);
+	});
+
+	it("includes site diagram labels when markup was not inlined", () => {
+		const block = formatAskAnswerEvidenceBlock({
+			expanded: [
+				{
+					slug: "sn36.6",
+					title: "The Dart",
+					referenceOnly: false,
+					passages: [{ source: "English", text: "The uninstructed person." }],
+					svgSummary: "viewBox 0 0 920 1680\nThe Dart",
+				},
+			],
+		});
+		assert.match(block, /Illustration \(labels\)/);
+		assert.match(block, /viewBox 0 0 920 1680/);
+		assert.doesNotMatch(block, /```svg/);
+	});
+
+	it("marks raster-only illustrated hits without SVG markup", () => {
+		const block = formatAskAnswerEvidenceBlock({
+			expanded: [
+				{
+					slug: "an3.65",
+					title: "Kesamutti",
+					referenceOnly: false,
+					passages: [{ source: "English", text: "Do not go by reports." }],
+					illustrated: true,
+				},
+			],
+		});
+		assert.match(block, /AN 3.65 \[illustrated\]/);
+		assert.doesNotMatch(block, /Illustration \(SVG\)/);
+		assert.doesNotMatch(block, /Illustration \(labels\)/);
+	});
 });
 
 describe("buildAskAnswerEvidence", () => {
@@ -403,6 +454,66 @@ describe("buildAskAnswerEvidence", () => {
 		);
 		assert.equal(pack.expanded.length, 28);
 		assert.deepEqual(pack.listedOnly, ["mn29", "mn30"]);
+	});
+
+	it("loads SVG labels for illustrated hits by default", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "sn36.6",
+					title: "The Dart",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/sn36.6",
+					hasIllustration: true,
+				},
+			],
+			[],
+			async () => ({
+				slug: "sn36.6",
+				title: "The Dart",
+				description: "",
+				content: "Two feelings.",
+			}),
+			4,
+			{
+				loadSvgSummary: () => "viewBox 0 0 920 1680\nThe Dart",
+			},
+		);
+		assert.match(pack.expanded[0]?.svgSummary || "", /The Dart/);
+		assert.equal(pack.expanded[0]?.svgMarkup, undefined);
+	});
+
+	it("inlines full SVG markup only for requested illustration slugs", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "sn36.6",
+					title: "The Dart",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/sn36.6",
+					hasIllustration: true,
+				},
+			],
+			[],
+			async () => ({
+				slug: "sn36.6",
+				title: "The Dart",
+				description: "",
+				content: "Two feelings.",
+			}),
+			4,
+			{
+				svgSlugs: ["sn36.6"],
+				loadSvgMarkup: () =>
+					'<svg xmlns="http://www.w3.org/2000/svg"><text>dart</text></svg>',
+			},
+		);
+		assert.match(pack.expanded[0]?.svgMarkup || "", /dart/);
+		assert.equal(pack.expanded[0]?.svgSummary, undefined);
 	});
 });
 

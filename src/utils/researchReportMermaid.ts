@@ -11,8 +11,45 @@ type MermaidApi = {
 	render: (id: string, text: string) => Promise<{ svg: string }>;
 };
 
+type MermaidModule = { default?: MermaidApi } & MermaidApi;
+
 let mermaidMod: MermaidApi | null = null;
 let mermaidTheme = "";
+
+function unwrapMermaid(mod: MermaidModule): MermaidApi {
+	return (mod.default ?? mod) as MermaidApi;
+}
+
+function isDev(): boolean {
+	return typeof import.meta.env !== "undefined" && Boolean(import.meta.env.DEV);
+}
+
+function logMermaidIssue(phase: string, err?: unknown): void {
+	if (isDev()) console.error(`[ai-mermaid] ${phase}`, err ?? "");
+}
+
+/**
+ * Vite 8 wraps `import(variable)` with `__vite__injectQuery(url, "import")`.
+ * That `?import` request 500s for files in `/public` ("should not be imported
+ * from source"). Build `import()` at runtime so the vendor URL stays native.
+ */
+const importPublicEsm = new Function("u", "return import(u)") as (
+	url: string,
+) => Promise<MermaidModule>;
+
+/** Browser (dev + prod): public vendor ESM. Node/SSR/tsx: package `mermaid`. */
+async function importMermaid(): Promise<MermaidApi> {
+	if (typeof import.meta.env === "undefined" || import.meta.env.SSR) {
+		return unwrapMermaid((await import("mermaid")) as MermaidModule);
+	}
+	const spec = "/vendor/" + "mermaid/mermaid.esm.min.mjs";
+	try {
+		return unwrapMermaid(await importPublicEsm(spec));
+	} catch (err) {
+		logMermaidIssue("vendor import failed", err);
+		throw err;
+	}
+}
 
 function decodeReportEntities(value: string): string {
 	return value
@@ -24,9 +61,13 @@ function decodeReportEntities(value: string): string {
 }
 
 function mermaidInitConfig(theme: string): Record<string, unknown> {
+	const node =
+		typeof process !== "undefined" && Boolean(process.versions?.node);
 	return {
 		startOnLoad: false,
-		securityLevel: "strict",
+		// mermaid 12's DOMPurify interop throws `addHook is not a function` in
+		// jsdom. The SVG still passes through sanitizeResearchReportHtml.
+		securityLevel: node ? "loose" : "strict",
 		suppressErrorRendering: true,
 		theme,
 		htmlLabels: true,
@@ -35,10 +76,7 @@ function mermaidInitConfig(theme: string): Record<string, unknown> {
 }
 
 async function loadMermaid(dark: boolean): Promise<MermaidApi> {
-	if (!mermaidMod) {
-		const mod = await import("mermaid");
-		mermaidMod = (mod.default ?? mod) as MermaidApi;
-	}
+	if (!mermaidMod) mermaidMod = await importMermaid();
 	const theme = dark ? "dark" : "neutral";
 	if (mermaidTheme !== theme) {
 		mermaidMod.initialize(mermaidInitConfig(theme));
@@ -58,9 +96,13 @@ export async function mermaidSourceToSvg(
 	try {
 		await mermaid.parse(text);
 		const { svg } = await mermaid.render(id, text);
-		if (!svg || isMermaidErrorSvg(svg)) return "";
+		if (!svg || isMermaidErrorSvg(svg)) {
+			logMermaidIssue("empty or error svg");
+			return "";
+		}
 		return sanitizeResearchReportHtml(svg, { allowStyle: true });
-	} catch {
+	} catch (err) {
+		logMermaidIssue("render failed", err);
 		return "";
 	} finally {
 		removeMermaidTempElements(id);
@@ -85,8 +127,8 @@ export async function replaceMermaidPlaceholdersWithSvg(
 				match[0],
 				`<div class="ai-report-diagram">${svg}</div>`,
 			);
-		} catch {
-			/* keep the mermaid source listing */
+		} catch (err) {
+			logMermaidIssue("placeholder replace failed", err);
 		}
 	}
 	return out;
@@ -118,7 +160,8 @@ export async function hydrateResearchReportMermaid(
 			wrap.className = "ai-report-diagram";
 			wrap.innerHTML = svg;
 			node.replaceWith(wrap);
-		} catch {
+		} catch (err) {
+			logMermaidIssue("hydrate failed", err);
 			node.setAttribute("data-ai-mermaid-done", "error");
 		}
 	}

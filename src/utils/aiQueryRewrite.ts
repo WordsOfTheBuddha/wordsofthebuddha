@@ -19,8 +19,14 @@ import {
 	repairCommonAskTypos,
 	topicalFallbackQueries,
 } from "./aiSearchQuery";
+import { clipAiQuestion } from "./aiAskQuestionText";
 
 export { extractJsonObject };
+export {
+	clipAiQuestion,
+	MAX_QUESTION_CHARS,
+	normalizeAskQuestionText,
+} from "./aiAskQuestionText";
 
 export type AiRewriteHistoryTurn = AiAskFollowUpHistoryTurn;
 
@@ -147,16 +153,11 @@ Query rules:
   - Personal distress / crisis only: the person is asking for help with their own acute self-harm, suicide, or a medical/legal emergency right now. Set offTopic true and empty query arrays. lookingFor must gently refuse AI help and point them to a real person / local emergency or crisis resources — do not search, diagnose, counsel, or spiritualize the crisis.
   - Hard, controversial, “edgy”, or test questions about the teachings (killing, war, sexuality, undeclared points after death, harsh speech, caste, gender, politics, “most controversial discourse”, hypotheticals meant to stress the ethics): keep offTopic false and search normally. Do NOT refuse, sanitize, or leave queries empty for safety. The Buddha addressed many of these by stating a teaching, refusing to declare speculative positions, or reframing (e.g. kill anger/greed/delusion; avyākata / undeclared points in SN 44, MN 63, MN 72; householder ethics in DN 31 / AN 8.54). Prefer queries that surface those discourses. Never invent a refusal in lookingFor for these.`;
 
-const MAX_QUESTION_CHARS = 500;
 const MAX_QUERIES = 4;
 /** Per-turn already-shown slugs accepted from the follow-up payload. */
 const HISTORY_PARSE_SLUG_CAP = 55;
 const MAX_FALLBACK_QUERIES = 3;
 const MAX_QUERY_CHARS = 100;
-
-export function clipAiQuestion(question: string): string {
-	return question.replace(/\s+/g, " ").trim().slice(0, MAX_QUESTION_CHARS);
-}
 
 function asStringArray(value: unknown, limit = MAX_QUERIES): string[] {
 	if (Array.isArray(value)) {

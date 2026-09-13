@@ -168,6 +168,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		question,
 		draft.questions,
 		check.answers,
+		draft.interpretation,
 	);
 
 	const created = await createResearchJob({

@@ -1,5 +1,6 @@
 import {
 	clipAiHistorySummary,
+	clipAiQuestion,
 	extractJsonObject,
 	type AiRewriteHistoryTurn,
 } from "./aiQueryRewrite";
@@ -157,6 +158,8 @@ export interface AiRerankCandidate {
 	referenceOnly?: boolean;
 	/** Search queries that retrieved this hit (Ask pool). */
 	matchedQueries?: readonly string[];
+	/** Site illustration for this discourse (SVG or raster). */
+	hasIllustration?: boolean;
 }
 
 export interface AiRerankPromptOptions {
@@ -384,6 +387,7 @@ function candidateLine(
 		.trim()
 		.slice(0, 180);
 	const ref = hit.referenceOnly ? " [reference]" : "";
+	const illustrated = hit.hasIllustration ? " [illustrated]" : "";
 	const tags = namedTermTags(hit, namedKeys);
 	const mark = tags.length > 0 ? ` [term: ${tags.join("; ")}]` : "";
 	const snippet =
@@ -392,7 +396,7 @@ function candidateLine(
 			? passageText(hit)
 			: "";
 	const snippetLine = snippet ? `\n   passage: ${snippet}` : "";
-	return `${index + 1}. ${id}${ref}${mark} | ${title}\n   ${description || "(no description)"}${snippetLine}`;
+	return `${index + 1}. ${id}${ref}${illustrated}${mark} | ${title}\n   ${description || "(no description)"}${snippetLine}`;
 }
 
 export function namedTermHitDebugRows(
@@ -547,7 +551,7 @@ export function buildRerankUserPrompt(
 	const targetLine = survey
 		? `Target result count: typically ${typicalLow}–${typical} (hard cap ${hard})`
 		: `Target result count: up to ${target}`;
-	return `Question: ${question.replace(/\s+/g, " ").trim()}
+	return `Question: ${clipAiQuestion(question)}
 ${targetLine}
 ${coverage}
 ${guidanceBlock}${notesBlock}${namedBlock}${earlier}${excludeBlock}${fallbacks}

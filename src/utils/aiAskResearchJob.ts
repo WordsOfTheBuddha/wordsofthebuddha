@@ -1,7 +1,15 @@
 import type { AiAskPersonHit } from "./aiAskPersons";
-import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
+import {
+	publicIllustrationFields,
+	type AiDiscourseHit,
+} from "./aiDiscourseHits";
+import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
+import {
+	clipResearchVersionIndex,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 
 export const RESEARCH_JOB_ID_MAX = 80;
@@ -70,6 +78,8 @@ export interface ResearchJobPublic {
 	processNotes?: string[];
 	/** When the reader started this research — history `at` should keep this. */
 	createdAt?: number;
+	/** Changelog rows; bodies live in researchJobs/{id}/versions/{n}. */
+	versionIndex?: ResearchVersionMeta[];
 }
 
 export function isResearchJobTerminal(status: ResearchJobStatus): boolean {
@@ -268,6 +278,7 @@ function sanitizeHits(value: unknown): AiDiscourseHit[] {
 				? { volpage: clip(hit.volpage, 80) }
 				: {}),
 			href,
+			...publicIllustrationFields(hit),
 		});
 	}
 	return out;
@@ -278,14 +289,14 @@ export function sanitizeResearchJobResult(
 ): ResearchJobResult | undefined {
 	if (!raw || typeof raw !== "object") return undefined;
 	const record = raw as Record<string, unknown>;
-	const question = clip(
+	const question = clipAiQuestion(
 		typeof record.question === "string" ? record.question : "",
-		500,
+		MAX_QUESTION_CHARS,
 	);
 	if (!question) return undefined;
 	const originalQuestion =
 		typeof record.originalQuestion === "string"
-			? clip(record.originalQuestion, 500)
+			? clipAiQuestion(record.originalQuestion, MAX_QUESTION_CHARS)
 			: "";
 	const persons = sanitizeAskPersonHits(record.persons);
 	return {
@@ -369,6 +380,7 @@ export function toResearchJobPublic(input: {
 	progressNote?: string;
 	processNotes?: readonly string[];
 	createdAt?: number;
+	versionIndex?: unknown;
 }): ResearchJobPublic {
 	const status = input.status;
 	const result = sanitizeResearchJobResult(input.result);
@@ -377,7 +389,7 @@ export function toResearchJobPublic(input: {
 		status,
 		phase: researchJobPhase(status),
 		pending: !isResearchJobTerminal(status),
-		question: clip(input.question, 500),
+		question: clipAiQuestion(input.question, MAX_QUESTION_CHARS),
 		lookingFor: clip(input.lookingFor || result?.lookingFor || "", 280),
 		queries: input.queries
 			? stringList(input.queries, 6, 100)
@@ -414,5 +426,9 @@ export function toResearchJobPublic(input: {
 			? { createdAt: Math.floor(input.createdAt) }
 			: {}),
 		...(result ? { result } : {}),
+		...(() => {
+			const versionIndex = clipResearchVersionIndex(input.versionIndex);
+			return versionIndex.length > 0 ? { versionIndex } : {};
+		})(),
 	};
 }

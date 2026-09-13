@@ -458,6 +458,16 @@ self.addEventListener("fetch", (event) => {
 		return;
 	}
 
+	// Mermaid ESM under /vendor/ keeps stable filenames; network-first so
+	// upgrades are not stuck behind cacheFirst after a deploy.
+	if (
+		url.origin === self.location.origin &&
+		url.pathname.startsWith("/vendor/")
+	) {
+		event.respondWith(networkFirstAsset(req, ASSETS_CACHE));
+		return;
+	}
+
 	// Catch-all: cache any same-origin JS/CSS that wasn't handled above
 	// This ensures dynamically imported chunks get cached for offline use
 	if (url.origin === self.location.origin) {

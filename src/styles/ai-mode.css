@@ -241,6 +241,8 @@
 
 .ai-question-row .ai-question {
 	margin: 0;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 2;
@@ -259,7 +261,11 @@
 	display: block;
 	-webkit-line-clamp: unset;
 	line-clamp: unset;
-	overflow: visible;
+	max-height: min(40vh, 18rem);
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding-right: 0.2rem;
 }
 
 .ai-question-more {
@@ -337,7 +343,7 @@
 	font-size: 1.05rem;
 	line-height: 1.45;
 	min-height: 2.6rem;
-	max-height: 10rem;
+	max-height: 18rem;
 	overflow-y: auto;
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
@@ -1065,6 +1071,10 @@
 	line-height: 1.45;
 	resize: vertical;
 	min-height: 2.75rem;
+	max-height: 18rem;
+	overflow-y: auto;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 }
 
 .ai-question-edit-actions {

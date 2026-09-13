@@ -21,10 +21,18 @@ import {
 	answersFromClarifyState,
 	canStartResearchClarify,
 	RESEARCH_CLARIFY_TITLE,
+	RESEARCH_CLARIFY_CONFIRM_TITLE,
+	RESEARCH_CLARIFY_CONFIRM_FALLBACK,
 	RESEARCH_CLARIFY_OTHER_ID,
 	RESEARCH_CLARIFY_MAX_OTHER,
+	suggestedClarifyAnswers,
 	type ResearchClarifyQuestion,
 } from "./aiAskResearchClarify";
+import {
+	ASK_COMPOSER_TEXTAREA_MAX_PX,
+	clipAiQuestion,
+	MAX_QUESTION_CHARS,
+} from "./aiAskQuestionText";
 import {
 	formatResearchHitTitle,
 	renderAskBriefingHtml,
@@ -263,6 +271,7 @@ export interface AiAskTurn {
 		id: string;
 		questions: ResearchClarifyQuestion[];
 		answers: Record<string, { choiceId: string; otherText?: string }>;
+		interpretation?: string;
 	};
 	researchDeclined?: {
 		kind: string;
@@ -1197,7 +1206,7 @@ function speechRecognitionCtor(): (new () => BrowserSpeechRecognition) | null {
 
 function fitTextarea(el: HTMLTextAreaElement): void {
 	el.style.height = "auto";
-	el.style.height = `${Math.min(Math.max(el.scrollHeight, 28), 160)}px`;
+	el.style.height = `${Math.min(Math.max(el.scrollHeight, 28), ASK_COMPOSER_TEXTAREA_MAX_PX)}px`;
 }
 
 function fitClarifyOther(el: HTMLTextAreaElement): void {
@@ -3410,6 +3419,10 @@ export function attachAiMode(options: {
 		const badge = hit.referenceOnly
 			? `<span class="inline-block ml-1.5 px-1 py-0 text-[0.65rem] font-semibold uppercase tracking-wide text-[var(--text-muted)] align-middle">Reference</span>`
 			: "";
+		const vizHref = `/${hit.slug}?viz=1`;
+		const vizIcon = hit.hasIllustration
+			? `<span class="discourse-viz-icon ml-1 align-middle" role="link" tabindex="0" aria-label="Open visualization" title="Visualization" onclick="event.preventDefault();event.stopPropagation();window.location.href='${escapeHtml(vizHref)}'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();window.location.href='${escapeHtml(vizHref)}'}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg></span>`
+			: "";
 		const volpage =
 			research && hit.volpage
 				? `<div class="mt-2 flex justify-end"><span class="text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(hit.volpage)}">${escapeHtml(hit.volpage)}</span></div>`
@@ -3424,6 +3437,7 @@ export function attachAiMode(options: {
 								${id}&nbsp; <span style="color:var(--text-color)">${title}</span>
 							</span>
 							${badge}
+							${vizIcon}
 						</h2>
 					</div>
 				</div>
@@ -3891,8 +3905,19 @@ export function attachAiMode(options: {
 				</div>`;
 			})
 			.join("");
+		const confirmOnly = draft.questions.length === 0;
+		const title = confirmOnly
+			? RESEARCH_CLARIFY_CONFIRM_TITLE
+			: RESEARCH_CLARIFY_TITLE;
+		const reading =
+			(draft.interpretation || "").trim() ||
+			(confirmOnly ? RESEARCH_CLARIFY_CONFIRM_FALLBACK : "");
+		const readingHtml = reading
+			? `<p class="ai-clarify-kicker">${escapeHtml(reading)}</p>`
+			: "";
 		return `<div class="ai-clarify">
-			<p class="ai-clarify-title">${escapeHtml(RESEARCH_CLARIFY_TITLE)}</p>
+			<p class="ai-clarify-title">${escapeHtml(title)}</p>
+			${readingHtml}
 			${questions}
 		</div>`;
 	}
@@ -4763,7 +4788,7 @@ export function attachAiMode(options: {
 				: "";
 		wrap.innerHTML = `
 			<label class="sr-only" for="ai-edit-question">Edit question</label>
-			<textarea id="ai-edit-question" data-ai-edit-input rows="2"></textarea>
+			<textarea id="ai-edit-question" data-ai-edit-input rows="2" maxlength="${MAX_QUESTION_CHARS}"></textarea>
 			<div class="ai-question-edit-actions">
 				<button type="button" data-ai-edit-submit>${submitLabel}</button>
 				${
@@ -4790,8 +4815,7 @@ export function attachAiMode(options: {
 		const cancel = (): void => {
 			syncLayout();
 		};
-		const editedQuestion = (): string =>
-			editInput.value.replace(/\s+/g, " ").trim();
+		const editedQuestion = (): string => clipAiQuestion(editInput.value);
 		const submitResearch = (): void => {
 			const next = editedQuestion();
 			if (!next || busy) return;
@@ -5061,7 +5085,7 @@ export function attachAiMode(options: {
 	): Promise<void> {
 		const turn = turns[turnIndex];
 		if (!turn || busy || turn.fromShare) return;
-		const next = (question ?? turn.question).replace(/\s+/g, " ").trim();
+		const next = clipAiQuestion(question ?? turn.question);
 		if (!next) return;
 		if (turn.researchJobId && sameResearchRetryQuestion(next, turn)) {
 			await restartResearchJobTurn(turn, turnIndex);
@@ -5334,7 +5358,7 @@ export function attachAiMode(options: {
 			forceAsk?: boolean;
 		},
 	): Promise<void> {
-		const q = question.replace(/\s+/g, " ").trim();
+		const q = clipAiQuestion(question);
 		if (!q || busy) return;
 		stopListening();
 		stopSamplePlayback();
@@ -5521,7 +5545,11 @@ export function attachAiMode(options: {
 				turn.researchClarify = {
 					id: data.clarifyId || "",
 					questions: data.questions || [],
-					answers: {},
+					answers: suggestedClarifyAnswers(data.questions || []),
+					...(typeof data.interpretation === "string" &&
+					data.interpretation.trim()
+						? { interpretation: data.interpretation.trim() }
+						: {}),
 				};
 				syncLayoutAndReveal();
 			} catch {

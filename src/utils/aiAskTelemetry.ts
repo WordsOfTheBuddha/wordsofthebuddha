@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 
 export type AiAskFeedbackRating = "up" | "down";
 
@@ -49,7 +50,6 @@ export interface AiAskTelemetryUserReviewEvent {
 	day: string;
 }
 
-const MAX_QUESTION = 500;
 const MAX_LOOKING = 160;
 const MAX_QUERY = 100;
 const MAX_QUERIES = 6;
@@ -112,7 +112,7 @@ export function buildAiAskTelemetryAskEvent(input: {
 	return {
 		kind: "ask",
 		requestId: clip(input.requestId, 80) || newAiAskRequestId(),
-		question: clip(input.question, MAX_QUESTION),
+		question: clipAiQuestion(input.question, MAX_QUESTION_CHARS),
 		lookingFor: clip(input.lookingFor || "", MAX_LOOKING),
 		queries: stringList(input.queries, MAX_QUERIES, MAX_QUERY),
 		fallbackQueries: stringList(input.fallbackQueries, MAX_QUERIES, MAX_QUERY),
@@ -143,7 +143,7 @@ export function buildAiAskTelemetryFeedbackEvent(input: {
 		kind: "feedback",
 		requestId: clip(input.requestId, 80),
 		rating: input.rating,
-		question: clip(input.question || "", MAX_QUESTION),
+		question: clipAiQuestion(input.question || "", MAX_QUESTION_CHARS),
 		queries: stringList(input.queries, MAX_QUERIES, MAX_QUERY),
 		resultSlugs: stringList(input.resultSlugs, MAX_SLUGS, 64),
 	};
