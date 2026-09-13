@@ -44,10 +44,12 @@ const chrome = askShareViewChrome(share, {
 			{chrome.researchShare ? (
 				<>
 					Shared Research Report
-					{" · "}
-					<a href={chrome.registerHref}>
-						Create an account to generate your own
-					</a>
+					<span data-ai-share-register>
+						{" · "}
+						<a href={chrome.registerHref}>
+							Create an account to generate your own
+						</a>
+					</span>
 				</>
 			) : (
 				<>
@@ -64,3 +66,22 @@ const chrome = askShareViewChrome(share, {
 		shareSnapshot={JSON.stringify(share)}
 	/>
 </main>
+
+<script>
+	import { readNavAuthCache } from "../utils/navAuthClient";
+	import { loadPageUserState } from "../utils/pageUserStateClient";
+	import { syncShareRegisterCta } from "../utils/aiAskShare";
+
+	const cached = readNavAuthCache();
+	if (cached) syncShareRegisterCta(document, cached.signedIn);
+	if (document.querySelector("[data-ai-share-register]")) {
+		void loadPageUserState()
+			.then((data) => {
+				if (!data) return;
+				syncShareRegisterCta(document, data.signedIn === true);
+			})
+			.catch(() => {
+				/* keep the SSR banner */
+			});
+	}
+</script>

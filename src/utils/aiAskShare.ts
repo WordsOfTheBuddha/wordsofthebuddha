@@ -153,6 +153,16 @@ export function askShareViewChrome(
 	};
 }
 
+/** Hide the guest register invite on a shared Research report. */
+export function syncShareRegisterCta(
+	root: ParentNode,
+	signedIn: boolean,
+): void {
+	const el = root.querySelector<HTMLElement>("[data-ai-share-register]");
+	if (!el) return;
+	el.hidden = signedIn;
+}
+
 export function askShareResultMax(raw: unknown): number {
 	return isAskShareResearchInput(raw)
 		? RESEARCH_SHARE_RESULT_MAX

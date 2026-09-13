@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import {
 	ASK_SHARE_SLUG_MAX,
 	askShareIsSameSnapshot,
@@ -7,6 +8,7 @@ import {
 	askSharePageRedirect,
 	askShareSeo,
 	askShareViewChrome,
+	syncShareRegisterCta,
 	askShareSlugCandidate,
 	askShareSlugCollisionCandidates,
 	askShareSlugWithNumericSuffix,
@@ -535,6 +537,22 @@ describe("askShareViewChrome", () => {
 				.showResearchMode,
 			true,
 		);
+	});
+});
+
+describe("syncShareRegisterCta", () => {
+	it("hides the register invite when signed in and shows it when signed out", () => {
+		const dom = new JSDOM(
+			`<p>Shared Research Report<span data-ai-share-register> · <a href="/register">Create an account to generate your own</a></span></p>`,
+		);
+		const span = () =>
+			dom.window.document.querySelector<HTMLElement>(
+				"[data-ai-share-register]",
+			);
+		syncShareRegisterCta(dom.window.document, true);
+		assert.equal(span()?.hidden, true);
+		syncShareRegisterCta(dom.window.document, false);
+		assert.equal(span()?.hidden, false);
 	});
 });
 
