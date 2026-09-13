@@ -30,11 +30,10 @@ export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
  * Paid OpenRouter model for Ask, Research, and revise.
  * Never shown in the free picker. OpenRouter fails over across its hosts.
  */
-export const ASK_PLANNER_PAID_FALLBACK_MODEL =
-	"deepseek/deepseek-v4-flash-0731";
+export const ASK_PLANNER_PAID_FALLBACK_MODEL = "z-ai/glm-5.3-flash";
 
 const ASK_INTERNAL_MODEL_LABELS: Readonly<Record<string, string>> = {
-	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "DeepSeek: DeepSeek V4 Flash",
+	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "Z.ai: GLM 5.3 Flash",
 };
 
 export function isAskPlannerPaidFallbackModelId(id: string): boolean {
@@ -42,9 +41,9 @@ export function isAskPlannerPaidFallbackModelId(id: string): boolean {
 }
 
 /**
- * Automatic OpenRouter queue. DeepSeek V4 Flash only — provider failover is
+ * Automatic OpenRouter queue. GLM 5.3 Flash only — provider failover is
  * OpenRouter’s job (cheapest host, then the next). A picked free model still
- * goes first when the picker is shown, then DeepSeek.
+ * goes first when the picker is shown, then GLM.
  */
 export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
@@ -79,7 +78,7 @@ export const DEFAULT_OPENROUTER_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"medium";
 /** Planner rewrite — more thinking before the JSON chips. */
 export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
-/** DeepSeek V4 Flash accepts low / high / max, not medium. */
+/** GLM 5.3 Flash accepts low / high / max, not medium. */
 export const ASK_PLANNER_PAID_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"high";
 /** Scout/verify pass — cheap check that the plan is on track. */
@@ -87,7 +86,7 @@ export const ASK_RESEARCH_VERIFY_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"low";
 
 /**
- * Paid DeepSeek rejects `medium`. Map it to `high`.
+ * Paid GLM rejects `medium`. Map it to `high`.
  */
 export function resolveReasoningEffort(
 	model: string,
@@ -110,7 +109,7 @@ export const RESEARCH_WRITER_MAX_TOKENS = 16_384;
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
 /**
- * Paid DeepSeek often swallows the reasoning channel under `json_object`, and
+ * Paid GLM often swallows the reasoning channel under `json_object`, and
  * rejects `reasoning.effort: medium`. Free Nemotron planners keep JSON mode
  * and medium effort.
  */
@@ -134,7 +133,7 @@ export function askPlannerChatOptions(model: string): {
 }
 
 /**
- * Thinking writer: low effort so it finishes the JSON briefing. Paid DeepSeek
+ * Thinking writer: low effort so it finishes the JSON briefing. Paid GLM
  * still skips `json_object` (it swallows the reasoning channel under that mode).
  */
 export function askWriterChatOptions(model: string): {
@@ -193,7 +192,7 @@ export function curatedAskModelLabel(id: string): string {
 	);
 }
 
-/** Picker labels plus internal fallbacks (paid DeepSeek) that are not curated. */
+/** Picker labels plus internal fallbacks (paid GLM) that are not curated. */
 export function openRouterModelLabel(id: string): string {
 	return ASK_INTERNAL_MODEL_LABELS[id.trim()] || curatedAskModelLabel(id);
 }
@@ -213,7 +212,7 @@ export function getConfiguredOpenRouterModel(): string {
 
 /**
  * Model preselected in the free picker. Ultra is the picker default.
- * Production hides the picker and Ask uses the paid DeepSeek id instead.
+ * Production hides the picker and Ask uses the paid GLM id instead.
  */
 export function getAskPickerDefaultModel(): string {
 	if (!shouldShowAiModelPicker()) return getConfiguredOpenRouterModel();
@@ -230,7 +229,7 @@ export function resolveRequestedOpenRouterModel(
 		if (isCuratedAskModelId(configured)) return configured;
 		return DEFAULT_OPENROUTER_MODEL;
 	}
-	// Picker hidden: paid DeepSeek is the product default. Ignore leftover
+	// Picker hidden: paid GLM is the product default. Ignore leftover
 	// client / env free-model ids so Ask does not wait on Nemotron first.
 	return ASK_PLANNER_PAID_FALLBACK_MODEL;
 }
@@ -238,7 +237,7 @@ export function resolveRequestedOpenRouterModel(
 /**
  * Model id sent to OpenRouter. Client requests go through
  * `resolveRequestedOpenRouterModel`. Internal calls may pass the paid
- * DeepSeek id or a curated free fallback.
+ * GLM id or a curated free fallback.
  */
 export function resolveOpenRouterChatModel(model: string): string {
 	const trimmed = model.trim();
@@ -248,7 +247,7 @@ export function resolveOpenRouterChatModel(model: string): string {
 }
 
 /**
- * Paid DeepSeek: cheapest healthy provider first, then the next cheapest
+ * Paid GLM: cheapest healthy provider first, then the next cheapest
  * host of the same model. OpenRouter does that inside one request — we do
  * not hop to a second model.
  */

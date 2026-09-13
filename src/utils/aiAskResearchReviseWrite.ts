@@ -40,7 +40,7 @@ import {
 	openRouterChat,
 } from "./openrouter";
 
-/** DeepSeek V4 Flash allows 393k completions; 50k covers a full cited report. */
+/** Paid GLM allows 131k completions; 50k covers a full cited report. */
 export const RESEARCH_REVISE_WRITER_MAX_TOKENS = 50_000;
 export const RESEARCH_REVISE_NEW_HITS_MAX = 8;
 

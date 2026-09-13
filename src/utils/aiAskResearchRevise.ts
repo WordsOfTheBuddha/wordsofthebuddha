@@ -558,7 +558,7 @@ export function normalizeReportBlockText(text: string): string {
 		.replace(/[^\p{L}\p{N}]+/gu, "");
 }
 
-const REPORT_BLOCK_KEY_MIN = 12;
+export const REPORT_BLOCK_KEY_MIN = 12;
 
 /** Block keys of a report body: paragraphs, headings, list items, quotes. */
 export function reportBlockKeys(markdown: string): string[] {
@@ -597,17 +597,234 @@ export function reportBlockKeys(markdown: string): string[] {
 	return out.filter((key) => key.length >= REPORT_BLOCK_KEY_MIN);
 }
 
-/** Keys present in `next` but not `base` — the blocks a revision touched. */
-export function changedReportBlockKeys(base: string, next: string): string[] {
-	const before = new Set(reportBlockKeys(base));
-	const out: string[] = [];
-	const seen = new Set<string>();
-	for (const key of reportBlockKeys(next)) {
-		if (before.has(key) || seen.has(key)) continue;
-		seen.add(key);
-		out.push(key);
+export interface ReportContentBlock {
+	key: string;
+	markdown: string;
+	/** Position among every rendered markdown block, including short headings. */
+	index: number;
+}
+
+/** One report block in reading order — every paragraph, heading, list item, quote. */
+export interface ReportEnumeratedBlock {
+	index: number;
+	key: string;
+	markdown: string;
+}
+
+/** Markdown blocks with normalized keys — used for add / edit / delete diffs. */
+export function reportContentBlocks(markdown: string): ReportContentBlock[] {
+	return enumerateReportBlocks(markdown)
+		.filter((block) => block.key.length >= REPORT_BLOCK_KEY_MIN)
+		.map(({ index, key, markdown: body }) => ({ index, key, markdown: body }));
+}
+
+/** Full block walk in reading order (includes short blocks skipped by diffs). */
+export function enumerateReportBlocks(markdown: string): ReportEnumeratedBlock[] {
+	const out: ReportEnumeratedBlock[] = [];
+	const text = stripSourcesForRevise(markdown);
+	let inFence = false;
+	for (const chunk of splitParagraphs(text)) {
+		if (/^```/.test(chunk)) {
+			inFence = !inFence || !/```\s*$/.test(chunk);
+			continue;
+		}
+		if (inFence) continue;
+		const lines = chunk.split("\n");
+		const listy = lines.every(
+			(line) => /^\s*(?:[-*+]|\d+[.)])\s+/.test(line) || /^\s+\S/.test(line),
+		);
+		if (listy) {
+			let item = "";
+			for (const line of lines) {
+				if (/^\s*(?:[-*+]|\d+[.)])\s+/.test(line)) {
+					if (item) pushEnumeratedReportBlock(out, item);
+					item = line.replace(/^\s*(?:[-*+]|\d+[.)])\s+/, "");
+				} else {
+					item += ` ${line.trim()}`;
+				}
+			}
+			if (item) pushEnumeratedReportBlock(out, item);
+			continue;
+		}
+		pushEnumeratedReportBlock(
+			out,
+			chunk.replace(/^\s*>\s?/gm, "").replace(/^#{1,6}\s+/, ""),
+		);
 	}
 	return out;
+}
+
+function pushEnumeratedReportBlock(
+	out: ReportEnumeratedBlock[],
+	markdown: string,
+): void {
+	const trimmed = markdown.trim();
+	out.push({
+		index: out.length,
+		key: normalizeReportBlockText(trimmed),
+		markdown: trimmed,
+	});
+}
+
+export function reportBlockIndexByKey(
+	markdown: string,
+	key: string,
+): number {
+	return enumerateReportBlocks(markdown).findIndex((block) => block.key === key);
+}
+
+export interface ReportBlockDiff {
+	/** Brand-new blocks in the latest version. */
+	added: string[];
+	/** Rewritten blocks (a prior block at the same slot was replaced). */
+	edited: string[];
+	/** Blocks dropped from the prior version (shown collapsed). */
+	removed: ReportRemovedBlock[];
+}
+
+export interface ReportRemovedBlock extends ReportContentBlock {
+	/**
+	 * Insert before the first new-version block at this full block index.
+	 * `null` means the removal belonged after the final surviving block.
+	 */
+	beforeNextIndex: number | null;
+}
+
+type ReportDiffOp =
+	| { kind: "same"; before: ReportContentBlock; after: ReportContentBlock }
+	| { kind: "edit"; before: ReportContentBlock; after: ReportContentBlock }
+	| { kind: "delete"; before: ReportContentBlock }
+	| { kind: "insert"; after: ReportContentBlock };
+
+function reportBlockTokens(block: ReportContentBlock): Set<string> {
+	const words = block.markdown
+		.toLowerCase()
+		.normalize("NFKD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.match(/[\p{L}\p{N}]{3,}/gu);
+	if (words?.length) return new Set(words);
+	const grams = new Set<string>();
+	for (let i = 0; i <= block.key.length - 4; i += 2) {
+		grams.add(block.key.slice(i, i + 4));
+	}
+	return grams;
+}
+
+function reportBlockSimilarity(
+	a: ReportContentBlock,
+	b: ReportContentBlock,
+): number {
+	if (a.key === b.key) return 1;
+	const left = reportBlockTokens(a);
+	const right = reportBlockTokens(b);
+	if (left.size === 0 || right.size === 0) return 0;
+	let shared = 0;
+	for (const token of left) if (right.has(token)) shared += 1;
+	return shared / Math.max(left.size, right.size);
+}
+
+/**
+ * Align the old and new block streams. Exact blocks cost nothing; substitutions
+ * cost less than delete+insert, with similar text preferred when one side has
+ * several candidates. This keeps rewrites paired without losing true inserts.
+ */
+function alignReportBlocks(
+	before: readonly ReportContentBlock[],
+	after: readonly ReportContentBlock[],
+): ReportDiffOp[] {
+	const rows = before.length + 1;
+	const cols = after.length + 1;
+	const costs = Array.from({ length: rows }, () => Array<number>(cols).fill(0));
+	const steps = Array.from({ length: rows }, () =>
+		Array<"same" | "edit" | "delete" | "insert">(cols).fill("same"),
+	);
+	for (let i = 1; i < rows; i += 1) {
+		costs[i][0] = i;
+		steps[i][0] = "delete";
+	}
+	for (let j = 1; j < cols; j += 1) {
+		costs[0][j] = j;
+		steps[0][j] = "insert";
+	}
+	for (let i = 1; i < rows; i += 1) {
+		for (let j = 1; j < cols; j += 1) {
+			const exact = before[i - 1].key === after[j - 1].key;
+			const similarity = reportBlockSimilarity(before[i - 1], after[j - 1]);
+			const substitute = costs[i - 1][j - 1] + (exact ? 0 : 1.45 - similarity);
+			const remove = costs[i - 1][j] + 1;
+			const insert = costs[i][j - 1] + 1;
+			if (substitute <= remove && substitute <= insert) {
+				costs[i][j] = substitute;
+				steps[i][j] = exact ? "same" : "edit";
+			} else if (remove <= insert) {
+				costs[i][j] = remove;
+				steps[i][j] = "delete";
+			} else {
+				costs[i][j] = insert;
+				steps[i][j] = "insert";
+			}
+		}
+	}
+	const out: ReportDiffOp[] = [];
+	let i = before.length;
+	let j = after.length;
+	while (i > 0 || j > 0) {
+		const step = steps[i][j];
+		if (i > 0 && j > 0 && (step === "same" || step === "edit")) {
+			out.push({ kind: step, before: before[i - 1], after: after[j - 1] });
+			i -= 1;
+			j -= 1;
+		} else if (i > 0 && (j === 0 || step === "delete")) {
+			out.push({ kind: "delete", before: before[i - 1] });
+			i -= 1;
+		} else {
+			out.push({ kind: "insert", after: after[j - 1] });
+			j -= 1;
+		}
+	}
+	return out.reverse();
+}
+
+/** Classify and position block-level changes between two report bodies. */
+export function diffReportBlockChanges(base: string, next: string): ReportBlockDiff {
+	const ops = alignReportBlocks(
+		reportContentBlocks(base),
+		reportContentBlocks(next),
+	);
+	const added: string[] = [];
+	const edited: string[] = [];
+	const removed: ReportRemovedBlock[] = [];
+	for (let i = 0; i < ops.length; i += 1) {
+		const op = ops[i];
+		if (op.kind === "insert") {
+			added.push(op.after.key);
+		} else if (op.kind === "edit") {
+			edited.push(op.after.key);
+		} else if (op.kind === "delete") {
+			const nextSurvivor = ops
+				.slice(i + 1)
+				.find(
+					(candidate): candidate is Extract<ReportDiffOp, { after: ReportContentBlock }> =>
+						candidate.kind !== "delete",
+				);
+			removed.push({
+				...op.before,
+				beforeNextIndex: nextSurvivor?.after.index ?? null,
+			});
+		}
+	}
+	return { added, edited, removed };
+}
+
+/** Keys present in `next` but not `base` — every touched block (legacy helper). */
+export function changedReportBlockKeys(base: string, next: string): string[] {
+	const diff = diffReportBlockChanges(base, next);
+	return [...diff.added, ...diff.edited];
+}
+
+export function reportBlockDiffCount(diff: ReportBlockDiff | null): number {
+	if (!diff) return 0;
+	return diff.added.length + diff.edited.length + diff.removed.length;
 }
 
 export function clipEditsToWordBudget(
@@ -915,7 +1132,7 @@ export function formatResearchVersionStats(
 	}
 	if (stats.additional > 0) {
 		parts.push(
-			`${stats.additional.toLocaleString("en-US")} ${stats.additional === 1 ? "additional source" : "additional sources"}${delta(stats.additional, previous?.additional)}`,
+			`${stats.additional.toLocaleString("en-US")} ${stats.additional === 1 ? "source" : "sources"}${delta(stats.additional, previous?.additional)}`,
 		);
 	}
 	return parts.join(" · ");

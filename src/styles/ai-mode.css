@@ -678,7 +678,7 @@
 }
 
 .ai-answer-toolbar-start {
-	margin: 0 0 0.35rem;
+	margin: 0 0 1rem;
 	min-height: 1.75rem;
 }
 
@@ -1163,7 +1163,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.35rem;
-	max-height: min(22rem, 50vh);
+	max-height: min(16.5rem, 37.5vh);
 	overflow: auto;
 	overscroll-behavior: contain;
 }
@@ -2517,7 +2517,6 @@
 
 .ai-revise-clear,
 .ai-ask-without-editing,
-.ai-versions-btn,
 .ai-heading-revise {
 	background: none;
 	border: 0;
@@ -2584,18 +2583,28 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0;
-	padding: 0;
-	border: 0;
-	background: none;
+	padding: 0.28rem 0.72rem;
+	border: 1px solid color-mix(in srgb, var(--secondary-color) 42%, var(--surface-border));
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--secondary-color) 11%, transparent);
 	min-height: 1.75rem;
 	letter-spacing: 0.02em;
 	line-height: 1;
 	text-transform: none;
 	font: inherit;
-	font-size: 0.78rem;
-	font-weight: 650;
-	color: var(--text-muted);
+	font-size: 0.92rem;
+	font-weight: 700;
+	color: var(--secondary-color);
 	cursor: pointer;
+	text-decoration: none;
+	transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.ai-versions-btn:hover,
+.ai-versions-btn:focus-visible {
+	border-color: color-mix(in srgb, var(--secondary-color) 62%, var(--surface-border));
+	background: color-mix(in srgb, var(--secondary-color) 18%, transparent);
+	color: var(--secondary-color);
 }
 
 /* “3 changes” chip: toggles the highlights for the version that just landed. */
@@ -2608,9 +2617,10 @@
 	padding: 0 0.55rem;
 	height: 1.75rem;
 	border-radius: 999px;
-	border: 1px solid color-mix(in srgb, var(--secondary-color) 55%, transparent);
-	background: color-mix(in srgb, var(--secondary-color) 14%, transparent);
-	color: var(--secondary-color);
+	border: 1px solid
+		color-mix(in srgb, var(--layout-active-color) 28%, var(--surface-border));
+	background: color-mix(in srgb, var(--layout-active-color) 6%, transparent);
+	color: color-mix(in srgb, var(--layout-active-color) 78%, var(--text-muted));
 	font: inherit;
 	font-size: 0.74rem;
 	font-weight: 650;
@@ -2625,7 +2635,7 @@
 	width: 0.45rem;
 	height: 0.45rem;
 	border-radius: 50%;
-	background: var(--secondary-color);
+	background: color-mix(in srgb, var(--layout-active-color) 72%, var(--text-muted));
 }
 
 .ai-changes-btn[aria-pressed="false"] {
@@ -2638,40 +2648,202 @@
 	background: var(--text-muted);
 }
 
-/* Blocks the latest revision added or rewrote. */
+/* Git-like diff colours — soft fills only, no dashed frames. */
+.ai-report.is-show-changes .ai-answer-body .is-change-added {
+	background: color-mix(in srgb, #3ecf8e 14%, transparent);
+	border-radius: 0.2rem;
+}
+
+.ai-report.is-show-changes .ai-answer-body .is-change-edited,
 .ai-report.is-show-changes .ai-answer-body .is-changed {
-	position: relative;
-	background: color-mix(in srgb, var(--secondary-color) 9%, transparent);
-	box-shadow: -0.75rem 0 0 color-mix(in srgb, var(--secondary-color) 9%, transparent),
-		0.75rem 0 0 color-mix(in srgb, var(--secondary-color) 9%, transparent);
-	border-radius: 0.15rem;
+	background: color-mix(in srgb, var(--secondary-color) 12%, transparent);
+	border-radius: 0.2rem;
 }
 
-.ai-report.is-show-changes .ai-answer-body .is-changed::before {
-	content: "";
-	position: absolute;
-	left: -0.75rem;
-	top: 0;
-	bottom: 0;
-	width: 3px;
-	border-radius: 2px;
-	background: var(--secondary-color);
+.ai-report.is-show-changes .ai-answer-body blockquote.is-change-added {
+	background: color-mix(in srgb, #3ecf8e 9%, transparent);
 }
 
-.ai-report.is-show-changes .ai-answer-body li.is-changed::before {
-	left: -1.9rem;
+.ai-report.is-show-changes .ai-answer-body blockquote.is-change-edited,
+.ai-report.is-show-changes .ai-answer-body blockquote.is-changed {
+	background: color-mix(in srgb, var(--secondary-color) 7%, transparent);
+}
+
+.ai-report.is-show-changes .ai-change-removed {
+	margin: 0 0 0.65rem;
+	border-radius: 0.35rem;
+	border: 0;
+	background: color-mix(in srgb, #e06c75 8%, transparent);
+}
+
+.ai-report.is-show-changes .ai-change-removed > summary {
+	cursor: pointer;
+	list-style: none;
+	font-size: 0.78rem;
+	font-weight: 650;
+	color: color-mix(in srgb, #e06c75 82%, var(--text-color));
+	padding: 0.35rem 0.55rem;
+}
+
+.ai-report.is-show-changes .ai-change-removed > summary::-webkit-details-marker {
+	display: none;
+}
+
+.ai-report.is-show-changes .ai-change-removed > summary::before {
+	content: "− ";
+}
+
+.ai-report.is-show-changes .ai-change-removed:not([open]) > summary::before {
+	content: "+ ";
+}
+
+.ai-report.is-show-changes .ai-change-removed-body {
+	padding: 0 0.55rem 0.55rem;
+	font-size: 0.88rem;
+	line-height: 1.45;
+	color: color-mix(in srgb, #e06c75 55%, var(--text-muted));
+	text-decoration: line-through;
+	text-decoration-color: color-mix(in srgb, #e06c75 45%, transparent);
+}
+
+.ai-report.is-show-changes .ai-change-removed-body > :first-child {
+	margin-top: 0;
+}
+
+.ai-report.is-show-changes .ai-change-removed-body > :last-child {
+	margin-bottom: 0;
+}
+
+.ai-report.is-show-changes .ai-change-removed-body blockquote {
+	margin-block: 0.25rem;
+}
+
+/* ¶ N on report blocks — same markers as discourses, scoped to the report. */
+.ai-report .ai-answer-body .paragraph-num {
+	display: none;
+	user-select: none;
+	-webkit-user-select: none;
+	pointer-events: none;
+	white-space: nowrap;
+}
+
+.ai-report .ai-answer-body {
+	overflow: visible;
+}
+
+@media (min-width: 1024px) {
+	.ai-report.is-show-paragraph-numbers .ai-answer-body p[data-paragraph-number],
+	.ai-report.is-show-paragraph-numbers .ai-answer-body blockquote[data-paragraph-number],
+	.ai-report.is-show-paragraph-numbers .ai-answer-body ul[data-paragraph-number],
+	.ai-report.is-show-paragraph-numbers .ai-answer-body ol[data-paragraph-number] {
+		position: relative;
+	}
+
+	.ai-report.is-show-paragraph-numbers .ai-answer-body .paragraph-num {
+		display: block;
+		position: absolute;
+		left: -3rem;
+		top: 0;
+		padding-top: 8px;
+		color: var(--text-muted);
+		font-size: 0.75rem;
+		opacity: 0.7;
+		line-height: inherit;
+	}
+}
+
+/* Discourse ParagraphToggle: layout-active-color, gray-100/800 hover wash. */
+.ai-paragraph-btn {
+	flex: 0 0 auto;
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	padding: 0.5rem;
+	border: 0;
+	border-radius: 999px;
+	background: none;
+	color: var(--layout-active-color);
+	opacity: 0.5;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.875rem;
+	font-weight: 700;
+	line-height: 1;
+	transition:
+		opacity 0.3s ease,
+		background 0.3s ease;
+}
+
+.ai-paragraph-glyph {
+	width: 1rem;
+	height: 1rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.875rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.ai-paragraph-btn:hover,
+.ai-paragraph-btn:focus-visible {
+	opacity: 1;
+	background: #f3f4f6;
+}
+
+html.dark .ai-paragraph-btn:hover,
+html.dark .ai-paragraph-btn:focus-visible {
+	background: #1f2937;
+}
+
+.ai-paragraph-btn.is-on {
+	opacity: 1;
 }
 
 .ai-answer-toolbar-start {
 	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.45rem;
+}
+
+.ai-report-toolbar-main {
+	display: flex;
 	align-items: center;
-	gap: 0.55rem;
 	flex-wrap: wrap;
+	gap: 0.55rem;
+	width: 100%;
+}
+
+.ai-report-actions-group {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	flex: 0 0 auto;
+}
+
+.ai-report-stats-row {
+	flex: 1 1 12rem;
+	min-width: 0;
+	margin: 0;
+}
+
+@media (min-width: 768px) {
+	.ai-report-actions-group + .ai-report-stats-row {
+		padding-left: 0.65rem;
+	}
+}
+
+.ai-report-stats-row .ai-report-stats {
+	margin: 0;
 }
 
 .ai-answer-toolbar-start .ai-report-kicker,
 .ai-answer-toolbar-start .ai-versions-btn,
-.ai-answer-toolbar-start .ai-report-stats,
+.ai-answer-toolbar-start .ai-paragraph-btn,
 .ai-answer-toolbar-start .ai-answer-copy {
 	box-sizing: border-box;
 	margin: 0;
@@ -2687,11 +2859,41 @@
 	flex: 0 0 auto;
 }
 
-.ai-answer-toolbar-start .ai-answer-copy {
+.ai-report-toolbar-main > .ai-answer-copy {
 	margin-left: auto;
 	min-width: 1.75rem;
 	min-height: 1.75rem;
 	padding: 0;
+}
+
+@media (max-width: 767px) {
+	.ai-report-toolbar-main {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-rows: auto auto;
+		align-items: center;
+		gap: 0.45rem 0.55rem;
+	}
+
+	.ai-report-stats-row {
+		grid-column: 1 / -1;
+		grid-row: 1;
+		flex: initial;
+		width: 100%;
+	}
+
+	.ai-report-actions-group {
+		grid-row: 2;
+		grid-column: 1;
+		width: auto;
+	}
+
+	.ai-report-toolbar-main > .ai-answer-copy {
+		grid-row: 2;
+		grid-column: 2;
+		margin-left: 0;
+		align-self: center;
+	}
 }
 
 .ai-versions-drawer {
@@ -2894,6 +3096,16 @@
 	letter-spacing: 0.01em;
 	padding-top: 0.4rem;
 	border-top: 1px dashed color-mix(in srgb, var(--surface-border) 85%, transparent);
+}
+
+.ai-versions-changes-wrap {
+	display: block;
+	margin-top: 0.55rem;
+}
+
+.ai-versions-changes-wrap .ai-changes-btn {
+	width: 100%;
+	justify-content: center;
 }
 
 .ai-versions-actions {

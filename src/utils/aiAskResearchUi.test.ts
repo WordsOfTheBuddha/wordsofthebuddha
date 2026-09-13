@@ -22,6 +22,7 @@ import {
 	ASK_WAITING_PLACEHOLDER,
 	ASK_NEW_LABEL,
 	researchHistoryExcerpt,
+	researchHistoryCardStatsLabel,
 	researchHistoryStatsLabel,
 	REVIEW_ROOM_ASK_EMPTY,
 	REVIEW_ROOM_ASK_NEW_LABEL,
@@ -933,20 +934,23 @@ describe("wrapAskAnswerHtml", () => {
 		assert.match(html, /ai-answer-toolbar-end/);
 		assert.equal([...html.matchAll(/data-ai-copy-answer/g)].length, 2);
 		assert.match(html, /Research report/);
+		assert.match(html, /data-ai-report-paragraphs/);
 	});
 
 	it("puts version and stats on the report toolbar without a kicker", () => {
 		const html = wrapAskAnswerHtml({
 			kind: "report",
 			turnIndex: 0,
-			extraStart: `<button type="button" class="ai-versions-btn">v2</button>`,
-			stats: "18 words · 2 discourses cited",
+			versionStart: `<button type="button" class="ai-versions-btn">v2</button>`,
+			stats: "18 words · 2 citations",
 			bodyHtml: "<p>Hello</p>",
 		});
 		assert.match(html, /ai-answer-toolbar-start/);
 		assert.match(html, /ai-versions-btn/);
+		assert.match(html, /ai-report-stats-row/);
+		assert.match(html, /ai-report-actions-group/);
 		assert.match(html, /ai-report-stats/);
-		assert.match(html, /18 words · 2 discourses cited/);
+		assert.match(html, /18 words · 2 citations/);
 		assert.doesNotMatch(html, /Research report/);
 		assert.doesNotMatch(html, /ai-report-kicker/);
 	});
@@ -1183,6 +1187,21 @@ describe("researchHistoryExcerpt", () => {
 	});
 });
 
+describe("researchHistoryCardStatsLabel", () => {
+	it("prefixes the current version on history cards", () => {
+		assert.equal(
+			researchHistoryCardStatsLabel({
+				report: "See MN 10 and SN 47.1 for more detail here.",
+				versionIndex: [
+					{ n: 1, at: 1, instruction: "", changelog: "", from: null },
+					{ n: 2, at: 2, instruction: "", changelog: "", from: 1 },
+				],
+			}),
+			"v2 · 10 words · 2 citations",
+		);
+	});
+});
+
 describe("researchHistoryStatsLabel", () => {
 	it("reports word count, unique discourses cited, and leftover sources", () => {
 		assert.equal(researchHistoryStatsLabel(""), "");
@@ -1199,7 +1218,7 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 `;
 		assert.equal(
 			researchHistoryStatsLabel(report),
-			"18 words · 2 discourses cited",
+			"18 words · 2 citations",
 		);
 		assert.equal(
 			researchHistoryStatsLabel(report, [
@@ -1207,7 +1226,7 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 				{ slug: "sn47.1" },
 				{ slug: "sn46.2" },
 			]),
-			"18 words · 2 discourses cited · 1 additional source",
+			"18 words · 2 citations · 1 additional source",
 		);
 		assert.equal(
 			researchHistoryStatsLabel(report, [
@@ -1216,11 +1235,11 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 				{ slug: "sn46.2" },
 				{ slug: "sn46.51" },
 			]),
-			"18 words · 2 discourses cited · 2 additional sources",
+			"18 words · 2 citations · 2 additional sources",
 		);
 		assert.equal(
 			researchHistoryStatsLabel("See MN 10.", [{ slug: "mn10" }]),
-			"3 words · 1 discourse cited",
+			"3 words · 1 citation",
 		);
 		assert.equal(researchHistoryStatsLabel("No citations here."), "3 words");
 		assert.equal(
@@ -1242,7 +1261,7 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 				cited: 37,
 				additional: 21,
 			}),
-			"4,962 words · 37 discourses cited · 21 additional sources",
+			"4,962 words · 37 citations · 21 additional sources",
 		);
 	});
 });

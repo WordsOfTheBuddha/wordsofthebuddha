@@ -1,5 +1,9 @@
 import { uniquePrefixedDiscourseIdsInText } from "./aiSearchQuery";
 import { stripResearchReportLengthNote } from "./aiAskResearchReportLength";
+import {
+	currentResearchVersionN,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
 
 export interface ResearchHistoryReportStats {
 	words: number;
@@ -95,7 +99,7 @@ export function formatResearchHistoryStatsLabel(
 	}
 	if (stats.cited > 0) {
 		parts.push(
-			`${formatHistoryStatCount(stats.cited)} ${stats.cited === 1 ? "discourse cited" : "discourses cited"}`,
+			`${formatHistoryStatCount(stats.cited)} ${stats.cited === 1 ? "citation" : "citations"}`,
 		);
 	}
 	if (stats.additional > 0) {
@@ -127,4 +131,21 @@ export function researchHistoryStatsLabel(
 	return formatResearchHistoryStatsLabel(
 		snapshotResearchHistoryStats(report, results),
 	);
+}
+
+/** Research history card row: current version + compact stats. */
+export function researchHistoryCardStatsLabel(input: {
+	report?: string | null;
+	results?: readonly { slug?: string }[];
+	reportStats?: ResearchHistoryReportStats | null;
+	versionIndex?: readonly ResearchVersionMeta[];
+}): string {
+	const stats = researchHistoryStatsLabel(
+		input.report,
+		input.results,
+		input.reportStats,
+	);
+	if (!stats) return "";
+	const n = currentResearchVersionN(input.versionIndex || []);
+	return n > 0 ? `v${n} · ${stats}` : stats;
 }

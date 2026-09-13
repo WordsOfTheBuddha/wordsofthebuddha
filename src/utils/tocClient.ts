@@ -13,6 +13,12 @@ export const DISCOURSE_TOC_MIN_HEADINGS = 2;
 export const DISCOURSE_TOC_HEADING_SELECTOR = "h1, h2, h3, h4, h5";
 /** Essay posts skip the layout `h1` title; nest `h3`–`h5` under `h2`. */
 export const POST_TOC_HEADING_SELECTOR = "h2, h3, h4, h5";
+/** Research reports: last finished report body; nest `h3` under `h2`. */
+export const RESEARCH_TOC_MIN_HEADINGS = 2;
+export const RESEARCH_TOC_CONTENT_SELECTOR =
+	".ai-turn:last-child .ai-report .ai-answer-body";
+export const RESEARCH_TOC_HEADING_SELECTOR =
+	"h2[data-report-heading], h3[data-report-heading]";
 
 const LETTER_RE = /\p{L}/u;
 const GLOSS_RE = /\|([^:|]+)::[^|]*\|/g;
@@ -59,6 +65,58 @@ export interface AttachTableOfContentsOptions {
 	mobileOverlayId: string;
 	mobileCloseId: string;
 	activeClass?: string;
+}
+
+const tocControllers = new Map<string, AbortController>();
+
+export function researchTableOfContentsOptions(): AttachTableOfContentsOptions {
+	return {
+		contentSelector: RESEARCH_TOC_CONTENT_SELECTOR,
+		headingSelector: RESEARCH_TOC_HEADING_SELECTOR,
+		nestedTag: "H3",
+		minHeadings: RESEARCH_TOC_MIN_HEADINGS,
+		requireNamed: false,
+		placement: "fixed",
+		desktopNavId: "post-toc",
+		mobileNavId: "mobile-toc-nav",
+		mobileToggleId: "mobile-toc-toggle",
+		mobileOverlayId: "mobile-toc-overlay",
+		mobileCloseId: "mobile-toc-close",
+		activeClass: "has-toc",
+	};
+}
+
+export function detachTableOfContents(desktopNavId: string): void {
+	tocControllers.get(desktopNavId)?.abort();
+	tocControllers.delete(desktopNavId);
+}
+
+export function refreshTableOfContents(
+	options: AttachTableOfContentsOptions,
+): boolean {
+	detachTableOfContents(options.desktopNavId);
+	return attachTableOfContents(options);
+}
+
+export function clearTableOfContents(
+	options: AttachTableOfContentsOptions,
+): void {
+	detachTableOfContents(options.desktopNavId);
+	hideTocUi(options);
+}
+
+function hideTocUi(options: AttachTableOfContentsOptions): void {
+	document.getElementById(options.desktopNavId)?.replaceChildren();
+	document.getElementById(options.mobileNavId)?.replaceChildren();
+	const mobileToggle = document.getElementById(options.mobileToggleId);
+	mobileToggle?.classList.add("opacity-0", "invisible");
+	mobileToggle?.classList.remove("opacity-100", "visible");
+	const mobileOverlay = document.getElementById(options.mobileOverlayId);
+	mobileOverlay?.classList.remove("open");
+	document.body.style.overflow = "";
+	if (options.activeClass) {
+		document.documentElement.classList.remove(options.activeClass);
+	}
 }
 
 function expectsSplitView(): boolean {
@@ -230,11 +288,17 @@ function collectHeadings(
 	);
 }
 
+function tocHeadingLabel(heading: HTMLElement): string {
+	const attr = heading.getAttribute("data-report-heading");
+	if (attr) return headingLabel(attr);
+	return headingLabel(heading.textContent || "");
+}
+
 function createTocLink(heading: HTMLElement, className: string): HTMLAnchorElement {
 	const id = ensureHeadingId(heading);
 	const link = document.createElement("a");
 	link.href = `#${id}`;
-	link.textContent = headingLabel(heading.textContent || "");
+	link.textContent = tocHeadingLabel(heading);
 	if (className) link.className = className;
 	return link;
 }
@@ -242,11 +306,16 @@ function createTocLink(heading: HTMLElement, className: string): HTMLAnchorEleme
 export function attachTableOfContents(
 	options: AttachTableOfContentsOptions,
 ): boolean {
+	detachTableOfContents(options.desktopNavId);
+
 	const nav = document.getElementById(options.desktopNavId);
 	if (!nav) return false;
 
 	const contentRoot = resolveContentRoot(options.contentSelector);
-	if (!contentRoot) return false;
+	if (!contentRoot) {
+		hideTocUi(options);
+		return false;
+	}
 
 	const headings = collectHeadings(
 		contentRoot,
@@ -256,7 +325,10 @@ export function attachTableOfContents(
 	const hasEnoughHeadings = headings.length >= options.minHeadings;
 	// Essay posts reserve the two-column shell even with an empty ToC.
 	// Discourses (fixed rail) stay hidden until there are real sections.
-	if (!hasEnoughHeadings && options.placement === "fixed") return false;
+	if (!hasEnoughHeadings && options.placement === "fixed") {
+		hideTocUi(options);
+		return false;
+	}
 
 	if (options.activeClass) {
 		document.documentElement.classList.add(options.activeClass);
@@ -380,7 +452,11 @@ export function attachTableOfContents(
 		tryScroll();
 	}
 
-	nav.addEventListener("click", scrollToHeading);
+	const controller = new AbortController();
+	const { signal } = controller;
+	tocControllers.set(options.desktopNavId, controller);
+
+	nav.addEventListener("click", scrollToHeading, { signal });
 
 	if (mobileNav && mobileToggle && mobileOverlay) {
 		mobileToggle.classList.remove("opacity-0", "invisible");
@@ -395,15 +471,23 @@ export function attachTableOfContents(
 			document.body.style.overflow = "";
 		};
 
-		mobileToggle.addEventListener("click", openMobileToc);
-		mobileClose?.addEventListener("click", closeMobileToc);
-		mobileOverlay.addEventListener("click", (event) => {
-			if (event.target === mobileOverlay) closeMobileToc();
-		});
-		mobileNav.addEventListener("click", (event) => {
-			scrollToHeading(event);
-			closeMobileToc();
-		});
+		mobileToggle.addEventListener("click", openMobileToc, { signal });
+		mobileClose?.addEventListener("click", closeMobileToc, { signal });
+		mobileOverlay.addEventListener(
+			"click",
+			(event) => {
+				if (event.target === mobileOverlay) closeMobileToc();
+			},
+			{ signal },
+		);
+		mobileNav.addEventListener(
+			"click",
+			(event) => {
+				scrollToHeading(event);
+				closeMobileToc();
+			},
+			{ signal },
+		);
 	}
 
 	let ticking = false;
@@ -421,11 +505,13 @@ export function attachTableOfContents(
 		updateActiveFromScroll();
 	}
 
-	window.addEventListener("scroll", onScrollOrResize, { passive: true });
-	window.addEventListener("scrollend", onScrollEnd);
-	window.addEventListener("resize", onScrollOrResize);
-	document.addEventListener("layoutChanged", updateActiveFromScroll);
-	document.addEventListener("paliModeChanged", updateActiveFromScroll);
+	window.addEventListener("scroll", onScrollOrResize, { passive: true, signal });
+	window.addEventListener("scrollend", onScrollEnd, { signal });
+	window.addEventListener("resize", onScrollOrResize, { signal });
+	document.addEventListener("layoutChanged", updateActiveFromScroll, { signal });
+	document.addEventListener("paliModeChanged", updateActiveFromScroll, {
+		signal,
+	});
 	if (!loadPassed) {
 		window.addEventListener(
 			"load",
@@ -433,7 +519,7 @@ export function attachTableOfContents(
 				loadPassed = true;
 				scheduleArm();
 			},
-			{ once: true },
+			{ once: true, signal },
 		);
 	} else {
 		scheduleArm();

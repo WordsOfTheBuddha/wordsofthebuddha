@@ -39,6 +39,12 @@ import {
 } from "./aiAskQuestionText";
 import {
 	changedReportBlockKeys,
+	diffReportBlockChanges,
+	enumerateReportBlocks,
+	reportBlockDiffCount,
+	REPORT_BLOCK_KEY_MIN,
+	type ReportBlockDiff,
+	type ReportContentBlock,
 	clipResearchReviseHeading,
 	clipResearchReviseQuote,
 	clipResearchVersionIndex,
@@ -61,6 +67,16 @@ import {
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
 import { hydrateResearchReportMermaid } from "./researchReportMermaid";
+import {
+	decorateReportParagraphNumbers,
+	readShowParagraphNumbers,
+	writeShowParagraphNumbers,
+} from "./paragraphNumbers";
+import {
+	clearTableOfContents,
+	refreshTableOfContents,
+	researchTableOfContentsOptions,
+} from "./tocClient";
 import {
 	hideDiscourseCitationPopover,
 	installDiscourseCitationPopovers,
@@ -115,6 +131,8 @@ import {
 	RESEARCH_UNPIN_ACTION,
 	RESEARCH_NEW_LABEL,
 	RESEARCH_VERSIONS_ACTION,
+	REPORT_PARAGRAPH_HIDE_TITLE,
+	REPORT_PARAGRAPH_SHOW_TITLE,
 	ASK_CLIPBOARD_COPIED_LABEL,
 	ASK_CLIPBOARD_FAILED_LABEL,
 	ASK_SHARE_COPIED_LABEL,
@@ -125,6 +143,7 @@ import {
 	isIncompleteResearchTurn,
 	openAskTurnActionFlags,
 	readAskButtonIdle,
+	researchHistoryCardStatsLabel,
 	researchHistoryStatsLabel,
 	researchHistoryTimestamp,
 	researchJobToHistoryEntry,
@@ -1502,6 +1521,7 @@ function turnToSessionEntry(
 		...(turn.versionIndex && turn.versionIndex.length > 0
 			? { versionIndex: turn.versionIndex }
 			: {}),
+		...(turn.reviseBase ? { reviseBase: turn.reviseBase } : {}),
 	};
 }
 
@@ -1546,6 +1566,7 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		...(entry.versionIndex && entry.versionIndex.length > 0
 			? { versionIndex: clipResearchVersionIndex(entry.versionIndex) }
 			: {}),
+		...(entry.reviseBase ? { reviseBase: entry.reviseBase } : {}),
 	};
 }
 
@@ -1732,47 +1753,223 @@ export function researchChangesChipLabel(count: number): string {
 	return n === 1 ? "1 change" : `${n.toLocaleString("en-US")} changes`;
 }
 
+export function researchChangesChipVisible(
+	turn: Pick<
+		AiAskTurn,
+		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+	>,
+	input: { previewVersion?: boolean; isLatestTurn?: boolean } = {},
+): boolean {
+	if (input.previewVersion || input.isLatestTurn === false) return false;
+	if (reportChangeCount(turn) > 0) return true;
+	return shouldHydrateReviseBase(turn);
+}
+
+export function researchChangesChipLabelForTurn(
+	turn: Pick<
+		AiAskTurn,
+		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+	>,
+): string {
+	const count = reportChangeCount(turn);
+	if (count > 0) return researchChangesChipLabel(count);
+	if (shouldHydrateReviseBase(turn)) return "Changes";
+	return "";
+}
+
+export function researchVersionChangesChipHtml(input: {
+	label: string;
+	pressed: boolean;
+}): string {
+	const title = input.pressed
+		? RESEARCH_CHANGES_HIDE_TITLE
+		: RESEARCH_CHANGES_SHOW_TITLE;
+	return `<button type="button" class="ai-changes-btn ai-versions-changes" data-ai-changes aria-pressed="${
+		input.pressed ? "true" : "false"
+	}" title="${escapeHtml(title)}">${escapeHtml(input.label)}</button>`;
+}
+
+export function reportBlockDiff(
+	turn: Pick<AiAskTurn, "report" | "reviseBase">,
+): ReportBlockDiff | null {
+	const base = (turn.reviseBase || "").trim();
+	const next = (turn.report || "").trim();
+	if (!base || !next || base === next) return null;
+	return diffReportBlockChanges(base, next);
+}
+
 /** Block keys the current report added or rewrote against `reviseBase`. */
 export function reportChangedKeys(
 	turn: Pick<AiAskTurn, "report" | "reviseBase">,
 ): string[] {
-	const base = (turn.reviseBase || "").trim();
-	const next = (turn.report || "").trim();
-	if (!base || !next || base === next) return [];
-	return changedReportBlockKeys(base, next);
+	const diff = reportBlockDiff(turn);
+	if (!diff) return [];
+	return [...diff.added, ...diff.edited];
 }
 
 export function reportChangeCount(
 	turn: Pick<AiAskTurn, "report" | "reviseBase">,
 ): number {
-	return reportChangedKeys(turn).length;
+	return reportBlockDiffCount(reportBlockDiff(turn));
 }
 
-const REPORT_CHANGE_BLOCK_SELECTOR =
-	":scope > p, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote > p, :scope > ul > li, :scope > ol > li";
+/** Version body to diff against when the session did not keep `reviseBase`. */
+export function researchReviseBaseVersionN(
+	index: readonly ResearchVersionMeta[] = [],
+): number | null {
+	const current = currentResearchVersionN(index);
+	return current >= 2 ? current - 1 : null;
+}
+
+export function shouldHydrateReviseBase(
+	turn: Pick<
+		AiAskTurn,
+		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+	>,
+): boolean {
+	if (turn.reviseBase || turn.research !== true || !turn.researchJobId) return false;
+	const report = (turn.report || "").trim();
+	if (!report) return false;
+	const index = healedResearchVersionIndex({
+		versionIndex: turn.versionIndex,
+	});
+	return researchReviseBaseVersionN(index) !== null;
+}
+
+export const REPORT_CHANGE_BLOCK_SELECTOR =
+	":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote, :scope > ul > li, :scope > ol > li";
+
+function reportBlockKeyFromElement(el: HTMLElement): string {
+	if (el.dataset.reportBlockKey) return el.dataset.reportBlockKey;
+	const clone = el.cloneNode(true) as HTMLElement;
+	clone.querySelectorAll(".paragraph-num").forEach((node) => node.remove());
+	return normalizeReportBlockText(clone.textContent || "");
+}
+
+/** Stamp `data-report-block-key` on rendered blocks from the markdown source. */
+export function stampReportBlockKeys(body: ParentNode, markdown: string): number {
+	if (typeof (body as Element).querySelectorAll !== "function") return 0;
+	const blocks = enumerateReportBlocks(markdown);
+	const els = body.querySelectorAll<HTMLElement>(REPORT_CHANGE_BLOCK_SELECTOR);
+	let stamped = 0;
+	blocks.forEach((block, index) => {
+		const el = els[index];
+		if (!el) return;
+		el.dataset.reportBlockIdx = String(index);
+		if (block.key.length >= REPORT_BLOCK_KEY_MIN) {
+			el.dataset.reportBlockKey = block.key;
+			stamped += 1;
+		} else {
+			delete el.dataset.reportBlockKey;
+		}
+	});
+	for (let i = blocks.length; i < els.length; i += 1) {
+		delete els[i].dataset.reportBlockKey;
+		delete els[i].dataset.reportBlockIdx;
+	}
+	return stamped;
+}
+
+function clearReportDiffMarks(body: ParentNode): void {
+	body.querySelectorAll<HTMLElement>(REPORT_CHANGE_BLOCK_SELECTOR).forEach((el) => {
+		el.classList.remove(
+			"is-changed",
+			"is-change-added",
+			"is-change-edited",
+			"is-first-change",
+		);
+	});
+	body.querySelectorAll(".ai-change-removed").forEach((el) => el.remove());
+}
+
+function insertRemovedBlockGhost(
+	body: Element,
+	block: ReportContentBlock,
+	before?: Element | null,
+): void {
+	const doc = body.ownerDocument;
+	if (!doc) return;
+	const details = doc.createElement("details");
+	details.className = "ai-change-removed";
+	const summary = doc.createElement("summary");
+	summary.textContent = "Removed in this version";
+	const content = doc.createElement("div");
+	content.className = "ai-change-removed-body";
+	content.innerHTML = renderResearchReportHtml(block.markdown);
+	details.append(summary, content);
+	if (before && before.parentElement === body) {
+		body.insertBefore(details, before);
+	} else {
+		body.appendChild(details);
+	}
+}
 
 /**
- * Tag rendered blocks whose text matches a changed key with `.is-changed`
- * (and the first one with `.is-first-change`). Returns how many were tagged.
+ * Paint git-like diff marks: green additions, amber edits, red removals
+ * (removals collapsed in `<details>`). Returns how many live blocks were tagged.
  */
+export function markReportBlockDiff(
+	body: ParentNode,
+	diff: ReportBlockDiff | null,
+	baseMarkdown = "",
+): number {
+	if (typeof (body as Element).querySelectorAll !== "function") return 0;
+	clearReportDiffMarks(body);
+	if (!diff) return 0;
+	const added = new Set(diff.added);
+	const edited = new Set(diff.edited);
+	let marked = 0;
+	let firstMarked: HTMLElement | null = null;
+	for (const el of body.querySelectorAll<HTMLElement>(
+		REPORT_CHANGE_BLOCK_SELECTOR,
+	)) {
+		const key = reportBlockKeyFromElement(el);
+		if (!key) continue;
+		if (added.has(key)) {
+			el.classList.add("is-change-added");
+			marked += 1;
+			if (!firstMarked) firstMarked = el;
+		} else if (edited.has(key)) {
+			el.classList.add("is-change-edited");
+			marked += 1;
+			if (!firstMarked) firstMarked = el;
+		}
+	}
+	const container = body as Element;
+	if (typeof container.appendChild === "function" && baseMarkdown.trim()) {
+		for (const block of diff.removed) {
+			let anchor: Element | null = null;
+			if (block.beforeNextIndex !== null) {
+				const targetIndex = block.beforeNextIndex;
+				for (const el of body.querySelectorAll<HTMLElement>(
+					REPORT_CHANGE_BLOCK_SELECTOR,
+				)) {
+					const idx = Number(el.dataset.reportBlockIdx ?? -1);
+					if (idx >= targetIndex) {
+						anchor = el;
+						break;
+					}
+				}
+			}
+			insertRemovedBlockGhost(container, block, anchor);
+		}
+	}
+	if (firstMarked !== null) {
+		(firstMarked as HTMLElement).classList.add("is-first-change");
+	}
+	return marked;
+}
+
+/** @deprecated Use markReportBlockDiff */
 export function markChangedReportBlocks(
 	body: ParentNode,
 	keys: readonly string[],
 ): number {
-	const wanted = new Set(keys);
-	let marked = 0;
-	body.querySelectorAll<HTMLElement>(REPORT_CHANGE_BLOCK_SELECTOR).forEach(
-		(el) => {
-			el.classList.remove("is-changed", "is-first-change");
-			if (wanted.size === 0) return;
-			const key = normalizeReportBlockText(el.textContent || "");
-			if (!key || !wanted.has(key)) return;
-			el.classList.add("is-changed");
-			if (marked === 0) el.classList.add("is-first-change");
-			marked += 1;
-		},
-	);
-	return marked;
+	return markReportBlockDiff(body, {
+		added: [...keys],
+		edited: [],
+		removed: [],
+	});
 }
 
 /** The version a row was built from: its `from`, else the one before it. */
@@ -1796,6 +1993,7 @@ export function researchVersionRowHtml(
 		preview?: boolean;
 		previous?: ResearchVersionMeta;
 		fallbackStats?: ResearchHistoryReportStats;
+		changesChip?: { label: string; pressed: boolean };
 	} = {},
 ): string {
 	const relative = formatAskRelativeTime(row.at);
@@ -1818,6 +2016,11 @@ export function researchVersionRowHtml(
 	const note = (row.changelog || "").trim() || (instruction ? "" : "Untitled revision");
 	const stats = row.stats || options.fallbackStats;
 	const statsLine = formatResearchVersionStats(stats, options.previous?.stats);
+	const changesChip = options.changesChip
+		? `<span class="ai-versions-changes-wrap">${researchVersionChangesChipHtml(
+				options.changesChip,
+			)}</span>`
+		: "";
 	const classes = [
 		"ai-versions-row",
 		options.current ? "is-current" : "",
@@ -1830,7 +2033,7 @@ export function researchVersionRowHtml(
 		options.preview ? "true" : "false"
 	}"><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${ask}${
 		note ? `<span class="ai-versions-note">${escapeHtml(note)}</span>` : ""
-	}${statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""}</div></li>`;
+	}${statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""}${changesChip}</div></li>`;
 }
 
 export const RESEARCH_VERSIONS_COPY_ASK = "Copy this instruction";
@@ -2012,7 +2215,9 @@ export function attachAiMode(options: {
 	let reviseFromVersion: number | null = null;
 	let previewVersion: { n: number; report: string } | null = null;
 	/** Whether changed paragraphs are highlighted after a revise lands. */
-	let showReviseChanges = true;
+	let showReviseChanges = false;
+	let hydratingReviseBase = false;
+	let hydrateReviseBaseToken = 0;
 	let headingReviseBtn: HTMLButtonElement | null = null;
 	const REVISE_PENDING_KEY = "ai-revise-pending";
 
@@ -2402,7 +2607,6 @@ export function attachAiMode(options: {
 				const landed = (last.report || "").trim();
 				if (!data.job.pending && base && landed && landed !== base) {
 					last.reviseBase = base;
-					showReviseChanges = true;
 				}
 				previewVersion = null;
 				reviseFromVersion = null;
@@ -2429,7 +2633,6 @@ export function attachAiMode(options: {
 				if (data.job.error) setStatus(data.job.error);
 				else setStatus("");
 				syncLayout();
-				if (last.reviseBase) window.setTimeout(revealFirstReportChange, 250);
 				return;
 			}
 			if (response.status === 401) {
@@ -2557,6 +2760,10 @@ export function attachAiMode(options: {
 							from: null,
 						},
 					];
+		const changesVisible = researchChangesChipVisible(turn, {
+			isLatestTurn: true,
+		});
+		const changesLabel = researchChangesChipLabelForTurn(turn);
 		versionsList.innerHTML = rows
 			.map((row) =>
 				researchVersionRowHtml(row, {
@@ -2564,6 +2771,13 @@ export function attachAiMode(options: {
 					preview: row.n === previewN,
 					previous: previousResearchVersion(index, row),
 					fallbackStats: row.n === currentN ? liveStats : undefined,
+					changesChip:
+						row.n === currentN &&
+						row.n === previewN &&
+						changesVisible &&
+						changesLabel
+							? { label: changesLabel, pressed: showReviseChanges }
+							: undefined,
 				}),
 			)
 			.join("");
@@ -2603,6 +2817,16 @@ export function attachAiMode(options: {
 							/* clipboard unavailable — text is still selectable */
 						});
 				});
+				row.querySelector<HTMLButtonElement>("[data-ai-changes]")?.addEventListener(
+					"click",
+					(event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						showReviseChanges = !showReviseChanges;
+						syncReportChangeVisibility(turn);
+						openVersionsDrawer(turn);
+					},
+				);
 			},
 		);
 		if (versionsActions) versionsActions.hidden = previewN === currentN;
@@ -2732,35 +2956,38 @@ export function attachAiMode(options: {
 		return thread.querySelector<HTMLElement>(".ai-turn:last-child .ai-report");
 	}
 
-	/** Highlight the blocks this version changed and wire the “N changes” chip. */
+	function syncReportChangeVisibility(turn: AiAskTurn): void {
+		const report = lastReportElement();
+		if (!report) return;
+		const diff = previewVersion ? null : reportBlockDiff(turn);
+		const changeCount = reportBlockDiffCount(diff);
+		report.classList.toggle(
+			"is-show-changes",
+			changeCount > 0 && showReviseChanges && !previewVersion,
+		);
+		if (showReviseChanges && changeCount > 0 && !previewVersion) {
+			revealFirstReportChange();
+		}
+	}
+
+	/** Paint diff marks on the report; visibility is toggled from the Versions drawer. */
 	function applyReportChangeMarks(turn: AiAskTurn): void {
 		const report = lastReportElement();
 		if (!report) return;
 		const body = report.querySelector<HTMLElement>(".ai-answer-body");
-		const keys = previewVersion ? [] : reportChangedKeys(turn);
-		const marked = body ? markChangedReportBlocks(body, keys) : 0;
-		report.classList.toggle("is-show-changes", marked > 0 && showReviseChanges);
-		const chip = report.querySelector<HTMLButtonElement>("[data-ai-changes]");
-		if (!chip) return;
-		if (marked === 0) {
-			chip.remove();
-			return;
+		const diff = previewVersion ? null : reportBlockDiff(turn);
+		if (body) {
+			const reportMarkdown = displayedReportMarkdown(turn).trim();
+			stampReportBlockKeys(body, reportMarkdown);
+			markReportBlockDiff(body, diff, (turn.reviseBase || "").trim());
 		}
-		chip.addEventListener("click", () => {
-			showReviseChanges = !showReviseChanges;
-			chip.setAttribute("aria-pressed", showReviseChanges ? "true" : "false");
-			chip.title = showReviseChanges
-				? RESEARCH_CHANGES_HIDE_TITLE
-				: RESEARCH_CHANGES_SHOW_TITLE;
-			report.classList.toggle("is-show-changes", showReviseChanges);
-			if (showReviseChanges) revealFirstReportChange();
-		});
+		syncReportChangeVisibility(turn);
 	}
 
 	function revealFirstReportChange(): void {
-		const first = lastReportElement()?.querySelector<HTMLElement>(
-			".is-first-change",
-		);
+		const first =
+			lastReportElement()?.querySelector<HTMLElement>(".is-first-change") ||
+			lastReportElement()?.querySelector<HTMLElement>(".ai-change-removed");
 		if (!first) return;
 		try {
 			first.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -2769,8 +2996,89 @@ export function attachAiMode(options: {
 		}
 	}
 
+	function syncReportParagraphNumbers(report: HTMLElement): void {
+		const body = report.querySelector<HTMLElement>(".ai-answer-body");
+		if (!body) return;
+		decorateReportParagraphNumbers(body);
+		const show = readShowParagraphNumbers();
+		report.classList.toggle("is-show-paragraph-numbers", show);
+		const btn = report.querySelector<HTMLButtonElement>("[data-ai-report-paragraphs]");
+		if (!btn) return;
+		btn.classList.toggle("is-on", show);
+		btn.setAttribute("aria-pressed", show ? "true" : "false");
+		btn.title = show ? REPORT_PARAGRAPH_HIDE_TITLE : REPORT_PARAGRAPH_SHOW_TITLE;
+		btn.setAttribute("aria-label", btn.title);
+	}
+
+	function bindReportParagraphToggle(report: HTMLElement): void {
+		const btn = report.querySelector<HTMLButtonElement>("[data-ai-report-paragraphs]");
+		if (!btn || btn.dataset.bound === "1") return;
+		btn.dataset.bound = "1";
+		btn.addEventListener("click", () => {
+			const on = !report.classList.contains("is-show-paragraph-numbers");
+			report.classList.toggle("is-show-paragraph-numbers", on);
+			writeShowParagraphNumbers(on);
+			btn.classList.toggle("is-on", on);
+			btn.setAttribute("aria-pressed", on ? "true" : "false");
+			btn.title = on ? REPORT_PARAGRAPH_HIDE_TITLE : REPORT_PARAGRAPH_SHOW_TITLE;
+			btn.setAttribute("aria-label", btn.title);
+		});
+	}
+
+	async function hydrateReviseBaseIfNeeded(turn: AiAskTurn): Promise<void> {
+		if (!shouldHydrateReviseBase(turn) || previewVersion) return;
+		const prevN = researchReviseBaseVersionN(
+			healedResearchVersionIndex({ versionIndex: turn.versionIndex }),
+		);
+		if (!prevN || !turn.researchJobId) return;
+		const token = ++hydrateReviseBaseToken;
+		hydratingReviseBase = true;
+		try {
+			const slug = shareSlugForRevise() || turn.shareSlug || "";
+			const url = turn.fromShare && slug
+				? `/api/ai/share?slug=${encodeURIComponent(slug)}&version=${prevN}`
+				: researchJobApiPath(turn.researchJobId, prevN);
+			const { response, data } = await fetchAiJson<{
+				success?: boolean;
+				report?: string;
+			}>(url);
+			if (token !== hydrateReviseBaseToken) return;
+			const base = (data.report || "").trim();
+			if (
+				!response.ok ||
+				!data.success ||
+				!base ||
+				base === (turn.report || "").trim()
+			) {
+				return;
+			}
+			turn.reviseBase = base;
+			persistSessionFromTurn(turn);
+			syncLayout();
+			if (!versionsDrawer?.hidden) openVersionsDrawer(turn);
+		} catch {
+			/* keep report without the chip */
+		} finally {
+			if (token === hydrateReviseBaseToken) hydratingReviseBase = false;
+		}
+	}
+
+	function syncReportToc(): void {
+		const options = researchTableOfContentsOptions();
+		if (!lastFinishedReportTurn()) {
+			clearTableOfContents(options);
+			return;
+		}
+		refreshTableOfContents(options);
+	}
+
 	function bindReportRevise(turn: AiAskTurn, turnIndex: number): void {
 		if (turnIndex !== turns.length - 1 || !lastFinishedReportTurn()) return;
+		const report = lastReportElement();
+		if (report) {
+			syncReportParagraphNumbers(report);
+			bindReportParagraphToggle(report);
+		}
 		thread.querySelectorAll<HTMLElement>("[data-report-heading]").forEach(
 			(heading) => {
 				heading.addEventListener("click", (event) => {
@@ -5128,44 +5436,30 @@ export function attachAiMode(options: {
 		const reportText = displayedReportMarkdown(turn).trim();
 		const hasHits = turn.results.length > 0;
 		const summary = reportText
-			? wrapAskAnswerHtml({
+			? (() => {
+					const versionIndex = healedResearchVersionIndex({
+						versionIndex: turn.versionIndex,
+						processNotes: turn.processNotes,
+						createdAt: turn.researchStartedAt,
+					});
+					const versionLabel = formatResearchVersionLabel(
+						versionIndex,
+						previewVersion?.n,
+					);
+					return wrapAskAnswerHtml({
 					kind: "report",
 					turnIndex,
-					extraStart: (() => {
-						const versionIndex = healedResearchVersionIndex({
-							versionIndex: turn.versionIndex,
-							processNotes: turn.processNotes,
-							createdAt: turn.researchStartedAt,
-						});
-						const versionLabel = formatResearchVersionLabel(
-							versionIndex,
-							previewVersion?.n,
-						);
-						const changes =
-							!previewVersion && turnIndex === turns.length - 1
-								? reportChangeCount(turn)
-								: 0;
-						const changesChip =
-							changes > 0
-								? `<button type="button" class="ai-changes-btn" data-ai-changes data-turn-index="${turnIndex}" aria-pressed="${
-										showReviseChanges ? "true" : "false"
-									}" title="${escapeHtml(
-										showReviseChanges
-											? RESEARCH_CHANGES_HIDE_TITLE
-											: RESEARCH_CHANGES_SHOW_TITLE,
-									)}">${escapeHtml(researchChangesChipLabel(changes))}</button>`
-								: "";
-						return `<button type="button" class="ai-versions-btn" data-ai-versions data-turn-index="${turnIndex}" aria-label="${escapeHtml(
-							`${versionLabel} · ${RESEARCH_VERSIONS_ACTION}`,
-						)}">${escapeHtml(versionLabel)}</button>${changesChip}`;
-					})(),
+					versionStart: `<button type="button" class="ai-versions-btn" data-ai-versions data-turn-index="${turnIndex}" aria-label="${escapeHtml(
+						`${versionLabel} · ${RESEARCH_VERSIONS_ACTION}`,
+					)}">${escapeHtml(versionLabel)}</button>`,
 					stats: escapeHtml(
 						researchHistoryStatsLabel(reportText, turn.results),
 					),
 					bodyHtml: renderResearchReportHtml(reportText, turn.results, {
 						citationPopovers: true,
 					}),
-				})
+				});
+				})()
 			: hasHits && summaryText
 				? wrapAskAnswerHtml({
 						kind: "answer",
@@ -5320,11 +5614,12 @@ export function attachAiMode(options: {
 			? `<span class="ai-history-pin" title="${threadCount > 1 ? "Pinned conversation" : "Pinned"}" aria-label="${threadCount > 1 ? "Pinned conversation" : "Pinned"}">${PIN_ICON_SVG}</span>`
 			: "";
 		const statsLabel = paneResearch
-			? researchHistoryStatsLabel(
-					entry.report,
-					entry.results,
-					entry.reportStats,
-				)
+			? researchHistoryCardStatsLabel({
+					report: entry.report,
+					results: entry.results,
+					reportStats: entry.reportStats,
+					versionIndex: entry.versionIndex,
+				})
 			: "";
 		const resultIds = paneResearch
 			? ""
@@ -5900,7 +6195,15 @@ export function attachAiMode(options: {
 			scrollAskProcessToLatest(
 				thread.querySelector(".ai-turn:last-child .ai-process"),
 			);
+			if (
+				!hydratingReviseBase &&
+				reportChangeCount(lastTurn) === 0 &&
+				shouldHydrateReviseBase(lastTurn)
+			) {
+				void hydrateReviseBaseIfNeeded(lastTurn);
+			}
 		}
+		syncReportToc();
 		if (!shareMode) renderHistory();
 		syncFollowComposerMode();
 		scheduleFollowDockFrost();
@@ -6304,16 +6607,12 @@ export function attachAiMode(options: {
 				const landed = (turn.report || "").trim();
 				if (reviseBase && landed && landed !== reviseBase && !turn.error) {
 					turn.reviseBase = reviseBase;
-					showReviseChanges = true;
 				}
 				syncLayout();
 				scrollAskProcessToLatest(
 					thread.querySelector(".ai-turn:last-child .ai-process"),
 					{ focus: true },
 				);
-				if (turn.reviseBase === reviseBase && reviseBase) {
-					window.setTimeout(revealFirstReportChange, 250);
-				}
 				break;
 			} catch {
 				turn.pending = false;

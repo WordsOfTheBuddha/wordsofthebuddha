@@ -19,7 +19,7 @@ describe("plannerDisplayName", () => {
 		assert.equal(plannerDisplayName(LIGHTNING), "Nemotron 3.5 Lightning");
 		assert.equal(
 			plannerDisplayName(ASK_PLANNER_PAID_FALLBACK_MODEL),
-			"DeepSeek V4 Flash",
+			"GLM 5.3 Flash",
 		);
 		assert.equal(plannerDisplayName(GEMINI), "Gemini");
 	});
@@ -236,7 +236,7 @@ describe("buildAskPlannerNote", () => {
 				acceptedHasReasoning: true,
 				audience: "log",
 			}),
-			"Nemotron 3 Ultra was busy — planned with DeepSeek V4 Flash instead.",
+			"Nemotron 3 Ultra was busy — planned with GLM 5.3 Flash instead.",
 		);
 		assert.match(
 			buildAskPlannerNote({
@@ -253,7 +253,7 @@ describe("buildAskPlannerNote", () => {
 				acceptedHasReasoning: false,
 				audience: "log",
 			}) || "",
-			/Nemotron 3 Ultra timed out — planned with DeepSeek V4 Flash instead/,
+			/Nemotron 3 Ultra timed out — planned with GLM 5\.3 Flash instead/,
 		);
 		assert.match(
 			buildAskPlannerNote({
@@ -265,7 +265,7 @@ describe("buildAskPlannerNote", () => {
 				acceptedHasReasoning: false,
 				audience: "log",
 			}) || "",
-			/Nemotron 3 Ultra was recently unavailable — planned with DeepSeek V4 Flash instead/,
+			/Nemotron 3 Ultra was recently unavailable — planned with GLM 5\.3 Flash instead/,
 		);
 	});
 

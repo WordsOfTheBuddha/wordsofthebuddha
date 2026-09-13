@@ -3,6 +3,8 @@ import { describe, it } from "node:test";
 import {
 	applyResearchRevisePatch,
 	changedReportBlockKeys,
+	diffReportBlockChanges,
+	reportBlockDiffCount,
 	clipEditsToWordBudget,
 	clipResearchVersionIndex,
 	countWords,
@@ -427,11 +429,37 @@ describe("changed block keys", () => {
 		assert.deepEqual(reportBlockKeys("Short.\n\nA long enough paragraph here."), [
 			"alongenoughparagraphhere",
 		]);
-		assert.deepEqual(changedReportBlockKeys(base, next), [
+		assert.deepEqual(new Set(changedReportBlockKeys(base, next)), new Set([
 			"itemtwoisrewrittennow",
 			"newparagraphwithsn11",
-		]);
+		]));
 		assert.deepEqual(changedReportBlockKeys(base, base), []);
+	});
+
+	it("classifies additions, edits, and removals separately", () => {
+		const base =
+			"## A\n\nSame paragraph stays right here.\n\nDropped paragraph goes away now.\n\n- item one stays here\n- item two changes here";
+		const next =
+			"## A\n\nSame paragraph stays right here.\n\n- item one stays here\n- item two is rewritten now\n\nNew paragraph with [SN 1.1](/sn1.1).";
+		const diff = diffReportBlockChanges(base, next);
+		assert.deepEqual(diff.added, ["newparagraphwithsn11"]);
+		assert.deepEqual(diff.edited, ["itemtwoisrewrittennow"]);
+		assert.equal(diff.removed.length, 1);
+		assert.match(diff.removed[0].markdown, /Dropped paragraph/);
+		assert.equal(reportBlockDiffCount(diff), 3);
+	});
+
+	it("positions removals against the next surviving block after earlier inserts", () => {
+		const base =
+			"## Section\n\nAlpha paragraph remains in place.\n\n**Removed emphasis stays markdown.**\n\nBeta paragraph remains in place.\n\nGamma paragraph remains in place.";
+		const next =
+			"## Section\n\nA new opening paragraph was inserted.\n\nAlpha paragraph remains in place.\n\nBeta paragraph remains in place.\n\nGamma paragraph remains in place.";
+		const diff = diffReportBlockChanges(base, next);
+		assert.deepEqual(diff.added, ["anewopeningparagraphwasinserted"]);
+		assert.equal(diff.edited.length, 0);
+		assert.equal(diff.removed.length, 1);
+		assert.equal(diff.removed[0].beforeNextIndex, 3);
+		assert.match(diff.removed[0].markdown, /^\*\*Removed emphasis/);
 	});
 });
 
@@ -451,7 +479,7 @@ describe("version stats", () => {
 				{ words: 120, cited: 3, additional: 2 },
 				{ words: 100, cited: 4, additional: 2 },
 			),
-			"120 words (+20) · 3 cited (−1) · 2 additional sources",
+			"120 words (+20) · 3 cited (−1) · 2 sources",
 		);
 		assert.equal(formatResearchVersionStats(undefined), "");
 		assert.equal(openingResearchVersionMeta(1, { words: 5, cited: 0, additional: 0 }).stats?.words, 5);

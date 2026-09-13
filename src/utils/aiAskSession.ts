@@ -66,6 +66,8 @@ export interface AiAskSessionEntry {
 	processNotes?: string[];
 	/** Changelog rows for in-place report revisions. */
 	versionIndex?: ResearchVersionMeta[];
+	/** Report markdown before the latest revision — powers the “N changes” chip. */
+	reviseBase?: string;
 }
 
 const SESSION_KEY = "ai-ask-session-v1";

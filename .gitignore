@@ -83,3 +83,6 @@ public/vendor/mermaid/
 # audio-output
 public/audio/*
 tmp/
+
+# MCP browser tooling artifacts
+.playwright-mcp/

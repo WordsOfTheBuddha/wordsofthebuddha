@@ -92,8 +92,8 @@ export function formatPlannerRoutingLine(routing: AiAskPlannerRouting): string {
 
 /**
  * Distinct OpenRouter planners per Ask (requested + fallbacks). Same-model
- * unusable retries do not count as extra models. Production is DeepSeek
- * only; a picked free model can add a 2nd slot before DeepSeek.
+ * unusable retries do not count as extra models. Production is GLM only;
+ * a picked free model can add a 2nd slot before GLM.
  */
 export const MAX_PLANNER_OPENROUTER_ATTEMPTS = 3;
 
@@ -146,13 +146,13 @@ export interface PlannerModelAttemptsOptions {
 }
 
 /**
- * Requested model first, then DeepSeek V4 Flash if it was not already
- * requested. OpenRouter fails over across DeepSeek providers in one call,
+ * Requested model first, then GLM 5.3 Flash if it was not already
+ * requested. OpenRouter fails over across GLM providers in one call,
  * so Nemotron is not an automatic backup. Caps at `maxAttempts`.
  *
- * Example (production / picker hidden): DeepSeek V4 Flash
- * Example (requested = Ultra): Ultra → DeepSeek V4 Flash
- * Example (requested = Lightning): Lightning → DeepSeek V4 Flash
+ * Example (production / picker hidden): GLM 5.3 Flash
+ * Example (requested = Ultra): Ultra → GLM 5.3 Flash
+ * Example (requested = Lightning): Lightning → GLM 5.3 Flash
  */
 export function plannerModelAttempts(
 	requested: string,
@@ -190,7 +190,7 @@ export function plannerModelAttempts(
 export type UnusableRewriteAction = "retry_same" | "try_next" | "use_degraded";
 
 /**
- * Unusable JSON from a model that still has a fallback (Ultra → DeepSeek) moves
+ * Unusable JSON from a model that still has a fallback (Ultra → GLM) moves
  * on immediately — a same-model retry was burning ~90s and dropping the SSE.
  * Last-in-queue still retries once before accepting a degraded plan.
  * Timeouts/429 are handled separately and do not use this path.
@@ -323,7 +323,7 @@ export const PLANNER_ATTEMPT_MS = 45_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
- * when it fails (busy, 404, timeout, …) try DeepSeek V4 Flash if it was not
+ * when it fails (busy, 404, timeout, …) try GLM 5.3 Flash if it was not
  * already requested. Provider failover stays inside that one model.
  * An unusable rewrite from a model with a fallback moves on;
  * the last model retries once before a degraded plan. Do not fall back to
@@ -342,7 +342,7 @@ export async function rewriteAskQuestion(options: {
 	onReasoningReset?: () => void;
 	signal?: AbortSignal;
 	/**
-	 * Explicit OpenRouter queue (Research uses DeepSeek only). When omitted, use
+	 * Explicit OpenRouter queue (Research uses GLM only). When omitted, use
 	 * the usual requested → free → paid fallback chain.
 	 */
 	models?: readonly string[];

@@ -2,11 +2,15 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	DISCOURSE_TOC_MIN_HEADINGS,
+	RESEARCH_TOC_CONTENT_SELECTOR,
+	RESEARCH_TOC_HEADING_SELECTOR,
+	RESEARCH_TOC_MIN_HEADINGS,
 	TOC_ACTIVE_SLACK_PX,
 	headingLabel,
 	isNamedSectionHeading,
 	namedSectionHeadingsFromMarkdown,
 	pickActiveHeadingId,
+	researchTableOfContentsOptions,
 	scrollYToAlignHeading,
 	shouldShowDiscourseToc,
 	slugifyHeading,
@@ -186,6 +190,18 @@ describe("pickActiveHeadingId", () => {
 
 	it("returns null when there are no headings", () => {
 		assert.equal(pickActiveHeadingId([], 100), null);
+	});
+});
+
+describe("researchTableOfContentsOptions", () => {
+	it("targets the last report body with stamped headings", () => {
+		const options = researchTableOfContentsOptions();
+		assert.equal(options.contentSelector, RESEARCH_TOC_CONTENT_SELECTOR);
+		assert.equal(options.headingSelector, RESEARCH_TOC_HEADING_SELECTOR);
+		assert.equal(options.nestedTag, "H3");
+		assert.equal(options.minHeadings, RESEARCH_TOC_MIN_HEADINGS);
+		assert.equal(options.placement, "fixed");
+		assert.equal(options.requireNamed, false);
 	});
 });
 

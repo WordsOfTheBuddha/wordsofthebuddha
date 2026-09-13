@@ -13,9 +13,17 @@ import {
 	firstRangeClientRect,
 	lastRangeClientRect,
 	markChangedReportBlocks,
+	markReportBlockDiff,
+	reportBlockDiff,
+	stampReportBlockKeys,
 	reportChangeCount,
+	researchReviseBaseVersionN,
+	shouldHydrateReviseBase,
 	reportChangedKeys,
 	researchChangesChipLabel,
+	researchChangesChipLabelForTurn,
+	researchChangesChipVisible,
+	researchVersionChangesChipHtml,
 	researchVersionRowHtml,
 	researchSourcesBlockHtml,
 	formatAskRoutingDevHtml,
@@ -983,6 +991,46 @@ describe("researchVersionRowHtml", () => {
 		assert.match(html, /10 words · 2 cited/);
 		assert.doesNotMatch(html, /\(\+/);
 	});
+
+	it("shows the changes chip only when requested for the selected current row", () => {
+		const row = {
+			n: 8,
+			at: Date.now(),
+			instruction: "Add blockquotes",
+			changelog: "Converted inline quotations.",
+			from: 7,
+		};
+		const without = researchVersionRowHtml(row, { current: true, preview: true });
+		assert.doesNotMatch(without, /data-ai-changes/);
+
+		const withChip = researchVersionRowHtml(row, {
+			current: true,
+			preview: true,
+			changesChip: { label: "35 changes", pressed: false },
+		});
+		assert.match(withChip, /ai-versions-changes-wrap/);
+		assert.match(withChip, /data-ai-changes/);
+		assert.match(withChip, /aria-pressed="false"/);
+		assert.match(withChip, />35 changes</);
+	});
+});
+
+describe("researchVersionChangesChipHtml", () => {
+	it("reflects pressed state in aria and title", () => {
+		const off = researchVersionChangesChipHtml({
+			label: "3 changes",
+			pressed: false,
+		});
+		assert.match(off, /aria-pressed="false"/);
+		assert.match(off, /Highlight what changed in this version/);
+
+		const on = researchVersionChangesChipHtml({
+			label: "3 changes",
+			pressed: true,
+		});
+		assert.match(on, /aria-pressed="true"/);
+		assert.match(on, /Hide change highlights/);
+	});
 });
 
 describe("revise composer chip", () => {
@@ -1043,6 +1091,50 @@ describe("report change marks", () => {
 		assert.equal(researchChangesChipLabel(3), "3 changes");
 	});
 
+	it("shows the chip while reviseBase is still loading", () => {
+		const turn = {
+			report: "new report body here with enough words to count",
+			research: true as const,
+			researchJobId: "job-1",
+			versionIndex: [
+				{ n: 1, at: 1, instruction: "", changelog: "", from: null },
+				{ n: 2, at: 2, instruction: "", changelog: "", from: 1 },
+			],
+		};
+		assert.equal(researchChangesChipVisible(turn, { isLatestTurn: true }), true);
+		assert.equal(researchChangesChipLabelForTurn(turn), "Changes");
+	});
+
+	it("knows when to hydrate reviseBase after reload", () => {
+		assert.equal(researchReviseBaseVersionN([{ n: 1, at: 1, instruction: "", changelog: "", from: null }]), null);
+		assert.equal(
+			researchReviseBaseVersionN([
+				{ n: 1, at: 1, instruction: "", changelog: "", from: null },
+				{ n: 2, at: 2, instruction: "x", changelog: "y", from: 1 },
+			]),
+			1,
+		);
+		assert.equal(
+			shouldHydrateReviseBase({
+				report: "new",
+				research: true,
+				researchJobId: "job-1",
+				versionIndex: [{ n: 1, at: 1, instruction: "", changelog: "", from: null }, { n: 2, at: 2, instruction: "", changelog: "", from: 1 }],
+			}),
+			true,
+		);
+		assert.equal(
+			shouldHydrateReviseBase({
+				report: "new",
+				reviseBase: "old",
+				research: true,
+				researchJobId: "job-1",
+				versionIndex: [{ n: 1, at: 1, instruction: "", changelog: "", from: null }, { n: 2, at: 2, instruction: "", changelog: "", from: 1 }],
+			}),
+			false,
+		);
+	});
+
 	it("tags the rendered blocks that match changed keys", () => {
 		const base = "## A\n\nFirst paragraph stays the same here.\n\n- old item one here\n- old item two here";
 		const next =
@@ -1051,18 +1143,68 @@ describe("report change marks", () => {
 			`<div class="ai-answer-body"><h2>A</h2><p>First paragraph stays the same here.</p><p>A rewritten paragraph citing <a href="/sn48.42">SN 48.42</a> in full.</p><ul><li>old item one here</li><li>new item two, with more words</li></ul></div>`,
 		);
 		const body = dom.window.document.querySelector(".ai-answer-body")!;
-		const keys = reportChangedKeys({ report: next, reviseBase: base });
-		assert.equal(markChangedReportBlocks(body, keys), 2);
-		const changed = [...body.querySelectorAll(".is-changed")].map((el) =>
-			el.textContent,
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		assert.equal(markReportBlockDiff(body, diff, base), 2);
+		const changed = [...body.querySelectorAll(".is-change-edited, .is-change-added")].map(
+			(el) => el.textContent,
 		);
 		assert.deepEqual(changed, [
 			"A rewritten paragraph citing SN 48.42 in full.",
 			"new item two, with more words",
 		]);
 		assert.ok(body.querySelector("p.is-first-change"));
-		assert.equal(markChangedReportBlocks(body, []), 0);
-		assert.equal(body.querySelectorAll(".is-changed").length, 0);
+		assert.equal(markReportBlockDiff(body, null), 0);
+		assert.equal(body.querySelectorAll(".is-change-edited, .is-change-added").length, 0);
+	});
+
+	it("stamps block keys so citation markup still highlights", () => {
+		const base =
+			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph cites SN 48.42 in full.";
+		const next =
+			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph cites [SN 48.42](/sn48.42) with a popover title.";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>A</h2><p>First paragraph stays the same here.</p><p>Second paragraph cites <a href="/sn48.42" class="ai-summary-ref" data-cite-title="Sabbasava Sutta">SN 48.42</a> with a popover title.</p></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		assert.equal(markReportBlockDiff(body, diff, base), 1);
+		assert.ok(body.querySelector("p.is-change-edited.is-first-change"));
+	});
+
+	it("renders removed markdown before its next surviving block", () => {
+		const base =
+			"## Section\n\nAlpha paragraph remains in place.\n\n**Removed emphasis stays markdown.**\n\nBeta paragraph remains in place.";
+		const next =
+			"## Section\n\nA new opening paragraph was inserted.\n\nAlpha paragraph remains in place.\n\nBeta paragraph remains in place.";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>Section</h2><p>A new opening paragraph was inserted.</p><p>Alpha paragraph remains in place.</p><p>Beta paragraph remains in place.</p></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		markReportBlockDiff(body, diff, base);
+		const removed = body.querySelector("details.ai-change-removed");
+		assert.ok(removed);
+		assert.equal(removed.nextElementSibling?.textContent, "Beta paragraph remains in place.");
+		assert.equal(removed.querySelector(".ai-change-removed-body strong")?.textContent, "Removed emphasis stays markdown.");
+		assert.equal(removed.hasAttribute("open"), false);
+	});
+
+	it("marks blockquote wrappers, not inner paragraphs, when a quote changed", () => {
+		const base = "## A\n\nLead-in.\n\n> old quote SN 48.42";
+		const next = "## A\n\nLead-in.\n\n> new quote SN 48.42";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>A</h2><p>Lead-in.</p><blockquote><p>new quote SN 48.42</p></blockquote></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		assert.equal(markReportBlockDiff(body, diff, base), 1);
+		assert.ok(body.querySelector("blockquote.is-change-edited.is-first-change"));
+		assert.equal(body.querySelectorAll("blockquote p.is-change-edited").length, 0);
+		assert.equal(body.querySelectorAll("details.ai-change-removed").length, 0);
 	});
 });
 

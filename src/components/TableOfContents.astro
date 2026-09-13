@@ -18,6 +18,8 @@ interface Props {
 	minHeadings?: number;
 	requireNamed?: boolean;
 	placement?: "grid" | "fixed";
+	/** Skip DOMContentLoaded init — caller attaches after dynamic content renders. */
+	deferInit?: boolean;
 }
 
 const {
@@ -27,6 +29,7 @@ const {
 	minHeadings = 1,
 	requireNamed = false,
 	placement = "grid",
+	deferInit = false,
 } = Astro.props;
 ---
 
@@ -351,32 +354,36 @@ const {
 	}
 </style>
 
-<script>
-	import { attachTableOfContents } from "../utils/tocClient";
+{
+	!deferInit && (
+		<script>
+			import { attachTableOfContents } from "../utils/tocClient";
 
-	function initToc() {
-		const root = document.getElementById("post-toc");
-		if (!root) return;
-		attachTableOfContents({
-			contentSelector: root.dataset.contentSelector || "",
-			headingSelector: root.dataset.headingSelector || "h2, h3, h4, h5",
-			nestedTag: root.dataset.nestedTag || "H3",
-			minHeadings: Number(root.dataset.minHeadings || "1"),
-			requireNamed: root.dataset.requireNamed === "true",
-			placement:
-				root.dataset.tocPlacement === "fixed" ? "fixed" : "grid",
-			desktopNavId: "post-toc",
-			mobileNavId: "mobile-toc-nav",
-			mobileToggleId: "mobile-toc-toggle",
-			mobileOverlayId: "mobile-toc-overlay",
-			mobileCloseId: "mobile-toc-close",
-			activeClass: "has-toc",
-		});
-	}
+			function initToc() {
+				const root = document.getElementById("post-toc");
+				if (!root) return;
+				attachTableOfContents({
+					contentSelector: root.dataset.contentSelector || "",
+					headingSelector: root.dataset.headingSelector || "h2, h3, h4, h5",
+					nestedTag: root.dataset.nestedTag || "H3",
+					minHeadings: Number(root.dataset.minHeadings || "1"),
+					requireNamed: root.dataset.requireNamed === "true",
+					placement:
+						root.dataset.tocPlacement === "fixed" ? "fixed" : "grid",
+					desktopNavId: "post-toc",
+					mobileNavId: "mobile-toc-nav",
+					mobileToggleId: "mobile-toc-toggle",
+					mobileOverlayId: "mobile-toc-overlay",
+					mobileCloseId: "mobile-toc-close",
+					activeClass: "has-toc",
+				});
+			}
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initToc);
-	} else {
-		initToc();
-	}
-</script>
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", initToc);
+			} else {
+				initToc();
+			}
+		</script>
+	)
+}

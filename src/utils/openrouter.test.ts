@@ -113,7 +113,7 @@ describe("createContentThinkSplitter", () => {
 });
 
 describe("resolveReasoningEffort", () => {
-	it("maps medium to high for paid DeepSeek and leaves free models alone", () => {
+	it("maps medium to high for paid GLM and leaves free models alone", () => {
 		assert.equal(
 			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "medium"),
 			"high",
@@ -131,7 +131,7 @@ describe("resolveReasoningEffort", () => {
 });
 
 describe("askPlannerChatOptions", () => {
-	it("drops json_object and uses high effort for paid DeepSeek", () => {
+	it("drops json_object and uses high effort for paid GLM", () => {
 		assert.deepEqual(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
@@ -148,7 +148,7 @@ describe("askPlannerChatOptions", () => {
 });
 
 describe("askWriterChatOptions", () => {
-	it("uses low effort and keeps paid DeepSeek off json_object", () => {
+	it("uses low effort and keeps paid GLM off json_object", () => {
 		assert.deepEqual(askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
@@ -225,7 +225,7 @@ describe("resolveRequestedOpenRouterModel", () => {
 		}
 	}
 
-	it("defaults to paid DeepSeek when the free picker is hidden", () => {
+	it("defaults to paid GLM when the free picker is hidden", () => {
 		withFlag(undefined, () => {
 			assert.equal(shouldShowAiModelPicker(), false);
 			assert.equal(
@@ -273,7 +273,7 @@ describe("resolveRequestedOpenRouterModel", () => {
 });
 
 describe("resolveOpenRouterChatModel", () => {
-	it("allows paid DeepSeek and curated free fallbacks on internal calls", () => {
+	it("allows paid GLM and curated free fallbacks on internal calls", () => {
 		assert.equal(
 			resolveOpenRouterChatModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
@@ -286,7 +286,7 @@ describe("resolveOpenRouterChatModel", () => {
 		assert.equal(isCuratedAskModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), false);
 		assert.equal(
 			openRouterModelLabel(ASK_PLANNER_PAID_FALLBACK_MODEL),
-			"DeepSeek: DeepSeek V4 Flash",
+			"Z.ai: GLM 5.3 Flash",
 		);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
@@ -295,7 +295,7 @@ describe("resolveOpenRouterChatModel", () => {
 });
 
 describe("openRouterProviderPreferences", () => {
-	it("sorts paid DeepSeek by price and leaves free models unscoped", () => {
+	it("sorts paid GLM by price and leaves free models unscoped", () => {
 		assert.deepEqual(
 			openRouterProviderPreferences(ASK_PLANNER_PAID_FALLBACK_MODEL),
 			{ sort: "price", allow_fallbacks: true, require_parameters: true },
@@ -330,8 +330,8 @@ describe("parseOpenRouterUsage", () => {
 			generationId: "gen-abc",
 		});
 		assert.equal(
-			formatOpenRouterUsageLine("deepseek/deepseek-v4-flash-0731", usage!),
-			"[openrouter] model=deepseek/deepseek-v4-flash-0731 provider=Baidu cost=0.00042 prompt=1200 completion=80 reason=40 cache=100 gen=gen-abc",
+			formatOpenRouterUsageLine("z-ai/glm-5.3-flash", usage!),
+			"[openrouter] model=z-ai/glm-5.3-flash provider=Baidu cost=0.00042 prompt=1200 completion=80 reason=40 cache=100 gen=gen-abc",
 		);
 		assert.equal(parseOpenRouterUsage({ model: "x" }), null);
 	});

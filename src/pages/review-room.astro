@@ -36,7 +36,7 @@ import {
 	ASK_HISTORY_HINT_RECENT,
 	ASK_HISTORY_LABEL,
 	isAskResearchEnabled,
-	researchHistoryStatsLabel,
+	researchHistoryCardStatsLabel,
 	REVIEW_ROOM_ASK_EMPTY,
 	REVIEW_ROOM_ASK_NEW_LABEL,
 	REVIEW_ROOM_REPORT_EMPTY,
@@ -929,11 +929,12 @@ try {
 									>
 										{researchLaneEntries.map((entry) => {
 											const stats =
-												researchHistoryStatsLabel(
-													entry.report,
-													entry.results,
-													entry.reportStats,
-												);
+												researchHistoryCardStatsLabel({
+													report: entry.report,
+													results: entry.results,
+													reportStats: entry.reportStats,
+													versionIndex: entry.versionIndex,
+												});
 											const status =
 												entry.researchPending
 													? "Researching…"

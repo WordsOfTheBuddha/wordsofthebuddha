@@ -7,8 +7,14 @@ import {
 } from "../utils/openrouter";
 import { ASK_LIMITS_NOTE, RESEARCH_CHIP_TITLE, RESEARCH_SIGNIN_EMPTY_NOTE } from "../utils/aiAskResearchUi";
 import { MAX_QUESTION_CHARS } from "../utils/aiAskQuestionText";
+import {
+	RESEARCH_TOC_CONTENT_SELECTOR,
+	RESEARCH_TOC_HEADING_SELECTOR,
+	RESEARCH_TOC_MIN_HEADINGS,
+} from "../utils/tocClient";
 import "../styles/ai-mode.css";
 import AskExportModal from "./AskExportModal.astro";
+import TableOfContents from "./TableOfContents.astro";
 
 interface Props {
 	/** When false, the page owns the title + Search/Ask switch. */
@@ -425,6 +431,16 @@ const defaultModel = showModelPicker
 			</div>
 		</div>
 	</div>
+
+	<TableOfContents
+		deferInit
+		placement="fixed"
+		contentSelector={RESEARCH_TOC_CONTENT_SELECTOR}
+		headingSelector={RESEARCH_TOC_HEADING_SELECTOR}
+		nestedTag="H3"
+		minHeadings={RESEARCH_TOC_MIN_HEADINGS}
+		requireNamed={false}
+	/>
 </div>
 
 <style>

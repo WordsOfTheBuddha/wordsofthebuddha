@@ -7,8 +7,10 @@ import { JSDOM } from "jsdom";
 import { formatBlock } from "./contentParser";
 import { parseMarkdown } from "./mdParser";
 import {
+	decorateReportParagraphNumbers,
 	PARAGRAPH_NUM_CLASS,
 	paragraphNumberMarkerHtml,
+	stripReportParagraphNumbers,
 	withoutParagraphNumberMarkers,
 } from "./paragraphNumbers";
 
@@ -93,6 +95,33 @@ describe("paragraph number markup", () => {
 			3,
 			"verse line breaks stay between numbered lines",
 		);
+	});
+});
+
+describe("decorateReportParagraphNumbers", () => {
+	it("numbers top-level paragraphs, quotes, and lists in order", () => {
+		const document = installDom(`
+			<div class="ai-answer-body">
+				<h2>Section</h2>
+				<p>Opening.</p>
+				<blockquote><p>"Quoted line" SN 48.42</p></blockquote>
+				<ul><li>one</li><li>two</li></ul>
+			</div>
+		`);
+		const body = document.querySelector(".ai-answer-body")!;
+		assert.equal(decorateReportParagraphNumbers(body), 3);
+		const nums = [...body.querySelectorAll("[data-paragraph-number]")].map(
+			(el) => el.getAttribute("data-paragraph-number"),
+		);
+		assert.deepEqual(nums, ["1", "2", "3"]);
+		assert.equal(body.querySelector("p .paragraph-num")?.textContent, "¶ 1");
+		assert.equal(
+			body.querySelector("blockquote .paragraph-num")?.textContent,
+			"¶ 2",
+		);
+		stripReportParagraphNumbers(body);
+		assert.equal(body.querySelectorAll(".paragraph-num").length, 0);
+		assert.equal(body.querySelectorAll("[data-paragraph-number]").length, 0);
 	});
 });
 

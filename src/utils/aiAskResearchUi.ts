@@ -14,6 +14,7 @@ import {
 } from "./aiAskResearchRevise";
 
 export {
+	researchHistoryCardStatsLabel,
 	researchHistoryStatsLabel,
 	type ResearchHistoryReportStats,
 } from "./aiAskResearchHistoryStats";
@@ -649,6 +650,13 @@ export function flashAskButtonFeedback(
 	);
 }
 
+export const REPORT_PARAGRAPH_SHOW_TITLE = "Show paragraph numbering";
+export const REPORT_PARAGRAPH_HIDE_TITLE = "Hide paragraph numbering";
+
+export function reportParagraphToggleHtml(): string {
+	return `<button type="button" class="ai-paragraph-btn" data-ai-report-paragraphs title="${REPORT_PARAGRAPH_SHOW_TITLE}" aria-label="${REPORT_PARAGRAPH_SHOW_TITLE}" aria-pressed="false"><span class="ai-paragraph-glyph" aria-hidden="true">¶</span></button>`;
+}
+
 export function askAnswerCopyButtonHtml(input: {
 	turnIndex: number;
 	kind: "report" | "answer";
@@ -668,7 +676,7 @@ export function wrapAskAnswerHtml(input: {
 	bodyHtml: string;
 	turnIndex: number;
 	kicker?: string;
-	extraStart?: string;
+	versionStart?: string;
 	stats?: string;
 }): string {
 	const className =
@@ -676,13 +684,20 @@ export function wrapAskAnswerHtml(input: {
 	const stats = input.stats
 		? `<p class="ai-report-stats">${input.stats}</p>`
 		: "";
-	const showStart = Boolean(input.kicker || input.extraStart || input.stats);
+	const showStart = Boolean(
+		input.kicker || input.versionStart || input.stats,
+	);
 	const start = showStart
 		? `<div class="ai-answer-toolbar ai-answer-toolbar-start">
 			${input.kicker ? `<p class="ai-report-kicker">${input.kicker}</p>` : ""}
-			${input.extraStart || ""}
-			${stats}
-			${askAnswerCopyButtonHtml({ turnIndex: input.turnIndex, kind: input.kind, placement: "start" })}
+			<div class="ai-report-toolbar-main">
+				<div class="ai-report-actions-group">
+					${input.versionStart || ""}
+					${input.kind === "report" ? reportParagraphToggleHtml() : ""}
+				</div>
+				${stats ? `<div class="ai-report-stats-row">${stats}</div>` : ""}
+				${askAnswerCopyButtonHtml({ turnIndex: input.turnIndex, kind: input.kind, placement: "start" })}
+			</div>
 		</div>`
 		: "";
 	return `<div class="${className}">
