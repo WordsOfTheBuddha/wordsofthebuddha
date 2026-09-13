@@ -6,6 +6,7 @@ import {
 	RESEARCH_REPORT_MAX_CHARS,
 } from "./aiAskResearchReport";
 import { normalizeAskShareSlug } from "./aiAskShare";
+import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import {
 	clipResearchVersionIndex,
 	openingResearchVersionMeta,
@@ -135,12 +136,18 @@ export async function seedResearchOpeningVersion(options: {
 	report: string;
 	existingIndex?: unknown;
 	at?: number;
+	results?: readonly { slug?: string }[];
 }): Promise<ResearchVersionMeta[] | null> {
 	const existing = clipResearchVersionIndex(options.existingIndex);
 	if (existing.length > 0) return null;
 	const report = clipBody(options.report);
 	if (!report) return null;
-	const index = [openingResearchVersionMeta(options.at ?? Date.now())];
+	const index = [
+		openingResearchVersionMeta(
+			options.at ?? Date.now(),
+			snapshotResearchHistoryStats(report, options.results),
+		),
+	];
 	await writeResearchVersionBody({
 		uid: options.uid,
 		jobId: options.jobId,

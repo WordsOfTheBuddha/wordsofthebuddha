@@ -8,7 +8,7 @@ import {
 	sanitizeAskShareResults,
 	sanitizeAskShareSnapshot,
 } from "../../../utils/aiAskShare";
-import { loadAskShare, publishAskShare } from "../../../utils/aiAskShareServer";
+import { loadAskShare, loadAskShareVersion, publishAskShare } from "../../../utils/aiAskShareServer";
 import { clientIpFromRequest } from "../../../utils/aiRateLimit";
 
 const shareBuckets = new Map<string, { day: string; count: number }>();
@@ -32,6 +32,24 @@ function consumeShareQuota(ip: string): boolean {
 
 export const GET: APIRoute = async ({ url }) => {
 	const slug = url.searchParams.get("slug") || "";
+	const versionRaw = url.searchParams.get("version");
+	if (versionRaw) {
+		const n = Math.floor(Number(versionRaw));
+		const report =
+			Number.isFinite(n) && n > 0
+				? await loadAskShareVersion(slug, n)
+				: null;
+		if (!report) {
+			return new Response(
+				JSON.stringify({ success: false, error: "Version not found." }),
+				{ status: 404, headers: { "Content-Type": "application/json" } },
+			);
+		}
+		return new Response(JSON.stringify({ success: true, n, report }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
+	}
 	const snapshot = await loadAskShare(slug);
 	if (!snapshot) {
 		return new Response(
@@ -118,6 +136,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					? body.candidateCount
 					: undefined,
 			...(thread ? { thread } : {}),
+			researchJobId:
+				typeof body.researchJobId === "string"
+					? body.researchJobId
+					: undefined,
+			versionIndex: Array.isArray(body.versionIndex)
+				? body.versionIndex
+				: undefined,
 			user,
 		});
 		const share = sanitizeAskShareSnapshot({
@@ -134,6 +159,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			report: body.report,
 			reasoning: body.reasoning,
 			candidateCount: body.candidateCount,
+			researchJobId: body.researchJobId,
+			versionIndex: body.versionIndex,
 			createdAt: Date.now(),
 			...(thread ? { thread } : {}),
 		});

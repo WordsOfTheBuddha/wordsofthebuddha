@@ -1,8 +1,8 @@
 ---
 import {
+	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	curatedAskModelLabel,
 	getAskPickerDefaultModel,
-	getConfiguredOpenRouterModel,
 	shouldShowAiModelPicker,
 } from "../utils/openrouter";
 import { ASK_LIMITS_NOTE, RESEARCH_CHIP_TITLE, RESEARCH_SIGNIN_EMPTY_NOTE } from "../utils/aiAskResearchUi";
@@ -28,7 +28,7 @@ const {
 const showModelPicker = !shareMode && shouldShowAiModelPicker();
 const defaultModel = showModelPicker
 	? getAskPickerDefaultModel()
-	: getConfiguredOpenRouterModel();
+	: ASK_PLANNER_PAID_FALLBACK_MODEL;
 ---
 
 <div
@@ -100,6 +100,10 @@ const defaultModel = showModelPicker
 			<input type="hidden" data-ai-model value={defaultModel} />
 		)
 	}
+
+	<p class="ai-limits-note ai-limits-note-menu" data-ai-sponsor-note>
+		{ASK_LIMITS_NOTE}
+	</p>
 
 	<div class="ai-empty ai-shell" data-ai-empty></div>
 
@@ -177,9 +181,6 @@ const defaultModel = showModelPicker
 		<p class="ai-research-signin" data-ai-research-signin hidden>
 			{RESEARCH_SIGNIN_EMPTY_NOTE}
 		</p>
-		<p class="ai-limits-note ai-limits-note-composer">
-			{ASK_LIMITS_NOTE}
-		</p>
 		<div class="ai-meta-row">
 			<span class="ai-meta-spacer" aria-hidden="true"></span>
 			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
@@ -188,12 +189,26 @@ const defaultModel = showModelPicker
 	</form>
 
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
-		<label class="sr-only" for="ai-follow-input">Ask another question</label>
+		<label class="sr-only" for="ai-follow-input">Continue this conversation</label>
 		<div class="ai-box">
+			<div class="ai-revise-scope" data-ai-revise-scope hidden>
+				<span class="ai-revise-chip">
+					<span class="ai-revise-chip-text" data-ai-revise-chip></span>
+					<button
+						type="button"
+						class="ai-revise-clear"
+						data-ai-revise-clear
+						aria-label="Clear selection"
+						title="Clear selection"
+					>
+						×
+					</button>
+				</span>
+			</div>
 			<textarea
 				id="ai-follow-input"
 				data-ai-follow-input
-				rows="2"
+				rows="1"
 				maxlength={MAX_QUESTION_CHARS}
 				placeholder="Waiting for an answer…"
 				enterkeyhint="enter"
@@ -246,6 +261,14 @@ const defaultModel = showModelPicker
 		<div class="ai-meta-row">
 			<button type="button" class="ai-new" data-ai-new>
 				+ New Ask
+			</button>
+			<button
+				type="button"
+				class="ai-ask-without-editing"
+				data-ai-ask-without-editing
+				hidden
+			>
+				Ask a follow-up instead
 			</button>
 			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
 		</div>
@@ -367,6 +390,41 @@ const defaultModel = showModelPicker
 	</div>
 
 	<AskExportModal />
+
+	<button type="button" class="ai-revise-float" data-ai-revise-float hidden>
+		Revise report
+	</button>
+
+	<div class="ai-versions-drawer" data-ai-versions-drawer hidden>
+		<div
+			class="ai-versions-sheet"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="ai-versions-title"
+		>
+			<div class="ai-versions-grab" aria-hidden="true"></div>
+			<div class="ai-versions-head">
+				<h2 id="ai-versions-title" class="ai-versions-title">Versions</h2>
+				<button
+					type="button"
+					class="ai-dialog-close"
+					data-ai-versions-close
+					aria-label="Close"
+				>
+					×
+				</button>
+			</div>
+			<ol class="ai-versions-list" data-ai-versions-list></ol>
+			<div class="ai-versions-actions" data-ai-versions-actions hidden>
+				<button type="button" class="ai-dialog-secondary" data-ai-versions-revise>
+					Revise from this version
+				</button>
+				<button type="button" class="ai-dialog-primary" data-ai-versions-restore>
+					Restore as current
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>

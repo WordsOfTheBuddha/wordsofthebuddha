@@ -23,6 +23,7 @@ import {
 	wrapResearchReportHtml,
 } from "./researchReportSanitize";
 import { stampResearchReportHeadingIds } from "./aiAskResearchRevise";
+import { transformId } from "./transformId";
 
 /** Storage ceiling only — large enough for a finished 16k-token report plus Sources. */
 export const RESEARCH_REPORT_MAX_CHARS = 100_000;

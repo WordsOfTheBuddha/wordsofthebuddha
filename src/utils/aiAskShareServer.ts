@@ -1,3 +1,9 @@
+import {
+	copyJobVersionsToShare,
+	readShareVersionBody,
+	writeShareVersionBody,
+} from "./aiAskResearchVersions";
+import { currentResearchVersionN } from "./aiAskResearchRevise";
 import { FieldValue } from "firebase-admin/firestore";
 import type { UserRecord } from "firebase-admin/auth";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
@@ -37,6 +43,43 @@ export async function loadAskShare(
 	return sanitizeAskShareSnapshot({ ...data, slug: clean, createdAt });
 }
 
+export async function loadAskShareVersion(
+	slug: string,
+	n: number,
+): Promise<string | null> {
+	return readShareVersionBody({ slug, n });
+}
+
+async function snapshotShareVersionBodies(
+	slug: string,
+	draft: AiAskShareSnapshot,
+	options: {
+		user?: UserRecord | null;
+		researchJobId?: string;
+	},
+): Promise<void> {
+	const report = (draft.report || "").trim();
+	if (!report) return;
+	const index = draft.versionIndex || [];
+	const uid = options.user?.uid || "";
+	const jobId = (options.researchJobId || draft.researchJobId || "").trim();
+	if (uid && jobId && index.length > 0) {
+		await copyJobVersionsToShare({
+			uid,
+			jobId,
+			slug,
+			index,
+			currentReport: report,
+		});
+		return;
+	}
+	await writeShareVersionBody({
+		slug,
+		n: currentResearchVersionN(index),
+		report,
+	});
+}
+
 function isAlreadyExistsError(error: unknown): boolean {
 	if (!error || typeof error !== "object") return false;
 	const code = "code" in error ? (error as { code: unknown }).code : undefined;
@@ -70,6 +113,8 @@ export async function publishAskShare(options: {
 	candidateCount?: number;
 	/** Conversation through the shared turn (oldest → newest). */
 	thread?: AiAskShareSnapshot["thread"];
+	researchJobId?: string;
+	versionIndex?: AiAskShareSnapshot["versionIndex"];
 	user?: UserRecord | null;
 }): Promise<{ slug: string; path: string; created: boolean }> {
 	const draft = sanitizeAskShareSnapshot({
@@ -90,6 +135,10 @@ export async function publishAskShare(options: {
 		...(options.report ? { report: options.report } : {}),
 		...(options.reasoning ? { reasoning: options.reasoning } : {}),
 		...(options.candidateCount ? { candidateCount: options.candidateCount } : {}),
+		...(options.researchJobId ? { researchJobId: options.researchJobId } : {}),
+		...(options.versionIndex && options.versionIndex.length > 0
+			? { versionIndex: options.versionIndex }
+			: {}),
 		createdAt: Date.now(),
 		...(options.thread && options.thread.length > 1
 			? { thread: options.thread }
@@ -101,6 +150,7 @@ export async function publishAskShare(options: {
 	const pathFor = (slug: string) =>
 		askSharePath(slug, { research: draft.research === true });
 	if (!isFirebaseInitialized || !db) {
+		await snapshotShareVersionBodies(draft.slug, draft, options);
 		return { slug: draft.slug, path: pathFor(draft.slug), created: false };
 	}
 
@@ -123,6 +173,7 @@ export async function publishAskShare(options: {
 					},
 					{ merge: true },
 				);
+				await snapshotShareVersionBodies(slug, draft, options);
 			}
 			return { slug, path: pathFor(slug), created: false };
 		}
@@ -135,6 +186,7 @@ export async function publishAskShare(options: {
 		};
 		try {
 			await shareRef(slug).create(payload);
+			await snapshotShareVersionBodies(slug, draft, options);
 			return { slug, path: pathFor(slug), created: true };
 		} catch (error) {
 			if (

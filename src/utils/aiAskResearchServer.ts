@@ -44,6 +44,7 @@ import { recordAiAskTelemetry } from "./aiAskTelemetryServer";
 import {
 	clipResearchJobId,
 	isResearchJobRetryable,
+	isResearchJobRevising,
 	isResearchJobTerminal,
 	parseResearchJobStatus,
 	clipResearchProcessNotes,
@@ -84,7 +85,14 @@ import {
 	buildResearchReportEvidence,
 	writeResearchReport,
 } from "./aiAskResearchReportWrite";
-import { seedResearchOpeningVersion } from "./aiAskResearchVersions";
+import { seedResearchOpeningVersion, writeResearchVersionBody } from "./aiAskResearchVersions";
+import {
+	clipResearchVersionIndex,
+	currentResearchVersionN,
+	healedResearchVersionIndex,
+	researchProcessCompletedRevise,
+} from "./aiAskResearchRevise";
+import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import { sendResearchEmail } from "./researchEmail";
 import {
 	consumeResearchQuota,
@@ -180,6 +188,10 @@ export interface ResearchJobRecord {
 	unreadFull?: string[];
 	fullReadSlugs?: string[];
 	versionIndex?: unknown;
+	reviseInstruction?: string;
+	reviseHeading?: string;
+	reviseQuote?: string;
+	reviseFromVersion?: number | null;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -297,6 +309,17 @@ function recordFromData(
 			? (data.fullReadSlugs as string[])
 			: undefined,
 		versionIndex: data.versionIndex,
+		reviseInstruction:
+			typeof data.reviseInstruction === "string" ? data.reviseInstruction : "",
+		reviseHeading:
+			typeof data.reviseHeading === "string" ? data.reviseHeading : "",
+		reviseQuote: typeof data.reviseQuote === "string" ? data.reviseQuote : "",
+		reviseFromVersion:
+			typeof data.reviseFromVersion === "number" &&
+			Number.isFinite(data.reviseFromVersion) &&
+			data.reviseFromVersion > 0
+				? Math.floor(data.reviseFromVersion)
+				: null,
 	};
 }
 
@@ -404,13 +427,15 @@ export async function writeJob(
 async function attachOpeningResearchVersion(
 	record: ResearchJobRecord,
 ): Promise<ResearchJobRecord> {
-	const report = sanitizeResearchJobResult(record.result)?.report || "";
+	const result = sanitizeResearchJobResult(record.result);
+	const report = result?.report || "";
 	const seeded = await seedResearchOpeningVersion({
 		uid: record.uid,
 		jobId: record.id,
 		report,
 		existingIndex: record.versionIndex,
 		at: record.createdAt || Date.now(),
+		results: result?.results,
 	});
 	if (!seeded) return record;
 	return writeJob(record, { versionIndex: seeded });
@@ -475,19 +500,50 @@ export async function getResearchJobForUser(
 ): Promise<ResearchJobPublic | null> {
 	const record = await readJob(uid, jobId);
 	if (!record) return null;
+	const healed = await healStoredResearchVersionIndex(record);
 	// Failed jobs and empty completes refund on read (time-independent). Do
 	// not re-evaluate cancelled jobs here: an early stop must keep its credit
 	// even after the refund window.
-	if (record.status === "failed") {
-		return recordToPublic(await settleResearchJobQuota(record));
+	if (healed.status === "failed") {
+		return recordToPublic(await settleResearchJobQuota(healed));
 	}
 	if (
-		record.status === "complete" &&
-		(sanitizeResearchJobResult(record.result)?.results.length ?? 0) === 0
+		healed.status === "complete" &&
+		(sanitizeResearchJobResult(healed.result)?.results.length ?? 0) === 0
 	) {
-		return recordToPublic(await settleResearchJobQuota(record));
+		return recordToPublic(await settleResearchJobQuota(healed));
 	}
-	return recordToPublic(record);
+	return recordToPublic(healed);
+}
+
+async function healStoredResearchVersionIndex(
+	record: ResearchJobRecord,
+): Promise<ResearchJobRecord> {
+	if (record.status !== "complete") return record;
+	if (!researchProcessCompletedRevise(record.processNotes)) return record;
+	const result = sanitizeResearchJobResult(record.result);
+	const report = result?.report || "";
+	const nextIndex = healedResearchVersionIndex({
+		versionIndex: record.versionIndex,
+		processNotes: record.processNotes,
+		createdAt: record.createdAt,
+		stats: snapshotResearchHistoryStats(report, result?.results),
+	});
+	const current = clipResearchVersionIndex(record.versionIndex);
+	if (
+		currentResearchVersionN(current) >= 2 ||
+		currentResearchVersionN(nextIndex) < 2
+	) {
+		return record;
+	}
+	if (!report.trim()) return record;
+	await writeResearchVersionBody({
+		uid: record.uid,
+		jobId: record.id,
+		n: 2,
+		report,
+	});
+	return writeJob(record, { versionIndex: nextIndex });
 }
 
 async function claimResearchQuotaRefund(
@@ -609,6 +665,19 @@ export async function requestResearchJobCancel(
 ): Promise<ResearchJobPublic | null> {
 	const record = await readJob(uid, jobId);
 	if (!record) return null;
+	if (isResearchJobRevising(record.status)) {
+		const next = await writeJob(record, {
+			status: "complete",
+			progressNote: "",
+			error: "Revision stopped.",
+			cancelRequested: false,
+			reviseInstruction: "",
+			reviseHeading: "",
+			reviseQuote: "",
+			reviseFromVersion: null,
+		});
+		return recordToPublic(next);
+	}
 	if (isResearchJobTerminal(record.status)) {
 		if (record.status === "failed") {
 			return recordToPublic(await settleResearchJobQuota(record));
@@ -1435,6 +1504,7 @@ export async function runResearchJob(options: {
 	const record = await readJob(options.uid, options.jobId);
 	if (!record) return "done";
 	if (record.runToken !== options.runToken) return "done";
+	if (isResearchJobRevising(record.status)) return "done";
 	if (isResearchJobTerminal(record.status)) return "done";
 	if ((record.hop && record.hop >= 2) || record.chainPass === 2) {
 		if (record.chainStarted) return "done";
@@ -2259,6 +2329,21 @@ export async function persistHistory(
 				...(record.processNotes && record.processNotes.length > 0
 					? { processNotes: record.processNotes }
 					: {}),
+				...(() => {
+					const versionIndex = healedResearchVersionIndex({
+						versionIndex: record.versionIndex,
+						processNotes: record.processNotes,
+						createdAt: record.createdAt,
+					});
+					return versionIndex.length > 0 ? { versionIndex } : {};
+				})(),
+				...(() => {
+					const reportStats = snapshotResearchHistoryStats(
+						result.report,
+						result.results,
+					);
+					return reportStats ? { reportStats } : {};
+				})(),
 			},
 		);
 	} catch (error) {

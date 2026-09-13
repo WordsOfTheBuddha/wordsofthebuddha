@@ -8,6 +8,8 @@ import {
 	researchJobPhase,
 	researchJobRetryReusesCredit,
 	researchProcessHopLabels,
+	researchRevisedLabel,
+	interleaveResearchRevisionStartedHops,
 	toResearchJobPublic,
 } from "./aiAskResearchJob";
 
@@ -20,6 +22,8 @@ describe("research job status machine", () => {
 		assert.equal(researchJobPhase("crunching"), "rerank");
 		assert.equal(researchJobPhase("reviewing"), "review");
 		assert.equal(researchJobPhase("answering"), "answer");
+		assert.equal(researchJobPhase("revising"), "answer");
+		assert.equal(parseResearchJobStatus("revising"), "revising");
 		assert.equal(parseResearchJobStatus("reviewing"), "reviewing");
 		assert.equal(researchJobPhase("complete"), "done");
 		assert.equal(researchJobPhase("failed"), "done");
@@ -40,6 +44,7 @@ describe("research job status machine", () => {
 			false,
 		);
 		assert.equal(isResearchJobTerminal("searching"), false);
+		assert.equal(isResearchJobTerminal("revising"), false);
 		assert.equal(parseResearchJobStatus("nope"), null);
 		assert.equal(parseResearchJobStatus("verify"), "verify");
 	});
@@ -71,6 +76,32 @@ describe("research job status machine", () => {
 			},
 		});
 		assert.match(view.result?.report || "", /## Feeling/);
+	});
+
+	it("exposes a version changelog index on the public job", () => {
+		const view = toResearchJobPublic({
+			id: "job-v",
+			status: "complete",
+			question: "feeling?",
+			versionIndex: [
+				{
+					n: 1,
+					at: 1,
+					instruction: "",
+					changelog: "Original report.",
+					from: null,
+				},
+				{
+					n: 2,
+					at: 2,
+					instruction: "warmer",
+					changelog: "Warmer tone.",
+					from: 1,
+				},
+			],
+		});
+		assert.equal(view.versionIndex?.[1]?.changelog, "Warmer tone.");
+		assert.equal(view.versionIndex?.[1]?.n, 2);
 	});
 
 	it("strips the run token from the public view", () => {
@@ -141,6 +172,14 @@ describe("rememberResearchProcessNote", () => {
 			rememberResearchProcessNote([], "Reviewing the evidence…"),
 			[],
 		);
+		assert.deepEqual(
+			rememberResearchProcessNote([], "Started v2 revision…"),
+			["Started v2 revision…"],
+		);
+		assert.deepEqual(
+			researchProcessHopLabels(["Started v3 revision…", "Considering the revision…"]),
+			["Started v3 revision", "Considered the revision"],
+		);
 	});
 
 	it("replaces the last search-again note and keeps distinct reads", () => {
@@ -157,6 +196,34 @@ describe("rememberResearchProcessNote", () => {
 			"Reading MN 70 in full…",
 			"Reading MN 70, SN 48.53 in Pāli and English…",
 		]);
+	});
+
+	it("keeps every revision cycle's hops and names the version it produced", () => {
+		let notes: string[] = ["Reading MN 70 in full…"];
+		const cycle = (n: number) => {
+			notes = rememberResearchProcessNote(notes, `Started v${n} revision…`);
+			notes = rememberResearchProcessNote(notes, "Considering the revision…");
+			notes = rememberResearchProcessNote(notes, "Reading SN 48.42 in full…");
+			notes = rememberResearchProcessNote(notes, "Revising the report…");
+		};
+		cycle(2);
+		cycle(3);
+		// Identical hops in later cycles used to be deduped away, leaving only
+		// a run of “Started vN revision” dividers.
+		assert.equal(notes.filter((n) => /^Considering/.test(n)).length, 2);
+		assert.equal(notes.filter((n) => /^Reading SN 48\.42/.test(n)).length, 2);
+		assert.deepEqual(researchProcessHopLabels(notes), [
+			"Read MN 70 in full",
+			"Started v2 revision",
+			"Considered the revision",
+			"Read SN 48.42 in full",
+			"Revised the report · v2",
+			"Started v3 revision",
+			"Considered the revision",
+			"Read SN 48.42 in full",
+			"Revised the report · v3",
+		]);
+		assert.equal(researchRevisedLabel(3), "Revised the report · v3");
 	});
 
 	it("labels finished hops in the past tense", () => {
@@ -254,3 +321,41 @@ describe("research job public extras", () => {
 		assert.equal(view.result?.results.length, 80);
 	});
 });
+
+describe("interleaveResearchRevisionStartedHops", () => {
+	it("inserts Started v2 before the first considering hop", () => {
+		assert.deepEqual(
+			interleaveResearchRevisionStartedHops([
+				"Considered the revision",
+				"Looked up additional discourses",
+				"Revised the report",
+			]),
+			[
+				"Started v2 revision",
+				"Considered the revision",
+				"Looked up additional discourses",
+				"Revised the report",
+			],
+		);
+	});
+
+	it("adds Started v3 when a second revise is in flight", () => {
+		assert.deepEqual(
+			interleaveResearchRevisionStartedHops(
+				[
+					"Started v2 revision",
+					"Considered the revision",
+					"Revised the report",
+				],
+				{ currentN: 2, revising: true },
+			),
+			[
+				"Started v2 revision",
+				"Considered the revision",
+				"Revised the report",
+				"Started v3 revision",
+			],
+		);
+	});
+});
+

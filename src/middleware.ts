@@ -7,6 +7,7 @@ import {
 	isRootPostCandidate,
 	parsePostSlugFromGlobPath,
 } from "./utils/rootPostSlugs";
+import { dispatchResearchApi } from "./utils/researchApiDispatch";
 
 const englishRouteSet = new Set<string>(routes);
 
@@ -63,6 +64,38 @@ function hasNoindexViewParams(url: URL): boolean {
 	);
 }
 
+function searchRedirectPath(location: string): string {
+	if (!location) return "";
+	try {
+		const path = location.startsWith("http")
+			? new URL(location).pathname
+			: location.split("?")[0];
+		return path.replace(/\/+$/, "") || "/";
+	} catch {
+		return location.split("?")[0] || "";
+	}
+}
+
+/** `/api/*` must never 302 onto the discourse catch-all `/search` page. */
+function jsonIfApiFellThroughToSearch(
+	pathname: string,
+	response: Response,
+): Response {
+	if (!pathname.startsWith("/api/")) return response;
+	if (response.status < 300 || response.status >= 400) return response;
+	if (searchRedirectPath(response.headers.get("Location") || "") !== "/search") {
+		return response;
+	}
+	return new Response(
+		JSON.stringify({
+			success: false,
+			code: "route_miss",
+			error: "Not found.",
+		}),
+		{ status: 404, headers: { "Content-Type": "application/json" } },
+	);
+}
+
 function withNoindexIfNeeded(requestUrl: URL, response: Response): Response {
 	if (!hasNoindexViewParams(requestUrl) || response.status >= 300) {
 		return response;
@@ -85,6 +118,10 @@ function rewriteURL(path: string, from: URL): URL {
 
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
+	const researchApi = await dispatchResearchApi(context);
+	if (researchApi) {
+		return withNoindexIfNeeded(context.url, researchApi);
+	}
 	const noindexViewState = hasNoindexViewParams(context.url);
 	// SSR layouts can read this when a rewrite hides the original query string.
 	(context.locals as { wotbNoindexViewState?: boolean }).wotbNoindexViewState =
@@ -184,7 +221,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	}
 
 	if (!TOP_LEVEL_SLUG.test(pathname)) {
-		return withNoindexIfNeeded(context.url, await next());
+		const response = await next();
+		return withNoindexIfNeeded(
+			context.url,
+			jsonIfApiFellThroughToSearch(pathname, response),
+		);
 	}
 
 	const slug = pathname.slice(1);

@@ -8,6 +8,10 @@ import type {
 	ResearchAskPhase,
 	ResearchJobPublic,
 } from "./aiAskResearchJob";
+import {
+	healedResearchVersionIndex,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
 
 export {
 	researchHistoryStatsLabel,
@@ -17,15 +21,50 @@ export {
 export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
 export const RESEARCH_PLACEHOLDER =
 	"Ask for a cited report based on the Words of the Buddha…";
+export const RESEARCH_SIGNED_OUT_PLACEHOLDER =
+	"Create an account or Sign in to start a research";
 export const ASK_PLACEHOLDER = "Ask a question about the discourses…";
 export const ASK_COMPOSER_LABEL = "Ask a question";
 export const RESEARCH_COMPOSER_LABEL = "Ask for a cited report";
 export const ASK_WAITING_PLACEHOLDER = "Waiting for an answer…";
 export const ASK_FOLLOW_PLACEHOLDER = "Follow up in this conversation";
 export const RESEARCH_FOLLOW_PLACEHOLDER = "Follow up with a wider search";
-export const ASK_LIMITS_NOTE = "Experimental AI search · limited free Asks";
-export const RESEARCH_LIMITS_NOTE =
-	"Experimental AI research";
+export const RESEARCH_REVISE_PLACEHOLDER = "Revise this report";
+export const RESEARCH_ASK_WITHOUT_EDITING = "Ask a follow-up instead";
+export const RESEARCH_REVISE_INSTEAD = "Revise this report instead";
+export const RESEARCH_REVISE_CLEAR = "Clear";
+export const RESEARCH_REVISE_REPORT = "Revise report";
+export const RESEARCH_VERSIONS_ACTION = "Versions";
+export const RESEARCH_RESTORE_ACTION = "Restore as current";
+export const RESEARCH_REVISE_FROM_ACTION = "Revise from this version";
+export const RESEARCH_REVISE_ACCOUNT_TITLE =
+	"Revise this report";
+export const RESEARCH_REVISE_ACCOUNT_BODY =
+	"Revising updates this report in place and uses one Ask. Create a free account to continue.";
+export const ASK_LIMITS_NOTE =
+	"Freely accessible · made possible by generous donors";
+export const RESEARCH_LIMITS_NOTE = ASK_LIMITS_NOTE;
+
+/** Menu-screen donor note under Search / Ask / Research. */
+export function askSponsorNoteVisible(input: {
+	askSurface: boolean;
+	research?: boolean;
+	signedIn?: boolean;
+	hasThread?: boolean;
+	shareMode?: boolean;
+	restoring?: boolean;
+}): boolean {
+	if (
+		!input.askSurface ||
+		input.hasThread ||
+		input.shareMode ||
+		input.restoring
+	) {
+		return false;
+	}
+	return true;
+}
+
 export const ASK_HISTORY_LABEL = "Recent Asks";
 export const RESEARCH_HISTORY_LABEL = "Recent reports";
 export const ASK_HISTORY_ARIA = "Ask history";
@@ -39,23 +78,23 @@ export const ASK_DELETE_CONFIRM =
 export const RESEARCH_DELETE_CONFIRM =
 	"Delete this report from Recent reports? This cannot be undone.";
 export const RESEARCH_SIGNIN_EMPTY_NOTE =
-	"Create an account or sign in to run Research.";
+	"Create an account to generate your own";
 export const RESEARCH_SIGNIN_TITLE = "Run Research";
 export const RESEARCH_SIGNIN_BODY =
 	"Perform a deep search of the Words of the Buddha and get a cited report. Create a free account to get started with Research.";
 export const RESEARCH_INVITE_AFTER_ASK =
 	"Looking for a wider search and a cited report? Try Research";
-export const RESEARCH_PIN_ACCOUNT_TITLE = "Create an account to pin this report";
+export const RESEARCH_PIN_ACCOUNT_TITLE = "Pin this report";
 export const RESEARCH_PIN_ACCOUNT_BODY =
 	"Recent research reports are temporary. Pinning keeps a report at hand when older ones drop off.";
-export const ASK_PIN_ACCOUNT_TITLE = "Create an account to pin Asks";
+export const ASK_PIN_ACCOUNT_TITLE = "Pin Asks";
 export const ASK_PIN_ACCOUNT_BODY =
 	"Recent Asks are temporary. Pinning keeps a question at hand when older ones drop off.";
 export const RESEARCH_SHARE_ACCOUNT_TITLE =
-	"Create an account to share this report";
+	"Share this report";
 export const RESEARCH_SHARE_ACCOUNT_BODY =
 	"Sharing publishes a public link to this report. Create a free account to copy a link you can send.";
-export const ASK_SHARE_ACCOUNT_TITLE = "Create an account to share this Ask";
+export const ASK_SHARE_ACCOUNT_TITLE = "Share this Ask";
 export const ASK_SHARE_ACCOUNT_BODY =
 	"Sharing publishes a public link to this Ask. Create a free account to copy a link you can send.";
 export const RESEARCH_PIN_ACTION = "Pin this report";
@@ -109,7 +148,7 @@ export function openAskTurnActionFlags(input: {
 	return { showPin, showDelete, showShare, showDownload };
 }
 
-/** Overflow menu on a Recent card. Signed-in only gates sample hide/share. */
+/** Overflow menu on a Recent card. Pin / sample Delete stay signed-in. */
 export function askHistoryCardMenuFlags(input: {
 	sample?: boolean;
 	signedInForHistory?: boolean;
@@ -118,7 +157,7 @@ export function askHistoryCardMenuFlags(input: {
 	const signedIn = input.signedInForHistory === true;
 	return {
 		showPin: signedIn,
-		showShare: !sample || signedIn,
+		showShare: true,
 		showDelete: !sample || signedIn,
 	};
 }
@@ -160,12 +199,89 @@ export const RESEARCH_EXAMPLES = [
 export function askFollowPlaceholder(input: {
 	pending: boolean;
 	researchFollow?: boolean;
+	reviseFollow?: boolean;
 }): string {
 	if (input.pending) return ASK_WAITING_PLACEHOLDER;
-	return input.researchFollow
-		? RESEARCH_FOLLOW_PLACEHOLDER
-		: ASK_FOLLOW_PLACEHOLDER;
+	if (input.researchFollow) return RESEARCH_FOLLOW_PLACEHOLDER;
+	if (input.reviseFollow) return RESEARCH_REVISE_PLACEHOLDER;
+	return ASK_FOLLOW_PLACEHOLDER;
 }
+
+/** On a finished report, the meta toggle switches Revise ↔ Ask follow-up. */
+export function reportFollowToggleLabel(askMode: boolean): string {
+	return askMode ? RESEARCH_REVISE_INSTEAD : RESEARCH_ASK_WITHOUT_EDITING;
+}
+
+/** Finished report + chip off → Revise (Ask credit), not a new Research hop. */
+export function shouldReviseResearchFollow(input: {
+	lastTurnResearch: boolean;
+	lastTurnPending: boolean;
+	hasReport: boolean;
+	researchChipOn: boolean;
+	forceAsk?: boolean;
+}): boolean {
+	if (input.forceAsk || input.researchChipOn || input.lastTurnPending) {
+		return false;
+	}
+	return input.lastTurnResearch && input.hasReport;
+}
+
+/** Compact revise dock stays one row until focus, typed text, or a Revising chip. */
+export function followComposerShouldExpand(input: {
+	focused: boolean;
+	hasText: boolean;
+	hasReviseChip: boolean;
+}): boolean {
+	return input.focused || input.hasText || input.hasReviseChip;
+}
+
+/**
+ * Report-dock chrome after a research turn. A 202 revise stays pending, so the
+ * compact idle composer must not come back until the job finishes.
+ */
+export function researchReportFollowChrome(input: {
+	research: boolean;
+	pending: boolean;
+	hasReport: boolean;
+	clarifying?: boolean;
+	declinedOpen?: boolean;
+	expanded?: boolean;
+}): {
+	reportDock: boolean;
+	revisingReport: boolean;
+	followCompact: boolean;
+} {
+	const revisingReport = Boolean(
+		input.pending && input.research && input.hasReport,
+	);
+	const reportDock = Boolean(
+		input.research &&
+			!input.pending &&
+			!input.clarifying &&
+			!input.declinedOpen,
+	);
+	return {
+		reportDock,
+		revisingReport,
+		followCompact: reportDock && !input.expanded,
+	};
+}
+
+/** Empty Research home: signed-out readers cannot start a report. */
+export function researchEmptyComposerGated(input: {
+	researchPane: boolean;
+	hasThread: boolean;
+	quotaReady: boolean;
+	signedIn: boolean;
+}): boolean {
+	return (
+		input.researchPane &&
+		!input.hasThread &&
+		input.quotaReady &&
+		!input.signedIn
+	);
+}
+
 export const RESEARCH_CHIP_TITLE =
 	"A few questions first, then a cited report based on the Words of the Buddha. We’ll email you when it’s ready.";
 export const RESEARCH_EMAIL_PENDING_NOTE =
@@ -216,6 +332,7 @@ export interface ResearchTurnFields {
 	onTrack?: boolean;
 	progressNote?: string;
 	processNotes?: string[];
+	versionIndex?: ResearchVersionMeta[];
 }
 
 /**
@@ -363,6 +480,14 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	turn.phase = job.phase;
 	turn.progressNote = job.progressNote || "";
 	turn.processNotes = job.processNotes || [];
+	turn.versionIndex = healedResearchVersionIndex({
+		versionIndex:
+			Array.isArray(job.versionIndex) && job.versionIndex.length > 0
+				? job.versionIndex
+				: turn.versionIndex,
+		processNotes: turn.processNotes,
+		createdAt: turn.researchStartedAt,
+	});
 	if (typeof job.candidateCount === "number" && job.candidateCount > 0) {
 		turn.rerankCandidateCount = job.candidateCount;
 	}
@@ -419,6 +544,8 @@ export function researchHistoryTimestamp(input: {
 
 const ASK_COPY_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9.75a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" /></svg>`;
 
+const ASK_COPY_CHECK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>`;
+
 const ASK_BUTTON_FEEDBACK_LABEL_SELECTOR =
 	".ai-answer-copy-label, .ai-share-label-full, .ai-share-label-short";
 
@@ -453,12 +580,29 @@ function askButtonFeedbackLabels(button: HTMLButtonElement): HTMLElement[] {
 	];
 }
 
+function applyAskCopyTickFeedback(
+	button: HTMLButtonElement,
+	message: string,
+): void {
+	button.disabled = true;
+	const icon = button.querySelector("svg");
+	if (icon) icon.outerHTML = ASK_COPY_CHECK_SVG;
+	button.setAttribute("aria-label", message);
+	button.setAttribute("title", message);
+	button.classList.add("is-copied");
+	button.classList.remove("is-copy-error");
+}
+
 /** Swap a Copy/Share control to a status word without rebuilding the thread. */
 export function applyAskButtonFeedback(
 	button: HTMLButtonElement,
 	message: string,
 	kind: AskButtonFeedbackKind,
 ): void {
+	if (kind === "copied" && button.classList.contains("ai-answer-copy")) {
+		applyAskCopyTickFeedback(button, message);
+		return;
+	}
 	button.disabled = true;
 	const labels = askButtonFeedbackLabels(button);
 	if (labels.length > 0) {
@@ -524,16 +668,23 @@ export function wrapAskAnswerHtml(input: {
 	bodyHtml: string;
 	turnIndex: number;
 	kicker?: string;
+	extraStart?: string;
+	stats?: string;
 }): string {
 	const className =
 		input.kind === "report" ? "ai-answer ai-report" : "ai-answer ai-summary";
-	const start =
-		input.kicker
-			? `<div class="ai-answer-toolbar ai-answer-toolbar-start">
-			<p class="ai-report-kicker">${input.kicker}</p>
+	const stats = input.stats
+		? `<p class="ai-report-stats">${input.stats}</p>`
+		: "";
+	const showStart = Boolean(input.kicker || input.extraStart || input.stats);
+	const start = showStart
+		? `<div class="ai-answer-toolbar ai-answer-toolbar-start">
+			${input.kicker ? `<p class="ai-report-kicker">${input.kicker}</p>` : ""}
+			${input.extraStart || ""}
+			${stats}
 			${askAnswerCopyButtonHtml({ turnIndex: input.turnIndex, kind: input.kind, placement: "start" })}
 		</div>`
-			: "";
+		: "";
 	return `<div class="${className}">
 		${start}
 		<div class="ai-answer-body">${input.bodyHtml}</div>
@@ -577,6 +728,22 @@ export function researchJobToHistoryEntry(
 		...(job.processNotes && job.processNotes.length > 0
 			? { processNotes: job.processNotes }
 			: {}),
+		...(job.versionIndex && job.versionIndex.length > 0
+			? {
+					versionIndex: healedResearchVersionIndex({
+						versionIndex: job.versionIndex,
+						processNotes: job.processNotes,
+						createdAt: job.createdAt,
+					}),
+				}
+			: job.processNotes && job.processNotes.length > 0
+				? {
+						versionIndex: healedResearchVersionIndex({
+							processNotes: job.processNotes,
+							createdAt: job.createdAt,
+						}),
+					}
+				: {}),
 		...(job.pending ? { researchPending: true } : {}),
 		...(typeof job.candidateCount === "number" && job.candidateCount > 0
 			? { candidateCount: job.candidateCount }

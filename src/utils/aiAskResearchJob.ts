@@ -8,6 +8,7 @@ import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import {
 	clipResearchVersionIndex,
+	researchRevisionStartedLabel,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
@@ -22,6 +23,7 @@ export type ResearchJobStatus =
 	| "crunching"
 	| "reviewing"
 	| "answering"
+	| "revising"
 	| "complete"
 	| "failed"
 	| "cancelled";
@@ -88,6 +90,10 @@ export function isResearchJobTerminal(status: ResearchJobStatus): boolean {
 	);
 }
 
+export function isResearchJobRevising(status: ResearchJobStatus): boolean {
+	return status === "revising";
+}
+
 /** Cancelled or failed jobs can be started again on the same record. */
 export function isResearchJobRetryable(status: ResearchJobStatus): boolean {
 	return status === "cancelled" || status === "failed";
@@ -108,7 +114,7 @@ export function researchJobPhase(status: ResearchJobStatus): ResearchAskPhase {
 	if (status === "searching" || status === "verify") return "search";
 	if (status === "crunching") return "rerank";
 	if (status === "reviewing") return "review";
-	if (status === "answering") return "answer";
+	if (status === "answering" || status === "revising") return "answer";
 	if (isResearchJobTerminal(status)) return "done";
 	return "rewrite";
 }
@@ -117,17 +123,33 @@ export function clipResearchJobId(value: string): string {
 	return value.replace(/\s+/g, "").trim().slice(0, RESEARCH_JOB_ID_MAX);
 }
 
-export const RESEARCH_PROCESS_NOTES_MAX = 10;
+/** Enough for the original run plus several revision cycles (~4 hops each). */
+export const RESEARCH_PROCESS_NOTES_MAX = 40;
 export const RESEARCH_PROCESS_NOTE_CHARS = 160;
 
 function clipProcessNote(value: string): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_PROCESS_NOTE_CHARS);
 }
 
+function revisionStartedN(note: string): number {
+	const match = note.match(/^started v(\d+) revision/i);
+	return match ? Number(match[1]) || 0 : 0;
+}
+
+/**
+ * Dedupe key for a hop. Revision hops repeat verbatim every cycle
+ * (“Considering the revision…”, “Revising the report…”), so they are keyed by
+ * the cycle they belong to; otherwise only the first revision kept its hops.
+ */
+function processNoteDedupeKey(note: string, cycle: number): string {
+	return `${cycle}\u0000${note.toLowerCase()}`;
+}
+
 export function clipResearchProcessNotes(value: unknown): string[] {
 	if (!Array.isArray(value)) return [];
 	const out: string[] = [];
 	const seen = new Set<string>();
+	let cycle = 0;
 	for (const item of value) {
 		if (typeof item !== "string") continue;
 		const note = clipProcessNote(item);
@@ -141,13 +163,15 @@ export function clipResearchProcessNotes(value: unknown): string[] {
 		) {
 			continue;
 		}
-		const key = note.toLowerCase();
+		if (family === "revise-start") cycle = revisionStartedN(note) || cycle + 1;
+		const key = processNoteDedupeKey(note, cycle);
 		if (seen.has(key)) continue;
 		seen.add(key);
 		out.push(note);
-		if (out.length >= RESEARCH_PROCESS_NOTES_MAX) break;
 	}
-	return out;
+	return out.length > RESEARCH_PROCESS_NOTES_MAX
+		? out.slice(out.length - RESEARCH_PROCESS_NOTES_MAX)
+		: out;
 }
 
 export function researchProcessNoteFamily(note: string): string {
@@ -159,6 +183,12 @@ export function researchProcessNoteFamily(note: string): string {
 	if (/\bin pāli\b/i.test(n)) return "read-pali";
 	if (/^(?:reading|read)\b/i.test(n)) return "read-full";
 	if (/^(?:writing|wrote|rewriting) the report/i.test(n)) return "write";
+	if (/^started v\d+ revision/i.test(n)) return "revise-start";
+	if (/^(?:considering|considered) the revision/i.test(n)) return "revise-think";
+	if (/^(?:looking up additional|looked up additional)/i.test(n)) {
+		return "revise-search";
+	}
+	if (/^(?:revising|revised) the report/i.test(n)) return "revise";
 	if (/^starting/i.test(n)) return "start";
 	if (
 		/^(?:planning|opening the library|searching ·|crunching|ranking|understood|checking for gaps)/i.test(
@@ -192,7 +222,8 @@ export function rememberResearchProcessNote(
 		researchProcessNoteFamily(last) === family &&
 		(family === "search-again" ||
 			family === "go-deeper" ||
-			family === "review-report")
+			family === "review-report" ||
+			family === "revise")
 	) {
 		return clipResearchProcessNotes([...current.slice(0, -1), next]);
 	}
@@ -204,9 +235,93 @@ export function formatResearchProcessHopLabel(note: string): string {
 	return clipProcessNote(note)
 		.replace(/^Reviewing the report/i, "Reviewed the report")
 		.replace(/^Searching again/i, "Searched again")
+		.replace(/^Considering the revision/i, "Considered the revision")
+		.replace(/^Looking up additional discourses/i, "Looked up additional discourses")
+		.replace(/^Revising the report/i, "Revised the report")
 		.replace(/^Reading\b/i, "Read")
 		.replace(/…$/, "")
 		.trim();
+}
+
+export function isResearchReviseHopLabel(text: string): boolean {
+	const family = researchProcessNoteFamily(text);
+	return (
+		family === "revise-start" ||
+		family === "revise-think" ||
+		family === "revise-search" ||
+		family === "revise"
+	);
+}
+
+function isRevisionThinkHopLabel(text: string): boolean {
+	return /consider(?:ing|ed) the revision/i.test(text);
+}
+
+function isRevisionDoneHopLabel(text: string): boolean {
+	return /^revised the report/i.test(text);
+}
+
+function isRevisionStartedHopLabel(text: string): boolean {
+	return /^started v\d+ revision/i.test(text);
+}
+
+/**
+ * Insert “Started vN revision” before each revise cycle when the job did not
+ * already record that hop. Live revises get the next version number.
+ */
+export function interleaveResearchRevisionStartedHops(
+	hops: readonly string[],
+	options: { currentN?: number; revising?: boolean } = {},
+): string[] {
+	const currentN = Math.max(1, Math.floor(options.currentN || 1));
+	const revising = options.revising === true;
+	if (hops.length === 0 && !revising) return [];
+	if (hops.some(isRevisionStartedHopLabel)) {
+		if (!revising) return [...hops];
+		const lastStarted = [...hops]
+			.reverse()
+			.find(isRevisionStartedHopLabel);
+		const liveN = Math.max(2, currentN + 1);
+		const lastN = Number((lastStarted || "").match(/v(\d+)/i)?.[1] || 0);
+		const afterLastStart = lastStarted
+			? hops.slice(hops.lastIndexOf(lastStarted) + 1)
+			: hops;
+		const cycleClosed = afterLastStart.some(isRevisionDoneHopLabel);
+		if (cycleClosed && lastN !== liveN) {
+			return [...hops, researchRevisionStartedLabel(liveN)];
+		}
+		return [...hops];
+	}
+	const out: string[] = [];
+	let cycle = 0;
+	let open = false;
+	for (const hop of hops) {
+		if (isRevisionThinkHopLabel(hop) && !open) {
+			cycle += 1;
+			out.push(researchRevisionStartedLabel(cycle + 1));
+			open = true;
+		}
+		out.push(hop);
+		if (isRevisionDoneHopLabel(hop)) open = false;
+	}
+	if (revising && !open) {
+		const n = cycle > 0 ? cycle + 2 : Math.max(2, currentN + 1);
+		out.push(researchRevisionStartedLabel(n));
+	}
+	return out;
+}
+
+/** Original hops stay before “Wrote the report”; revise hops append after it. */
+export function splitResearchReviseHopLabels(labels: readonly string[]): {
+	original: string[];
+	revise: string[];
+} {
+	const splitAt = labels.findIndex((text) => isResearchReviseHopLabel(text));
+	if (splitAt < 0) return { original: [...labels], revise: [] };
+	return {
+		original: labels.slice(0, splitAt),
+		revise: labels.slice(splitAt),
+	};
 }
 
 export function researchProcessHopLabels(
@@ -216,6 +331,7 @@ export function researchProcessHopLabels(
 	const hideFamily = hideNote ? researchProcessNoteFamily(hideNote) : "";
 	const out: string[] = [];
 	const seen = new Set<string>();
+	let cycle = 0;
 	for (const note of notes) {
 		const family = researchProcessNoteFamily(note);
 		if (
@@ -226,14 +342,24 @@ export function researchProcessHopLabels(
 		) {
 			continue;
 		}
+		if (family === "revise-start") cycle = revisionStartedN(note) || cycle + 1;
 		if (hideFamily && family === hideFamily) continue;
-		const label = formatResearchProcessHopLabel(note);
-		const key = label.toLowerCase();
+		let label = formatResearchProcessHopLabel(note);
+		if (family === "revise" && cycle > 0 && /^revised the report$/i.test(label)) {
+			label = researchRevisedLabel(cycle);
+		}
+		const key = processNoteDedupeKey(label, cycle);
 		if (!label || seen.has(key)) continue;
 		seen.add(key);
 		out.push(label);
 	}
 	return out;
+}
+
+/** Finished hop that closes a revision cycle: “Revised the report · v3”. */
+export function researchRevisedLabel(n: number): string {
+	const version = Math.max(2, Math.floor(Number(n) || 2));
+	return `Revised the report · v${version}`;
 }
 
 function clip(value: string, max: number): string {
@@ -352,6 +478,7 @@ export function parseResearchJobStatus(value: unknown): ResearchJobStatus | null
 		value === "crunching" ||
 		value === "reviewing" ||
 		value === "answering" ||
+		value === "revising" ||
 		value === "complete" ||
 		value === "failed" ||
 		value === "cancelled"

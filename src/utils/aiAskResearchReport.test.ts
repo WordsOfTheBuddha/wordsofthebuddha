@@ -31,7 +31,9 @@ MN 10 sets out the four establishments.
 				{ slug: "sn47.19", href: "/sn47.19" },
 			],
 		);
-		assert.match(html, /<h2>/);
+		assert.match(html, /<h2\b/);
+		assert.match(html, /id="rh-body-mindfulness"/);
+		assert.match(html, /data-report-heading="Body mindfulness"/);
 		assert.match(html, /ai-report-table/);
 		assert.match(html, /href="\/mn10"/);
 		assert.match(html, /href="\/sn47\.19"/);
@@ -249,7 +251,10 @@ Then MN 10 continues.
 None of the defining passages for the *saddhānusārī* or *dhammānusārī* in the excerpts.
 `,
 		);
-		assert.match(html, /<h3>Strict check, qualification by qualification<\/h3>/);
+		assert.match(
+			html,
+			/<h3[^>]*>Strict check, qualification by qualification<\/h3>/,
+		);
 		assert.match(html, /<hr class="ai-report-rule">/);
 		assert.doesNotMatch(html, /####/);
 		assert.match(html, /<em>adhisīla<\/em>/);

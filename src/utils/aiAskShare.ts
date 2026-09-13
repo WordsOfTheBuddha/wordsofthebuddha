@@ -14,6 +14,10 @@ import {
 } from "./aiAskHref";
 import { normalizeAskQuestionKey } from "./aiAskSession";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
+import {
+	clipResearchVersionIndex,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
 
 export const ASK_SHARE_SLUG_MIN = 8;
 export const ASK_SHARE_SLUG_MAX = 48;
@@ -103,6 +107,10 @@ export interface AiAskShareSnapshot {
 	reasoning?: string;
 	candidateCount?: number;
 	createdAt: number;
+	/** Owner's research job — used to revise in place when signed in as owner. */
+	researchJobId?: string;
+	/** Changelog rows at share time. Bodies live in askShares/{slug}/versions. */
+	versionIndex?: ResearchVersionMeta[];
 	/**
 	 * Full conversation through the shared turn (oldest → newest).
 	 * When absent, the top-level fields are the only turn.
@@ -598,6 +606,14 @@ export function sanitizeAskShareSnapshot(
 		...(head.reasoning ? { reasoning: head.reasoning } : {}),
 		...(head.candidateCount ? { candidateCount: head.candidateCount } : {}),
 		createdAt,
+		...(typeof record.researchJobId === "string" &&
+		record.researchJobId.trim()
+			? { researchJobId: record.researchJobId.trim().slice(0, 80) }
+			: {}),
+		...(() => {
+			const versionIndex = clipResearchVersionIndex(record.versionIndex);
+			return versionIndex.length > 0 ? { versionIndex } : {};
+		})(),
 		...(thread.length > 1 ? { thread } : {}),
 	};
 }

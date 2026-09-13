@@ -488,10 +488,22 @@ describe("sanitizeAskShareSnapshot", () => {
 			report,
 			reasoning: "The brief asks for the trainee grades.",
 			candidateCount: 509,
+			researchJobId: "job-trainee",
+			versionIndex: [
+				{
+					n: 1,
+					at: 1,
+					instruction: "",
+					changelog: "Original report.",
+					from: null,
+				},
+			],
 			createdAt: 1,
 		});
 		assert.ok(snap);
 		assert.equal(snap?.research, true);
+		assert.equal(snap?.researchJobId, "job-trainee");
+		assert.equal(snap?.versionIndex?.[0]?.n, 1);
 		assert.match(snap?.report || "", /> He trains/);
 		assert.match(snap?.report || "", /\*\*The trainee/);
 		assert.equal(snap?.reasoning, "The brief asks for the trainee grades.");

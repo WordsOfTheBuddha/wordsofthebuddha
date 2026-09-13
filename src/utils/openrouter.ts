@@ -68,6 +68,7 @@ export interface OpenRouterChatResult {
 	content: string;
 	reasoning: string;
 	model: string;
+	truncated?: boolean;
 }
 
 /** OpenRouter `reasoning.effort` values we use for Ask. */
@@ -500,6 +501,8 @@ export async function openRouterChat(options: {
 		provider?: unknown;
 		usage?: unknown;
 		choices?: Array<{
+			finish_reason?: string;
+			native_finish_reason?: string;
 			message?: {
 				content?: unknown;
 				reasoning?: unknown;
@@ -513,12 +516,17 @@ export async function openRouterChat(options: {
 	const reasoning = messageText(
 		message?.reasoning ?? message?.reasoning_content,
 	);
+	const finish =
+		payload.choices?.[0]?.finish_reason ||
+		payload.choices?.[0]?.native_finish_reason ||
+		"";
 	return {
 		content: content.includes("{")
 			? content
 			: [content, reasoning].filter(Boolean).join("\n"),
 		reasoning,
 		model: payload.model || model,
+		...(finish === "length" ? { truncated: true } : {}),
 	};
 }
 

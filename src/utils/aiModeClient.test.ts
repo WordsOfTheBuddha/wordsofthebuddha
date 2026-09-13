@@ -10,14 +10,36 @@ import {
 	askShouldSurviveDisconnect,
 	buildAskProcessSteps,
 	displayAskReasoning,
+	firstRangeClientRect,
+	lastRangeClientRect,
+	markChangedReportBlocks,
+	reportChangeCount,
+	reportChangedKeys,
+	researchChangesChipLabel,
+	researchVersionRowHtml,
 	researchSourcesBlockHtml,
 	formatAskRoutingDevHtml,
 	isAskSendShortcut,
 	mergeAskTurnReasoning,
 	renderAskThinkingHtml,
+	reviseFloatOffset,
+	researchJobApiPath,
+	RESEARCH_API_PATH,
+	RESEARCH_REVISE_API_PATH,
+	aiJsonRequestInit,
+	isAiJsonResponse,
+	fetchAiJson,
+	scrollAskProcessToLatest,
 	takeAskSseEvents,
 	buildAskFollowUpHistory,
+	abbreviateReviseQuote,
+	reviseScopeLabel,
+	isAiTimeoutError,
+	AI_JSON_TIMEOUT_MS,
+	AI_JSON_WRITE_TIMEOUT_MS,
+	AI_SERVER_TIMEOUT_MESSAGE,
 } from "./aiModeClient";
+import { researchApiFailureMessage } from "./appApiPath";
 
 function key(
 	partial: Partial<
@@ -357,6 +379,61 @@ describe("buildAskProcessSteps", () => {
 		assert.equal(done[2]?.text, "Ranked and picked 18 discourses");
 		assert.equal(done[3]?.text, "Reviewed the evidence");
 		assert.equal(done[4]?.text, "Wrote the report");
+	});
+
+	it("appends live revise hops after Wrote the report", () => {
+		const revising = buildAskProcessSteps({
+			pending: true,
+			phase: "answer",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+			hasReport: true,
+			candidateCount: 186,
+			showCount: 18,
+			resultCount: 18,
+			progressNote: "Revising the report…",
+			processNotes: [
+				"Reading MN 70 in full…",
+				"Considering the revision…",
+				"Looking up additional discourses…",
+			],
+		});
+		assert.deepEqual(
+			revising.map((step) => `${step.state}:${step.text}`),
+			[
+				"done:Understood · vedanā",
+				"done:Searched widely, found 186 discourse matches",
+				"done:Ranked and picked 18 discourses",
+				"done:Reviewed the evidence",
+				"done:Read MN 70 in full",
+				"done:Wrote the report",
+				"done:Started v2 revision",
+				"done:Considered the revision",
+				"done:Looked up additional discourses",
+				"active:Revising the report…",
+			],
+		);
+
+		const done = buildAskProcessSteps({
+			pending: false,
+			phase: "done",
+			question: "feeling?",
+			lookingFor: "vedanā",
+			research: true,
+			hasReport: true,
+			candidateCount: 186,
+			resultCount: 18,
+			processNotes: [
+				"Reading MN 70 in full…",
+				"Considering the revision…",
+				"Revising the report…",
+			],
+		});
+		assert.equal(done.at(-1)?.text, "Revised the report");
+		assert.equal(done.at(-2)?.text, "Considered the revision");
+		assert.equal(done.at(-3)?.text, "Started v2 revision");
+		assert.ok(done.some((step) => step.text === "Wrote the report"));
 	});
 
 	it("keeps further searches and reads on the finished research strip", () => {
@@ -704,7 +781,7 @@ describe("applyAskThinkingStreamPatch", () => {
 		assert.equal(thread.querySelector(".ai-process-thinking-note"), null);
 		assert.doesNotMatch(
 			thread.querySelector(".ai-process")?.textContent || "",
-			/puṇṇama|GLM|timed out|planned with/i,
+			/puṇṇama|GLM|DeepSeek|timed out|planned with/i,
 		);
 		assert.equal(thread.querySelector("[data-ai-toggle-thinking]"), null);
 	});
@@ -765,5 +842,330 @@ describe("applyAskProcessStreamPatch", () => {
 			/Requesting SN 12\.49, SN 48\.9, MN 70 · Searching · 2 of 4 queries/,
 		);
 		assert.ok(steps[1]?.classList.contains("is-active"));
+	});
+});
+
+describe("firstRangeClientRect", () => {
+	it("uses the first non-empty client rect instead of the full bounding box", () => {
+		const first = {
+			left: 40,
+			top: 80,
+			right: 180,
+			bottom: 102,
+			width: 140,
+			height: 22,
+		};
+		const later = {
+			left: 20,
+			top: 220,
+			right: 360,
+			bottom: 280,
+			width: 340,
+			height: 60,
+		};
+		const rect = firstRangeClientRect({
+			getClientRects: () => [first, later],
+			getBoundingClientRect: () => ({
+				left: 20,
+				top: 80,
+				right: 360,
+				bottom: 280,
+				width: 340,
+				height: 200,
+			}),
+		});
+		assert.equal(rect, first);
+	});
+
+	it("skips empty wrap artifacts then falls back to the bounding box", () => {
+		const box = {
+			left: 10,
+			top: 20,
+			right: 110,
+			bottom: 60,
+			width: 100,
+			height: 40,
+		};
+		assert.equal(
+			firstRangeClientRect({
+				getClientRects: () => [{ left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 }],
+				getBoundingClientRect: () => box,
+			}),
+			box,
+		);
+	});
+});
+
+describe("lastRangeClientRect", () => {
+	it("returns the last non-empty line box", () => {
+		const first = { left: 10, top: 20, right: 300, bottom: 44, width: 290, height: 24 };
+		const last = { left: 10, top: 48, right: 120, bottom: 72, width: 110, height: 24 };
+		const rect = lastRangeClientRect({
+			getClientRects: () => [
+				first,
+				last,
+				{ left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 },
+			],
+		});
+		assert.equal(rect, last);
+	});
+});
+
+describe("reviseFloatOffset", () => {
+	const origin = { left: 16, top: 40 };
+	const chip = { width: 100, height: 28 };
+	const column = { left: 60, right: 700 };
+
+	it("sits just after the end of the selection when the line has room", () => {
+		const lastLine = { left: 80, top: 120, right: 320, bottom: 144, height: 24 };
+		const pos = reviseFloatOffset(lastLine, origin, chip, column);
+		assert.equal(pos.placement, "after");
+		assert.equal(pos.left, 320 + 8 - 16);
+		assert.equal(pos.top, 120 + (24 - 28) / 2 - 40);
+	});
+
+	it("drops to the next row, right-aligned under the selection end, when it would overflow", () => {
+		const lastLine = { left: 80, top: 120, right: 660, bottom: 144, height: 24 };
+		const pos = reviseFloatOffset(lastLine, origin, chip, column);
+		assert.equal(pos.placement, "below");
+		assert.equal(pos.left, 660 - 100 - 16);
+		assert.equal(pos.top, 144 + 6 - 40);
+	});
+
+	it("never leaves the column on the left", () => {
+		const lastLine = { left: 60, top: 120, right: 90, bottom: 144, height: 24 };
+		const pos = reviseFloatOffset(lastLine, origin, chip, { left: 60, right: 150 });
+		assert.equal(pos.placement, "below");
+		assert.equal(pos.left, 60 - 16);
+	});
+});
+
+describe("researchVersionRowHtml", () => {
+	it("shows the reader's ask, the changelog, and stats with deltas", () => {
+		const v1 = {
+			n: 1,
+			at: Date.now() - 60_000,
+			instruction: "",
+			changelog: "Original report.",
+			from: null,
+			stats: { words: 6000, cited: 50, additional: 115 },
+		};
+		const v2 = {
+			n: 2,
+			at: Date.now(),
+			instruction: "Add quotes on faculties",
+			changelog: "Rewrote the faculties paragraph with two SN 48.42 quotations.",
+			from: 1,
+			heading: "Faculties",
+			stats: { words: 6312, cited: 52, additional: 115 },
+		};
+		const html = researchVersionRowHtml(v2, { current: true, previous: v1 });
+		assert.match(html, /ai-versions-tag">current</);
+		assert.match(html, /You asked/);
+		assert.match(html, /Add quotes on faculties/);
+		assert.match(html, /in Faculties/);
+		assert.match(html, /Rewrote the faculties paragraph/);
+		assert.match(html, /6,312 words \(\+312\)/);
+		assert.match(html, /52 cited \(\+2\)/);
+		assert.doesNotMatch(html, /additional sources \(/);
+		// Not a <button>: the ask must stay selectable, with a copy control.
+		assert.match(html, /<div role="button" tabindex="0" data-ai-version-n="2"/);
+		assert.doesNotMatch(html, /<button type="button" data-ai-version-n/);
+		assert.match(html, /data-ai-versions-copy/);
+		assert.match(html, /data-ai-versions-ask>“Add quotes on faculties”/);
+	});
+
+	it("uses fallback stats for the current row and no deltas without a base", () => {
+		const html = researchVersionRowHtml(
+			{ n: 1, at: Date.now(), instruction: "", changelog: "Original report.", from: null },
+			{ fallbackStats: { words: 10, cited: 2, additional: 0 } },
+		);
+		assert.match(html, /10 words · 2 cited/);
+		assert.doesNotMatch(html, /\(\+/);
+	});
+});
+
+describe("revise composer chip", () => {
+	it("keeps short selections verbatim and shows start … end of long ones", () => {
+		assert.equal(abbreviateReviseQuote("  a short   quote "), "a short quote");
+		const long =
+			"Another text traces the chain of dependency from the five sense faculties to Nibbāna, situating mindfulness as the indispensable bridge between the mind and liberation, and closes with the experience of hindrances.";
+		const short = abbreviateReviseQuote(long, 80);
+		assert.ok(short.length <= 84, short);
+		assert.match(short, /^Another text traces the chain/);
+		assert.match(short, / … /);
+		assert.match(short, /experience of hindrances\.$/);
+		// Cuts fall on word boundaries.
+		assert.doesNotMatch(short, /\w … \w*[^ ]\w… /);
+	});
+
+	it("labels heading scopes and quoted selections", () => {
+		assert.equal(reviseScopeLabel("Faculties", "ignored"), "Revising · Faculties");
+		assert.equal(reviseScopeLabel("", "two words"), "Revising · “two words”");
+		assert.equal(reviseScopeLabel("", ""), "");
+	});
+});
+
+describe("AI JSON request timeouts", () => {
+	it("attaches a timeout signal, longer for writes, unless one is supplied", () => {
+		const read = aiJsonRequestInit();
+		assert.ok(read.signal instanceof AbortSignal);
+		const write = aiJsonRequestInit({ method: "POST" });
+		assert.ok(write.signal instanceof AbortSignal);
+		const own = new AbortController();
+		assert.equal(aiJsonRequestInit({ signal: own.signal }).signal, own.signal);
+		assert.ok(AI_JSON_WRITE_TIMEOUT_MS > AI_JSON_TIMEOUT_MS);
+	});
+
+	it("recognises a timed-out fetch", () => {
+		const timeout = new DOMException("timed out", "TimeoutError");
+		assert.equal(isAiTimeoutError(timeout), true);
+		assert.equal(isAiTimeoutError(new Error("boom")), false);
+		assert.equal(
+			researchApiFailureMessage({ status: 0, code: "timeout", error: AI_SERVER_TIMEOUT_MESSAGE }),
+			AI_SERVER_TIMEOUT_MESSAGE,
+		);
+	});
+});
+
+describe("report change marks", () => {
+	it("counts blocks the new version added or rewrote", () => {
+		const base = "## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph will change a lot.";
+		const next =
+			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph now quotes SN 48.42 directly.\n\nA brand new closing paragraph appears.";
+		assert.equal(reportChangeCount({ report: next, reviseBase: base }), 2);
+		assert.equal(reportChangeCount({ report: base, reviseBase: base }), 0);
+		assert.equal(reportChangeCount({ report: next }), 0);
+	});
+
+	it("labels the chip", () => {
+		assert.equal(researchChangesChipLabel(1), "1 change");
+		assert.equal(researchChangesChipLabel(3), "3 changes");
+	});
+
+	it("tags the rendered blocks that match changed keys", () => {
+		const base = "## A\n\nFirst paragraph stays the same here.\n\n- old item one here\n- old item two here";
+		const next =
+			"## A\n\nFirst paragraph stays the same here.\n\nA rewritten paragraph citing [SN 48.42](/sn48.42) in full.\n\n- old item one here\n- new item two, with more words";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>A</h2><p>First paragraph stays the same here.</p><p>A rewritten paragraph citing <a href="/sn48.42">SN 48.42</a> in full.</p><ul><li>old item one here</li><li>new item two, with more words</li></ul></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const keys = reportChangedKeys({ report: next, reviseBase: base });
+		assert.equal(markChangedReportBlocks(body, keys), 2);
+		const changed = [...body.querySelectorAll(".is-changed")].map((el) =>
+			el.textContent,
+		);
+		assert.deepEqual(changed, [
+			"A rewritten paragraph citing SN 48.42 in full.",
+			"new item two, with more words",
+		]);
+		assert.ok(body.querySelector("p.is-first-change"));
+		assert.equal(markChangedReportBlocks(body, []), 0);
+		assert.equal(body.querySelectorAll(".is-changed").length, 0);
+	});
+});
+
+describe("researchJobApiPath", () => {
+	it("always uses a rooted /api path and encodes the job id", () => {
+		const id = "b6a24e6f-62f8-42e4-95cc-6f1d45991044";
+		assert.equal(researchJobApiPath(id), `${RESEARCH_API_PATH}/${id}`);
+		assert.equal(researchJobApiPath(id).startsWith("/"), true);
+		assert.doesNotMatch(researchJobApiPath(id), /^api\//);
+		assert.equal(
+			researchJobApiPath("a/b"),
+			`${RESEARCH_API_PATH}/${encodeURIComponent("a/b")}`,
+		);
+		assert.equal(researchJobApiPath(id, 2), `${RESEARCH_API_PATH}/${id}?version=2`);
+		assert.equal(RESEARCH_REVISE_API_PATH, "/api/ai/research/revise");
+	});
+});
+
+describe("fetch redirect handling", () => {
+	it("refuses HTML, redirects, and opaque redirects as API JSON", () => {
+		assert.equal(aiJsonRequestInit().redirect, "error");
+		assert.equal(
+			isAiJsonResponse(
+				new Response(JSON.stringify({ ok: true }), {
+					status: 202,
+					headers: { "Content-Type": "application/json" },
+				}),
+			),
+			true,
+		);
+		assert.equal(
+			isAiJsonResponse(
+				new Response("<!doctype html>", {
+					status: 200,
+					headers: { "Content-Type": "text/html" },
+				}),
+			),
+			false,
+		);
+		assert.equal(
+			isAiJsonResponse({
+				redirected: true,
+				type: "basic",
+				status: 200,
+				headers: { get: () => "application/json" },
+			}),
+			false,
+		);
+		assert.equal(
+			isAiJsonResponse({
+				redirected: false,
+				type: "opaqueredirect",
+				status: 0,
+				headers: { get: () => "" },
+			}),
+			false,
+		);
+	});
+
+	it("throws when fetch returns HTML instead of JSON", async () => {
+		const original = globalThis.fetch;
+		globalThis.fetch = (async () =>
+			new Response("<html>search</html>", {
+				status: 200,
+				headers: { "Content-Type": "text/html" },
+			})) as typeof fetch;
+		try {
+			await assert.rejects(
+				() => fetchAiJson("/api/ai/research/revise"),
+				(error: unknown) =>
+					error instanceof Error && error.name === "AiJsonResponseError",
+			);
+		} finally {
+			globalThis.fetch = original;
+		}
+	});
+});
+
+describe("scrollAskProcessToLatest", () => {
+	it("scrolls and focuses the latest active process hop", () => {
+		const dom = new JSDOM(`<!DOCTYPE html><html><body>
+			<ol class="ai-process">
+				<li class="is-done"><span class="ai-process-mark">✓</span><span>Wrote the report</span></li>
+				<li class="is-active"><span class="ai-process-mark">●</span><span>Considering the revision…</span></li>
+				<li class="ai-process-thinking"><span class="ai-process-mark"></span><span>hidden</span></li>
+			</ol>
+		</body></html>`);
+		const process = dom.window.document.querySelector(".ai-process");
+		assert.ok(process);
+		const hops = [...process.querySelectorAll(":scope > li")].filter(
+			(li) =>
+				!li.classList.contains("ai-process-thinking") &&
+				!li.classList.contains("ai-process-dev"),
+		);
+		const active = hops[1] as HTMLElement;
+		let focused = false;
+		active.focus = () => {
+			focused = true;
+		};
+		Object.defineProperty(process, "scrollHeight", { value: 400 });
+		Object.defineProperty(process, "clientHeight", { value: 120 });
+		scrollAskProcessToLatest(process, { focus: true });
+		assert.equal(focused, true);
+		assert.equal((process as HTMLElement).scrollTop, 400);
 	});
 });

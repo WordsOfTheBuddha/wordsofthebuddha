@@ -8,6 +8,10 @@ import { clipResearchProcessNotes } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import {
+	clipResearchVersionIndex,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
+import {
 	sanitizeResearchHistoryReportStats,
 	snapshotResearchHistoryStats,
 	type ResearchHistoryReportStats,
@@ -60,6 +64,8 @@ export interface AiAskSessionEntry {
 	researchUnread?: boolean;
 	/** Durable research hops kept on the finished process strip. */
 	processNotes?: string[];
+	/** Changelog rows for in-place report revisions. */
+	versionIndex?: ResearchVersionMeta[];
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -304,6 +310,10 @@ export function sanitizeAskHistoryEntry(
 		...(() => {
 			const processNotes = clipResearchProcessNotes(record.processNotes);
 			return processNotes.length > 0 ? { processNotes } : {};
+		})(),
+		...(() => {
+			const versionIndex = clipResearchVersionIndex(record.versionIndex);
+			return versionIndex.length > 0 ? { versionIndex } : {};
 		})(),
 	};
 }
@@ -1044,6 +1054,19 @@ export function formatAskRelativeTime(at: number, now = Date.now()): string {
 		return new Date(at).toLocaleDateString(undefined, {
 			month: "short",
 			day: "numeric",
+		});
+	} catch {
+		return "";
+	}
+}
+
+/** Absolute local time for titles/tooltips — uses the reader’s timezone. */
+export function formatAskAbsoluteTime(at: number): string {
+	if (!Number.isFinite(at) || at <= 0) return "";
+	try {
+		return new Date(at).toLocaleString(undefined, {
+			dateStyle: "medium",
+			timeStyle: "short",
 		});
 	} catch {
 		return "";

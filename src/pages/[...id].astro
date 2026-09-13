@@ -5,9 +5,8 @@ import { routes } from "../utils/routes";
 import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
-import {
-	resolveCatchAllDiscoursePage,
-} from "../utils/catchAllDiscoursePage";
+import { isAppApiCatchAllId } from "../utils/appApiPath";
+import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
 import {
 	parsePostSlugFromGlobPath,
@@ -29,6 +28,16 @@ const rootPostEntries = Object.entries(rootPostModules).map(
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
+if (isAppApiCatchAllId(originalId)) {
+	return new Response(
+		JSON.stringify({
+			success: false,
+			code: "route_miss",
+			error: "Not found.",
+		}),
+		{ status: 404, headers: { "Content-Type": "application/json" } },
+	);
+}
 if ((originalId || "").replace(/\/+$/, "") === "ai") {
 	const question = Astro.url.searchParams.get("q");
 	const params = new URLSearchParams();

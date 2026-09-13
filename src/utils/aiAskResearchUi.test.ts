@@ -15,6 +15,7 @@ import {
 	ASK_HISTORY_HINT_RECENT,
 	ASK_HISTORY_LABEL,
 	ASK_LIMITS_NOTE,
+	askSponsorNoteVisible,
 	ASK_PIN_ACCOUNT_TITLE,
 	ASK_SHARE_ACCOUNT_TITLE,
 	ASK_PLACEHOLDER,
@@ -31,6 +32,7 @@ import {
 	RESEARCH_DELETE_ACTION,
 	RESEARCH_DELETE_CONFIRM,
 	RESEARCH_FOLLOW_PLACEHOLDER,
+	RESEARCH_REVISE_PLACEHOLDER,
 	RESEARCH_HISTORY_LABEL,
 	RESEARCH_INVITE_AFTER_ASK,
 	RESEARCH_LIMITS_NOTE,
@@ -64,7 +66,13 @@ import {
 	researchEditAskInsteadLabel,
 	researchRetrySubmitLabel,
 	sameResearchRetryQuestion,
+	shouldReviseResearchFollow,
 	shouldUseResearchAsk,
+	followComposerShouldExpand,
+	researchEmptyComposerGated,
+	researchReportFollowChrome,
+	reportFollowToggleLabel,
+	RESEARCH_SIGNED_OUT_PLACEHOLDER,
 	type ResearchTurnFields,
 } from "./aiAskResearchUi";
 
@@ -102,6 +110,152 @@ describe("askFollowPlaceholder", () => {
 		assert.equal(
 			askFollowPlaceholder({ pending: false, researchFollow: true }),
 			RESEARCH_FOLLOW_PLACEHOLDER,
+		);
+		assert.equal(
+			askFollowPlaceholder({ pending: false, reviseFollow: true }),
+			RESEARCH_REVISE_PLACEHOLDER,
+		);
+	});
+});
+
+describe("reportFollowToggleLabel", () => {
+	it("switches between Ask a follow-up instead and Revise this report instead", () => {
+		assert.equal(reportFollowToggleLabel(false), "Ask a follow-up instead");
+		assert.equal(reportFollowToggleLabel(true), "Revise this report instead");
+	});
+});
+
+describe("followComposerShouldExpand", () => {
+	it("stays compact until focus, typed text, or a Revising chip", () => {
+		assert.equal(
+			followComposerShouldExpand({
+				focused: false,
+				hasText: false,
+				hasReviseChip: false,
+			}),
+			false,
+		);
+		assert.equal(
+			followComposerShouldExpand({
+				focused: true,
+				hasText: false,
+				hasReviseChip: false,
+			}),
+			true,
+		);
+		assert.equal(
+			followComposerShouldExpand({
+				focused: false,
+				hasText: true,
+				hasReviseChip: false,
+			}),
+			true,
+		);
+		assert.equal(
+			followComposerShouldExpand({
+				focused: false,
+				hasText: false,
+				hasReviseChip: true,
+			}),
+			true,
+		);
+	});
+});
+
+describe("researchReportFollowChrome", () => {
+	it("does not return compact idle chrome while a 202 revise is in progress", () => {
+		const accepted = researchReportFollowChrome({
+			research: true,
+			pending: true,
+			hasReport: true,
+		});
+		assert.equal(accepted.reportDock, false);
+		assert.equal(accepted.revisingReport, true);
+		assert.equal(accepted.followCompact, false);
+	});
+
+	it("uses the compact report dock only after the job is finished", () => {
+		const idle = researchReportFollowChrome({
+			research: true,
+			pending: false,
+			hasReport: true,
+		});
+		assert.equal(idle.reportDock, true);
+		assert.equal(idle.revisingReport, false);
+		assert.equal(idle.followCompact, true);
+	});
+});
+
+describe("researchEmptyComposerGated", () => {
+	it("gates the empty Research composer until sign-in", () => {
+		assert.equal(
+			researchEmptyComposerGated({
+				researchPane: true,
+				hasThread: false,
+				quotaReady: true,
+				signedIn: false,
+			}),
+			true,
+		);
+		assert.equal(
+			researchEmptyComposerGated({
+				researchPane: true,
+				hasThread: false,
+				quotaReady: true,
+				signedIn: true,
+			}),
+			false,
+		);
+		assert.equal(
+			researchEmptyComposerGated({
+				researchPane: true,
+				hasThread: false,
+				quotaReady: false,
+				signedIn: false,
+			}),
+			false,
+		);
+		assert.equal(
+			researchEmptyComposerGated({
+				researchPane: false,
+				hasThread: false,
+				quotaReady: true,
+				signedIn: false,
+			}),
+			false,
+		);
+	});
+});
+
+describe("shouldReviseResearchFollow", () => {
+	it("revises a finished report unless Research or Ask-without-editing is on", () => {
+		assert.equal(
+			shouldReviseResearchFollow({
+				lastTurnResearch: true,
+				lastTurnPending: false,
+				hasReport: true,
+				researchChipOn: false,
+			}),
+			true,
+		);
+		assert.equal(
+			shouldReviseResearchFollow({
+				lastTurnResearch: true,
+				lastTurnPending: false,
+				hasReport: true,
+				researchChipOn: true,
+			}),
+			false,
+		);
+		assert.equal(
+			shouldReviseResearchFollow({
+				lastTurnResearch: true,
+				lastTurnPending: false,
+				hasReport: true,
+				researchChipOn: false,
+				forceAsk: true,
+			}),
+			false,
 		);
 	});
 });
@@ -429,6 +583,10 @@ describe("askHistoryCardMenuFlags", () => {
 			false,
 		);
 		assert.equal(
+			askHistoryCardMenuFlags({ sample: true, signedInForHistory: false }).showShare,
+			true,
+		);
+		assert.equal(
 			askHistoryCardMenuFlags({ sample: true, signedInForHistory: true }).showDelete,
 			true,
 		);
@@ -544,7 +702,88 @@ describe("applyResearchJobToTurn", () => {
 			"Reading MN 70 in full…",
 		]);
 	});
+
+	it("copies version index and the revised report onto the turn", () => {
+		const job = toResearchJobPublic({
+			id: "job-v2",
+			status: "complete",
+			question: "feeling?",
+			result: {
+				question: "feeling?",
+				lookingFor: "vedanā",
+				queries: ["feeling"],
+				fallbackQueries: [],
+				offTopic: false,
+				results: [],
+				model: "glm",
+				reasoning: "",
+				report: "## Revised\n",
+			},
+			versionIndex: [
+				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },
+				{ n: 2, at: 2, instruction: "add SN 48", changelog: "Added SN 48.", from: 1 },
+			],
+		});
+		const turn: ResearchTurnFields = {
+			question: "feeling?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: true,
+			phase: "answer",
+			report: "## Original\n",
+		};
+		applyResearchJobToTurn(turn, job);
+		assert.equal(turn.pending, false);
+		assert.equal(turn.report, "## Revised");
+		assert.equal(turn.versionIndex?.[1]?.n, 2);
+		assert.equal(turn.versionIndex?.[1]?.changelog, "Added SN 48.");
+	});
+
+	it("recovers v2 when process hops show a revise but the index stayed on v1", () => {
+		const job = toResearchJobPublic({
+			id: "job-heal",
+			status: "complete",
+			question: "feeling?",
+			processNotes: ["Considering the revision…", "Revising the report…"],
+			result: {
+				question: "feeling?",
+				lookingFor: "vedanā",
+				queries: ["feeling"],
+				fallbackQueries: [],
+				offTopic: false,
+				results: [],
+				model: "glm",
+				reasoning: "",
+				report: "## Revised\n",
+			},
+			versionIndex: [
+				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },
+			],
+		});
+		const turn: ResearchTurnFields = {
+			question: "feeling?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: false,
+			phase: "done",
+			report: "## Original\n",
+		};
+		applyResearchJobToTurn(turn, job);
+		assert.equal(turn.versionIndex?.[1]?.n, 2);
+		assert.equal(turn.versionIndex?.[1]?.changelog, "Revised the report.");
+	});
 });
+
 
 describe("researchJobToHistoryEntry", () => {
 	it("keeps an in-flight job restorable from Recent", () => {
@@ -696,6 +935,22 @@ describe("wrapAskAnswerHtml", () => {
 		assert.match(html, /Research report/);
 	});
 
+	it("puts version and stats on the report toolbar without a kicker", () => {
+		const html = wrapAskAnswerHtml({
+			kind: "report",
+			turnIndex: 0,
+			extraStart: `<button type="button" class="ai-versions-btn">v2</button>`,
+			stats: "18 words · 2 discourses cited",
+			bodyHtml: "<p>Hello</p>",
+		});
+		assert.match(html, /ai-answer-toolbar-start/);
+		assert.match(html, /ai-versions-btn/);
+		assert.match(html, /ai-report-stats/);
+		assert.match(html, /18 words · 2 discourses cited/);
+		assert.doesNotMatch(html, /Research report/);
+		assert.doesNotMatch(html, /ai-report-kicker/);
+	});
+
 	it("puts a single copy control at the end of an ask answer", () => {
 		const html = wrapAskAnswerHtml({
 			kind: "answer",
@@ -721,7 +976,7 @@ describe("flashAskButtonFeedback", () => {
 		return button;
 	}
 
-	it("unhides the icon-only Copy control and shows Copied", () => {
+	it("keeps the Copy label and swaps the icon to a tick", () => {
 		const button = copyButton("start");
 		const idle = readAskButtonIdle(button);
 		const scheduled: Array<[() => void, number]> = [];
@@ -734,8 +989,9 @@ describe("flashAskButtonFeedback", () => {
 		);
 		const label = button.querySelector<HTMLElement>(".ai-answer-copy-label");
 		assert.ok(label);
-		assert.equal(label.hidden, false);
-		assert.equal(label.textContent, "Copied");
+		assert.equal(label.hidden, true);
+		assert.equal(label.textContent, "Copy");
+		assert.match(button.innerHTML, /m4\.5 12\.75 6 6 9-13\.5/);
 		assert.equal(button.getAttribute("aria-label"), "Copied");
 		assert.equal(button.getAttribute("title"), "Copied");
 		assert.equal(button.classList.contains("is-copied"), true);
@@ -747,6 +1003,7 @@ describe("flashAskButtonFeedback", () => {
 		assert.ok(restored);
 		assert.equal(restored.hidden, true);
 		assert.equal(restored.textContent, "Copy");
+		assert.doesNotMatch(button.innerHTML, /m4\.5 12\.75 6 6 9-13\.5/);
 		assert.equal(button.getAttribute("aria-label"), "Copy report");
 		assert.equal(button.disabled, false);
 		assert.equal(button.classList.contains("is-copied"), false);
@@ -812,6 +1069,10 @@ describe("Research pane copy", () => {
 			RESEARCH_PLACEHOLDER,
 			"Ask for a cited report based on the Words of the Buddha…",
 		);
+		assert.equal(
+			RESEARCH_SIGNED_OUT_PLACEHOLDER,
+			"Create an account or Sign in to start a research",
+		);
 		assert.equal(ASK_COMPOSER_LABEL, "Ask a question");
 		assert.equal(RESEARCH_COMPOSER_LABEL, "Ask for a cited report");
 		assert.equal(
@@ -820,10 +1081,43 @@ describe("Research pane copy", () => {
 		);
 		assert.equal(ASK_HISTORY_LABEL, "Recent Asks");
 		assert.equal(RESEARCH_HISTORY_LABEL, "Recent reports");
-		assert.equal(ASK_LIMITS_NOTE, "Experimental AI search · limited free Asks");
 		assert.equal(
-			RESEARCH_LIMITS_NOTE,
-			"Experimental AI research",
+			ASK_LIMITS_NOTE,
+			"Freely accessible · made possible by generous donors",
+		);
+		assert.equal(RESEARCH_LIMITS_NOTE, ASK_LIMITS_NOTE);
+		assert.equal(
+			askSponsorNoteVisible({
+				askSurface: true,
+				research: false,
+				signedIn: false,
+			}),
+			true,
+		);
+		assert.equal(
+			askSponsorNoteVisible({
+				askSurface: true,
+				research: true,
+				signedIn: false,
+			}),
+			true,
+		);
+		assert.equal(
+			askSponsorNoteVisible({
+				askSurface: true,
+				research: false,
+				signedIn: true,
+				hasThread: true,
+			}),
+			false,
+		);
+		assert.equal(
+			askSponsorNoteVisible({
+				askSurface: false,
+				research: false,
+				signedIn: false,
+			}),
+			false,
 		);
 		assert.equal(
 			ASK_HISTORY_HINT_RECENT,
@@ -841,15 +1135,15 @@ describe("Research pane copy", () => {
 		assert.equal(RESEARCH_PIN_ACTION, "Pin this report");
 		assert.equal(RESEARCH_UNPIN_ACTION, "Unpin this report");
 		assert.equal(RESEARCH_DELETE_ACTION, "Delete this report");
-		assert.equal(ASK_PIN_ACCOUNT_TITLE, "Create an account to pin Asks");
+		assert.equal(ASK_PIN_ACCOUNT_TITLE, "Pin Asks");
 		assert.equal(
 			RESEARCH_PIN_ACCOUNT_TITLE,
-			"Create an account to pin this report",
+			"Pin this report",
 		);
-		assert.equal(ASK_SHARE_ACCOUNT_TITLE, "Create an account to share this Ask");
+		assert.equal(ASK_SHARE_ACCOUNT_TITLE, "Share this Ask");
 		assert.equal(
 			RESEARCH_SHARE_ACCOUNT_TITLE,
-			"Create an account to share this report",
+			"Share this report",
 		);
 		assert.equal(RESEARCH_SIGNIN_TITLE, "Run Research");
 		assert.equal(
@@ -858,7 +1152,7 @@ describe("Research pane copy", () => {
 		);
 		assert.equal(
 			RESEARCH_SIGNIN_EMPTY_NOTE,
-			"Create an account or sign in to run Research.",
+			"Create an account to generate your own",
 		);
 		assert.equal(
 			RESEARCH_INVITE_AFTER_ASK,

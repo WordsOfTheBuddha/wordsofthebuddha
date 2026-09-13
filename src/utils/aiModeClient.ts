@@ -9,12 +9,16 @@ import {
 	searchResearchHref,
 	withAskSurfaceParams,
 } from "./aiAskHref";
+import { researchApiFailureMessage } from "./appApiPath";
 import type { AiAskPersonHit } from "./aiAskPersons";
 import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
 import type { ResearchQuotaView } from "./aiResearchQuota";
 import {
+	interleaveResearchRevisionStartedHops,
+	rememberResearchProcessNote,
 	researchProcessHopLabels,
+	splitResearchReviseHopLabels,
 	type ResearchJobPublic,
 } from "./aiAskResearchJob";
 import {
@@ -34,6 +38,24 @@ import {
 	MAX_QUESTION_CHARS,
 } from "./aiAskQuestionText";
 import {
+	changedReportBlockKeys,
+	clipResearchReviseHeading,
+	clipResearchReviseQuote,
+	clipResearchVersionIndex,
+	currentResearchVersionN,
+	formatResearchVersionLabel,
+	formatResearchVersionStats,
+	healedResearchVersionIndex,
+	isResearchRevisionStartedLabel,
+	nextResearchRevisionN,
+	normalizeReportBlockText,
+	openingResearchVersionMeta,
+	researchRevisionStartedNote,
+	selectionQualifiesForRevise,
+	RESEARCH_REVISE_CONSIDERING_NOTE,
+	type ResearchVersionMeta,
+} from "./aiAskResearchRevise";
+import {
 	formatResearchHitTitle,
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
@@ -52,6 +74,7 @@ import {
 	ASK_HISTORY_HINT_RECENT,
 	ASK_HISTORY_LABEL,
 	ASK_LIMITS_NOTE,
+	askSponsorNoteVisible,
 	ASK_OPTIONS_ARIA,
 	ASK_PIN_ACCOUNT_BODY,
 	ASK_PIN_ACCOUNT_TITLE,
@@ -79,12 +102,19 @@ import {
 	RESEARCH_PIN_ACCOUNT_TITLE,
 	RESEARCH_PIN_ACTION,
 	RESEARCH_PLACEHOLDER,
+	RESEARCH_RESTORE_ACTION,
+	RESEARCH_REVISE_ACCOUNT_BODY,
+	RESEARCH_REVISE_ACCOUNT_TITLE,
+	RESEARCH_REVISE_CLEAR,
+	RESEARCH_REVISE_FROM_ACTION,
+	RESEARCH_REVISE_REPORT,
 	RESEARCH_SIGNIN_BODY,
 	RESEARCH_SIGNIN_TITLE,
 	RESEARCH_SHARE_ACCOUNT_BODY,
 	RESEARCH_SHARE_ACCOUNT_TITLE,
 	RESEARCH_UNPIN_ACTION,
 	RESEARCH_NEW_LABEL,
+	RESEARCH_VERSIONS_ACTION,
 	ASK_CLIPBOARD_COPIED_LABEL,
 	ASK_CLIPBOARD_FAILED_LABEL,
 	ASK_SHARE_COPIED_LABEL,
@@ -102,8 +132,18 @@ import {
 	researchRetrySubmitLabel,
 	wrapAskAnswerHtml,
 	sameResearchRetryQuestion,
+	shouldReviseResearchFollow,
 	shouldUseResearchAsk,
+	followComposerShouldExpand,
+	researchReportFollowChrome,
+	researchEmptyComposerGated,
+	reportFollowToggleLabel,
+	RESEARCH_SIGNED_OUT_PLACEHOLDER,
 } from "./aiAskResearchUi";
+import {
+	snapshotResearchHistoryStats,
+	type ResearchHistoryReportStats,
+} from "./aiAskResearchHistoryStats";
 import {
 	notifyResearchReady,
 	requestResearchNotifyPermission,
@@ -139,7 +179,6 @@ import {
 	publishedAskSample,
 	readHiddenAskSampleKeys,
 	removeAskSampleLocal,
-	RESEARCH_SAMPLE_KICKER,
 	RESEARCH_SAMPLE_NOTE,
 	sampleToHistoryEntry,
 	sanitizeAskSamplePublic,
@@ -157,6 +196,7 @@ import {
 	clearAskResumeFromDiscourse,
 	clearAskThreadResumeIntent,
 	findAiAskSessionEntry,
+	formatAskAbsoluteTime,
 	formatAskRelativeTime,
 	markAskResumeFromDiscourse,
 	mergeAskHistoryEntries,
@@ -267,6 +307,12 @@ export interface AiAskTurn {
 	processNotes?: string[];
 	/** Markdown research document. */
 	report?: string;
+	versionIndex?: ResearchVersionMeta[];
+	/**
+	 * Body the current report was revised from, kept in memory for this page
+	 * view only, so changed paragraphs can be highlighted after a revise lands.
+	 */
+	reviseBase?: string;
 	researchClarify?: {
 		id: string;
 		questions: ResearchClarifyQuestion[];
@@ -435,6 +481,8 @@ export type AskProcessStepState = "todo" | "active" | "done";
 export interface AskProcessStep {
 	state: AskProcessStepState;
 	text: string;
+	/** "divider" renders as a grey system row (———— Started v2 revision ————). */
+	kind?: "divider";
 }
 
 /** Compact process steps for the Ask UI (pending + finished). */
@@ -454,6 +502,8 @@ export function buildAskProcessSteps(input: {
 	onTrack?: boolean;
 	progressNote?: string;
 	processNotes?: readonly string[];
+	hasReport?: boolean;
+	versionIndex?: readonly ResearchVersionMeta[];
 }): AskProcessStep[] {
 	const question = (input.question || "").replace(/\s+/g, " ").trim();
 	const looking = (input.lookingFor || "")
@@ -579,10 +629,45 @@ export function buildAskProcessSteps(input: {
 	}
 
 	const prefix: AskProcessStep[] = [understood];
-	const hopSteps: AskProcessStep[] = researchProcessHopLabels(
+	const hopLabels = researchProcessHopLabels(
 		input.processNotes,
 		input.pending ? note : undefined,
-	).map((text) => ({ state: "done", text }));
+	);
+	const { original: originalHops, revise: reviseHops } =
+		splitResearchReviseHopLabels(hopLabels);
+	const originalHopSteps: AskProcessStep[] = originalHops.map((text) => ({
+		state: "done",
+		text,
+	}));
+	const revising = Boolean(
+		input.research && input.pending && input.hasReport,
+	);
+	const startedHops = interleaveResearchRevisionStartedHops(reviseHops, {
+		currentN: currentResearchVersionN(input.versionIndex || []),
+		revising,
+	});
+	const reviseHopSteps: AskProcessStep[] = startedHops.map((text) =>
+		isResearchRevisionStartedLabel(text)
+			? { state: "done", text, kind: "divider" }
+			: { state: "done", text },
+	);
+
+	if (revising) {
+		const live: AskProcessStep = {
+			state: "active",
+			text: note || "Revising the report…",
+		};
+		return [
+			...prefix,
+			searched,
+			crunched,
+			{ state: "done", text: "Reviewed the evidence" },
+			...originalHopSteps,
+			{ state: "done", text: "Wrote the report" },
+			...reviseHopSteps,
+			live,
+		];
+	}
 
 	if (phase === "done") {
 		if (!input.research) return [...prefix, searched, crunched];
@@ -591,8 +676,9 @@ export function buildAskProcessSteps(input: {
 			searched,
 			crunched,
 			{ state: "done", text: "Reviewed the evidence" },
-			...hopSteps,
+			...originalHopSteps,
 			{ state: "done", text: "Wrote the report" },
+			...reviseHopSteps,
 		];
 	}
 	const writeStep: AskProcessStep =
@@ -621,7 +707,15 @@ export function buildAskProcessSteps(input: {
 	if (reviewed.state === "todo") {
 		return [...prefix, searched, crunched, reviewed, writeStep];
 	}
-	return [...prefix, searched, crunched, reviewed, ...hopSteps, writeStep];
+	return [
+		...prefix,
+		searched,
+		crunched,
+		reviewed,
+		...originalHopSteps,
+		...reviseHopSteps,
+		writeStep,
+	];
 }
 
 /** Caption shown with the answer once results are in (“Showing 12 discourses”). */
@@ -713,8 +807,18 @@ function processStepsHtml(
 	const items = steps
 		.map((step, index) => {
 			const mark =
-				step.state === "done" ? "✓" : step.state === "active" ? "●" : "○";
-			const row = `<li class="is-${step.state}"><span class="ai-process-mark" aria-hidden="true">${mark}</span><span>${escapeHtml(step.text)}</span></li>`;
+				step.kind === "divider"
+					? ""
+					: step.state === "done"
+						? "✓"
+						: step.state === "active"
+							? "●"
+							: "○";
+			const cls =
+				step.kind === "divider"
+					? `is-${step.state} ai-process-divider`
+					: `is-${step.state}`;
+			const row = `<li class="${cls}"><span class="ai-process-mark" aria-hidden="true">${mark}</span><span>${escapeHtml(step.text)}</span></li>`;
 			return index === 0 && options.afterFirst
 				? `${row}${options.afterFirst}`
 				: row;
@@ -928,6 +1032,8 @@ export function askProcessStepsFromTurn(
 		| "onTrack"
 		| "progressNote"
 		| "processNotes"
+		| "report"
+		| "versionIndex"
 	>,
 ): AskProcessStep[] {
 	return buildAskProcessSteps({
@@ -947,6 +1053,8 @@ export function askProcessStepsFromTurn(
 		onTrack: turn.onTrack,
 		progressNote: turn.progressNote,
 		processNotes: turn.processNotes,
+		hasReport: Boolean((turn.report || "").trim()),
+		versionIndex: turn.versionIndex,
 	});
 }
 
@@ -956,6 +1064,100 @@ function processStatusLis(process: Element): HTMLElement[] {
 			!li.classList.contains("ai-process-thinking") &&
 			!li.classList.contains("ai-process-dev"),
 	);
+}
+
+export const RESEARCH_API_PATH = "/api/ai/research";
+export const RESEARCH_REVISE_API_PATH = "/api/ai/research/revise";
+export const RESEARCH_CLARIFY_API_PATH = "/api/ai/research/clarify";
+
+export function researchJobApiPath(
+	jobId: string,
+	version?: number | null,
+): string {
+	const id = encodeURIComponent((jobId || "").trim());
+	const path = `${RESEARCH_API_PATH}/${id}`;
+	if (version == null) return path;
+	const n = Math.floor(Number(version));
+	if (!Number.isFinite(n) || n < 1) return path;
+	return `${path}?version=${n}`;
+}
+
+/** Ask/Research JSON reads give up after this long instead of hanging. */
+export const AI_JSON_TIMEOUT_MS = 45_000;
+/** Writes (start, clarify, revise) may run a model call before replying. */
+export const AI_JSON_WRITE_TIMEOUT_MS = 150_000;
+export const AI_SERVER_SLOW_AFTER_MS = 8_000;
+export const AI_SERVER_SLOW_STATUS =
+	"Still opening… the server is slow to respond.";
+export const AI_SERVER_TIMEOUT_MESSAGE =
+	"The server did not respond. It may be down or unreachable — try again in a moment.";
+
+function aiJsonTimeoutSignal(ms: number): AbortSignal | undefined {
+	try {
+		if (typeof AbortSignal !== "undefined" && "timeout" in AbortSignal) {
+			return AbortSignal.timeout(ms);
+		}
+	} catch {
+		/* older runtimes */
+	}
+	return undefined;
+}
+
+export function aiJsonRequestInit(init: RequestInit = {}): RequestInit {
+	const headers = new Headers(init.headers);
+	if (!headers.has("Accept")) headers.set("Accept", "application/json");
+	const write = Boolean(init.method && init.method.toUpperCase() !== "GET");
+	const signal =
+		init.signal ??
+		aiJsonTimeoutSignal(write ? AI_JSON_WRITE_TIMEOUT_MS : AI_JSON_TIMEOUT_MS);
+	return {
+		credentials: "same-origin",
+		cache: "no-store",
+		...init,
+		headers,
+		redirect: "error",
+		...(signal ? { signal } : {}),
+	};
+}
+
+/** True for a fetch that gave up waiting (AbortSignal.timeout). */
+export function isAiTimeoutError(error: unknown): boolean {
+	return Boolean(
+		error &&
+			typeof error === "object" &&
+			((error as { name?: string }).name === "TimeoutError" ||
+				(error as { name?: string }).name === "AbortError"),
+	);
+}
+
+export function isAiJsonResponse(
+	response: Pick<Response, "redirected" | "type" | "headers" | "status">,
+): boolean {
+	if (response.redirected || response.type === "opaqueredirect") return false;
+	if (response.status >= 300 && response.status < 400) return false;
+	const ctype = response.headers.get("content-type") || "";
+	return ctype.toLowerCase().includes("application/json");
+}
+
+export async function fetchAiJson<
+	T extends Record<string, unknown> = Record<string, unknown>,
+>(
+	url: string,
+	init: RequestInit = {},
+): Promise<{ response: Response; data: T }> {
+	const response = await fetch(url, aiJsonRequestInit(init));
+	if (!isAiJsonResponse(response)) {
+		const error = new Error("API returned a non-JSON response.");
+		error.name = "AiJsonResponseError";
+		throw error;
+	}
+	let data = {} as T;
+	try {
+		data = (await response.json()) as T;
+	} catch {
+		data = {} as T;
+	}
+	return { response, data };
 }
 
 /**
@@ -982,6 +1184,8 @@ export function applyAskProcessStreamPatch(
 		| "onTrack"
 		| "progressNote"
 		| "processNotes"
+		| "report"
+		| "versionIndex"
 		| "reasoning"
 		| "reasoningExpanded"
 	>,
@@ -1001,16 +1205,44 @@ export function applyAskProcessStreamPatch(
 		if (!li) return;
 		li.classList.remove("is-todo", "is-active", "is-done");
 		li.classList.add(`is-${step.state}`);
+		li.classList.toggle("ai-process-divider", step.kind === "divider");
 		const mark = li.querySelector(".ai-process-mark");
 		if (mark) {
 			mark.textContent =
-				step.state === "done" ? "✓" : step.state === "active" ? "●" : "○";
+				step.kind === "divider"
+					? ""
+					: step.state === "done"
+						? "✓"
+						: step.state === "active"
+							? "●"
+							: "○";
 		}
 		const text = li.querySelector("span:not(.ai-process-mark)");
 		if (text && text.textContent !== step.text) text.textContent = step.text;
 	});
 
-	return applyAskThinkingStreamPatch(thread, turn, turnIndex);
+	const thinking = applyAskThinkingStreamPatch(thread, turn, turnIndex);
+	scrollAskProcessToLatest(process);
+	return thinking;
+}
+
+export function scrollAskProcessToLatest(
+	process: Element | null | undefined,
+	options?: { focus?: boolean },
+): void {
+	if (!process) return;
+	const hops = processStatusLis(process);
+	const target =
+		[...hops].reverse().find((li) => li.classList.contains("is-active")) ||
+		hops[hops.length - 1];
+	if ("scrollTop" in process && "scrollHeight" in process) {
+		const el = process as HTMLElement;
+		el.scrollTop = el.scrollHeight;
+	}
+	if (options?.focus && target) {
+		if (!target.hasAttribute("tabindex")) target.tabIndex = -1;
+		target.focus({ preventScroll: true });
+	}
 }
 
 function isClientFreeModelId(id: string): boolean {
@@ -1267,6 +1499,9 @@ function turnToSessionEntry(
 		...(turn.processNotes && turn.processNotes.length > 0
 			? { processNotes: turn.processNotes }
 			: {}),
+		...(turn.versionIndex && turn.versionIndex.length > 0
+			? { versionIndex: turn.versionIndex }
+			: {}),
 	};
 }
 
@@ -1308,6 +1543,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		...(entry.processNotes && entry.processNotes.length > 0
 			? { processNotes: entry.processNotes }
 			: {}),
+		...(entry.versionIndex && entry.versionIndex.length > 0
+			? { versionIndex: clipResearchVersionIndex(entry.versionIndex) }
+			: {}),
 	};
 }
 
@@ -1343,6 +1581,10 @@ function shareTurnToAiAskTurn(
 			: {}),
 		...(turn.research || turn.report ? { research: true } : {}),
 		...(turn.report ? { report: turn.report } : {}),
+		...(share.researchJobId ? { researchJobId: share.researchJobId } : {}),
+		...(share.versionIndex && share.versionIndex.length > 0
+			? { versionIndex: share.versionIndex }
+			: {}),
 	};
 }
 
@@ -1433,6 +1675,232 @@ async function readSseEvents(
 	}
 }
 
+/** First visible line of a range — not the growing multi-line bounding box. */
+export function firstRangeClientRect(range: {
+	getClientRects: () => ArrayLike<Pick<DOMRect, "left" | "top" | "right" | "bottom" | "width" | "height">>;
+	getBoundingClientRect?: () => Pick<
+		DOMRect,
+		"left" | "top" | "right" | "bottom" | "width" | "height"
+	>;
+}): Pick<DOMRect, "left" | "top" | "right" | "bottom" | "width" | "height"> | null {
+	const rects = range.getClientRects();
+	for (let i = 0; i < rects.length; i++) {
+		const rect = rects[i];
+		if (rect && rect.width > 0 && rect.height > 0) return rect;
+	}
+	const box = range.getBoundingClientRect?.();
+	if (box && (box.width > 0 || box.height > 0)) return box;
+	return null;
+}
+
+/** Longest chip text before a selection is shown as start … end. */
+export const REVISE_QUOTE_CHIP_MAX = 150;
+
+/**
+ * Selection text for the composer chip: short quotes verbatim, long ones as
+ * their opening and closing words so the reader can see both ends of the
+ * passage being revised.
+ */
+export function abbreviateReviseQuote(
+	quote: string,
+	max = REVISE_QUOTE_CHIP_MAX,
+): string {
+	const text = quote.replace(/\s+/g, " ").trim();
+	if (text.length <= max) return text;
+	const headBudget = Math.floor(max * 0.55);
+	const tailBudget = max - headBudget;
+	let head = text.slice(0, headBudget);
+	const headSpace = head.lastIndexOf(" ");
+	if (headSpace > headBudget * 0.6) head = head.slice(0, headSpace);
+	let tail = text.slice(text.length - tailBudget);
+	const tailSpace = tail.indexOf(" ");
+	if (tailSpace >= 0 && tailSpace < tailBudget * 0.4) tail = tail.slice(tailSpace + 1);
+	return `${head.trim()} … ${tail.trim()}`;
+}
+
+export function reviseScopeLabel(heading: string, quote: string): string {
+	if (heading.trim()) return `Revising · ${heading.trim()}`;
+	if (quote.trim()) return `Revising · “${abbreviateReviseQuote(quote)}”`;
+	return "";
+}
+
+export const RESEARCH_CHANGES_SHOW_TITLE = "Highlight what changed in this version";
+export const RESEARCH_CHANGES_HIDE_TITLE = "Hide change highlights";
+
+export function researchChangesChipLabel(count: number): string {
+	const n = Math.max(0, Math.floor(count));
+	return n === 1 ? "1 change" : `${n.toLocaleString("en-US")} changes`;
+}
+
+/** Block keys the current report added or rewrote against `reviseBase`. */
+export function reportChangedKeys(
+	turn: Pick<AiAskTurn, "report" | "reviseBase">,
+): string[] {
+	const base = (turn.reviseBase || "").trim();
+	const next = (turn.report || "").trim();
+	if (!base || !next || base === next) return [];
+	return changedReportBlockKeys(base, next);
+}
+
+export function reportChangeCount(
+	turn: Pick<AiAskTurn, "report" | "reviseBase">,
+): number {
+	return reportChangedKeys(turn).length;
+}
+
+const REPORT_CHANGE_BLOCK_SELECTOR =
+	":scope > p, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote > p, :scope > ul > li, :scope > ol > li";
+
+/**
+ * Tag rendered blocks whose text matches a changed key with `.is-changed`
+ * (and the first one with `.is-first-change`). Returns how many were tagged.
+ */
+export function markChangedReportBlocks(
+	body: ParentNode,
+	keys: readonly string[],
+): number {
+	const wanted = new Set(keys);
+	let marked = 0;
+	body.querySelectorAll<HTMLElement>(REPORT_CHANGE_BLOCK_SELECTOR).forEach(
+		(el) => {
+			el.classList.remove("is-changed", "is-first-change");
+			if (wanted.size === 0) return;
+			const key = normalizeReportBlockText(el.textContent || "");
+			if (!key || !wanted.has(key)) return;
+			el.classList.add("is-changed");
+			if (marked === 0) el.classList.add("is-first-change");
+			marked += 1;
+		},
+	);
+	return marked;
+}
+
+/** The version a row was built from: its `from`, else the one before it. */
+export function previousResearchVersion(
+	index: readonly ResearchVersionMeta[],
+	row: ResearchVersionMeta,
+): ResearchVersionMeta | undefined {
+	const fromN = row.from && row.from > 0 && row.from !== row.n ? row.from : row.n - 1;
+	if (fromN < 1) return undefined;
+	return index.find((item) => item.n === fromN);
+}
+
+/**
+ * One row of the Versions drawer: version + when, the reader's instruction,
+ * the writer's changelog, and a stats line with deltas against the base.
+ */
+export function researchVersionRowHtml(
+	row: ResearchVersionMeta,
+	options: {
+		current?: boolean;
+		preview?: boolean;
+		previous?: ResearchVersionMeta;
+		fallbackStats?: ResearchHistoryReportStats;
+	} = {},
+): string {
+	const relative = formatAskRelativeTime(row.at);
+	const absolute = formatAskAbsoluteTime(row.at);
+	const when = relative
+		? `<span class="ai-versions-when" title="${escapeHtml(absolute)}" aria-label="${escapeHtml(absolute)}">${escapeHtml(relative)}</span>`
+		: "";
+	const tag = options.current
+		? `<span class="ai-versions-tag">current</span>`
+		: "";
+	const scope = (row.heading || "").trim();
+	const instruction = (row.instruction || "").trim();
+	const ask = instruction
+		? `<span class="ai-versions-ask"><span class="ai-versions-ask-head"><span class="ai-versions-ask-label">You asked</span><button type="button" class="ai-versions-copy" data-ai-versions-copy aria-label="${escapeHtml(
+				RESEARCH_VERSIONS_COPY_ASK,
+			)}" title="${escapeHtml(RESEARCH_VERSIONS_COPY_ASK)}">${ASK_COPY_ICON_SVG}</button></span><span class="ai-versions-ask-text" data-ai-versions-ask>“${escapeHtml(instruction)}”</span>${
+				scope ? ` <span class="ai-versions-scope">in ${escapeHtml(scope)}</span>` : ""
+			}</span>`
+		: "";
+	const note = (row.changelog || "").trim() || (instruction ? "" : "Untitled revision");
+	const stats = row.stats || options.fallbackStats;
+	const statsLine = formatResearchVersionStats(stats, options.previous?.stats);
+	const classes = [
+		"ai-versions-row",
+		options.current ? "is-current" : "",
+		options.preview ? "is-preview" : "",
+	]
+		.filter(Boolean)
+		.join(" ");
+	// A div, not a <button>: the “You asked” text must stay selectable.
+	return `<li><div role="button" tabindex="0" data-ai-version-n="${row.n}" class="${classes}" aria-pressed="${
+		options.preview ? "true" : "false"
+	}"><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${ask}${
+		note ? `<span class="ai-versions-note">${escapeHtml(note)}</span>` : ""
+	}${statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""}</div></li>`;
+}
+
+export const RESEARCH_VERSIONS_COPY_ASK = "Copy this instruction";
+
+const ASK_COPY_ICON_SVG =
+	'<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+
+/** True when the reader is selecting text inside `el` (a click should not fire). */
+export function selectionInside(el: Element, doc: Document = document): boolean {
+	const selection = doc.getSelection?.();
+	if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+		return false;
+	}
+	const anchor = selection.anchorNode;
+	return Boolean(anchor && el.contains(anchor));
+}
+
+type RangeRectLike = Pick<
+	DOMRect,
+	"left" | "top" | "right" | "bottom" | "width" | "height"
+>;
+
+/** Last non-empty line box of a selection — where the reader stopped. */
+export function lastRangeClientRect(range: {
+	getClientRects: () => ArrayLike<RangeRectLike>;
+	getBoundingClientRect?: () => RangeRectLike;
+}): RangeRectLike | null {
+	const rects = range.getClientRects();
+	for (let i = rects.length - 1; i >= 0; i--) {
+		const rect = rects[i];
+		if (rect && rect.width > 0 && rect.height > 0) return rect;
+	}
+	const box = range.getBoundingClientRect?.();
+	if (box && (box.width > 0 || box.height > 0)) return box;
+	return null;
+}
+
+export const REVISE_FLOAT_GAP = 8;
+
+/**
+ * Offset inside a positioned ancestor for the Revise chip. It sits just after
+ * the end of the selection on the same line when the column has room there;
+ * otherwise it drops to the next row, right-aligned under the selection end,
+ * so it never lands in the middle of the selected text.
+ */
+export function reviseFloatOffset(
+	lastLine: Pick<DOMRect, "left" | "top" | "right" | "bottom" | "height">,
+	origin: Pick<DOMRect, "left" | "top">,
+	chip: { width: number; height: number },
+	column: Pick<DOMRect, "left" | "right">,
+): { left: number; top: number; placement: "after" | "below" } {
+	const gap = REVISE_FLOAT_GAP;
+	const fitsAfter = lastLine.right + gap + chip.width <= column.right;
+	if (fitsAfter) {
+		return {
+			left: lastLine.right + gap - origin.left,
+			top: lastLine.top + (lastLine.height - chip.height) / 2 - origin.top,
+			placement: "after",
+		};
+	}
+	const maxLeft = column.right - chip.width;
+	const wantLeft = Math.min(lastLine.right, column.right) - chip.width;
+	const left = Math.max(column.left, Math.min(wantLeft, maxLeft));
+	return {
+		left: left - origin.left,
+		top: lastLine.bottom + gap * 0.75 - origin.top,
+		placement: "below",
+	};
+}
+
 export function attachAiMode(options: {
 	root: HTMLElement;
 	showModelPicker: boolean;
@@ -1468,14 +1936,51 @@ export function attachAiMode(options: {
 	const feedbackDialog = root.querySelector<HTMLElement>("[data-ai-feedback-dialog]");
 	const feedbackText = root.querySelector<HTMLTextAreaElement>("[data-ai-feedback-text]");
 	const feedbackError = root.querySelector<HTMLElement>("[data-ai-feedback-error]");
+	const reviseScope = root.querySelector<HTMLElement>("[data-ai-revise-scope]");
+	const reviseChipEl = root.querySelector<HTMLElement>("[data-ai-revise-chip]");
+	const reviseClearBtn = root.querySelector<HTMLButtonElement>("[data-ai-revise-clear]");
+	const askWithoutEditingBtn = root.querySelector<HTMLButtonElement>(
+		"[data-ai-ask-without-editing]",
+	);
+	const reviseFloat = root.querySelector<HTMLButtonElement>("[data-ai-revise-float]");
+	const versionsDrawer = root.querySelector<HTMLElement>("[data-ai-versions-drawer]");
+	const versionsList = root.querySelector<HTMLElement>("[data-ai-versions-list]");
+	const versionsActions = root.querySelector<HTMLElement>("[data-ai-versions-actions]");
+	const versionsReviseBtn = root.querySelector<HTMLButtonElement>(
+		"[data-ai-versions-revise]",
+	);
+	const versionsRestoreBtn = root.querySelector<HTMLButtonElement>(
+		"[data-ai-versions-restore]",
+	);
 	const micButtons = [
 		...root.querySelectorAll<HTMLButtonElement>("[data-ai-mic]"),
 	];
 	if (!form || !input || !thread || !empty || !composer) return;
 	installDiscourseCitationPopovers(thread);
 
+	const restoreStatusEl = root.querySelector<HTMLElement>(".ai-restore-status");
+	const restoreStatusIdle = restoreStatusEl?.textContent?.trim() || "Opening the report…";
+	let restoreSlowTimer = 0;
+
+	/**
+	 * “Opening the report…” used to sit there forever when the database hung;
+	 * after a few seconds say so, and fetches time out (see aiJsonRequestInit)
+	 * so the reader gets an error instead of a spinner.
+	 */
 	function setRestoringResearch(on: boolean): void {
 		root.classList.toggle("is-restoring-research", on);
+		if (restoreSlowTimer) {
+			window.clearTimeout(restoreSlowTimer);
+			restoreSlowTimer = 0;
+		}
+		if (restoreStatusEl) restoreStatusEl.textContent = restoreStatusIdle;
+		if (!on) return;
+		restoreSlowTimer = window.setTimeout(() => {
+			restoreSlowTimer = 0;
+			if (restoreStatusEl && root.classList.contains("is-restoring-research")) {
+				restoreStatusEl.textContent = AI_SERVER_SLOW_STATUS;
+			}
+		}, AI_SERVER_SLOW_AFTER_MS);
 	}
 
 	if (
@@ -1501,6 +2006,15 @@ export function attachAiMode(options: {
 	let busy = false;
 	let researchChipOn = false;
 	let researchPollTimer = 0;
+	let reviseHeading = "";
+	let reviseQuote = "";
+	let followAskMode = false;
+	let reviseFromVersion: number | null = null;
+	let previewVersion: { n: number; report: string } | null = null;
+	/** Whether changed paragraphs are highlighted after a revise lands. */
+	let showReviseChanges = true;
+	let headingReviseBtn: HTMLButtonElement | null = null;
+	const REVISE_PENDING_KEY = "ai-revise-pending";
 
 	function researchPaneOn(): boolean {
 		return (
@@ -1678,6 +2192,603 @@ export function attachAiMode(options: {
 		return false;
 	}
 
+	function lastFinishedReportTurn(): AiAskTurn | undefined {
+		const last = turns[turns.length - 1];
+		if (
+			!last?.research ||
+			last.pending ||
+			!(last.report || "").trim()
+		) {
+			return undefined;
+		}
+		return last;
+	}
+
+	function followResearchChipOn(): boolean {
+		if (!researchChipAvailable()) return false;
+		if (lastFinishedReportTurn()) return false;
+		if (researchPaneOn()) return false;
+		return researchChipOn || researchFlowLocksChip();
+	}
+
+	function reviseFollowActive(): boolean {
+		const last = lastFinishedReportTurn();
+		return shouldReviseResearchFollow({
+			lastTurnResearch: Boolean(last?.research),
+			lastTurnPending: Boolean(last?.pending),
+			hasReport: Boolean((last?.report || "").trim()),
+			researchChipOn: followResearchChipOn(),
+			forceAsk: followAskMode,
+		});
+	}
+
+	function shareSlugForRevise(): string {
+		if (!shareMode) return "";
+		try {
+			const share = sanitizeAskShareSnapshot(
+				JSON.parse(shareSnapshot || "null"),
+			);
+			return share?.slug || "";
+		} catch {
+			return "";
+		}
+	}
+
+	function syncReviseScope(): void {
+		const heading = clipResearchReviseHeading(reviseHeading);
+		const quote = clipResearchReviseQuote(reviseQuote);
+		const label = reviseScopeLabel(heading, quote);
+		if (reviseChipEl) {
+			reviseChipEl.textContent = label;
+			reviseChipEl.title = heading || quote;
+		}
+		if (reviseScope) reviseScope.hidden = !label;
+		if (reviseClearBtn) {
+			reviseClearBtn.setAttribute("aria-label", RESEARCH_REVISE_CLEAR);
+			reviseClearBtn.title = RESEARCH_REVISE_CLEAR;
+		}
+		if (askWithoutEditingBtn) {
+			const onReport = Boolean(lastFinishedReportTurn());
+			if (!onReport) followAskMode = false;
+			askWithoutEditingBtn.hidden = !onReport;
+			askWithoutEditingBtn.textContent = reportFollowToggleLabel(followAskMode);
+		}
+		syncFollowComposerMode();
+	}
+
+	function clearReviseScope(keepPrompt = true): void {
+		reviseHeading = "";
+		reviseQuote = "";
+		headingReviseBtn?.remove();
+		headingReviseBtn = null;
+		hideSelectionRevise();
+		if (!keepPrompt) {
+			/* keep the typed prompt; Clear only drops the chip */
+		}
+		syncReviseScope();
+	}
+
+	function openReviseComposer(): void {
+		if (!followForm || !followInput) return;
+		followAskMode = false;
+		syncReviseScope();
+		followForm.hidden = false;
+		followInput.focus();
+		syncFollowComposerMode();
+	}
+
+	function rememberPendingRevise(): void {
+		const last = lastFinishedReportTurn();
+		try {
+			sessionStorage.setItem(
+				REVISE_PENDING_KEY,
+				JSON.stringify({
+					instruction: followInput?.value || "",
+					heading: reviseHeading,
+					quote: reviseQuote,
+					jobId: last?.researchJobId || "",
+					shareSlug: shareSlugForRevise() || last?.shareSlug || "",
+					fromVersion: reviseFromVersion,
+				}),
+			);
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function takePendingRevise(): {
+		instruction: string;
+		heading: string;
+		quote: string;
+		jobId: string;
+		shareSlug: string;
+		fromVersion: number | null;
+	} | null {
+		try {
+			const raw = sessionStorage.getItem(REVISE_PENDING_KEY);
+			if (!raw) return null;
+			sessionStorage.removeItem(REVISE_PENDING_KEY);
+			const parsed = JSON.parse(raw) as Record<string, unknown>;
+			return {
+				instruction:
+					typeof parsed.instruction === "string" ? parsed.instruction : "",
+				heading: typeof parsed.heading === "string" ? parsed.heading : "",
+				quote: typeof parsed.quote === "string" ? parsed.quote : "",
+				jobId: typeof parsed.jobId === "string" ? parsed.jobId : "",
+				shareSlug:
+					typeof parsed.shareSlug === "string" ? parsed.shareSlug : "",
+				fromVersion:
+					typeof parsed.fromVersion === "number" ? parsed.fromVersion : null,
+			};
+		} catch {
+			return null;
+		}
+	}
+
+	function displayedReportMarkdown(turn: AiAskTurn): string {
+		if (previewVersion && previewVersion.n > 0) return previewVersion.report;
+		return turn.report || "";
+	}
+
+	async function reviseReport(
+		instruction: string,
+		action: "revise" | "restore" = "revise",
+	): Promise<void> {
+		const last = lastFinishedReportTurn();
+		if (!last || busy) return;
+		const q = clipAiQuestion(instruction);
+		if (action === "revise" && !q) return;
+		if (!quota?.signedIn) {
+			if (followInput) followInput.value = q;
+			rememberPendingRevise();
+			openQuotaDialog("revise", q);
+			return;
+		}
+		if (quota.needsEmailVerification && quota.remaining <= 0) {
+			openQuotaDialog("verify", q);
+			return;
+		}
+		if (action === "revise" && quota && !quota.allowed) {
+			openQuotaDialog(quota.signedIn ? "tomorrow" : "signin", q);
+			return;
+		}
+		stopListening();
+		busy = true;
+		root.classList.add("is-busy");
+		if (action === "revise") {
+			last.pending = true;
+			last.phase = "answer";
+			last.processNotes = rememberResearchProcessNote(
+				last.processNotes,
+				researchRevisionStartedNote(nextResearchRevisionN(last.versionIndex || [])),
+			);
+			last.progressNote = RESEARCH_REVISE_CONSIDERING_NOTE;
+			if (followInput) {
+				followInput.value = "";
+				followInput.blur();
+				fitTextarea(followInput);
+			}
+			clearReviseScope();
+			syncLayout();
+			revealReviseProgress();
+		} else {
+			setStatus("Restoring…");
+		}
+		try {
+			const { response, data } = await fetchAiJson<{
+				success?: boolean;
+				job?: ResearchJobPublic;
+				forked?: boolean;
+				quota?: AiAskQuotaView;
+				code?: string;
+				error?: string;
+			}>(RESEARCH_REVISE_API_PATH, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					action,
+					instruction: q,
+					heading: reviseHeading,
+					quote: reviseQuote,
+					jobId: last.researchJobId || "",
+					shareSlug: shareSlugForRevise() || last.shareSlug || "",
+					fromVersion: reviseFromVersion,
+				}),
+			});
+			if (data.quota) applyQuota(data.quota);
+			if (data.job) {
+				const base = (last.report || "").trim();
+				applyResearchJobToTurn(last, data.job);
+				const landed = (last.report || "").trim();
+				if (!data.job.pending && base && landed && landed !== base) {
+					last.reviseBase = base;
+					showReviseChanges = true;
+				}
+				previewVersion = null;
+				reviseFromVersion = null;
+				closeVersionsDrawer();
+				persistSessionFromTurn(last);
+				if (data.forked && data.job.id && shareMode) {
+					window.location.assign(
+						`/search?mode=research&research=${encodeURIComponent(data.job.id)}`,
+					);
+					return;
+				}
+				if (data.job.pending) {
+					setStatus("");
+					syncLayout();
+					scrollAskProcessToLatest(
+						thread.querySelector(".ai-turn:last-child .ai-process"),
+						{ focus: true },
+					);
+					await pollResearchTurn(last);
+					if (last.error) setStatus(last.error);
+					else if (!last.pending) setStatus("");
+					return;
+				}
+				if (data.job.error) setStatus(data.job.error);
+				else setStatus("");
+				syncLayout();
+				if (last.reviseBase) window.setTimeout(revealFirstReportChange, 250);
+				return;
+			}
+			if (response.status === 401) {
+				last.pending = false;
+				last.phase = "done";
+				if (followInput) followInput.value = q;
+				rememberPendingRevise();
+				openQuotaDialog("revise", q);
+				return;
+			}
+			if (response.status === 429) {
+				last.pending = false;
+				last.phase = "done";
+				openQuotaDialog(
+					data.quota?.needsEmailVerification
+						? "verify"
+						: data.quota?.signedIn
+							? "tomorrow"
+							: "signin",
+					q,
+				);
+				return;
+			}
+			if (action === "revise" && last.researchJobId) {
+				const live = await fetchResearchJob(last.researchJobId);
+				if (live.job?.pending) {
+					applyResearchJobToTurn(last, live.job);
+					syncLayout();
+					await pollResearchTurn(last);
+					return;
+				}
+			}
+			last.pending = false;
+			last.phase = "done";
+			setStatus(
+				researchApiFailureMessage({
+					status: response.status,
+					code: data.code,
+					error: data.error,
+					fallback: "Could not revise the report.",
+				}),
+			);
+		} catch {
+			if (action === "revise" && last.researchJobId) {
+				try {
+					const live = await fetchResearchJob(last.researchJobId);
+					if (live.job?.pending) {
+						applyResearchJobToTurn(last, live.job);
+						syncLayout();
+						await pollResearchTurn(last);
+						return;
+					}
+					if (live.job) applyResearchJobToTurn(last, live.job);
+				} catch {
+					/* fall through */
+				}
+			}
+			last.pending = false;
+			last.phase = "done";
+			setStatus(
+				researchApiFailureMessage({
+					status: 0,
+					code: "route_miss",
+					fallback: "Could not revise the report.",
+				}),
+			);
+		} finally {
+			busy = false;
+			root.classList.remove("is-busy");
+			syncLayout();
+		}
+	}
+
+	/**
+	 * The composer collapses the moment a revise is submitted; bring the reader
+	 * to the progress strip and pulse it so the “Started vN revision” row and the
+	 * live hop are what they see next.
+	 */
+	function revealReviseProgress(): void {
+		const process = thread.querySelector<HTMLElement>(
+			".ai-turn:last-child .ai-process",
+		);
+		if (!process) return;
+		scrollAskProcessToLatest(process, { focus: true });
+		try {
+			process.scrollIntoView({ block: "center", behavior: "smooth" });
+		} catch {
+			process.scrollIntoView();
+		}
+		process.classList.remove("is-revise-flash");
+		// Restart the animation even when a previous flash is still on the node.
+		void process.offsetWidth;
+		process.classList.add("is-revise-flash");
+		window.setTimeout(() => process.classList.remove("is-revise-flash"), 1800);
+	}
+
+	function closeVersionsDrawer(): void {
+		if (versionsDrawer) versionsDrawer.hidden = true;
+	}
+
+	function openVersionsDrawer(turn: AiAskTurn): void {
+		if (!versionsDrawer || !versionsList) return;
+		const liveStats = snapshotResearchHistoryStats(turn.report, turn.results);
+		const index = healedResearchVersionIndex({
+			versionIndex: turn.versionIndex,
+			processNotes: turn.processNotes,
+			createdAt: turn.researchStartedAt,
+			stats: liveStats,
+		});
+		const currentN = currentResearchVersionN(
+			index.length > 0
+				? index
+				: [{ n: 1, at: 0, instruction: "", changelog: "", from: null }],
+		);
+		const previewN = previewVersion?.n ?? currentN;
+		const rows =
+			index.length > 0
+				? [...index].reverse()
+				: [
+						{
+							n: 1,
+							at: 0,
+							instruction: "",
+							changelog: "Original report.",
+							from: null,
+						},
+					];
+		versionsList.innerHTML = rows
+			.map((row) =>
+				researchVersionRowHtml(row, {
+					current: row.n === currentN,
+					preview: row.n === previewN,
+					previous: previousResearchVersion(index, row),
+					fallbackStats: row.n === currentN ? liveStats : undefined,
+				}),
+			)
+			.join("");
+		versionsList.querySelectorAll<HTMLElement>("[data-ai-version-n]").forEach(
+			(row) => {
+				const open = () => {
+					const n = Number(row.getAttribute("data-ai-version-n"));
+					void previewResearchVersion(turn, n);
+				};
+				row.addEventListener("click", (event) => {
+					const target = event.target as HTMLElement | null;
+					if (target?.closest("[data-ai-versions-copy]")) return;
+					// Dragging across “You asked” to copy it must not switch versions.
+					if (selectionInside(row)) return;
+					open();
+				});
+				row.addEventListener("keydown", (event) => {
+					if (event.key !== "Enter" && event.key !== " ") return;
+					if ((event.target as HTMLElement | null)?.closest("button")) return;
+					event.preventDefault();
+					open();
+				});
+				const copy = row.querySelector<HTMLButtonElement>("[data-ai-versions-copy]");
+				const askText = row.querySelector<HTMLElement>("[data-ai-versions-ask]");
+				copy?.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const text = (askText?.textContent || "").replace(/^“|”$/g, "").trim();
+					if (!text) return;
+					void navigator.clipboard
+						?.writeText(text)
+						.then(() => {
+							copy.classList.add("is-copied");
+							window.setTimeout(() => copy.classList.remove("is-copied"), 1200);
+						})
+						.catch(() => {
+							/* clipboard unavailable — text is still selectable */
+						});
+				});
+			},
+		);
+		if (versionsActions) versionsActions.hidden = previewN === currentN;
+		if (versionsReviseBtn) {
+			versionsReviseBtn.textContent = RESEARCH_REVISE_FROM_ACTION;
+		}
+		if (versionsRestoreBtn) {
+			versionsRestoreBtn.textContent = RESEARCH_RESTORE_ACTION;
+		}
+		versionsDrawer.hidden = false;
+	}
+
+	async function previewResearchVersion(
+		turn: AiAskTurn,
+		n: number,
+	): Promise<void> {
+		const currentN = currentResearchVersionN(turn.versionIndex || []);
+		if (n === currentN || n < 1) {
+			previewVersion = null;
+			reviseFromVersion = null;
+			syncLayout();
+			openVersionsDrawer(turn);
+			return;
+		}
+		const jobId = turn.researchJobId || "";
+		const slug = shareSlugForRevise() || turn.shareSlug || "";
+		const url = turn.fromShare && slug
+			? `/api/ai/share?slug=${encodeURIComponent(slug)}&version=${n}`
+			: jobId
+				? researchJobApiPath(jobId, n)
+				: "";
+		if (!url) return;
+		try {
+			const { response, data } = await fetchAiJson<{
+				success?: boolean;
+				report?: string;
+			}>(url);
+			if (!response.ok || !data.success || !data.report) return;
+			previewVersion = { n, report: data.report };
+			reviseFromVersion = n;
+			syncLayout();
+			openVersionsDrawer(turn);
+		} catch {
+			/* keep current */
+		}
+	}
+
+	function pinHeading(heading: HTMLElement): void {
+		reviseHeading = heading.getAttribute("data-report-heading") || "";
+		reviseQuote = "";
+		headingReviseBtn?.remove();
+		headingReviseBtn = document.createElement("button");
+		headingReviseBtn.type = "button";
+		headingReviseBtn.className = "ai-heading-revise";
+		headingReviseBtn.textContent = RESEARCH_REVISE_REPORT;
+		headingReviseBtn.addEventListener("click", (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			openReviseComposer();
+		});
+		heading.classList.add("is-revise-heading");
+		thread
+			.querySelectorAll(".is-revise-heading")
+			.forEach((node) => {
+				if (node !== heading) node.classList.remove("is-revise-heading");
+			});
+		heading.append(headingReviseBtn);
+		syncReviseScope();
+	}
+
+	let selectionPointerDown = false;
+
+	function hideSelectionRevise(): void {
+		if (reviseFloat) reviseFloat.hidden = true;
+	}
+
+	function updateSelectionRevise(): void {
+		if (!reviseFloat || !lastFinishedReportTurn()) {
+			hideSelectionRevise();
+			return;
+		}
+		const selection = window.getSelection();
+		const text = selection?.toString() || "";
+		if (!selection || selection.rangeCount === 0 || !selectionQualifiesForRevise(text)) {
+			hideSelectionRevise();
+			return;
+		}
+		const range = selection.getRangeAt(0);
+		const node = range.commonAncestorContainer;
+		const el = node instanceof Element ? node : node.parentElement;
+		if (!el?.closest(".ai-report .ai-answer-body")) {
+			hideSelectionRevise();
+			return;
+		}
+		// While the pointer is still down the end of the selection is moving;
+		// place the chip once the drag ends so it never hops mid-selection.
+		if (selectionPointerDown) {
+			hideSelectionRevise();
+			return;
+		}
+		reviseFloat.textContent = RESEARCH_REVISE_REPORT;
+		const lastLine = lastRangeClientRect(range);
+		const column = el.closest(".ai-answer-body")?.getBoundingClientRect();
+		if (!lastLine || !column) {
+			hideSelectionRevise();
+			return;
+		}
+		const origin = root.getBoundingClientRect();
+		const wasHidden = reviseFloat.hidden;
+		if (wasHidden) {
+			reviseFloat.style.visibility = "hidden";
+			reviseFloat.hidden = false;
+		}
+		const chip = {
+			width: reviseFloat.offsetWidth || 96,
+			height: reviseFloat.offsetHeight || 28,
+		};
+		const pos = reviseFloatOffset(lastLine, origin, chip, column);
+		reviseFloat.style.left = `${pos.left}px`;
+		reviseFloat.style.top = `${pos.top}px`;
+		reviseFloat.dataset.placement = pos.placement;
+		reviseFloat.style.visibility = "";
+		reviseFloat.hidden = false;
+	}
+
+	function lastReportElement(): HTMLElement | null {
+		return thread.querySelector<HTMLElement>(".ai-turn:last-child .ai-report");
+	}
+
+	/** Highlight the blocks this version changed and wire the “N changes” chip. */
+	function applyReportChangeMarks(turn: AiAskTurn): void {
+		const report = lastReportElement();
+		if (!report) return;
+		const body = report.querySelector<HTMLElement>(".ai-answer-body");
+		const keys = previewVersion ? [] : reportChangedKeys(turn);
+		const marked = body ? markChangedReportBlocks(body, keys) : 0;
+		report.classList.toggle("is-show-changes", marked > 0 && showReviseChanges);
+		const chip = report.querySelector<HTMLButtonElement>("[data-ai-changes]");
+		if (!chip) return;
+		if (marked === 0) {
+			chip.remove();
+			return;
+		}
+		chip.addEventListener("click", () => {
+			showReviseChanges = !showReviseChanges;
+			chip.setAttribute("aria-pressed", showReviseChanges ? "true" : "false");
+			chip.title = showReviseChanges
+				? RESEARCH_CHANGES_HIDE_TITLE
+				: RESEARCH_CHANGES_SHOW_TITLE;
+			report.classList.toggle("is-show-changes", showReviseChanges);
+			if (showReviseChanges) revealFirstReportChange();
+		});
+	}
+
+	function revealFirstReportChange(): void {
+		const first = lastReportElement()?.querySelector<HTMLElement>(
+			".is-first-change",
+		);
+		if (!first) return;
+		try {
+			first.scrollIntoView({ block: "center", behavior: "smooth" });
+		} catch {
+			first.scrollIntoView();
+		}
+	}
+
+	function bindReportRevise(turn: AiAskTurn, turnIndex: number): void {
+		if (turnIndex !== turns.length - 1 || !lastFinishedReportTurn()) return;
+		thread.querySelectorAll<HTMLElement>("[data-report-heading]").forEach(
+			(heading) => {
+				heading.addEventListener("click", (event) => {
+					if ((event.target as HTMLElement | null)?.closest("a")) return;
+					event.preventDefault();
+					pinHeading(heading);
+				});
+			},
+		);
+		thread.querySelectorAll<HTMLButtonElement>("[data-ai-versions]").forEach(
+			(button) => {
+				button.addEventListener("click", () => {
+					openVersionsDrawer(turn);
+				});
+			},
+		);
+	}
+
 	function syncClarifyBar(): void {
 		const last = turns[turns.length - 1];
 		const clarifying = isClarifyingTurn(last);
@@ -1790,51 +2901,79 @@ export function attachAiMode(options: {
 	function syncLimitsNotes(): void {
 		const research = researchPaneOn();
 		const note = research ? RESEARCH_LIMITS_NOTE : ASK_LIMITS_NOTE;
-		root.querySelectorAll<HTMLElement>(".ai-limits-note").forEach((el) => {
+		const show = askSponsorNoteVisible({
+			askSurface: isAskSurfaceMode(window.location.search),
+			research,
+			signedIn: Boolean(quota?.signedIn),
+			hasThread: turns.length > 0,
+			shareMode,
+			restoring: root.classList.contains("is-restoring-research"),
+		});
+		root.querySelectorAll<HTMLElement>("[data-ai-sponsor-note]").forEach((el) => {
 			el.textContent = note;
+			el.hidden = !show;
 		});
 		const signin = root.querySelector<HTMLElement>("[data-ai-research-signin]");
-		if (signin) {
-			signin.hidden = !(
-				research &&
-				turns.length === 0 &&
-				quota &&
-				!quota.signedIn
-			);
-		}
+		if (signin) signin.hidden = true;
 	}
 
 	function syncResearchChip(): void {
 		const pane = researchPaneOn();
 		const available = researchChipAvailable();
-		const pressed = pane || (available && (researchChipOn || researchFlowLocksChip()));
+		const finishedReport = Boolean(lastFinishedReportTurn());
+		const gated = researchEmptyComposerGated({
+			researchPane: pane,
+			hasThread: turns.length > 0,
+			quotaReady: Boolean(quota),
+			signedIn: Boolean(quota?.signedIn),
+		});
+		root.classList.toggle("is-research-gated", gated);
+		const pressed =
+			pane || (available && (researchChipOn || researchFlowLocksChip()));
 		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
 			(chip) => {
-				chip.hidden = !available || pane;
+				const onFollow = Boolean(chip.closest("[data-ai-follow-form]"));
+				chip.hidden =
+					!available || pane || (onFollow && finishedReport);
 				chip.title = RESEARCH_CHIP_TITLE;
-				chip.setAttribute("aria-pressed", pressed ? "true" : "false");
+				chip.setAttribute("aria-pressed", pressed && !pane ? "true" : "false");
 				chip.classList.toggle("is-on", pressed && !pane);
 			},
 		);
-		const placeholder = pane || pressed ? RESEARCH_PLACEHOLDER : ASK_PLACEHOLDER;
-		if (input) input.placeholder = placeholder;
+		const placeholder = gated
+			? RESEARCH_SIGNED_OUT_PLACEHOLDER
+			: pane || (pressed && !finishedReport)
+				? RESEARCH_PLACEHOLDER
+				: ASK_PLACEHOLDER;
+		if (input) {
+			input.placeholder = placeholder;
+			input.rows = gated ? 1 : 2;
+			if (gated) input.style.height = "";
+		}
 		const composerLabel = root.querySelector<HTMLLabelElement>(
 			'label[for="ai-input"]',
 		);
 		if (composerLabel) {
-			composerLabel.textContent = pane
-				? RESEARCH_COMPOSER_LABEL
-				: ASK_COMPOSER_LABEL;
+			composerLabel.textContent = gated
+				? RESEARCH_SIGNED_OUT_PLACEHOLDER
+				: pane
+					? RESEARCH_COMPOSER_LABEL
+					: ASK_COMPOSER_LABEL;
 		}
 		root.querySelectorAll<HTMLButtonElement>("[data-ai-new]").forEach((button) => {
 			button.textContent = pane ? RESEARCH_NEW_LABEL : ASK_NEW_LABEL;
+			if (button.closest("[data-ai-follow-form]")) {
+				button.hidden = Boolean(lastFinishedReportTurn());
+			}
 		});
 		if (followInput) {
 			followInput.placeholder = askFollowPlaceholder({
 				pending: turns.some((turn) => turn.pending),
-				researchFollow: pressed && !pane ? true : pane && turns.length === 0,
+				researchFollow: followResearchChipOn(),
+				reviseFollow: reviseFollowActive(),
 			});
 		}
+		syncReviseScope();
 		syncLimitsNotes();
 		const researchBusy = turns.some(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
@@ -1900,7 +3039,7 @@ export function attachAiMode(options: {
 	}
 
 	function openQuotaDialog(
-		kind: "signin" | "tomorrow" | "save" | "share" | "verify" | "research",
+		kind: "signin" | "tomorrow" | "save" | "share" | "verify" | "research" | "revise",
 		question?: string | null,
 	): void {
 		if (!quotaDialog) return;
@@ -1917,7 +3056,11 @@ export function attachAiMode(options: {
 		const research = quotaDialog.querySelector<HTMLElement>(
 			'[data-ai-quota-panel="research"]',
 		);
-		const showSignin = kind === "signin" || kind === "save" || kind === "share";
+		const showSignin =
+			kind === "signin" ||
+			kind === "save" ||
+			kind === "share" ||
+			kind === "revise";
 		if (signin) signin.hidden = !showSignin;
 		if (tomorrow) tomorrow.hidden = kind !== "tomorrow";
 		if (verify) verify.hidden = kind !== "verify";
@@ -1943,6 +3086,9 @@ export function attachAiMode(options: {
 				body.textContent = researchPaneOn()
 					? RESEARCH_SHARE_ACCOUNT_BODY
 					: ASK_SHARE_ACCOUNT_BODY;
+			} else if (kind === "revise") {
+				title.textContent = RESEARCH_REVISE_ACCOUNT_TITLE;
+				body.textContent = RESEARCH_REVISE_ACCOUNT_BODY;
 			} else if (kind === "signin" && researchPaneOn()) {
 				title.textContent = RESEARCH_SIGNIN_TITLE;
 				body.textContent = RESEARCH_SIGNIN_BODY;
@@ -1956,7 +3102,7 @@ export function attachAiMode(options: {
 			"[data-ai-quota-register]",
 		);
 		const link = quotaDialog.querySelector<HTMLAnchorElement>("[data-ai-quota-signin]");
-		const pending = kind === "save" || kind === "share" ? "" : question;
+		const pending = kind === "save" || kind === "share" || kind === "revise" ? "" : question;
 		if (register) register.href = registerHref(pending);
 		if (link) link.href = signInHref(pending);
 		const verifyStatus = quotaDialog.querySelector<HTMLElement>(
@@ -2464,12 +3610,10 @@ export function attachAiMode(options: {
 	async function hydrateOpenResearchJobs(): Promise<void> {
 		if (shareMode) return;
 		try {
-			const response = await fetch("/api/ai/research", {
-				credentials: "same-origin",
-				cache: "no-store",
-			});
+			const { response, data } = await fetchAiJson<{
+				jobs?: ResearchJobPublic[];
+			}>(RESEARCH_API_PATH);
 			if (!response.ok) return;
-			const data = (await response.json()) as { jobs?: ResearchJobPublic[] };
 			const jobs = Array.isArray(data.jobs) ? data.jobs : [];
 			let changed = false;
 			for (const job of jobs) {
@@ -3247,6 +4391,9 @@ export function attachAiMode(options: {
 					...(entry.research ? { research: true } : {}),
 					...(entry.report ? { report: entry.report } : {}),
 					...(thread ? { thread } : {}),
+					...(entry.researchJobId
+						? { researchJobId: entry.researchJobId }
+						: {}),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -3807,6 +4954,10 @@ export function attachAiMode(options: {
 					...(turn.research || turn.report ? { research: true } : {}),
 					...(turn.report ? { report: turn.report } : {}),
 					...(turn.reasoning ? { reasoning: turn.reasoning } : {}),
+					...(turn.researchJobId ? { researchJobId: turn.researchJobId } : {}),
+					...(turn.versionIndex && turn.versionIndex.length > 0
+						? { versionIndex: turn.versionIndex }
+						: {}),
 					...(typeof turn.rerankCandidateCount === "number" &&
 					turn.rerankCandidateCount > 0
 						? { candidateCount: turn.rerankCandidateCount }
@@ -3974,15 +5125,43 @@ export function attachAiMode(options: {
 			},
 		);
 		const summaryText = (turn.summary || "").trim();
-		const reportText = (turn.report || "").trim();
+		const reportText = displayedReportMarkdown(turn).trim();
 		const hasHits = turn.results.length > 0;
 		const summary = reportText
 			? wrapAskAnswerHtml({
 					kind: "report",
-					kicker: turn.fromSample
-						? RESEARCH_SAMPLE_KICKER
-						: "Research report",
 					turnIndex,
+					extraStart: (() => {
+						const versionIndex = healedResearchVersionIndex({
+							versionIndex: turn.versionIndex,
+							processNotes: turn.processNotes,
+							createdAt: turn.researchStartedAt,
+						});
+						const versionLabel = formatResearchVersionLabel(
+							versionIndex,
+							previewVersion?.n,
+						);
+						const changes =
+							!previewVersion && turnIndex === turns.length - 1
+								? reportChangeCount(turn)
+								: 0;
+						const changesChip =
+							changes > 0
+								? `<button type="button" class="ai-changes-btn" data-ai-changes data-turn-index="${turnIndex}" aria-pressed="${
+										showReviseChanges ? "true" : "false"
+									}" title="${escapeHtml(
+										showReviseChanges
+											? RESEARCH_CHANGES_HIDE_TITLE
+											: RESEARCH_CHANGES_SHOW_TITLE,
+									)}">${escapeHtml(researchChangesChipLabel(changes))}</button>`
+								: "";
+						return `<button type="button" class="ai-versions-btn" data-ai-versions data-turn-index="${turnIndex}" aria-label="${escapeHtml(
+							`${versionLabel} · ${RESEARCH_VERSIONS_ACTION}`,
+						)}">${escapeHtml(versionLabel)}</button>${changesChip}`;
+					})(),
+					stats: escapeHtml(
+						researchHistoryStatsLabel(reportText, turn.results),
+					),
 					bodyHtml: renderResearchReportHtml(reportText, turn.results, {
 						citationPopovers: true,
 					}),
@@ -4504,11 +5683,15 @@ export function attachAiMode(options: {
 		const researchBusy = turns.some(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
 		);
-		const reportDock = Boolean(
-			last?.research && !last.pending && !clarifying && !declinedOpen,
-		);
+		const chrome = researchReportFollowChrome({
+			research: Boolean(last?.research),
+			pending: Boolean(last?.pending),
+			hasReport: Boolean((last?.report || "").trim()),
+			clarifying,
+			declinedOpen,
+		});
 		root.classList.toggle("is-research-busy", researchBusy);
-		root.classList.toggle("is-report-dock", reportDock);
+		root.classList.toggle("is-report-dock", chrome.reportDock);
 		syncStopButtons(researchBusy);
 		const threadPending = turns.some((turn) => turn.pending);
 		if (followInput) followInput.disabled = threadPending;
@@ -4529,8 +5712,13 @@ export function attachAiMode(options: {
 			}
 		}
 		if (followForm) {
+			const finishedReport = Boolean(lastFinishedReportTurn());
 			followForm.hidden =
-				shareMode || !hasThread || clarifying || declinedOpen;
+				(!shareMode && (!hasThread || clarifying || declinedOpen)) ||
+				(shareMode && !finishedReport) ||
+				clarifying ||
+				declinedOpen ||
+				chrome.revisingReport;
 		}
 		syncClarifyBar();
 		hideDiscourseCitationPopover();
@@ -4697,16 +5885,81 @@ export function attachAiMode(options: {
 				});
 			});
 		if (thread) pinClampedAskThinking(thread);
+		if (last?.pending) {
+			scrollAskProcessToLatest(
+				thread.querySelector(".ai-turn:last-child .ai-process"),
+				{ focus: true },
+			);
+		}
 		bindQuestionExpand();
+		const lastTurn = turns[turns.length - 1];
+		if (lastTurn) {
+			bindReportRevise(lastTurn, turns.length - 1);
+			applyReportChangeMarks(lastTurn);
+			// The strip clamps its height; keep the newest hop in view.
+			scrollAskProcessToLatest(
+				thread.querySelector(".ai-turn:last-child .ai-process"),
+			);
+		}
 		if (!shareMode) renderHistory();
+		syncFollowComposerMode();
 		scheduleFollowDockFrost();
 		void hydrateResearchReportMermaid(thread);
 	}
 
 	let followDockFrostRaf = 0;
 
+	function pinReportFollowToColumn(): void {
+		if (!followForm) return;
+		if (!root.classList.contains("is-report-dock") || followForm.hidden) {
+			followForm.style.removeProperty("left");
+			followForm.style.removeProperty("width");
+			followForm.style.removeProperty("right");
+			followForm.style.removeProperty("margin-inline");
+			followForm.style.removeProperty("bottom");
+			return;
+		}
+		const column = thread.getBoundingClientRect();
+		followForm.style.left = `${column.left}px`;
+		followForm.style.width = `${column.width}px`;
+		followForm.style.right = "auto";
+		followForm.style.marginInline = "0";
+		followForm.style.removeProperty("bottom");
+	}
+
+	function syncFollowComposerMode(): void {
+		const dock = Boolean(
+			root.classList.contains("is-report-dock") &&
+				followForm &&
+				!followForm.hidden,
+		);
+		const focused = Boolean(
+			dock && followForm && followForm.contains(document.activeElement),
+		);
+		const hasText = Boolean(
+			(followInput?.value || "").replace(/\s+/g, " ").trim(),
+		);
+		const hasReviseChip = Boolean(
+			clipResearchReviseHeading(reviseHeading) ||
+				clipResearchReviseQuote(reviseQuote),
+		);
+		const expanded = Boolean(
+			dock &&
+				followComposerShouldExpand({ focused, hasText, hasReviseChip }),
+		);
+		root.classList.toggle("is-follow-expanded", expanded);
+		followForm?.classList.toggle("is-follow-expanded", expanded);
+		followForm?.classList.toggle("is-follow-compact", dock && !expanded);
+		if (followInput) {
+			followInput.rows = dock && !expanded ? 1 : 2;
+			if (dock && !expanded) followInput.style.height = "";
+			else fitTextarea(followInput);
+		}
+	}
+
 	function followDockOverlapsThread(): boolean {
 		if (!followForm || followForm.hidden) return false;
+		if (root.classList.contains("is-report-dock")) return true;
 		const dock = followForm.getBoundingClientRect();
 		for (const child of thread.children) {
 			const rect = child.getBoundingClientRect();
@@ -4718,6 +5971,7 @@ export function attachAiMode(options: {
 	}
 
 	function syncFollowDockFrost(): void {
+		pinReportFollowToColumn();
 		followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
 	}
 
@@ -4935,28 +6189,44 @@ export function attachAiMode(options: {
 
 	async function fetchResearchJob(
 		jobId: string,
-	): Promise<{ ok: boolean; status: number; job?: ResearchJobPublic; error?: string }> {
-		const response = await fetch(`/api/ai/research/${encodeURIComponent(jobId)}`, {
-			credentials: "same-origin",
-			cache: "no-store",
-		});
-		let data: {
-			job?: ResearchJobPublic;
-			error?: string;
-			researchQuota?: ResearchQuotaView;
-		} = {};
+	): Promise<{
+		ok: boolean;
+		status: number;
+		job?: ResearchJobPublic;
+		error?: string;
+		code?: string;
+	}> {
 		try {
-			data = (await response.json()) as typeof data;
-		} catch {
-			data = {};
+			const { response, data } = await fetchAiJson<{
+				job?: ResearchJobPublic;
+				error?: string;
+				code?: string;
+				researchQuota?: ResearchQuotaView;
+			}>(researchJobApiPath(jobId));
+			if (data.researchQuota) applyQuota(quota, data.researchQuota);
+			return {
+				ok: response.ok,
+				status: response.status,
+				job: data.job,
+				error: data.error,
+				code: data.code,
+			};
+		} catch (error) {
+			if (isAiTimeoutError(error)) {
+				return {
+					ok: false,
+					status: 0,
+					code: "timeout",
+					error: AI_SERVER_TIMEOUT_MESSAGE,
+				};
+			}
+			return {
+				ok: false,
+				status: 0,
+				code: "route_miss",
+				error: researchApiFailureMessage({ status: 0, code: "route_miss" }),
+			};
 		}
-		if (data.researchQuota) applyQuota(quota, data.researchQuota);
-		return {
-			ok: response.ok,
-			status: response.status,
-			job: data.job,
-			error: data.error,
-		};
 	}
 
 	async function pollResearchTurn(turn: AiAskTurn): Promise<void> {
@@ -4964,6 +6234,9 @@ export function attachAiMode(options: {
 		if (!turn.researchJobId) return;
 		let stallKey = "";
 		let stallSince = Date.now();
+		// A revise polls with a report already on the turn; remember it so the
+		// blocks the new version touched can be highlighted when it lands.
+		const reviseBase = turn.research ? (turn.report || "").trim() : "";
 		while (turn.pending && turn.researchJobId && token === researchPollToken) {
 			const still = await new Promise<boolean>((resolve) => {
 				researchPollTimer = window.setTimeout(() => {
@@ -4981,7 +6254,12 @@ export function attachAiMode(options: {
 				if (!data.ok || !data.job) {
 					turn.pending = false;
 					turn.phase = "done";
-					turn.error = data.error || "Research not found.";
+					turn.error = researchApiFailureMessage({
+						status: data.status,
+						code: data.code,
+						error: data.error,
+						fallback: "Could not load research.",
+					});
 					break;
 				}
 				const key = `${data.job.status}\0${data.job.progressNote || ""}\0${(data.job.processNotes || []).join("|")}`;
@@ -4990,6 +6268,13 @@ export function attachAiMode(options: {
 					stallSince = Date.now();
 				}
 				applyResearchJobToTurn(turn, data.job);
+				if (
+					!data.job.pending &&
+					data.job.error &&
+					(turn.report || "").trim()
+				) {
+					setStatus(data.job.error);
+				}
 				if (
 					data.job.pending &&
 					!(data.job.progressNote || "").trim() &&
@@ -5008,9 +6293,27 @@ export function attachAiMode(options: {
 						syncLayout();
 						window.scrollTo({ top: y, left: 0, behavior: "auto" });
 					}
+					scrollAskProcessToLatest(
+						thread.querySelector(".ai-turn:last-child .ai-process"),
+					);
 					continue;
 				}
-				syncLayoutAndReveal();
+				previewVersion = null;
+				reviseFromVersion = null;
+				closeVersionsDrawer();
+				const landed = (turn.report || "").trim();
+				if (reviseBase && landed && landed !== reviseBase && !turn.error) {
+					turn.reviseBase = reviseBase;
+					showReviseChanges = true;
+				}
+				syncLayout();
+				scrollAskProcessToLatest(
+					thread.querySelector(".ai-turn:last-child .ai-process"),
+					{ focus: true },
+				);
+				if (turn.reviseBase === reviseBase && reviseBase) {
+					window.setTimeout(revealFirstReportChange, 250);
+				}
 				break;
 			} catch {
 				turn.pending = false;
@@ -5047,19 +6350,14 @@ export function attachAiMode(options: {
 		if (!turn?.researchJobId) return;
 		stopResearchPoll();
 		try {
-			const response = await fetch(
-				`/api/ai/research/${encodeURIComponent(turn.researchJobId)}`,
-				{
-					method: "POST",
-					credentials: "same-origin",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ action: "cancel" }),
-				},
-			);
-			const data = (await response.json()) as {
+			const { data } = await fetchAiJson<{
 				job?: ResearchJobPublic;
 				researchQuota?: ResearchQuotaView;
-			};
+			}>(researchJobApiPath(turn.researchJobId), {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "cancel" }),
+			});
 			if (data.researchQuota) applyQuota(quota, data.researchQuota);
 			if (data.job) applyResearchJobToTurn(turn, data.job);
 			else {
@@ -5112,21 +6410,16 @@ export function attachAiMode(options: {
 		syncLayout();
 		let fallbackAsk = false;
 		try {
-			const response = await fetch(
-				`/api/ai/research/${encodeURIComponent(jobId)}`,
-				{
-					method: "POST",
-					credentials: "same-origin",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ action: "retry" }),
-				},
-			);
-			const data = (await response.json()) as {
+			const { response, data } = await fetchAiJson<{
 				job?: ResearchJobPublic;
 				error?: string;
 				code?: string;
 				researchQuota?: ResearchQuotaView;
-			};
+			}>(researchJobApiPath(jobId), {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "retry" }),
+			});
 			if (data.researchQuota) applyQuota(quota, data.researchQuota);
 			if (data.code === "research_quota") {
 				turn.pending = false;
@@ -5181,7 +6474,14 @@ export function attachAiMode(options: {
 				return true;
 			}
 			if (!data.ok || !data.job) {
-				setStatus(data.error || "Research not found.");
+				setStatus(
+					researchApiFailureMessage({
+						status: data.status,
+						code: data.code,
+						error: data.error,
+						fallback: "Could not load research.",
+					}),
+				);
 				return false;
 			}
 			const job = data.job;
@@ -5235,8 +6535,12 @@ export function attachAiMode(options: {
 			root.classList.remove("is-busy", "is-research-busy");
 			syncLayout();
 			return true;
-		} catch {
-			setStatus("Could not load research.");
+		} catch (error) {
+			setStatus(
+				isAiTimeoutError(error)
+					? AI_SERVER_TIMEOUT_MESSAGE
+					: "Could not load research.",
+			);
 			return false;
 		} finally {
 			if (!keepRestoring) {
@@ -5274,17 +6578,7 @@ export function attachAiMode(options: {
 		turn.phase = "rewrite";
 		syncLayout();
 		try {
-			const response = await fetch("/api/ai/research", {
-				method: "POST",
-				credentials: "same-origin",
-				cache: "no-store",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					clarifyId: turn.researchClarify.id,
-					answers,
-				}),
-			});
-			const data = (await response.json()) as {
+			const { response, data } = await fetchAiJson<{
 				success?: boolean;
 				error?: string;
 				code?: string;
@@ -5292,7 +6586,14 @@ export function attachAiMode(options: {
 				decline?: { kind?: string; message?: string };
 				job?: ResearchJobPublic;
 				researchQuota?: ResearchQuotaView;
-			};
+			}>(RESEARCH_API_PATH, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					clarifyId: turn.researchClarify.id,
+					answers,
+				}),
+			});
 			if (data.researchQuota) applyQuota(quota, data.researchQuota);
 			if (data.declined && data.decline) {
 				turn.pending = false;
@@ -5377,7 +6678,7 @@ export function attachAiMode(options: {
 		const useResearch = shouldUseResearchAsk({
 			chipOn:
 				(researchPaneOn() && turns.length === 0 && !replacing) ||
-				(!researchPaneOn() && researchChipOn && researchChipAvailable()),
+				followResearchChipOn(),
 			followUp: replacing || turns.length > 0,
 			lastTurnResearch:
 				lastTurnIsResearch() || Boolean(replacingTurn?.research),
@@ -5485,17 +6786,7 @@ export function attachAiMode(options: {
 		};
 		if (useResearch) {
 			try {
-				const response = await fetch("/api/ai/research/clarify", {
-					method: "POST",
-					credentials: "same-origin",
-					cache: "no-store",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						question: q,
-						history: buildAskFollowUpHistory(turns.slice(0, -1)),
-					}),
-				});
-				const data = (await response.json()) as {
+				const { response, data } = await fetchAiJson<{
 					success?: boolean;
 					error?: string;
 					code?: string;
@@ -5503,7 +6794,14 @@ export function attachAiMode(options: {
 					inScope?: boolean;
 					decline?: { kind?: string; message?: string };
 					questions?: ResearchClarifyQuestion[];
-				};
+				}>(RESEARCH_CLARIFY_API_PATH, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						question: q,
+						history: buildAskFollowUpHistory(turns.slice(0, -1)),
+					}),
+				});
 				if (!response.ok || !data.success) {
 					turn.pending = false;
 					turn.phase = "done";
@@ -5884,6 +7182,10 @@ export function attachAiMode(options: {
 
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
+		if (root.classList.contains("is-research-gated")) {
+			openQuotaDialog("signin", input.value);
+			return;
+		}
 		if (turns.some((turn) => turn.pending && turn.research && turn.researchJobId)) {
 			void cancelActiveResearch();
 			return;
@@ -5896,11 +7198,30 @@ export function attachAiMode(options: {
 			void cancelActiveResearch();
 			return;
 		}
-		if (followInput) void ask(followInput.value, followInput);
+		if (reviseFollowActive()) {
+			if (followInput) void reviseReport(followInput.value);
+			return;
+		}
+		if (followInput) {
+			void ask(followInput.value, followInput, {
+				forceAsk: followAskMode,
+			});
+		}
 	});
 
 	input.addEventListener("input", () => fitTextarea(input));
-	followInput?.addEventListener("input", () => fitTextarea(followInput));
+	followInput?.addEventListener("input", () => {
+		fitTextarea(followInput);
+		syncFollowComposerMode();
+	});
+	followForm?.addEventListener("focusin", () => {
+		syncFollowComposerMode();
+	});
+	followForm?.addEventListener("focusout", (event) => {
+		const next = event.relatedTarget;
+		if (next instanceof Node && followForm.contains(next)) return;
+		syncFollowComposerMode();
+	});
 
 	const sendHint = askSendShortcutLabel();
 	root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
@@ -5932,7 +7253,11 @@ export function attachAiMode(options: {
 				void cancelActiveResearch();
 				return;
 			}
-			void ask(followInput.value, followInput);
+			if (reviseFollowActive()) {
+				void reviseReport(followInput.value);
+				return;
+			}
+			void ask(followInput.value, followInput, { forceAsk: followAskMode });
 		});
 	}
 
@@ -5962,6 +7287,58 @@ export function attachAiMode(options: {
 			});
 		},
 	);
+
+	reviseClearBtn?.addEventListener("click", () => {
+		clearReviseScope();
+	});
+	askWithoutEditingBtn?.addEventListener("click", () => {
+		if (!lastFinishedReportTurn() || !followInput) return;
+		followAskMode = !followAskMode;
+		if (followAskMode) clearReviseScope();
+		else syncReviseScope();
+		followInput.focus();
+		syncResearchChip();
+		syncFollowComposerMode();
+	});
+	reviseFloat?.addEventListener("click", () => {
+		const selection = window.getSelection()?.toString() || "";
+		if (!selectionQualifiesForRevise(selection)) return;
+		reviseQuote = clipResearchReviseQuote(selection);
+		reviseHeading = "";
+		hideSelectionRevise();
+		openReviseComposer();
+	});
+	versionsDrawer?.querySelector("[data-ai-versions-close]")?.addEventListener(
+		"click",
+		() => closeVersionsDrawer(),
+	);
+	versionsDrawer?.addEventListener("click", (event) => {
+		if (event.target === versionsDrawer) closeVersionsDrawer();
+	});
+	versionsReviseBtn?.addEventListener("click", () => {
+		closeVersionsDrawer();
+		openReviseComposer();
+	});
+	versionsRestoreBtn?.addEventListener("click", () => {
+		void reviseReport("", "restore");
+	});
+	document.addEventListener("selectionchange", () => {
+		updateSelectionRevise();
+	});
+	document.addEventListener("pointerdown", (event) => {
+		if ((event.target as HTMLElement | null)?.closest("[data-ai-revise-float]")) {
+			return;
+		}
+		selectionPointerDown = true;
+	});
+	const endSelectionPointer = () => {
+		if (!selectionPointerDown) return;
+		selectionPointerDown = false;
+		// Let the browser settle the final range before measuring it.
+		window.setTimeout(updateSelectionRevise, 0);
+	};
+	document.addEventListener("pointerup", endSelectionPointer);
+	document.addEventListener("pointercancel", endSelectionPointer);
 
 	clarifyCancelBtn?.addEventListener("click", () => {
 		cancelResearchClarify();
@@ -6111,6 +7488,21 @@ export function attachAiMode(options: {
 		if (quotaDialog && !quotaDialog.hidden) {
 			event.preventDefault();
 			closeQuotaDialog();
+			return;
+		}
+		if (versionsDrawer && !versionsDrawer.hidden) {
+			event.preventDefault();
+			closeVersionsDrawer();
+			return;
+		}
+		if (
+			root.classList.contains("is-follow-expanded") &&
+			followForm &&
+			!followForm.hidden
+		) {
+			event.preventDefault();
+			followInput?.blur();
+			syncFollowComposerMode();
 		}
 	});
 
@@ -6145,6 +7537,8 @@ export function attachAiMode(options: {
 		scheduleFollowDockFrost();
 	});
 	window.addEventListener("scroll", scheduleFollowDockFrost, { passive: true });
+	window.visualViewport?.addEventListener("resize", scheduleFollowDockFrost);
+	window.visualViewport?.addEventListener("scroll", scheduleFollowDockFrost);
 
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);
@@ -6246,4 +7640,19 @@ export function attachAiMode(options: {
 		});
 	}
 	scheduleFollowDockFrost();
+	void refreshQuota().then(() => {
+		const pending = takePendingRevise();
+		if (!pending || !quota?.signedIn) return;
+		reviseHeading = pending.heading;
+		reviseQuote = pending.quote;
+		reviseFromVersion = pending.fromVersion;
+		if (followInput && pending.instruction) {
+			followInput.value = pending.instruction;
+			fitTextarea(followInput);
+		}
+		syncReviseScope();
+		if (lastFinishedReportTurn() && pending.instruction) {
+			void reviseReport(pending.instruction);
+		}
+	});
 }

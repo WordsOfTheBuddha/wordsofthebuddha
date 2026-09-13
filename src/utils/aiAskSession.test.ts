@@ -20,6 +20,7 @@ import {
 	shouldResumeAskFromDiscourse,
 	findAiAskSessionEntry,
 	formatAskRelativeTime,
+	formatAskAbsoluteTime,
 	mergeAskHistoryEntries,
 	mergeResearchUnreadFlag,
 	preservePendingResearchHistory,
@@ -198,6 +199,33 @@ describe("sanitizeAskHistoryEntry research", () => {
 			"Searching again · 3 of 3 queries",
 			"Reading MN 70 in full…",
 		]);
+	});
+
+	it("round-trips a research version index", () => {
+		const clean = sanitizeAskHistoryEntry(
+			entry("survey feeling", 1, {
+				research: true,
+				researchJobId: "job-v",
+				versionIndex: [
+					{
+						n: 1,
+						at: 1,
+						instruction: "",
+						changelog: "Original report.",
+						from: null,
+					},
+					{
+						n: 2,
+						at: 2,
+						instruction: "add SN 48",
+						changelog: "Added SN 48.",
+						from: 1,
+					},
+				],
+			}),
+		);
+		assert.equal(clean?.versionIndex?.[1]?.n, 2);
+		assert.equal(clean?.versionIndex?.[1]?.changelog, "Added SN 48.");
 	});
 
 	it("round-trips a research report", () => {
@@ -533,6 +561,9 @@ describe("formatAskRelativeTime", () => {
 		assert.equal(formatAskRelativeTime(now - 33 * 60 * 60_000, now), "1d ago");
 		assert.equal(formatAskRelativeTime(now - 39 * 60 * 60_000, now), "1d ago");
 		assert.equal(formatAskRelativeTime(now - 2 * 24 * 60 * 60_000, now), "2d ago");
+		const absolute = formatAskAbsoluteTime(now);
+		assert.match(absolute, /\d/);
+		assert.equal(formatAskAbsoluteTime(0), "");
 	});
 });
 
