@@ -67,13 +67,13 @@ function friendlyAskError(error: unknown): { status: number; message: string } {
 		);
 	const friendly =
 		status === 429
-			? "The free model is rate-limited right now. Wait a minute, or pick another free model."
+			? "The model is rate-limited right now. Try again in a minute."
 			: status === 401
 				? "The API key was rejected. Check OPENROUTER_API_KEY or GEMINI_API_KEY."
 				: searchIndexFailed
 					? "Could not load the discourse library. Try again shortly."
 					: message.includes("timeout")
-						? "The model timed out. Try again, or pick another free model."
+						? "The model timed out. Try again shortly."
 						: "Could not reach the model. Try again shortly.";
 	return { status, message: friendly };
 }

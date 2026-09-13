@@ -24,7 +24,7 @@ export interface BuildAskPlannerNoteInput {
 	acceptedHasReasoning: boolean;
 	/**
 	 * `"reader"` (default) is what the Ask UI may show. OpenRouter→OpenRouter
-	 * fallbacks (Ultra → GLM, cooldown, timeout) are omitted — they belong in
+	 * fallbacks (Ultra → DeepSeek, cooldown, timeout) are omitted — they belong in
 	 * server logs / DEV routing, not under “Understood”.
 	 */
 	audience?: "reader" | "log";
@@ -185,7 +185,7 @@ export function buildAskPlannerNote(
 		);
 	}
 
-	// Ultra → GLM (timeout, cooldown, unusable, …) is not useful for readers.
+	// Ultra → DeepSeek (timeout, cooldown, unusable, …) is not useful for readers.
 	if (audience === "reader") return undefined;
 
 	if (!requested || sameModel(used, requested)) return undefined;

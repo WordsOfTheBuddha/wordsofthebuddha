@@ -11,7 +11,9 @@ import {
 	ASK_WRITER_REASONING_EFFORT,
 	askPlannerChatOptions,
 	askWriterChatOptions,
+	formatOpenRouterUsageLine,
 	resolveReasoningEffort,
+	openRouterProviderPreferences,
 	openRouterReasoningBody,
 	createContentThinkSplitter,
 	getAskPickerDefaultModel,
@@ -21,6 +23,7 @@ import {
 	isFreeCatalogModel,
 	openRouterChoiceDelta,
 	openRouterModelLabel,
+	parseOpenRouterUsage,
 	resolveOpenRouterChatModel,
 	resolveRequestedOpenRouterModel,
 	selectFreeOpenRouterModels,
@@ -110,7 +113,7 @@ describe("createContentThinkSplitter", () => {
 });
 
 describe("resolveReasoningEffort", () => {
-	it("maps medium to high for GLM and leaves free models alone", () => {
+	it("maps medium to high for paid DeepSeek and leaves free models alone", () => {
 		assert.equal(
 			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "medium"),
 			"high",
@@ -128,7 +131,7 @@ describe("resolveReasoningEffort", () => {
 });
 
 describe("askPlannerChatOptions", () => {
-	it("drops json_object and uses high effort for paid GLM", () => {
+	it("drops json_object and uses high effort for paid DeepSeek", () => {
 		assert.deepEqual(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
@@ -145,7 +148,7 @@ describe("askPlannerChatOptions", () => {
 });
 
 describe("askWriterChatOptions", () => {
-	it("uses low effort and keeps GLM off json_object", () => {
+	it("uses low effort and keeps paid DeepSeek off json_object", () => {
 		assert.deepEqual(askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
@@ -201,27 +204,64 @@ describe("isAllowedFreeModelId", () => {
 		assert.equal(isAllowedFreeModelId("openai/gpt-4o"), false);
 		assert.equal(isAllowedFreeModelId("nvidia/nemotron-3-ultra-550b-a55b"), false);
 		assert.equal(isAllowedFreeModelId("z-ai/glm-5.3-flash"), false);
+		assert.equal(isAllowedFreeModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), false);
 		assert.equal(isAllowedFreeModelId("evil:free extra"), false);
 		assert.equal(isAllowedFreeModelId(""), false);
 	});
 });
 
 describe("resolveRequestedOpenRouterModel", () => {
-	it("accepts curated free models", () => {
-		for (const model of CURATED_ASK_MODELS) {
-			assert.equal(resolveRequestedOpenRouterModel(model.id), model.id);
-			assert.equal(isCuratedAskModelId(model.id), true);
+	const FLAG = "PUBLIC_AI_SHOW_MODEL_PICKER";
+
+	function withFlag(value: string | undefined, fn: () => void) {
+		const prev = process.env[FLAG];
+		try {
+			if (value === undefined) delete process.env[FLAG];
+			else process.env[FLAG] = value;
+			fn();
+		} finally {
+			if (prev === undefined) delete process.env[FLAG];
+			else process.env[FLAG] = prev;
 		}
+	}
+
+	it("defaults to paid DeepSeek when the free picker is hidden", () => {
+		withFlag(undefined, () => {
+			assert.equal(shouldShowAiModelPicker(), false);
+			assert.equal(
+				resolveRequestedOpenRouterModel(),
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			);
+			assert.equal(
+				resolveRequestedOpenRouterModel(DEFAULT_OPENROUTER_MODEL),
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			);
+			assert.equal(
+				resolveRequestedOpenRouterModel("openai/gpt-4o"),
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			);
+		});
 	});
 
-	it("falls back away from paid ids", () => {
-		const resolved = resolveRequestedOpenRouterModel("openai/gpt-4o");
-		assert.equal(isAllowedFreeModelId(resolved), true);
-		assert.notEqual(resolved, "openai/gpt-4o");
-		assert.notEqual(
-			resolveRequestedOpenRouterModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
-			ASK_PLANNER_PAID_FALLBACK_MODEL,
-		);
+	it("accepts curated free models when the picker is shown", () => {
+		withFlag("1", () => {
+			for (const model of CURATED_ASK_MODELS) {
+				assert.equal(resolveRequestedOpenRouterModel(model.id), model.id);
+				assert.equal(isCuratedAskModelId(model.id), true);
+			}
+		});
+	});
+
+	it("rejects arbitrary paid ids from the client when the picker is shown", () => {
+		withFlag("1", () => {
+			const resolved = resolveRequestedOpenRouterModel("openai/gpt-4o");
+			assert.equal(isAllowedFreeModelId(resolved), true);
+			assert.notEqual(resolved, "openai/gpt-4o");
+			assert.notEqual(
+				resolveRequestedOpenRouterModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
+				ASK_PLANNER_PAID_FALLBACK_MODEL,
+			);
+		});
 	});
 
 	it("ignores retired :free ids the client may still have stored", () => {
@@ -233,21 +273,67 @@ describe("resolveRequestedOpenRouterModel", () => {
 });
 
 describe("resolveOpenRouterChatModel", () => {
-	it("allows the paid planner fallback without exposing it to client requests", () => {
+	it("allows paid DeepSeek and curated free fallbacks on internal calls", () => {
 		assert.equal(
 			resolveOpenRouterChatModel(ASK_PLANNER_PAID_FALLBACK_MODEL),
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
+		);
+		assert.equal(
+			resolveOpenRouterChatModel(DEFAULT_OPENROUTER_MODEL),
+			DEFAULT_OPENROUTER_MODEL,
 		);
 		assert.equal(isAskPlannerPaidFallbackModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), true);
 		assert.equal(isCuratedAskModelId(ASK_PLANNER_PAID_FALLBACK_MODEL), false);
 		assert.equal(
 			openRouterModelLabel(ASK_PLANNER_PAID_FALLBACK_MODEL),
-			"Z.ai: GLM 5.3 Flash",
+			"DeepSeek: DeepSeek V4 Flash",
 		);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
-			"nvidia/nemotron-3-ultra-550b-a55b:free",
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
 		]);
+	});
+});
+
+describe("openRouterProviderPreferences", () => {
+	it("sorts paid DeepSeek by price and leaves free models unscoped", () => {
+		assert.deepEqual(
+			openRouterProviderPreferences(ASK_PLANNER_PAID_FALLBACK_MODEL),
+			{ sort: "price", allow_fallbacks: true, require_parameters: true },
+		);
+		assert.equal(
+			openRouterProviderPreferences(DEFAULT_OPENROUTER_MODEL),
+			undefined,
+		);
+	});
+});
+
+describe("parseOpenRouterUsage", () => {
+	it("reads tokens, cache, cost, and provider", () => {
+		const usage = parseOpenRouterUsage({
+			id: "gen-abc",
+			provider: "Baidu",
+			usage: {
+				prompt_tokens: 1200,
+				completion_tokens: 80,
+				cost: 0.00042,
+				prompt_tokens_details: { cached_tokens: 100 },
+				completion_tokens_details: { reasoning_tokens: 40 },
+			},
+		});
+		assert.deepEqual(usage, {
+			promptTokens: 1200,
+			completionTokens: 80,
+			reasoningTokens: 40,
+			cachedTokens: 100,
+			cost: 0.00042,
+			provider: "Baidu",
+			generationId: "gen-abc",
+		});
+		assert.equal(
+			formatOpenRouterUsageLine("deepseek/deepseek-v4-flash-0731", usage!),
+			"[openrouter] model=deepseek/deepseek-v4-flash-0731 provider=Baidu cost=0.00042 prompt=1200 completion=80 reason=40 cache=100 gen=gen-abc",
+		);
+		assert.equal(parseOpenRouterUsage({ model: "x" }), null);
 	});
 });
 

@@ -92,8 +92,8 @@ export function formatPlannerRoutingLine(routing: AiAskPlannerRouting): string {
 
 /**
  * Distinct OpenRouter planners per Ask (requested + fallbacks). Same-model
- * unusable retries do not count as extra models. Default Ultra → GLM uses 2;
- * a picked model outside the automatic order (Lightning) can add a 3rd slot.
+ * unusable retries do not count as extra models. Production is DeepSeek
+ * only; a picked free model can add a 2nd slot before DeepSeek.
  */
 export const MAX_PLANNER_OPENROUTER_ATTEMPTS = 3;
 
@@ -146,13 +146,13 @@ export interface PlannerModelAttemptsOptions {
 }
 
 /**
- * Requested/default model first, then free fallbacks, then paid GLM in the
- * last slot. Caps at `maxAttempts`. Models in cooldown are skipped so the
- * list still fills from healthier options when possible. Paid GLM is kept
- * in the last slot even when the reader picked Lightning.
+ * Requested model first, then DeepSeek V4 Flash if it was not already
+ * requested. OpenRouter fails over across DeepSeek providers in one call,
+ * so Nemotron is not an automatic backup. Caps at `maxAttempts`.
  *
- * Example (requested = Ultra): Ultra → GLM 5.3 Flash
- * Example (requested = Lightning): Lightning → Ultra → GLM 5.3 Flash
+ * Example (production / picker hidden): DeepSeek V4 Flash
+ * Example (requested = Ultra): Ultra → DeepSeek V4 Flash
+ * Example (requested = Lightning): Lightning → DeepSeek V4 Flash
  */
 export function plannerModelAttempts(
 	requested: string,
@@ -190,7 +190,7 @@ export function plannerModelAttempts(
 export type UnusableRewriteAction = "retry_same" | "try_next" | "use_degraded";
 
 /**
- * Unusable JSON from a model that still has a fallback (Ultra → GLM) moves
+ * Unusable JSON from a model that still has a fallback (Ultra → DeepSeek) moves
  * on immediately — a same-model retry was burning ~90s and dropping the SSE.
  * Last-in-queue still retries once before accepting a degraded plan.
  * Timeouts/429 are handled separately and do not use this path.
@@ -316,15 +316,16 @@ function failureMessage(error: unknown): string {
 }
 
 /**
- * Per-attempt cap. 90s left the browser SSE dead before GLM could answer;
- * 45s is enough to bail to the paid fallback on a hung free model.
+ * Per-attempt cap. 90s left the browser SSE dead before the next model
+ * could answer; 45s is enough to bail on a hung planner.
  */
 export const PLANNER_ATTEMPT_MS = 45_000;
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
- * when it fails (busy, 404, timeout, …) try the next model (Ultra then paid
- * GLM 5.3 Flash). An unusable rewrite from a model with a fallback moves on;
+ * when it fails (busy, 404, timeout, …) try DeepSeek V4 Flash if it was not
+ * already requested. Provider failover stays inside that one model.
+ * An unusable rewrite from a model with a fallback moves on;
  * the last model retries once before a degraded plan. Do not fall back to
  * Gemini for planning when OpenRouter is configured — Gemini remains the
  * rerank path.
@@ -341,7 +342,7 @@ export async function rewriteAskQuestion(options: {
 	onReasoningReset?: () => void;
 	signal?: AbortSignal;
 	/**
-	 * Explicit OpenRouter queue (Research uses GLM only). When omitted, use
+	 * Explicit OpenRouter queue (Research uses DeepSeek only). When omitted, use
 	 * the usual requested → free → paid fallback chain.
 	 */
 	models?: readonly string[];

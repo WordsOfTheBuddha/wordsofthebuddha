@@ -39,12 +39,15 @@ describe("plannerModelAttempts", () => {
 		]);
 	});
 
-	it("uses the product fallback order and caps OpenRouter attempts", () => {
+	it("uses DeepSeek only in the automatic queue", () => {
 		assert.equal(MAX_PLANNER_OPENROUTER_ATTEMPTS, 3);
 		assert.deepEqual(ASK_PLANNER_FALLBACK_ORDER, [
-			"nvidia/nemotron-3-ultra-550b-a55b:free",
 			ASK_PLANNER_PAID_FALLBACK_MODEL,
 		]);
+		assert.deepEqual(
+			plannerModelAttempts(ASK_PLANNER_PAID_FALLBACK_MODEL),
+			[ASK_PLANNER_PAID_FALLBACK_MODEL],
+		);
 		assert.deepEqual(
 			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free"),
 			[
@@ -56,7 +59,6 @@ describe("plannerModelAttempts", () => {
 			plannerModelAttempts("nvidia/nemotron-3.5-lightning:free"),
 			[
 				"nvidia/nemotron-3.5-lightning:free",
-				"nvidia/nemotron-3-ultra-550b-a55b:free",
 				ASK_PLANNER_PAID_FALLBACK_MODEL,
 			],
 		);
@@ -78,7 +80,7 @@ describe("plannerModelAttempts", () => {
 		);
 	});
 
-	it("plans paid GLM without json_object so the reasoning channel can stream", () => {
+	it("plans paid DeepSeek without json_object so the reasoning channel can stream", () => {
 		assert.equal(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL).jsonMode, false);
 		assert.equal(
 			askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL).reasoningEffort,
@@ -90,7 +92,7 @@ describe("plannerModelAttempts", () => {
 		);
 	});
 
-	it("keeps paid GLM in the last slot when a free model is cooled down", () => {
+	it("keeps paid DeepSeek in the last slot when a free model is cooled down", () => {
 		assert.deepEqual(
 			plannerModelAttempts("nvidia/nemotron-3-ultra-550b-a55b:free", undefined, 3, {
 				isExcluded: (id) => id === "nvidia/nemotron-3-ultra-550b-a55b:free",
@@ -162,7 +164,15 @@ describe("formatPlannerRoutingLine", () => {
 			line,
 			/called=nvidia\/nemotron-3\.5-lightning:free → nvidia\/nemotron-3-ultra-550b-a55b:free/,
 		);
-		assert.match(line, /skipped cooldown: z-ai\/glm-5\.3-flash/);
+		assert.match(
+			line,
+			new RegExp(
+				`skipped cooldown: ${ASK_PLANNER_PAID_FALLBACK_MODEL.replace(
+					/[.*+?^${}()|[\]\\]/g,
+					"\\$&",
+				)}`,
+			),
+		);
 		assert.match(line, /failed: nvidia\/nemotron-3\.5-lightning:free \(429\)/);
 		assert.match(line, /used=nvidia\/nemotron-3-ultra-550b-a55b:free \(openrouter\)/);
 		assert.match(line, /rerank=gemini-3\.5-flash-lite/);

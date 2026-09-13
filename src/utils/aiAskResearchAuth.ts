@@ -1,4 +1,4 @@
-/** Auth gate for Deep Research. Unsigned requests must not reach GLM. */
+/** Auth gate for Deep Research. Unsigned requests must not reach DeepSeek. */
 
 export interface ResearchAuthUser {
 	uid?: string | null;

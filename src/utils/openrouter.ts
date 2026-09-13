@@ -27,13 +27,14 @@ export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 ] as const;
 
 /**
- * Paid OpenRouter planner fallback only — never shown in the free picker.
- * Used after Ultra (not Lightning).
+ * Paid OpenRouter model for Ask, Research, and revise.
+ * Never shown in the free picker. OpenRouter fails over across its hosts.
  */
-export const ASK_PLANNER_PAID_FALLBACK_MODEL = "z-ai/glm-5.3-flash";
+export const ASK_PLANNER_PAID_FALLBACK_MODEL =
+	"deepseek/deepseek-v4-flash-0731";
 
 const ASK_INTERNAL_MODEL_LABELS: Readonly<Record<string, string>> = {
-	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "Z.ai: GLM 5.3 Flash",
+	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "DeepSeek: DeepSeek V4 Flash",
 };
 
 export function isAskPlannerPaidFallbackModelId(id: string): boolean {
@@ -41,12 +42,11 @@ export function isAskPlannerPaidFallbackModelId(id: string): boolean {
 }
 
 /**
- * OpenRouter planner fallback after the requested/default model fails.
- * Ultra, then paid GLM. Lightning stays pickable but is not an automatic
- * fallback.
+ * Automatic OpenRouter queue. DeepSeek V4 Flash only — provider failover is
+ * OpenRouter’s job (cheapest host, then the next). A picked free model still
+ * goes first when the picker is shown, then DeepSeek.
  */
 export const ASK_PLANNER_FALLBACK_ORDER: readonly string[] = [
-	CURATED_ASK_MODELS[0].id,
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 ];
 
@@ -78,7 +78,7 @@ export const DEFAULT_OPENROUTER_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"medium";
 /** Planner rewrite — more thinking before the JSON chips. */
 export const ASK_PLANNER_REASONING_EFFORT: OpenRouterReasoningEffort = "medium";
-/** GLM 5.3 Flash accepts low / high / max, not medium. */
+/** DeepSeek V4 Flash accepts low / high / max, not medium. */
 export const ASK_PLANNER_PAID_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"high";
 /** Scout/verify pass — cheap check that the plan is on track. */
@@ -86,7 +86,7 @@ export const ASK_RESEARCH_VERIFY_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"low";
 
 /**
- * GLM rejects `medium` (often treated as `max`). Map it to `high`.
+ * Paid DeepSeek rejects `medium`. Map it to `high`.
  */
 export function resolveReasoningEffort(
 	model: string,
@@ -109,7 +109,7 @@ export const RESEARCH_WRITER_MAX_TOKENS = 16_384;
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
 /**
- * Paid GLM often swallows the reasoning channel under `json_object`, and
+ * Paid DeepSeek often swallows the reasoning channel under `json_object`, and
  * rejects `reasoning.effort: medium`. Free Nemotron planners keep JSON mode
  * and medium effort.
  */
@@ -133,8 +133,8 @@ export function askPlannerChatOptions(model: string): {
 }
 
 /**
- * Thinking writer: low effort so it finishes the JSON briefing. GLM still
- * skips `json_object` (it swallows the reasoning channel under that mode).
+ * Thinking writer: low effort so it finishes the JSON briefing. Paid DeepSeek
+ * still skips `json_object` (it swallows the reasoning channel under that mode).
  */
 export function askWriterChatOptions(model: string): {
 	jsonMode: boolean;
@@ -192,7 +192,7 @@ export function curatedAskModelLabel(id: string): string {
 	);
 }
 
-/** Picker labels plus internal fallbacks (paid GLM) that are not curated. */
+/** Picker labels plus internal fallbacks (paid DeepSeek) that are not curated. */
 export function openRouterModelLabel(id: string): string {
 	return ASK_INTERNAL_MODEL_LABELS[id.trim()] || curatedAskModelLabel(id);
 }
@@ -211,9 +211,8 @@ export function getConfiguredOpenRouterModel(): string {
 }
 
 /**
- * Model preselected in the picker. The curated list’s first entry (Nemotron 3
- * Ultra) is the product default. OPENROUTER_MODEL is only used when the picker
- * is hidden (stale process env often overrides `.env` and would otherwise win).
+ * Model preselected in the free picker. Ultra is the picker default.
+ * Production hides the picker and Ask uses the paid DeepSeek id instead.
  */
 export function getAskPickerDefaultModel(): string {
 	if (!shouldShowAiModelPicker()) return getConfiguredOpenRouterModel();
@@ -224,25 +223,106 @@ export function resolveRequestedOpenRouterModel(
 	requested: string | undefined | null,
 ): string {
 	const trimmed = requested?.trim() || "";
-	if (trimmed && isCuratedAskModelId(trimmed)) return trimmed;
-	// Ignore stale client ids (retired :free models in localStorage). Env
-	// OPENROUTER_MODEL still applies when the picker is hidden.
-	const configured = getConfiguredOpenRouterModel();
-	if (isCuratedAskModelId(configured) || !shouldShowAiModelPicker()) {
-		return configured;
+	if (shouldShowAiModelPicker()) {
+		if (trimmed && isCuratedAskModelId(trimmed)) return trimmed;
+		const configured = getConfiguredOpenRouterModel();
+		if (isCuratedAskModelId(configured)) return configured;
+		return DEFAULT_OPENROUTER_MODEL;
 	}
-	return DEFAULT_OPENROUTER_MODEL;
+	// Picker hidden: paid DeepSeek is the product default. Ignore leftover
+	// client / env free-model ids so Ask does not wait on Nemotron first.
+	return ASK_PLANNER_PAID_FALLBACK_MODEL;
 }
 
 /**
- * Model id sent to OpenRouter. Client requests still go through
- * `resolveRequestedOpenRouterModel` (free/curated only). Internal planner
- * fallback may use the paid GLM id.
+ * Model id sent to OpenRouter. Client requests go through
+ * `resolveRequestedOpenRouterModel`. Internal calls may pass the paid
+ * DeepSeek id or a curated free fallback.
  */
 export function resolveOpenRouterChatModel(model: string): string {
 	const trimmed = model.trim();
 	if (isAskPlannerPaidFallbackModelId(trimmed)) return trimmed;
+	if (isCuratedAskModelId(trimmed)) return trimmed;
 	return resolveRequestedOpenRouterModel(trimmed);
+}
+
+/**
+ * Paid DeepSeek: cheapest healthy provider first, then the next cheapest
+ * host of the same model. OpenRouter does that inside one request — we do
+ * not hop to a second model.
+ */
+export function openRouterProviderPreferences(model: string):
+	| { sort: "price"; allow_fallbacks: true; require_parameters: true }
+	| undefined {
+	if (!isAskPlannerPaidFallbackModelId(model)) return undefined;
+	return { sort: "price", allow_fallbacks: true, require_parameters: true };
+}
+
+export interface OpenRouterUsage {
+	promptTokens: number;
+	completionTokens: number;
+	reasoningTokens: number;
+	cachedTokens: number;
+	cost: number;
+	provider: string;
+	generationId: string;
+}
+
+function asFiniteNumber(value: unknown): number {
+	const n = typeof value === "number" ? value : Number(value);
+	return Number.isFinite(n) ? n : 0;
+}
+
+function providerName(value: unknown): string {
+	if (typeof value === "string") return value.trim();
+	if (value && typeof value === "object" && "name" in value) {
+		const name = (value as { name?: unknown }).name;
+		if (typeof name === "string") return name.trim();
+	}
+	return "";
+}
+
+/** Token/cost block OpenRouter now includes on every completion. */
+export function parseOpenRouterUsage(payload: unknown): OpenRouterUsage | null {
+	if (!payload || typeof payload !== "object") return null;
+	const record = payload as Record<string, unknown>;
+	if (!record.usage || typeof record.usage !== "object") return null;
+	const usage = record.usage as Record<string, unknown>;
+	const promptDetails =
+		usage.prompt_tokens_details && typeof usage.prompt_tokens_details === "object"
+			? (usage.prompt_tokens_details as Record<string, unknown>)
+			: {};
+	const completionDetails =
+		usage.completion_tokens_details &&
+		typeof usage.completion_tokens_details === "object"
+			? (usage.completion_tokens_details as Record<string, unknown>)
+			: {};
+	const generationId =
+		typeof record.id === "string" ? record.id.trim() : "";
+	return {
+		promptTokens: asFiniteNumber(usage.prompt_tokens),
+		completionTokens: asFiniteNumber(usage.completion_tokens),
+		reasoningTokens: asFiniteNumber(completionDetails.reasoning_tokens),
+		cachedTokens: asFiniteNumber(promptDetails.cached_tokens),
+		cost: asFiniteNumber(usage.cost),
+		provider: providerName(record.provider),
+		generationId,
+	};
+}
+
+export function formatOpenRouterUsageLine(
+	model: string,
+	usage: OpenRouterUsage,
+): string {
+	const provider = usage.provider ? ` provider=${usage.provider}` : "";
+	const gen = usage.generationId ? ` gen=${usage.generationId}` : "";
+	return `[openrouter] model=${model}${provider} cost=${usage.cost} prompt=${usage.promptTokens} completion=${usage.completionTokens} reason=${usage.reasoningTokens} cache=${usage.cachedTokens}${gen}`;
+}
+
+function logOpenRouterUsage(model: string, payload: unknown): void {
+	const usage = parseOpenRouterUsage(payload);
+	if (!usage) return;
+	console.log(formatOpenRouterUsageLine(model, usage));
 }
 
 /**
@@ -377,6 +457,7 @@ export async function openRouterChat(options: {
 	signal?: AbortSignal;
 }): Promise<OpenRouterChatResult> {
 	const model = resolveOpenRouterChatModel(options.model);
+	const provider = openRouterProviderPreferences(model);
 	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
 		method: "POST",
 		headers: openRouterAuthHeaders(),
@@ -392,6 +473,7 @@ export async function openRouterChat(options: {
 				),
 				options.reasoningMaxTokens,
 			),
+			...(provider ? { provider } : {}),
 			...(options.jsonMode
 				? { response_format: { type: "json_object" } }
 				: {}),
@@ -413,7 +495,10 @@ export async function openRouterChat(options: {
 		throw error;
 	}
 	const payload = (await response.json()) as {
+		id?: string;
 		model?: string;
+		provider?: unknown;
+		usage?: unknown;
 		choices?: Array<{
 			message?: {
 				content?: unknown;
@@ -422,6 +507,7 @@ export async function openRouterChat(options: {
 			};
 		}>;
 	};
+	logOpenRouterUsage(payload.model || model, payload);
 	const message = payload.choices?.[0]?.message;
 	const content = messageText(message?.content);
 	const reasoning = messageText(
@@ -598,6 +684,7 @@ export async function* openRouterChatStream(options: {
 	signal?: AbortSignal;
 }): AsyncGenerator<OpenRouterStreamChunk> {
 	const model = resolveOpenRouterChatModel(options.model);
+	const provider = openRouterProviderPreferences(model);
 	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
 		method: "POST",
 		headers: openRouterAuthHeaders(),
@@ -615,6 +702,7 @@ export async function* openRouterChatStream(options: {
 				),
 				options.reasoningMaxTokens,
 			),
+			...(provider ? { provider } : {}),
 			...(options.jsonMode
 				? { response_format: { type: "json_object" } }
 				: {}),
@@ -643,6 +731,7 @@ export async function* openRouterChatStream(options: {
 	let buffer = "";
 	let emittedReasoning = false;
 	let emittedContent = false;
+	const usagePayload: Record<string, unknown> = {};
 	while (true) {
 		const { done, value } = await reader.read();
 		if (done) break;
@@ -655,7 +744,10 @@ export async function* openRouterChatStream(options: {
 			const data = trimmed.slice(5).trim();
 			if (!data || data === "[DONE]") continue;
 			let payload: {
+				id?: string;
 				model?: string;
+				provider?: unknown;
+				usage?: unknown;
 				choices?: Array<{
 					delta?: { content?: unknown; reasoning?: unknown };
 					message?: { content?: unknown; reasoning?: unknown };
@@ -666,6 +758,10 @@ export async function* openRouterChatStream(options: {
 			} catch {
 				continue;
 			}
+			if (payload.usage) usagePayload.usage = payload.usage;
+			if (payload.provider) usagePayload.provider = payload.provider;
+			if (payload.id) usagePayload.id = payload.id;
+			if (payload.model) usagePayload.model = payload.model;
 			const choice = payload.choices?.[0];
 			const fromDelta = openRouterChoiceDelta({ delta: choice?.delta });
 			let reasoning = fromDelta.reasoning;
@@ -696,5 +792,6 @@ export async function* openRouterChatStream(options: {
 			if (payload.model) yield { model: payload.model };
 		}
 	}
+	logOpenRouterUsage(String(usagePayload.model || model), usagePayload);
 	yield { model };
 }
