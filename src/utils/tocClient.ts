@@ -136,6 +136,13 @@ function isElementVisible(el: HTMLElement): boolean {
 	return el.getClientRects().length > 0;
 }
 
+/** Scroll-spy: off-screen headings still count; skip hidden or aria-hidden nodes. */
+function isTrackableTocHeading(heading: HTMLElement): boolean {
+	if (heading.closest('[aria-hidden="true"], [hidden]')) return false;
+	const style = window.getComputedStyle(heading);
+	return style.display !== "none" && style.visibility !== "hidden";
+}
+
 function resolveContentRoot(selector: string): HTMLElement | null {
 	const nodes = document.querySelectorAll<HTMLElement>(selector);
 	for (const node of nodes) {
@@ -167,10 +174,12 @@ export function findVisibleElementById(id: string): HTMLElement | null {
 function visibleHeadingForId(id: string): HTMLElement | null {
 	if (expectsSplitView()) {
 		const panel = document.getElementById("panel1");
-		if (!panel) return null;
-		const inPanel = findById(panel, id);
-		if (inPanel && isElementVisible(inPanel)) return inPanel;
-		return null;
+		if (panel) {
+			const inPanel = findById(panel, id);
+			if (inPanel && isElementVisible(inPanel)) return inPanel;
+		}
+		// Research reports and other pages outside panel1 still need hash scroll
+		// and scroll-spy when split layout is stored from discourse reading.
 	}
 
 	return findVisibleElementById(id);
@@ -221,9 +230,8 @@ export function scrollYToAlignHeading(
 	);
 }
 
-export function scrollToVisibleId(id: string): boolean {
-	const heading = visibleHeadingForId(id);
-	if (!heading) return false;
+export function scrollToHeadingElement(heading: HTMLElement): boolean {
+	if (!isElementVisible(heading)) return false;
 	const rect = heading.getBoundingClientRect();
 	const reduceMotion = window.matchMedia(
 		"(prefers-reduced-motion: reduce)",
@@ -233,6 +241,12 @@ export function scrollToVisibleId(id: string): boolean {
 		behavior: reduceMotion ? "auto" : "smooth",
 	});
 	return true;
+}
+
+export function scrollToVisibleId(id: string): boolean {
+	const heading = visibleHeadingForId(id);
+	if (!heading) return false;
+	return scrollToHeadingElement(heading);
 }
 
 function ensureHeadingId(heading: HTMLElement): string {
@@ -403,27 +417,29 @@ export function attachTableOfContents(
 	}
 
 	function updateActiveFromScroll() {
-		if (!spyArmed) {
-			scheduleArm();
-			if (!pinnedHeadingId) return;
-		}
+		if (!spyArmed) scheduleArm();
 		if (pinnedHeadingId) {
 			setActiveTocLink(pinnedHeadingId);
 			return;
 		}
 		const tops = [];
 		for (const heading of headings) {
-			const visible = visibleHeadingForId(heading.id);
-			if (!visible) continue;
+			if (!heading.id || !isTrackableTocHeading(heading)) continue;
 			tops.push({
 				id: heading.id,
-				top: visible.getBoundingClientRect().top,
+				top: heading.getBoundingClientRect().top,
 			});
 		}
 		if (tops.length === 0) return;
 		setActiveTocLink(
 			pickActiveHeadingId(tops, TOC_SCROLL_OFFSET_PX, TOC_ACTIVE_SLACK_PX),
 		);
+	}
+
+	function scrollToHeadingById(id: string): boolean {
+		const fromList = headings.find((heading) => heading.id === id);
+		if (fromList && scrollToHeadingElement(fromList)) return true;
+		return scrollToVisibleId(id);
 	}
 
 	function scrollToHeading(event: Event) {
@@ -446,7 +462,7 @@ export function attachTableOfContents(
 			updateActiveFromScroll();
 		}, 1000);
 		const tryScroll = (attempt = 0) => {
-			if (scrollToVisibleId(id) || attempt >= 12) return;
+			if (scrollToHeadingById(id) || attempt >= 12) return;
 			setTimeout(() => tryScroll(attempt + 1), 50);
 		};
 		tryScroll();
@@ -522,8 +538,35 @@ export function attachTableOfContents(
 			{ once: true, signal },
 		);
 	} else {
+		armSpy();
 		scheduleArm();
 	}
+
+	window.addEventListener(
+		"hashchange",
+		() => {
+			const raw = location.hash.startsWith("#") ? location.hash.slice(1) : "";
+			if (!raw) {
+				updateActiveFromScroll();
+				return;
+			}
+			let id = raw;
+			try {
+				id = decodeURIComponent(raw);
+			} catch {
+				/* keep raw id */
+			}
+			if (headings.some((heading) => heading.id === id)) {
+				pinnedHeadingId = id;
+				setActiveTocLink(id);
+				window.setTimeout(() => {
+					if (pinnedHeadingId === id) pinnedHeadingId = null;
+					updateActiveFromScroll();
+				}, 600);
+			}
+		},
+		{ signal },
+	);
 
 	return true;
 }

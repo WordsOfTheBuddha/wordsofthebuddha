@@ -3,6 +3,10 @@ import {
 	sanitizeResearchHistoryReportStats,
 	type ResearchHistoryReportStats,
 } from "./aiAskResearchHistoryStats";
+import {
+	sanitizeResearchClarifyQuestions,
+	type ResearchClarifyQuestion,
+} from "./aiAskResearchClarify";
 
 /** Soft clip for a large patch (~50k completion tokens). Ingest stays 100k chars. */
 export const RESEARCH_REVISE_MAX_OUTPUT_WORDS = 35_000;
@@ -17,6 +21,111 @@ export const RESEARCH_REVISE_TOO_LONG_ERROR =
 export const RESEARCH_REVISE_CONSIDERING_NOTE = "Considering the revision…";
 export const RESEARCH_REVISE_SEARCH_NOTE = "Looking up additional discourses…";
 export const RESEARCH_REVISE_WRITING_NOTE = "Revising the report…";
+/** Live hop while a revision waits on the reader's answers (never persisted). */
+export const RESEARCH_REVISE_WAITING_NOTE = "Waiting for your answer…";
+/** Persisted hop that names the planner's reading of the instruction. */
+export const RESEARCH_REVISE_PLAN_NOTE_PREFIX = "Plan: ";
+export const RESEARCH_REVISE_PLAN_SUMMARY_MAX = 150;
+export const RESEARCH_REVISE_CLARIFY_MAX_QUESTIONS = 2;
+export const RESEARCH_REVISE_CLARIFY_MAX_LABEL = 120;
+/** A paused revision that gets no answer is dropped after this long. */
+export const RESEARCH_REVISE_CLARIFY_TTL_MS = 30 * 60 * 1000;
+export const RESEARCH_REVISE_CLARIFY_TITLE = "A quick check before revising";
+export const RESEARCH_REVISE_CLARIFY_CONTINUE = "Continue revision";
+export const RESEARCH_REVISE_CLARIFY_CANCEL = "Cancel";
+export const RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR =
+	"Revision paused too long without an answer; nothing was changed.";
+
+/** Planner questions for a revise, plus the reading they hang off. */
+export interface ResearchReviseClarify {
+	id: string;
+	questions: ResearchClarifyQuestion[];
+	/** Reader-facing plan (“delete ¶12 (duplicate of ¶11) · …”). */
+	interpretation: string;
+	/** Version the revision started from; null = current head. */
+	fromVersion: number | null;
+	expiresAt: number;
+}
+
+export function isResearchRevisePlanNote(note: string): boolean {
+	return /^plan:\s/i.test(note.replace(/\s+/g, " ").trim());
+}
+
+/**
+ * Turn model-side block ids into what the reader sees: `p12` → `¶12`. Other
+ * kinds are described in words by the planner, so only `p` needs mapping.
+ */
+export function readerFacingReviseBlockRefs(text: string): string {
+	return text
+		.replace(/\[\[([phtc]\d{1,4})\]\]/gi, "$1")
+		.replace(/(^|[\s(,;:/–—-])[pP](\d{1,4})(?=$|[\s),;:.!?/–—-])/g, "$1¶$2");
+}
+
+/** One-line reading for the process strip and the clarify card kicker. */
+export function researchRevisePlanSummary(plan: {
+	summary?: string;
+	intent?: string;
+}): string {
+	const source = (plan.summary || plan.intent || "").replace(/\s+/g, " ").trim();
+	if (!source) return "";
+	const reader = readerFacingReviseBlockRefs(source);
+	return reader.length > RESEARCH_REVISE_PLAN_SUMMARY_MAX
+		? `${reader.slice(0, RESEARCH_REVISE_PLAN_SUMMARY_MAX - 1).trimEnd()}…`
+		: reader;
+}
+
+export function researchRevisePlanNote(plan: { summary?: string; intent?: string }): string {
+	const summary = researchRevisePlanSummary(plan);
+	return summary ? `${RESEARCH_REVISE_PLAN_NOTE_PREFIX}${summary}` : "";
+}
+
+export function sanitizeResearchReviseClarifyQuestions(
+	raw: unknown,
+): ResearchClarifyQuestion[] {
+	return sanitizeResearchClarifyQuestions(raw, {
+		maxQuestions: RESEARCH_REVISE_CLARIFY_MAX_QUESTIONS,
+		maxLabel: RESEARCH_REVISE_CLARIFY_MAX_LABEL,
+		noPreference: false,
+		blockIds: true,
+	});
+}
+
+export function sanitizeResearchReviseClarify(raw: unknown): ResearchReviseClarify | null {
+	if (!raw || typeof raw !== "object") return null;
+	const record = raw as Record<string, unknown>;
+	const id = typeof record.id === "string" ? record.id.trim().slice(0, 80) : "";
+	const questions = sanitizeResearchReviseClarifyQuestions(record.questions);
+	if (!id || questions.length === 0) return null;
+	const expiresAt =
+		typeof record.expiresAt === "number" && Number.isFinite(record.expiresAt)
+			? Math.floor(record.expiresAt)
+			: 0;
+	const fromRaw = record.fromVersion;
+	return {
+		id,
+		questions,
+		interpretation: researchRevisePlanSummary({
+			summary: typeof record.interpretation === "string" ? record.interpretation : "",
+		}),
+		fromVersion:
+			typeof fromRaw === "number" && Number.isFinite(fromRaw) && fromRaw > 0
+				? Math.floor(fromRaw)
+				: null,
+		expiresAt,
+	};
+}
+
+export function isResearchReviseClarifyExpired(
+	clarify: { expiresAt: number } | null | undefined,
+	now: number = Date.now(),
+): boolean {
+	return Boolean(clarify && clarify.expiresAt > 0 && clarify.expiresAt <= now);
+}
+
+/** Label for the clarify card: which version the paused revision started from. */
+export function researchReviseClarifyBaseLabel(fromVersion: number | null | undefined): string {
+	return fromVersion && fromVersion > 0 ? `Revising from v${fromVersion}` : "";
+}
 
 export function researchRevisionStartedLabel(n: number): string {
 	const version = Math.max(1, Math.floor(Number(n) || 1));
@@ -83,6 +192,8 @@ export interface ResearchRevisePatch {
 	ops?: ResearchReviseOp[];
 }
 
+export const RESEARCH_REVISE_MAX_BLOCKS_PER_OP = 12;
+
 export interface ResearchReportBlock {
 	id: string;
 	markdown: string;
@@ -101,13 +212,39 @@ export interface ResearchRevisePlan {
 	searchQueries: string[];
 	/** Discourse ids (mn10, sn48.42) to read in full for quotations. */
 	readFull: string[];
+	/** Reader-facing one-liner for the process strip (falls back to `intent`). */
+	summary?: string;
+	/** Genuine ambiguities the writer should not guess at (0–2). */
+	questions?: ResearchClarifyQuestion[];
 }
 
-const REPORT_BLOCK_TAG = /^\[\[p\d+\]\]\s*$/;
+/**
+ * Block id prefixes. `p` counts the blocks the reader sees numbered as ¶ N
+ * (paragraphs, block quotations, lists — see REPORT_PARAGRAPH_SELECTOR);
+ * headings, tables/rules/HTML, and fenced code get their own counters so the
+ * reader's "P12" and the model's `p12` are the same block.
+ */
+export const REPORT_BLOCK_ID_PREFIXES = {
+	paragraph: "p",
+	quote: "p",
+	list: "p",
+	heading: "h",
+	other: "t",
+	code: "c",
+} as const;
+
+const REPORT_BLOCK_TAG = /^\[\[[phtc]\d+\]\]\s*$/i;
+const HEADING_LINE = /^#{1,6}\s+/;
+const LIST_LINE = /^\s*(?:[-*+]|\d+[.)])\s+/;
+const QUOTE_LINE = /^\s*>/;
+const FENCE_LINE = /^\s*```/;
+const RULE_LINE = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
 
 /**
- * Split a report body into addressable blocks. Blank lines separate blocks;
- * fenced code stays whole; a run of list lines is one block.
+ * Split a report body into addressable blocks the way the renderer will:
+ * blank lines separate blocks; a heading line is always its own block; a
+ * fence or `>` line interrupts a paragraph; fenced code stays whole; a list
+ * stays one block even when blank lines sit between its items.
  */
 export function splitReportBlocks(markdown: string): ResearchReportBlock[] {
 	const text = stripSourcesForRevise(markdown).replace(/\r\n/g, "\n");
@@ -121,8 +258,18 @@ export function splitReportBlocks(markdown: string): ResearchReportBlock[] {
 		if (chunk) chunks.push(chunk);
 		current = [];
 	};
-	for (const line of lines) {
-		if (/^\s*```/.test(line)) {
+	const currentIsList = () => current.length > 0 && LIST_LINE.test(current[0] || "");
+	const currentIsQuote = () => current.length > 0 && QUOTE_LINE.test(current[0] || "");
+	const nextContentLine = (from: number): string | null => {
+		for (let j = from; j < lines.length; j += 1) {
+			if (lines[j]?.trim()) return lines[j] || null;
+		}
+		return null;
+	};
+	for (let i = 0; i < lines.length; i += 1) {
+		const line = lines[i] || "";
+		if (FENCE_LINE.test(line)) {
+			if (!inFence) flush();
 			inFence = !inFence;
 			current.push(line);
 			if (!inFence) flush();
@@ -133,27 +280,47 @@ export function splitReportBlocks(markdown: string): ResearchReportBlock[] {
 			continue;
 		}
 		if (!line.trim()) {
+			// A loose list (blank lines between items) renders as one <ul>/<ol>.
+			if (currentIsList()) {
+				const next = nextContentLine(i + 1);
+				if (next && (LIST_LINE.test(next) || /^\s{2,}\S/.test(next))) {
+					current.push("");
+					continue;
+				}
+			}
 			flush();
 			continue;
 		}
 		if (REPORT_BLOCK_TAG.test(line)) continue;
+		if (HEADING_LINE.test(line)) {
+			flush();
+			current.push(line);
+			flush();
+			continue;
+		}
+		if (QUOTE_LINE.test(line) && current.length > 0 && !currentIsQuote()) {
+			flush();
+		}
 		current.push(line);
 	}
 	flush();
 	let section = "";
-	return chunks.map((chunk, index) => {
+	const counters: Record<string, number> = {};
+	return chunks.map((chunk) => {
 		const first = chunk.split("\n")[0] || "";
 		let kind: ResearchReportBlock["kind"] = "paragraph";
-		if (/^#{1,6}\s+/.test(first)) {
+		if (HEADING_LINE.test(first)) {
 			kind = "heading";
 			if (/^#{2,3}\s+/.test(first)) {
 				section = first.replace(/^#{2,3}\s+/, "").trim();
 			}
-		} else if (/^\s*(?:[-*+]|\d+[.)])\s+/.test(first)) kind = "list";
-		else if (/^\s*>/.test(first)) kind = "quote";
-		else if (/^\s*```/.test(first)) kind = "code";
-		else if (/^\s*(?:\||<)/.test(first)) kind = "other";
-		return { id: `p${index + 1}`, markdown: chunk, section, kind };
+		} else if (LIST_LINE.test(first)) kind = "list";
+		else if (QUOTE_LINE.test(first)) kind = "quote";
+		else if (FENCE_LINE.test(first)) kind = "code";
+		else if (/^\s*(?:\||<)/.test(first) || RULE_LINE.test(first)) kind = "other";
+		const prefix = REPORT_BLOCK_ID_PREFIXES[kind];
+		counters[prefix] = (counters[prefix] || 0) + 1;
+		return { id: `${prefix}${counters[prefix]}`, markdown: chunk, section, kind };
 	});
 }
 
@@ -162,21 +329,33 @@ export function numberedReportForModel(blocks: readonly ResearchReportBlock[]): 
 	return blocks.map((block) => `[[${block.id}]]\n${block.markdown}`).join("\n\n");
 }
 
-/** Strip any [[pN]] tags a model echoes back inside new markdown. */
+/** Strip any [[pN]] / [[hN]] tags a model echoes back inside new markdown. */
 export function stripReportBlockTags(markdown: string): string {
 	return markdown
 		.replace(/\r\n/g, "\n")
 		.split("\n")
 		.filter((line) => !REPORT_BLOCK_TAG.test(line))
 		.join("\n")
-		.replace(/\[\[p\d+\]\]\s*/g, "")
+		.replace(/\[\[[phtc]\d+\]\]\s*/gi, "")
 		.trim();
 }
 
+/**
+ * Canonical block id from a model (or reader) reference. A bare number, "¶ 12",
+ * "P12" or "paragraph 12" all mean the visible paragraph p12; h/t/c ids keep
+ * their prefix. Anything else is not an id.
+ */
 export function normalizeReportBlockId(value: unknown): string {
-	const text = typeof value === "string" ? value : typeof value === "number" ? String(value) : "";
-	const match = text.trim().match(/p?(\d+)/i);
-	return match ? `p${Number(match[1])}` : "";
+	const text = (
+		typeof value === "string" ? value : typeof value === "number" ? String(value) : ""
+	)
+		.trim()
+		.replace(/^\[\[|\]\]$/g, "")
+		.trim();
+	const typed = text.match(/^([phtc])\s*-?\s*(\d+)$/i);
+	if (typed) return `${typed[1].toLowerCase()}${Number(typed[2])}`;
+	const visible = text.match(/^(?:¶|para(?:graph)?|block)?\s*(\d+)$/i);
+	return visible ? `p${Number(visible[1])}` : "";
 }
 
 function parseOpKind(value: unknown): ResearchReviseOpKind | null {
@@ -282,8 +461,28 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 				.filter((id) => /^[a-z]+\d+(?:\.\d+)*$/.test(id)),
 		),
 	].slice(0, 4);
-	if (!targets.length && !intent && !searchQueries.length && !readFull.length) return null;
-	return { targets, intent, searchQueries, readFull };
+	const summary =
+		typeof record.summary === "string"
+			? record.summary.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_PLAN_SUMMARY_MAX * 2)
+			: "";
+	const questions = sanitizeResearchReviseClarifyQuestions(record.questions);
+	if (
+		!targets.length &&
+		!intent &&
+		!searchQueries.length &&
+		!readFull.length &&
+		!questions.length
+	) {
+		return null;
+	}
+	return {
+		targets,
+		intent,
+		searchQueries,
+		readFull,
+		...(summary ? { summary } : {}),
+		...(questions.length ? { questions } : {}),
+	};
 }
 
 export interface ResearchVersionMeta {
@@ -482,6 +681,11 @@ function splitParagraphs(markdown: string): string[] {
 		.filter(Boolean);
 }
 
+function updateReportFenceState(inFence: boolean, chunk: string): boolean {
+	const markers = chunk.match(/^\s*```/gm)?.length || 0;
+	return markers % 2 === 1 ? !inFence : inFence;
+}
+
 function tokenSet(text: string): Set<string> {
 	return new Set(
 		normalizeReviseText(text)
@@ -560,6 +764,41 @@ export function normalizeReportBlockText(text: string): string {
 
 export const REPORT_BLOCK_KEY_MIN = 12;
 
+/** Below this token overlap, a rewrite is delete+insert, not one amber edit. */
+export const REPORT_BLOCK_EDIT_SIMILARITY_MIN = 0.85;
+
+export type ReportDiffBlockKind =
+	| "heading"
+	| "paragraph"
+	| "list"
+	| "quote"
+	| "code"
+	| "other";
+
+export function reportDiffBlockKey(
+	kind: ReportDiffBlockKind,
+	text: string,
+): string {
+	const normalized = normalizeReportBlockText(text);
+	if (normalized.length < REPORT_BLOCK_KEY_MIN) return "";
+	return `${kind}:${normalized}`;
+}
+
+export function reportDiffBlockKindFromKey(key: string): ReportDiffBlockKind {
+	const kind = key.split(":")[0];
+	if (
+		kind === "heading" ||
+		kind === "paragraph" ||
+		kind === "list" ||
+		kind === "quote" ||
+		kind === "code" ||
+		kind === "other"
+	) {
+		return kind;
+	}
+	return "paragraph";
+}
+
 /** Block keys of a report body: paragraphs, headings, list items, quotes. */
 export function reportBlockKeys(markdown: string): string[] {
 	const out: string[] = [];
@@ -567,7 +806,7 @@ export function reportBlockKeys(markdown: string): string[] {
 	let inFence = false;
 	for (const chunk of splitParagraphs(text)) {
 		if (/^```/.test(chunk)) {
-			inFence = !inFence || !/```\s*$/.test(chunk);
+			inFence = updateReportFenceState(inFence, chunk);
 			continue;
 		}
 		if (inFence) continue;
@@ -618,37 +857,36 @@ export function reportContentBlocks(markdown: string): ReportContentBlock[] {
 		.map(({ index, key, markdown: body }) => ({ index, key, markdown: body }));
 }
 
-/** Full block walk in reading order (includes short blocks skipped by diffs). */
+/** Full block walk in reading order, matching the report renderer's DOM blocks. */
 export function enumerateReportBlocks(markdown: string): ReportEnumeratedBlock[] {
 	const out: ReportEnumeratedBlock[] = [];
-	const text = stripSourcesForRevise(markdown);
-	let inFence = false;
-	for (const chunk of splitParagraphs(text)) {
-		if (/^```/.test(chunk)) {
-			inFence = !inFence || !/```\s*$/.test(chunk);
-			continue;
-		}
-		if (inFence) continue;
+	for (const block of splitReportBlocks(markdown)) {
+		const chunk = block.markdown;
 		const lines = chunk.split("\n");
-		const listy = lines.every(
-			(line) => /^\s*(?:[-*+]|\d+[.)])\s+/.test(line) || /^\s+\S/.test(line),
-		);
-		if (listy) {
+		if (block.kind === "list") {
 			let item = "";
 			for (const line of lines) {
 				if (/^\s*(?:[-*+]|\d+[.)])\s+/.test(line)) {
-					if (item) pushEnumeratedReportBlock(out, item);
+					if (item) pushEnumeratedReportBlock(out, item, "list");
 					item = line.replace(/^\s*(?:[-*+]|\d+[.)])\s+/, "");
 				} else {
 					item += ` ${line.trim()}`;
 				}
 			}
-			if (item) pushEnumeratedReportBlock(out, item);
+			if (item) pushEnumeratedReportBlock(out, item, "list");
 			continue;
 		}
+		const kind: ReportDiffBlockKind =
+			block.kind === "heading" ||
+			block.kind === "quote" ||
+			block.kind === "code" ||
+			block.kind === "other"
+				? block.kind
+				: "paragraph";
 		pushEnumeratedReportBlock(
 			out,
 			chunk.replace(/^\s*>\s?/gm, "").replace(/^#{1,6}\s+/, ""),
+			kind,
 		);
 	}
 	return out;
@@ -657,11 +895,12 @@ export function enumerateReportBlocks(markdown: string): ReportEnumeratedBlock[]
 function pushEnumeratedReportBlock(
 	out: ReportEnumeratedBlock[],
 	markdown: string,
+	kind: ReportDiffBlockKind,
 ): void {
 	const trimmed = markdown.trim();
 	out.push({
 		index: out.length,
-		key: normalizeReportBlockText(trimmed),
+		key: reportDiffBlockKey(kind, trimmed),
 		markdown: trimmed,
 	});
 }
@@ -688,6 +927,8 @@ export interface ReportRemovedBlock extends ReportContentBlock {
 	 * `null` means the removal belonged after the final surviving block.
 	 */
 	beforeNextIndex: number | null;
+	/** Fallback anchor when DOM indices drift (e.g. after a table). */
+	beforeNextKey?: string | null;
 }
 
 type ReportDiffOp =
@@ -715,6 +956,9 @@ function reportBlockSimilarity(
 	b: ReportContentBlock,
 ): number {
 	if (a.key === b.key) return 1;
+	if (reportDiffBlockKindFromKey(a.key) !== reportDiffBlockKindFromKey(b.key)) {
+		return 0;
+	}
 	const left = reportBlockTokens(a);
 	const right = reportBlockTokens(b);
 	if (left.size === 0 || right.size === 0) return 0;
@@ -750,7 +994,13 @@ function alignReportBlocks(
 		for (let j = 1; j < cols; j += 1) {
 			const exact = before[i - 1].key === after[j - 1].key;
 			const similarity = reportBlockSimilarity(before[i - 1], after[j - 1]);
-			const substitute = costs[i - 1][j - 1] + (exact ? 0 : 1.45 - similarity);
+			const substitute =
+				costs[i - 1][j - 1] +
+				(exact
+					? 0
+					: similarity >= REPORT_BLOCK_EDIT_SIMILARITY_MIN
+						? 1.45 - similarity
+						: 2.01);
 			const remove = costs[i - 1][j] + 1;
 			const insert = costs[i][j - 1] + 1;
 			if (substitute <= remove && substitute <= insert) {
@@ -810,6 +1060,7 @@ export function diffReportBlockChanges(base: string, next: string): ReportBlockD
 			removed.push({
 				...op.before,
 				beforeNextIndex: nextSurvivor?.after.index ?? null,
+				beforeNextKey: nextSurvivor?.after.key ?? null,
 			});
 		}
 	}
@@ -825,6 +1076,82 @@ export function changedReportBlockKeys(base: string, next: string): string[] {
 export function reportBlockDiffCount(diff: ReportBlockDiff | null): number {
 	if (!diff) return 0;
 	return diff.added.length + diff.edited.length + diff.removed.length;
+}
+
+function completeFenceInfo(markdown: string): string | null {
+	const text = markdown.replace(/\r\n/g, "\n").trim();
+	const opening = text.match(/^```([^\n]*)\n/);
+	if (!opening || !/\n```\s*$/.test(text)) return null;
+	const markers = text.match(/^\s*```/gm)?.length || 0;
+	if (markers !== 2) return null;
+	return (opening[1] || "").trim().toLowerCase();
+}
+
+/**
+ * Enforce the planner's scope after generation. This is the hard backstop for
+ * a writer that reprints unrelated blocks or damages an atomic fenced diagram.
+ */
+export function constrainResearchRevisePatch(options: {
+	patch: ResearchRevisePatch | null;
+	blocks: readonly ResearchReportBlock[];
+	targets?: readonly string[];
+}): ResearchRevisePatch | null {
+	const patch = options.patch;
+	if (!patch) return null;
+	const byId = new Map(options.blocks.map((block) => [block.id, block]));
+	const scoped = new Set(
+		(options.targets || []).map(normalizeReportBlockId).filter((id) => byId.has(id)),
+	);
+	const hasScope = scoped.size > 0;
+	const ops = (patch.ops || []).filter((op) => {
+		const target = byId.get(op.id);
+		if (!target || (hasScope && !scoped.has(op.id))) return false;
+		if (op.op === "delete") return true;
+		const replacementBlocks = splitReportBlocks(op.markdown);
+		if (replacementBlocks.length > RESEARCH_REVISE_MAX_BLOCKS_PER_OP) {
+			return false;
+		}
+		// Any fence the writer emits must be complete, or it renders as prose.
+		const fenceMarkers = op.markdown.match(/^\s*```/gm)?.length || 0;
+		if (fenceMarkers % 2 !== 0) return false;
+		if (op.op !== "update" || target.kind !== "code") return true;
+		const beforeInfo = completeFenceInfo(target.markdown);
+		const afterInfo = completeFenceInfo(op.markdown);
+		return beforeInfo !== null && afterInfo === beforeInfo;
+	});
+	const constrained: ResearchRevisePatch = {
+		...patch,
+		// A scoped block plan cannot safely accept heading-based legacy edits.
+		edits: hasScope ? [] : patch.edits,
+		...(ops.length ? { ops } : { ops: undefined }),
+	};
+	return researchRevisePatchIsEmpty(constrained) ? null : constrained;
+}
+
+/** Human-readable diff for debugging large revisions in the browser console. */
+export function formatReportBlockDiffDebug(base: string, next: string): string {
+	const diff = diffReportBlockChanges(base, next);
+	const lines = [
+		`report diff: ${reportBlockDiffCount(diff)} changes (${diff.added.length} added, ${diff.edited.length} edited, ${diff.removed.length} removed)`,
+	];
+	if (diff.added.length) {
+		lines.push("added:");
+		for (const key of diff.added) lines.push(`  + ${key}`);
+	}
+	if (diff.edited.length) {
+		lines.push("edited:");
+		for (const key of diff.edited) lines.push(`  ~ ${key}`);
+	}
+	if (diff.removed.length) {
+		lines.push("removed:");
+		for (const block of diff.removed) {
+			const preview = block.markdown.replace(/\s+/g, " ").trim().slice(0, 72);
+			lines.push(
+				`  - [before #${block.beforeNextIndex ?? "end"}${block.beforeNextKey ? ` key=${block.beforeNextKey}` : ""}] ${preview}`,
+			);
+		}
+	}
+	return lines.join("\n");
 }
 
 export function clipEditsToWordBudget(
@@ -1262,6 +1589,15 @@ export function formatResearchVersionLabel(
 		typeof previewN === "number" && previewN > 0 ? previewN : current;
 	if (index.length === 0) return "v1";
 	return n === current ? `v${n}` : `v${n} · preview`;
+}
+
+/** Toolbar label while a revise is in flight shows the version being written. */
+export function formatResearchVersionLabelForTurn(
+	index: readonly ResearchVersionMeta[],
+	options: { previewN?: number | null; revising?: boolean } = {},
+): string {
+	if (options.revising) return `v${nextResearchRevisionN(index)}`;
+	return formatResearchVersionLabel(index, options.previewN);
 }
 
 export function versionBodiesToKeep(

@@ -603,6 +603,64 @@
 	border-color: var(--primary-color);
 }
 
+/* Revise questions sit between the progress strip and the (unchanged) report. */
+.ai-clarify-revise {
+	margin: 0.65rem 0 1.15rem;
+	padding: 0.85rem 1rem 0.35rem;
+	border: 1px solid color-mix(in srgb, var(--secondary-color) 45%, var(--surface-border));
+	border-radius: 0.85rem;
+	background: color-mix(in srgb, var(--surface-elevated) 70%, var(--background-color));
+}
+
+.ai-clarify-revise .ai-clarify-title {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.25rem 0.6rem;
+	margin-bottom: 0.5rem;
+}
+
+.ai-clarify-base {
+	color: var(--text-muted);
+	font-size: 0.82rem;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+}
+
+/* Choices that name a block: excerpt text, left-aligned, may wrap. */
+.ai-clarify-choice.has-block {
+	border-radius: 0.65rem;
+	text-align: left;
+	line-height: 1.35;
+	max-width: 100%;
+}
+
+.ai-clarify-choice[data-block-id^="p"]::before {
+	content: "¶ ";
+	color: var(--text-muted);
+	font-size: 0.8em;
+}
+
+/* The block a clarify choice points at, pulsed after the scroll lands. */
+.ai-answer-body > .is-clarify-target {
+	animation: ai-clarify-target 2.2s ease-out 1;
+	border-radius: 0.35rem;
+}
+
+@keyframes ai-clarify-target {
+	0% {
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--secondary-color) 60%, transparent);
+		background: color-mix(in srgb, var(--secondary-color) 14%, transparent);
+	}
+	60% {
+		box-shadow: 0 0 0 8px transparent;
+	}
+	100% {
+		box-shadow: 0 0 0 8px transparent;
+		background: transparent;
+	}
+}
+
 .ai-clarify-decline {
 	margin: 0.2rem 0 0.85rem;
 }
@@ -1396,7 +1454,7 @@
 }
 
 .ai-search-details .ai-queries,
-.ai-search-details .ai-fallbacks {
+.ai-search-details .ai-sourcing-terms {
 	margin-bottom: 0.35rem;
 }
 
@@ -1474,26 +1532,26 @@
 	color: var(--primary-color);
 }
 
-.ai-queries {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.4rem;
-	margin-bottom: 1rem;
+.ai-sourcing-terms {
+	margin: 0 0 1rem;
 }
 
-.ai-fallbacks {
-	margin: -0.35rem 0 1rem;
-}
-
-.ai-fallbacks-label {
+.ai-sourcing-terms-label {
 	display: block;
 	font-size: 0.75rem;
 	color: var(--text-muted);
 	margin-bottom: 0.35rem;
 }
 
-.ai-queries-fallback .ai-query-chip {
-	opacity: 0.85;
+.ai-sourcing-terms .ai-queries {
+	margin-bottom: 0;
+}
+
+.ai-queries {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-bottom: 1rem;
 }
 
 .ai-query-chip {
@@ -2899,7 +2957,7 @@ html.dark .ai-paragraph-btn:focus-visible {
 .ai-versions-drawer {
 	position: fixed;
 	inset: 0;
-	z-index: 40;
+	z-index: 70;
 	background: color-mix(in srgb, #000 28%, transparent);
 }
 
@@ -2911,10 +2969,10 @@ html.dark .ai-paragraph-btn:focus-visible {
 	width: min(22rem, 100%);
 	background: var(--background-color);
 	border-left: 1px solid var(--surface-border);
-	padding: 1.1rem 1.15rem 1.25rem;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: 0;
 	overflow: hidden;
 }
 
@@ -2933,6 +2991,25 @@ html.dark .ai-paragraph-btn:focus-visible {
 	align-items: center;
 	justify-content: space-between;
 	gap: 0.5rem;
+	flex-shrink: 0;
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid var(--surface-border);
+}
+
+.ai-versions-head .ai-dialog-close {
+	position: static;
+	top: auto;
+	right: auto;
+	flex-shrink: 0;
+}
+
+.ai-versions-title {
+	margin: 0;
+	font-family: inherit;
+	font-size: 1.05rem;
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--text-color);
 }
 
 .ai-versions-when {
@@ -2945,7 +3022,7 @@ html.dark .ai-paragraph-btn:focus-visible {
 .ai-versions-list {
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 0.75rem 1rem 0.5rem;
 	display: flex;
 	flex-direction: column;
 	gap: 0.7rem;
@@ -2953,7 +3030,6 @@ html.dark .ai-paragraph-btn:focus-visible {
 	min-height: 0;
 	overflow: auto;
 	overscroll-behavior: contain;
-	padding: 0.15rem 0.1rem 0.5rem;
 }
 
 .ai-versions-row {
@@ -2982,7 +3058,7 @@ html.dark .ai-paragraph-btn:focus-visible {
 	outline-offset: 2px;
 }
 
-.ai-versions-row.is-current,
+/* The accent border marks the version being shown; the “current” tag marks head. */
 .ai-versions-row.is-preview {
 	border-color: color-mix(in srgb, var(--secondary-color) 55%, var(--surface-border));
 }
@@ -3113,6 +3189,7 @@ html.dark .ai-paragraph-btn:focus-visible {
 	flex-direction: column;
 	gap: 0.45rem;
 	margin-top: auto;
+	padding: 0 1rem 1.25rem;
 }
 
 @media (max-width: 640px) {
@@ -3136,12 +3213,15 @@ html.dark .ai-paragraph-btn:focus-visible {
 		border-left: 0;
 		border-top: 1px solid var(--surface-border);
 		border-radius: 1rem 1rem 0 0;
-		padding-top: 0.65rem;
-		padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
 	}
 
 	.ai-versions-grab {
 		display: block;
+		margin-top: 0.65rem;
+	}
+
+	.ai-versions-actions {
+		padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
 	}
 }
 

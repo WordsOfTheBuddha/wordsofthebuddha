@@ -8,6 +8,7 @@ import {
 	clipResearchReviseQuote,
 } from "../../../utils/aiAskResearchRevise";
 import {
+	answerResearchReviseClarify,
 	applyResearchRevise,
 	beginResearchRevise,
 	startResearchReviseWorker,
@@ -45,8 +46,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		body = {};
 	}
 
-	const action = body.action === "restore" ? "restore" : "revise";
-	if (action === "revise" && !getOpenRouterApiKey()) {
+	const action =
+		body.action === "restore"
+			? "restore"
+			: body.action === "answer"
+				? "answer"
+				: "revise";
+	if (action !== "restore" && !getOpenRouterApiKey()) {
 		return new Response(
 			JSON.stringify({
 				success: false,
@@ -82,6 +88,40 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				? fromVersion
 				: null,
 	};
+
+	if (action === "answer") {
+		// Resume a revision the planner paused on its questions. No new credit:
+		// the revise that asked already paid.
+		const answered = await answerResearchReviseClarify({
+			uid: user.uid,
+			jobId: shared.jobId,
+			clarifyId: typeof body.clarifyId === "string" ? body.clarifyId : "",
+			answers: body.answers,
+		});
+		if (!answered.ok) {
+			return new Response(
+				JSON.stringify({
+					success: false,
+					code: answered.code,
+					error: answered.error,
+				}),
+				{
+					status: errorStatus(answered.code),
+					headers: { "Content-Type": "application/json" },
+				},
+			);
+		}
+		void startResearchReviseWorker({
+			requestUrl: request.url,
+			uid: user.uid,
+			jobId: answered.job.id,
+			runToken: answered.runToken || "",
+		});
+		return new Response(
+			JSON.stringify({ success: true, job: answered.job }),
+			{ status: 202, headers: { "Content-Type": "application/json" } },
+		);
+	}
 
 	if (action === "restore") {
 		const result = await applyResearchRevise({ ...shared, action: "restore" });

@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+	dropOpenResearchRevisionCycle,
+	isResearchJobReviseClarifying,
 	isResearchJobRetryable,
+	isResearchJobRevising,
 	isResearchJobTerminal,
 	parseResearchJobStatus,
 	rememberResearchProcessNote,
@@ -9,6 +12,7 @@ import {
 	researchJobRetryReusesCredit,
 	researchProcessHopLabels,
 	researchRevisedLabel,
+	splitResearchReviseHopLabels,
 	interleaveResearchRevisionStartedHops,
 	toResearchJobPublic,
 } from "./aiAskResearchJob";
@@ -359,3 +363,94 @@ describe("interleaveResearchRevisionStartedHops", () => {
 	});
 });
 
+
+describe("revise-clarifying: a revision paused on the planner's questions", () => {
+	const clarify = {
+		id: "rc_1",
+		questions: [
+			{
+				id: "which",
+				prompt: "Which paragraph repeats the other?",
+				choices: [{ id: "a", label: "¶11 “The claim…”", blockId: "p11" }],
+			},
+		],
+		interpretation: "delete p12 (duplicate of p11)",
+		fromVersion: 8,
+		expiresAt: Date.now() + 60_000,
+	};
+
+	it("is an open, non-terminal revising state in the answer phase", () => {
+		assert.equal(parseResearchJobStatus("revise-clarifying"), "revise-clarifying");
+		assert.equal(isResearchJobTerminal("revise-clarifying"), false);
+		assert.equal(isResearchJobRevising("revise-clarifying"), true);
+		assert.equal(isResearchJobReviseClarifying("revise-clarifying"), true);
+		assert.equal(isResearchJobReviseClarifying("revising"), false);
+		assert.equal(researchJobPhase("revise-clarifying"), "answer");
+	});
+
+	it("exposes the questions only while paused", () => {
+		const paused = toResearchJobPublic({
+			id: "j1",
+			status: "revise-clarifying",
+			question: "Mindfulness",
+			reviseClarify: clarify,
+		});
+		assert.equal(paused.pending, true);
+		assert.equal(paused.reviseClarify?.id, "rc_1");
+		assert.equal(paused.reviseClarify?.interpretation, "delete ¶12 (duplicate of ¶11)");
+		assert.equal(paused.reviseClarify?.fromVersion, 8);
+		assert.equal(paused.reviseClarify?.questions[0].choices[0].blockId, "p11");
+		// Other appended by the sanitizer; no “No preference” on a revise.
+		assert.deepEqual(
+			paused.reviseClarify?.questions[0].choices.map((c) => c.id),
+			["a", "other"],
+		);
+		const resumed = toResearchJobPublic({
+			id: "j1",
+			status: "revising",
+			question: "Mindfulness",
+			reviseClarify: clarify,
+		});
+		assert.equal(resumed.reviseClarify, undefined);
+	});
+
+	it("keeps the plan as a hop but never the waiting note", () => {
+		let notes = rememberResearchProcessNote([], "Started v11 revision…");
+		notes = rememberResearchProcessNote(notes, "Considering the revision…");
+		notes = rememberResearchProcessNote(notes, "Plan: delete ¶12 (duplicate of ¶11)");
+		notes = rememberResearchProcessNote(notes, "Waiting for your answer…");
+		assert.deepEqual(notes, [
+			"Started v11 revision…",
+			"Considering the revision…",
+			"Plan: delete ¶12 (duplicate of ¶11)",
+		]);
+		// After the answers the planner runs again: the plan hop is replaced, not stacked.
+		notes = rememberResearchProcessNote(notes, "Considering the revision…");
+		notes = rememberResearchProcessNote(notes, "Plan: delete ¶12 · fence the diagram in ¶72");
+		assert.deepEqual(notes.slice(-1), ["Plan: delete ¶12 · fence the diagram in ¶72"]);
+		const labels = researchProcessHopLabels(notes);
+		assert.deepEqual(labels, [
+			"Started v11 revision",
+			"Considered the revision",
+			"Plan: delete ¶12 · fence the diagram in ¶72",
+		]);
+		assert.deepEqual(splitResearchReviseHopLabels(["Read MN 10", ...labels]).revise, labels);
+	});
+
+	it("drops an abandoned cycle's hops, but never a cycle that shipped a version", () => {
+		const open = [
+			"Read MN 10",
+			"Started v10 revision…",
+			"Considering the revision…",
+			"Revising the report…",
+			"Started v11 revision…",
+			"Considering the revision…",
+			"Plan: delete ¶12",
+		];
+		assert.deepEqual(dropOpenResearchRevisionCycle(open), open.slice(0, 4));
+		const closed = open.slice(0, 4);
+		assert.deepEqual(dropOpenResearchRevisionCycle(closed), closed);
+		assert.deepEqual(dropOpenResearchRevisionCycle(["Read MN 10"]), ["Read MN 10"]);
+		assert.deepEqual(dropOpenResearchRevisionCycle(undefined), []);
+	});
+});

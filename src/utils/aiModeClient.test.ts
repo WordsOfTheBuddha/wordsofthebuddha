@@ -1077,11 +1077,11 @@ describe("AI JSON request timeouts", () => {
 });
 
 describe("report change marks", () => {
-	it("counts blocks the new version added or rewrote", () => {
+	it("counts blocks the new version added, removed, or rewrote", () => {
 		const base = "## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph will change a lot.";
 		const next =
 			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph now quotes SN 48.42 directly.\n\nA brand new closing paragraph appears.";
-		assert.equal(reportChangeCount({ report: next, reviseBase: base }), 2);
+		assert.equal(reportChangeCount({ report: next, reviseBase: base }), 3);
 		assert.equal(reportChangeCount({ report: base, reviseBase: base }), 0);
 		assert.equal(reportChangeCount({ report: next }), 0);
 	});
@@ -1113,6 +1113,15 @@ describe("report change marks", () => {
 				{ n: 2, at: 2, instruction: "x", changelog: "y", from: 1 },
 			]),
 			1,
+		);
+		// A "revise from v8" while head was v9 diffs v10 against v8, not v9.
+		assert.equal(
+			researchReviseBaseVersionN([
+				{ n: 8, at: 8, instruction: "", changelog: "", from: 7 },
+				{ n: 9, at: 9, instruction: "", changelog: "", from: 8 },
+				{ n: 10, at: 10, instruction: "", changelog: "", from: 8 },
+			]),
+			8,
 		);
 		assert.equal(
 			shouldHydrateReviseBase({
@@ -1158,19 +1167,57 @@ describe("report change marks", () => {
 		assert.equal(body.querySelectorAll(".is-change-edited, .is-change-added").length, 0);
 	});
 
-	it("stamps block keys so citation markup still highlights", () => {
+	it("stamps block keys so citation markup still matches the markdown block", () => {
 		const base =
 			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph cites SN 48.42 in full.";
 		const next =
-			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph cites [SN 48.42](/sn48.42) with a popover title.";
+			"## A\n\nFirst paragraph stays the same here.\n\nSecond paragraph cites [SN 48.42](/sn48.42) in full.";
 		const dom = new JSDOM(
-			`<div class="ai-answer-body"><h2>A</h2><p>First paragraph stays the same here.</p><p>Second paragraph cites <a href="/sn48.42" class="ai-summary-ref" data-cite-title="Sabbasava Sutta">SN 48.42</a> with a popover title.</p></div>`,
+			`<div class="ai-answer-body"><h2>A</h2><p>First paragraph stays the same here.</p><p>Second paragraph cites <a href="/sn48.42" class="ai-summary-ref" data-cite-title="Sabbasava Sutta">SN 48.42</a> in full.</p></div>`,
 		);
 		const body = dom.window.document.querySelector(".ai-answer-body")!;
 		const diff = reportBlockDiff({ report: next, reviseBase: base });
 		stampReportBlockKeys(body, next);
-		assert.equal(markReportBlockDiff(body, diff, base), 1);
-		assert.ok(body.querySelector("p.is-change-edited.is-first-change"));
+		assert.equal(markReportBlockDiff(body, diff, base), 0);
+		assert.equal(
+			body.querySelectorAll("p")[1]?.getAttribute("data-report-block-key"),
+			"paragraph:secondparagraphcitessn4842infull",
+		);
+		assert.equal(body.querySelectorAll(".is-change-edited, .is-change-added").length, 0);
+	});
+
+	it("places removals before a list when the anchor is a list item", () => {
+		const base =
+			"## Section\n\nAlpha paragraph remains in place.\n\n- **Removed bullet** stays in the old version.\n\nBeta paragraph remains in place.";
+		const next =
+			"## Section\n\nAlpha paragraph remains in place.\n\nBeta paragraph remains in place.";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>Section</h2><p>Alpha paragraph remains in place.</p><p>Beta paragraph remains in place.</p></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		markReportBlockDiff(body, diff, base);
+		const removed = body.querySelector("details.ai-change-removed");
+		assert.ok(removed);
+		assert.equal(removed.nextElementSibling?.textContent, "Beta paragraph remains in place.");
+	});
+
+	it("places removals before the next block even when a table sits between them", () => {
+		const base =
+			"## Section\n\nAlpha paragraph remains in place.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n**Removed emphasis stays markdown.**\n\nBeta paragraph remains in place.";
+		const next =
+			"## Section\n\nAlpha paragraph remains in place.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\nBeta paragraph remains in place.";
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>Section</h2><p>Alpha paragraph remains in place.</p><div class="ai-report-table-wrap"><table><tr><td>1</td></tr></table></div><p>Beta paragraph remains in place.</p></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		markReportBlockDiff(body, diff, base);
+		const removed = body.querySelector("details.ai-change-removed");
+		assert.ok(removed);
+		assert.equal(removed.nextElementSibling?.textContent, "Beta paragraph remains in place.");
 	});
 
 	it("renders removed markdown before its next surviving block", () => {
@@ -1192,7 +1239,7 @@ describe("report change marks", () => {
 		assert.equal(removed.hasAttribute("open"), false);
 	});
 
-	it("marks blockquote wrappers, not inner paragraphs, when a quote changed", () => {
+	it("marks blockquote wrappers, not inner paragraphs, when a quote was replaced", () => {
 		const base = "## A\n\nLead-in.\n\n> old quote SN 48.42";
 		const next = "## A\n\nLead-in.\n\n> new quote SN 48.42";
 		const dom = new JSDOM(
@@ -1202,9 +1249,30 @@ describe("report change marks", () => {
 		const diff = reportBlockDiff({ report: next, reviseBase: base });
 		stampReportBlockKeys(body, next);
 		assert.equal(markReportBlockDiff(body, diff, base), 1);
-		assert.ok(body.querySelector("blockquote.is-change-edited.is-first-change"));
-		assert.equal(body.querySelectorAll("blockquote p.is-change-edited").length, 0);
-		assert.equal(body.querySelectorAll("details.ai-change-removed").length, 0);
+		assert.ok(body.querySelector("blockquote.is-change-added.is-first-change"));
+		assert.equal(body.querySelectorAll("blockquote p.is-change-added").length, 0);
+		assert.equal(body.querySelectorAll("details.ai-change-removed").length, 1);
+	});
+
+	it("tracks a fenced Mermaid diagram as one changed report block", () => {
+		const base =
+			"## Diagram\n\n```mermaid\nflowchart LR\n A[Old] --> B\n```\n\nClosing paragraph stays exactly the same.";
+		const next =
+			'## Diagram\n\n```mermaid\nflowchart LR\n A["New label"] --> B\n```\n\nClosing paragraph stays exactly the same.';
+		const dom = new JSDOM(
+			`<div class="ai-answer-body"><h2>Diagram</h2><pre class="ai-report-mermaid" data-ai-mermaid>flowchart LR\n A["New label"] --&gt; B</pre><p>Closing paragraph stays exactly the same.</p></div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		const diff = reportBlockDiff({ report: next, reviseBase: base });
+		stampReportBlockKeys(body, next);
+		assert.equal(markReportBlockDiff(body, diff, base), 1);
+		assert.ok(body.querySelector("pre.ai-report-mermaid.is-change-added"));
+		assert.equal(
+			body.querySelectorAll(
+				"p.is-change-added, p.is-change-edited, details.ai-change-removed p",
+			).length,
+			0,
+		);
 	});
 });
 

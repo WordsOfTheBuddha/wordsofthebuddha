@@ -5,6 +5,9 @@ import { toResearchJobPublic } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_LENGTH_NOTE_MD } from "./aiAskResearchReportLength";
 import {
 	applyResearchJobToTurn,
+	findReportBlockElement,
+	isResearchReviseClarifying,
+	nextReviseClarifyDraft,
 	askComposerMeterIsResearch,
 	askFollowPlaceholder,
 	askMeterLabel,
@@ -71,9 +74,12 @@ import {
 	shouldUseResearchAsk,
 	followComposerShouldExpand,
 	researchEmptyComposerGated,
+	isResearchReviseInProgress,
 	researchReportFollowChrome,
 	reportFollowToggleLabel,
 	RESEARCH_SIGNED_OUT_PLACEHOLDER,
+	SEARCH_TERMS_SOURCING_LABEL,
+	dedupeSourcingSearchTerms,
 	type ResearchTurnFields,
 } from "./aiAskResearchUi";
 
@@ -159,6 +165,27 @@ describe("followComposerShouldExpand", () => {
 				hasReviseChip: true,
 			}),
 			true,
+		);
+	});
+});
+
+describe("isResearchReviseInProgress", () => {
+	it("is true only while a report revise is pending", () => {
+		assert.equal(
+			isResearchReviseInProgress({
+				research: true,
+				pending: true,
+				hasReport: true,
+			}),
+			true,
+		);
+		assert.equal(
+			isResearchReviseInProgress({
+				research: true,
+				pending: true,
+				hasReport: false,
+			}),
+			false,
 		);
 	});
 });
@@ -1263,5 +1290,112 @@ MN 10 sets out mindfulness of the body. SN 47.1 repeats the four establishments.
 			}),
 			"4,962 words · 37 citations · 21 additional sources",
 		);
+	});
+});
+
+describe("dedupeSourcingSearchTerms", () => {
+	it("merges primary and fallback queries without duplicates", () => {
+		assert.equal(SEARCH_TERMS_SOURCING_LABEL, "Search queries used for sourcing:");
+		assert.deepEqual(
+			dedupeSourcingSearchTerms(
+				["sati", "mindfulness", "satipaṭṭhāna"],
+				["mindfulness", "establishments of mindfulness", "satipaṭṭhāna"],
+			),
+			["sati", "mindfulness", "satipaṭṭhāna", "establishments of mindfulness"],
+		);
+	});
+
+	it("dedupes case-insensitively while keeping the first spelling", () => {
+		assert.deepEqual(
+			dedupeSourcingSearchTerms(["Mindfulness"], ["mindfulness"]),
+			["Mindfulness"],
+		);
+	});
+});
+
+describe("revise clarify on the turn", () => {
+	const questions = [
+		{
+			id: "which",
+			prompt: "Which paragraph repeats the other?",
+			choices: [
+				{ id: "a", label: "¶11 “The claim…”", blockId: "p11" },
+				{ id: "b", label: "¶12 “Three further…”", blockId: "p12" },
+				{ id: "other", label: "Other", other: true },
+			],
+			suggestedChoiceId: "b",
+		},
+	];
+	const incoming = {
+		id: "rc_1",
+		questions,
+		interpretation: "delete ¶12 (duplicate of ¶11)",
+		fromVersion: 8,
+		expiresAt: 10,
+	};
+
+	it("starts from the planner's suggestion and keeps the reader's picks across polls", () => {
+		const first = nextReviseClarifyDraft(undefined, incoming);
+		assert.deepEqual(first?.answers, { which: { choiceId: "b" } });
+		const edited = { ...first!, answers: { which: { choiceId: "a" } } };
+		const again = nextReviseClarifyDraft(edited, incoming);
+		assert.deepEqual(again?.answers, { which: { choiceId: "a" } });
+		const fresh = nextReviseClarifyDraft(edited, { ...incoming, id: "rc_2" });
+		assert.deepEqual(fresh?.answers, { which: { choiceId: "b" } });
+		assert.equal(nextReviseClarifyDraft(edited, undefined), undefined);
+	});
+
+	it("applyResearchJobToTurn carries the pause in and clears it on resume", () => {
+		const turn = {
+			question: "q",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: false,
+			phase: "done" as const,
+			research: true,
+			report: "Alpha.",
+		};
+		const paused = toResearchJobPublic({
+			id: "j1",
+			status: "revise-clarifying",
+			question: "q",
+			reviseClarify: incoming,
+		});
+		applyResearchJobToTurn(turn, paused);
+		assert.equal(turn.pending, true);
+		assert.equal(isResearchReviseClarifying(turn), true);
+		assert.equal((turn as { reviseClarify?: { id: string } }).reviseClarify?.id, "rc_1");
+		const resumed = toResearchJobPublic({ id: "j1", status: "revising", question: "q" });
+		applyResearchJobToTurn(turn, resumed);
+		assert.equal(isResearchReviseClarifying(turn), false);
+		assert.equal((turn as { reviseClarify?: unknown }).reviseClarify, undefined);
+	});
+
+	it("finds the rendered block a choice points at", () => {
+		const dom = new JSDOM(
+			`<div class="ai-answer-body">
+				<h2>One</h2>
+				<p data-paragraph-number="1">Alpha</p>
+				<blockquote data-paragraph-number="2">Quote</blockquote>
+				<h3>Two</h3>
+				<pre><code>mermaid</code></pre>
+				<table><tr><td>t</td></tr></table>
+				<p>Beta</p>
+			</div>`,
+		);
+		const body = dom.window.document.querySelector(".ai-answer-body")!;
+		assert.equal(findReportBlockElement(body, "p2")?.textContent, "Quote");
+		// Undecorated bodies fall back to document order of the ¶ selector.
+		assert.equal(findReportBlockElement(body, "p3")?.textContent, "Beta");
+		assert.equal(findReportBlockElement(body, "h2")?.textContent, "Two");
+		assert.equal(findReportBlockElement(body, "c1")?.tagName, "PRE");
+		assert.equal(findReportBlockElement(body, "t1")?.tagName, "TABLE");
+		assert.equal(findReportBlockElement(body, "p9"), null);
+		assert.equal(findReportBlockElement(body, "junk"), null);
 	});
 });

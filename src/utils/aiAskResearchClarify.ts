@@ -31,7 +31,21 @@ export interface ResearchClarifyChoice {
 	label: string;
 	outOfScope?: boolean;
 	other?: boolean;
+	/** Revise questions: the report block this choice points at (p12, h3, c1). */
+	blockId?: string;
 }
+
+/** Knobs for question parsing that differ between new-report and revise clarify. */
+export interface ResearchClarifyParseOptions {
+	maxQuestions?: number;
+	maxLabel?: number;
+	/** Append “No preference” (true for new reports; a revise fork has no such answer). */
+	noPreference?: boolean;
+	/** Keep `blockId` on choices (revise only). */
+	blockIds?: boolean;
+}
+
+const BLOCK_ID_RE = /^[phtc]\d{1,4}$/i;
 
 export interface ResearchClarifyQuestion {
 	id: string;
@@ -177,14 +191,20 @@ function parseChoice(
 	raw: unknown,
 	index: number,
 	seen: Set<string>,
+	options: ResearchClarifyParseOptions = {},
 ): ResearchClarifyChoice | null {
 	if (!raw || typeof raw !== "object") return null;
 	const record = raw as Record<string, unknown>;
 	const label = clip(
 		typeof record.label === "string" ? record.label : "",
-		RESEARCH_CLARIFY_MAX_LABEL,
+		options.maxLabel ?? RESEARCH_CLARIFY_MAX_LABEL,
 	);
 	if (!label) return null;
+	const blockIdRaw =
+		options.blockIds && typeof record.blockId === "string"
+			? record.blockId.trim().toLowerCase()
+			: "";
+	const blockId = BLOCK_ID_RE.test(blockIdRaw) ? blockIdRaw : "";
 	let id = clip(
 		typeof record.id === "string" ? record.id.toLowerCase() : "",
 		40,
@@ -200,14 +220,20 @@ function parseChoice(
 		id,
 		label,
 		...(record.outOfScope === true ? { outOfScope: true } : {}),
+		...(blockId ? { blockId } : {}),
 	};
 }
 
 function withRequiredChoices(
 	choices: ResearchClarifyChoice[],
+	options: ResearchClarifyParseOptions = {},
 ): ResearchClarifyChoice[] {
-	const out = choices.slice(0, RESEARCH_CLARIFY_MAX_CHOICES - 2);
-	if (!out.some((choice) => choice.id === RESEARCH_CLARIFY_NO_PREF_ID)) {
+	const noPreference = options.noPreference !== false;
+	const out = choices.slice(0, RESEARCH_CLARIFY_MAX_CHOICES - (noPreference ? 2 : 1));
+	if (
+		noPreference &&
+		!out.some((choice) => choice.id === RESEARCH_CLARIFY_NO_PREF_ID)
+	) {
 		out.push({
 			id: RESEARCH_CLARIFY_NO_PREF_ID,
 			label: RESEARCH_CLARIFY_NO_PREF_LABEL,
@@ -231,6 +257,7 @@ function parseQuestion(
 	raw: unknown,
 	index: number,
 	seen: Set<string>,
+	options: ResearchClarifyParseOptions = {},
 ): ResearchClarifyQuestion | null {
 	if (!raw || typeof raw !== "object") return null;
 	const record = raw as Record<string, unknown>;
@@ -249,18 +276,19 @@ function parseQuestion(
 	const choiceSeen = new Set<string>();
 	const choices: ResearchClarifyChoice[] = [];
 	const rawChoices = Array.isArray(record.choices) ? record.choices : [];
+	const keep = RESEARCH_CLARIFY_MAX_CHOICES - (options.noPreference === false ? 1 : 2);
 	for (const [choiceIndex, item] of rawChoices.entries()) {
-		const choice = parseChoice(item, choiceIndex, choiceSeen);
+		const choice = parseChoice(item, choiceIndex, choiceSeen, options);
 		if (!choice) continue;
 		choices.push(choice);
-		if (choices.length >= RESEARCH_CLARIFY_MAX_CHOICES - 2) break;
+		if (choices.length >= keep) break;
 	}
 	if (choices.length < 1) return null;
 	const suggestedChoiceId = suggestedChoiceIdFor(record, choices);
 	return {
 		id,
 		prompt,
-		choices: withRequiredChoices(choices),
+		choices: withRequiredChoices(choices, options),
 		...(suggestedChoiceId ? { suggestedChoiceId } : {}),
 	};
 }
@@ -355,15 +383,17 @@ function cloneQuestion(question: ResearchClarifyQuestion): ResearchClarifyQuesti
 
 export function sanitizeResearchClarifyQuestions(
 	raw: unknown,
+	options: ResearchClarifyParseOptions = {},
 ): ResearchClarifyQuestion[] {
 	if (!Array.isArray(raw)) return [];
 	const seen = new Set<string>();
 	const out: ResearchClarifyQuestion[] = [];
+	const max = options.maxQuestions ?? RESEARCH_CLARIFY_MAX_QUESTIONS;
 	for (const [index, item] of raw.entries()) {
-		const question = parseQuestion(item, index, seen);
+		const question = parseQuestion(item, index, seen, options);
 		if (!question) continue;
 		out.push(question);
-		if (out.length >= RESEARCH_CLARIFY_MAX_QUESTIONS) break;
+		if (out.length >= max) break;
 	}
 	return out;
 }
@@ -465,16 +495,13 @@ export function researchClarifyAnswersOutOfScope(
 	return false;
 }
 
-export function formatResearchClarifyBrief(
-	question: string,
+/** “Prompt → chosen label” lines; an Other answer uses the reader's note. */
+export function formatClarifyAnswerLines(
 	questions: readonly ResearchClarifyQuestion[],
 	answers: readonly ResearchClarifyAnswer[],
-	interpretation?: string,
-): string {
+): string[] {
 	const byId = new Map(answers.map((item) => [item.questionId, item]));
-	const lines = [`Topic: ${clipAiQuestion(question).slice(0, 1500)}`];
-	const reading = clipInterpretation(interpretation);
-	if (reading) lines.push(`Reading: ${reading}`);
+	const lines: string[] = [];
 	for (const item of questions) {
 		const answer = byId.get(item.id);
 		if (!answer) continue;
@@ -484,8 +511,23 @@ export function formatResearchClarifyBrief(
 				? clip(answer.otherText || "", RESEARCH_CLARIFY_MAX_OTHER)
 				: choice?.label || answer.choiceId;
 		if (!label) continue;
-		lines.push(`${item.prompt} → ${label}`);
+		lines.push(
+			`${item.prompt} → ${label}${choice?.blockId ? ` (block ${choice.blockId})` : ""}`,
+		);
 	}
+	return lines;
+}
+
+export function formatResearchClarifyBrief(
+	question: string,
+	questions: readonly ResearchClarifyQuestion[],
+	answers: readonly ResearchClarifyAnswer[],
+	interpretation?: string,
+): string {
+	const lines = [`Topic: ${clipAiQuestion(question).slice(0, 1500)}`];
+	const reading = clipInterpretation(interpretation);
+	if (reading) lines.push(`Reading: ${reading}`);
+	lines.push(...formatClarifyAnswerLines(questions, answers));
 	return lines.join("\n").slice(0, RESEARCH_CLARIFY_BRIEF_MAX);
 }
 

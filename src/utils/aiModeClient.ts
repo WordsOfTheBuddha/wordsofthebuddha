@@ -41,15 +41,18 @@ import {
 	changedReportBlockKeys,
 	diffReportBlockChanges,
 	enumerateReportBlocks,
+	formatReportBlockDiffDebug,
 	reportBlockDiffCount,
 	REPORT_BLOCK_KEY_MIN,
 	type ReportBlockDiff,
 	type ReportContentBlock,
+	type ReportRemovedBlock,
 	clipResearchReviseHeading,
 	clipResearchReviseQuote,
 	clipResearchVersionIndex,
 	currentResearchVersionN,
 	formatResearchVersionLabel,
+	formatResearchVersionLabelForTurn,
 	formatResearchVersionStats,
 	healedResearchVersionIndex,
 	isResearchRevisionStartedLabel,
@@ -57,7 +60,10 @@ import {
 	normalizeReportBlockText,
 	openingResearchVersionMeta,
 	researchRevisionStartedNote,
+	researchReviseClarifyBaseLabel,
 	selectionQualifiesForRevise,
+	RESEARCH_REVISE_CLARIFY_CONTINUE,
+	RESEARCH_REVISE_CLARIFY_TITLE,
 	RESEARCH_REVISE_CONSIDERING_NOTE,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
@@ -98,6 +104,7 @@ import {
 	ASK_SHARE_ACCOUNT_TITLE,
 	ASK_NEW_LABEL,
 	applyResearchJobToTurn,
+	isResearchReviseInProgress,
 	askComposerMeterIsResearch,
 	askFollowPlaceholder,
 	askMeterLabel,
@@ -158,6 +165,11 @@ import {
 	researchEmptyComposerGated,
 	reportFollowToggleLabel,
 	RESEARCH_SIGNED_OUT_PLACEHOLDER,
+	SEARCH_TERMS_SOURCING_LABEL,
+	dedupeSourcingSearchTerms,
+	findReportBlockElement,
+	isResearchReviseClarifying,
+	type ResearchReviseClarifyDraft,
 } from "./aiAskResearchUi";
 import {
 	snapshotResearchHistoryStats,
@@ -338,6 +350,8 @@ export interface AiAskTurn {
 		answers: Record<string, { choiceId: string; otherText?: string }>;
 		interpretation?: string;
 	};
+	/** Planner questions a revision is paused on; the report is still the base. */
+	reviseClarify?: ResearchReviseClarifyDraft;
 	researchDeclined?: {
 		kind: string;
 		message: string;
@@ -1813,12 +1827,19 @@ export function reportChangeCount(
 	return reportBlockDiffCount(reportBlockDiff(turn));
 }
 
-/** Version body to diff against when the session did not keep `reviseBase`. */
+/**
+ * Version body to diff against when the session did not keep `reviseBase`:
+ * the version the current one was revised *from* (not necessarily n − 1).
+ */
 export function researchReviseBaseVersionN(
 	index: readonly ResearchVersionMeta[] = [],
 ): number | null {
 	const current = currentResearchVersionN(index);
-	return current >= 2 ? current - 1 : null;
+	if (current < 2) return null;
+	const meta = index.find((item) => item.n === current);
+	const from = meta?.from;
+	if (typeof from === "number" && from >= 1 && from < current) return from;
+	return current - 1;
 }
 
 export function shouldHydrateReviseBase(
@@ -1837,7 +1858,7 @@ export function shouldHydrateReviseBase(
 }
 
 export const REPORT_CHANGE_BLOCK_SELECTOR =
-	":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote, :scope > ul > li, :scope > ol > li";
+	":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote, :scope > ul > li, :scope > ol > li, :scope > .ai-report-table-wrap, :scope > .ai-report-mermaid, :scope > .ai-report-code, :scope > .ai-report-html, :scope > hr";
 
 function reportBlockKeyFromElement(el: HTMLElement): string {
 	if (el.dataset.reportBlockKey) return el.dataset.reportBlockKey;
@@ -1882,6 +1903,53 @@ function clearReportDiffMarks(body: ParentNode): void {
 	body.querySelectorAll(".ai-change-removed").forEach((el) => el.remove());
 }
 
+/** Map a stamped block (e.g. `li`) to the body's direct child to insert before. */
+export function topLevelReportBlock(
+	body: Element,
+	target: Element | null,
+): Element | null {
+	if (!target || !body.contains(target)) return null;
+	let node: Element = target;
+	while (node.parentElement && node.parentElement !== body) {
+		node = node.parentElement;
+	}
+	return node.parentElement === body ? node : null;
+}
+
+function findReportRemovalAnchor(
+	body: Element,
+	block: Pick<ReportRemovedBlock, "beforeNextIndex" | "beforeNextKey">,
+): Element | null {
+	const els = body.querySelectorAll<HTMLElement>(REPORT_CHANGE_BLOCK_SELECTOR);
+	let anchor: HTMLElement | null = null;
+	if (block.beforeNextKey) {
+		for (const el of els) {
+			if (el.dataset.reportBlockKey === block.beforeNextKey) {
+				anchor = el;
+				break;
+			}
+		}
+	}
+	if (!anchor && block.beforeNextIndex !== null) {
+		const targetIndex = block.beforeNextIndex;
+		for (const el of els) {
+			if (Number(el.dataset.reportBlockIdx) === targetIndex) {
+				anchor = el;
+				break;
+			}
+		}
+		if (!anchor) {
+			for (const el of els) {
+				if (Number(el.dataset.reportBlockIdx) >= targetIndex) {
+					anchor = el;
+					break;
+				}
+			}
+		}
+	}
+	return topLevelReportBlock(body, anchor);
+}
+
 function insertRemovedBlockGhost(
 	body: Element,
 	block: ReportContentBlock,
@@ -1897,8 +1965,9 @@ function insertRemovedBlockGhost(
 	content.className = "ai-change-removed-body";
 	content.innerHTML = renderResearchReportHtml(block.markdown);
 	details.append(summary, content);
-	if (before && before.parentElement === body) {
-		body.insertBefore(details, before);
+	const insertionPoint = topLevelReportBlock(body, before);
+	if (insertionPoint) {
+		body.insertBefore(details, insertionPoint);
 	} else {
 		body.appendChild(details);
 	}
@@ -1938,20 +2007,11 @@ export function markReportBlockDiff(
 	const container = body as Element;
 	if (typeof container.appendChild === "function" && baseMarkdown.trim()) {
 		for (const block of diff.removed) {
-			let anchor: Element | null = null;
-			if (block.beforeNextIndex !== null) {
-				const targetIndex = block.beforeNextIndex;
-				for (const el of body.querySelectorAll<HTMLElement>(
-					REPORT_CHANGE_BLOCK_SELECTOR,
-				)) {
-					const idx = Number(el.dataset.reportBlockIdx ?? -1);
-					if (idx >= targetIndex) {
-						anchor = el;
-						break;
-					}
-				}
-			}
-			insertRemovedBlockGhost(container, block, anchor);
+			insertRemovedBlockGhost(
+				container,
+				block,
+				findReportRemovalAnchor(container, block),
+			);
 		}
 	}
 	if (firstMarked !== null) {
@@ -2214,6 +2274,9 @@ export function attachAiMode(options: {
 	let followAskMode = false;
 	let reviseFromVersion: number | null = null;
 	let previewVersion: { n: number; report: string } | null = null;
+	let previewVersionToken = 0;
+	/** Report body shown while a revise is pending (keeps v8 visible when revising from v8). */
+	let revisePendingSource: { n: number; report: string } | null = null;
 	/** Whether changed paragraphs are highlighted after a revise lands. */
 	let showReviseChanges = false;
 	let hydratingReviseBase = false;
@@ -2377,6 +2440,25 @@ export function attachAiMode(options: {
 		return turns.some((turn) => turn.research === true);
 	}
 
+	/** A revision on the last turn is waiting on the planner's questions. */
+	function isReviseClarifyingTurn(turn: AiAskTurn | undefined): boolean {
+		return Boolean(
+			turn &&
+				turn.researchJobId &&
+				(turn.report || "").trim() &&
+				isResearchReviseClarifying(turn),
+		);
+	}
+
+	/** Whichever clarify draft the card on `turn` is editing. */
+	function clarifyDraftFor(
+		turn: AiAskTurn | undefined,
+		kind: string | null,
+	): AiAskTurn["researchClarify"] | ResearchReviseClarifyDraft | undefined {
+		if (!turn) return undefined;
+		return kind === "revise" ? turn.reviseClarify : turn.researchClarify;
+	}
+
 	function isClarifyingTurn(turn: AiAskTurn | undefined): boolean {
 		return Boolean(
 			turn?.research &&
@@ -2530,7 +2612,42 @@ export function attachAiMode(options: {
 		}
 	}
 
+	function isReviseInProgress(turn: AiAskTurn | undefined): boolean {
+		return isResearchReviseInProgress({
+			research: turn?.research,
+			pending: turn?.pending,
+			hasReport: Boolean((turn?.report || "").trim()),
+		});
+	}
+
+	function captureRevisePendingSource(turn: AiAskTurn): void {
+		const report = (previewVersion?.report || turn.report || "").trim();
+		if (!report) {
+			revisePendingSource = null;
+			return;
+		}
+		const index = healedResearchVersionIndex({ versionIndex: turn.versionIndex });
+		const n =
+			previewVersion?.n ??
+			reviseFromVersion ??
+			currentResearchVersionN(
+				index.length > 0
+					? index
+					: [{ n: 1, at: 0, instruction: "", changelog: "", from: null }],
+			);
+		revisePendingSource = { n, report };
+	}
+
+	function clearReviseVersionState(): void {
+		previewVersion = null;
+		reviseFromVersion = null;
+		revisePendingSource = null;
+	}
+
 	function displayedReportMarkdown(turn: AiAskTurn): string {
+		if (isReviseInProgress(turn) && revisePendingSource?.report) {
+			return revisePendingSource.report;
+		}
 		if (previewVersion && previewVersion.n > 0) return previewVersion.report;
 		return turn.report || "";
 	}
@@ -2561,6 +2678,8 @@ export function attachAiMode(options: {
 		busy = true;
 		root.classList.add("is-busy");
 		if (action === "revise") {
+			captureRevisePendingSource(last);
+			showReviseChanges = false;
 			last.pending = true;
 			last.phase = "answer";
 			last.processNotes = rememberResearchProcessNote(
@@ -2608,8 +2727,7 @@ export function attachAiMode(options: {
 				if (!data.job.pending && base && landed && landed !== base) {
 					last.reviseBase = base;
 				}
-				previewVersion = null;
-				reviseFromVersion = null;
+				if (!data.job.pending) clearReviseVersionState();
 				closeVersionsDrawer();
 				persistSessionFromTurn(last);
 				if (data.forked && data.job.id && shareMode) {
@@ -2638,6 +2756,7 @@ export function attachAiMode(options: {
 			if (response.status === 401) {
 				last.pending = false;
 				last.phase = "done";
+				clearReviseVersionState();
 				if (followInput) followInput.value = q;
 				rememberPendingRevise();
 				openQuotaDialog("revise", q);
@@ -2646,6 +2765,7 @@ export function attachAiMode(options: {
 			if (response.status === 429) {
 				last.pending = false;
 				last.phase = "done";
+				clearReviseVersionState();
 				openQuotaDialog(
 					data.quota?.needsEmailVerification
 						? "verify"
@@ -2667,6 +2787,7 @@ export function attachAiMode(options: {
 			}
 			last.pending = false;
 			last.phase = "done";
+			clearReviseVersionState();
 			setStatus(
 				researchApiFailureMessage({
 					status: response.status,
@@ -2692,6 +2813,7 @@ export function attachAiMode(options: {
 			}
 			last.pending = false;
 			last.phase = "done";
+			clearReviseVersionState();
 			setStatus(
 				researchApiFailureMessage({
 					status: 0,
@@ -2859,11 +2981,14 @@ export function attachAiMode(options: {
 				? researchJobApiPath(jobId, n)
 				: "";
 		if (!url) return;
+		const token = ++previewVersionToken;
 		try {
 			const { response, data } = await fetchAiJson<{
 				success?: boolean;
 				report?: string;
 			}>(url);
+			// A slower earlier click must not overwrite the version picked last.
+			if (token !== previewVersionToken) return;
 			if (!response.ok || !data.success || !data.report) return;
 			previewVersion = { n, report: data.report };
 			reviseFromVersion = n;
@@ -2959,6 +3084,10 @@ export function attachAiMode(options: {
 	function syncReportChangeVisibility(turn: AiAskTurn): void {
 		const report = lastReportElement();
 		if (!report) return;
+		if (isReviseInProgress(turn)) {
+			report.classList.remove("is-show-changes");
+			return;
+		}
 		const diff = previewVersion ? null : reportBlockDiff(turn);
 		const changeCount = reportBlockDiffCount(diff);
 		report.classList.toggle(
@@ -2972,14 +3101,24 @@ export function attachAiMode(options: {
 
 	/** Paint diff marks on the report; visibility is toggled from the Versions drawer. */
 	function applyReportChangeMarks(turn: AiAskTurn): void {
+		if (isReviseInProgress(turn)) return;
 		const report = lastReportElement();
 		if (!report) return;
 		const body = report.querySelector<HTMLElement>(".ai-answer-body");
 		const diff = previewVersion ? null : reportBlockDiff(turn);
 		if (body) {
 			const reportMarkdown = displayedReportMarkdown(turn).trim();
+			const baseMarkdown = (turn.reviseBase || "").trim();
 			stampReportBlockKeys(body, reportMarkdown);
-			markReportBlockDiff(body, diff, (turn.reviseBase || "").trim());
+			markReportBlockDiff(body, diff, baseMarkdown);
+			if (
+				diff &&
+				baseMarkdown &&
+				typeof localStorage !== "undefined" &&
+				localStorage.getItem("debugReportChanges") === "1"
+			) {
+				console.info(formatReportBlockDiffDebug(baseMarkdown, reportMarkdown));
+			}
 		}
 		syncReportChangeVisibility(turn);
 	}
@@ -3026,7 +3165,9 @@ export function attachAiMode(options: {
 	}
 
 	async function hydrateReviseBaseIfNeeded(turn: AiAskTurn): Promise<void> {
-		if (!shouldHydrateReviseBase(turn) || previewVersion) return;
+		if (!shouldHydrateReviseBase(turn) || previewVersion || isReviseInProgress(turn)) {
+			return;
+		}
 		const prevN = researchReviseBaseVersionN(
 			healedResearchVersionIndex({ versionIndex: turn.versionIndex }),
 		);
@@ -3100,7 +3241,20 @@ export function attachAiMode(options: {
 	function syncClarifyBar(): void {
 		const last = turns[turns.length - 1];
 		const clarifying = isClarifyingTurn(last);
-		if (clarifyBar) clarifyBar.hidden = !clarifying;
+		const reviseClarifying = !clarifying && isReviseClarifyingTurn(last);
+		if (clarifyBar) clarifyBar.hidden = !(clarifying || reviseClarifying);
+		if (clarifyBar) clarifyBar.classList.toggle("is-revise", reviseClarifying);
+		if (reviseClarifying && last?.reviseClarify && clarifyStartBtn) {
+			// Same bar, revise wording: the credit was spent when the revise
+			// began, so there is no “N left” meter here.
+			const answers = answersFromClarifyState(last.reviseClarify.answers);
+			clarifyStartBtn.disabled = !canStartResearchClarify(
+				last.reviseClarify.questions,
+				answers,
+			);
+			clarifyStartBtn.textContent = RESEARCH_REVISE_CLARIFY_CONTINUE;
+			return;
+		}
 		if (clarifying && last?.researchClarify && clarifyStartBtn) {
 			const answers = answersFromClarifyState(last.researchClarify.answers);
 			clarifyStartBtn.disabled = !canStartResearchClarify(
@@ -4923,6 +5077,18 @@ export function attachAiMode(options: {
 			.join("")}</div>`;
 	}
 
+	function sourcingSearchTermsHtml(turn: AiAskTurn): string {
+		const queries = dedupeSourcingSearchTerms(
+			turn.queries,
+			turn.fallbackQueries,
+		);
+		if (queries.length === 0) return "";
+		return `<div class="ai-sourcing-terms">
+			<span class="ai-sourcing-terms-label">${escapeHtml(SEARCH_TERMS_SOURCING_LABEL)}</span>
+			${queryChipsHtml(queries, "ai-queries")}
+		</div>`;
+	}
+
 	function emptyHitsHtml(turn: AiAskTurn): string {
 		const searchTerm =
 			turn.queries[0] ||
@@ -5196,7 +5362,7 @@ export function attachAiMode(options: {
 			: "answer";
 		const text =
 			kind === "report"
-				? (turn.report || "").trim()
+				? displayedReportMarkdown(turn).trim()
 				: (turn.summary || "").trim();
 		if (!text) return;
 		const idle = readAskButtonIdle(button);
@@ -5350,9 +5516,14 @@ export function attachAiMode(options: {
 		}
 	}
 
-	function renderClarifyCardHtml(turn: AiAskTurn, turnIndex: number): string {
-		const draft = turn.researchClarify;
+	function renderClarifyCardHtml(
+		turn: AiAskTurn,
+		turnIndex: number,
+		kind: "research" | "revise" = "research",
+	): string {
+		const draft = kind === "revise" ? turn.reviseClarify : turn.researchClarify;
 		if (!draft) return "";
+		const kindAttr = ` data-clarify-kind="${kind}"`;
 		const questions = draft.questions
 			.map((question, qIndex) => {
 				const selected = draft.answers[question.id]?.choiceId || "";
@@ -5360,12 +5531,15 @@ export function attachAiMode(options: {
 				const chips = question.choices
 					.map((choice) => {
 						const on = selected === choice.id;
-						return `<button type="button" class="ai-clarify-choice${on ? " is-on" : ""}" data-ai-clarify-choice data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" data-choice-id="${escapeHtml(choice.id)}" role="radio" aria-checked="${on ? "true" : "false"}">${escapeHtml(choice.label)}</button>`;
+						const block = choice.blockId
+							? ` data-block-id="${escapeHtml(choice.blockId)}" title="Show this block in the report"`
+							: "";
+						return `<button type="button" class="ai-clarify-choice${on ? " is-on" : ""}${choice.blockId ? " has-block" : ""}" data-ai-clarify-choice${kindAttr} data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" data-choice-id="${escapeHtml(choice.id)}"${block} role="radio" aria-checked="${on ? "true" : "false"}">${escapeHtml(choice.label)}</button>`;
 					})
 					.join("");
 				const otherField =
 					selected === RESEARCH_CLARIFY_OTHER_ID
-						? `<textarea class="ai-clarify-other" data-ai-clarify-other data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" rows="2" maxlength="${RESEARCH_CLARIFY_MAX_OTHER}" placeholder="Add a short note">${escapeHtml(otherText)}</textarea>`
+						? `<textarea class="ai-clarify-other" data-ai-clarify-other${kindAttr} data-turn-index="${turnIndex}" data-question-id="${escapeHtml(question.id)}" rows="2" maxlength="${RESEARCH_CLARIFY_MAX_OTHER}" placeholder="Add a short note">${escapeHtml(otherText)}</textarea>`
 						: "";
 				return `<div class="ai-clarify-q" role="radiogroup" aria-label="${escapeHtml(question.prompt)}">
 					<p class="ai-clarify-prompt">${qIndex + 1}. ${escapeHtml(question.prompt)}</p>
@@ -5374,6 +5548,18 @@ export function attachAiMode(options: {
 				</div>`;
 			})
 			.join("");
+		if (kind === "revise") {
+			const revise = turn.reviseClarify;
+			const base = researchReviseClarifyBaseLabel(revise?.fromVersion);
+			const reading = (revise?.interpretation || "").trim();
+			return `<div class="ai-clarify ai-clarify-revise" data-ai-revise-clarify>
+			<p class="ai-clarify-title">${escapeHtml(RESEARCH_REVISE_CLARIFY_TITLE)}${
+				base ? ` <span class="ai-clarify-base">${escapeHtml(base)}</span>` : ""
+			}</p>
+			${reading ? `<p class="ai-clarify-kicker">${escapeHtml(reading)}</p>` : ""}
+			${questions}
+		</div>`;
+		}
 		const confirmOnly = draft.questions.length === 0;
 		const title = confirmOnly
 			? RESEARCH_CLARIFY_CONFIRM_TITLE
@@ -5405,11 +5591,6 @@ export function attachAiMode(options: {
 	}
 
 	function renderTurn(turn: AiAskTurn, turnIndex: number): string {
-		const primaryQueries = queryChipsHtml(turn.queries, "ai-queries");
-		const fallbackQueries =
-			turn.fallbackQueries.length > 0
-				? `<div class="ai-fallbacks"><span class="ai-fallbacks-label">Also tried</span>${queryChipsHtml(turn.fallbackQueries, "ai-queries ai-queries-fallback")}</div>`
-				: "";
 		const cacheNote = turn.fromSample
 			? `<p class="ai-cache-note">${escapeHtml(
 					turn.research ? RESEARCH_SAMPLE_NOTE : ASK_SAMPLE_NOTE,
@@ -5452,10 +5633,10 @@ export function attachAiMode(options: {
 						processNotes: turn.processNotes,
 						createdAt: turn.researchStartedAt,
 					});
-					const versionLabel = formatResearchVersionLabel(
-						versionIndex,
-						previewVersion?.n,
-					);
+					const versionLabel = formatResearchVersionLabelForTurn(versionIndex, {
+						previewN: previewVersion?.n,
+						revising: isReviseInProgress(turn),
+					});
 					return wrapAskAnswerHtml({
 					kind: "report",
 					turnIndex,
@@ -5495,8 +5676,7 @@ export function attachAiMode(options: {
 				})
 			: "";
 		const hideQueryChips = turn.offTopic || !hasHits;
-		const queryBlock = hideQueryChips ? "" : primaryQueries;
-		const fallbackBlock = hideQueryChips ? "" : fallbackQueries;
+		const queryBlock = hideQueryChips ? "" : sourcingSearchTermsHtml(turn);
 		let body = "";
 		if (turn.researchDeclined && !turn.researchJobId) {
 			body = renderDeclineCardHtml(turn, turnIndex);
@@ -5551,7 +5731,13 @@ export function attachAiMode(options: {
 						: personBlock
 							? ""
 							: emptyHitsHtml(turn);
-			body = `${cacheNote}${process}${summary}${queryBlock}${fallbackBlock}${personBlock}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
+			// A paused revision asks its questions right under the progress
+			// strip; the report below stays readable so the reader can check
+			// the blocks the choices point at.
+			const reviseClarify = isReviseClarifyingTurn(turn)
+				? renderClarifyCardHtml(turn, turnIndex, "revise")
+				: "";
+			body = `${cacheNote}${process}${reviseClarify}${summary}${queryBlock}${personBlock}${hits}${shareActionsHtml(turn, turnIndex)}${feedbackHtml(turn, turnIndex)}`;
 		}
 		const backLabel = shareMode
 			? turn.research
@@ -6129,14 +6315,16 @@ export function attachAiMode(options: {
 					const index = Number(button.getAttribute("data-turn-index"));
 					const questionId = button.getAttribute("data-question-id") || "";
 					const choiceId = button.getAttribute("data-choice-id") || "";
+					const blockId = button.getAttribute("data-block-id") || "";
 					const turn = turns[index];
-					if (!turn?.researchClarify || !questionId || !choiceId) return;
-					turn.researchClarify.answers = {
-						...turn.researchClarify.answers,
+					const draft = clarifyDraftFor(turn, button.getAttribute("data-clarify-kind"));
+					if (!draft || !questionId || !choiceId) return;
+					draft.answers = {
+						...draft.answers,
 						[questionId]: {
 							choiceId,
 							...(choiceId === RESEARCH_CLARIFY_OTHER_ID
-								? { otherText: turn.researchClarify.answers[questionId]?.otherText || "" }
+								? { otherText: draft.answers[questionId]?.otherText || "" }
 								: {}),
 						},
 					};
@@ -6147,6 +6335,8 @@ export function attachAiMode(options: {
 						);
 						other?.focus();
 						if (other) fitClarifyOther(other);
+					} else if (blockId) {
+						revealReportBlock(blockId);
 					}
 				});
 			},
@@ -6158,12 +6348,13 @@ export function attachAiMode(options: {
 					const index = Number(inputEl.getAttribute("data-turn-index"));
 					const questionId = inputEl.getAttribute("data-question-id") || "";
 					const turn = turns[index];
-					if (!turn?.researchClarify || !questionId) return;
-					const currentAnswer = turn.researchClarify.answers[questionId] || {
+					const draft = clarifyDraftFor(turn, inputEl.getAttribute("data-clarify-kind"));
+					if (!draft || !questionId) return;
+					const currentAnswer = draft.answers[questionId] || {
 						choiceId: RESEARCH_CLARIFY_OTHER_ID,
 					};
-					turn.researchClarify.answers = {
-						...turn.researchClarify.answers,
+					draft.answers = {
+						...draft.answers,
 						[questionId]: {
 							...currentAnswer,
 							choiceId: RESEARCH_CLARIFY_OTHER_ID,
@@ -6200,7 +6391,7 @@ export function attachAiMode(options: {
 		const lastTurn = turns[turns.length - 1];
 		if (lastTurn) {
 			bindReportRevise(lastTurn, turns.length - 1);
-			applyReportChangeMarks(lastTurn);
+			if (!isReviseInProgress(lastTurn)) applyReportChangeMarks(lastTurn);
 			// The strip clamps its height; keep the newest hop in view.
 			scrollAskProcessToLatest(
 				thread.querySelector(".ai-turn:last-child .ai-process"),
@@ -6547,9 +6738,10 @@ export function attachAiMode(options: {
 		if (!turn.researchJobId) return;
 		let stallKey = "";
 		let stallSince = Date.now();
-		// A revise polls with a report already on the turn; remember it so the
-		// blocks the new version touched can be highlighted when it lands.
-		const reviseBase = turn.research ? (turn.report || "").trim() : "";
+		// Remember the body the reader was revising from — not necessarily head.
+		const reviseBase =
+			revisePendingSource?.report ||
+			(turn.research ? (turn.report || "").trim() : "");
 		while (turn.pending && turn.researchJobId && token === researchPollToken) {
 			const still = await new Promise<boolean>((resolve) => {
 				researchPollTimer = window.setTimeout(() => {
@@ -6581,6 +6773,15 @@ export function attachAiMode(options: {
 					stallSince = Date.now();
 				}
 				applyResearchJobToTurn(turn, data.job);
+				if (data.job.pending && data.job.reviseClarify) {
+					// The planner paused on its questions. Stop polling — nothing
+					// moves until the reader answers — and bring the card up.
+					// The turn stays pending so the revise chrome (Stop, the
+					// “v11” label, the pinned base body) holds.
+					syncLayout();
+					revealReviseClarifyCard();
+					return;
+				}
 				if (
 					!data.job.pending &&
 					data.job.error &&
@@ -6611,8 +6812,7 @@ export function attachAiMode(options: {
 					);
 					continue;
 				}
-				previewVersion = null;
-				reviseFromVersion = null;
+				clearReviseVersionState();
 				closeVersionsDrawer();
 				const landed = (turn.report || "").trim();
 				if (reviseBase && landed && landed !== reviseBase && !turn.error) {
@@ -6633,6 +6833,7 @@ export function attachAiMode(options: {
 		}
 		if (token !== researchPollToken) return;
 		if (!turn.pending) {
+			clearReviseVersionState();
 			void refreshQuota();
 		}
 		if (!turn.pending && turn.error && turn.research) {
@@ -6650,6 +6851,123 @@ export function attachAiMode(options: {
 				});
 			}
 		}
+	}
+
+	/**
+	 * Send the reader's answers and resume the paused revision. No new credit
+	 * is spent; the server folds the answers into the same cycle.
+	 */
+	async function answerReviseClarify(): Promise<void> {
+		const turn = turns[turns.length - 1];
+		if (!turn || !isReviseClarifyingTurn(turn) || !turn.reviseClarify || busy) return;
+		if (!turn.researchJobId) return;
+		const clarify = turn.reviseClarify;
+		const answers = answersFromClarifyState(clarify.answers);
+		if (!canStartResearchClarify(clarify.questions, answers)) return;
+		busy = true;
+		root.classList.add("is-busy");
+		// Optimistic: the card gives way to the live hop straight away.
+		turn.reviseClarify = undefined;
+		turn.progressNote = RESEARCH_REVISE_CONSIDERING_NOTE;
+		setStatus("");
+		syncLayout();
+		revealReviseProgress();
+		try {
+			const { response, data } = await fetchAiJson<{
+				success?: boolean;
+				job?: ResearchJobPublic;
+				code?: string;
+				error?: string;
+			}>(RESEARCH_REVISE_API_PATH, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					action: "answer",
+					jobId: turn.researchJobId,
+					clarifyId: clarify.id,
+					answers,
+				}),
+			});
+			if (data.job) {
+				applyResearchJobToTurn(turn, data.job);
+				syncLayout();
+				if (data.job.pending) {
+					await pollResearchTurn(turn);
+					if (turn.error) setStatus(turn.error);
+					else if (!turn.pending) setStatus("");
+				} else {
+					clearReviseVersionState();
+					if (data.job.error) setStatus(data.job.error);
+				}
+				return;
+			}
+			if (response.status === 401) {
+				window.location.assign(askAuthPageHref("/signin", null, currentReturnTo()));
+				return;
+			}
+			// The questions were stale or the pause expired: re-read the job so
+			// the turn shows whatever the server settled on.
+			const live = await fetchResearchJob(turn.researchJobId);
+			if (live.job) applyResearchJobToTurn(turn, live.job);
+			else {
+				turn.pending = false;
+				turn.phase = "done";
+			}
+			if (!turn.pending) clearReviseVersionState();
+			setStatus(
+				researchApiFailureMessage({
+					status: response.status,
+					code: data.code,
+					error: data.error,
+					fallback: "Could not continue the revision.",
+				}),
+			);
+			if (turn.pending && live.job?.reviseClarify) {
+				syncLayout();
+				revealReviseClarifyCard();
+			} else if (turn.pending) {
+				syncLayout();
+				await pollResearchTurn(turn);
+			}
+		} catch {
+			// Restore the card so the answers are not lost on a flaky network.
+			turn.reviseClarify = clarify;
+			setStatus("Network error. Try again.");
+		} finally {
+			busy = false;
+			root.classList.remove("is-busy");
+			syncLayout();
+		}
+	}
+
+	function revealReviseClarifyCard(): void {
+		const card = thread.querySelector<HTMLElement>(
+			".ai-turn:last-child [data-ai-revise-clarify]",
+		);
+		if (!card) return;
+		try {
+			card.scrollIntoView({ block: "center", behavior: "smooth" });
+		} catch {
+			card.scrollIntoView();
+		}
+	}
+
+	/** Scroll the report block a clarify choice names into view and pulse it. */
+	function revealReportBlock(blockId: string): void {
+		const body = lastReportElement()?.querySelector<HTMLElement>(".ai-answer-body");
+		if (!body) return;
+		const el = findReportBlockElement(body, blockId);
+		if (!el) return;
+		try {
+			el.scrollIntoView({ block: "center", behavior: "smooth" });
+		} catch {
+			el.scrollIntoView();
+		}
+		body
+			.querySelectorAll<HTMLElement>(".is-clarify-target")
+			.forEach((node) => node.classList.remove("is-clarify-target"));
+		el.classList.add("is-clarify-target");
+		window.setTimeout(() => el.classList.remove("is-clarify-target"), 2200);
 	}
 
 	async function cancelActiveResearch(): Promise<void> {
@@ -6679,6 +6997,7 @@ export function attachAiMode(options: {
 			turn.phase = "done";
 			turn.error = "Research stopped.";
 		}
+		clearReviseVersionState();
 		void refreshQuota();
 		if (turn.research && !turn.report) setResearchChipOn(true);
 		busy = false;
@@ -7650,19 +7969,30 @@ export function attachAiMode(options: {
 	document.addEventListener("pointercancel", endSelectionPointer);
 
 	clarifyCancelBtn?.addEventListener("click", () => {
+		if (isReviseClarifyingTurn(turns[turns.length - 1])) {
+			void cancelActiveResearch();
+			return;
+		}
 		cancelResearchClarify();
 	});
 	clarifyStartBtn?.addEventListener("click", () => {
+		if (isReviseClarifyingTurn(turns[turns.length - 1])) {
+			void answerReviseClarify();
+			return;
+		}
 		void startResearchFromClarify();
 	});
 	root.addEventListener("keydown", (event) => {
 		if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
-		if (!isClarifyingTurn(turns[turns.length - 1])) return;
+		const last = turns[turns.length - 1];
+		const revise = isReviseClarifyingTurn(last);
+		if (!revise && !isClarifyingTurn(last)) return;
 		const target = event.target as HTMLElement | null;
 		if (target?.closest?.(".ai-clarify-other")) return;
 		if (target?.closest?.("textarea")) return;
 		event.preventDefault();
-		void startResearchFromClarify();
+		if (revise) void answerReviseClarify();
+		else void startResearchFromClarify();
 	});
 
 	const samplesReady = loadAskSamples();

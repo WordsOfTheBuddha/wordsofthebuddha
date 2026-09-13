@@ -13,6 +13,7 @@ import {
 	clipResearchReviseInstruction,
 	clipResearchReviseQuote,
 	clipResearchRevisePlan,
+	constrainResearchRevisePatch,
 	numberedReportForModel,
 	parseResearchRevisePatch,
 	reportBlocksContainingText,
@@ -49,11 +50,22 @@ export const RESEARCH_REVISE_NEW_HITS_MAX = 8;
  * (one search, a few full reads) the writer will need. Cheap output, so it can
  * spend its reasoning on the report rather than on prose.
  */
-export const RESEARCH_REVISE_PLAN_SYSTEM = `You plan one edit to a research report written from early Buddhist discourses. Every block of the report is labelled [[pN]]. Read the instruction and the report, then return JSON only:
-{"targets":["p12"],"intent":"one or two sentences naming the exact change: which block(s), what happens to each","searchQueries":[],"readFull":[]}
+export const RESEARCH_REVISE_BLOCK_ID_NOTE = `Block ids: paragraphs, block quotations and lists are labelled [[pN]] — these are the same numbers the reader sees as ¶ N beside the report, so "P12", "paragraph 12" or "¶12" in the instruction means block p12 and nothing else. Headings are [[hN]], tables and rules [[tN]], fenced code or diagrams [[cN]]. Trust the id over any guess about what the reader meant; if the numbered block does not fit the instruction, say so in the intent rather than editing a neighbour.`;
+
+export const RESEARCH_REVISE_STYLE_NOTE = `Style guidance in the instruction (e.g. "use em-dashes sparingly", "keep it concise", "review the surrounding context") constrains how the requested edits are written; it is not a request to rewrite the rest of the report.`;
+
+export const RESEARCH_REVISE_PLAN_SYSTEM = `You plan one revision request to a research report written from early Buddhist discourses. The request may contain several independent changes; account for every explicit change while leaving everything else untouched. Read the current revision instruction, the original research request and preferences, and the report, then return JSON only:
+{"targets":["p12"],"intent":"one or two sentences naming the exact change: which block(s), what happens to each","summary":"one line for the reader, under 140 characters","searchQueries":[],"readFull":[],"questions":[]}
+
+${RESEARCH_REVISE_BLOCK_ID_NOTE}
 
 Rules:
-- "targets": the block ids the edit must change, insert next to, or delete — the smallest set that carries out the instruction. If the reader pinned a passage, its block is a target. Do not list blocks that merely relate to the topic.
+- "summary": the plan in the reader's terms, as short clauses joined by " · " — e.g. "delete ¶12 (duplicate of ¶11) · fence the diagram in ¶72 · add SN 47.10, 47.20, 47.42 after ¶35". Write paragraph ids as ¶12 (never p12); name headings and diagrams by their text. This line is shown to the reader while the revision runs.
+- "questions": normally an empty array. Ask (at most 2) only when the instruction is genuinely ambiguous and guessing would risk editing the wrong block or doing the wrong thing — e.g. the reader's block number does not match the content they describe, an instruction could mean two different edits, or a named passage appears in several places. Never ask about style guidance, about things the report itself settles, or to confirm a plan you are confident in. Each question: {"id":"which","prompt":"one plain sentence, under 120 characters","choices":[{"id":"a","label":"a concrete option — for blocks, quote their opening words","blockId":"p11"}],"suggestedChoiceId":"a"}. Give 2–4 choices, each a real, specific alternative (the harness adds an "Other" free-text choice). Include "blockId" when a choice points at a block. Set "suggestedChoiceId" to the choice you would pick. When questions are present, still fill targets/intent/summary with your best reading.
+- If the user message contains "Reader's answers", the questions have been asked and answered: follow those answers, treat them as part of the instruction, and return "questions": [].
+- "targets": every block id the revision must update, insert next to, or delete — the smallest complete set that carries out all parts of the instruction. If the reader names several changes, include targets for every one. If the reader pinned a passage, its block is a target. Do not list blocks that merely relate to the topic.
+- ${RESEARCH_REVISE_STYLE_NOTE} Do not add targets for it.
+- A bare "mermaid" / "flowchart" paragraph that is not inside a \`\`\` fence is a broken diagram; fixing it means updating that paragraph block into a complete \`\`\`mermaid fence.
 - "intent": be concrete. Say what the reader wants done (e.g. “split p12: keep the lead-in, move the sentence in quotation marks into its own > blockquote with its SN citation, keep the rest as a following paragraph; leave p13 unchanged”).
 - "searchQueries": up to 3 short library searches, only when the instruction needs discourses the report does not yet cite (new evidence, more sources, a topic not covered). Leave empty for edits the report's own text can satisfy.
 - "readFull": up to 4 discourse ids (mn10, sn48.42) whose full text the writer needs to quote word-for-word — the discourses already cited in the target blocks when quotations are asked for, or ids the instruction names. Leave empty otherwise.
@@ -61,7 +73,7 @@ Rules:
 
 export const RESEARCH_REVISE_SYSTEM = `You are the editor of a research report written from early Buddhist discourses. You do not search. You do not invent citations. You make the smallest edit that fully carries out the instruction, so the revised report reads as one continuous piece.
 
-The report is given with every block (heading, paragraph, list, quotation) labelled [[pN]]. Address blocks by id. Return JSON only:
+${RESEARCH_REVISE_BLOCK_ID_NOTE} Address blocks by id. Return JSON only:
 {"changelog":"one or two sentences: what changed, where, and which discourses were newly cited","ops":[
  {"op":"update","id":"p12","markdown":"replacement for block p12 — may be one block, or several blocks separated by blank lines (e.g. paragraph, > quotation, paragraph) when a block is split"},
  {"op":"insert-after","id":"p12","markdown":"new block(s) placed after p12"},
@@ -75,7 +87,10 @@ Choosing ops:
 - New material → "insert-after" (or "insert-before") the block it belongs next to. A new section is an insert whose markdown begins with a "## Heading" line. Prefer weaving new material into the section it belongs to over appending a section.
 - Removing text → "delete" the block, or "update" it without the removed sentences.
 - Renaming a heading → "update" the heading block.
-- Only the target blocks change unless the instruction cannot be carried out otherwise; every other block stays as it is. Do not reprint unchanged blocks. Never include [[pN]] labels inside "markdown".
+- Only the target blocks may be used as op ids. Every other block must remain byte-for-byte unchanged. Do not reprint unchanged blocks or copy the remainder of the report into an op. Never include [[pN]] labels inside "markdown".
+- Separate every block in "markdown" with a blank line: a heading line, then a blank line, then its paragraph. Never glue a heading to the text under it.
+- ${RESEARCH_REVISE_STYLE_NOTE}
+- A fenced code or Mermaid block is atomic. When updating one, return the complete fenced block, preserving the opening language (for example \`\`\`mermaid) and closing \`\`\`. Never emit a bare "mermaid" line. A paragraph that reads "mermaid / flowchart …" without a fence is a broken diagram: "update" it into a complete \`\`\`mermaid … \`\`\` block, quoting node labels that contain spaces or punctuation (A["Label text"]). Do not touch any other diagram unless it is explicitly targeted.
 
 Continuity (the revised text must not read as bolted on):
 - Match the report's voice, tense, terminology, transliteration, and citation style exactly. Reuse its phrasing for recurring concepts.
@@ -95,6 +110,8 @@ Citations:
 Scope:
 - Ops may touch any number of blocks; finish every op you start.
 - If a heading was pinned, edit within that section unless the instruction names others.
+- The current revision instruction controls what changes now. The original research request and preference brief are background constraints for scope, style, terminology, and emphasis; preserve them unless the current instruction explicitly overrides them.
+- If the message carries the reader's answers to the planner's questions, they are part of the current instruction: where an answer names a block, edit that block and not the one the instruction's number pointed at.
 - Write only from the report plus any supplied passages. If passages are empty, do not pad.`;
 
 export const RESEARCH_REVISE_PLANNER_MAX_TOKENS = 4_000;
@@ -104,9 +121,19 @@ export const RESEARCH_REVISE_PLANNER_BUDGET_MS = 120_000;
  * Planner call. Returns null (the writer then works from heuristics) when the
  * model is unavailable, times out, or answers with nothing usable.
  */
+/** The reader's answers to the planner's questions, one “prompt → answer” per line. */
+export function reviseClarificationsBlock(clarifications?: string): string {
+	const text = (clarifications || "").trim();
+	return text ? `Reader's answers to the planner's questions (these settle the ambiguity; follow them):\n${text}\n` : "";
+}
+
 export async function planResearchRevise(options: {
 	report: string;
 	instruction: string;
+	originalQuestion?: string;
+	clarifyBrief?: string;
+	/** Answers from a paused revision; when present the planner must not ask again. */
+	clarifications?: string;
 	heading?: string;
 	quote?: string;
 	signal?: AbortSignal;
@@ -137,7 +164,12 @@ export async function planResearchRevise(options: {
 				{ role: "system", content: RESEARCH_REVISE_PLAN_SYSTEM },
 				{
 					role: "user",
-					content: `Instruction: ${instruction}
+					content: `Current revision instruction: ${instruction}
+${reviseClarificationsBlock(options.clarifications)}${options.originalQuestion ? `Original research request (background): ${options.originalQuestion}\n` : ""}${
+						options.clarifyBrief
+							? `Original research preferences and emphasis choices:\n${options.clarifyBrief}\n`
+							: ""
+					}
 ${heading ? `Pinned heading: ${heading}\n` : ""}${
 						quote
 							? `Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quote}\n`
@@ -155,6 +187,10 @@ JSON:`,
 		if (plan && pinnedIds.length) {
 			// The pinned block is always in scope, whatever the planner said.
 			plan.targets = [...new Set([...pinnedIds, ...plan.targets])].slice(0, 12);
+		}
+		if (plan && options.clarifications?.trim()) {
+			// Answered once; a second round would loop the reader.
+			delete plan.questions;
 		}
 		return { plan, model: result.model || ASK_PLANNER_PAID_FALLBACK_MODEL };
 	} catch {
@@ -325,6 +361,9 @@ export async function gatherReviseEvidence(options: {
 export function buildReviseWriterMessage(options: {
 	blocks: readonly ResearchReportBlock[];
 	instruction: string;
+	originalQuestion?: string;
+	clarifyBrief?: string;
+	clarifications?: string;
 	heading?: string;
 	quote?: string;
 	evidence?: string;
@@ -339,7 +378,21 @@ export function buildReviseWriterMessage(options: {
 		...new Set([...pinnedIds, ...(options.plan?.targets || [])]),
 	].filter((id) => known.has(id));
 	const targetBlocks = options.blocks.filter((block) => targets.includes(block.id));
-	const lines: string[] = [`Instruction: ${options.instruction}`];
+	const lines: string[] = [
+		`Current revision instruction (make only these requested changes): ${options.instruction}`,
+	];
+	const clarifications = reviseClarificationsBlock(options.clarifications).trimEnd();
+	if (clarifications) lines.push(clarifications);
+	if (options.originalQuestion) {
+		lines.push(
+			`Original research request (background; preserve its scope and style unless the current instruction overrides it): ${options.originalQuestion}`,
+		);
+	}
+	if (options.clarifyBrief) {
+		lines.push(
+			`Original research preferences and emphasis choices (background; keep these preferences):\n${options.clarifyBrief}`,
+		);
+	}
 	if (options.plan?.intent) lines.push(`Plan (from a first pass over the report): ${options.plan.intent}`);
 	if (heading) lines.push(`Pinned heading: ${heading} (edit within this section)`);
 	if (quote) {
@@ -349,7 +402,7 @@ export function buildReviseWriterMessage(options: {
 	}
 	if (targets.length) {
 		lines.push(
-			`Target blocks: ${targets.join(", ")} — change these; leave every other block untouched unless the instruction cannot be carried out otherwise.`,
+			`Allowed target blocks: ${targets.join(", ")} — ops may use only these ids. Every other block must remain byte-for-byte unchanged.`,
 		);
 		lines.push("", "Target blocks as they stand now:");
 		for (const block of targetBlocks) lines.push(`[[${block.id}]]`, block.markdown, "");
@@ -367,6 +420,9 @@ export function buildReviseWriterMessage(options: {
 export async function writeResearchRevise(options: {
 	report: string;
 	instruction: string;
+	originalQuestion?: string;
+	clarifyBrief?: string;
+	clarifications?: string;
 	heading?: string;
 	quote?: string;
 	evidence?: string;
@@ -407,6 +463,9 @@ export async function writeResearchRevise(options: {
 					content: buildReviseWriterMessage({
 						blocks,
 						instruction,
+						originalQuestion: options.originalQuestion,
+						clarifyBrief: options.clarifyBrief,
+						clarifications: options.clarifications,
 						heading: options.heading,
 						quote: options.quote,
 						evidence: options.evidence,
@@ -416,7 +475,11 @@ export async function writeResearchRevise(options: {
 			],
 		});
 		watchdog.ping();
-		const patch = parseResearchRevisePatch(result.content || "");
+		const patch = constrainResearchRevisePatch({
+			patch: parseResearchRevisePatch(result.content || ""),
+			blocks,
+			targets: options.plan?.targets,
+		});
 		if (patch && !patch.changelog) {
 			patch.changelog = clipResearchChangelog(instruction);
 		}

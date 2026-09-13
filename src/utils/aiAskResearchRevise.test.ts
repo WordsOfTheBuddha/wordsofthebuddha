@@ -3,11 +3,14 @@ import { describe, it } from "node:test";
 import {
 	applyResearchRevisePatch,
 	changedReportBlockKeys,
+	constrainResearchRevisePatch,
 	diffReportBlockChanges,
+	enumerateReportBlocks,
 	reportBlockDiffCount,
 	clipEditsToWordBudget,
 	clipResearchVersionIndex,
 	countWords,
+	formatResearchVersionLabelForTurn,
 	formatResearchVersionStats,
 	isResearchRevisionStartedLabel,
 	locateReviseParagraph,
@@ -35,12 +38,20 @@ import {
 	numberedReportForModel,
 	reportBlocksContainingText,
 	researchRevisePatchIsEmpty,
+	normalizeReportBlockId,
 	splitReportBlocks,
 	stripReportBlockTags,
+	researchRevisePlanNote,
+	researchRevisePlanSummary,
+	researchReviseClarifyBaseLabel,
+	sanitizeResearchReviseClarify,
+	isResearchReviseClarifyExpired,
+	RESEARCH_REVISE_PLAN_SUMMARY_MAX,
 } from "./aiAskResearchRevise";
 import {
 	buildReviseWriterMessage,
 	planReviseEvidence,
+	reviseClarificationsBlock,
 	RESEARCH_REVISE_WRITER_MAX_TOKENS,
 } from "./aiAskResearchReviseWrite";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
@@ -63,25 +74,77 @@ The discourse then declares the faculties easy to grasp.
 
 1. SN 48.42`;
 
-	it("splits into labelled blocks, keeps lists whole, drops Sources", () => {
+	it("numbers p-blocks the way the reader sees ¶ N; headings get h ids", () => {
 		const blocks = splitReportBlocks(report);
 		assert.deepEqual(
 			blocks.map((b) => `${b.id}:${b.kind}`),
-			["p1:paragraph", "p2:heading", "p3:paragraph", "p4:paragraph", "p5:list", "p6:quote"],
+			["p1:paragraph", "h1:heading", "p2:paragraph", "p3:paragraph", "p4:list", "p5:quote"],
 		);
 		assert.equal(blocks[4]?.markdown, "- one\n- two");
 		assert.equal(blocks[3]?.section, "Mindfulness");
 		const numbered = numberedReportForModel(blocks);
 		assert.match(numbered, /^\[\[p1\]\]\nOpening line\./);
-		assert.match(numbered, /\[\[p5\]\]\n- one\n- two/);
+		assert.match(numbered, /\[\[h1\]\]\n## Mindfulness/);
+		assert.match(numbered, /\[\[p4\]\]\n- one\n- two/);
 		assert.doesNotMatch(numbered, /## Sources/);
+	});
+
+	it("keeps ids aligned with rendered ¶ numbers across headings, tables, fences, glued headings and loose lists", () => {
+		const md = [
+			"# Title",
+			"## 1. First",
+			"Lead paragraph.",
+			"",
+			"| A | B |",
+			"|---|---|",
+			"| 1 | 2 |",
+			"",
+			"```mermaid",
+			"flowchart LR",
+			" A --> B",
+			"```",
+			"",
+			"### Glued heading",
+			"Text right under the heading.",
+			"> quote interrupting the paragraph",
+			"",
+			"- one",
+			"",
+			"- two",
+			"",
+			"---",
+			"",
+			"mermaid",
+			"flowchart LR",
+			" C --> D",
+		].join("\n");
+		const blocks = splitReportBlocks(md);
+		assert.deepEqual(
+			blocks.map((b) => `${b.id}:${b.kind}`),
+			[
+				"h1:heading",
+				"h2:heading",
+				"p1:paragraph",
+				"t1:other",
+				"c1:code",
+				"h3:heading",
+				"p2:paragraph",
+				"p3:quote",
+				"p4:list",
+				"t2:other",
+				"p5:paragraph",
+			],
+		);
+		assert.equal(blocks[8]?.markdown, "- one\n\n- two");
+		// p5 is the broken (unfenced) diagram — a plain paragraph the reader sees as ¶ 5.
+		assert.match(blocks[10]?.markdown || "", /^mermaid\nflowchart/);
 	});
 
 	it("update splits a paragraph into prose + blockquote + prose, touching nothing else", () => {
 		const next = applyResearchReviseOps(report, [
 			{
 				op: "update",
-				id: "p3",
+				id: "p2",
 				markdown:
 					'Another text traces the chain from the faculties to Nibbāna. The Buddha replies:\n\n> "the spiritual life is lived grounded upon Nibbāna" SN 48.42\n\nUṇṇābha\'s faith is settled.',
 			},
@@ -95,9 +158,9 @@ The discourse then declares the faculties easy to grasp.
 
 	it("delete / insert-after / insert-before land on the named block; unknown ids are ignored", () => {
 		const next = applyResearchReviseOps(report, [
-			{ op: "delete", id: "p4", markdown: "" },
-			{ op: "insert-after", id: "p6", markdown: "## New section\n\nNew text." },
-			{ op: "insert-before", id: "p2", markdown: "Lead-in." },
+			{ op: "delete", id: "p3", markdown: "" },
+			{ op: "insert-after", id: "p5", markdown: "## New section\n\nNew text." },
+			{ op: "insert-before", id: "h1", markdown: "Lead-in." },
 			{ op: "update", id: "p99", markdown: "should vanish" },
 		]);
 		const bodies = splitReportBlocks(next).map((b) => b.markdown);
@@ -114,8 +177,20 @@ The discourse then declares the faculties easy to grasp.
 		assert.doesNotMatch(next, /should vanish/);
 	});
 
-	it("strips echoed [[pN]] tags from new markdown", () => {
+	it("strips echoed [[pN]] / [[hN]] tags from new markdown", () => {
 		assert.equal(stripReportBlockTags("[[p3]]\nBody here [[p4]] tail"), "Body here tail");
+		assert.equal(stripReportBlockTags("[[h2]]\n## Heading"), "## Heading");
+	});
+
+	it("normalizes reader and model block references to ids", () => {
+		assert.equal(normalizeReportBlockId("P12"), "p12");
+		assert.equal(normalizeReportBlockId("¶ 12"), "p12");
+		assert.equal(normalizeReportBlockId("paragraph 12"), "p12");
+		assert.equal(normalizeReportBlockId(12), "p12");
+		assert.equal(normalizeReportBlockId("[[h3]]"), "h3");
+		assert.equal(normalizeReportBlockId("C1"), "c1");
+		assert.equal(normalizeReportBlockId("junk7"), "");
+		assert.equal(normalizeReportBlockId("sn48.42"), "");
 	});
 
 	it("parses ops JSON (and block-addressed rows that landed in edits)", () => {
@@ -126,6 +201,7 @@ The discourse then declares the faculties easy to grasp.
 					{ op: "replace", id: "p3", markdown: "[[p3]]\nNew p3" },
 					{ op: "remove", block: "4" },
 					{ op: "insert-after", id: "p6", markdown: "" },
+					{ op: "update", id: "h2", markdown: "## Renamed" },
 				],
 				edits: [{ mode: "update", id: "p1", markdown: "New opening" }],
 			}),
@@ -134,6 +210,7 @@ The discourse then declares the faculties easy to grasp.
 		assert.deepEqual(patch?.ops, [
 			{ op: "update", id: "p3", markdown: "New p3" },
 			{ op: "delete", id: "p4", markdown: "" },
+			{ op: "update", id: "h2", markdown: "## Renamed" },
 			{ op: "update", id: "p1", markdown: "New opening" },
 		]);
 		assert.equal(patch?.edits.length, 0);
@@ -159,23 +236,23 @@ The discourse then declares the faculties easy to grasp.
 		const blocks = splitReportBlocks(report);
 		assert.deepEqual(
 			reportBlocksContainingText(blocks, "Uṇṇābha's faith is settled"),
-			["p3"],
+			["p2"],
 		);
 		// A selection spanning two paragraphs names both.
 		const span = `${blocks[2]?.markdown}\n\n${blocks[3]?.markdown}`;
-		assert.deepEqual(reportBlocksContainingText(blocks, span), ["p3", "p4"]);
+		assert.deepEqual(reportBlocksContainingText(blocks, span), ["p2", "p3"]);
 		assert.deepEqual(reportBlocksContainingText(blocks, "nothing like this at all here"), []);
 	});
 
 	it("clips a planner answer", () => {
 		assert.equal(clipResearchRevisePlan({}), null);
 		const plan = clipResearchRevisePlan({
-			targets: ["p3", "3", "P3", "junk", "p7"],
+			targets: ["p3", "3", "P3", "junk", "p7", "h1"],
 			intent: "  Split p3 around the quotation.  ",
 			searchQueries: ["mindfulness faculties", "mindfulness faculties", "x", "y", "z"],
 			readFull: ["SN 48.42", "mn10", "not an id"],
 		});
-		assert.deepEqual(plan?.targets, ["p3", "p7"]);
+		assert.deepEqual(plan?.targets, ["p3", "p7", "h1"]);
 		assert.equal(plan?.intent, "Split p3 around the quotation.");
 		assert.deepEqual(plan?.searchQueries, ["mindfulness faculties", "x", "y"]);
 		assert.deepEqual(plan?.readFull, ["sn48.42", "mn10"]);
@@ -216,15 +293,112 @@ The discourse then declares the faculties easy to grasp.
 		const message = buildReviseWriterMessage({
 			blocks,
 			instruction: "Make the quoted part a sutta quote.",
+			originalQuestion: "Explain mindfulness with practical emphasis.",
+			clarifyBrief:
+				"How should quotations be used? → Prefer direct quotations\nTone → Technical",
 			quote: "Uṇṇābha's faith is settled.",
-			plan: { targets: ["p4"], intent: "Split p3 around the quotation.", searchQueries: [], readFull: [] },
+			plan: { targets: ["p3"], intent: "Split p2 around the quotation.", searchQueries: [], readFull: [] },
 		});
-		assert.match(message, /Plan \(from a first pass over the report\): Split p3/);
-		assert.match(message, /it sits in p3/);
-		assert.match(message, /Target blocks: p3, p4 —/);
-		assert.match(message, /Target blocks as they stand now:\n\[\[p3\]\]\nAnother text/);
+		assert.match(message, /Plan \(from a first pass over the report\): Split p2/);
+		assert.match(message, /Original research request.*Explain mindfulness/);
+		assert.match(message, /Original research preferences and emphasis choices/);
+		assert.match(message, /Prefer direct quotations/);
+		assert.match(message, /it sits in p2/);
+		assert.match(message, /Allowed target blocks: p2, p3 —/);
+		assert.match(message, /Target blocks as they stand now:\n\[\[p2\]\]\nAnother text/);
 		assert.match(message, /Current report, with block ids:\n\[\[p1\]\]/);
 		assert.match(message, /No passages supplied/);
+	});
+
+	it("enforces planner targets and drops legacy whole-section edits", () => {
+		const blocks = splitReportBlocks(report);
+		const constrained = constrainResearchRevisePatch({
+			blocks,
+			targets: ["p2"],
+			patch: {
+				changelog: "Changed too much.",
+				ops: [
+					{ op: "update", id: "p2", markdown: "Targeted replacement." },
+					{ op: "update", id: "p3", markdown: "Unrelated replacement." },
+				],
+				edits: [
+					{
+						heading: "Mindfulness",
+						mode: "replace",
+						markdown: "A whole rewritten section.",
+					},
+				],
+			},
+		});
+		assert.deepEqual(constrained?.ops, [
+			{ op: "update", id: "p2", markdown: "Targeted replacement." },
+		]);
+		assert.deepEqual(constrained?.edits, []);
+	});
+
+	it("rejects malformed Mermaid updates but accepts a complete matching fence", () => {
+		const blocks = splitReportBlocks(
+			"## Diagram\n\n```mermaid\nflowchart LR\n A --> B\n```\n\nClosing paragraph stays exactly the same.",
+		);
+		assert.equal(blocks[1]?.id, "c1");
+		const malformed = constrainResearchRevisePatch({
+			blocks,
+			targets: ["c1"],
+			patch: {
+				changelog: "Broke it.",
+				ops: [
+					{ op: "update", id: "c1", markdown: "mermaid\nflowchart LR\n A --> B" },
+				],
+				edits: [],
+			},
+		});
+		assert.equal(malformed, null);
+		const valid = constrainResearchRevisePatch({
+			blocks,
+			targets: ["c1"],
+			patch: {
+				changelog: "Fixed labels.",
+				ops: [
+					{
+						op: "update",
+						id: "c1",
+						markdown: '```mermaid\nflowchart LR\n A["Quoted label"] --> B\n```',
+					},
+				],
+				edits: [],
+			},
+		});
+		assert.equal(valid?.ops?.length, 1);
+	});
+
+	it("lets a broken unfenced diagram paragraph be fenced, but drops half-open fences", () => {
+		const blocks = splitReportBlocks(
+			"## Chains\n\nIntro paragraph.\n\nmermaid\nflowchart LR\n A --> B\n\nAfter.",
+		);
+		assert.equal(blocks[2]?.id, "p2");
+		assert.equal(blocks[2]?.kind, "paragraph");
+		const fixed = constrainResearchRevisePatch({
+			blocks,
+			targets: ["p2"],
+			patch: {
+				changelog: "Fenced the diagram.",
+				ops: [
+					{ op: "update", id: "p2", markdown: "```mermaid\nflowchart LR\n A --> B\n```" },
+				],
+				edits: [],
+			},
+		});
+		assert.equal(fixed?.ops?.length, 1);
+		const halfOpen = constrainResearchRevisePatch({
+			blocks,
+			targets: ["p2"],
+			patch: {
+				changelog: "Forgot to close.",
+				ops: [{ op: "update", id: "p2", markdown: "```mermaid\nflowchart LR\n A --> B" }],
+				edits: [],
+			},
+		});
+		assert.equal(halfOpen, null);
 	});
 });
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
@@ -422,6 +596,25 @@ Done.`;
 });
 
 describe("changed block keys", () => {
+	it("resumes block enumeration after a complete fenced Mermaid diagram", () => {
+		const report =
+			"## Before\n\nOpening paragraph remains here.\n\n```mermaid\nflowchart LR\n A --> B\n```\n\n## After\n\nClosing paragraph stays exactly the same.";
+		const blocks = enumerateReportBlocks(report);
+		assert.equal(
+			blocks.some(
+				(block) =>
+					block.key ===
+					"paragraph:closingparagraphstaysexactlythesame",
+			),
+			true,
+		);
+		assert.deepEqual(diffReportBlockChanges(report, report), {
+			added: [],
+			edited: [],
+			removed: [],
+		});
+	});
+
 	it("lists paragraphs and list items the new version added or rewrote", () => {
 		const base = "## A\n\nSame paragraph stays right here.\n\n- item one stays here\n- item two changes here";
 		const next =
@@ -430,8 +623,8 @@ describe("changed block keys", () => {
 			"alongenoughparagraphhere",
 		]);
 		assert.deepEqual(new Set(changedReportBlockKeys(base, next)), new Set([
-			"itemtwoisrewrittennow",
-			"newparagraphwithsn11",
+			"list:itemtwoisrewrittennow",
+			"paragraph:newparagraphwithsn11",
 		]));
 		assert.deepEqual(changedReportBlockKeys(base, base), []);
 	});
@@ -442,11 +635,15 @@ describe("changed block keys", () => {
 		const next =
 			"## A\n\nSame paragraph stays right here.\n\n- item one stays here\n- item two is rewritten now\n\nNew paragraph with [SN 1.1](/sn1.1).";
 		const diff = diffReportBlockChanges(base, next);
-		assert.deepEqual(diff.added, ["newparagraphwithsn11"]);
-		assert.deepEqual(diff.edited, ["itemtwoisrewrittennow"]);
-		assert.equal(diff.removed.length, 1);
+		assert.deepEqual(diff.added, [
+			"list:itemtwoisrewrittennow",
+			"paragraph:newparagraphwithsn11",
+		]);
+		assert.deepEqual(diff.edited, []);
+		assert.equal(diff.removed.length, 2);
 		assert.match(diff.removed[0].markdown, /Dropped paragraph/);
-		assert.equal(reportBlockDiffCount(diff), 3);
+		assert.match(diff.removed[1].markdown, /item two changes here/);
+		assert.equal(reportBlockDiffCount(diff), 4);
 	});
 
 	it("positions removals against the next surviving block after earlier inserts", () => {
@@ -455,11 +652,43 @@ describe("changed block keys", () => {
 		const next =
 			"## Section\n\nA new opening paragraph was inserted.\n\nAlpha paragraph remains in place.\n\nBeta paragraph remains in place.\n\nGamma paragraph remains in place.";
 		const diff = diffReportBlockChanges(base, next);
-		assert.deepEqual(diff.added, ["anewopeningparagraphwasinserted"]);
+		assert.deepEqual(diff.added, ["paragraph:anewopeningparagraphwasinserted"]);
 		assert.equal(diff.edited.length, 0);
 		assert.equal(diff.removed.length, 1);
 		assert.equal(diff.removed[0].beforeNextIndex, 3);
 		assert.match(diff.removed[0].markdown, /^\*\*Removed emphasis/);
+	});
+
+	it("includes tables in the stream so removal anchors stay aligned with the DOM", () => {
+		const base =
+			"## Section\n\nAlpha paragraph remains in place.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n**Removed emphasis stays markdown.**\n\nBeta paragraph remains in place.";
+		const next =
+			"## Section\n\nAlpha paragraph remains in place.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\nBeta paragraph remains in place.";
+		const diff = diffReportBlockChanges(base, next);
+		assert.equal(diff.removed.length, 1);
+		assert.equal(diff.removed[0].beforeNextKey, "paragraph:betaparagraphremainsinplace");
+	});
+
+	it("treats heavy rewrites as removals plus additions, not a single edit", () => {
+		const base =
+			"## A\n\nAnother text traces the chain of dependency from the five sense faculties to Nibbāna, situating mindfulness as the indispensable bridge. The brahmin Uṇṇābha asks what the five faculties take recourse in.";
+		const next =
+			'## A\n\n> "For these five faculties that have distinct fields" SN 48.42\n\n> "The mind, brahmin, takes recourse in mindfulness." SN 48.42';
+		const diff = diffReportBlockChanges(base, next);
+		assert.equal(diff.edited.length, 0);
+		assert.equal(diff.removed.length, 1);
+		assert.equal(diff.added.length, 2);
+	});
+
+	it("detects list-to-paragraph reformats as remove plus add", () => {
+		const base =
+			"## 1. Why\n\nLead paragraph long enough for the diff algorithm here.\n\n- **All Buddhas awaken this way.** Sāriputta gatekeeper simile makes the point about fortress and gatekeeper patrolling walls.";
+		const next =
+			"## 1. Why\n\nLead paragraph long enough for the diff algorithm here.\n\n**All Buddhas awaken this way.** Sāriputta gatekeeper simile makes the point about fortress and gatekeeper patrolling walls.";
+		const diff = diffReportBlockChanges(base, next);
+		assert.equal(diff.edited.length, 0);
+		assert.equal(diff.removed.length, 1);
+		assert.equal(diff.added.length, 1);
 	});
 });
 
@@ -524,6 +753,21 @@ describe("clipEditsToWordBudget", () => {
 });
 
 describe("version index", () => {
+	it("labels the in-flight revision with the next version number", () => {
+		const index = clipResearchVersionIndex([
+			{ n: 1, at: 1, instruction: "", changelog: "First", from: null },
+			{ n: 2, at: 2, instruction: "tone", changelog: "Softer", from: 1 },
+		]);
+		assert.equal(
+			formatResearchVersionLabelForTurn(index, { revising: true }),
+			"v3",
+		);
+		assert.equal(
+			formatResearchVersionLabelForTurn(index, { previewN: 1 }),
+			"v1 · preview",
+		);
+	});
+
 	it("assigns the next unused number and keeps the newest bodies", () => {
 		const index = clipResearchVersionIndex([
 			{ n: 1, at: 1, instruction: "", changelog: "First", from: null },
@@ -601,5 +845,101 @@ describe("researchReviseNeedsSearch", () => {
 		assert.equal(researchReviseNeedsSearch("Make it a study guide."), false);
 		assert.equal(researchReviseNeedsSearch("Add AN 10.60 to the body."), true);
 		assert.equal(researchReviseNeedsSearch("Softer opening.", ["mn10"]), true);
+	});
+});
+
+describe("revise plan: reader summary and clarifying questions", () => {
+	it("parses summary and questions; choices keep block ids and gain only Other", () => {
+		const plan = clipResearchRevisePlan({
+			targets: ["p11", "p12"],
+			intent: "Delete p12, which repeats p11.",
+			summary: "delete p12 (duplicate of p11) · fence the diagram in p72",
+			questions: [
+				{
+					id: "which",
+					prompt: "Which paragraph repeats the other?",
+					choices: [
+						{ id: "a", label: "¶11 “The claim that mindfulness…”", blockId: "P11" },
+						{ id: "b", label: "¶12 “Three further texts…”", blockId: "p12" },
+						{ id: "c", label: "junk", blockId: "nope" },
+					],
+					suggestedChoiceId: "b",
+				},
+				{ id: "q2", prompt: "Second", choices: [{ id: "x", label: "X" }] },
+				{ id: "q3", prompt: "Third — over the cap", choices: [{ id: "y", label: "Y" }] },
+			],
+		});
+		assert.ok(plan);
+		assert.equal(plan.summary, "delete p12 (duplicate of p11) · fence the diagram in p72");
+		assert.equal(plan.questions?.length, 2);
+		const first = plan.questions![0];
+		assert.deepEqual(
+			first.choices.map((c) => c.id),
+			["a", "b", "c", "other"],
+		);
+		assert.equal(first.choices[0].blockId, "p11");
+		assert.equal(first.choices[2].blockId, undefined);
+		assert.equal(first.suggestedChoiceId, "b");
+		assert.ok(!first.choices.some((c) => c.id === "no_preference"));
+	});
+
+	it("drops questions the model returns empty or malformed", () => {
+		const plan = clipResearchRevisePlan({ targets: ["p3"], intent: "x", questions: [] });
+		assert.equal(plan?.questions, undefined);
+		const junk = clipResearchRevisePlan({ targets: ["p3"], intent: "x", questions: "no" });
+		assert.equal(junk?.questions, undefined);
+	});
+
+	it("turns the plan into a reader-facing hop with ¶ numbers", () => {
+		assert.equal(
+			researchRevisePlanNote({ summary: "delete p12 (duplicate of p11) · add SN 47.42 after p35" }),
+			"Plan: delete ¶12 (duplicate of ¶11) · add SN 47.42 after ¶35",
+		);
+		// Falls back to the intent and does not touch words that merely start with p.
+		assert.equal(
+			researchRevisePlanNote({ intent: "Update [[p7]]; keep the passage in p8 as is." }),
+			"Plan: Update ¶7; keep the passage in ¶8 as is.",
+		);
+		assert.equal(researchRevisePlanNote({}), "");
+		const long = researchRevisePlanSummary({ summary: "x".repeat(400) });
+		assert.ok(long.length <= RESEARCH_REVISE_PLAN_SUMMARY_MAX);
+		assert.ok(long.endsWith("…"));
+	});
+
+	it("sanitizes a stored clarify record and knows when it has expired", () => {
+		const clarify = sanitizeResearchReviseClarify({
+			id: "rc_1",
+			questions: [
+				{ id: "which", prompt: "Which one?", choices: [{ id: "a", label: "A", blockId: "p2" }] },
+			],
+			interpretation: "delete p12",
+			fromVersion: 8,
+			expiresAt: 1_000,
+		});
+		assert.ok(clarify);
+		assert.equal(clarify.id, "rc_1");
+		assert.equal(clarify.interpretation, "delete ¶12");
+		assert.equal(clarify.fromVersion, 8);
+		assert.equal(clarify.questions[0].choices[0].blockId, "p2");
+		assert.equal(isResearchReviseClarifyExpired(clarify, 999), false);
+		assert.equal(isResearchReviseClarifyExpired(clarify, 1_000), true);
+		assert.equal(isResearchReviseClarifyExpired(null), false);
+		assert.equal(sanitizeResearchReviseClarify({ id: "x", questions: [] }), null);
+		assert.equal(researchReviseClarifyBaseLabel(8), "Revising from v8");
+		assert.equal(researchReviseClarifyBaseLabel(null), "");
+	});
+
+	it("passes the reader's answers to the writer and planner as their own block", () => {
+		const blocks = splitReportBlocks("Alpha.\n\nBeta.");
+		const message = buildReviseWriterMessage({
+			blocks,
+			instruction: "Delete the duplicate.",
+			clarifications: "Which paragraph repeats? → ¶2 “Beta.” (block p2)",
+			plan: { targets: ["p2"], intent: "Delete p2.", searchQueries: [], readFull: [] },
+		});
+		assert.match(message, /Reader's answers to the planner's questions/);
+		assert.match(message, /→ ¶2 “Beta\.” \(block p2\)/);
+		assert.equal(reviseClarificationsBlock(""), "");
+		assert.equal(reviseClarificationsBlock("  "), "");
 	});
 });

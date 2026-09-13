@@ -107,28 +107,31 @@
     <g id="meals-buddha" transform="translate(68, 66)">
       <rect x="0" y="0" width="384" height="252" rx="8" fill="url(#cardTeal)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
 
-      <!-- Moderation bowl icon -->
-      <g transform="translate(36, 31)" opacity="0.85" filter="url(#iconGlow)">
-        <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
-          <ellipse cx="0" cy="-3" rx="14" ry="5" stroke-width="1.2" />
-          <path d="M -14 -3 C -14 5 -10 16 0 18 C 10 16 14 5 14 -3" stroke-width="1.2" />
-          <line x1="-9" y1="6" x2="9" y2="6" stroke-width="0.7" opacity="0.5" />
+      <!-- Title cluster: icon + two-line title, centered as a unit -->
+      <g transform="translate(84, 0)">
+        <g transform="translate(14, 31)" opacity="0.85" filter="url(#iconGlow)">
+          <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="0" cy="-3" rx="14" ry="5" stroke-width="1.2" />
+            <path d="M -14 -3 C -14 5 -10 16 0 18 C 10 16 14 5 14 -3" stroke-width="1.2" />
+            <line x1="-9" y1="6" x2="9" y2="6" stroke-width="0.7" opacity="0.5" />
+          </g>
         </g>
+        <text x="40" y="28" fill="#98d0b8" font-size="12.5" font-weight="bold">Eating Only During the Day</text>
+        <text x="40" y="44" fill="#689888" font-size="10.5" font-style="italic">aññatreva rattibhojanā bhuñjāmi</text>
       </g>
-
-      <text x="64" y="28" fill="#98d0b8" font-size="12.5" font-weight="bold">Eating Only During the Day</text>
-      <text x="64" y="44" fill="#689888" font-size="10.5" font-style="italic">aññatreva rattibhojanā bhuñjāmi</text>
 
       <line x1="20" y1="60" x2="364" y2="60" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
 
-      <!-- Five bodily benefits -->
-      <text x="192" y="84" text-anchor="middle" fill="#c8d8e8" font-size="11" font-weight="bold">Five tangible fruits of restraint:</text>
-      <g id="benefits-list" transform="translate(82, 106)" font-size="10.8">
-        <text x="0" y="0" fill="#a0b8c8">• Fewer ailments <tspan fill="#688878" font-style="italic">(appābādhatañca)</tspan></text>
-        <text x="0" y="19" fill="#a0b8c8">• Fewer illnesses <tspan fill="#688878" font-style="italic">(appātaṅkatañca)</tspan></text>
-        <text x="0" y="38" fill="#a0b8c8">• Nimbleness and lightness <tspan fill="#688878" font-style="italic">(lahuṭṭhānañca)</tspan></text>
-        <text x="0" y="57" fill="#a0b8c8">• Bodily strength <tspan fill="#688878" font-style="italic">(balañca)</tspan></text>
-        <text x="0" y="76" fill="#a0b8c8">• Ease of abiding <tspan fill="#688878" font-style="italic">(phāsuvihārañca)</tspan></text>
+      <!-- Benefits column: bullets indented from heading, group centered in the card -->
+      <g id="benefits-block" transform="translate(79.5, 84)">
+        <text x="0" y="0" fill="#c8d8e8" font-size="11" font-weight="bold">Five tangible fruits of restraint:</text>
+        <g id="benefits-list" transform="translate(14, 22)" font-size="10.8">
+          <text x="0" y="0" fill="#a0b8c8">• Fewer ailments <tspan fill="#688878" font-style="italic">(appābādhatañca)</tspan></text>
+          <text x="0" y="19" fill="#a0b8c8">• Fewer illnesses <tspan fill="#688878" font-style="italic">(appātaṅkatañca)</tspan></text>
+          <text x="0" y="38" fill="#a0b8c8">• Nimbleness and lightness <tspan fill="#688878" font-style="italic">(lahuṭṭhānañca)</tspan></text>
+          <text x="0" y="57" fill="#a0b8c8">• Bodily strength <tspan fill="#688878" font-style="italic">(balañca)</tspan></text>
+          <text x="0" y="76" fill="#a0b8c8">• Ease of abiding <tspan fill="#688878" font-style="italic">(phāsuvihārañca)</tspan></text>
+        </g>
       </g>
 
       <line x1="20" y1="208" x2="364" y2="208" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
@@ -139,28 +142,29 @@
     <g id="meals-rebellion" transform="translate(468, 66)">
       <rect x="0" y="0" width="384" height="252" rx="8" fill="url(#cardBurgundy)" stroke="#a06070" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
 
-      <!-- Moon / Night meal motif -->
-      <g transform="translate(36, 36)" opacity="0.8" filter="url(#iconGlow)">
-        <g fill="none" stroke="#d0a0a8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M 4 -9 A 9 9 0 1 0 4 9 A 6.5 6.5 0 0 1 4 -9 Z" stroke-width="1.1" />
-          <line x1="10" y1="-4" x2="14" y2="-6" stroke-width="0.9" />
-          <line x1="11" y1="3" x2="15" y2="3" stroke-width="0.9" />
+      <!-- Title cluster: icon + two-line title, centered as a unit -->
+      <g transform="translate(82.5, 0)">
+        <g transform="translate(14, 36)" opacity="0.8" filter="url(#iconGlow)">
+          <g fill="none" stroke="#d0a0a8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 4 -9 A 9 9 0 1 0 4 9 A 6.5 6.5 0 0 1 4 -9 Z" stroke-width="1.1" />
+            <line x1="10" y1="-4" x2="14" y2="-6" stroke-width="0.9" />
+            <line x1="11" y1="3" x2="15" y2="3" stroke-width="0.9" />
+          </g>
         </g>
+        <text x="40" y="28" fill="#d0a0a8" font-size="12.5" font-weight="bold">Eating Outside Proper Time</text>
+        <text x="40" y="44" fill="#886070" font-size="10.5" font-style="italic">sāyañceva … pāto ca divā ca vikāle</text>
       </g>
-
-      <text x="64" y="28" fill="#d0a0a8" font-size="12.5" font-weight="bold">Eating Outside Proper Time</text>
-      <text x="64" y="44" fill="#886070" font-size="10.5" font-style="italic">sāyañceva … pāto ca divā ca vikāle</text>
 
       <line x1="20" y1="60" x2="364" y2="60" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
 
-      <!-- The Hedonic Rationalization -->
+      <!-- Hedonic rationalization: stays centered; top/bottom match the LHS benefits block -->
       <text x="192" y="84" text-anchor="middle" fill="#d0a8b0" font-size="11" font-weight="bold">The monks’ subjective defense:</text>
       <g id="rebel-arguments" font-size="10.8">
         <text x="192" y="106" text-anchor="middle" fill="#b8a0a8">“We experience fewer illnesses and comfort eating</text>
         <text x="192" y="122" text-anchor="middle" fill="#b8a0a8">in evening, morning, and outside proper time.”</text>
-        <text x="192" y="146" text-anchor="middle" fill="#d098a8" font-style="italic">“Why abandon what is evident here and now <tspan fill="#886070">(sandiṭṭhika)</tspan></text>
-        <text x="192" y="162" text-anchor="middle" fill="#d098a8" font-style="italic">to pursue what belongs to time <tspan fill="#886070">(kālika)</tspan>?”</text>
-        <text x="192" y="184" text-anchor="middle" fill="#a07888">They confuse hedonic ease with spiritual completion</text>
+        <text x="192" y="144" text-anchor="middle" fill="#d098a8" font-style="italic">“Why abandon what is evident here and now <tspan fill="#886070">(sandiṭṭhika)</tspan></text>
+        <text x="192" y="160" text-anchor="middle" fill="#d098a8" font-style="italic">to pursue what belongs to time <tspan fill="#886070">(kālika)</tspan>?”</text>
+        <text x="192" y="182" text-anchor="middle" fill="#a07888">They confuse hedonic ease with spiritual completion</text>
       </g>
 
       <line x1="20" y1="208" x2="364" y2="208" stroke="#a06070" stroke-opacity="0.2" stroke-width="0.6" />

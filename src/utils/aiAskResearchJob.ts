@@ -8,7 +8,10 @@ import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import {
 	clipResearchVersionIndex,
+	isResearchRevisePlanNote,
 	researchRevisionStartedLabel,
+	sanitizeResearchReviseClarify,
+	type ResearchReviseClarify,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
@@ -24,6 +27,8 @@ export type ResearchJobStatus =
 	| "reviewing"
 	| "answering"
 	| "revising"
+	/** Revision paused on the planner's questions; the report is unchanged. */
+	| "revise-clarifying"
 	| "complete"
 	| "failed"
 	| "cancelled";
@@ -82,6 +87,8 @@ export interface ResearchJobPublic {
 	createdAt?: number;
 	/** Changelog rows; bodies live in researchJobs/{id}/versions/{n}. */
 	versionIndex?: ResearchVersionMeta[];
+	/** Present only while `status` is `revise-clarifying`. */
+	reviseClarify?: ResearchReviseClarify;
 }
 
 export function isResearchJobTerminal(status: ResearchJobStatus): boolean {
@@ -90,8 +97,13 @@ export function isResearchJobTerminal(status: ResearchJobStatus): boolean {
 	);
 }
 
+/** A revision cycle is open — running, or paused on the reader's answers. */
 export function isResearchJobRevising(status: ResearchJobStatus): boolean {
-	return status === "revising";
+	return status === "revising" || status === "revise-clarifying";
+}
+
+export function isResearchJobReviseClarifying(status: ResearchJobStatus): boolean {
+	return status === "revise-clarifying";
 }
 
 /** Cancelled or failed jobs can be started again on the same record. */
@@ -114,7 +126,7 @@ export function researchJobPhase(status: ResearchJobStatus): ResearchAskPhase {
 	if (status === "searching" || status === "verify") return "search";
 	if (status === "crunching") return "rerank";
 	if (status === "reviewing") return "review";
-	if (status === "answering" || status === "revising") return "answer";
+	if (status === "answering" || isResearchJobRevising(status)) return "answer";
 	if (isResearchJobTerminal(status)) return "done";
 	return "rewrite";
 }
@@ -189,6 +201,8 @@ export function researchProcessNoteFamily(note: string): string {
 		return "revise-search";
 	}
 	if (/^(?:revising|revised) the report/i.test(n)) return "revise";
+	if (isResearchRevisePlanNote(n)) return "revise-plan";
+	if (/^waiting for your answer/i.test(n)) return "skip";
 	if (/^starting/i.test(n)) return "start";
 	if (
 		/^(?:planning|opening the library|searching ·|crunching|ranking|understood|checking for gaps)/i.test(
@@ -198,6 +212,29 @@ export function researchProcessNoteFamily(note: string): string {
 		return "skip";
 	}
 	return `note:${n.toLowerCase()}`;
+}
+
+/**
+ * Drop the hops of a revision cycle that never produced a version (the reader
+ * cancelled at the clarify step, or the questions expired), so the strip does
+ * not show an open “Started vN revision” with nothing after it.
+ */
+export function dropOpenResearchRevisionCycle(
+	notes: readonly string[] | undefined,
+): string[] {
+	const current = clipResearchProcessNotes(notes);
+	let startAt = -1;
+	for (let i = current.length - 1; i >= 0; i -= 1) {
+		if (researchProcessNoteFamily(current[i]) === "revise-start") {
+			startAt = i;
+			break;
+		}
+	}
+	if (startAt < 0) return current;
+	const closed = current
+		.slice(startAt + 1)
+		.some((note) => researchProcessNoteFamily(note) === "revise");
+	return closed ? current : current.slice(0, startAt);
 }
 
 export function rememberResearchProcessNote(
@@ -223,6 +260,7 @@ export function rememberResearchProcessNote(
 		(family === "search-again" ||
 			family === "go-deeper" ||
 			family === "review-report" ||
+			family === "revise-plan" ||
 			family === "revise")
 	) {
 		return clipResearchProcessNotes([...current.slice(0, -1), next]);
@@ -248,6 +286,7 @@ export function isResearchReviseHopLabel(text: string): boolean {
 	return (
 		family === "revise-start" ||
 		family === "revise-think" ||
+		family === "revise-plan" ||
 		family === "revise-search" ||
 		family === "revise"
 	);
@@ -479,6 +518,7 @@ export function parseResearchJobStatus(value: unknown): ResearchJobStatus | null
 		value === "reviewing" ||
 		value === "answering" ||
 		value === "revising" ||
+		value === "revise-clarifying" ||
 		value === "complete" ||
 		value === "failed" ||
 		value === "cancelled"
@@ -508,9 +548,13 @@ export function toResearchJobPublic(input: {
 	processNotes?: readonly string[];
 	createdAt?: number;
 	versionIndex?: unknown;
+	reviseClarify?: unknown;
 }): ResearchJobPublic {
 	const status = input.status;
 	const result = sanitizeResearchJobResult(input.result);
+	const reviseClarify = isResearchJobReviseClarifying(status)
+		? sanitizeResearchReviseClarify(input.reviseClarify)
+		: null;
 	return {
 		id: clipResearchJobId(input.id),
 		status,
@@ -557,5 +601,6 @@ export function toResearchJobPublic(input: {
 			const versionIndex = clipResearchVersionIndex(input.versionIndex);
 			return versionIndex.length > 0 ? { versionIndex } : {};
 		})(),
+		...(reviseClarify ? { reviseClarify } : {}),
 	};
 }

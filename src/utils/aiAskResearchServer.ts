@@ -44,6 +44,8 @@ import {
 import { recordAiAskTelemetry } from "./aiAskTelemetryServer";
 import {
 	clipResearchJobId,
+	dropOpenResearchRevisionCycle,
+	isResearchJobReviseClarifying,
 	isResearchJobRetryable,
 	isResearchJobRevising,
 	isResearchJobTerminal,
@@ -91,7 +93,11 @@ import {
 	clipResearchVersionIndex,
 	currentResearchVersionN,
 	healedResearchVersionIndex,
+	isResearchReviseClarifyExpired,
 	researchProcessCompletedRevise,
+	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
+	sanitizeResearchReviseClarify,
+	type ResearchReviseClarify,
 } from "./aiAskResearchRevise";
 import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import { sendResearchEmail } from "./researchEmail";
@@ -193,6 +199,10 @@ export interface ResearchJobRecord {
 	reviseHeading?: string;
 	reviseQuote?: string;
 	reviseFromVersion?: number | null;
+	/** Planner questions the revision is paused on (status revise-clarifying). */
+	reviseClarify?: ResearchReviseClarify | null;
+	/** The reader's answers, folded into the resumed planner/writer calls. */
+	reviseClarifications?: string;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -321,6 +331,11 @@ function recordFromData(
 			data.reviseFromVersion > 0
 				? Math.floor(data.reviseFromVersion)
 				: null,
+		reviseClarify: sanitizeResearchReviseClarify(data.reviseClarify),
+		reviseClarifications:
+			typeof data.reviseClarifications === "string"
+				? data.reviseClarifications
+				: "",
 	};
 }
 
@@ -501,6 +516,15 @@ export async function getResearchJobForUser(
 ): Promise<ResearchJobPublic | null> {
 	const record = await readJob(uid, jobId);
 	if (!record) return null;
+	if (
+		isResearchJobReviseClarifying(record.status) &&
+		(!record.reviseClarify || isResearchReviseClarifyExpired(record.reviseClarify))
+	) {
+		// Nobody answered; the report was never touched, so simply reopen it.
+		return recordToPublic(
+			await abandonResearchReviseCycle(record, RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR),
+		);
+	}
 	const healed = await healStoredResearchVersionIndex(record);
 	// Failed jobs and empty completes refund on read (time-independent). Do
 	// not re-evaluate cancelled jobs here: an early stop must keep its credit
@@ -660,12 +684,40 @@ export async function listRecentResearchJobsForUser(
 		.map(recordToPublic);
 }
 
+/**
+ * Close a revision cycle that never wrote a version (clarify cancelled or
+ * expired): back to `complete`, revise fields cleared, and the cycle's hops
+ * dropped so the strip does not keep an open “Started vN revision”.
+ */
+export async function abandonResearchReviseCycle(
+	record: ResearchJobRecord,
+	error: string,
+): Promise<ResearchJobRecord> {
+	return writeJob(record, {
+		status: "complete",
+		progressNote: "",
+		processNotes: dropOpenResearchRevisionCycle(record.processNotes),
+		error,
+		cancelRequested: false,
+		reviseInstruction: "",
+		reviseHeading: "",
+		reviseQuote: "",
+		reviseFromVersion: null,
+		reviseClarify: null,
+		reviseClarifications: "",
+	});
+}
+
 export async function requestResearchJobCancel(
 	uid: string,
 	jobId: string,
 ): Promise<ResearchJobPublic | null> {
 	const record = await readJob(uid, jobId);
 	if (!record) return null;
+	if (isResearchJobReviseClarifying(record.status)) {
+		// The reader declined the questions: a quiet return to the report.
+		return recordToPublic(await abandonResearchReviseCycle(record, ""));
+	}
 	if (isResearchJobRevising(record.status)) {
 		const next = await writeJob(record, {
 			status: "complete",
@@ -676,6 +728,8 @@ export async function requestResearchJobCancel(
 			reviseHeading: "",
 			reviseQuote: "",
 			reviseFromVersion: null,
+			reviseClarify: null,
+			reviseClarifications: "",
 		});
 		return recordToPublic(next);
 	}

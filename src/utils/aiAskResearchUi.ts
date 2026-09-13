@@ -10,8 +10,11 @@ import type {
 } from "./aiAskResearchJob";
 import {
 	healedResearchVersionIndex,
+	type ResearchReviseClarify,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
+import { suggestedClarifyAnswers } from "./aiAskResearchClarify";
+import { REPORT_PARAGRAPH_SELECTOR } from "./paragraphNumbers";
 
 export {
 	researchHistoryCardStatsLabel,
@@ -83,6 +86,26 @@ export const RESEARCH_SIGNIN_EMPTY_NOTE =
 export const RESEARCH_SIGNIN_TITLE = "Run Research";
 export const RESEARCH_SIGNIN_BODY =
 	"Perform a deep search of the Words of the Buddha and get a cited report. Create a free account to get started with Research.";
+export const SEARCH_TERMS_SOURCING_LABEL = "Search queries used for sourcing:";
+
+/** Primary planner queries first, then fallbacks; trim and dedupe case-insensitively. */
+export function dedupeSourcingSearchTerms(
+	queries: readonly string[],
+	fallbackQueries: readonly string[] = [],
+): string[] {
+	const seen = new Set<string>();
+	const out: string[] = [];
+	for (const raw of [...queries, ...fallbackQueries]) {
+		const query = raw.trim();
+		if (!query) continue;
+		const key = query.toLowerCase();
+		if (seen.has(key)) continue;
+		seen.add(key);
+		out.push(query);
+	}
+	return out;
+}
+
 export const RESEARCH_INVITE_AFTER_ASK =
 	"Looking for a wider search and a cited report? Try Research";
 export const RESEARCH_PIN_ACCOUNT_TITLE = "Pin this report";
@@ -240,6 +263,73 @@ export function followComposerShouldExpand(input: {
  * Report-dock chrome after a research turn. A 202 revise stays pending, so the
  * compact idle composer must not come back until the job finishes.
  */
+export function isResearchReviseInProgress(input: {
+	research?: boolean;
+	pending?: boolean;
+	hasReport?: boolean;
+}): boolean {
+	return Boolean(input.research && input.pending && input.hasReport);
+}
+
+/** Planner questions on a paused revision, plus the reader's draft answers. */
+export interface ResearchReviseClarifyDraft extends ResearchReviseClarify {
+	answers: Record<string, { choiceId: string; otherText?: string }>;
+}
+
+/** The revision is parked on the planner's questions (report unchanged). */
+export function isResearchReviseClarifying(input: {
+	research?: boolean;
+	pending?: boolean;
+	reviseClarify?: ResearchReviseClarifyDraft | null;
+}): boolean {
+	return Boolean(input.research && input.pending && input.reviseClarify);
+}
+
+/**
+ * Carry the reader's draft answers across polls: the same question set keeps
+ * what they picked; a new set (or none) starts from the planner's suggestions.
+ */
+export function nextReviseClarifyDraft(
+	previous: ResearchReviseClarifyDraft | undefined,
+	incoming: ResearchReviseClarify | undefined,
+): ResearchReviseClarifyDraft | undefined {
+	if (!incoming) return undefined;
+	if (previous && previous.id === incoming.id) {
+		return { ...incoming, answers: previous.answers };
+	}
+	return { ...incoming, answers: suggestedClarifyAnswers(incoming.questions) };
+}
+
+/**
+ * Rendered element for a revise block id (`p12`, `h3`, `c1`, `t2`) inside a
+ * report body, so a clarify choice can point at the block it names. Numbered
+ * paragraphs come from the `¶` decoration; other kinds count in document order.
+ */
+export function findReportBlockElement(
+	body: ParentNode,
+	blockId: string,
+): HTMLElement | null {
+	const match = /^([phtc])(\d{1,4})$/i.exec(blockId.trim());
+	if (!match) return null;
+	const kind = match[1].toLowerCase();
+	const n = Number(match[2]);
+	if (!Number.isFinite(n) || n < 1) return null;
+	if (kind === "p") {
+		const decorated = body.querySelector<HTMLElement>(
+			`[data-paragraph-number="${n}"]`,
+		);
+		if (decorated) return decorated;
+		return body.querySelectorAll<HTMLElement>(REPORT_PARAGRAPH_SELECTOR)[n - 1] || null;
+	}
+	const selector =
+		kind === "h"
+			? ":scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6"
+			: kind === "c"
+				? ":scope > pre, :scope > .mermaid, :scope > [data-mermaid]"
+				: ":scope > table, :scope > hr";
+	return body.querySelectorAll<HTMLElement>(selector)[n - 1] || null;
+}
+
 export function researchReportFollowChrome(input: {
 	research: boolean;
 	pending: boolean;
@@ -252,9 +342,7 @@ export function researchReportFollowChrome(input: {
 	revisingReport: boolean;
 	followCompact: boolean;
 } {
-	const revisingReport = Boolean(
-		input.pending && input.research && input.hasReport,
-	);
+	const revisingReport = isResearchReviseInProgress(input);
 	const reportDock = Boolean(
 		input.research &&
 			!input.pending &&
@@ -334,6 +422,7 @@ export interface ResearchTurnFields {
 	progressNote?: string;
 	processNotes?: string[];
 	versionIndex?: ResearchVersionMeta[];
+	reviseClarify?: ResearchReviseClarifyDraft;
 }
 
 /**
@@ -481,6 +570,7 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	turn.phase = job.phase;
 	turn.progressNote = job.progressNote || "";
 	turn.processNotes = job.processNotes || [];
+	turn.reviseClarify = nextReviseClarifyDraft(turn.reviseClarify, job.reviseClarify);
 	turn.versionIndex = healedResearchVersionIndex({
 		versionIndex:
 			Array.isArray(job.versionIndex) && job.versionIndex.length > 0

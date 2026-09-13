@@ -4,12 +4,18 @@ import { consumeAskQuota } from "./aiAskQuotaServer";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
 	clipResearchJobId,
+	isResearchJobReviseClarifying,
 	rememberResearchProcessNote,
 	sanitizeResearchJobResult,
 	toResearchJobPublic,
 	type ResearchJobPublic,
 	type ResearchJobResult,
 } from "./aiAskResearchJob";
+import {
+	canStartResearchClarify,
+	formatClarifyAnswerLines,
+	parseResearchClarifyAnswers,
+} from "./aiAskResearchClarify";
 import {
 	clipResearchReport,
 	replaceResearchSourcesSection,
@@ -30,9 +36,15 @@ import {
 	reportSectionMarkdown,
 	researchRevisionStartedNote,
 	researchRevisePatchIsEmpty,
+	researchRevisePlanNote,
+	researchRevisePlanSummary,
+	isResearchReviseClarifyExpired,
+	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
+	RESEARCH_REVISE_CLARIFY_TTL_MS,
 	RESEARCH_REVISE_CONSIDERING_NOTE,
 	RESEARCH_REVISE_SEARCH_NOTE,
 	RESEARCH_REVISE_TOO_LONG_ERROR,
+	RESEARCH_REVISE_WAITING_NOTE,
 	RESEARCH_REVISE_WRITING_NOTE,
 	versionBodiesToKeep,
 	type ResearchVersionMeta,
@@ -46,6 +58,7 @@ import {
 	writeResearchRevise,
 } from "./aiAskResearchReviseWrite";
 import {
+	abandonResearchReviseCycle,
 	createResearchJob,
 	persistHistory,
 	readJob,
@@ -84,6 +97,9 @@ export type ResearchReviseResult =
 			error: string;
 			quota?: AskQuotaView;
 	  };
+
+/** Room for two “prompt → answer” lines including an Other note. */
+const RESEARCH_REVISE_CLARIFICATIONS_MAX = 1_400;
 
 function originFromRequest(requestUrl: string): string {
 	try {
@@ -248,7 +264,62 @@ async function restoreCompleteJob(
 		reviseHeading: "",
 		reviseQuote: "",
 		reviseFromVersion: null,
+		reviseClarify: null,
+		reviseClarifications: "",
 	});
+}
+
+function newClarifyId(): string {
+	return `rc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+/**
+ * Resume a revision the planner paused on its questions. Validates the answers
+ * against the stored questions, folds them into the instruction context, and
+ * puts the job back to `revising` for the worker the route then starts.
+ */
+export async function answerResearchReviseClarify(options: {
+	uid: string;
+	jobId: string;
+	clarifyId: string;
+	answers: unknown;
+}): Promise<
+	| { ok: true; job: ResearchJobPublic; runToken: string }
+	| { ok: false; code: ResearchReviseCode; error: string }
+> {
+	const record = await readJob(options.uid, options.jobId);
+	if (!record) return { ok: false, code: "not_found", error: "Research not found." };
+	const clarify = record.reviseClarify;
+	if (!isResearchJobReviseClarifying(record.status) || !clarify) {
+		return {
+			ok: false,
+			code: "invalid",
+			error: "This revision is not waiting on an answer.",
+		};
+	}
+	if (clarify.id !== (options.clarifyId || "").trim()) {
+		return { ok: false, code: "invalid", error: "These questions are out of date." };
+	}
+	if (isResearchReviseClarifyExpired(clarify)) {
+		await abandonResearchReviseCycle(record, RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR);
+		return { ok: false, code: "invalid", error: RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR };
+	}
+	const answers = parseResearchClarifyAnswers(options.answers);
+	if (!canStartResearchClarify(clarify.questions, answers)) {
+		return { ok: false, code: "invalid", error: "Answer each question to continue." };
+	}
+	const clarifications = formatClarifyAnswerLines(clarify.questions, answers)
+		.join("\n")
+		.slice(0, RESEARCH_REVISE_CLARIFICATIONS_MAX);
+	const next = await writeJob(record, {
+		status: "revising",
+		progressNote: RESEARCH_REVISE_CONSIDERING_NOTE,
+		error: "",
+		cancelRequested: false,
+		reviseClarify: null,
+		reviseClarifications: clarifications,
+	});
+	return { ok: true, job: toResearchJobPublic(next), runToken: next.runToken };
 }
 
 export async function beginResearchRevise(options: {
@@ -329,6 +400,8 @@ export async function beginResearchRevise(options: {
 		reviseHeading: heading,
 		reviseQuote: quote,
 		reviseFromVersion: fromVersion,
+		reviseClarify: null,
+		reviseClarifications: "",
 	});
 	return {
 		ok: true,
@@ -362,6 +435,10 @@ export async function runResearchReviseJob(options: {
 		await restoreCompleteJob(record, "Could not revise the report.");
 		return;
 	}
+	const clarifications = (record.reviseClarifications || "").trim();
+	// Set when this run parks the job on questions: the resumed run owns the
+	// job from then on, so the cleanup below must not touch it.
+	let paused = false;
 
 	try {
 		const index = clipResearchVersionIndex(record.versionIndex);
@@ -380,10 +457,36 @@ export async function runResearchReviseJob(options: {
 		const planned = await planResearchRevise({
 			report: baseReport,
 			instruction,
+			originalQuestion: record.originalQuestion,
+			clarifyBrief: record.clarifyBrief,
+			clarifications,
 			heading,
 			quote,
 		});
 		const plan = planned.plan;
+		// The reader sees the planner's reading as a hop within seconds, and can
+		// stop the revision if it is wrong.
+		const planNote = plan ? researchRevisePlanNote(plan) : "";
+		if (planNote) {
+			record = await writeJob(record, { progressNote: planNote });
+		}
+		// Genuine ambiguity: park the job on the questions. Nothing has been
+		// written; the route resumes the worker once the reader answers.
+		if (!clarifications && plan?.questions?.length) {
+			paused = true;
+			await writeJob(record, {
+				status: "revise-clarifying",
+				progressNote: RESEARCH_REVISE_WAITING_NOTE,
+				reviseClarify: {
+					id: newClarifyId(),
+					questions: plan.questions,
+					interpretation: researchRevisePlanSummary(plan),
+					fromVersion,
+					expiresAt: Date.now() + RESEARCH_REVISE_CLARIFY_TTL_MS,
+				},
+			});
+			return;
+		}
 		const contextSection = heading
 			? reportSectionMarkdown(baseReport, heading)
 			: quote
@@ -421,6 +524,9 @@ export async function runResearchReviseJob(options: {
 		const written = await writeResearchRevise({
 			report: baseReport,
 			instruction,
+			originalQuestion: record.originalQuestion,
+			clarifyBrief: record.clarifyBrief,
+			clarifications,
 			heading,
 			quote,
 			evidence: gathered.evidence,
@@ -483,13 +589,15 @@ export async function runResearchReviseJob(options: {
 			error instanceof Error ? error.message : error,
 		);
 		const fresh = await readJob(options.uid, options.jobId);
-		if (fresh && fresh.status === "revising") {
+		if (!paused && fresh && fresh.status === "revising") {
 			await restoreCompleteJob(fresh, "Could not revise the report.");
 		}
 	} finally {
-		const leftover = await readJob(options.uid, options.jobId);
-		if (leftover?.status === "revising") {
-			await restoreCompleteJob(leftover, "Could not revise the report.");
+		if (!paused) {
+			const leftover = await readJob(options.uid, options.jobId);
+			if (leftover?.status === "revising") {
+				await restoreCompleteJob(leftover, "Could not revise the report.");
+			}
 		}
 	}
 }

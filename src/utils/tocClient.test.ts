@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import {
+	attachTableOfContents,
+	detachTableOfContents,
 	DISCOURSE_TOC_MIN_HEADINGS,
+	findVisibleElementById,
 	RESEARCH_TOC_CONTENT_SELECTOR,
 	RESEARCH_TOC_HEADING_SELECTOR,
 	RESEARCH_TOC_MIN_HEADINGS,
 	TOC_ACTIVE_SLACK_PX,
+	TOC_SCROLL_OFFSET_PX,
 	headingLabel,
 	isNamedSectionHeading,
 	namedSectionHeadingsFromMarkdown,
@@ -214,5 +219,107 @@ describe("scrollYToAlignHeading", () => {
 
 	it("does not scroll above the page top", () => {
 		assert.equal(scrollYToAlignHeading(50, 0), 0);
+	});
+});
+
+describe("attachTableOfContents scroll spy", () => {
+	function mountResearchReportToc() {
+		const dom = new JSDOM(
+			`<!doctype html><html class="pali-on split"><body>
+				<nav id="post-toc"></nav>
+				<div class="ai-turn">
+					<div class="ai-report">
+						<div class="ai-answer-body">
+							<h2 id="rh-one" data-report-heading="One">One</h2>
+							<p>First</p>
+							<h2 id="rh-two" data-report-heading="Two">Two</h2>
+							<p>Second</p>
+						</div>
+					</div>
+				</div>
+			</body></html>`,
+			{ url: "https://example.test/search?mode=research" },
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+			localStorage: globalThis.localStorage,
+			requestAnimationFrame: globalThis.requestAnimationFrame,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.localStorage = window.localStorage;
+		globalThis.AbortController = window.AbortController;
+		window.localStorage.setItem("layout", "split");
+		window.HTMLElement.prototype.checkVisibility = () => true;
+		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+			cb(0);
+			return 1;
+		};
+		Object.defineProperty(window, "scrollY", { value: 0, writable: true, configurable: true });
+		Object.defineProperty(window, "innerWidth", { value: 1440, configurable: true });
+		window.scrollTo = () => {};
+		return {
+			window,
+			restore() {
+				detachTableOfContents("post-toc");
+				globalThis.window = previous.window;
+				globalThis.document = previous.document;
+				globalThis.localStorage = previous.localStorage;
+				globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+			},
+		};
+	}
+
+	it("finds research headings even when split layout is stored", () => {
+		const ctx = mountResearchReportToc();
+		try {
+			assert.equal(findVisibleElementById("rh-two")?.id, "rh-two");
+		} finally {
+			ctx.restore();
+		}
+	});
+
+	it("highlights the section at the reading line and updates on scroll", () => {
+		const ctx = mountResearchReportToc();
+		try {
+			const options = researchTableOfContentsOptions();
+			assert.equal(attachTableOfContents(options), true);
+			const nav = ctx.window.document.getElementById("post-toc");
+			assert.ok(nav);
+			const links = [...nav.querySelectorAll("a")];
+			assert.equal(links.length, 2);
+
+			const one = ctx.window.document.getElementById("rh-one");
+			const two = ctx.window.document.getElementById("rh-two");
+			assert.ok(one && two);
+			one.getBoundingClientRect = () =>
+				({ top: 40, bottom: 60, left: 0, right: 0, width: 0, height: 20, x: 0, y: 40, toJSON: () => ({}) }) as DOMRect;
+			two.getBoundingClientRect = () =>
+				({ top: 900, bottom: 920, left: 0, right: 0, width: 0, height: 20, x: 0, y: 900, toJSON: () => ({}) }) as DOMRect;
+
+			ctx.window.dispatchEvent(new ctx.window.Event("scroll"));
+			assert.equal(
+				nav.querySelector('a[href="#rh-one"]')?.classList.contains("active"),
+				true,
+			);
+			assert.equal(
+				nav.querySelector('a[href="#rh-two"]')?.classList.contains("active"),
+				false,
+			);
+
+			one.getBoundingClientRect = () =>
+				({ top: -200, bottom: -180, left: 0, right: 0, width: 0, height: 20, x: 0, y: -200, toJSON: () => ({}) }) as DOMRect;
+			two.getBoundingClientRect = () =>
+				({ top: TOC_SCROLL_OFFSET_PX, bottom: TOC_SCROLL_OFFSET_PX + 20, left: 0, right: 0, width: 0, height: 20, x: 0, y: TOC_SCROLL_OFFSET_PX, toJSON: () => ({}) }) as DOMRect;
+			ctx.window.dispatchEvent(new ctx.window.Event("scroll"));
+			assert.equal(
+				nav.querySelector('a[href="#rh-two"]')?.classList.contains("active"),
+				true,
+			);
+		} finally {
+			ctx.restore();
+		}
 	});
 });
