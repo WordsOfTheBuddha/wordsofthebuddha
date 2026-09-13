@@ -10,10 +10,13 @@ import {
 	type ResearchQuotaState,
 	type ResearchQuotaView,
 } from "./aiResearchQuota";
+import { createTtlCache } from "./ttlCache";
 
 const COLLECTION = "researchQuota";
 
 const memory = new Map<string, ResearchQuotaState>();
+/** Display-only view cache; gating reads stay in the consume/refund transactions. */
+const viewCache = createTtlCache<ResearchQuotaView>({ ttlMs: 3000 });
 
 function cloneState(state: ResearchQuotaState): ResearchQuotaState {
 	return { ...state };
@@ -54,9 +57,12 @@ export async function getResearchQuotaView(options: {
 	const day = utcResearchDay(now);
 	const seed = emptyResearchQuotaState({ day, uid: options.uid });
 	const docId = researchQuotaDocId(day, options.uid);
+	const cached = viewCache.get(docId);
+	if (cached) return cached;
 	const state = await readState(docId, seed);
-	if (state.day !== day) return toResearchQuotaView(seed);
-	return toResearchQuotaView(state);
+	const view = state.day !== day ? toResearchQuotaView(seed) : toResearchQuotaView(state);
+	viewCache.set(docId, view);
+	return view;
 }
 
 export async function consumeResearchQuota(options: {
@@ -92,6 +98,7 @@ export async function consumeResearchQuota(options: {
 			return { allowed: true, view: consumed.view, state: consumed.state };
 		});
 		memory.set(docId, cloneState(result.state));
+		viewCache.set(docId, result.view);
 		return { allowed: result.allowed, view: result.view };
 	}
 
@@ -102,6 +109,7 @@ export async function consumeResearchQuota(options: {
 	if (!before.allowed) return { allowed: false, view: before };
 	const consumed = consumeResearchQuotaState(normalized);
 	memory.set(docId, consumed.state);
+	viewCache.set(docId, consumed.view);
 	return { allowed: true, view: consumed.view };
 }
 
@@ -136,6 +144,7 @@ export async function refundResearchQuota(options: {
 			return refunded;
 		});
 		memory.set(docId, cloneState(result.state));
+		viewCache.set(docId, result.view);
 		return result.view;
 	}
 
@@ -144,9 +153,11 @@ export async function refundResearchQuota(options: {
 		current && current.day === day ? cloneState(current) : cloneState(seed);
 	const refunded = refundResearchQuotaState(normalized);
 	memory.set(docId, refunded.state);
+	viewCache.set(docId, refunded.view);
 	return refunded.view;
 }
 
 export function resetResearchQuotaMemoryForTests(): void {
 	memory.clear();
+	viewCache.clear();
 }

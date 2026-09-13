@@ -23,6 +23,17 @@ function sampleRef(slug: string) {
 	return db!.collection(ASK_SAMPLE_COLLECTION).doc(slug);
 }
 
+const SAMPLES_CACHE_MS = 5 * 60 * 1000;
+let samplesCache: { at: number; samples: AiAskSamplePublic[] } | null = null;
+
+function clearAskSamplesCache(): void {
+	samplesCache = null;
+}
+
+export function resetAskSamplesMemoryForTests(): void {
+	clearAskSamplesCache();
+}
+
 function millisFromFirestore(value: unknown, fallback = Date.now()): number {
 	if (typeof value === "number" && Number.isFinite(value)) return value;
 	if (
@@ -36,8 +47,18 @@ function millisFromFirestore(value: unknown, fallback = Date.now()): number {
 	return fallback;
 }
 
-export async function loadAskSamples(): Promise<AiAskSamplePublic[]> {
+export async function loadAskSamples(
+	options: { fresh?: boolean; now?: number } = {},
+): Promise<AiAskSamplePublic[]> {
 	if (!isFirebaseInitialized || !db) return [];
+	const now = options.now ?? Date.now();
+	if (
+		!options.fresh &&
+		samplesCache &&
+		now - samplesCache.at < SAMPLES_CACHE_MS
+	) {
+		return samplesCache.samples;
+	}
 	const snap = await db.collection(ASK_SAMPLE_COLLECTION).get();
 	const out: AiAskSamplePublic[] = [];
 	for (const doc of snap.docs) {
@@ -49,6 +70,7 @@ export async function loadAskSamples(): Promise<AiAskSamplePublic[]> {
 		});
 		if (sample) out.push(sample);
 	}
+	samplesCache = { at: now, samples: out };
 	return out;
 }
 
@@ -153,7 +175,7 @@ export async function upsertAskSample(options: {
 	}
 
 	const questionKey = normalizeAskQuestionKey(turn.question);
-	const existing = await loadAskSamples();
+	const existing = await loadAskSamples({ fresh: true });
 	const research = isResearchAskSample(turn);
 	const prior = existing.find(
 		(sample) =>
@@ -176,6 +198,7 @@ export async function upsertAskSample(options: {
 		processNotes,
 	};
 	await sampleRef(slug).set(payload);
+	clearAskSamplesCache();
 	const sample = sanitizeAskSamplePublic({
 		...turn,
 		slug,
@@ -207,5 +230,6 @@ export async function deleteAskSample(options: {
 		return { ok: false, error: "That example is no longer published." };
 	}
 	await sampleRef(slug).delete();
+	clearAskSamplesCache();
 	return { ok: true, slug: existing.slug };
 }

@@ -34,6 +34,7 @@ import {
 	type AiRewritePlan,
 } from "./aiQueryRewrite";
 import { collectAskHistoryShownSlugs } from "./aiAskHistory";
+import { createJobWriteCoalescer } from "./aiAskResearchWriteCoalescer";
 import { RESEARCH_CLARIFY_BRIEF_MAX } from "./aiAskResearchClarify";
 import { loadUserAskHistory, upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
 import {
@@ -1092,6 +1093,10 @@ async function runResearchChainPass(
 	record: ResearchJobRecord,
 ): Promise<"chained" | "done"> {
 	let current = record;
+	const streamWrites = createJobWriteCoalescer({
+		getRecord: () => current,
+		write: writeJob,
+	});
 	const startedAt = Date.now();
 	const draft = sanitizeResearchJobResult(current.draftResult);
 	if (!draft?.report) {
@@ -1193,7 +1198,7 @@ async function runResearchChainPass(
 					onProgress: (info) => {
 						const progressNote = `Going deeper · ${info.done} of ${info.total} queries`;
 						current = { ...current, progressNote };
-						void writeJob(current, { progressNote });
+						streamWrites.queueProgressNote(progressNote);
 					},
 				},
 			);
@@ -1322,13 +1327,11 @@ async function runResearchChainPass(
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
-							void writeJob(current, { reasoning: next });
+							streamWrites.queueReasoning();
 						},
 					}),
 				() => {
-					void writeJob(current, {
-						progressNote: "Rewriting the report again…",
-					});
+					streamWrites.queueProgressNote("Rewriting the report again…");
 				},
 			);
 			const followed = await followUpResearchPaliRead({
@@ -1365,7 +1368,7 @@ async function runResearchChainPass(
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
-							void writeJob(current, { reasoning: next });
+							streamWrites.queueReasoning();
 						},
 					}),
 			});
@@ -1442,6 +1445,8 @@ async function runResearchChainPass(
 		});
 		if (nextHop && unread.length > 0) {
 			const { batch, rest } = nextUnreadFullBatch(unread);
+			await streamWrites.flush();
+			streamWrites.dispose();
 			current = await writeJob(current, {
 				status: "searching",
 				chainPass: 2,
@@ -1464,6 +1469,8 @@ async function runResearchChainPass(
 			});
 			return "chained";
 		}
+		await streamWrites.flush();
+		streamWrites.dispose();
 		current = await writeJob(current, {
 			status: "complete",
 			lookingFor: result.lookingFor,
@@ -1492,6 +1499,9 @@ async function runResearchChainPass(
 		);
 		await commitDraft();
 		return "done";
+	} finally {
+		await streamWrites.flush();
+		streamWrites.dispose();
 	}
 }
 
@@ -1520,6 +1530,10 @@ export async function runResearchJob(options: {
 	let current = await writeJob(record, {
 		status: "running",
 		progressNote: "Planning searches…",
+	});
+	const streamWrites = createJobWriteCoalescer({
+		getRecord: () => current,
+		write: writeJob,
 	});
 	const startedAt = Date.now();
 	const history: readonly AiRewriteHistoryTurn[] = parseAskHistory(
@@ -1622,6 +1636,8 @@ export async function runResearchJob(options: {
 		result: ResearchJobResult,
 		ok: boolean,
 	): Promise<void> => {
+		await streamWrites.flush();
+		streamWrites.dispose();
 		await throwIfCancelled(current);
 		const fresh = await readJob(current.uid, current.id);
 		if (!fresh || isResearchJobTerminal(fresh.status)) return;
@@ -1784,7 +1800,7 @@ export async function runResearchJob(options: {
 						onReasoning: (delta) => {
 							const next = `${current.reasoning || ""}${delta}`;
 							current = { ...current, reasoning: next };
-							void writeJob(current, { reasoning: next });
+							streamWrites.queueReasoning();
 						},
 					}),
 				() => {
@@ -1792,7 +1808,7 @@ export async function runResearchJob(options: {
 						...current,
 						progressNote: "Planning searches again…",
 					};
-					void writeJob(current, { progressNote: "Planning searches again…" });
+					streamWrites.queueProgressNote("Planning searches again…");
 				},
 			);
 			plan = surveyPlan(rewrite.plan, current.question, brief);
@@ -1849,12 +1865,12 @@ export async function runResearchJob(options: {
 							progressNote,
 							candidateCount: seenSlugs.size || current.candidateCount,
 						};
-						void writeJob(current, {
+						streamWrites.queue(() => ({
 							progressNote,
 							...(seenSlugs.size > 0
 								? { candidateCount: seenSlugs.size }
 								: {}),
-						});
+						}));
 					},
 				},
 			);
@@ -1917,9 +1933,7 @@ export async function runResearchJob(options: {
 							...RESEARCH_RERANK_CAPS,
 						}),
 					() => {
-						void writeJob(current, {
-							progressNote: "Ranking again…",
-						});
+						streamWrites.queueProgressNote("Ranking again…");
 					},
 				);
 				results = ranked.results.map(toPublicAskHit);
@@ -2018,7 +2032,7 @@ export async function runResearchJob(options: {
 							onProgress: (info) => {
 								const progressNote = `Searching again · ${info.done} of ${info.total} queries`;
 								current = { ...current, progressNote };
-								void writeJob(current, { progressNote });
+								streamWrites.queueProgressNote(progressNote);
 							},
 						},
 					);
@@ -2156,13 +2170,11 @@ export async function runResearchJob(options: {
 							onReasoning: (delta) => {
 								const next = `${current.reasoning || ""}${delta}`;
 								current = { ...current, reasoning: next };
-								void writeJob(current, { reasoning: next });
+								streamWrites.queueReasoning();
 							},
 						}),
 					() => {
-						void writeJob(current, {
-							progressNote: "Writing the report again…",
-						});
+						streamWrites.queueProgressNote("Writing the report again…");
 					},
 				);
 				if (written.report) {
@@ -2199,7 +2211,7 @@ export async function runResearchJob(options: {
 								onReasoning: (delta) => {
 									const next = `${current.reasoning || ""}${delta}`;
 									current = { ...current, reasoning: next };
-									void writeJob(current, { reasoning: next });
+									streamWrites.queueReasoning();
 								},
 							}),
 					});
@@ -2216,7 +2228,11 @@ export async function runResearchJob(options: {
 		}
 
 		try {
-			if (await queueContinueIfNeeded()) return "chained";
+			if (await queueContinueIfNeeded()) {
+				await streamWrites.flush();
+				streamWrites.dispose();
+				return "chained";
+			}
 		} catch (error) {
 			if (
 				error instanceof ResearchCancelledError ||
@@ -2266,6 +2282,9 @@ export async function runResearchJob(options: {
 			await finishEmail(current, false);
 		}
 		return "done";
+	} finally {
+		await streamWrites.flush();
+		streamWrites.dispose();
 	}
 }
 

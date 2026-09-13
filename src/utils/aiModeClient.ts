@@ -3530,6 +3530,17 @@ export function attachAiMode(options: {
 		}
 	}
 
+	let quotaRefreshInFlight: Promise<void> | null = null;
+	function ensureQuotaRefresh(): Promise<void> {
+		// Collapse the several refreshQuota calls a page load makes into one request.
+		if (!quotaRefreshInFlight) {
+			quotaRefreshInFlight = refreshQuota().finally(() => {
+				quotaRefreshInFlight = null;
+			});
+		}
+		return quotaRefreshInFlight;
+	}
+
 	function maybeOfferFeedback(view: AiAskQuotaView | null | undefined): void {
 		if (!view?.offerFeedback || view.feedbackClaimed) {
 			// “Not now” only snoozes until the last 2 Asks remain.
@@ -4113,7 +4124,6 @@ export function attachAiMode(options: {
 		try {
 			const response = await fetch("/api/ai/samples", {
 				credentials: "same-origin",
-				cache: "no-store",
 			});
 			const data = (await response.json()) as {
 				success?: boolean;
@@ -7894,7 +7904,7 @@ export function attachAiMode(options: {
 			restoreResearchId,
 			sessionEntries.find((item) => item.researchJobId === restoreResearchId),
 		);
-		void refreshQuota();
+		void ensureQuotaRefresh();
 	} else if (sampleParam) {
 		void samplesReady.then(() => {
 			if (turns.length === 0) openSampleFromUrl(sampleParam);
@@ -7927,7 +7937,7 @@ export function attachAiMode(options: {
 	syncResearchChip();
 	watchPendingResearchHistory();
 	void loadModels();
-	if (!restoreResearchId) void refreshQuota();
+	if (!restoreResearchId) void ensureQuotaRefresh();
 	const historySync = syncHistoryFromServer();
 	void historySync.then(() => hydrateOpenResearchJobs());
 	if (openQuestion && turns.length === 0) {
@@ -7939,7 +7949,7 @@ export function attachAiMode(options: {
 		});
 	}
 	scheduleFollowDockFrost();
-	void refreshQuota().then(() => {
+	void ensureQuotaRefresh().then(() => {
 		const pending = takePendingRevise();
 		if (!pending || !quota?.signedIn) return;
 		reviseHeading = pending.heading;

@@ -15,10 +15,13 @@ import {
 	type AskQuotaView,
 } from "./aiAskQuota";
 import { clientIpFromRequest } from "./aiRateLimit";
+import { createTtlCache } from "./ttlCache";
 
 const COLLECTION = "askQuota";
 
 const memory = new Map<string, AskQuotaState>();
+/** Display-only view cache; gating reads stay in the consume/claim transactions. */
+const viewCache = createTtlCache<AskQuotaView>({ ttlMs: 3000 });
 
 function cloneState(state: AskQuotaState): AskQuotaState {
 	return { ...state };
@@ -55,6 +58,7 @@ async function readState(docId: string, seed: AskQuotaState): Promise<AskQuotaSt
 
 async function writeState(docId: string, state: AskQuotaState): Promise<void> {
 	memory.set(docId, cloneState(state));
+	viewCache.deleteByPrefix(`${docId}|`);
 	if (!isFirebaseInitialized || !db) return;
 	await db
 		.collection(COLLECTION)
@@ -114,6 +118,22 @@ async function priorAnonUsedForSignedIn(options: {
 	return Math.max(0, state.used);
 }
 
+function askQuotaViewCacheKey(options: {
+	day: string;
+	subject: ReturnType<typeof resolveAskQuotaSubject>;
+	request: Request;
+}): string {
+	const ip = options.subject.signedIn
+		? clientIpFromRequest(options.request)
+		: "";
+	return [
+		askQuotaDocId(options.day, options.subject.subjectKey),
+		options.subject.signedIn ? "u" : "a",
+		options.subject.needsEmailVerification ? 1 : 0,
+		ip,
+	].join("|");
+}
+
 export async function getAskQuotaView(options: {
 	request: Request;
 	user: UserRecord | null;
@@ -128,6 +148,13 @@ export async function getAskQuotaView(options: {
 		subjectKey: subject.subjectKey,
 	});
 	const docId = askQuotaDocId(day, subject.subjectKey);
+	const cacheKey = askQuotaViewCacheKey({
+		day,
+		subject,
+		request: options.request,
+	});
+	const cached = viewCache.get(cacheKey);
+	if (cached) return cached;
 	const state = await readState(docId, seed);
 	const priorUsed = await priorAnonUsedForSignedIn({
 		request: options.request,
@@ -138,10 +165,10 @@ export async function getAskQuotaView(options: {
 		priorUsed,
 		needsEmailVerification: subject.needsEmailVerification,
 	};
-	if (state.day !== day) {
-		return toAskQuotaView(seed, viewOpts);
-	}
-	return toAskQuotaView(state, viewOpts);
+	const view =
+		state.day !== day ? toAskQuotaView(seed, viewOpts) : toAskQuotaView(state, viewOpts);
+	viewCache.set(cacheKey, view);
+	return view;
 }
 
 /**
@@ -195,6 +222,7 @@ export async function consumeAskQuota(options: {
 			return { allowed: true, view: consumed.view, state: consumed.state };
 		});
 		memory.set(docId, cloneState(result.state));
+		viewCache.deleteByPrefix(`${docId}|`);
 		return { allowed: result.allowed, view: result.view };
 	}
 
@@ -205,6 +233,7 @@ export async function consumeAskQuota(options: {
 	if (!before.allowed) return { allowed: false, view: before };
 	const consumed = consumeAskQuotaState(normalized, viewOpts);
 	memory.set(docId, consumed.state);
+	viewCache.deleteByPrefix(`${docId}|`);
 	return { allowed: true, view: consumed.view };
 }
 
@@ -262,6 +291,7 @@ export async function claimAskFeedbackBonus(options: {
 			};
 		});
 		memory.set(docId, cloneState(result.state));
+		viewCache.deleteByPrefix(`${docId}|`);
 		return { granted: result.granted, view: result.view };
 	}
 
@@ -270,6 +300,7 @@ export async function claimAskFeedbackBonus(options: {
 		current && current.day === day ? cloneState(current) : cloneState(seed);
 	const applied = applyAskFeedbackBonus(normalized);
 	if (applied.granted) memory.set(docId, applied.state);
+	viewCache.deleteByPrefix(`${docId}|`);
 	return {
 		granted: applied.granted,
 		view: toAskQuotaView(applied.state, { priorUsed }),
@@ -304,4 +335,5 @@ export async function dismissAskFeedbackOffer(options: {
 
 export function resetAskQuotaMemoryForTests(): void {
 	memory.clear();
+	viewCache.clear();
 }
