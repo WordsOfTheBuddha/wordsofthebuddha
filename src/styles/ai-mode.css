@@ -927,6 +927,43 @@
 	background: color-mix(in srgb, var(--surface-elevated) 70%, transparent);
 }
 
+.ai-report-diagram,
+.ai-report-html {
+	margin: 0 0 0.9rem;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.ai-report-diagram svg,
+.ai-report-html svg,
+.ai-report-html > svg,
+.ai-report .ai-answer-body > svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+}
+
+.ai-report-mermaid,
+.ai-report-code {
+	margin: 0 0 0.9rem;
+	padding: 0.7rem 0.85rem;
+	overflow-x: auto;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.7rem;
+	background: var(--surface-elevated);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.82rem;
+	line-height: 1.45;
+	white-space: pre;
+}
+
+.ai-report-code code {
+	background: transparent;
+	color: inherit;
+	font: inherit;
+}
+
 .ai-history-research {
 	display: inline-block;
 	margin-top: 0.15rem;

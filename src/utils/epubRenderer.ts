@@ -13,6 +13,7 @@ import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
+import { bakeResearchReportMermaid } from "./researchReportMermaidServer";
 import { buildZip } from "./epubZip";
 import {
 	buildEpubCoverModel,
@@ -64,7 +65,7 @@ type NavNode = {
 };
 
 const VOID_TAGS =
-	"area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr";
+	"area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr|path|circle|ellipse|line|polygon|polyline|rect|stop|use|image";
 
 /** Convert HTML5 fragments into XML-safe XHTML for EPUB 3 content docs. */
 export function htmlToXhtml(html: string): string {
@@ -846,6 +847,22 @@ h1.cover-title {
   text-align: left;
   vertical-align: top;
 }
+.ask-report svg,
+.ask-report .ai-report-diagram,
+.ask-report .ai-report-html {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 0.9em;
+}
+.ask-report pre {
+  font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  border: 1px solid #ccc;
+  padding: 0.5em 0.65em;
+  margin: 0 0 0.9em;
+}
 .ask-turn-toc {
   margin: 0.6em 0 0 1.2em;
   padding: 0;
@@ -1028,6 +1045,10 @@ export async function buildCollectionEpub(
 		options.identifier ?? `urn:uuid:${crypto.randomUUID()}`;
 	const modified = isoNow(options.modified);
 	const { spine, nav } = collectSpineAndNav(collection);
+	for (const item of spine) {
+		if (!item.body.includes("ai-report-mermaid")) continue;
+		item.body = await bakeResearchReportMermaid(item.body, false);
+	}
 	await rasterizeSpineDiagrams(
 		spine,
 		options.rasterizeDiagram,

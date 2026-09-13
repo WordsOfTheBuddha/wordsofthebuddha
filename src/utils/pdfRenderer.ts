@@ -1517,6 +1517,22 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
 .ask-report th {
   font-weight: bold;
 }
+.ask-report svg,
+.ask-report .ai-report-diagram,
+.ask-report .ai-report-html {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 0.9em;
+}
+.ask-report pre {
+  font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+  font-size: 9pt;
+  white-space: pre-wrap;
+  border: 1px solid #ccc;
+  padding: 0.5em 0.65em;
+  margin: 0 0 0.9em;
+}
 .vagga-heading {
   font-size: 13pt;
   font-weight: bold;

@@ -103,6 +103,40 @@ MN 10 sets out the four establishments.
 		assert.doesNotMatch(html, /href="\/mn10"/);
 	});
 
+	it("keeps a paragraph fragment on EPUB export hrefs", () => {
+		const html = renderResearchReportHtml(
+			"[MN 21 ¶21](/mn21#21) is the simile.",
+			[{ slug: "mn21", href: "d-t0-mn21.xhtml" }],
+		);
+		assert.match(html, /href="d-t0-mn21\.xhtml#21"/);
+		assert.doesNotMatch(html, /href="\/mn21/);
+	});
+
+	it("renders paragraph-level citations and links a discourse once per paragraph", () => {
+		const html = renderResearchReportHtml(
+			`MN 21 ¶21 gives the simile, and MN 21 repeats it.
+
+[MN 10 ¶6–50](/mn10#6-50) maps the body section.
+
+MN 10 is named again in a new paragraph.
+`,
+			[
+				{ slug: "mn21", href: "/mn21" },
+				{ slug: "mn10", href: "/mn10" },
+			],
+		);
+		assert.match(
+			html,
+			/<a class="ai-summary-ref" href="\/mn21#21">MN 21 ¶21<\/a> gives the simile, and MN 21 repeats it/,
+		);
+		assert.equal([...html.matchAll(/href="\/mn21(?:#21)?"/g)].length, 1);
+		assert.match(html, /href="\/mn10#6-50"/);
+		assert.match(
+			html,
+			/<p><a class="ai-summary-ref" href="\/mn10">MN 10<\/a> is named again/,
+		);
+	});
+
 	it("renders block quotes and bold that contains italics", () => {
 		const html = renderResearchReportHtml(
 			`The Buddha's answer is brief:
@@ -136,14 +170,54 @@ MN 10 is the root text.
 		assert.doesNotMatch(html, /Establishments of Mindfulness/);
 	});
 
-	it("escapes raw HTML from the model", () => {
+	it("strips script tags from model HTML instead of executing them", () => {
 		const html = renderResearchReportHtml(
 			`Hello <script>alert(1)</script> MN 10`,
 			[{ slug: "mn10", href: "/mn10" }],
 		);
-		assert.match(html, /&lt;script&gt;/);
-		assert.doesNotMatch(html, /<script>/);
+		assert.doesNotMatch(html, /<script>/i);
+		assert.doesNotMatch(html, /alert\(1\)/);
+		assert.match(html, /Hello/);
 		assert.match(html, /href="\/mn10"/);
+	});
+
+	it("renders mermaid, SVG, and HTML diagram fences", () => {
+		const html = renderResearchReportHtml(
+			`## Map
+
+\`\`\`mermaid
+flowchart TD
+  A[MN 10] --> B[SN 47.19]
+\`\`\`
+
+\`\`\`svg
+<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#333"/><script>alert(1)</script></svg>
+\`\`\`
+
+\`\`\`html
+<figure onclick="alert(1)"><p>MN 10</p><a href="https://evil.example">x</a></figure>
+\`\`\`
+`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(html, /<pre class="ai-report-mermaid" data-ai-mermaid>/);
+		assert.match(html, /flowchart TD/);
+		assert.match(html, /<div class="ai-report-html">/);
+		assert.match(html, /<circle /);
+		assert.doesNotMatch(html, /<script>/i);
+		assert.doesNotMatch(html, /alert\(1\)/);
+		assert.doesNotMatch(html, /onclick/i);
+		assert.doesNotMatch(html, /evil\.example/);
+		assert.match(html, /<figure>/);
+	});
+
+	it("treats an unlabeled flowchart fence as mermaid", () => {
+		const html = renderResearchReportHtml(
+			"```\nflowchart LR\n  A --> B\n```",
+		);
+		assert.match(html, /data-ai-mermaid/);
+		assert.match(html, /flowchart LR/);
+		assert.doesNotMatch(html, /ai-report-code/);
 	});
 
 	it("renders #### headings, rules, and italics without eating spaces", () => {
@@ -329,5 +403,10 @@ describe("RESEARCH_REPORT_SYSTEM", () => {
 			RESEARCH_REPORT_SYSTEM,
 			/a different topic.*may use a different rendering/i,
 		);
+		assert.match(RESEARCH_REPORT_SYSTEM, /```mermaid/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /inline SVG/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /no scripts, forms, event handlers/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /\[MN 21 ¶21\]\(\/mn21#21\)/);
+		assert.match(RESEARCH_REPORT_SYSTEM, /link a given discourse only once/);
 	});
 });

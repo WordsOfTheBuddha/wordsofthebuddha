@@ -9,7 +9,19 @@ import {
 	linkifyDiscourseIdsInHtml,
 	looksLikeAskMarkdown,
 	normalizeAskSummaryProse,
+	remapResearchCitationHrefs,
 } from "./linkifyAskSummary";
+import {
+	isHtmlFenceLang,
+	isMermaidFenceLang,
+	isSvgFenceLang,
+	looksLikeHtmlBlock,
+	looksLikeMermaidSource,
+	mermaidBlockHtml,
+	reportCodeBlockHtml,
+	sanitizeResearchReportHtml,
+	wrapResearchReportHtml,
+} from "./researchReportSanitize";
 import { transformId } from "./transformId";
 
 /** Storage ceiling only — large enough for a finished 16k-token report plus Sources. */
@@ -17,12 +29,16 @@ export const RESEARCH_REPORT_MAX_CHARS = 100_000;
 
 export const RESEARCH_REPORT_SYSTEM = `You write a research report from early Buddhist discourses already selected for the reader. You do not search. You do not invent citations.
 
-Write GitHub-flavored markdown only (no JSON, no HTML tags). Use:
+Write GitHub-flavored markdown (no JSON). Use:
 - ## / ### / #### headings
 - short paragraphs and lists
 - markdown tables when a comparison, map of collections, or survey of facets helps
+- a \`\`\`mermaid fence for a flow chart, process map, or state diagram when the question asks for a diagram or the structure is clearer as a chart than as prose
+- inline SVG, a \`\`\`svg fence, or a small HTML figure when mermaid cannot express the diagram
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
+- when a claim quotes a specific paragraph (or range) from the passages, cite it as [MN 21 ¶21](/mn21#21) or [MN 10 ¶6–50](/mn10#6-50), using those ¶ numbers. In any one paragraph, link a given discourse only once
 - no ## Sources section — the harness appends a bilingual source list
+- no scripts, forms, event handlers, or off-site URLs in SVG/HTML
 
 Hidden thinking is shown to the reader. Think however the excerpts require. When you can, say in ordinary language what the passages support and which IDs carry the claim. In thinking, settle English renderings from core translations for this report's topics, then keep those renderings in the markdown.
 
@@ -79,11 +95,32 @@ reportRenderer.heading = function ({ tokens, depth }) {
 };
 
 reportRenderer.html = function ({ text }) {
-	return escapeHtml(text);
+	const trimmed = (text || "").trim();
+	if (!trimmed) return "";
+	if (/^<(?:svg|figure|div|table|section)\b/i.test(trimmed)) {
+		return wrapResearchReportHtml(trimmed);
+	}
+	return sanitizeResearchReportHtml(trimmed);
 };
 
 reportRenderer.image = function ({ text }) {
 	return escapeHtml(text || "");
+};
+
+reportRenderer.code = function ({ text, lang }) {
+	const language = (lang || "").trim();
+	const source = text || "";
+	if (isMermaidFenceLang(language) || looksLikeMermaidSource(source)) {
+		return mermaidBlockHtml(source);
+	}
+	if (
+		isSvgFenceLang(language) ||
+		isHtmlFenceLang(language) ||
+		looksLikeHtmlBlock(source)
+	) {
+		return wrapResearchReportHtml(source);
+	}
+	return reportCodeBlockHtml(source);
 };
 
 reportRenderer.link = function ({ href, title, tokens }) {
@@ -261,16 +298,26 @@ export function renderAskBriefingHtml(
 	return linkifyAskSummaryHtml(text, results);
 }
 
+function stripDangerousReportMarkup(markdown: string): string {
+	return markdown.replace(
+		/<(script|style|iframe|object|embed|form|textarea|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi,
+		"",
+	);
+}
+
 export function renderResearchReportHtml(
 	markdown: string,
 	results: readonly CitationPopoverHit[] = [],
 	options?: { citationPopovers?: boolean },
 ): string {
-	const text = stripResearchSourcesSection(markdown);
+	const text = stripDangerousReportMarkup(stripResearchSourcesSection(markdown));
 	if (!text) return "";
 	const html = reportMarked.parse(text);
 	const linked = linkifyDiscourseIdsInHtml(
-		flattenSoftBreaks(typeof html === "string" ? html : ""),
+		remapResearchCitationHrefs(
+			flattenSoftBreaks(typeof html === "string" ? html : ""),
+			results,
+		),
 		results,
 	);
 	if (!options?.citationPopovers) return linked;

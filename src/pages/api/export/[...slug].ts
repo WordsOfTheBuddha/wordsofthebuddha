@@ -75,7 +75,11 @@ import { normalizeDiscourseIdForContentImages } from "../../../utils/contentImag
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
 import type { DirectoryStructure } from "../../../types/directory";
-import type { Browser } from "playwright-core";
+import type { Browser, Page } from "playwright-core";
+import {
+	bakeResearchReportMermaid,
+	hydratePlaywrightMermaid,
+} from "../../../utils/researchReportMermaidServer";
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -149,6 +153,15 @@ async function launchBrowser(): Promise<Browser> {
 		args: launchArgs,
 		headless: true,
 	});
+}
+
+async function setPdfContent(page: Page, html: string): Promise<void> {
+	const baked = await bakeResearchReportMermaid(html, false);
+	await page.setContent(baked, {
+		waitUntil: "domcontentloaded",
+		timeout: 20_000,
+	});
+	await hydratePlaywrightMermaid(page);
 }
 
 // ── Concurrency gate ────────────────────────────────────────────────────────
@@ -654,10 +667,7 @@ async function runOnPagePdfGeneration(
 		});
 		const page = await browser.newPage();
 		await page.setViewportSize({ width: 794, height: 1123 });
-		await page.setContent(html, {
-			waitUntil: "domcontentloaded",
-			timeout: 20_000,
-		});
+		await setPdfContent(page, html);
 
 		const pdfBuffer = await page.pdf({
 			format: "A4",
@@ -795,10 +805,7 @@ async function runPdfGeneration(
 
 		await page.setViewportSize({ width: 794, height: 1123 });
 
-		await page.setContent(html, {
-			waitUntil: "domcontentloaded",
-			timeout: 20_000,
-		});
+		await setPdfContent(page, html);
 
 		const pdfBuffer = await page.pdf({
 			format: "A4",
@@ -936,10 +943,7 @@ async function runAskExport(
 			});
 			const page = await browser.newPage();
 			await page.setViewportSize({ width: 794, height: 1123 });
-			await page.setContent(html, {
-				waitUntil: "domcontentloaded",
-				timeout: 20_000,
-			});
+			await setPdfContent(page, html);
 
 			const pdfBuffer = await page.pdf({
 				format: "A4",

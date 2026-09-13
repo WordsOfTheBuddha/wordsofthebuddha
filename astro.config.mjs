@@ -86,7 +86,7 @@ export default defineConfig({
 	vite: {
 		...silentDevReloadViteConfig(),
 		optimizeDeps: {
-			include: ["rangy"],
+			include: ["rangy", "mermaid"],
 		},
 		build: {
 			commonjsOptions: {

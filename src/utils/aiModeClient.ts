@@ -30,6 +30,7 @@ import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
+import { hydrateResearchReportMermaid } from "./researchReportMermaid";
 import {
 	hideDiscourseCitationPopover,
 	installDiscourseCitationPopovers,
@@ -4674,6 +4675,7 @@ export function attachAiMode(options: {
 		bindQuestionExpand();
 		if (!shareMode) renderHistory();
 		scheduleFollowDockFrost();
+		void hydrateResearchReportMermaid(thread);
 	}
 
 	let followDockFrostRaf = 0;

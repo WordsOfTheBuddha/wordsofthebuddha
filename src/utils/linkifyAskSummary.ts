@@ -1,4 +1,5 @@
 import { transformId } from "./transformId";
+import { slugFromCitationHref } from "./discourseCitationPopover";
 
 function escapeHtml(value: string): string {
 	return value
@@ -236,10 +237,88 @@ export function normalizeAskSummaryProse(value: string, max?: number): string {
 	return text.slice(0, Math.max(0, max));
 }
 
+/** Optional `¶21` / `¶ 6 – ¶ 50` after a discourse ID. */
+const PARA_CITE_TAIL =
+	"(?:\\s*¶\\s*\\d+(?:\\s*[-–—]\\s*¶?\\s*\\d+)?)?";
+
+const CITATION_BLOCKS = new Set(["p", "li", "td", "th", "blockquote"]);
+
+export type DiscourseIdLink = { slug: string; href: string };
+
+/** Hash fragment from `MN 21 ¶21` or `MN 10 ¶6 - ¶50` (`21`, `6-50`). */
+export function paragraphAnchorFromCite(text: string): string {
+	const range = text.match(/¶\s*(\d+)\s*[-–—]\s*¶?\s*(\d+)/);
+	if (range?.[1] && range[2]) {
+		return range[1] === range[2] ? range[1] : `${range[1]}-${range[2]}`;
+	}
+	const one = text.match(/¶\s*(\d+)/);
+	return one?.[1] || "";
+}
+
+/** Append a paragraph fragment when the base href has none. */
+export function withParagraphHash(href: string, anchor: string): string {
+	const hash = (anchor || "").replace(/^#/, "").trim();
+	const trimmed = (href || "").trim();
+	if (!hash || !trimmed || trimmed.includes("#")) return trimmed;
+	return `${trimmed}#${hash}`;
+}
+
+function citationIdToken(token: string): string {
+	return token.replace(/\s*¶[\s\S]*$/, "").trim();
+}
+
+function slugForCitationHref(
+	href: string,
+	results: readonly { slug: string; href?: string }[],
+): string {
+	const fromPath = slugFromCitationHref(href);
+	if (fromPath) return fromPath;
+	const trimmed = (href || "").trim();
+	if (!trimmed) return "";
+	const base = trimmed.split("#")[0] || trimmed;
+	for (const hit of results) {
+		const slug = (hit.slug || "").trim().toLowerCase();
+		if (!slug) continue;
+		const hitHref = (hit.href || `/${slug}`).trim() || `/${slug}`;
+		if (hitHref === trimmed || hitHref.split("#")[0] === base) return slug;
+	}
+	return "";
+}
+
+/**
+ * Point markdown citation hrefs at the result href (PDF/EPUB anchors),
+ * keeping a paragraph fragment when the destination can take one.
+ */
+export function remapResearchCitationHrefs(
+	html: string,
+	results: readonly { slug: string; href?: string }[],
+): string {
+	const bySlug = new Map<string, string>();
+	for (const hit of results) {
+		const slug = (hit.slug || "").trim().toLowerCase();
+		if (!slug) continue;
+		bySlug.set(slug, (hit.href || `/${slug}`).trim() || `/${slug}`);
+	}
+	if (bySlug.size === 0) return html;
+	return html.replace(/<a\b([^>]*?)>/gi, (open, attrs: string) => {
+		if (!/\bai-summary-ref\b/.test(attrs)) return open;
+		const hrefMatch = attrs.match(/\bhref\s*=\s*"([^"]*)"/i);
+		const href = hrefMatch?.[1];
+		if (!href) return open;
+		const slug = slugFromCitationHref(href);
+		const dest = slug ? bySlug.get(slug) : undefined;
+		if (!dest) return open;
+		const fragment = href.includes("#") ? href.slice(href.indexOf("#") + 1) : "";
+		const next = withParagraphHash(dest, fragment);
+		if (next === href) return open;
+		return `<a${attrs.replace(/\bhref\s*=\s*"[^"]*"/i, `href="${escapeHtml(next)}"`)}>`;
+	});
+}
+
 export function discourseIdLinkIndex(
 	results: readonly { slug: string; href?: string }[],
-): { byKey: Map<string, string>; pattern: RegExp | null } {
-	type Alias = { alias: string; href: string };
+): { byKey: Map<string, DiscourseIdLink>; pattern: RegExp | null } {
+	type Alias = { alias: string; slug: string; href: string };
 	const aliases: Alias[] = [];
 	const seenAlias = new Set<string>();
 	for (const hit of results) {
@@ -250,19 +329,22 @@ export function discourseIdLinkIndex(
 			const key = alias.toLowerCase();
 			if (seenAlias.has(key)) continue;
 			seenAlias.add(key);
-			aliases.push({ alias, href });
+			aliases.push({ alias, slug, href });
 		}
 	}
 	aliases.sort((a, b) => b.alias.length - a.alias.length);
 	const pattern =
 		aliases.length > 0
 			? new RegExp(
-					`\\b(?:${aliases.map((item) => escapeRegExp(item.alias)).join("|")})\\b`,
+					`\\b(?:${aliases.map((item) => escapeRegExp(item.alias)).join("|")})\\b${PARA_CITE_TAIL}`,
 					"gi",
 				)
 			: null;
 	const byKey = new Map(
-		aliases.map((item) => [item.alias.toLowerCase(), item.href] as const),
+		aliases.map(
+			(item) =>
+				[item.alias.toLowerCase(), { slug: item.slug, href: item.href }] as const,
+		),
 	);
 	return { byKey, pattern };
 }
@@ -290,13 +372,17 @@ export function linkifyDiscourseIdsInHtml(
 	const { byKey, pattern } = discourseIdLinkIndex(results);
 	if (!pattern) return html;
 	let headingDepth = 0;
+	let skipDepth = 0;
+	const seenStack: Set<string>[] = [new Set()];
+	const currentSeen = () => seenStack[seenStack.length - 1] || seenStack[0]!;
 	return html.replace(
-		/(<a\b[^>]*>[\s\S]*?<\/a>)|(<\/?h[1-6]\b[^>]*>)|(<[^>]+>)|([^<]+)/gi,
+		/(<a\b[^>]*>[\s\S]*?<\/a>)|(<\/?h[1-6]\b[^>]*>)|(<\/?(?:svg|pre|code|textarea)\b[^>]*>)|(<[^>]+>)|([^<]+)/gi,
 		(
 			chunk,
 			anchor: string | undefined,
 			headingTag: string | undefined,
-			_tag: string | undefined,
+			skipTag: string | undefined,
+			tag: string | undefined,
 			text: string | undefined,
 		) => {
 			if (headingTag) {
@@ -307,47 +393,82 @@ export function linkifyDiscourseIdsInHtml(
 				}
 				return chunk;
 			}
-			if (anchor) {
-				return headingDepth > 0 ? unwrapHtmlAnchors(anchor) : chunk;
+			if (skipTag) {
+				if (/^<\//.test(skipTag)) {
+					skipDepth = Math.max(0, skipDepth - 1);
+				} else if (!/\/\s*>$/.test(skipTag)) {
+					skipDepth += 1;
+				}
+				return chunk;
 			}
-			if (!text || headingDepth > 0) return chunk;
-			pattern.lastIndex = 0;
-			return text.replace(pattern, (token) => {
-				const href = byKey.get(token.toLowerCase());
-				return href
-					? `<a class="ai-summary-ref" href="${escapeHtml(href)}">${token}</a>`
-					: token;
-			});
+			if (anchor) {
+				if (headingDepth > 0) return unwrapHtmlAnchors(anchor);
+				const hrefMatch = anchor.match(/\bhref\s*=\s*"([^"]*)"/i);
+				const slug = slugForCitationHref(hrefMatch?.[1] || "", results);
+				if (slug) currentSeen().add(slug);
+				return chunk;
+			}
+			if (tag) {
+				const close = /^<\/([a-z0-9]+)/i.exec(tag);
+				const open = /^<([a-z0-9]+)/i.exec(tag);
+				const name = (close?.[1] || open?.[1] || "").toLowerCase();
+				if (CITATION_BLOCKS.has(name)) {
+					if (close) {
+						if (seenStack.length > 1) seenStack.pop();
+					} else if (open && !/\/\s*>$/.test(tag)) {
+						seenStack.push(new Set());
+					}
+				}
+				return chunk;
+			}
+			if (!text || headingDepth > 0 || skipDepth > 0) return chunk;
+			return linkifySummaryText(text, byKey, pattern, currentSeen(), false);
 		},
 	);
 }
 
-function linkifySummaryParagraph(
+function linkifySummaryText(
 	text: string,
-	byKey: Map<string, string>,
+	byKey: Map<string, DiscourseIdLink>,
 	pattern: RegExp | null,
+	seen: Set<string>,
+	escapeTokens: boolean,
 ): string {
-	if (!pattern) return escapeHtml(text);
+	if (!pattern) return escapeTokens ? escapeHtml(text) : text;
 	let out = "";
 	let cursor = 0;
+	pattern.lastIndex = 0;
 	for (const match of text.matchAll(pattern)) {
 		const index = match.index ?? 0;
 		const token = match[0] || "";
 		if (index > cursor) {
-			out += escapeHtml(text.slice(cursor, index));
+			const gap = text.slice(cursor, index);
+			out += escapeTokens ? escapeHtml(gap) : gap;
 		}
-		const href = byKey.get(token.toLowerCase());
-		if (href) {
-			out += `<a class="ai-summary-ref" href="${escapeHtml(href)}">${escapeHtml(token)}</a>`;
+		const link = byKey.get(citationIdToken(token).toLowerCase());
+		const write = escapeTokens ? escapeHtml(token) : token;
+		if (link && !seen.has(link.slug)) {
+			seen.add(link.slug);
+			const href = withParagraphHash(link.href, paragraphAnchorFromCite(token));
+			out += `<a class="ai-summary-ref" href="${escapeHtml(href)}">${write}</a>`;
 		} else {
-			out += escapeHtml(token);
+			out += write;
 		}
 		cursor = index + token.length;
 	}
 	if (cursor < text.length) {
-		out += escapeHtml(text.slice(cursor));
+		const tail = text.slice(cursor);
+		out += escapeTokens ? escapeHtml(tail) : tail;
 	}
 	return out;
+}
+
+function linkifySummaryParagraph(
+	text: string,
+	byKey: Map<string, DiscourseIdLink>,
+	pattern: RegExp | null,
+): string {
+	return linkifySummaryText(text, byKey, pattern, new Set(), true);
 }
 
 /**

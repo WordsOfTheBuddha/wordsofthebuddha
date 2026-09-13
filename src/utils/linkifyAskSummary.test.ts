@@ -35,6 +35,15 @@ describe("linkifyAskSummaryHtml", () => {
 		assert.doesNotMatch(html, /<script>/);
 	});
 
+	it("links a discourse only once in a briefing paragraph", () => {
+		const html = linkifyAskSummaryHtml(
+			"MN 10 opens the body, and MN 10 returns to it.",
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.equal([...html.matchAll(/href="\/mn10"/g)].length, 1);
+		assert.match(html, /and MN 10 returns/);
+	});
+
 	it("does not link IDs that are not in the result set", () => {
 		const html = linkifyAskSummaryHtml("See DN 22 as well as MN 10.", [
 			{ slug: "mn10", href: "/mn10" },
@@ -127,6 +136,20 @@ describe("linkifyDiscourseIdsInHtml", () => {
 		);
 	});
 
+	it("does not link discourse IDs inside SVG or mermaid listings", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<p>MN 10 in prose.</p><svg><text>MN 10</text></svg><pre class="ai-report-mermaid">MN 10</pre>`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(
+			html,
+			/<p><a class="ai-summary-ref" href="\/mn10">MN 10<\/a> in prose\.<\/p>/,
+		);
+		assert.match(html, /<svg><text>MN 10<\/text><\/svg>/);
+		assert.match(html, /<pre class="ai-report-mermaid">MN 10<\/pre>/);
+		assert.equal([...html.matchAll(/href="\/mn10"/g)].length, 1);
+	});
+
 	it("unwraps markdown links already inside a heading", () => {
 		const html = linkifyDiscourseIdsInHtml(
 			`<h3>Body: <a class="ai-summary-ref" href="/mn10">MN 10</a></h3><p>Keep going.</p>`,
@@ -134,5 +157,43 @@ describe("linkifyDiscourseIdsInHtml", () => {
 		);
 		assert.match(html, /<h3>Body: MN 10<\/h3>/);
 		assert.doesNotMatch(html, /<h3>[^<]*<a\b/);
+	});
+
+	it("links a paragraph range cite", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<p>See MN 10 ¶6 - ¶50 for the body.</p>`,
+			[{ slug: "mn10", href: "/mn10" }],
+		);
+		assert.match(
+			html,
+			/<a class="ai-summary-ref" href="\/mn10#6-50">MN 10 ¶6 - ¶50<\/a>/,
+		);
+	});
+
+	it("links a paragraph cite and only the first mention in a paragraph", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<p>MN 21 ¶21 then MN 21 again.</p><p>MN 21 later.</p><td>MN 21</td>`,
+			[{ slug: "mn21", href: "/mn21" }],
+		);
+		assert.match(
+			html,
+			/<p><a class="ai-summary-ref" href="\/mn21#21">MN 21 ¶21<\/a> then MN 21 again\.<\/p>/,
+		);
+		assert.match(
+			html,
+			/<p><a class="ai-summary-ref" href="\/mn21">MN 21<\/a> later\.<\/p>/,
+		);
+		assert.match(html, /<td><a class="ai-summary-ref" href="\/mn21">MN 21<\/a><\/td>/);
+		assert.equal([...html.matchAll(/href="\/mn21(?:#21)?"/g)].length, 3);
+	});
+
+	it("does not auto-link a discourse already linked in that paragraph", () => {
+		const html = linkifyDiscourseIdsInHtml(
+			`<p><a class="ai-summary-ref" href="/mn21#21">MN 21 ¶21</a> and MN 21 later.</p>`,
+			[{ slug: "mn21", href: "/mn21" }],
+		);
+		assert.match(html, /href="\/mn21#21"/);
+		assert.match(html, /and MN 21 later/);
+		assert.equal([...html.matchAll(/<a\b/g)].length, 1);
 	});
 });
