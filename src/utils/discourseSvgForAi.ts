@@ -1,27 +1,43 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import {
+	contentImageBasenameMatchesSlug,
+	DISCOURSE_SVG_AI_MAX_REQUESTED,
+	DISCOURSE_SVG_AI_PER_FILE,
+	DISCOURSE_SVG_AI_SUMMARY_CHARS,
+	DISCOURSE_SVG_AI_SUMMARY_TOTAL,
+	DISCOURSE_SVG_AI_TOTAL,
+	normalizeDiscourseSvgRequestSlugs,
+	normalizeDiscourseSvgSlug,
+} from "./discourseSvgForAiPure";
 
-/** Compact label list packed into Ask/Research evidence by default. */
-export const DISCOURSE_SVG_AI_SUMMARY_CHARS = 4_000;
-export const DISCOURSE_SVG_AI_SUMMARY_TOTAL = 16_000;
-/**
- * Full site SVG markup, only when the research writer requests it.
- * Fits every current discourse SVG (largest tidy file is ~115k).
- */
-export const DISCOURSE_SVG_AI_PER_FILE = 120_000;
-export const DISCOURSE_SVG_AI_TOTAL = 240_000;
-/** At most this many full SVGs on a readIllustration hop. */
-export const DISCOURSE_SVG_AI_MAX_REQUESTED = 2;
-
-const IMAGE_EXT = /\.(svg|webp|jpe?g|png)$/i;
+// Re-exported so existing server-only importers keep working. WARNING: this
+// module imports `node:fs` — never import it (even transitively) from
+// client-reachable code (`aiModeClient.ts` and its graph). Browser-safe
+// helpers live in `discourseSvgForAiPure.ts`. Importing this file in the
+// browser crashes with "Module node:fs has been externalized".
+export {
+	contentImageBasenameMatchesSlug,
+	DISCOURSE_SVG_AI_MAX_REQUESTED,
+	DISCOURSE_SVG_AI_PER_FILE,
+	DISCOURSE_SVG_AI_SUMMARY_CHARS,
+	DISCOURSE_SVG_AI_SUMMARY_TOTAL,
+	DISCOURSE_SVG_AI_TOTAL,
+	normalizeDiscourseSvgRequestSlugs,
+	normalizeDiscourseSvgSlug,
+};
 
 let cachedFiles: { dir: string; name: string }[] | null = null;
 
+/**
+ * Serverless note: read ONLY `public/content-images`, never
+ * `src/assets/content-images`. Both hold the same files (synced in prebuild),
+ * but `public/` is already shipped to the function via the adapter's
+ * `includeFiles` for PDF export — referencing `src/` would make the file
+ * tracer copy the whole directory a second time (~13 MB) into `_render.func`.
+ */
 function contentImageDirs(): string[] {
-	return [
-		path.join(process.cwd(), "public", "content-images"),
-		path.join(process.cwd(), "src", "assets", "content-images"),
-	];
+	return [path.join(process.cwd(), "public", "content-images")];
 }
 
 function listContentImageFiles(): { dir: string; name: string }[] {
@@ -52,26 +68,10 @@ export function resetDiscourseSvgForAiCacheForTests(): void {
 	cachedFiles = null;
 }
 
-function normalizeSlug(slug: string): string {
-	return slug.trim().toLowerCase().replace(/^\/+|\/+$/g, "");
-}
-
-/** Same prefix rule as site discourse-image discovery. */
-export function contentImageBasenameMatchesSlug(
-	basename: string,
-	slug: string,
-): boolean {
-	const base = basename.replace(IMAGE_EXT, "").toLowerCase();
-	const id = normalizeSlug(slug);
-	if (!id || !base) return false;
-	if (base === id) return true;
-	if (!base.startsWith(id)) return false;
-	const next = base[id.length];
-	return next === "-" || next === "_" || next === ".";
-}
+const IMAGE_EXT = /\.(svg|webp|jpe?g|png)$/i;
 
 export function discourseHasIllustration(slug: string): boolean {
-	const id = normalizeSlug(slug);
+	const id = normalizeDiscourseSvgSlug(slug);
 	if (!id) return false;
 	return listContentImageFiles().some((file) =>
 		contentImageBasenameMatchesSlug(file.name, id),
@@ -97,7 +97,7 @@ function tidySvgMarkup(raw: string): string {
 }
 
 function matchingSvgFiles(slug: string): { dir: string; name: string }[] {
-	const id = normalizeSlug(slug);
+	const id = normalizeDiscourseSvgSlug(slug);
 	if (!id) return [];
 	const exact: { dir: string; name: string }[] = [];
 	const extra: { dir: string; name: string }[] = [];
@@ -124,7 +124,7 @@ export function clipDiscourseSvgRequestSlugs(
 	const out: string[] = [];
 	const seen = new Set<string>();
 	for (const raw of slugs) {
-		const slug = normalizeSlug(raw);
+		const slug = normalizeDiscourseSvgSlug(raw);
 		if (!slug || seen.has(slug)) continue;
 		if (!discourseHasSvgIllustration(slug)) continue;
 		seen.add(slug);

@@ -44,7 +44,7 @@ import {
 	type PdfExportParams,
 	type PdfImageMode,
 } from "../../../utils/exportFormatConstraints";
-import { buildCollectionEpub, collectionHasInlineSvg } from "../../../utils/epubRenderer";
+import { buildCollectionEpub, collectionHasInlineSvg, collectionHasMermaid } from "../../../utils/epubRenderer";
 import {
 	rasterizeSvgOnPage,
 	type SvgVizRasterMode,
@@ -77,7 +77,7 @@ import { directoryStructure } from "../../../data/directoryStructure";
 import type { DirectoryStructure } from "../../../types/directory";
 import type { Browser, Page } from "playwright-core";
 import {
-	bakeResearchReportMermaid,
+	hydrateMermaidHtml,
 	hydratePlaywrightMermaid,
 } from "../../../utils/researchReportMermaidServer";
 import { createRequire } from "node:module";
@@ -156,8 +156,10 @@ async function launchBrowser(): Promise<Browser> {
 }
 
 async function setPdfContent(page: Page, html: string): Promise<void> {
-	const baked = await bakeResearchReportMermaid(html, false);
-	await page.setContent(baked, {
+	// Mermaid listings render inside Chromium (vendored UMD). Node-side baking
+	// is deliberately avoided: importing the npm package would drag ~140 MB
+	// into the Vercel serverless function.
+	await page.setContent(html, {
 		waitUntil: "domcontentloaded",
 		timeout: 20_000,
 	});
@@ -219,6 +221,7 @@ async function respondWithEpub(
 
 	const startMs = Date.now();
 	let rasterizeDiagram: ((svg: string) => Promise<Buffer>) | undefined;
+	let hydrateMermaid: ((html: string) => Promise<string>) | undefined;
 	let browser: Browser | undefined;
 	let heldJob = false;
 	const vizMode: SvgVizRasterMode =
@@ -228,13 +231,22 @@ async function respondWithEpub(
 				? "light"
 				: "eink";
 
-	if (collectionHasInlineSvg(collectionData)) {
+	// Chromium is needed for SVG rasterization and for mermaid listings in
+	// Ask/Research exports (rendered in-page; Node cannot import mermaid
+	// without blowing the serverless size cap).
+	const needsBrowser =
+		collectionHasInlineSvg(collectionData) ||
+		collectionHasMermaid(collectionData);
+	if (needsBrowser) {
 		try {
 			browser = await launchBrowser();
 			const page = await browser.newPage();
-			console.log(`[EPUB Export] Rasterizing diagrams as ${vizMode}`);
-			rasterizeDiagram = (svg: string) =>
-				rasterizeSvgOnPage(page, svg, { vizMode });
+			if (collectionHasInlineSvg(collectionData)) {
+				console.log(`[EPUB Export] Rasterizing diagrams as ${vizMode}`);
+				rasterizeDiagram = (svg: string) =>
+					rasterizeSvgOnPage(page, svg, { vizMode });
+			}
+			hydrateMermaid = (html: string) => hydrateMermaidHtml(page, html);
 			activeJobs++;
 			heldJob = true;
 		} catch (err) {
@@ -247,6 +259,7 @@ async function respondWithEpub(
 				browser = undefined;
 			}
 			rasterizeDiagram = undefined;
+			hydrateMermaid = undefined;
 		}
 	}
 
@@ -259,6 +272,7 @@ async function respondWithEpub(
 			coverAccentRole: opts.coverAccentRole,
 			titleKindLabel: opts.titleKindLabel,
 			rasterizeDiagram,
+			hydrateMermaid,
 			vizImageMode: vizMode,
 		});
 		const elapsed = ((Date.now() - startMs) / 1000).toFixed(1);

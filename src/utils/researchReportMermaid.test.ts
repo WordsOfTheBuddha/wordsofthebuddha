@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { mermaidBlockHtml } from "./researchReportSanitize";
-import { bakeResearchReportMermaid } from "./researchReportMermaidServer";
+// Node-only bake: never import researchReportMermaidNode from SSR routes —
+// the npm `mermaid` import would blow the Vercel serverless size cap.
+import { bakeResearchReportMermaid } from "./researchReportMermaidNode";
 import {
 	isMermaidErrorSvg,
 	normalizeMermaidSource,

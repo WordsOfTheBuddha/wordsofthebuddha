@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 /**
- * Copy mermaid's browser ESM build into public/ so the production browser
- * can load `/vendor/mermaid/mermaid.esm.min.mjs` as native ESM (via a
- * concatenated dynamic specifier) without Vite rewriting mermaid's lazy
- * diagram chunks (those 404 on the Vercel client build).
+ * Copy mermaid's browser builds into public/:
+ * - ESM (`mermaid.esm.min.mjs` + chunks) so the production browser can load
+ *   `/vendor/mermaid/mermaid.esm.min.mjs` as native ESM (via a concatenated
+ *   dynamic specifier) without Vite rewriting mermaid's lazy diagram chunks
+ *   (those 404 on the Vercel client build).
+ * - UMD (`mermaid.min.js`) so server PDF/EPUB export can `addScriptTag` it
+ *   into headless Chromium (researchReportMermaidServer.ts). The UMD file is
+ *   shipped to serverless via the adapter's `includeFiles` — server code must
+ *   reference `public/vendor/mermaid/…`, never `node_modules/mermaid`, so the
+ *   file tracer cannot drag the ~140 MB package into the function.
  */
 import {
 	copyFileSync,
@@ -25,15 +31,22 @@ export function copyMermaidVendor(root = ROOT) {
 	const mermaidRoot = join(root, "node_modules/mermaid/dist");
 	const entry = join(mermaidRoot, "mermaid.esm.min.mjs");
 	const chunks = join(mermaidRoot, "chunks/mermaid.esm.min");
+	const umd = join(mermaidRoot, "mermaid.min.js");
 	if (!existsSync(entry) || !existsSync(chunks)) {
 		throw new Error(
 			"copy-mermaid-vendor: mermaid ESM build is missing (yarn add mermaid)",
+		);
+	}
+	if (!existsSync(umd)) {
+		throw new Error(
+			"copy-mermaid-vendor: mermaid UMD build is missing (yarn add mermaid)",
 		);
 	}
 	const dest = mermaidVendorDest(root);
 	rmSync(dest, { recursive: true, force: true });
 	mkdirSync(join(dest, "chunks/mermaid.esm.min"), { recursive: true });
 	copyFileSync(entry, join(dest, "mermaid.esm.min.mjs"));
+	copyFileSync(umd, join(dest, "mermaid.min.js"));
 	for (const name of readdirSync(chunks)) {
 		if (!name.endsWith(".mjs")) continue;
 		copyFileSync(

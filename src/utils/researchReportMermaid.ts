@@ -37,10 +37,21 @@ const importPublicEsm = new Function("u", "return import(u)") as (
 	url: string,
 ) => Promise<MermaidModule>;
 
-/** Browser (dev + prod): public vendor ESM. Node/SSR/tsx: package `mermaid`. */
+/**
+ * Browser-side mermaid rendering for research reports.
+ *
+ * IMPORTANT (Vercel 250 MB serverless cap): this module is part of the SSR
+ * bundle, so it must NEVER statically or dynamically import the npm
+ * `mermaid` package (~140 MB). The browser loads the vendored ESM build from
+ * `/vendor/mermaid/` (public, CDN), server PDF/EPUB export renders mermaid
+ * inside Playwright (researchReportMermaidServer.ts), and Node-only baking
+ * for tests lives in researchReportMermaidNode.ts.
+ */
 async function importMermaid(): Promise<MermaidApi> {
-	if (typeof import.meta.env === "undefined" || import.meta.env.SSR) {
-		return unwrapMermaid((await import("mermaid")) as MermaidModule);
+	if (typeof document === "undefined") {
+		throw new Error(
+			"mermaid vendor ESM is browser-only; on the server use hydratePlaywrightMermaid",
+		);
 	}
 	const spec = "/vendor/" + "mermaid/mermaid.esm.min.mjs";
 	try {
@@ -61,13 +72,9 @@ function decodeReportEntities(value: string): string {
 }
 
 function mermaidInitConfig(theme: string): Record<string, unknown> {
-	const node =
-		typeof process !== "undefined" && Boolean(process.versions?.node);
 	return {
 		startOnLoad: false,
-		// mermaid 12's DOMPurify interop throws `addHook is not a function` in
-		// jsdom. The SVG still passes through sanitizeResearchReportHtml.
-		securityLevel: node ? "loose" : "strict",
+		securityLevel: "strict",
 		suppressErrorRendering: true,
 		theme,
 		htmlLabels: true,
@@ -89,6 +96,7 @@ export async function mermaidSourceToSvg(
 	source: string,
 	dark = false,
 ): Promise<string> {
+	if (typeof document === "undefined") return "";
 	const text = normalizeMermaidSource(source).trim();
 	if (!text) return "";
 	const mermaid = await loadMermaid(dark);
@@ -109,9 +117,15 @@ export async function mermaidSourceToSvg(
 	}
 }
 
-export async function replaceMermaidPlaceholdersWithSvg(
+/**
+ * Replace `<pre class="ai-report-mermaid">` listings with rendered diagrams.
+ * The `renderSvg` callback keeps this helper free of any mermaid import so
+ * both the browser (vendor ESM) and Node (npm package, tests only) can use it
+ * without pulling mermaid into the serverless bundle.
+ */
+export async function replaceMermaidPlaceholders(
 	html: string,
-	dark = false,
+	renderSvg: (source: string) => Promise<string>,
 ): Promise<string> {
 	const re = /<pre class="ai-report-mermaid"[^>]*>([\s\S]*?)<\/pre>/gi;
 	const matches = [...html.matchAll(re)];
@@ -121,7 +135,7 @@ export async function replaceMermaidPlaceholdersWithSvg(
 		const source = decodeReportEntities(match[1] || "").trim();
 		if (!source || !match[0]) continue;
 		try {
-			const svg = await mermaidSourceToSvg(source, dark);
+			const svg = await renderSvg(source);
 			if (!svg) continue;
 			out = out.replace(
 				match[0],
@@ -134,9 +148,20 @@ export async function replaceMermaidPlaceholdersWithSvg(
 	return out;
 }
 
+export async function replaceMermaidPlaceholdersWithSvg(
+	html: string,
+	dark = false,
+): Promise<string> {
+	if (typeof document === "undefined") return html;
+	return replaceMermaidPlaceholders(html, (source) =>
+		mermaidSourceToSvg(source, dark),
+	);
+}
+
 export async function hydrateResearchReportMermaid(
 	root: ParentNode,
 ): Promise<void> {
+	if (typeof document === "undefined") return;
 	const nodes = [
 		...root.querySelectorAll<HTMLElement>(
 			"[data-ai-mermaid]:not([data-ai-mermaid-done])",

@@ -48,12 +48,29 @@ function pruneRenderFunction() {
 	// Full playwright must not ship in serverless (PDF uses playwright-core + Sparticuz).
 	saved += rmDir(join(nm, "playwright"), "node_modules/playwright");
 
+	// mermaid must never ship in serverless: the browser uses /vendor ESM and
+	// PDF/EPUB export uses the vendored UMD via includeFiles. No SSR module may
+	// import the npm package (~140 MB); this is belt-and-braces in case the
+	// tracer follows a new reference.
+	saved += rmDir(join(nm, "mermaid"), "node_modules/mermaid");
+
 	// ms-dpd dynamically imports all language packs; site only uses English.
 	for (const lang of ["ru", "de", "fr", "es", "pt"]) {
 		saved += rmDir(
 			join(nm, "@sc-voice", `ms-dpd-${lang}`),
 			`node_modules/@sc-voice/ms-dpd-${lang}`,
 		);
+	}
+
+	// resvg ships per-platform binaries; Vercel Node.js runs glibc linux-x64.
+	// Drop the musl twin (~4 MB) and any non-linux strays the tracer picked up.
+	for (const name of [
+		"resvg-js-linux-x64-musl",
+		"resvg-js-darwin-x64",
+		"resvg-js-darwin-arm64",
+		"resvg-js-win32-x64-msvc",
+	]) {
+		saved += rmDir(join(nm, "@resvg", name), `node_modules/@resvg/${name}`);
 	}
 
 	// sharp optional deps: keep glibc linux-x64 only.

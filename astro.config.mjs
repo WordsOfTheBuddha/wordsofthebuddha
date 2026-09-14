@@ -1,7 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import { globSync } from "glob";
-import { dirname } from "node:path";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import tailwind from "@astrojs/tailwind";
@@ -57,6 +58,18 @@ const vercelSearchIndexFiles = globSync(
 	},
 );
 
+/**
+ * Mermaid UMD for Playwright-side diagram rendering in PDF/EPUB export
+ * (`hydratePlaywrightMermaid` / `hydrateMermaidHtml`). The npm package itself
+ * (~140 MB) must never be reachable from the SSR module graph; only this
+ * single vendored file ships. Copied by `copyMermaidVendor` in `prebuild`.
+ */
+const vercelMermaidUmd = existsSync(
+	join(__dirname, "public/vendor/mermaid/mermaid.min.js"),
+)
+	? ["public/vendor/mermaid/mermaid.min.js"]
+	: [];
+
 const externalLinksOptions = {
 	target: "_blank",
 	rel: ["noopener", "noreferrer"],
@@ -111,7 +124,11 @@ export default defineConfig({
 		// PDF export (/api/export/*) launches headless Chromium; Hobby Fluid Compute
 		// caps serverless functions at 300s.
 		maxDuration: 300,
-		includeFiles: [...vercelPdfIncludeContentImages, ...vercelSearchIndexFiles],
+		includeFiles: [
+			...vercelPdfIncludeContentImages,
+			...vercelSearchIndexFiles,
+			...vercelMermaidUmd,
+		],
 		excludeFiles: [
 			"generated/search-index.json",
 			"generated/search-meta.json",

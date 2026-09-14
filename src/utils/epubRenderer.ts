@@ -13,7 +13,6 @@ import {
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
-import { bakeResearchReportMermaid } from "./researchReportMermaidServer";
 import { buildZip } from "./epubZip";
 import {
 	buildEpubCoverModel,
@@ -46,6 +45,13 @@ export type EpubBuildOptions = {
 	 * to resvg at the same native pixel size (tests / no browser).
 	 */
 	rasterizeDiagram?: EpubDiagramRasterizer;
+	/**
+	 * Render `<pre class="ai-report-mermaid">` listings to SVG via a Chromium
+	 * page (hydrateMermaidHtml). When omitted, listings stay as code blocks.
+	 * Deliberately a callback: importing the npm `mermaid` package here would
+	 * drag ~140 MB into the Vercel serverless function.
+	 */
+	hydrateMermaid?: (html: string) => Promise<string>;
 	/** Light / dark / thermal / e-ink baked into diagram PNGs. */
 	vizImageMode?: SvgVizRasterMode;
 };
@@ -988,6 +994,19 @@ export function collectionHasInlineSvg(collection: CollectionPdf): boolean {
 	);
 }
 
+/**
+ * True when an Ask/Research export may contain mermaid listings: research
+ * summaries carry fenced mermaid blocks that render to
+ * `<pre class="ai-report-mermaid">`, or discourse HTML already has them.
+ */
+export function collectionHasMermaid(collection: CollectionPdf): boolean {
+	return collection.chapters.some(
+		(ch) =>
+			/```\s*(mermaid|mmd)\b/i.test(ch.description ?? "") ||
+			ch.discourses.some((d) => d.html.includes("ai-report-mermaid")),
+	);
+}
+
 async function rasterizeSpineDiagrams(
 	spine: SpineItem[],
 	rasterize?: EpubDiagramRasterizer,
@@ -1047,7 +1066,9 @@ export async function buildCollectionEpub(
 	const { spine, nav } = collectSpineAndNav(collection);
 	for (const item of spine) {
 		if (!item.body.includes("ai-report-mermaid")) continue;
-		item.body = await bakeResearchReportMermaid(item.body, false);
+		if (options.hydrateMermaid) {
+			item.body = await options.hydrateMermaid(item.body);
+		}
 	}
 	await rasterizeSpineDiagrams(
 		spine,
