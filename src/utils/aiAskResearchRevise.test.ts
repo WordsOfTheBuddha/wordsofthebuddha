@@ -3,7 +3,9 @@ import { describe, it } from "node:test";
 import {
 	applyResearchRevisePatch,
 	changedReportBlockKeys,
+	auditResearchRevisePatchConstraints,
 	constrainResearchRevisePatch,
+	rejectResearchReviseOpReason,
 	diffReportBlockChanges,
 	enumerateReportBlocks,
 	reportBlockDiffCount,
@@ -28,20 +30,28 @@ import {
 	researchRevisionStartedNote,
 	RESEARCH_REVISE_MAX_OUTPUT_WORDS,
 	researchReviseFailedAsTooLong,
-	researchReviseNeedsSearch,
 	selectionQualifiesForRevise,
 	splitReportSections,
 	mergeResearchHits,
 	versionBodiesToKeep,
 	applyResearchReviseOps,
 	clipResearchRevisePlan,
+	clipResearchChangelog,
+	RESEARCH_REVISE_CHANGELOG_MAX,
 	numberedReportForModel,
 	reportBlocksContainingText,
 	researchRevisePatchIsEmpty,
 	normalizeReportBlockId,
 	splitReportBlocks,
 	stripReportBlockTags,
+	expandReportBlockIdRange,
+	REPORT_BLOCK_RANGE_MAX,
+	ensureResearchReviseMermaidFences,
+	fenceMermaidMarkdown,
+	isUnfencedMermaidMarkdown,
+	resolveResearchReviseTargets,
 	researchRevisePlanNote,
+	reviseEvidenceRequestedIds,
 	researchRevisePlanSummary,
 	researchReviseClarifyBaseLabel,
 	sanitizeResearchReviseClarify,
@@ -52,6 +62,10 @@ import {
 	buildReviseWriterMessage,
 	planReviseEvidence,
 	reviseClarificationsBlock,
+	reviseSlugsForDiscourseIds,
+	formatReviseEvidenceDebugLog,
+	hitMatchesDiscourseId,
+	RESEARCH_REVISE_PLAN_SYSTEM,
 	RESEARCH_REVISE_WRITER_MAX_TOKENS,
 } from "./aiAskResearchReviseWrite";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
@@ -256,6 +270,91 @@ The discourse then declares the faculties easy to grasp.
 		assert.equal(plan?.intent, "Split p3 around the quotation.");
 		assert.deepEqual(plan?.searchQueries, ["mindfulness faculties", "x", "y"]);
 		assert.deepEqual(plan?.readFull, ["sn48.42", "mn10"]);
+		assert.deepEqual(plan?.readPali, []);
+		const ranged = clipResearchRevisePlan({
+			targets: ["p3"],
+			intent: "Quote AN 1.485–494 and SnP 1.8.",
+			readFull: ["an1.485-494", "SNP 1.8", "an1.485–494"],
+			readPali: ["SNP 1.8", "snp1.8"],
+		});
+		assert.deepEqual(ranged?.readFull, ["an1.485-494", "snp1.8"]);
+		assert.deepEqual(ranged?.readPali, ["snp1.8"]);
+	});
+
+	it("expands range targets and keeps a whole section move in scope", () => {
+		assert.deepEqual(expandReportBlockIdRange("p31-p38"), [
+			"p31", "p32", "p33", "p34", "p35", "p36", "p37", "p38",
+		]);
+		assert.deepEqual(expandReportBlockIdRange("¶31–33"), ["p31", "p32", "p33"]);
+		assert.deepEqual(expandReportBlockIdRange("P31 to 33"), ["p31", "p32", "p33"]);
+		assert.deepEqual(expandReportBlockIdRange("h2-h3"), ["h2", "h3"]);
+		assert.deepEqual(expandReportBlockIdRange("p3-h5"), []);
+		assert.deepEqual(expandReportBlockIdRange("p9-p3"), []);
+		assert.deepEqual(expandReportBlockIdRange("p12"), ["p12"]);
+		assert.deepEqual(expandReportBlockIdRange("junk"), []);
+		assert.equal(expandReportBlockIdRange("p1-p999").length, REPORT_BLOCK_RANGE_MAX);
+		// The v11 case: section 2, the moved run, its anchor, and the diagram —
+		// twenty-odd blocks that the old 12-target cap silently truncated.
+		const plan = clipResearchRevisePlan({
+			targets: ["h2", "p21-p30", "p31-p38", "p52", "p79"],
+			intent: "Move p31–p38 after p52 (end of the Cook sub-section); tighten section 2; fence p79.",
+		});
+		assert.equal(plan?.targets.length, 21);
+		assert.ok(plan?.targets.includes("p38"));
+		assert.ok(plan?.targets.includes("p52"));
+		assert.ok(plan?.targets.includes("p79"));
+	});
+
+	it("keeps kind aliases on the plan and expands them against the report", () => {
+		const plan = clipResearchRevisePlan({
+			targets: ["quotes", "diagrams", "p3"],
+			intent: "Add Pāli beside every English quote and fence diagrams.",
+		});
+		assert.deepEqual(plan?.targets, ["quotes", "diagrams", "p3"]);
+		const blocks = splitReportBlocks(
+			[
+				"## Section",
+				"Lead.",
+				"",
+				"> \"English only.\" SN 47.8",
+				"",
+				"mermaid",
+				"flowchart LR",
+				" A --> B",
+				"",
+				"Close.",
+			].join("\n"),
+		);
+		assert.deepEqual(resolveResearchReviseTargets(plan?.targets || [], blocks), [
+			"p2",
+			"p3",
+		]);
+		assert.equal(blocks.find((b) => b.id === "p2")?.kind, "quote");
+		assert.equal(isUnfencedMermaidMarkdown(blocks.find((b) => b.id === "p3")?.markdown || ""), true);
+	});
+
+	it("fences a skipped mermaid paragraph even when the writer omitted the op", () => {
+		const blocks = splitReportBlocks(
+			"## Chains\n\nIntro.\n\nmermaid flowchart LR subgraph descent[\"The descending chain\"] A2[\"Association\"] --> B2\n\nAfter.",
+		);
+		const mermaid = blocks.find((block) => isUnfencedMermaidMarkdown(block.markdown));
+		assert.ok(mermaid);
+		const patched = ensureResearchReviseMermaidFences({
+			blocks,
+			patch: {
+				changelog: "Tightened section 2.",
+				edits: [],
+				ops: [{ op: "update", id: "p1", markdown: "Shorter intro." }],
+			},
+			targets: ["p1", mermaid.id],
+			instruction: "Fix mermaid diagram in P79.",
+			planText: "fence the ¶79 mermaid diagram",
+		});
+		const fenceOp = patched?.ops?.find((op) => op.id === mermaid.id);
+		assert.equal(fenceOp?.op, "update");
+		assert.equal(fenceMermaidMarkdown(mermaid.markdown).startsWith("```mermaid"), true);
+		assert.match(fenceOp?.markdown || "", /^```mermaid\nflowchart LR/);
+		assert.match(fenceOp?.markdown || "", /```$/);
 	});
 
 	const hit = (slug: string): AiDiscourseHit =>
@@ -265,7 +364,13 @@ The discourse then declares the faculties easy to grasp.
 		const out = planReviseEvidence({
 			instruction: "Make the quoted part a sutta quote.",
 			existingHits: [hit("sn48.42"), hit("mn10")],
-			plan: { targets: ["p3"], intent: "", searchQueries: [], readFull: ["sn48.42", "an4.41"] },
+			plan: {
+				targets: ["p3"],
+				intent: "",
+				searchQueries: [],
+				readFull: ["sn48.42", "an4.41"],
+				readPali: [],
+			},
 		});
 		assert.deepEqual(out.reread.map((h) => h.slug), ["sn48.42"]);
 		assert.deepEqual(out.queries, ["AN 4.41"]);
@@ -273,19 +378,78 @@ The discourse then declares the faculties easy to grasp.
 		const quiet = planReviseEvidence({
 			instruction: "Add more discourses on this.",
 			existingHits: [],
-			plan: { targets: ["p3"], intent: "wording only", searchQueries: [], readFull: [] },
+			plan: {
+				targets: ["p3"],
+				intent: "wording only",
+				searchQueries: [],
+				readFull: [],
+				readPali: [],
+			},
 		});
 		assert.equal(quiet.needsSearch, false);
 		assert.deepEqual(quiet.queries, []);
 	});
 
-	it("planReviseEvidence without a plan keeps the instruction heuristics", () => {
+	it("resolves a constituent AN id to the range file already in the report", () => {
+		assert.equal(hitMatchesDiscourseId({ slug: "an1.394-574" }, "an1.485"), true);
+		assert.equal(hitMatchesDiscourseId({ slug: "an1.394-574" }, "an1.485-494"), true);
+		assert.equal(hitMatchesDiscourseId({ slug: "an1.41-50" }, "an1.485"), false);
+		assert.deepEqual(
+			reviseEvidenceRequestedIds({
+				instruction: "Quote SnP 1.8 sati verse.",
+				plan: { targets: ["p3"], intent: "", searchQueries: [], readFull: ["snp1.8"], readPali: ["snp1.8"] },
+			}),
+			["snp1.8"],
+		);
+		assert.deepEqual(
+			reviseSlugsForDiscourseIds(["snp1.8"], [hit("snp1.8")]),
+			["snp1.8"],
+		);
+		assert.match(
+			formatReviseEvidenceDebugLog({
+				planReadFull: ["snp1.8"],
+				planReadPali: ["snp1.8"],
+				requestedIds: ["snp1.8"],
+				readFull: ["snp1.8"],
+				readPali: ["snp1.8"],
+				readFullLabels: ["SNP 1.8"],
+				rereadSlugs: [],
+				newHitSlugs: ["snp1.8"],
+				evidenceChars: 1200,
+				evidenceHasPaliPassage: true,
+			}),
+			/hasPaliPassage=true/,
+		);
+		const out = planReviseEvidence({
+			instruction:
+				"Add SnP 1.8 in Pali + English. Include AN 1.485-494 as a quoted block.",
+			existingHits: [hit("an1.394-574"), hit("mn10")],
+			plan: {
+				targets: ["p3"],
+				intent: "Quote diversity passages.",
+				searchQueries: [],
+				readFull: ["snp1.8", "an1.485-494"],
+				readPali: ["snp1.8"],
+			},
+		});
+		assert.deepEqual(out.reread.map((h) => h.slug), ["an1.394-574"]);
+		assert.deepEqual(out.queries, ["SNP 1.8"]);
+		assert.equal(out.needsSearch, true);
+	});
+
+	it("planReviseEvidence without a plan only searches for named discourse ids", () => {
 		const out = planReviseEvidence({
 			instruction: "Add more discourses on the faculties.",
 			existingHits: [],
 		});
-		assert.equal(out.needsSearch, true);
-		assert.deepEqual(out.queries, ["Add more discourses on the faculties."]);
+		assert.equal(out.needsSearch, false);
+		assert.deepEqual(out.queries, []);
+		const named = planReviseEvidence({
+			instruction: "Add AN 10.60 to the body.",
+			existingHits: [],
+		});
+		assert.equal(named.needsSearch, true);
+		assert.deepEqual(named.queries, ["AN 10.60"]);
 	});
 
 	it("writer message carries the numbered report, plan and target blocks", () => {
@@ -297,7 +461,13 @@ The discourse then declares the faculties easy to grasp.
 			clarifyBrief:
 				"How should quotations be used? → Prefer direct quotations\nTone → Technical",
 			quote: "Uṇṇābha's faith is settled.",
-			plan: { targets: ["p3"], intent: "Split p2 around the quotation.", searchQueries: [], readFull: [] },
+			plan: {
+				targets: ["p3"],
+				intent: "Split p2 around the quotation.",
+				searchQueries: [],
+				readFull: [],
+				readPali: [],
+			},
 		});
 		assert.match(message, /Plan \(from a first pass over the report\): Split p2/);
 		assert.match(message, /Original research request.*Explain mindfulness/);
@@ -308,6 +478,39 @@ The discourse then declares the faculties easy to grasp.
 		assert.match(message, /Target blocks as they stand now:\n\[\[p2\]\]\nAnother text/);
 		assert.match(message, /Current report, with block ids:\n\[\[p1\]\]/);
 		assert.match(message, /No passages supplied/);
+	});
+
+	it("audits why each op fails constraints", () => {
+		const blocks = splitReportBlocks(
+			"## Diagram\n\n```mermaid\nflowchart LR\n A --> B\n```\n\nClosing.",
+		);
+		const audit = auditResearchRevisePatchConstraints({
+			blocks,
+			targets: ["p1"],
+			patch: {
+				changelog: "x",
+				edits: [{ heading: "Diagram", mode: "replace", markdown: "legacy" }],
+				ops: [
+					{ op: "update", id: "p1", markdown: "ok" },
+					{ op: "update", id: "p99", markdown: "ghost" },
+					{ op: "update", id: "c1", markdown: "```mermaid\nflowchart LR\n A --> B" },
+				],
+			},
+		});
+		assert.equal(audit.kept.length, 1);
+		assert.equal(audit.kept[0]?.id, "p1");
+		assert.equal(audit.legacyEditsDropped, 1);
+		assert.deepEqual(
+			audit.rejected.map((r) => `${r.op.id}:${r.reason}`),
+			["p99:unknown_block_id", "c1:outside_targets"],
+		);
+		assert.equal(
+			rejectResearchReviseOpReason(
+				{ op: "update", id: "p1", markdown: "```mermaid\nflowchart LR\n A --> B" },
+				{ blocks, targets: ["p1"] },
+			)?.reason,
+			"unclosed_fence",
+		);
 	});
 
 	it("enforces planner targets and drops legacy whole-section edits", () => {
@@ -753,14 +956,14 @@ describe("clipEditsToWordBudget", () => {
 });
 
 describe("version index", () => {
-	it("labels the in-flight revision with the next version number", () => {
+	it("keeps the version chip on the current head while a revise is in flight", () => {
 		const index = clipResearchVersionIndex([
 			{ n: 1, at: 1, instruction: "", changelog: "First", from: null },
 			{ n: 2, at: 2, instruction: "tone", changelog: "Softer", from: 1 },
 		]);
 		assert.equal(
 			formatResearchVersionLabelForTurn(index, { revising: true }),
-			"v3",
+			"v2",
 		);
 		assert.equal(
 			formatResearchVersionLabelForTurn(index, { previewN: 1 }),
@@ -806,6 +1009,11 @@ describe("revise output budget", () => {
 	it("raises the writer completion cap without moving the 100k ingest cap", () => {
 		assert.equal(RESEARCH_REVISE_WRITER_MAX_TOKENS, 50_000);
 		assert.ok(RESEARCH_REVISE_MAX_OUTPUT_WORDS >= 30_000);
+		assert.ok(RESEARCH_REVISE_CHANGELOG_MAX >= 2_000);
+		assert.equal(
+			clipResearchChangelog(`${"x".repeat(3_000)}`).length,
+			RESEARCH_REVISE_CHANGELOG_MAX,
+		);
 		assert.equal(RESEARCH_REPORT_MAX_CHARS, 100_000);
 	});
 });
@@ -837,14 +1045,6 @@ describe("researchReviseFailedAsTooLong", () => {
 			}),
 			false,
 		);
-	});
-});
-
-describe("researchReviseNeedsSearch", () => {
-	it("searches for named IDs or add/include language, not a tone pass", () => {
-		assert.equal(researchReviseNeedsSearch("Make it a study guide."), false);
-		assert.equal(researchReviseNeedsSearch("Add AN 10.60 to the body."), true);
-		assert.equal(researchReviseNeedsSearch("Softer opening.", ["mn10"]), true);
 	});
 });
 
@@ -901,6 +1101,17 @@ describe("revise plan: reader summary and clarifying questions", () => {
 			"Plan: Update ¶7; keep the passage in ¶8 as is.",
 		);
 		assert.equal(researchRevisePlanNote({}), "");
+		assert.equal(
+			researchRevisePlanNote({ searchQueries: ["AN 1.485-494 sati"] }),
+			"Plan: look up: AN 1.485-494 sati",
+		);
+		assert.match(
+			researchRevisePlanNote({
+				readFull: ["snp1.8", "an4.189"],
+				readPali: ["snp1.8"],
+			}),
+			/^Plan: read SNP 1\.8, AN 4\.189/,
+		);
 		const long = researchRevisePlanSummary({ summary: "x".repeat(400) });
 		assert.ok(long.length <= RESEARCH_REVISE_PLAN_SUMMARY_MAX);
 		assert.ok(long.endsWith("…"));
@@ -935,7 +1146,13 @@ describe("revise plan: reader summary and clarifying questions", () => {
 			blocks,
 			instruction: "Delete the duplicate.",
 			clarifications: "Which paragraph repeats? → ¶2 “Beta.” (block p2)",
-			plan: { targets: ["p2"], intent: "Delete p2.", searchQueries: [], readFull: [] },
+			plan: {
+				targets: ["p2"],
+				intent: "Delete p2.",
+				searchQueries: [],
+				readFull: [],
+				readPali: [],
+			},
 		});
 		assert.match(message, /Reader's answers to the planner's questions/);
 		assert.match(message, /→ ¶2 “Beta\.” \(block p2\)/);

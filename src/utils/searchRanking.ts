@@ -177,7 +177,7 @@ export function stripAnnotations(text: string): string {
  * Returns lowercase slug without spaces.
  */
 export function normalizeSlugForMatching(input: string): string {
-	return input.toLowerCase().replace(/\s+/g, "");
+	return input.toLowerCase().replace(/[–—]/g, "-").replace(/\s+/g, "");
 }
 
 const DISCOURSE_ID_QUERY = /^[a-z]{2,5}\d[\d.\-]*$/;
@@ -185,7 +185,7 @@ const NUMERAL_DISCOURSE_ID_QUERY = /^\d[\d.\-]*$/;
 
 /** Compact form: "MN 10" → "mn10", "AN 6.12" → "an6.12", "36.3" → "36.3". Null if not ID-shaped. */
 export function compactDiscourseIdQuery(raw: string): string | null {
-	const compact = raw.trim().toLowerCase().replace(/\s+/g, "");
+	const compact = normalizeSlugForMatching(raw.trim());
 	if (
 		!DISCOURSE_ID_QUERY.test(compact) &&
 		!NUMERAL_DISCOURSE_ID_QUERY.test(compact)
@@ -285,12 +285,21 @@ export function isDiscourseRangeContainment(
 	const queryNumeric = isPrefixedDiscourseId(compact)
 		? discourseNumericId(compact)
 		: compact;
-	if (!queryNumeric || queryNumeric.includes("-")) return false;
+	if (!queryNumeric) return false;
 
 	if (isPrefixedDiscourseId(compact)) {
 		const slugCollection = discourseCollectionPrefix(slug);
 		const queryCollection = discourseCollectionPrefix(compact);
 		if (!slugCollection || slugCollection !== queryCollection) return false;
+	}
+
+	if (queryNumeric.includes("-")) {
+		const queryRange = parseDiscourseIdRange(queryNumeric);
+		if (!queryRange) return false;
+		return (
+			isNumericInDiscourseRange(queryRange.start, slugNumeric) &&
+			isNumericInDiscourseRange(queryRange.end, slugNumeric)
+		);
 	}
 
 	return isNumericInDiscourseRange(queryNumeric, slugNumeric);

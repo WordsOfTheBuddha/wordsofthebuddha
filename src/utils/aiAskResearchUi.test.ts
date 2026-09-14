@@ -72,6 +72,8 @@ import {
 	sameResearchRetryQuestion,
 	shouldReviseResearchFollow,
 	shouldUseResearchAsk,
+	followComposerClickShouldExpand,
+	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
@@ -166,6 +168,47 @@ describe("followComposerShouldExpand", () => {
 			}),
 			true,
 		);
+		assert.equal(
+			followComposerShouldExpand({
+				focused: false,
+				hasText: false,
+				hasReviseChip: false,
+				pinnedOpen: true,
+			}),
+			true,
+		);
+	});
+});
+
+describe("followComposerFocusShouldExpand", () => {
+	it("ignores focus on the pause/stop send button", () => {
+		const { document } = new JSDOM(
+			`<!doctype html><body>
+				<button class="ai-send" data-ai-stop="1"></button>
+				<textarea></textarea>
+			</body></html>`,
+		).window;
+		const stop = document.querySelector("button")!;
+		const textarea = document.querySelector("textarea")!;
+		assert.equal(followComposerFocusShouldExpand(stop), false);
+		assert.equal(followComposerFocusShouldExpand(textarea), true);
+	});
+});
+
+describe("followComposerClickShouldExpand", () => {
+	it("expands on shell clicks but not on pause or tool buttons", () => {
+		const { document } = new JSDOM(
+			`<!doctype html><body>
+				<div class="ai-box">
+					<textarea></textarea>
+					<button class="ai-send" data-ai-stop="1"></button>
+				</div>
+			</body></html>`,
+		).window;
+		const textarea = document.querySelector("textarea")!;
+		const stop = document.querySelector("button")!;
+		assert.equal(followComposerClickShouldExpand(textarea), true);
+		assert.equal(followComposerClickShouldExpand(stop), false);
 	});
 });
 
@@ -191,15 +234,15 @@ describe("isResearchReviseInProgress", () => {
 });
 
 describe("researchReportFollowChrome", () => {
-	it("does not return compact idle chrome while a 202 revise is in progress", () => {
+	it("keeps the report dock visible during a pending revise so the reader can stop", () => {
 		const accepted = researchReportFollowChrome({
 			research: true,
 			pending: true,
 			hasReport: true,
 		});
-		assert.equal(accepted.reportDock, false);
+		assert.equal(accepted.reportDock, true);
 		assert.equal(accepted.revisingReport, true);
-		assert.equal(accepted.followCompact, false);
+		assert.equal(accepted.followCompact, true);
 	});
 
 	it("uses the compact report dock only after the job is finished", () => {
@@ -327,6 +370,30 @@ describe("askMeterLabel", () => {
 				researchRemaining: 0,
 			}),
 			"12 Asks left today",
+		);
+	});
+
+	it("shows Ask remaining when the research chip is on but no job is running", () => {
+		assert.equal(
+			askMeterLabel({
+				signedIn: true,
+				researchOn: askComposerMeterIsResearch({ chipOn: true }),
+				askRemaining: 2,
+				researchRemaining: 1,
+			}),
+			"1 research report available today",
+		);
+		assert.equal(
+			askMeterLabel({
+				signedIn: true,
+				researchOn: askComposerMeterIsResearch({
+					chipOn: false,
+					researchPending: false,
+				}),
+				askRemaining: 2,
+				researchRemaining: 1,
+			}),
+			"2 Asks left today",
 		);
 	});
 
@@ -1343,6 +1410,76 @@ describe("revise clarify on the turn", () => {
 		const fresh = nextReviseClarifyDraft(edited, { ...incoming, id: "rc_2" });
 		assert.deepEqual(fresh?.answers, { which: { choiceId: "b" } });
 		assert.equal(nextReviseClarifyDraft(edited, undefined), undefined);
+	});
+
+	it("keeps process notes when a revise fails", () => {
+		const turn = {
+			question: "q",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: true,
+			phase: "answer" as const,
+			research: true,
+			report: "Alpha.",
+			processNotes: [
+				"Read MN 70 in full",
+				"Started v13 revision…",
+				"Considering the revision…",
+				"Revising the report…",
+			],
+		};
+		const failed = toResearchJobPublic({
+			id: "j1",
+			status: "complete",
+			question: "q",
+			error: "Could not revise the report. Try a shorter direction.",
+			processNotes: turn.processNotes,
+			result: {
+				question: "q",
+				lookingFor: "",
+				queries: [],
+				fallbackQueries: [],
+				offTopic: false,
+				results: [],
+				model: "",
+				reasoning: "",
+				report: "Alpha.",
+			},
+		});
+		applyResearchJobToTurn(turn, failed);
+		assert.deepEqual(turn.processNotes, failed.processNotes);
+	});
+
+	it("surfaces a revise failure that returns complete with an error field", () => {
+		const turn = {
+			question: "q",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: true,
+			phase: "answer" as const,
+			research: true,
+			report: "Alpha.",
+		};
+		const failed = toResearchJobPublic({
+			id: "j1",
+			status: "complete",
+			question: "q",
+			error: "Could not revise the report. Try a shorter direction.",
+			result: { question: "q", lookingFor: "", queries: [], fallbackQueries: [], offTopic: false, results: [], model: "", reasoning: "", report: "Alpha." },
+		});
+		applyResearchJobToTurn(turn, failed);
+		assert.equal(turn.pending, false);
+		assert.equal(turn.error, "Could not revise the report. Try a shorter direction.");
 	});
 
 	it("applyResearchJobToTurn carries the pause in and clears it on resume", () => {

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	dropOpenResearchRevisionCycle,
+	revisionCycleShippedNote,
 	isResearchJobReviseClarifying,
 	isResearchJobRetryable,
 	isResearchJobRevising,
@@ -202,13 +203,14 @@ describe("rememberResearchProcessNote", () => {
 		]);
 	});
 
-	it("keeps every revision cycle's hops and names the version it produced", () => {
+	it("keeps every revision cycle's hops and only shows shipped revise hops", () => {
 		let notes: string[] = ["Reading MN 70 in full…"];
 		const cycle = (n: number) => {
 			notes = rememberResearchProcessNote(notes, `Started v${n} revision…`);
 			notes = rememberResearchProcessNote(notes, "Considering the revision…");
 			notes = rememberResearchProcessNote(notes, "Reading SN 48.42 in full…");
 			notes = rememberResearchProcessNote(notes, "Revising the report…");
+			notes = rememberResearchProcessNote(notes, researchRevisedLabel(n));
 		};
 		cycle(2);
 		cycle(3);
@@ -228,6 +230,20 @@ describe("rememberResearchProcessNote", () => {
 			"Revised the report · v3",
 		]);
 		assert.equal(researchRevisedLabel(3), "Revised the report · v3");
+	});
+
+	it("does not treat an in-flight “Revising…” hop as a shipped version", () => {
+		const notes = [
+			"Started v13 revision…",
+			"Considering the revision…",
+			"Plan: fence ¶79 diagram",
+			"Revising the report…",
+		];
+		assert.deepEqual(researchProcessHopLabels(notes), [
+			"Started v13 revision",
+			"Considered the revision",
+			"Plan: fence ¶79 diagram",
+		]);
 	});
 
 	it("labels finished hops in the past tense", () => {
@@ -448,8 +464,15 @@ describe("revise-clarifying: a revision paused on the planner's questions", () =
 			"Plan: delete ¶12",
 		];
 		assert.deepEqual(dropOpenResearchRevisionCycle(open), open.slice(0, 4));
-		const closed = open.slice(0, 4);
+		const closed = [
+			"Read MN 10",
+			"Started v10 revision…",
+			"Considering the revision…",
+			"Revised the report · v10",
+		];
 		assert.deepEqual(dropOpenResearchRevisionCycle(closed), closed);
+		assert.equal(revisionCycleShippedNote("Revised the report · v10"), true);
+		assert.equal(revisionCycleShippedNote("Revising the report…"), false);
 		assert.deepEqual(dropOpenResearchRevisionCycle(["Read MN 10"]), ["Read MN 10"]);
 		assert.deepEqual(dropOpenResearchRevisionCycle(undefined), []);
 	});

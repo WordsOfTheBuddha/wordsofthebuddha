@@ -18,6 +18,8 @@ import {
 	loadDiscourseSvgMarkupForAi,
 	loadDiscourseSvgSummaryForAi,
 } from "./discourseSvgForAi";
+import type { DiscourseEvidenceSpan } from "./discourseEvidenceSpan";
+import { sliceDiscourseTextForSpan } from "./discourseEvidenceSpan";
 import { joinAskSummaryParagraphs } from "./linkifyAskSummary";
 import { questionTextForTermMatch } from "./aiSearchQuery";
 import {
@@ -73,6 +75,8 @@ export interface AskAnswerPassage {
 
 export interface AskAnswerHitEvidence {
 	slug: string;
+	/** When a subsection was opened, cite this label instead of the file slug. */
+	citationLabel?: string;
 	title: string;
 	referenceOnly: boolean;
 	passages: AskAnswerPassage[];
@@ -305,6 +309,25 @@ export function pickMatchingParagraphs(
 	return out;
 }
 
+function fullReadText(
+	body: string,
+	options: {
+		maxChars: number;
+		hints?: readonly string[];
+		maxParas?: number;
+		span?: DiscourseEvidenceSpan;
+	},
+): string {
+	const sliced = options.span ? sliceDiscourseTextForSpan(body, options.span) : body;
+	if (options.span && sliced) return clipText(sliced, options.maxChars);
+	return composeFullDiscourseText(
+		sliced,
+		options.maxChars,
+		options.hints,
+		options.maxParas,
+	);
+}
+
 export function selectFullDiscoursePassages(input: {
 	english?: string;
 	pali?: string;
@@ -315,20 +338,18 @@ export function selectFullDiscoursePassages(input: {
 	maxParas?: number;
 	/** When the thinking model asked for Pāli, send both languages. */
 	includePali?: boolean;
+	/** Subsection inside a range file — do not read from the file start. */
+	span?: DiscourseEvidenceSpan;
 }): AskAnswerPassage[] {
 	const maxChars = input.maxChars ?? RESEARCH_FULL_TEXT_CHARS;
-	const english = composeFullDiscourseText(
-		input.english || "",
+	const readOpts = {
 		maxChars,
-		input.hints,
-		input.maxParas,
-	);
-	const pali = composeFullDiscourseText(
-		input.pali || "",
-		maxChars,
-		input.hints,
-		input.maxParas,
-	);
+		hints: input.hints,
+		maxParas: input.maxParas,
+		span: input.span,
+	};
+	const english = fullReadText(input.english || "", readOpts);
+	const pali = fullReadText(input.pali || "", readOpts);
 	const out: AskAnswerPassage[] = [];
 	if (english) {
 		out.push({
@@ -414,6 +435,8 @@ export async function buildAskAnswerEvidence(
 		labelParagraphs?: boolean;
 		loadSvgMarkup?: (slug: string, maxChars: number) => string | undefined;
 		loadSvgSummary?: (slug: string, maxChars: number) => string | undefined;
+		/** Subsection to open inside a range file, keyed by file slug. */
+		spanBySlug?: Readonly<Record<string, DiscourseEvidenceSpan>>;
 	},
 ): Promise<{
 	expanded: AskAnswerHitEvidence[];
@@ -460,6 +483,7 @@ export async function buildAskAnswerEvidence(
 		const slug = hit.slug.toLowerCase();
 		const wantPali = paliSet.has(slug);
 		const wantFull = fullSet.has(slug) || wantPali;
+		const span = options?.spanBySlug?.[slug];
 		const passages = wantFull
 			? selectFullDiscoursePassages({
 					english: doc?.content,
@@ -470,6 +494,7 @@ export async function buildAskAnswerEvidence(
 					hints,
 					maxParas: excerptParas,
 					includePali: wantPali,
+					span,
 				})
 			: selectAskAnswerPassages({
 					english: doc?.content,
@@ -502,6 +527,7 @@ export async function buildAskAnswerEvidence(
 		}
 		expanded.push({
 			slug: hit.slug,
+			...(span?.label ? { citationLabel: span.label } : {}),
 			title: hit.title || "",
 			referenceOnly: hit.referenceOnly === true || doc?.referenceOnly === true,
 			passages,
@@ -528,7 +554,7 @@ export function formatAskAnswerEvidenceBlock(input: {
 	markCore?: boolean;
 }): string {
 	const blocks = input.expanded.map((hit) => {
-		const id = transformId(hit.slug) || hit.slug;
+		const id = hit.citationLabel || transformId(hit.slug) || hit.slug;
 		const ref = hit.referenceOnly
 			? " [reference]"
 			: input.markCore

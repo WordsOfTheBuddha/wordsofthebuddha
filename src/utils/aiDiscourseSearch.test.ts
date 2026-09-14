@@ -193,6 +193,11 @@ describe("prefixed discourse ID queries", () => {
 			"mn70",
 		]);
 		assert.deepEqual(prefixedAiDiscourseIdsInText("leave it 27 and an extra note"), []);
+		assert.deepEqual(prefixedAiDiscourseIdsInText("Include AN 1.485-494 and SnP 1.8."), [
+			"an1.485-494",
+			"snp1.8",
+		]);
+		assert.deepEqual(prefixedAiDiscourseIdsInText("AN 1.485–494"), ["an1.485-494"]);
 		assert.deepEqual(
 			collectDirectDiscourseIds({
 				question,

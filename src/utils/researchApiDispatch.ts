@@ -2,6 +2,25 @@ import type { APIContext, APIRoute } from "astro";
 import { rewriteResearchApiPath } from "./appApiPath";
 
 /**
+ * Prototype-backed context view with an own `params` override. Avoids
+ * spreading the context, which enumerates lazy getters such as `session`
+ * and triggers Astro's "no session storage" warning on every request.
+ */
+export function researchApiContextWithParams(
+	context: APIContext,
+	params: APIContext["params"],
+): APIContext {
+	const view = Object.create(context) as APIContext;
+	Object.defineProperty(view, "params", {
+		value: params,
+		enumerable: true,
+		writable: true,
+		configurable: true,
+	});
+	return view;
+}
+
+/**
  * Astro’s file router often misses `/api/ai/research…` (folder + sibling
  * collision, and new page files with HMR off). Invoke the handlers here so
  * public URLs never fall through to the discourse catch-all.
@@ -28,7 +47,7 @@ export async function dispatchResearchApi(
 		const params = jobMatch
 			? { ...context.params, id: jobMatch[1] }
 			: context.params;
-		return await handler({ ...context, params });
+		return await handler(researchApiContextWithParams(context, params));
 	} catch (error) {
 		console.error("[researchApiDispatch]", target, error);
 		return new Response(

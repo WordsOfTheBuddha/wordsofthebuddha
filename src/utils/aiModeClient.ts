@@ -15,6 +15,7 @@ import { sanitizeAskPersonHits } from "./aiAskPersons";
 import { ASK_FEEDBACK_MIN_CHARS, isValidAskUserReview } from "./aiAskQuota";
 import type { ResearchQuotaView } from "./aiResearchQuota";
 import {
+	dropOpenResearchRevisionCycle,
 	interleaveResearchRevisionStartedHops,
 	rememberResearchProcessNote,
 	researchProcessHopLabels,
@@ -88,6 +89,12 @@ import {
 	installDiscourseCitationPopovers,
 } from "./discourseCitationPopover";
 import {
+	clearResearchPreviewVersion,
+	readResearchPreviewVersion,
+	shareUrlWithVersion,
+	writeResearchPreviewVersion,
+} from "./aiAskResearchVersionPreview";
+import {
 	ASK_PLACEHOLDER,
 	ASK_COMPOSER_LABEL,
 	ASK_DELETE_CONFIRM,
@@ -160,6 +167,8 @@ import {
 	sameResearchRetryQuestion,
 	shouldReviseResearchFollow,
 	shouldUseResearchAsk,
+	followComposerClickShouldExpand,
+	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
@@ -344,6 +353,8 @@ export interface AiAskTurn {
 	 * view only, so changed paragraphs can be highlighted after a revise lands.
 	 */
 	reviseBase?: string;
+	/** Which stored version `reviseBase` came from — must match head `versionIndex[n].from`. */
+	reviseBaseVersionN?: number;
 	researchClarify?: {
 		id: string;
 		questions: ResearchClarifyQuestion[];
@@ -1115,6 +1126,23 @@ export function researchJobApiPath(
 	return `${path}?version=${n}`;
 }
 
+/** Fast first-poll cadence so a fresh job shows its early hops quickly. */
+export const RESEARCH_POLL_START_MS = 2000;
+/** Steady cadence once a job has been running a while; updates lag at most this. */
+export const RESEARCH_POLL_STEADY_MS = 6000;
+/** How long to stay on the fast cadence before backing off. */
+export const RESEARCH_POLL_RAMP_MS = 20_000;
+/** Cadence for pending history rows on the Ask home. */
+export const RESEARCH_WATCH_POLL_MS = 6000;
+/** Safety re-check while the tab is hidden and no visibility event arrives. */
+const RESEARCH_POLL_HIDDEN_RECHECK_MS = 60_000;
+
+export function researchPollDelayMs(elapsedMs: number): number {
+	return elapsedMs < RESEARCH_POLL_RAMP_MS
+		? RESEARCH_POLL_START_MS
+		: RESEARCH_POLL_STEADY_MS;
+}
+
 /** Ask/Research JSON reads give up after this long instead of hanging. */
 export const AI_JSON_TIMEOUT_MS = 45_000;
 /** Writes (start, clarify, revise) may run a model call before replying. */
@@ -1536,6 +1564,9 @@ function turnToSessionEntry(
 			? { versionIndex: turn.versionIndex }
 			: {}),
 		...(turn.reviseBase ? { reviseBase: turn.reviseBase } : {}),
+		...(typeof turn.reviseBaseVersionN === "number" && turn.reviseBaseVersionN > 0
+			? { reviseBaseVersionN: turn.reviseBaseVersionN }
+			: {}),
 	};
 }
 
@@ -1581,6 +1612,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 			? { versionIndex: clipResearchVersionIndex(entry.versionIndex) }
 			: {}),
 		...(entry.reviseBase ? { reviseBase: entry.reviseBase } : {}),
+		...(typeof entry.reviseBaseVersionN === "number" && entry.reviseBaseVersionN > 0
+			? { reviseBaseVersionN: entry.reviseBaseVersionN }
+			: {}),
 	};
 }
 
@@ -1770,7 +1804,12 @@ export function researchChangesChipLabel(count: number): string {
 export function researchChangesChipVisible(
 	turn: Pick<
 		AiAskTurn,
-		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+		| "report"
+		| "reviseBase"
+		| "reviseBaseVersionN"
+		| "research"
+		| "researchJobId"
+		| "versionIndex"
 	>,
 	input: { previewVersion?: boolean; isLatestTurn?: boolean } = {},
 ): boolean {
@@ -1782,7 +1821,12 @@ export function researchChangesChipVisible(
 export function researchChangesChipLabelForTurn(
 	turn: Pick<
 		AiAskTurn,
-		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+		| "report"
+		| "reviseBase"
+		| "reviseBaseVersionN"
+		| "research"
+		| "researchJobId"
+		| "versionIndex"
 	>,
 ): string {
 	const count = reportChangeCount(turn);
@@ -1842,19 +1886,48 @@ export function researchReviseBaseVersionN(
 	return current - 1;
 }
 
+export function expectedReviseBaseVersionN(
+	turn: Pick<AiAskTurn, "versionIndex">,
+): number | null {
+	return researchReviseBaseVersionN(
+		healedResearchVersionIndex({ versionIndex: turn.versionIndex }),
+	);
+}
+
 export function shouldHydrateReviseBase(
 	turn: Pick<
 		AiAskTurn,
-		"report" | "reviseBase" | "research" | "researchJobId" | "versionIndex"
+		| "report"
+		| "reviseBase"
+		| "reviseBaseVersionN"
+		| "research"
+		| "researchJobId"
+		| "versionIndex"
 	>,
 ): boolean {
-	if (turn.reviseBase || turn.research !== true || !turn.researchJobId) return false;
+	if (turn.research !== true || !turn.researchJobId) return false;
 	const report = (turn.report || "").trim();
 	if (!report) return false;
-	const index = healedResearchVersionIndex({
-		versionIndex: turn.versionIndex,
-	});
-	return researchReviseBaseVersionN(index) !== null;
+	const expectedN = expectedReviseBaseVersionN(turn);
+	if (expectedN === null) return false;
+	if (!turn.reviseBase) return true;
+	return turn.reviseBaseVersionN !== expectedN;
+}
+
+export function stampReviseDiffBase(
+	turn: Pick<AiAskTurn, "report" | "versionIndex" | "reviseBase" | "reviseBaseVersionN">,
+	base: string,
+	versionN?: number | null,
+): void {
+	const trimmed = base.trim();
+	const landed = (turn.report || "").trim();
+	if (!trimmed || !landed || trimmed === landed) return;
+	turn.reviseBase = trimmed;
+	const n =
+		typeof versionN === "number" && versionN > 0
+			? versionN
+			: expectedReviseBaseVersionN(turn);
+	if (n) turn.reviseBaseVersionN = n;
 }
 
 export const REPORT_CHANGE_BLOCK_SELECTOR =
@@ -2081,6 +2154,12 @@ export function researchVersionRowHtml(
 				options.changesChip,
 			)}</span>`
 		: "";
+	const body =
+		ask || note
+			? `<span class="ai-versions-body">${ask}${
+					note ? `<span class="ai-versions-note">${escapeHtml(note)}</span>` : ""
+				}</span>`
+			: "";
 	const classes = [
 		"ai-versions-row",
 		options.current ? "is-current" : "",
@@ -2091,9 +2170,9 @@ export function researchVersionRowHtml(
 	// A div, not a <button>: the “You asked” text must stay selectable.
 	return `<li><div role="button" tabindex="0" data-ai-version-n="${row.n}" class="${classes}" aria-pressed="${
 		options.preview ? "true" : "false"
-	}"><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${ask}${
-		note ? `<span class="ai-versions-note">${escapeHtml(note)}</span>` : ""
-	}${statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""}${changesChip}</div></li>`;
+	}"><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${body}${
+		statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""
+	}${changesChip}</div></li>`;
 }
 
 export const RESEARCH_VERSIONS_COPY_ASK = "Copy this instruction";
@@ -2269,14 +2348,18 @@ export function attachAiMode(options: {
 	let busy = false;
 	let researchChipOn = false;
 	let researchPollTimer = 0;
+	let researchPollHiddenCleanup: (() => void) | null = null;
 	let reviseHeading = "";
 	let reviseQuote = "";
 	let followAskMode = false;
+	let followComposerPinnedOpen = false;
 	let reviseFromVersion: number | null = null;
 	let previewVersion: { n: number; report: string } | null = null;
 	let previewVersionToken = 0;
 	/** Report body shown while a revise is pending (keeps v8 visible when revising from v8). */
 	let revisePendingSource: { n: number; report: string } | null = null;
+	/** Last revise instruction, restored to the compose bar if the job fails. */
+	let lastReviseInstruction = "";
 	/** Whether changed paragraphs are highlighted after a revise lands. */
 	let showReviseChanges = false;
 	let hydratingReviseBase = false;
@@ -2642,6 +2725,83 @@ export function attachAiMode(options: {
 		previewVersion = null;
 		reviseFromVersion = null;
 		revisePendingSource = null;
+		clearResearchPreviewVersion();
+	}
+
+	function persistPreviewVersionRef(turn: AiAskTurn, n: number): void {
+		const jobId = turn.researchJobId || "";
+		const slug = shareSlugForRevise() || turn.shareSlug || "";
+		if (turn.fromShare && slug) {
+			writeResearchPreviewVersion({ shareSlug: slug, n });
+		} else if (jobId) {
+			writeResearchPreviewVersion({ jobId, n });
+		}
+	}
+
+	function restoreStoredPreviewVersion(turn: AiAskTurn): void {
+		if (!turn.research || !(turn.report || "").trim()) return;
+		const index = healedResearchVersionIndex({
+			versionIndex: turn.versionIndex,
+			processNotes: turn.processNotes,
+			createdAt: turn.researchStartedAt,
+		});
+		const currentN = currentResearchVersionN(index);
+		const jobId = turn.researchJobId || "";
+		const slug = shareSlugForRevise() || turn.shareSlug || "";
+		let n: number | null = null;
+		if (shareMode) {
+			try {
+				const parsed = Math.floor(
+					Number(new URL(window.location.href).searchParams.get("version")),
+				);
+				if (Number.isFinite(parsed) && parsed >= 1) n = parsed;
+			} catch {
+				/* ignore */
+			}
+		}
+		if (!n) {
+			const stored = readResearchPreviewVersion();
+			if (!stored) return;
+			if (stored.jobId && jobId && stored.jobId === jobId) n = stored.n;
+			else if (stored.shareSlug && slug && stored.shareSlug === slug) n = stored.n;
+			else return;
+		}
+		if (!n || n >= currentN) {
+			if (n && n >= currentN) clearResearchPreviewVersion();
+			return;
+		}
+		void previewResearchVersion(turn, n);
+	}
+
+	/** After a failed or cancelled revise, show the version the reader started from. */
+	function restoreReviseFailureView(): void {
+		if (revisePendingSource) {
+			previewVersion = {
+				n: revisePendingSource.n,
+				report: revisePendingSource.report,
+			};
+			reviseFromVersion = revisePendingSource.n;
+			const last = lastFinishedReportTurn();
+			if (last) persistPreviewVersionRef(last, revisePendingSource.n);
+		}
+		revisePendingSource = null;
+	}
+
+	function settleReviseVersionState(turn: AiAskTurn): void {
+		if (turn.error) restoreReviseFailureView();
+		else clearReviseVersionState();
+	}
+
+	function restoreReviseInstructionToComposer(): void {
+		const text = lastReviseInstruction.trim();
+		if (!text || !followInput) return;
+		followInput.value = text;
+		fitTextarea(followInput);
+		followInput.focus();
+	}
+
+	function clearReviseInstructionDraft(): void {
+		lastReviseInstruction = "";
 	}
 
 	function displayedReportMarkdown(turn: AiAskTurn): string {
@@ -2678,12 +2838,13 @@ export function attachAiMode(options: {
 		busy = true;
 		root.classList.add("is-busy");
 		if (action === "revise") {
+			lastReviseInstruction = q;
 			captureRevisePendingSource(last);
 			showReviseChanges = false;
 			last.pending = true;
 			last.phase = "answer";
 			last.processNotes = rememberResearchProcessNote(
-				last.processNotes,
+				dropOpenResearchRevisionCycle(last.processNotes),
 				researchRevisionStartedNote(nextResearchRevisionN(last.versionIndex || [])),
 			);
 			last.progressNote = RESEARCH_REVISE_CONSIDERING_NOTE;
@@ -2692,7 +2853,7 @@ export function attachAiMode(options: {
 				followInput.blur();
 				fitTextarea(followInput);
 			}
-			clearReviseScope();
+			syncFollowComposerMode();
 			syncLayout();
 			revealReviseProgress();
 		} else {
@@ -2721,13 +2882,16 @@ export function attachAiMode(options: {
 			});
 			if (data.quota) applyQuota(data.quota);
 			if (data.job) {
-				const base = (last.report || "").trim();
+				const base = (
+					revisePendingSource?.report ||
+					last.report ||
+					""
+				).trim();
 				applyResearchJobToTurn(last, data.job);
-				const landed = (last.report || "").trim();
-				if (!data.job.pending && base && landed && landed !== base) {
-					last.reviseBase = base;
+				if (!data.job.pending && !last.error) {
+					stampReviseDiffBase(last, base, revisePendingSource?.n);
 				}
-				if (!data.job.pending) clearReviseVersionState();
+				if (!data.job.pending) settleReviseVersionState(last);
 				closeVersionsDrawer();
 				persistSessionFromTurn(last);
 				if (data.forked && data.job.id && shareMode) {
@@ -2744,19 +2908,32 @@ export function attachAiMode(options: {
 						{ focus: true },
 					);
 					await pollResearchTurn(last);
-					if (last.error) setStatus(last.error);
-					else if (!last.pending) setStatus("");
+					if (last.error) {
+						setStatus(last.error);
+						restoreReviseFailureView();
+						restoreReviseInstructionToComposer();
+					} else if (!last.pending) {
+						clearReviseInstructionDraft();
+						setStatus("");
+					}
 					return;
 				}
-				if (data.job.error) setStatus(data.job.error);
-				else setStatus("");
+				if (data.job.error) {
+					setStatus(data.job.error);
+					last.error = data.job.error;
+					restoreReviseFailureView();
+					restoreReviseInstructionToComposer();
+				} else {
+					clearReviseInstructionDraft();
+					setStatus("");
+				}
 				syncLayout();
 				return;
 			}
 			if (response.status === 401) {
 				last.pending = false;
 				last.phase = "done";
-				clearReviseVersionState();
+				restoreReviseFailureView();
 				if (followInput) followInput.value = q;
 				rememberPendingRevise();
 				openQuotaDialog("revise", q);
@@ -2765,7 +2942,7 @@ export function attachAiMode(options: {
 			if (response.status === 429) {
 				last.pending = false;
 				last.phase = "done";
-				clearReviseVersionState();
+				restoreReviseFailureView();
 				openQuotaDialog(
 					data.quota?.needsEmailVerification
 						? "verify"
@@ -2787,7 +2964,7 @@ export function attachAiMode(options: {
 			}
 			last.pending = false;
 			last.phase = "done";
-			clearReviseVersionState();
+			restoreReviseFailureView();
 			setStatus(
 				researchApiFailureMessage({
 					status: response.status,
@@ -2796,6 +2973,7 @@ export function attachAiMode(options: {
 					fallback: "Could not revise the report.",
 				}),
 			);
+			restoreReviseInstructionToComposer();
 		} catch {
 			if (action === "revise" && last.researchJobId) {
 				try {
@@ -2813,7 +2991,7 @@ export function attachAiMode(options: {
 			}
 			last.pending = false;
 			last.phase = "done";
-			clearReviseVersionState();
+			restoreReviseFailureView();
 			setStatus(
 				researchApiFailureMessage({
 					status: 0,
@@ -2821,6 +2999,7 @@ export function attachAiMode(options: {
 					fallback: "Could not revise the report.",
 				}),
 			);
+			restoreReviseInstructionToComposer();
 		} finally {
 			busy = false;
 			root.classList.remove("is-busy");
@@ -2828,11 +3007,7 @@ export function attachAiMode(options: {
 		}
 	}
 
-	/**
-	 * The composer collapses the moment a revise is submitted; bring the reader
-	 * to the progress strip and pulse it so the “Started vN revision” row and the
-	 * live hop are what they see next.
-	 */
+	/** Scroll to the live revise progress strip and pulse it after submit. */
 	function revealReviseProgress(): void {
 		const process = thread.querySelector<HTMLElement>(
 			".ai-turn:last-child .ai-process",
@@ -2969,6 +3144,7 @@ export function attachAiMode(options: {
 		if (n === currentN || n < 1) {
 			previewVersion = null;
 			reviseFromVersion = null;
+			clearResearchPreviewVersion();
 			syncLayout();
 			openVersionsDrawer(turn);
 			return;
@@ -2992,6 +3168,7 @@ export function attachAiMode(options: {
 			if (!response.ok || !data.success || !data.report) return;
 			previewVersion = { n, report: data.report };
 			reviseFromVersion = n;
+			persistPreviewVersionRef(turn, n);
 			syncLayout();
 			openVersionsDrawer(turn);
 		} catch {
@@ -3194,6 +3371,7 @@ export function attachAiMode(options: {
 				return;
 			}
 			turn.reviseBase = base;
+			turn.reviseBaseVersionN = prevN;
 			persistSessionFromTurn(turn);
 			syncLayout();
 			if (!versionsDrawer?.hidden) openVersionsDrawer(turn);
@@ -3274,10 +3452,69 @@ export function attachAiMode(options: {
 
 	function stopResearchPoll(): void {
 		researchPollToken += 1;
+		researchPollHiddenCleanup?.();
+		researchPollHiddenCleanup = null;
 		if (researchPollTimer) {
 			window.clearTimeout(researchPollTimer);
 			researchPollTimer = 0;
 		}
+	}
+
+	/**
+	 * Resolves when it is worth polling again: after the delay, or as soon as
+	 * a hidden tab becomes visible. While hidden the request is skipped.
+	 */
+	function waitForResearchPollWindow(
+		delayMs: number,
+		token: number,
+	): Promise<boolean> {
+		if (typeof document !== "undefined" && document.hidden) {
+			return new Promise<boolean>((resolve) => {
+				let settled = false;
+				const finish = (value: boolean) => {
+					if (settled) return;
+					settled = true;
+					window.clearTimeout(recheckTimer);
+					document.removeEventListener("visibilitychange", onVisibility);
+					researchPollHiddenCleanup = null;
+					researchPollTimer = 0;
+					resolve(value);
+				};
+				const onVisibility = () => {
+					if (!document.hidden) finish(token === researchPollToken);
+				};
+				const recheckTimer = window.setTimeout(() => {
+					finish(token === researchPollToken);
+				}, RESEARCH_POLL_HIDDEN_RECHECK_MS);
+				researchPollTimer = recheckTimer;
+				researchPollHiddenCleanup = () => finish(false);
+				document.addEventListener("visibilitychange", onVisibility);
+			});
+		}
+		return new Promise<boolean>((resolve) => {
+			researchPollTimer = window.setTimeout(() => {
+				researchPollTimer = 0;
+				resolve(token === researchPollToken);
+			}, delayMs);
+		});
+	}
+
+	/** Background-tab pause for the history watcher. */
+	async function waitForResearchWatchWindow(delayMs: number): Promise<void> {
+		if (!(typeof document !== "undefined" && document.hidden)) {
+			await new Promise<void>((resolve) => {
+				window.setTimeout(resolve, delayMs);
+			});
+			return;
+		}
+		await new Promise<void>((resolve) => {
+			const onVisibility = () => {
+				if (document.hidden) return;
+				document.removeEventListener("visibilitychange", onVisibility);
+				resolve();
+			};
+			document.addEventListener("visibilitychange", onVisibility);
+		});
 	}
 
 	function askSurfaceHistoryState(fromMenu: boolean): object {
@@ -3825,6 +4062,12 @@ export function attachAiMode(options: {
 			return turn;
 		});
 		syncLayout();
+		const lastResearch = [...turns]
+			.reverse()
+			.find((turn) => turn.research && (turn.report || "").trim());
+		if (lastResearch && !lastResearch.pending) {
+			restoreStoredPreviewVersion(lastResearch);
+		}
 		const pending = turns.find(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
 		);
@@ -4050,7 +4293,7 @@ export function attachAiMode(options: {
 		watchingResearchJobs.add(jobId);
 		try {
 			while (turns.length === 0) {
-				await new Promise((resolve) => window.setTimeout(resolve, 2000));
+				await waitForResearchWatchWindow(RESEARCH_WATCH_POLL_MS);
 				if (turns.length > 0) return;
 				const data = await fetchResearchJob(jobId);
 				if (!data.ok || !data.job) return;
@@ -5401,8 +5644,19 @@ export function attachAiMode(options: {
 		const idle = readAskButtonIdle(button);
 		if (turn.sharePath && turn.fromShare && thread.length <= 1) {
 			try {
+				const versionIndex = healedResearchVersionIndex({
+					versionIndex: turn.versionIndex,
+					processNotes: turn.processNotes,
+					createdAt: turn.researchStartedAt,
+				});
+				const currentN = currentResearchVersionN(versionIndex);
+				const previewN = previewVersion?.n;
+				const sharePath = shareUrlWithVersion(
+					turn.sharePath,
+					previewN && previewN < currentN ? previewN : null,
+				);
 				await navigator.clipboard.writeText(
-					new URL(turn.sharePath, window.location.origin).toString(),
+					new URL(sharePath, window.location.origin).toString(),
 				);
 				flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
 			} catch {
@@ -5466,7 +5720,18 @@ export function attachAiMode(options: {
 			}
 			turn.shareSlug = data.slug || turn.shareSlug;
 			turn.sharePath = data.path;
-			const url = new URL(data.path, window.location.origin).toString();
+			const versionIndex = healedResearchVersionIndex({
+				versionIndex: turn.versionIndex,
+				processNotes: turn.processNotes,
+				createdAt: turn.researchStartedAt,
+			});
+			const currentN = currentResearchVersionN(versionIndex);
+			const previewN = previewVersion?.n;
+			const sharePath = shareUrlWithVersion(
+				data.path,
+				previewN && previewN < currentN ? previewN : null,
+			);
+			const url = new URL(sharePath, window.location.origin).toString();
 			await navigator.clipboard.writeText(url);
 			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
 			persistSessionFromTurn(turn);
@@ -5697,8 +5962,11 @@ export function attachAiMode(options: {
 					</div>`
 					: "";
 			// Keep the process strip + any streamed thinking so a timeout or
-			// refusal stall is still inspectable after the error lands.
-			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${retry}${shareActionsHtml(turn, turnIndex)}`;
+			// refusal stall is still inspectable after the error lands. When a
+			// revise fails, keep the current report visible under the error.
+			const reportAfterError =
+				reportText && turn.research ? summary : "";
+			body = `${process}<p class="ai-error">${escapeHtml(turn.error)}</p>${reportAfterError}${retry}${shareActionsHtml(turn, turnIndex)}`;
 		} else if (turn.pending && !hasHits) {
 			const emailNote =
 				turn.research && turn.researchJobId
@@ -6174,6 +6442,7 @@ export function attachAiMode(options: {
 		const researchBusy = turns.some(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
 		);
+		const reviseBusy = turns.some((turn) => isReviseInProgress(turn));
 		const chrome = researchReportFollowChrome({
 			research: Boolean(last?.research),
 			pending: Boolean(last?.pending),
@@ -6182,8 +6451,9 @@ export function attachAiMode(options: {
 			declinedOpen,
 		});
 		root.classList.toggle("is-research-busy", researchBusy);
+		root.classList.toggle("is-revise-busy", reviseBusy);
 		root.classList.toggle("is-report-dock", chrome.reportDock);
-		syncStopButtons(researchBusy);
+		syncStopButtons(researchBusy, reviseBusy);
 		const threadPending = turns.some((turn) => turn.pending);
 		if (followInput) followInput.disabled = threadPending;
 		followForm
@@ -6208,8 +6478,7 @@ export function attachAiMode(options: {
 				(!shareMode && (!hasThread || clarifying || declinedOpen)) ||
 				(shareMode && !finishedReport) ||
 				clarifying ||
-				declinedOpen ||
-				chrome.revisingReport;
+				declinedOpen;
 		}
 		syncClarifyBar();
 		hideDiscourseCitationPopover();
@@ -6396,11 +6665,7 @@ export function attachAiMode(options: {
 			scrollAskProcessToLatest(
 				thread.querySelector(".ai-turn:last-child .ai-process"),
 			);
-			if (
-				!hydratingReviseBase &&
-				reportChangeCount(lastTurn) === 0 &&
-				shouldHydrateReviseBase(lastTurn)
-			) {
+			if (!hydratingReviseBase && shouldHydrateReviseBase(lastTurn)) {
 				void hydrateReviseBaseIfNeeded(lastTurn);
 			}
 		}
@@ -6437,8 +6702,13 @@ export function attachAiMode(options: {
 				followForm &&
 				!followForm.hidden,
 		);
+		const active = document.activeElement;
 		const focused = Boolean(
-			dock && followForm && followForm.contains(document.activeElement),
+			dock &&
+				followForm &&
+				active instanceof Element &&
+				followForm.contains(active) &&
+				followComposerFocusShouldExpand(active),
 		);
 		const hasText = Boolean(
 			(followInput?.value || "").replace(/\s+/g, " ").trim(),
@@ -6449,8 +6719,16 @@ export function attachAiMode(options: {
 		);
 		const expanded = Boolean(
 			dock &&
-				followComposerShouldExpand({ focused, hasText, hasReviseChip }),
+				followComposerShouldExpand({
+					focused,
+					hasText,
+					hasReviseChip,
+					pinnedOpen: followComposerPinnedOpen,
+				}),
 		);
+		if (dock && !expanded && !focused && !hasText && !hasReviseChip) {
+			followComposerPinnedOpen = false;
+		}
 		root.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-compact", dock && !expanded);
@@ -6676,13 +6954,17 @@ export function attachAiMode(options: {
 		});
 	}
 
-	function syncStopButtons(researchBusy: boolean): void {
+	function syncStopButtons(
+		researchBusy: boolean,
+		reviseBusy = false,
+	): void {
 		const sendHint = askSendShortcutLabel();
 		root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
 			if (researchBusy) {
 				button.setAttribute("data-ai-stop", "1");
-				button.setAttribute("aria-label", "Pause research");
-				button.title = "Pause research";
+				const stopLabel = reviseBusy ? "Stop revision" : "Pause research";
+				button.setAttribute("aria-label", stopLabel);
+				button.title = stopLabel;
 			} else {
 				button.removeAttribute("data-ai-stop");
 				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : researchPaneOn() ? "Research" : "Ask");
@@ -6736,19 +7018,19 @@ export function attachAiMode(options: {
 	async function pollResearchTurn(turn: AiAskTurn): Promise<void> {
 		const token = researchPollToken;
 		if (!turn.researchJobId) return;
+		const pollStartedAt = Date.now();
 		let stallKey = "";
 		let stallSince = Date.now();
 		// Remember the body the reader was revising from — not necessarily head.
 		const reviseBase =
 			revisePendingSource?.report ||
 			(turn.research ? (turn.report || "").trim() : "");
+		const reviseBaseN = revisePendingSource?.n ?? null;
 		while (turn.pending && turn.researchJobId && token === researchPollToken) {
-			const still = await new Promise<boolean>((resolve) => {
-				researchPollTimer = window.setTimeout(() => {
-					researchPollTimer = 0;
-					resolve(token === researchPollToken);
-				}, 1500);
-			});
+			const still = await waitForResearchPollWindow(
+				researchPollDelayMs(Date.now() - pollStartedAt),
+				token,
+			);
 			if (!still || token !== researchPollToken) return;
 			try {
 				const data = await fetchResearchJob(turn.researchJobId);
@@ -6812,11 +7094,10 @@ export function attachAiMode(options: {
 					);
 					continue;
 				}
-				clearReviseVersionState();
+				settleReviseVersionState(turn);
 				closeVersionsDrawer();
-				const landed = (turn.report || "").trim();
-				if (reviseBase && landed && landed !== reviseBase && !turn.error) {
-					turn.reviseBase = reviseBase;
+				if (!turn.error) {
+					stampReviseDiffBase(turn, reviseBase, reviseBaseN);
 				}
 				syncLayout();
 				scrollAskProcessToLatest(
@@ -6833,13 +7114,14 @@ export function attachAiMode(options: {
 		}
 		if (token !== researchPollToken) return;
 		if (!turn.pending) {
-			clearReviseVersionState();
 			void refreshQuota();
 		}
 		if (!turn.pending && turn.error && turn.research) {
-			setResearchChipOn(true);
+			// Revise retries use the follow-up composer; keep the Ask meter.
+			restoreReviseInstructionToComposer();
 		}
 		if (!turn.pending && !turn.error) {
+			clearReviseInstructionDraft();
 			setResearchChipOn(false);
 			persistSessionFromTurn(turn);
 			const hidden = typeof document !== "undefined" && document.hidden;
@@ -6896,7 +7178,7 @@ export function attachAiMode(options: {
 					if (turn.error) setStatus(turn.error);
 					else if (!turn.pending) setStatus("");
 				} else {
-					clearReviseVersionState();
+					settleReviseVersionState(turn);
 					if (data.job.error) setStatus(data.job.error);
 				}
 				return;
@@ -6913,7 +7195,7 @@ export function attachAiMode(options: {
 				turn.pending = false;
 				turn.phase = "done";
 			}
-			if (!turn.pending) clearReviseVersionState();
+			if (!turn.pending) settleReviseVersionState(turn);
 			setStatus(
 				researchApiFailureMessage({
 					status: response.status,
@@ -6997,11 +7279,16 @@ export function attachAiMode(options: {
 			turn.phase = "done";
 			turn.error = "Research stopped.";
 		}
-		clearReviseVersionState();
+		if (isReviseInProgress(turn) || revisePendingSource) {
+			restoreReviseFailureView();
+			restoreReviseInstructionToComposer();
+		} else {
+			clearReviseVersionState();
+		}
 		void refreshQuota();
 		if (turn.research && !turn.report) setResearchChipOn(true);
 		busy = false;
-		root.classList.remove("is-busy", "is-research-busy");
+		root.classList.remove("is-busy", "is-research-busy", "is-revise-busy");
 		syncLayout();
 	}
 
@@ -7153,6 +7440,7 @@ export function attachAiMode(options: {
 			setRestoringResearch(false);
 			if (!turn.pending) {
 				if (!turn.error) persistSessionFromTurn(turn);
+				restoreStoredPreviewVersion(turn);
 				return true;
 			}
 			busy = true;
@@ -7806,6 +8094,10 @@ export function attachAiMode(options: {
 		if (historyEl) historyEl.hidden = true;
 		root.classList.add("has-thread", "ai-mode-share");
 		syncLayout();
+		const shared = turns[turns.length - 1];
+		if (shared?.research && (shared.report || "").trim()) {
+			restoreStoredPreviewVersion(shared);
+		}
 	}
 
 	form.addEventListener("submit", (event) => {
@@ -7848,8 +8140,40 @@ export function attachAiMode(options: {
 	followForm?.addEventListener("focusout", (event) => {
 		const next = event.relatedTarget;
 		if (next instanceof Node && followForm.contains(next)) return;
+		followComposerPinnedOpen = false;
 		syncFollowComposerMode();
 	});
+	followForm
+		?.querySelector(".ai-box")
+		?.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			if (!root.classList.contains("is-report-dock")) return;
+			if (root.classList.contains("is-follow-expanded")) return;
+			if (!followComposerClickShouldExpand(target)) return;
+			followComposerPinnedOpen = true;
+			if (followInput && !followInput.disabled) followInput.focus();
+			syncFollowComposerMode();
+		});
+	root.addEventListener(
+		"click",
+		(event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const stop = target.closest<HTMLButtonElement>(".ai-send[data-ai-stop]");
+			if (!stop) return;
+			event.preventDefault();
+			event.stopPropagation();
+			if (
+				turns.some(
+					(turn) => turn.pending && turn.research && turn.researchJobId,
+				)
+			) {
+				void cancelActiveResearch();
+			}
+		},
+		true,
+	);
 
 	const sendHint = askSendShortcutLabel();
 	root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
@@ -8140,6 +8464,7 @@ export function attachAiMode(options: {
 			!followForm.hidden
 		) {
 			event.preventDefault();
+			followComposerPinnedOpen = false;
 			followInput?.blur();
 			syncFollowComposerMode();
 		}

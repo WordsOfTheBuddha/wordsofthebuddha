@@ -17,8 +17,10 @@ import {
 	reportBlockDiff,
 	stampReportBlockKeys,
 	reportChangeCount,
+	expectedReviseBaseVersionN,
 	researchReviseBaseVersionN,
 	shouldHydrateReviseBase,
+	stampReviseDiffBase,
 	reportChangedKeys,
 	researchChangesChipLabel,
 	researchChangesChipLabelForTurn,
@@ -32,7 +34,11 @@ import {
 	renderAskThinkingHtml,
 	reviseFloatOffset,
 	researchJobApiPath,
+	researchPollDelayMs,
 	RESEARCH_API_PATH,
+	RESEARCH_POLL_RAMP_MS,
+	RESEARCH_POLL_START_MS,
+	RESEARCH_POLL_STEADY_MS,
 	RESEARCH_REVISE_API_PATH,
 	aiJsonRequestInit,
 	isAiJsonResponse,
@@ -972,6 +978,7 @@ describe("researchVersionRowHtml", () => {
 		assert.match(html, /You asked/);
 		assert.match(html, /Add quotes on faculties/);
 		assert.match(html, /in Faculties/);
+		assert.match(html, /ai-versions-body/);
 		assert.match(html, /Rewrote the faculties paragraph/);
 		assert.match(html, /6,312 words \(\+312\)/);
 		assert.match(html, /52 cited \(\+2\)/);
@@ -1136,11 +1143,61 @@ describe("report change marks", () => {
 			shouldHydrateReviseBase({
 				report: "new",
 				reviseBase: "old",
+				reviseBaseVersionN: 1,
 				research: true,
 				researchJobId: "job-1",
 				versionIndex: [{ n: 1, at: 1, instruction: "", changelog: "", from: null }, { n: 2, at: 2, instruction: "", changelog: "", from: 1 }],
 			}),
 			false,
+		);
+		assert.equal(
+			shouldHydrateReviseBase({
+				report: "v16 head body with enough words to count",
+				reviseBase: "v14 stale baseline from an earlier revision",
+				research: true,
+				researchJobId: "job-1",
+				versionIndex: [
+					{ n: 14, at: 14, instruction: "", changelog: "", from: 13 },
+					{ n: 15, at: 15, instruction: "", changelog: "", from: 14 },
+					{ n: 16, at: 16, instruction: "", changelog: "", from: 15 },
+				],
+			}),
+			true,
+		);
+	});
+
+	it("stamps reviseBase against the version the head was revised from", () => {
+		const turn = {
+			report: "## Mindfulness In The Divine Abidings\n\nSame paragraph throughout.",
+			versionIndex: [
+				{ n: 15, at: 15, instruction: "", changelog: "", from: 14 },
+				{ n: 16, at: 16, instruction: "", changelog: "", from: 15 },
+			],
+		};
+		stampReviseDiffBase(
+			turn,
+			"## Mindfulness in the divine abidings\n\nSame paragraph throughout.",
+			15,
+		);
+		assert.equal(turn.reviseBaseVersionN, 15);
+		assert.equal(
+			reportChangeCount({
+				report: turn.report,
+				reviseBase: turn.reviseBase,
+			}),
+			0,
+		);
+	});
+
+	it("resolves the expected diff baseline from versionIndex.from", () => {
+		assert.equal(
+			expectedReviseBaseVersionN({
+				versionIndex: [
+					{ n: 15, at: 15, instruction: "", changelog: "", from: 14 },
+					{ n: 16, at: 16, instruction: "", changelog: "", from: 15 },
+				],
+			}),
+			15,
 		);
 	});
 
@@ -1288,6 +1345,19 @@ describe("researchJobApiPath", () => {
 		);
 		assert.equal(researchJobApiPath(id, 2), `${RESEARCH_API_PATH}/${id}?version=2`);
 		assert.equal(RESEARCH_REVISE_API_PATH, "/api/ai/research/revise");
+	});
+});
+
+describe("researchPollDelayMs", () => {
+	it("starts fast and backs off to the steady cadence", () => {
+		assert.equal(researchPollDelayMs(0), RESEARCH_POLL_START_MS);
+		assert.equal(
+			researchPollDelayMs(RESEARCH_POLL_RAMP_MS - 1),
+			RESEARCH_POLL_START_MS,
+		);
+		assert.equal(researchPollDelayMs(RESEARCH_POLL_RAMP_MS), RESEARCH_POLL_STEADY_MS);
+		assert.equal(researchPollDelayMs(5 * 60_000), RESEARCH_POLL_STEADY_MS);
+		assert.ok(RESEARCH_POLL_STEADY_MS >= RESEARCH_POLL_START_MS);
 	});
 });
 

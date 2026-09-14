@@ -84,7 +84,7 @@ export function isPrefixedAiDiscourseIdOnlyQuery(query: string): boolean {
 const NAMED_DISCOURSE_PREFIX =
 	"mn|dn|sn|an|dhp|ud|iti|snp|kp|thag|thig|vv|pv|ja|bv|cp|mil";
 const NAMED_DISCOURSE_ID_IN_TEXT = new RegExp(
-	`\\b(${NAMED_DISCOURSE_PREFIX})\\s*(\\d+(?:\\.\\d+)*)\\b`,
+	`\\b(${NAMED_DISCOURSE_PREFIX})\\s*(\\d+(?:\\.\\d+)*(?:\\s*[–-]\\s*\\d+)?)\\b`,
 	"gi",
 );
 const MAX_NAMED_DISCOURSE_IDS = 12;
@@ -98,7 +98,7 @@ export function uniquePrefixedDiscourseIdsInText(text: string): string[] {
 	const seen = new Set<string>();
 	const source = (text || "").replace(/\u2019/g, "'");
 	for (const match of source.matchAll(NAMED_DISCOURSE_ID_IN_TEXT)) {
-		const compact = `${(match[1] || "").toLowerCase()}${match[2] || ""}`;
+		const compact = `${(match[1] || "").toLowerCase()}${(match[2] || "").replace(/[–—]/g, "-").replace(/\s+/g, "")}`;
 		if (!isPrefixedAiDiscourseIdQuery(compact)) continue;
 		const key = compact.toLowerCase();
 		if (seen.has(key)) continue;

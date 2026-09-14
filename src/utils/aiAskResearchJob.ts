@@ -137,7 +137,8 @@ export function clipResearchJobId(value: string): string {
 
 /** Enough for the original run plus several revision cycles (~4 hops each). */
 export const RESEARCH_PROCESS_NOTES_MAX = 40;
-export const RESEARCH_PROCESS_NOTE_CHARS = 160;
+/** Revise plan/read hops need room for several discourse ids and a short summary. */
+export const RESEARCH_PROCESS_NOTE_CHARS = 280;
 
 function clipProcessNote(value: string): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_PROCESS_NOTE_CHARS);
@@ -201,6 +202,7 @@ export function researchProcessNoteFamily(note: string): string {
 		return "revise-search";
 	}
 	if (/^(?:revising|revised) the report/i.test(n)) return "revise";
+	if (/^revision failed:/i.test(n)) return "revise-failed";
 	if (isResearchRevisePlanNote(n)) return "revise-plan";
 	if (/^waiting for your answer/i.test(n)) return "skip";
 	if (/^starting/i.test(n)) return "start";
@@ -214,10 +216,18 @@ export function researchProcessNoteFamily(note: string): string {
 	return `note:${n.toLowerCase()}`;
 }
 
+/** True when a stored hop marks a revision that actually shipped a version. */
+export function revisionCycleShippedNote(note: string): boolean {
+	const n = clipProcessNote(note);
+	// “Revising the report…” is written before the writer returns; it must not
+	// count as shipped until it is replaced with an explicit “Revised … · vN”.
+	return /^revised the report\b/i.test(n) && !/^revising the report/i.test(n);
+}
+
 /**
  * Drop the hops of a revision cycle that never produced a version (the reader
- * cancelled at the clarify step, or the questions expired), so the strip does
- * not show an open “Started vN revision” with nothing after it.
+ * cancelled at the clarify step, the questions expired, or the writer failed),
+ * so the strip does not show an open “Started vN revision” with nothing after it.
  */
 export function dropOpenResearchRevisionCycle(
 	notes: readonly string[] | undefined,
@@ -233,7 +243,7 @@ export function dropOpenResearchRevisionCycle(
 	if (startAt < 0) return current;
 	const closed = current
 		.slice(startAt + 1)
-		.some((note) => researchProcessNoteFamily(note) === "revise");
+		.some((note) => revisionCycleShippedNote(note));
 	return closed ? current : current.slice(0, startAt);
 }
 
@@ -383,10 +393,10 @@ export function researchProcessHopLabels(
 		}
 		if (family === "revise-start") cycle = revisionStartedN(note) || cycle + 1;
 		if (hideFamily && family === hideFamily) continue;
-		let label = formatResearchProcessHopLabel(note);
-		if (family === "revise" && cycle > 0 && /^revised the report$/i.test(label)) {
-			label = researchRevisedLabel(cycle);
-		}
+		// “Revising the report…” is written before the writer returns. Only an
+		// explicit “Revised the report · vN” hop means a version actually shipped.
+		if (family === "revise" && !revisionCycleShippedNote(note)) continue;
+		const label = formatResearchProcessHopLabel(note);
 		const key = processNoteDedupeKey(label, cycle);
 		if (!label || seen.has(key)) continue;
 		seen.add(key);

@@ -4,10 +4,7 @@ import {
 	attachResearchToHistoryThread,
 	type AiAskSessionEntry,
 } from "./aiAskSession";
-import type {
-	ResearchAskPhase,
-	ResearchJobPublic,
-} from "./aiAskResearchJob";
+import type { ResearchAskPhase, ResearchJobPublic } from "./aiAskResearchJob";
 import {
 	healedResearchVersionIndex,
 	type ResearchReviseClarify,
@@ -255,14 +252,33 @@ export function followComposerShouldExpand(input: {
 	focused: boolean;
 	hasText: boolean;
 	hasReviseChip: boolean;
+	pinnedOpen?: boolean;
 }): boolean {
-	return input.focused || input.hasText || input.hasReviseChip;
+	return (
+		input.pinnedOpen ||
+		input.focused ||
+		input.hasText ||
+		input.hasReviseChip
+	);
 }
 
-/**
- * Report-dock chrome after a research turn. A 202 revise stays pending, so the
- * compact idle composer must not come back until the job finishes.
- */
+/** Pause/stop should cancel without expanding the compact dock. */
+export function followComposerFocusShouldExpand(
+	activeElement: Element | null,
+): boolean {
+	if (!activeElement) return false;
+	return !activeElement.closest("[data-ai-stop]");
+}
+
+/** Clicks on the composer shell expand it; action buttons are excluded. */
+export function followComposerClickShouldExpand(target: Element | null): boolean {
+	if (!target?.closest(".ai-box")) return false;
+	return !target.closest(
+		"[data-ai-stop], [data-ai-mic], [data-ai-research-chip], .ai-revise-clear",
+	);
+}
+
+/** Report-dock chrome after a research turn (including while a revise is pending). */
 export function isResearchReviseInProgress(input: {
 	research?: boolean;
 	pending?: boolean;
@@ -345,7 +361,8 @@ export function researchReportFollowChrome(input: {
 	const revisingReport = isResearchReviseInProgress(input);
 	const reportDock = Boolean(
 		input.research &&
-			!input.pending &&
+			input.hasReport &&
+			(!input.pending || revisingReport) &&
 			!input.clarifying &&
 			!input.declinedOpen,
 	);
@@ -603,6 +620,15 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 		turn.pending = false;
 		turn.phase = "done";
 		turn.error = job.error || "Research stopped.";
+	} else if (
+		job.status === "complete" &&
+		typeof job.error === "string" &&
+		job.error.trim()
+	) {
+		// A revise that failed after returning to `complete` (empty patch, too long).
+		turn.pending = false;
+		turn.phase = "done";
+		turn.error = job.error.trim();
 	} else {
 		turn.error = undefined;
 	}

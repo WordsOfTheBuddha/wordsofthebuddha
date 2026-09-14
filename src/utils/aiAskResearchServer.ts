@@ -35,6 +35,7 @@ import {
 } from "./aiQueryRewrite";
 import { collectAskHistoryShownSlugs } from "./aiAskHistory";
 import { createJobWriteCoalescer } from "./aiAskResearchWriteCoalescer";
+import { isWithinTtl } from "./ttlCache";
 import { RESEARCH_CLARIFY_BRIEF_MAX } from "./aiAskResearchClarify";
 import { loadUserAskHistory, upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
 import {
@@ -206,6 +207,13 @@ export interface ResearchJobRecord {
 }
 
 const memory = new Map<string, ResearchJobRecord>();
+/** When this process last wrote each job; bounds staleness of display reads. */
+const memoryWrittenAt = new Map<string, number>();
+
+function rememberJobMemory(key: string, record: ResearchJobRecord): void {
+	memory.set(key, record);
+	memoryWrittenAt.set(key, Date.now());
+}
 
 function jobKey(uid: string, jobId: string): string {
 	return `${uid}:${jobId}`;
@@ -406,12 +414,12 @@ export async function writeJob(
 		stored[keyName] = value;
 	}
 	if (!isFirebaseInitialized || !db) {
-		memory.set(key, next);
+		rememberJobMemory(key, next);
 		return next;
 	}
 	const ref = jobsCol(next.uid).doc(next.id);
 	if (!jobPatchNeedsLease(patch)) {
-		memory.set(key, next);
+		rememberJobMemory(key, next);
 		await ref.set(stored, { merge: true });
 		return next;
 	}
@@ -433,10 +441,10 @@ export async function writeJob(
 	});
 	if (applied.stale) {
 		const fresh = recordFromData(next.id, next.uid, applied.data);
-		if (fresh) memory.set(key, fresh);
+		if (fresh) rememberJobMemory(key, fresh);
 		return fresh || existingMem || record;
 	}
-	memory.set(key, next);
+	rememberJobMemory(key, next);
 	return next;
 }
 
@@ -497,7 +505,7 @@ export async function createResearchJob(options: {
 			? { clarifyBrief: options.clarifyBrief.slice(0, RESEARCH_CLARIFY_BRIEF_MAX) }
 			: {}),
 	};
-	memory.set(jobKey(record.uid, record.id), record);
+	rememberJobMemory(jobKey(record.uid, record.id), record);
 	if (isFirebaseInitialized && db) {
 		await jobsCol(record.uid).doc(record.id).set(
 			{
@@ -510,11 +518,33 @@ export async function createResearchJob(options: {
 	return { job: recordToPublic(record), runToken };
 }
 
+/** Matches the steady polling cadence: repeated polls within it avoid a Firestore read. */
+const RESEARCH_DISPLAY_CACHE_MS = 6000;
+
+/**
+ * Display-only read for the poll route. Serves the last record this process
+ * wrote when it is recent enough; workers, cancel, and retry keep using the
+ * uncached `readJob` for control flow.
+ */
+function readDisplayJob(uid: string, jobId: string): ResearchJobRecord | null {
+	const id = clipResearchJobId(jobId);
+	if (!id || !uid) return null;
+	const key = jobKey(uid, id);
+	const record = memory.get(key);
+	if (
+		record &&
+		isWithinTtl(memoryWrittenAt.get(key) ?? 0, RESEARCH_DISPLAY_CACHE_MS)
+	) {
+		return record;
+	}
+	return null;
+}
+
 export async function getResearchJobForUser(
 	uid: string,
 	jobId: string,
 ): Promise<ResearchJobPublic | null> {
-	const record = await readJob(uid, jobId);
+	const record = readDisplayJob(uid, jobId) ?? (await readJob(uid, jobId));
 	if (!record) return null;
 	if (
 		isResearchJobReviseClarifying(record.status) &&
@@ -579,7 +609,7 @@ async function claimResearchQuotaRefund(
 	if (!isFirebaseInitialized || !db) {
 		const current = memory.get(key) || record;
 		if (current.quotaRefunded || current.quotaSettled) return false;
-		memory.set(key, { ...current, quotaSettled: true, quotaRefunded: true });
+		rememberJobMemory(key, { ...current, quotaSettled: true, quotaRefunded: true });
 		return true;
 	}
 	const claimed = await db.runTransaction(async (tx) => {
@@ -601,7 +631,7 @@ async function claimResearchQuotaRefund(
 	});
 	if (claimed) {
 		const current = memory.get(key) || record;
-		memory.set(key, { ...current, quotaSettled: true, quotaRefunded: true });
+		rememberJobMemory(key, { ...current, quotaSettled: true, quotaRefunded: true });
 	}
 	return claimed;
 }
@@ -722,6 +752,7 @@ export async function requestResearchJobCancel(
 		const next = await writeJob(record, {
 			status: "complete",
 			progressNote: "",
+			processNotes: dropOpenResearchRevisionCycle(record.processNotes),
 			error: "Revision stopped.",
 			cancelRequested: false,
 			reviseInstruction: "",

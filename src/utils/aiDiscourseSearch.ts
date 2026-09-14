@@ -13,6 +13,7 @@ import {
 	type DiscourseHitLike,
 } from "./aiDiscourseHits";
 import { withIllustrationFlags } from "./discourseSvgForAi";
+import { slugMatchesQuery } from "./searchRanking";
 import {
 	isPrefixedAiDiscourseIdOnlyQuery,
 	namedTermSearchQueries,
@@ -121,7 +122,7 @@ export async function searchHitsForAiQuery(
 			}
 			const fuzzy = await performSearch(id, AI_ASK_SEARCH_OPTIONS);
 			const exactHits = fuzzy.filter(
-				(hit) => hit.slug.toLowerCase() === id.toLowerCase(),
+				(hit) => slugMatchesQuery(hit.slug, id) === "exact",
 			);
 			for (const hit of exactHits.slice(0, 1)) {
 				const key = hit.slug.toLowerCase();

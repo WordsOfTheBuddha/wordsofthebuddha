@@ -17,6 +17,7 @@ import {
 import {
 	isStopword,
 	calculatePhraseProximity,
+	slugMatchesQuery,
 	stripAnnotations,
 	textContainsStrictWord,
 } from "../../utils/searchRanking";
@@ -1316,16 +1317,29 @@ export async function getFilteredDiscourses(
 		}));
 }
 
-/** O(1) slug lookup for native + optional reference index (API scoring). */
+/** O(1) slug lookup for native + optional reference index (API scoring).
+ *  Also resolves a constituent id to its range file (`an1.485` → `an1.394-574`).
+ */
 export async function getSearchDocBySlug(
 	slug: string,
 	includeReferences = false,
 ): Promise<SearchData | undefined> {
 	const native = await ensureNativeSearchData(true);
-	const found = native.find((d) => d.slug === slug);
+	const found = findDocForDiscourseId(native, slug);
 	if (found || !includeReferences) return found;
 	const refData = await loadReferenceSearchData();
-	return refData.find((d) => d.slug === slug);
+	return findDocForDiscourseId(refData, slug);
+}
+
+function findDocForDiscourseId(
+	docs: readonly SearchData[],
+	id: string,
+): SearchData | undefined {
+	const key = id.trim().toLowerCase();
+	if (!key) return undefined;
+	const exact = docs.find((d) => d.slug === key || d.slug === id);
+	if (exact) return exact;
+	return docs.find((d) => slugMatchesQuery(d.slug, key) === "exact");
 }
 
 /**

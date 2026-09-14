@@ -139,6 +139,10 @@ describe("slugMatchesQuery numeric ID tokens", () => {
 		assert.equal(slugMatchesQuery("an1.1-10", "an1.8"), "exact");
 		assert.equal(slugMatchesQuery("an1.1-10", "1.11"), "none");
 		assert.equal(slugMatchesQuery("an1.1-10", "sn1.8"), "none");
+		assert.equal(slugMatchesQuery("an1.394-574", "an1.485"), "exact");
+		assert.equal(slugMatchesQuery("an1.394-574", "an1.485-494"), "exact");
+		assert.equal(slugMatchesQuery("an1.394-574", "AN 1.485–494"), "exact");
+		assert.equal(slugMatchesQuery("an1.41-50", "an1.485"), "none");
 	});
 });
 

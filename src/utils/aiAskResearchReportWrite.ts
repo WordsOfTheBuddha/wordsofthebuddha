@@ -26,6 +26,7 @@ import {
 	stripResearchReportLengthNote,
 } from "./aiAskResearchReportLength";
 
+import type { DiscourseEvidenceSpan } from "./discourseEvidenceSpan";
 import { resolveResearchReadFullSlugs } from "./aiAskResearchContinue";
 import { clipDiscourseSvgRequestSlugs } from "./discourseSvgForAi";
 import {
@@ -48,6 +49,7 @@ export async function buildResearchReportEvidence(options: {
 	readFullSlugs?: readonly string[];
 	readPaliSlugs?: readonly string[];
 	readIllustrationSlugs?: readonly string[];
+	spanBySlug?: Readonly<Record<string, DiscourseEvidenceSpan>>;
 	loadDoc?: (slug: string) => Promise<SearchData | undefined>;
 	maxExpanded?: number;
 }): Promise<string> {
@@ -76,6 +78,7 @@ export async function buildResearchReportEvidence(options: {
 			excerptChars: RESEARCH_EXCERPT_CHARS,
 			excerptParas: RESEARCH_EXCERPT_PARAS,
 			labelParagraphs: true,
+			spanBySlug: options.spanBySlug,
 		},
 	);
 	return formatAskAnswerEvidenceBlock({ ...pack, markCore: true });

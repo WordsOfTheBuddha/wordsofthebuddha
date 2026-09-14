@@ -68,6 +68,8 @@ export interface AiAskSessionEntry {
 	versionIndex?: ResearchVersionMeta[];
 	/** Report markdown before the latest revision — powers the “N changes” chip. */
 	reviseBase?: string;
+	/** Version number `reviseBase` was fetched from (matches `versionIndex[n].from`). */
+	reviseBaseVersionN?: number;
 }
 
 const SESSION_KEY = "ai-ask-session-v1";

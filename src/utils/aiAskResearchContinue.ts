@@ -112,10 +112,16 @@ export function formatResearchReadFullProgress(
 	slugs: readonly string[] = [],
 ): string {
 	const labels = slugs.map((slug) => transformId(slug)).filter(Boolean);
-	if (labels.length === 0) return "Reading selected discourses in full…";
-	const listed = labels.slice(0, 8).join(", ");
-	const extra = labels.length > 8 ? ` +${labels.length - 8}` : "";
-	return `Reading ${listed}${extra} in full…`;
+	return formatResearchReadLabelsProgress(labels);
+}
+
+/** Process-hop labels for named reads (may be sub-ranges, not file slugs). */
+export function formatResearchReadLabelsProgress(labels: readonly string[] = []): string {
+	const listed = labels.map((label) => label.trim()).filter(Boolean);
+	if (listed.length === 0) return "Reading selected discourses in full…";
+	const shown = listed.slice(0, 8).join(", ");
+	const extra = listed.length > 8 ? ` +${listed.length - 8}` : "";
+	return `Reading ${shown}${extra} in full…`;
 }
 
 /** Live status when the writer is opening Pāli with the English. */

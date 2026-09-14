@@ -1,4 +1,5 @@
 import { extractJsonObject } from "./extractJsonObject";
+import { prefixedAiDiscourseIdsInText } from "./aiSearchQuery";
 import {
 	sanitizeResearchHistoryReportStats,
 	type ResearchHistoryReportStats,
@@ -10,7 +11,7 @@ import {
 
 /** Soft clip for a large patch (~50k completion tokens). Ingest stays 100k chars. */
 export const RESEARCH_REVISE_MAX_OUTPUT_WORDS = 35_000;
-export const RESEARCH_REVISE_CHANGELOG_MAX = 320;
+export const RESEARCH_REVISE_CHANGELOG_MAX = 2_400;
 export const RESEARCH_REVISE_INSTRUCTION_MAX = 2_000;
 export const RESEARCH_REVISE_QUOTE_MAX = 800;
 export const RESEARCH_REVISE_HEADING_MAX = 180;
@@ -25,7 +26,8 @@ export const RESEARCH_REVISE_WRITING_NOTE = "Revising the report…";
 export const RESEARCH_REVISE_WAITING_NOTE = "Waiting for your answer…";
 /** Persisted hop that names the planner's reading of the instruction. */
 export const RESEARCH_REVISE_PLAN_NOTE_PREFIX = "Plan: ";
-export const RESEARCH_REVISE_PLAN_SUMMARY_MAX = 150;
+/** Fits in {@link RESEARCH_PROCESS_NOTE_CHARS} with the `Plan: ` prefix. */
+export const RESEARCH_REVISE_PLAN_SUMMARY_MAX = 260;
 export const RESEARCH_REVISE_CLARIFY_MAX_QUESTIONS = 2;
 export const RESEARCH_REVISE_CLARIFY_MAX_LABEL = 120;
 /** A paused revision that gets no answer is dropped after this long. */
@@ -74,8 +76,63 @@ export function researchRevisePlanSummary(plan: {
 		: reader;
 }
 
-export function researchRevisePlanNote(plan: { summary?: string; intent?: string }): string {
-	const summary = researchRevisePlanSummary(plan);
+function discourseIdsForPlanNote(ids: readonly string[]): string {
+	return ids
+		.map((id) =>
+			id.replace(/^([a-z]+)(\d.*)$/i, (_m, book: string, num: string) => `${book.toUpperCase()} ${num}`),
+		)
+		.join(", ");
+}
+
+/** Legacy path when no planner JSON: search only for discourse ids named in the instruction. */
+export function researchReviseNeedsSearch(
+	_instruction: string,
+	namedIds: readonly string[] = [],
+): boolean {
+	return namedIds.length > 0;
+}
+
+/** Discourse ids the planner asked to open — union of readFull, readPali, and instruction. */
+export function reviseEvidenceRequestedIds(options: {
+	instruction: string;
+	plan?: {
+		readFull?: string[];
+		readPali?: string[];
+	} | null;
+}): string[] {
+	return [
+		...new Set([
+			...(options.plan?.readFull || []),
+			...(options.plan?.readPali || []),
+			...prefixedAiDiscourseIdsInText(options.instruction),
+		]),
+	];
+}
+
+/** Reader-facing process hop; always surfaces something when the planner named work. */
+export function researchRevisePlanNote(
+	plan: {
+		summary?: string;
+		intent?: string;
+		searchQueries?: string[];
+		readFull?: string[];
+		readPali?: string[];
+		targets?: string[];
+	} = {},
+): string {
+	let summary = researchRevisePlanSummary(plan);
+	if (!summary && plan.searchQueries?.length) {
+		summary = `look up: ${plan.searchQueries.slice(0, 3).join("; ")}`;
+	}
+	if (!summary && (plan.readFull?.length || plan.readPali?.length)) {
+		const ids = [
+			...new Set([...(plan.readFull || []), ...(plan.readPali || [])]),
+		].slice(0, 4);
+		summary = `read ${discourseIdsForPlanNote(ids)}`;
+	}
+	if (!summary && plan.targets?.length) {
+		summary = `edit ${readerFacingReviseBlockRefs(plan.targets.slice(0, 8).join(", "))}`;
+	}
 	return summary ? `${RESEARCH_REVISE_PLAN_NOTE_PREFIX}${summary}` : "";
 }
 
@@ -192,7 +249,8 @@ export interface ResearchRevisePatch {
 	ops?: ResearchReviseOp[];
 }
 
-export const RESEARCH_REVISE_MAX_BLOCKS_PER_OP = 12;
+/** Room for a moved sub-section (paragraphs, quotes, a heading) in one insert op. */
+export const RESEARCH_REVISE_MAX_BLOCKS_PER_OP = 24;
 
 export interface ResearchReportBlock {
 	id: string;
@@ -212,6 +270,8 @@ export interface ResearchRevisePlan {
 	searchQueries: string[];
 	/** Discourse ids (mn10, sn48.42) to read in full for quotations. */
 	readFull: string[];
+	/** Discourse ids whose Pāli file must be opened alongside English. */
+	readPali: string[];
 	/** Reader-facing one-liner for the process strip (falls back to `intent`). */
 	summary?: string;
 	/** Genuine ambiguities the writer should not guess at (0–2). */
@@ -358,6 +418,184 @@ export function normalizeReportBlockId(value: unknown): string {
 	return visible ? `p${Number(visible[1])}` : "";
 }
 
+/** Widest span a single range target may cover (a whole long section). */
+export const REPORT_BLOCK_RANGE_MAX = 40;
+/** Planner targets kept after ranges and kind aliases expand (a report-wide restyle). */
+export const RESEARCH_REVISE_TARGETS_MAX = 160;
+
+/** Kind-wide target tokens the planner may emit instead of listing every id. */
+export const RESEARCH_REVISE_TARGET_ALIASES = [
+	"quotes",
+	"all-quotes",
+	"headings",
+	"all-headings",
+	"diagrams",
+	"mermaid",
+	"paragraphs",
+	"all",
+	"report",
+] as const;
+
+export function isResearchReviseTargetAlias(value: string): boolean {
+	const key = value.trim().toLowerCase();
+	return (RESEARCH_REVISE_TARGET_ALIASES as readonly string[]).includes(key);
+}
+
+/**
+ * One planner target → block ids. Accepts a single id (`p12`, `¶ 12`, `h3`)
+ * or a same-kind range (`p31-p38`, `¶31–38`, `p31 to p38`), expanded in order.
+ */
+export function expandReportBlockIdRange(value: unknown): string[] {
+	const text = (typeof value === "string" ? value : "")
+		.trim()
+		.replace(/^\[\[|\]\]$/g, "")
+		.trim();
+	const range = text.match(
+		/^(?:¶|para(?:graph)?s?|blocks?)?\s*([phtc])?\s*(\d+)\s*(?:-|–|—|to|through|\.\.)\s*(?:¶)?\s*([phtc])?\s*(\d+)$/i,
+	);
+	if (!range) {
+		const single = normalizeReportBlockId(text);
+		return single ? [single] : [];
+	}
+	const kindA = (range[1] || range[3] || "p").toLowerCase();
+	const kindB = (range[3] || range[1] || "p").toLowerCase();
+	if (kindA !== kindB) return [];
+	const from = Number(range[2]);
+	const to = Number(range[4]);
+	if (!Number.isFinite(from) || !Number.isFinite(to) || from < 1 || to < from) {
+		return [];
+	}
+	const end = Math.min(to, from + REPORT_BLOCK_RANGE_MAX - 1);
+	const out: string[] = [];
+	for (let n = from; n <= end; n += 1) out.push(`${kindA}${n}`);
+	return out;
+}
+
+const UNFENCED_MERMAID_RE =
+	/^(?:mermaid\b|(?:flowchart|graph)\s+(?:TB|BT|LR|RL|TD)\b|sequenceDiagram\b)/i;
+
+/** A paragraph that is a Mermaid diagram with no ``` fence (renders as prose). */
+export function isUnfencedMermaidMarkdown(markdown: string): boolean {
+	const text = markdown.replace(/\r\n/g, "\n").trim();
+	if (!text || /^```/.test(text)) return false;
+	return UNFENCED_MERMAID_RE.test(text);
+}
+
+/** Wrap a bare mermaid/flowchart paragraph in a complete ```mermaid fence. */
+export function fenceMermaidMarkdown(markdown: string): string {
+	const text = markdown.replace(/\r\n/g, "\n").trim();
+	if (completeFenceInfo(text)) return text;
+	const body = text.replace(/^mermaid\s*/i, "").trim();
+	return body ? `\`\`\`mermaid\n${body}\n\`\`\`` : text;
+}
+
+/**
+ * Unfenced diagrams the harness should fence itself: targeted ones, ones the
+ * instruction names by ¶ number, or the only broken diagram when the ask is
+ * “fix the mermaid”.
+ */
+export function mermaidBlocksToFence(
+	blocks: readonly ResearchReportBlock[],
+	options: { targets?: readonly string[]; instruction?: string; planText?: string } = {},
+): ResearchReportBlock[] {
+	const unfenced = blocks.filter((block) => isUnfencedMermaidMarkdown(block.markdown));
+	if (unfenced.length === 0) return [];
+	const targetSet = new Set(
+		(options.targets || []).map(normalizeReportBlockId).filter(Boolean),
+	);
+	const blob = `${options.instruction || ""} ${options.planText || ""}`;
+	const mentioned = new Set(
+		[...blob.matchAll(/(?:¶|\[\[)?\s*[pP]\s*(\d{1,4})/g)].map((match) => `p${Number(match[1])}`),
+	);
+	const asks = /mermaid|flowchart|diagram|\bfenc/i.test(blob);
+	return unfenced.filter((block) => {
+		if (targetSet.has(block.id)) return true;
+		if (asks && mentioned.has(block.id)) return true;
+		if (asks && unfenced.length === 1) return true;
+		return false;
+	});
+}
+
+/**
+ * After the writer returns, add or repair fence ops so a skipped mermaid
+ * update cannot leave the diagram as prose.
+ */
+export function ensureResearchReviseMermaidFences(options: {
+	blocks: readonly ResearchReportBlock[];
+	patch: ResearchRevisePatch | null;
+	targets?: readonly string[];
+	instruction?: string;
+	planText?: string;
+}): ResearchRevisePatch | null {
+	const toFence = mermaidBlocksToFence(options.blocks, options);
+	const patch = options.patch;
+	if (toFence.length === 0) return patch;
+	const ops = [...(patch?.ops || [])];
+	for (const block of toFence) {
+		const index = ops.findIndex((op) => op.id === block.id && op.op === "update");
+		const candidate = index >= 0 ? ops[index].markdown : block.markdown;
+		const markdown = completeFenceInfo(candidate)
+			? candidate.trim()
+			: fenceMermaidMarkdown(
+					isUnfencedMermaidMarkdown(candidate) ? candidate : block.markdown,
+				);
+		if (!completeFenceInfo(markdown)) continue;
+		const next = { op: "update" as const, id: block.id, markdown };
+		if (index >= 0) ops[index] = next;
+		else ops.push(next);
+	}
+	const next: ResearchRevisePatch = {
+		changelog: patch?.changelog || "Fenced the mermaid diagram.",
+		edits: patch?.edits || [],
+		ops,
+	};
+	return researchRevisePatchIsEmpty(next) ? null : next;
+}
+
+/** Expand kind aliases (`quotes`, `diagrams`, `all`) against the live report. */
+export function resolveResearchReviseTargets(
+	raw: readonly string[],
+	blocks: readonly ResearchReportBlock[],
+): string[] {
+	const known = new Set(blocks.map((block) => block.id));
+	const out: string[] = [];
+	const push = (id: string) => {
+		if (known.has(id) && !out.includes(id)) out.push(id);
+	};
+	for (const item of raw) {
+		const key = item.trim().toLowerCase();
+		if (key === "quotes" || key === "all-quotes") {
+			for (const block of blocks) if (block.kind === "quote") push(block.id);
+			continue;
+		}
+		if (key === "headings" || key === "all-headings") {
+			for (const block of blocks) if (block.kind === "heading") push(block.id);
+			continue;
+		}
+		if (key === "diagrams" || key === "mermaid") {
+			for (const block of blocks) {
+				if (
+					block.kind === "code" ||
+					isUnfencedMermaidMarkdown(block.markdown)
+				) {
+					push(block.id);
+				}
+			}
+			continue;
+		}
+		if (key === "paragraphs") {
+			for (const block of blocks) if (block.kind === "paragraph") push(block.id);
+			continue;
+		}
+		if (key === "all" || key === "report") {
+			for (const block of blocks) push(block.id);
+			continue;
+		}
+		for (const id of expandReportBlockIdRange(item)) push(id);
+	}
+	return out.slice(0, RESEARCH_REVISE_TARGETS_MAX);
+}
+
 function parseOpKind(value: unknown): ResearchReviseOpKind | null {
 	const op = typeof value === "string" ? value.trim().toLowerCase() : "";
 	if (op === "update" || op === "replace" || op === "edit" || op === "rewrite") {
@@ -451,16 +689,25 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 					.map((item) => (typeof item === "string" ? item.replace(/\s+/g, " ").trim() : ""))
 					.filter(Boolean)
 			: [];
-	const targets = [...new Set(list(record.targets).map(normalizeReportBlockId).filter(Boolean))].slice(0, 12);
+	const rawTargets = list(record.targets);
+	const targets = [
+		...new Set([
+			...rawTargets.filter(isResearchReviseTargetAlias).map((item) => item.toLowerCase()),
+			...rawTargets.flatMap(expandReportBlockIdRange),
+		]),
+	].slice(0, RESEARCH_REVISE_TARGETS_MAX);
 	const intent = typeof record.intent === "string" ? clipResearchReviseInstruction(record.intent) : "";
 	const searchQueries = [...new Set(list(record.searchQueries).map((q) => q.slice(0, 120)))].slice(0, 3);
-	const readFull = [
-		...new Set(
-			list(record.readFull)
-				.map((id) => id.toLowerCase().replace(/\s+/g, ""))
-				.filter((id) => /^[a-z]+\d+(?:\.\d+)*$/.test(id)),
-		),
-	].slice(0, 4);
+	const clipDiscourseIds = (value: unknown) =>
+		[
+			...new Set(
+				list(value)
+					.map((id) => id.toLowerCase().replace(/[–—]/g, "-").replace(/\s+/g, ""))
+					.filter((id) => /^[a-z]+\d+(?:\.\d+)*(?:-\d+)?$/.test(id)),
+			),
+		].slice(0, 4);
+	const readFull = clipDiscourseIds(record.readFull);
+	const readPali = clipDiscourseIds(record.readPali);
 	const summary =
 		typeof record.summary === "string"
 			? record.summary.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_PLAN_SUMMARY_MAX * 2)
@@ -471,6 +718,7 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 		!intent &&
 		!searchQueries.length &&
 		!readFull.length &&
+		!readPali.length &&
 		!questions.length
 	) {
 		return null;
@@ -480,6 +728,7 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 		intent,
 		searchQueries,
 		readFull,
+		readPali,
 		...(summary ? { summary } : {}),
 		...(questions.length ? { questions } : {}),
 	};
@@ -1087,6 +1336,143 @@ function completeFenceInfo(markdown: string): string | null {
 	return (opening[1] || "").trim().toLowerCase();
 }
 
+export type ResearchReviseOpRejectReason =
+	| "unknown_block_id"
+	| "outside_targets"
+	| "too_many_replacement_blocks"
+	| "unclosed_fence"
+	| "broken_mermaid_fence"
+	| "mermaid_fence_language_changed";
+
+export interface ResearchReviseOpReject {
+	op: ResearchReviseOp;
+	reason: ResearchReviseOpRejectReason;
+	detail: string;
+}
+
+/** Why a single writer op fails `constrainResearchRevisePatch`; null when it passes. */
+export function rejectResearchReviseOpReason(
+	op: ResearchReviseOp,
+	options: {
+		blocks: readonly ResearchReportBlock[];
+		targets?: readonly string[];
+	},
+): ResearchReviseOpReject | null {
+	const byId = new Map(options.blocks.map((block) => [block.id, block]));
+	const scoped = new Set(
+		(options.targets || []).map(normalizeReportBlockId).filter((id) => byId.has(id)),
+	);
+	const hasScope = scoped.size > 0;
+	const id = normalizeReportBlockId(op.id);
+	const target = byId.get(id);
+	if (!target) {
+		return {
+			op,
+			reason: "unknown_block_id",
+			detail: `no block ${id || op.id} in the report`,
+		};
+	}
+	if (hasScope && !scoped.has(id)) {
+		return {
+			op,
+			reason: "outside_targets",
+			detail: `${id} not in planner targets (${scoped.size} allowed)`,
+		};
+	}
+	if (op.op === "delete") return null;
+	const replacementBlocks = splitReportBlocks(op.markdown);
+	if (replacementBlocks.length > RESEARCH_REVISE_MAX_BLOCKS_PER_OP) {
+		return {
+			op,
+			reason: "too_many_replacement_blocks",
+			detail: `${replacementBlocks.length} blocks in markdown (max ${RESEARCH_REVISE_MAX_BLOCKS_PER_OP})`,
+		};
+	}
+	const fenceMarkers = op.markdown.match(/^\s*```/gm)?.length || 0;
+	if (fenceMarkers % 2 !== 0) {
+		return {
+			op,
+			reason: "unclosed_fence",
+			detail: `${fenceMarkers} fence marker(s) — need an even count`,
+		};
+	}
+	if (op.op === "update" && target.kind === "code") {
+		const beforeInfo = completeFenceInfo(target.markdown);
+		const afterInfo = completeFenceInfo(op.markdown);
+		if (beforeInfo === null) {
+			return {
+				op,
+				reason: "broken_mermaid_fence",
+				detail: `existing ${id} is not a complete fenced block`,
+			};
+		}
+		if (afterInfo !== beforeInfo) {
+			return {
+				op,
+				reason: "mermaid_fence_language_changed",
+				detail: `fence language ${afterInfo || "(missing)"} ≠ ${beforeInfo}`,
+			};
+		}
+	}
+	return null;
+}
+
+export interface ResearchRevisePatchAudit {
+	kept: ResearchReviseOp[];
+	rejected: ResearchReviseOpReject[];
+	legacyEditsDropped: number;
+	targetCount: number;
+}
+
+/** Inspect which ops survive scope/fence constraints and why others do not. */
+export function auditResearchRevisePatchConstraints(options: {
+	patch: ResearchRevisePatch | null;
+	blocks: readonly ResearchReportBlock[];
+	targets?: readonly string[];
+}): ResearchRevisePatchAudit {
+	const patch = options.patch;
+	const scoped = new Set(
+		(options.targets || [])
+			.map(normalizeReportBlockId)
+			.filter((id) => options.blocks.some((block) => block.id === id)),
+	);
+	const kept: ResearchReviseOp[] = [];
+	const rejected: ResearchReviseOpReject[] = [];
+	for (const op of patch?.ops || []) {
+		const reason = rejectResearchReviseOpReason(op, options);
+		if (reason) rejected.push(reason);
+		else kept.push(op);
+	}
+	const hasScope = scoped.size > 0;
+	return {
+		kept,
+		rejected,
+		legacyEditsDropped: hasScope ? patch?.edits?.length || 0 : 0,
+		targetCount: scoped.size,
+	};
+}
+
+/** Server log line for a constrain audit (grep `[ai/research/revise]`). */
+export function formatResearchRevisePatchAuditLog(
+	label: string,
+	audit: ResearchRevisePatchAudit,
+): string {
+	const lines = [
+		`[ai/research/revise] ${label}: kept ${audit.kept.length}, rejected ${audit.rejected.length}, targets ${audit.targetCount}`,
+	];
+	if (audit.legacyEditsDropped > 0) {
+		lines.push(
+			`[ai/research/revise] ${label}: dropped ${audit.legacyEditsDropped} legacy heading edit(s) (scoped plan uses block ops only)`,
+		);
+	}
+	for (const item of audit.rejected) {
+		lines.push(
+			`[ai/research/revise] ${label}: reject ${item.op.op}:${normalizeReportBlockId(item.op.id)} — ${item.reason} (${item.detail})`,
+		);
+	}
+	return lines.join("\n");
+}
+
 /**
  * Enforce the planner's scope after generation. This is the hard backstop for
  * a writer that reprints unrelated blocks or damages an atomic fenced diagram.
@@ -1098,32 +1484,18 @@ export function constrainResearchRevisePatch(options: {
 }): ResearchRevisePatch | null {
 	const patch = options.patch;
 	if (!patch) return null;
-	const byId = new Map(options.blocks.map((block) => [block.id, block]));
+	const audit = auditResearchRevisePatchConstraints(options);
 	const scoped = new Set(
-		(options.targets || []).map(normalizeReportBlockId).filter((id) => byId.has(id)),
+		(options.targets || [])
+			.map(normalizeReportBlockId)
+			.filter((id) => options.blocks.some((block) => block.id === id)),
 	);
 	const hasScope = scoped.size > 0;
-	const ops = (patch.ops || []).filter((op) => {
-		const target = byId.get(op.id);
-		if (!target || (hasScope && !scoped.has(op.id))) return false;
-		if (op.op === "delete") return true;
-		const replacementBlocks = splitReportBlocks(op.markdown);
-		if (replacementBlocks.length > RESEARCH_REVISE_MAX_BLOCKS_PER_OP) {
-			return false;
-		}
-		// Any fence the writer emits must be complete, or it renders as prose.
-		const fenceMarkers = op.markdown.match(/^\s*```/gm)?.length || 0;
-		if (fenceMarkers % 2 !== 0) return false;
-		if (op.op !== "update" || target.kind !== "code") return true;
-		const beforeInfo = completeFenceInfo(target.markdown);
-		const afterInfo = completeFenceInfo(op.markdown);
-		return beforeInfo !== null && afterInfo === beforeInfo;
-	});
 	const constrained: ResearchRevisePatch = {
 		...patch,
 		// A scoped block plan cannot safely accept heading-based legacy edits.
 		edits: hasScope ? [] : patch.edits,
-		...(ops.length ? { ops } : { ops: undefined }),
+		...(audit.kept.length ? { ops: audit.kept } : { ops: undefined }),
 	};
 	return researchRevisePatchIsEmpty(constrained) ? null : constrained;
 }
@@ -1591,12 +1963,12 @@ export function formatResearchVersionLabel(
 	return n === current ? `v${n}` : `v${n} · preview`;
 }
 
-/** Toolbar label while a revise is in flight shows the version being written. */
+/** Toolbar label while a revise is in flight stays on the current head. */
 export function formatResearchVersionLabelForTurn(
 	index: readonly ResearchVersionMeta[],
 	options: { previewN?: number | null; revising?: boolean } = {},
 ): string {
-	if (options.revising) return `v${nextResearchRevisionN(index)}`;
+	// `revising` is ignored: the chip only advances once the new version lands.
 	return formatResearchVersionLabel(index, options.previewN);
 }
 
@@ -1609,15 +1981,3 @@ export function versionBodiesToKeep(
 	return nums.slice(nums.length - max);
 }
 
-/** Style-only prompts skip library search. Named IDs or “add/include” still search. */
-export function researchReviseNeedsSearch(
-	instruction: string,
-	namedIds: readonly string[] = [],
-): boolean {
-	if (namedIds.length > 0) return true;
-	const text = instruction.replace(/\s+/g, " ").trim();
-	if (!text) return false;
-	return /\b(add|include|cite|bring in|also|missing|sutta|suttas|discourse|discourses)\b/i.test(
-		text,
-	);
-}

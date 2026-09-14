@@ -1,11 +1,14 @@
 import type { UserRecord } from "firebase-admin/auth";
+import { resolveAskWriterBudgetMs } from "./aiAskAnswer";
 import type { AskQuotaView } from "./aiAskQuota";
 import { consumeAskQuota } from "./aiAskQuotaServer";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
 	clipResearchJobId,
+	dropOpenResearchRevisionCycle,
 	isResearchJobReviseClarifying,
 	rememberResearchProcessNote,
+	researchRevisedLabel,
 	sanitizeResearchJobResult,
 	toResearchJobPublic,
 	type ResearchJobPublic,
@@ -32,12 +35,11 @@ import {
 	mergeResearchHits,
 	nextResearchRevisionN,
 	openingResearchVersionMeta,
-	reportSectionContainingText,
-	reportSectionMarkdown,
 	researchRevisionStartedNote,
 	researchRevisePatchIsEmpty,
 	researchRevisePlanNote,
 	researchRevisePlanSummary,
+	reviseEvidenceRequestedIds,
 	isResearchReviseClarifyExpired,
 	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
 	RESEARCH_REVISE_CLARIFY_TTL_MS,
@@ -49,7 +51,10 @@ import {
 	versionBodiesToKeep,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
-import { formatResearchReadProgress } from "./aiAskResearchContinue";
+import {
+	formatResearchReadLabelsProgress,
+	formatResearchReadProgress,
+} from "./aiAskResearchContinue";
 import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import {
 	gatherReviseEvidence,
@@ -252,14 +257,45 @@ async function resolveWritableJob(options: {
 	return null;
 }
 
+function reviseFailureMessage(error: unknown): string {
+	const reason =
+		error instanceof Error
+			? error.message
+			: typeof error === "string"
+				? error
+				: "";
+	const compact = reason.replace(/\s+/g, " ").trim().slice(0, 240);
+	if (/abort|timeout/i.test(compact)) {
+		return `Revision timed out before the writer finished. Try fewer changes in one request, or split across two revisions. (${compact})`;
+	}
+	return compact
+		? `Could not revise the report. (${compact})`
+		: "Could not revise the report.";
+}
+
 async function restoreCompleteJob(
 	record: ResearchJobRecord,
 	error = "",
+	options: { shippedVersion?: number } = {},
 ): Promise<ResearchJobRecord> {
+	const trimmed = error.trim();
+	let processNotes = record.processNotes;
+	if (trimmed) {
+		processNotes = rememberResearchProcessNote(
+			processNotes,
+			`Revision failed: ${trimmed.slice(0, 200)}`,
+		);
+	} else if (options.shippedVersion) {
+		processNotes = rememberResearchProcessNote(
+			processNotes,
+			researchRevisedLabel(options.shippedVersion),
+		);
+	}
 	return writeJob(record, {
 		status: "complete",
 		progressNote: "",
-		error,
+		...(processNotes !== record.processNotes ? { processNotes } : {}),
+		error: trimmed,
 		reviseInstruction: "",
 		reviseHeading: "",
 		reviseQuote: "",
@@ -391,7 +427,7 @@ export async function beginResearchRevise(options: {
 		status: "revising",
 		progressNote: RESEARCH_REVISE_CONSIDERING_NOTE,
 		processNotes: rememberResearchProcessNote(
-			record.processNotes,
+			dropOpenResearchRevisionCycle(record.processNotes),
 			researchRevisionStartedNote(nextN),
 		),
 		error: "",
@@ -439,11 +475,15 @@ export async function runResearchReviseJob(options: {
 	// Set when this run parks the job on questions: the resumed run owns the
 	// job from then on, so the cleanup below must not touch it.
 	let paused = false;
+	const workerStarted = Date.now();
 
 	try {
 		const index = clipResearchVersionIndex(record.versionIndex);
 		const currentN = currentResearchVersionN(
 			index.length > 0 ? index : [openingResearchVersionMeta()],
+		);
+		console.warn(
+			`[ai/research/revise] job ${record.id} start fromVersion=${fromVersion ?? "head"} instructionChars=${instruction.length}`,
 		);
 		const baseReport = await loadBaseReport({
 			uid: record.uid,
@@ -487,15 +527,9 @@ export async function runResearchReviseJob(options: {
 			});
 			return;
 		}
-		const contextSection = heading
-			? reportSectionMarkdown(baseReport, heading)
-			: quote
-				? reportSectionContainingText(baseReport, quote)
-				: "";
 		const evidencePlan = planReviseEvidence({
 			instruction,
 			existingHits: current.results,
-			contextText: `${quote}\n${contextSection}`,
 			plan,
 		});
 		if (evidencePlan.needsSearch) {
@@ -503,22 +537,41 @@ export async function runResearchReviseJob(options: {
 				progressNote: RESEARCH_REVISE_SEARCH_NOTE,
 			});
 		}
+		console.warn(
+			`[ai/research/revise] job ${record.id} evidence plan: search=${evidencePlan.needsSearch} reread=${evidencePlan.reread.length} queries=${evidencePlan.queries.length} readFull=${(plan?.readFull || []).join(",")} readPali=${(plan?.readPali || []).join(",")}`,
+		);
 		const gathered = await gatherReviseEvidence({
 			instruction,
 			existingHits: current.results,
-			contextText: `${quote}\n${contextSection}`,
 			plan,
 		});
-		if (gathered.hits.length > 0 || gathered.reread.length > 0) {
+		const requestedIds = reviseEvidenceRequestedIds({
+			instruction,
+			plan,
+		});
+		if (
+			gathered.readFull.length > 0 ||
+			gathered.readPali.length > 0 ||
+			requestedIds.length > 0
+		) {
+			const readLabels = gathered.readFullLabels?.length
+				? gathered.readFullLabels
+				: gathered.readFull.length
+					? gathered.readFull
+					: requestedIds;
+			const readNote = gathered.readPali.length
+				? `${formatResearchReadLabelsProgress(readLabels).replace(/ in full…$/, "")} in Pāli and English…`
+				: formatResearchReadLabelsProgress(readLabels);
 			record = await writeJob(record, {
-				progressNote: formatResearchReadProgress({
-					readFull: [...gathered.hits, ...gathered.reread].map((hit) => hit.slug),
-				}),
+				progressNote: readNote,
 			});
 		}
 		record = await writeJob(record, {
 			progressNote: RESEARCH_REVISE_WRITING_NOTE,
 		});
+		console.warn(
+			`[ai/research/revise] job ${record.id} writing (evidenceChars=${gathered.evidence.length})`,
+		);
 		// Pass 2 — the writer sees the block-numbered report, the plan, the
 		// target blocks and the passages, and returns block ops.
 		const written = await writeResearchRevise({
@@ -531,16 +584,22 @@ export async function runResearchReviseJob(options: {
 			quote,
 			evidence: gathered.evidence,
 			plan,
+			timeoutMs: resolveAskWriterBudgetMs(Date.now() - workerStarted),
 		});
 		if (written.tooLong) {
 			await restoreCompleteJob(record, RESEARCH_REVISE_TOO_LONG_ERROR);
 			return;
 		}
 		if (!written.patch || researchRevisePatchIsEmpty(written.patch)) {
-			await restoreCompleteJob(
-				record,
-				"Could not revise the report. Try a shorter direction.",
+			const dropped = written.opsDropped || 0;
+			const message =
+				dropped > 0
+					? `Could not apply the revision (${dropped} edit${dropped === 1 ? "" : "s"} fell outside the plan). Try naming fewer changes, or split them across two revisions.`
+					: "Could not revise the report. Try a shorter direction.";
+			console.warn(
+				`[ai/research/revise] job ${record.id} failed: ${message} (model=${written.model || "unknown"}, tooLong=${Boolean(written.tooLong)})`,
 			);
+			await restoreCompleteJob(record, message);
 			return;
 		}
 		const hits = mergeResearchHits(current.results, gathered.hits);
@@ -582,21 +641,24 @@ export async function runResearchReviseJob(options: {
 			meta,
 			index: nextIndex,
 		});
-		await restoreCompleteJob(record);
+		// Ship the “Revised · vN” hop only when the job is marked complete, so a
+		// crash or timeout after commit cannot leave a false success hop behind.
+		await restoreCompleteJob(record, "", { shippedVersion: n });
 	} catch (error) {
-		console.warn(
-			"[ai/research/revise] worker failed",
-			error instanceof Error ? error.message : error,
-		);
+		const message = reviseFailureMessage(error);
+		console.warn(`[ai/research/revise] job ${options.jobId} worker failed: ${message}`);
 		const fresh = await readJob(options.uid, options.jobId);
 		if (!paused && fresh && fresh.status === "revising") {
-			await restoreCompleteJob(fresh, "Could not revise the report.");
+			await restoreCompleteJob(fresh, message);
 		}
 	} finally {
 		if (!paused) {
 			const leftover = await readJob(options.uid, options.jobId);
 			if (leftover?.status === "revising") {
-				await restoreCompleteJob(leftover, "Could not revise the report.");
+				await restoreCompleteJob(
+					leftover,
+					reviseFailureMessage("Revision did not finish."),
+				);
 			}
 		}
 	}
