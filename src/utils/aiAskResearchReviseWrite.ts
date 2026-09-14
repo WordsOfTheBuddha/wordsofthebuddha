@@ -17,6 +17,7 @@ import {
 	constrainResearchRevisePatch,
 	ensureResearchReviseMermaidFences,
 	formatResearchRevisePatchAuditLog,
+	logResearchReviseWriterRawOutput,
 	mermaidBlocksToFence,
 	resolveResearchReviseTargets,
 	numberedReportForModel,
@@ -24,6 +25,7 @@ import {
 	reportBlocksContainingText,
 	researchReviseFailedAsTooLong,
 	researchReviseNeedsSearch,
+	researchRevisePatchIsEmpty,
 	reviseEvidenceRequestedIds,
 	RESEARCH_REVISE_TARGETS_MAX,
 	splitReportBlocks,
@@ -67,7 +69,7 @@ export const RESEARCH_REVISE_BLOCK_ID_NOTE = `Block ids: paragraphs, block quota
 export const RESEARCH_REVISE_STYLE_NOTE = `Two kinds of style language. A remark attached to a specific edit ("use em-dashes sparingly" while also asking to move ¶31–38) only constrains those edits and does not add targets. When the instruction itself is a report-wide transformation (reformat the report, add Pāli beside every English quote, give sections subsection titles, restyle as a study guide, fence every diagram), that IS the edit: target every block the transformation applies to.`;
 
 export const RESEARCH_REVISE_PLAN_SYSTEM = `You plan one revision request to a research report written from early Buddhist discourses. The request may contain several independent changes; account for every explicit change while leaving everything else untouched. Read the current revision instruction, the original research request and preferences, and the report, then return JSON only:
-{"targets":["p12"],"intent":"one or two sentences naming the exact change: which block(s), what happens to each","summary":"one line for the reader, under 140 characters","searchQueries":[],"readFull":[],"questions":[]}
+{"targets":["p12"],"intent":"one or two sentences naming the exact change: which block(s), what happens to each","summary":"one line for the reader, under 140 characters","searchQueries":[],"readFull":[],"readPali":[],"readIllustration":[],"questions":[]}
 
 ${RESEARCH_REVISE_BLOCK_ID_NOTE}
 
@@ -83,7 +85,9 @@ Rules:
 - "intent": be concrete. Say what the reader wants done (e.g. “split p12: keep the lead-in, move the sentence in quotation marks into its own > blockquote with its SN citation, keep the rest as a following paragraph; leave p13 unchanged”).
 - "searchQueries": up to 3 short library searches, only when the instruction needs discourses the report does not yet cite (new evidence, more sources, a topic not covered). Leave empty for edits the report's own text can satisfy.
 - "readFull": up to 4 discourse ids (mn10, sn48.42, an1.485-494) whose full text the writer needs to quote word-for-word — the discourses already cited in the target blocks when quotations are asked for, or ids the instruction names. Range ids (AN 1.485–494) are valid; the harness resolves them to the file that contains that span. Leave empty otherwise.
-- If the instruction is only about wording, layout, or structure, return empty searchQueries and readFull.`;
+- "readPali": discourse ids whose Pāli file must be opened alongside English when the instruction asks for Pāli wording.
+- "readIllustration": up to 2 discourse ids (an10.61, sn36.6) whose site SVG markup the writer should embed — not for quotations. When the instruction asks to include, show, or reuse a discourse diagram/SVG/chart from the site, put those ids here. Leave empty when a new mermaid summary chart is enough or no site diagram is named.
+- If the instruction is only about wording, layout, or structure, return empty searchQueries, readFull, readPali, and readIllustration.`;
 
 export const RESEARCH_REVISE_SYSTEM = `You are the editor of a research report written from early Buddhist discourses. You do not search. You do not invent citations. You make the smallest edit that fully carries out the instruction, so the revised report reads as one continuous piece.
 
@@ -107,6 +111,7 @@ Choosing ops:
 - Separate every block in "markdown" with a blank line: a heading line, then a blank line, then its paragraph. Never glue a heading to the text under it.
 - ${RESEARCH_REVISE_STYLE_NOTE}
 - A fenced code or Mermaid block is atomic. When updating one, return the complete fenced block, preserving the opening language (for example \`\`\`mermaid) and closing \`\`\`. Never emit a bare "mermaid" line. A paragraph that reads "mermaid / flowchart …" without a fence is a broken diagram: "update" it into a complete \`\`\`mermaid … \`\`\` block, quoting node labels that contain spaces or punctuation (A["Label text"]). Do not touch any other diagram unless it is explicitly targeted.
+- When passages include Illustration (SVG) with \`\`\`svg markup, embed or adapt it as a fenced \`\`\`svg block (atomic, like mermaid). Do not invent SVG paths or off-site URLs. For a holistic summary chart the instruction asks for, prefer \`\`\`mermaid unless it names a site diagram to reuse.
 
 Continuity (the revised text must not read as bolted on):
 - Match the report's voice, tense, terminology, transliteration, and citation style exactly. Reuse its phrasing for recurring concepts.
@@ -276,19 +281,22 @@ export function reviseSlugsForDiscourseIds(
 export function formatReviseEvidenceDebugLog(input: {
 	planReadFull: readonly string[];
 	planReadPali: readonly string[];
+	planReadIllustration: readonly string[];
 	requestedIds: readonly string[];
 	readFull: readonly string[];
 	readPali: readonly string[];
+	readIllustration: readonly string[];
 	readFullLabels?: readonly string[];
 	rereadSlugs: readonly string[];
 	newHitSlugs: readonly string[];
 	evidenceChars: number;
 	evidenceHasPaliPassage: boolean;
+	evidenceHasSvgMarkup: boolean;
 }): string {
 	const labels = input.readFullLabels?.length
 		? input.readFullLabels.join(", ")
 		: input.readFull.join(", ");
-	return `[ai/research/revise] evidence: planReadFull=[${input.planReadFull.join(", ")}] planReadPali=[${input.planReadPali.join(", ")}] requested=[${input.requestedIds.join(", ")}] readFull=[${input.readFull.join(", ")}] readPali=[${input.readPali.join(", ")}] labels=[${labels}] reread=[${input.rereadSlugs.join(", ")}] searchHits=[${input.newHitSlugs.join(", ")}] evidenceChars=${input.evidenceChars} hasPaliPassage=${input.evidenceHasPaliPassage}`;
+	return `[ai/research/revise] evidence: planReadFull=[${input.planReadFull.join(", ")}] planReadPali=[${input.planReadPali.join(", ")}] planReadIllustration=[${input.planReadIllustration.join(", ")}] requested=[${input.requestedIds.join(", ")}] readFull=[${input.readFull.join(", ")}] readPali=[${input.readPali.join(", ")}] readIllustration=[${input.readIllustration.join(", ")}] labels=[${labels}] reread=[${input.rereadSlugs.join(", ")}] searchHits=[${input.newHitSlugs.join(", ")}] evidenceChars=${input.evidenceChars} hasPaliPassage=${input.evidenceHasPaliPassage} hasSvgMarkup=${input.evidenceHasSvgMarkup}`;
 }
 
 function existingHitForDiscourseId(
@@ -404,6 +412,7 @@ export async function gatherReviseEvidence(options: {
 	readFull: string[];
 	readFullLabels: string[];
 	readPali: string[];
+	readIllustration: string[];
 }> {
 	const empty = {
 		hits: [] as AiDiscourseHit[],
@@ -412,6 +421,7 @@ export async function gatherReviseEvidence(options: {
 		readFull: [] as string[],
 		readFullLabels: [] as string[],
 		readPali: [] as string[],
+		readIllustration: [] as string[],
 	};
 	const { queries, reread, needsSearch } = planReviseEvidence(options);
 	const requestedIds = reviseEvidenceRequestedIds({
@@ -420,8 +430,12 @@ export async function gatherReviseEvidence(options: {
 	});
 	const planReadFull = options.plan?.readFull || [];
 	const planReadPali = options.plan?.readPali || [];
+	const planReadIllustration = options.plan?.readIllustration || [];
 	const needsReads =
-		requestedIds.length > 0 || planReadFull.length > 0 || planReadPali.length > 0;
+		requestedIds.length > 0 ||
+		planReadFull.length > 0 ||
+		planReadPali.length > 0 ||
+		planReadIllustration.length > 0;
 	const fullFrom = (hits: readonly AiDiscourseHit[]) => {
 		const out: AiDiscourseHit[] = [];
 		const seen = new Set<string>();
@@ -445,6 +459,7 @@ export async function gatherReviseEvidence(options: {
 			fullHits,
 		);
 		const readPali = reviseSlugsForDiscourseIds(planReadPali, fullHits);
+		const readIllustration = reviseSlugsForDiscourseIds(planReadIllustration, fullHits);
 		const readPaliSlugs =
 			readPali.length > 0
 				? readPali
@@ -467,24 +482,36 @@ export async function gatherReviseEvidence(options: {
 			namedQueries: queries,
 			readFullSlugs: readFull,
 			readPaliSlugs: readPaliSlugs,
+			readIllustrationSlugs: readIllustration,
 			spanBySlug,
-			maxExpanded: Math.max(readFull.length, allHits.length),
+			maxExpanded: Math.max(readFull.length, readIllustration.length, allHits.length),
 		});
 		console.warn(
 			formatReviseEvidenceDebugLog({
 				planReadFull,
 				planReadPali,
+				planReadIllustration,
 				requestedIds,
 				readFull,
 				readPali: readPaliSlugs,
+				readIllustration,
 				readFullLabels,
 				rereadSlugs: reread.map((hit) => hit.slug),
 				newHitSlugs: hits.map((hit) => hit.slug),
 				evidenceChars: evidence.length,
 				evidenceHasPaliPassage: /Pali \(full text\)/i.test(evidence),
+				evidenceHasSvgMarkup: /Illustration \(SVG\):/i.test(evidence),
 			}),
 		);
-		return { hits, evidence, reread, readFull, readFullLabels, readPali: readPaliSlugs };
+		return {
+			hits,
+			evidence,
+			reread,
+			readFull,
+			readFullLabels,
+			readPali: readPaliSlugs,
+			readIllustration,
+		};
 	};
 	if (!needsSearch && reread.length === 0 && !needsReads) {
 		return empty;
@@ -591,6 +618,10 @@ export async function writeResearchRevise(options: {
 	patch: ResearchRevisePatch | null;
 	model: string;
 	tooLong?: boolean;
+	/** Model output was present but not valid revise JSON. */
+	unparseable?: boolean;
+	/** Parsed JSON had no ops the harness could apply. */
+	emptyPatch?: boolean;
 	/** Ops the writer returned but constrain rejected (scope, fences, etc.). */
 	opsDropped?: number;
 }> {
@@ -646,14 +677,22 @@ export async function writeResearchRevise(options: {
 		);
 		const raw = (result.content || "").trim();
 		const parsed = parseResearchRevisePatch(raw);
-		if (!parsed) {
+		const unparseable = Boolean(raw) && !parsed;
+		if (unparseable) {
 			console.warn(
 				`[ai/research/revise] writer returned no parseable patch (${raw.length} chars, truncated=${Boolean(result.truncated)})`,
 			);
-		} else if (!parsed.ops?.length && !parsed.edits?.length) {
-			console.warn(
-				`[ai/research/revise] writer patch empty after parse (changelog=${Boolean(parsed.changelog)})`,
+			logResearchReviseWriterRawOutput(
+				raw,
+				`unparseable, truncated=${Boolean(result.truncated)}`,
 			);
+		} else if (!parsed?.ops?.length && !parsed?.edits?.length) {
+			console.warn(
+				`[ai/research/revise] writer patch empty after parse (changelog=${Boolean(parsed?.changelog)})`,
+			);
+			if (raw) {
+				logResearchReviseWriterRawOutput(raw, "empty patch after parse");
+			}
 		}
 		const writerAudit = auditResearchRevisePatchConstraints({
 			patch: parsed,
@@ -699,6 +738,12 @@ export async function writeResearchRevise(options: {
 			console.warn(
 				`[ai/research/revise] no ops survived — see writer/mermaid reject lines above`,
 			);
+			if (raw) {
+				logResearchReviseWriterRawOutput(
+					raw,
+					`parsed but no ops survived (wanted=${wanted}, kept=${kept})`,
+				);
+			}
 		}
 		if (patch && !patch.changelog) {
 			patch.changelog = clipResearchChangelog(instruction);
@@ -710,16 +755,23 @@ export async function writeResearchRevise(options: {
 				content: result.content,
 			})
 		) {
+			if (raw) {
+				logResearchReviseWriterRawOutput(raw, "truncated output");
+			}
 			return {
 				patch: null,
 				model: result.model || ASK_PLANNER_PAID_FALLBACK_MODEL,
 				tooLong: true,
 			};
 		}
+		const opsDropped = wanted > kept ? wanted - kept : 0;
+		const emptyPatch = Boolean(parsed) && !unparseable && (!patch || researchRevisePatchIsEmpty(patch));
 		return {
 			patch,
 			model: result.model || ASK_PLANNER_PAID_FALLBACK_MODEL,
-			...(wanted > kept ? { opsDropped: wanted - kept } : {}),
+			...(unparseable ? { unparseable: true } : {}),
+			...(emptyPatch ? { emptyPatch: true } : {}),
+			...(opsDropped > 0 ? { opsDropped } : {}),
 		};
 	} finally {
 		watchdog.dispose();

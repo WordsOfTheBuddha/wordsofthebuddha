@@ -844,7 +844,11 @@ describe("applyResearchJobToTurn", () => {
 			id: "job-heal",
 			status: "complete",
 			question: "feeling?",
-			processNotes: ["Considering the revision…", "Revising the report…"],
+			processNotes: [
+				"Started v2 revision",
+				"Considered the revision",
+				"Revised the report · v2",
+			],
 			result: {
 				question: "feeling?",
 				lookingFor: "vedanā",

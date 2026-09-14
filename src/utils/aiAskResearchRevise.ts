@@ -1,5 +1,9 @@
 import { extractJsonObject } from "./extractJsonObject";
 import { prefixedAiDiscourseIdsInText } from "./aiSearchQuery";
+// Browser-safe: planner parsing runs in aiModeClient. The fs-backed
+// clipDiscourseSvgRequestSlugs would drag node:fs into the client bundle;
+// the server re-clips with the existence check and is the source of truth.
+import { normalizeDiscourseSvgRequestSlugs } from "./discourseSvgForAiPure";
 import {
 	sanitizeResearchHistoryReportStats,
 	type ResearchHistoryReportStats,
@@ -19,6 +23,12 @@ export const RESEARCH_REVISE_HEADING_MAX = 180;
 export const RESEARCH_REVISE_BODIES_MAX = 8;
 export const RESEARCH_REVISE_TOO_LONG_ERROR =
 	"The revision was too long to finish. Try a smaller change.";
+export const RESEARCH_REVISE_UNPARSEABLE_ERROR =
+	"Could not parse the revision response. Try again, or split the request into smaller steps.";
+export const RESEARCH_REVISE_EMPTY_PATCH_ERROR =
+	"The revision returned no edits. Try naming the change more specifically.";
+export const RESEARCH_REVISE_GENERIC_ERROR =
+	"Could not revise the report. Try again with a clearer or smaller change.";
 export const RESEARCH_REVISE_CONSIDERING_NOTE = "Considering the revision…";
 export const RESEARCH_REVISE_SEARCH_NOTE = "Looking up additional discourses…";
 export const RESEARCH_REVISE_WRITING_NOTE = "Revising the report…";
@@ -92,21 +102,52 @@ export function researchReviseNeedsSearch(
 	return namedIds.length > 0;
 }
 
-/** Discourse ids the planner asked to open — union of readFull, readPali, and instruction. */
+/** Discourse ids the planner asked to open — union of readFull, readPali, readIllustration, and instruction. */
 export function reviseEvidenceRequestedIds(options: {
 	instruction: string;
 	plan?: {
 		readFull?: string[];
 		readPali?: string[];
+		readIllustration?: string[];
 	} | null;
 }): string[] {
 	return [
 		...new Set([
 			...(options.plan?.readFull || []),
 			...(options.plan?.readPali || []),
+			...(options.plan?.readIllustration || []),
 			...prefixedAiDiscourseIdsInText(options.instruction),
 		]),
 	];
+}
+
+/** Reader-facing error when the writer patch cannot be applied. */
+export function researchReviseWriterFailureMessage(input: {
+	unparseable?: boolean;
+	emptyPatch?: boolean;
+	opsDropped?: number;
+}): string {
+	if (input.unparseable) return RESEARCH_REVISE_UNPARSEABLE_ERROR;
+	if (input.opsDropped && input.opsDropped > 0) {
+		const dropped = input.opsDropped;
+		return `Could not apply the revision (${dropped} edit${dropped === 1 ? "" : "s"} fell outside the plan). Try naming fewer changes, or split them across two revisions.`;
+	}
+	if (input.emptyPatch) return RESEARCH_REVISE_EMPTY_PATCH_ERROR;
+	return RESEARCH_REVISE_GENERIC_ERROR;
+}
+
+/** Log the model's raw JSON when the harness cannot parse or apply it. */
+export function logResearchReviseWriterRawOutput(raw: string, reason: string): void {
+	const text = raw.trim();
+	if (!text) return;
+	const cap = 80_000;
+	const body =
+		text.length > cap
+			? `${text.slice(0, cap)}\n… [truncated ${text.length - cap} chars]`
+			: text;
+	console.warn(
+		`[ai/research/revise] writer raw output (${reason}, ${text.length} chars):\n---\n${body}\n---`,
+	);
 }
 
 /** Reader-facing process hop; always surfaces something when the planner named work. */
@@ -117,6 +158,7 @@ export function researchRevisePlanNote(
 		searchQueries?: string[];
 		readFull?: string[];
 		readPali?: string[];
+		readIllustration?: string[];
 		targets?: string[];
 	} = {},
 ): string {
@@ -124,9 +166,13 @@ export function researchRevisePlanNote(
 	if (!summary && plan.searchQueries?.length) {
 		summary = `look up: ${plan.searchQueries.slice(0, 3).join("; ")}`;
 	}
-	if (!summary && (plan.readFull?.length || plan.readPali?.length)) {
+	if (!summary && (plan.readFull?.length || plan.readPali?.length || plan.readIllustration?.length)) {
 		const ids = [
-			...new Set([...(plan.readFull || []), ...(plan.readPali || [])]),
+			...new Set([
+				...(plan.readFull || []),
+				...(plan.readPali || []),
+				...(plan.readIllustration || []),
+			]),
 		].slice(0, 4);
 		summary = `read ${discourseIdsForPlanNote(ids)}`;
 	}
@@ -272,6 +318,8 @@ export interface ResearchRevisePlan {
 	readFull: string[];
 	/** Discourse ids whose Pāli file must be opened alongside English. */
 	readPali: string[];
+	/** Discourse ids whose site SVG markup should be inlined for the writer. */
+	readIllustration: string[];
 	/** Reader-facing one-liner for the process strip (falls back to `intent`). */
 	summary?: string;
 	/** Genuine ambiguities the writer should not guess at (0–2). */
@@ -489,6 +537,22 @@ export function fenceMermaidMarkdown(markdown: string): string {
 	return body ? `\`\`\`mermaid\n${body}\n\`\`\`` : text;
 }
 
+/** Fence bare mermaid inside a writer op (including new insert-after blocks). */
+export function fenceMermaidInOpMarkdown(markdown: string): string {
+	const text = markdown.replace(/\r\n/g, "\n").trim();
+	if (!text || completeFenceInfo(text)) return markdown;
+	if (isUnfencedMermaidMarkdown(text)) {
+		return fenceMermaidMarkdown(text);
+	}
+	const chunks = text.split(/\n\n+/);
+	if (chunks.length <= 1) return markdown;
+	const fenced = chunks.map((chunk) =>
+		isUnfencedMermaidMarkdown(chunk) ? fenceMermaidMarkdown(chunk) : chunk,
+	);
+	const joined = fenced.join("\n\n");
+	return joined === text ? markdown : joined;
+}
+
 /**
  * Unfenced diagrams the harness should fence itself: targeted ones, ones the
  * instruction names by ¶ number, or the only broken diagram when the ask is
@@ -527,8 +591,16 @@ export function ensureResearchReviseMermaidFences(options: {
 	instruction?: string;
 	planText?: string;
 }): ResearchRevisePatch | null {
+	let patch = options.patch;
+	if (patch?.ops?.length) {
+		const ops = patch.ops.map((op) => {
+			if (op.op === "delete") return op;
+			const markdown = fenceMermaidInOpMarkdown(op.markdown);
+			return markdown === op.markdown ? op : { ...op, markdown };
+		});
+		patch = { ...patch, ops };
+	}
 	const toFence = mermaidBlocksToFence(options.blocks, options);
-	const patch = options.patch;
 	if (toFence.length === 0) return patch;
 	const ops = [...(patch?.ops || [])];
 	for (const block of toFence) {
@@ -708,6 +780,7 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 		].slice(0, 4);
 	const readFull = clipDiscourseIds(record.readFull);
 	const readPali = clipDiscourseIds(record.readPali);
+	const readIllustration = normalizeDiscourseSvgRequestSlugs(clipDiscourseIds(record.readIllustration));
 	const summary =
 		typeof record.summary === "string"
 			? record.summary.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_PLAN_SUMMARY_MAX * 2)
@@ -719,6 +792,7 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 		!searchQueries.length &&
 		!readFull.length &&
 		!readPali.length &&
+		!readIllustration.length &&
 		!questions.length
 	) {
 		return null;
@@ -729,6 +803,7 @@ export function clipResearchRevisePlan(raw: unknown): ResearchRevisePlan | null 
 		searchQueries,
 		readFull,
 		readPali,
+		readIllustration,
 		...(summary ? { summary } : {}),
 		...(questions.length ? { questions } : {}),
 	};
@@ -1868,13 +1943,12 @@ export function currentResearchVersionN(
 	return index[index.length - 1]?.n || 1;
 }
 
+/** True when a stored hop marks a revision that actually shipped a version. */
 function processNoteLooksLikeCompletedRevise(note: string): boolean {
 	const n = note.replace(/\s+/g, " ").trim();
-	return (
-		/^(?:revised|revising) the report/i.test(n) ||
-		/^(?:considered|considering) the revision/i.test(n) ||
-		/^started v\d+ revision/i.test(n)
-	);
+	// “Revising the report…” / “Started vN revision” run before the writer
+	// returns — they must not advance the version chip or heal v2 from v1.
+	return /^revised the report\b/i.test(n) && !/^revising the report/i.test(n);
 }
 
 export function researchProcessCompletedRevise(
@@ -1963,12 +2037,14 @@ export function formatResearchVersionLabel(
 	return n === current ? `v${n}` : `v${n} · preview`;
 }
 
-/** Toolbar label while a revise is in flight stays on the current head. */
+/** Toolbar label while a revise is in flight stays on the shipped head. */
 export function formatResearchVersionLabelForTurn(
 	index: readonly ResearchVersionMeta[],
 	options: { previewN?: number | null; revising?: boolean } = {},
 ): string {
-	// `revising` is ignored: the chip only advances once the new version lands.
+	if (options.revising) {
+		return formatResearchVersionLabel(index, options.previewN ?? null);
+	}
 	return formatResearchVersionLabel(index, options.previewN);
 }
 

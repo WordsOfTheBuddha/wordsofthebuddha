@@ -39,6 +39,7 @@ import {
 	researchRevisePatchIsEmpty,
 	researchRevisePlanNote,
 	researchRevisePlanSummary,
+	researchReviseWriterFailureMessage,
 	reviseEvidenceRequestedIds,
 	isResearchReviseClarifyExpired,
 	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
@@ -538,7 +539,7 @@ export async function runResearchReviseJob(options: {
 			});
 		}
 		console.warn(
-			`[ai/research/revise] job ${record.id} evidence plan: search=${evidencePlan.needsSearch} reread=${evidencePlan.reread.length} queries=${evidencePlan.queries.length} readFull=${(plan?.readFull || []).join(",")} readPali=${(plan?.readPali || []).join(",")}`,
+			`[ai/research/revise] job ${record.id} evidence plan: search=${evidencePlan.needsSearch} reread=${evidencePlan.reread.length} queries=${evidencePlan.queries.length} readFull=${(plan?.readFull || []).join(",")} readPali=${(plan?.readPali || []).join(",")} readIllustration=${(plan?.readIllustration || []).join(",")}`,
 		);
 		const gathered = await gatherReviseEvidence({
 			instruction,
@@ -552,6 +553,7 @@ export async function runResearchReviseJob(options: {
 		if (
 			gathered.readFull.length > 0 ||
 			gathered.readPali.length > 0 ||
+			gathered.readIllustration.length > 0 ||
 			requestedIds.length > 0
 		) {
 			const readLabels = gathered.readFullLabels?.length
@@ -559,9 +561,14 @@ export async function runResearchReviseJob(options: {
 				: gathered.readFull.length
 					? gathered.readFull
 					: requestedIds;
-			const readNote = gathered.readPali.length
-				? `${formatResearchReadLabelsProgress(readLabels).replace(/ in full…$/, "")} in Pāli and English…`
-				: formatResearchReadLabelsProgress(readLabels);
+			const readNote =
+				gathered.readPali.length > 0 || gathered.readIllustration.length > 0
+					? formatResearchReadProgress({
+							readFull: gathered.readFull.length ? gathered.readFull : readLabels,
+							readPali: gathered.readPali,
+							readIllustration: gathered.readIllustration,
+						})
+					: formatResearchReadLabelsProgress(readLabels);
 			record = await writeJob(record, {
 				progressNote: readNote,
 			});
@@ -591,13 +598,13 @@ export async function runResearchReviseJob(options: {
 			return;
 		}
 		if (!written.patch || researchRevisePatchIsEmpty(written.patch)) {
-			const dropped = written.opsDropped || 0;
-			const message =
-				dropped > 0
-					? `Could not apply the revision (${dropped} edit${dropped === 1 ? "" : "s"} fell outside the plan). Try naming fewer changes, or split them across two revisions.`
-					: "Could not revise the report. Try a shorter direction.";
+			const message = researchReviseWriterFailureMessage({
+				unparseable: written.unparseable,
+				emptyPatch: written.emptyPatch,
+				opsDropped: written.opsDropped,
+			});
 			console.warn(
-				`[ai/research/revise] job ${record.id} failed: ${message} (model=${written.model || "unknown"}, tooLong=${Boolean(written.tooLong)})`,
+				`[ai/research/revise] job ${record.id} failed: ${message} (model=${written.model || "unknown"}, tooLong=${Boolean(written.tooLong)}, unparseable=${Boolean(written.unparseable)}, emptyPatch=${Boolean(written.emptyPatch)}, opsDropped=${written.opsDropped || 0})`,
 			);
 			await restoreCompleteJob(record, message);
 			return;

@@ -30,6 +30,9 @@ import {
 	researchRevisionStartedNote,
 	RESEARCH_REVISE_MAX_OUTPUT_WORDS,
 	researchReviseFailedAsTooLong,
+	researchReviseWriterFailureMessage,
+	RESEARCH_REVISE_UNPARSEABLE_ERROR,
+	RESEARCH_REVISE_EMPTY_PATCH_ERROR,
 	selectionQualifiesForRevise,
 	splitReportSections,
 	mergeResearchHits,
@@ -271,6 +274,13 @@ The discourse then declares the faculties easy to grasp.
 		assert.deepEqual(plan?.searchQueries, ["mindfulness faculties", "x", "y"]);
 		assert.deepEqual(plan?.readFull, ["sn48.42", "mn10"]);
 		assert.deepEqual(plan?.readPali, []);
+		assert.deepEqual(plan?.readIllustration, []);
+		const svgPlan = clipResearchRevisePlan({
+			targets: ["p20"],
+			intent: "Embed the AN 10.61 chain diagram after ¶20.",
+			readIllustration: ["an10.61", "sn36.6", "mn70", "an3.65"],
+		});
+		assert.deepEqual(svgPlan?.readIllustration, ["an10.61", "sn36.6"]);
 		const ranged = clipResearchRevisePlan({
 			targets: ["p3"],
 			intent: "Quote AN 1.485–494 and SnP 1.8.",
@@ -331,6 +341,31 @@ The discourse then declares the faculties easy to grasp.
 		]);
 		assert.equal(blocks.find((b) => b.id === "p2")?.kind, "quote");
 		assert.equal(isUnfencedMermaidMarkdown(blocks.find((b) => b.id === "p3")?.markdown || ""), true);
+	});
+
+	it("fences mermaid inside a new insert-after op", () => {
+		const blocks = splitReportBlocks("## Close\n\nClosing paragraph stays here.");
+		const patched = ensureResearchReviseMermaidFences({
+			blocks,
+			patch: {
+				changelog: "Added a summary chart.",
+				edits: [],
+				ops: [
+					{
+						op: "insert-after",
+						id: "p1",
+						markdown:
+							'mermaid flowchart TD subgraph Descent["The descending chain"] A --> B',
+					},
+				],
+			},
+			targets: ["p1"],
+			instruction: "Include a visual chart after the conclusion.",
+			planText: "add summary flowchart after ¶58",
+		});
+		const insert = patched?.ops?.find((op) => op.op === "insert-after");
+		assert.match(insert?.markdown || "", /^```mermaid\nflowchart TD/);
+		assert.match(insert?.markdown || "", /```$/);
 	});
 
 	it("fences a skipped mermaid paragraph even when the writer omitted the op", () => {
@@ -409,16 +444,36 @@ The discourse then declares the faculties easy to grasp.
 			formatReviseEvidenceDebugLog({
 				planReadFull: ["snp1.8"],
 				planReadPali: ["snp1.8"],
+				planReadIllustration: ["an10.61"],
 				requestedIds: ["snp1.8"],
 				readFull: ["snp1.8"],
 				readPali: ["snp1.8"],
+				readIllustration: ["an10.61"],
 				readFullLabels: ["SNP 1.8"],
 				rereadSlugs: [],
 				newHitSlugs: ["snp1.8"],
 				evidenceChars: 1200,
 				evidenceHasPaliPassage: true,
+				evidenceHasSvgMarkup: true,
 			}),
 			/hasPaliPassage=true/,
+		);
+		assert.match(
+			formatReviseEvidenceDebugLog({
+				planReadFull: [],
+				planReadPali: [],
+				planReadIllustration: ["an10.61"],
+				requestedIds: ["an10.61"],
+				readFull: [],
+				readPali: [],
+				readIllustration: ["an10.61"],
+				rereadSlugs: [],
+				newHitSlugs: [],
+				evidenceChars: 900,
+				evidenceHasPaliPassage: false,
+				evidenceHasSvgMarkup: true,
+			}),
+			/readIllustration=\[an10\.61\]/,
 		);
 		const out = planReviseEvidence({
 			instruction:
@@ -990,11 +1045,27 @@ describe("version index", () => {
 			versionIndex: [
 				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },
 			],
-			processNotes: ["Considering the revision…", "Revising the report…"],
+			processNotes: [
+				"Started v2 revision",
+				"Considered the revision",
+				"Revised the report · v2",
+			],
 			createdAt: 1,
 		});
 		assert.equal(healed[1]?.n, 2);
 		assert.equal(healed[1]?.changelog, "Revised the report.");
+		const inFlight = healedResearchVersionIndex({
+			versionIndex: [
+				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },
+			],
+			processNotes: [
+				"Started v2 revision",
+				"Considered the revision",
+				"Revising the report…",
+			],
+			createdAt: 1,
+		});
+		assert.equal(inFlight.length, 1);
 		assert.deepEqual(
 			mergeResearchHits(
 				[{ slug: "mn10" }, { slug: "sn47.19" }],
@@ -1015,6 +1086,27 @@ describe("revise output budget", () => {
 			RESEARCH_REVISE_CHANGELOG_MAX,
 		);
 		assert.equal(RESEARCH_REPORT_MAX_CHARS, 100_000);
+	});
+});
+
+describe("researchReviseWriterFailureMessage", () => {
+	it("distinguishes unparseable output from dropped ops and empty patches", () => {
+		assert.equal(
+			researchReviseWriterFailureMessage({ unparseable: true }),
+			RESEARCH_REVISE_UNPARSEABLE_ERROR,
+		);
+		assert.equal(
+			researchReviseWriterFailureMessage({ emptyPatch: true }),
+			RESEARCH_REVISE_EMPTY_PATCH_ERROR,
+		);
+		assert.match(
+			researchReviseWriterFailureMessage({ opsDropped: 2 }),
+			/2 edits fell outside the plan/,
+		);
+		assert.match(
+			researchReviseWriterFailureMessage({}),
+			/Try again with a clearer or smaller change/,
+		);
 	});
 });
 

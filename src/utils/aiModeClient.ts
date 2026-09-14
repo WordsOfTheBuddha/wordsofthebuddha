@@ -5895,7 +5895,7 @@ export function attachAiMode(options: {
 			? (() => {
 					const versionIndex = healedResearchVersionIndex({
 						versionIndex: turn.versionIndex,
-						processNotes: turn.processNotes,
+						processNotes: isReviseInProgress(turn) ? [] : turn.processNotes,
 						createdAt: turn.researchStartedAt,
 					});
 					const versionLabel = formatResearchVersionLabelForTurn(versionIndex, {
