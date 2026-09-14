@@ -1,19 +1,22 @@
 // pm2 process file for the user-owned Astro dev server.
 // Managed by the user in their own terminal — agents must NOT touch it.
 // See AGENTS.md ("Dev server ownership").
+//
+// Runs the same stack as `yarn dev`: predev (routes, search indexes, catalogs,
+// image copy, …) then content watcher + image watcher + astro on 4321.
 module.exports = {
 	apps: [
 		{
 			name: "astro-dev",
 			cwd: __dirname,
-			script: "./node_modules/.bin/astro",
-			args: "dev --host --port 4321 --strictPort",
+			script: "./scripts/pm2-dev.mjs",
 			interpreter: "node",
 			node_args: "--trace-deprecation",
 			autorestart: true,
 			exp_backoff_restart_delay: 2000,
 			max_memory_restart: "2G",
 			min_uptime: "10s",
+			kill_timeout: 8000,
 			env: {
 				NODE_ENV: "development",
 				DEBUG: "astro:router,astro:ssr",

@@ -4,6 +4,8 @@
 
 - The Astro dev server on port `4321` is **user-owned** and managed by `pm2`
   (`ecosystem.config.cjs`, process name `astro-dev`, auto-restart on).
+  That process runs `yarn dev`: `predev` (indexes, routes, catalogs) plus the
+  content watcher, image watcher, and `astro dev --port 4321 --strictPort`.
 - **Never** run `yarn dev`, `astro dev`, `astro dev --force`, `astro dev stop`,
   `lsof -ti:4321 | xargs kill`, `fuser -k`, or `pm2` commands against it.
 - **Never** start your own server on port `4321`. If you need a dev server for

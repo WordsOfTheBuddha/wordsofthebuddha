@@ -16,6 +16,7 @@ import {
 	silentDevReloadViteConfig,
 } from "./src/integrations/silentDevReload.mjs";
 import { mermaidVendorVitePlugin } from "./scripts/copy-mermaid-vendor.mjs";
+import { contentImagesVitePlugin } from "./src/utils/copyContentImages.mjs";
 import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
 
 const mnVaggaRedirects = Object.fromEntries(
@@ -86,7 +87,7 @@ export default defineConfig({
 
 	vite: {
 		...silentDevReloadViteConfig(),
-		plugins: [mermaidVendorVitePlugin()],
+		plugins: [mermaidVendorVitePlugin(), contentImagesVitePlugin()],
 		optimizeDeps: {
 			include: ["rangy"],
 		},
