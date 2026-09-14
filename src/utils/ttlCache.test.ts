@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { createTtlCache } from "./ttlCache";
+import { createTtlCache, isWithinTtl } from "./ttlCache";
 
 describe("ttl cache", () => {
 	it("returns fresh entries and expires them after the ttl", () => {
@@ -38,5 +38,18 @@ describe("ttl cache", () => {
 		cache.set("a", 1);
 		cache.clear();
 		assert.equal(cache.get("a"), null);
+	});
+});
+
+describe("isWithinTtl", () => {
+	it("accepts fresh timestamps and rejects stale or missing ones", () => {
+		assert.equal(isWithinTtl(0, 6_000, 10_000), false);
+		assert.equal(isWithinTtl(5_000, 6_000, 10_000), true);
+		assert.equal(isWithinTtl(4_000, 6_000, 10_000), false);
+		assert.equal(isWithinTtl(10_000, 6_000, 10_000), true);
+	});
+
+	it("defaults to Date.now", () => {
+		assert.equal(isWithinTtl(Date.now(), 60_000), true);
 	});
 });

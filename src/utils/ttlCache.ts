@@ -6,6 +6,11 @@ export interface TtlCache<T> {
 	clear(): void;
 }
 
+/** True when a timestamp is recent enough to trust for a short-lived read. */
+export function isWithinTtl(at: number, ttlMs: number, now = Date.now()): boolean {
+	return at > 0 && now - at < ttlMs;
+}
+
 /**
  * Small in-process TTL cache for display-only Firestore views. Entries are
  * dropped lazily on read, so a short TTL bounds staleness without timers.
