@@ -5,6 +5,7 @@ import { toResearchJobPublic } from "./aiAskResearchJob";
 import { RESEARCH_REPORT_LENGTH_NOTE_MD } from "./aiAskResearchReportLength";
 import {
 	applyResearchJobToTurn,
+	mergeResearchJobVersionMetadata,
 	findReportBlockElement,
 	isResearchReviseClarifying,
 	nextReviseClarifyDraft,
@@ -837,6 +838,43 @@ describe("applyResearchJobToTurn", () => {
 		assert.equal(turn.report, "## Revised");
 		assert.equal(turn.versionIndex?.[1]?.n, 2);
 		assert.equal(turn.versionIndex?.[1]?.changelog, "Added SN 48.");
+	});
+
+	it("mergeResearchJobVersionMetadata upgrades a stale local v2 heal to the server index", () => {
+		const job = toResearchJobPublic({
+			id: "job-v16",
+			status: "complete",
+			question: "mindfulness?",
+			createdAt: 1,
+			versionIndex: Array.from({ length: 16 }, (_, i) => ({
+				n: i + 1,
+				at: i + 1,
+				instruction: i === 0 ? "" : `revise ${i + 1}`,
+				changelog: i === 0 ? "Original report." : `Change ${i + 1}.`,
+				from: i === 0 ? null : i,
+			})),
+		});
+		const turn: ResearchTurnFields = {
+			question: "mindfulness?",
+			lookingFor: "",
+			queries: [],
+			fallbackQueries: [],
+			offTopic: false,
+			results: [],
+			model: "",
+			reasoning: "",
+			pending: false,
+			phase: "done",
+			report: "# Cached report\n",
+			versionIndex: [
+				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },
+				{ n: 2, at: 2, instruction: "", changelog: "Revised the report.", from: 1 },
+			],
+		};
+		assert.equal(mergeResearchJobVersionMetadata(turn, job), true);
+		assert.equal(turn.versionIndex?.length, 16);
+		assert.equal(turn.versionIndex?.[15]?.n, 16);
+		assert.equal(turn.report, "# Cached report\n");
 	});
 
 	it("recovers v2 when process hops show a revise but the index stayed on v1", () => {

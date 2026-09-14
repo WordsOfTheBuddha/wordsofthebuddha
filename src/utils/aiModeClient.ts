@@ -111,6 +111,7 @@ import {
 	ASK_SHARE_ACCOUNT_TITLE,
 	ASK_NEW_LABEL,
 	applyResearchJobToTurn,
+	mergeResearchJobVersionMetadata,
 	isResearchReviseInProgress,
 	askComposerMeterIsResearch,
 	askFollowPlaceholder,
@@ -249,6 +250,7 @@ import {
 	removeAskHistoryEntriesByJobIds,
 	removeAskHistoryEntriesByQuestions,
 	researchHistoryNeedsJobRestore,
+	researchHistoryNeedsVersionIndexRefresh,
 	resolveAskHistoryTab,
 	shouldRestoreActiveAskThread,
 	shouldRestoreDroppedResearchJob,
@@ -4067,6 +4069,9 @@ export function attachAiMode(options: {
 			.find((turn) => turn.research && (turn.report || "").trim());
 		if (lastResearch && !lastResearch.pending) {
 			restoreStoredPreviewVersion(lastResearch);
+			if (lastResearch.researchJobId) {
+				void refreshResearchJobVersionIndex(lastResearch.researchJobId);
+			}
 		}
 		const pending = turns.find(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
@@ -4128,7 +4133,10 @@ export function attachAiMode(options: {
 				const already =
 					turns.length > 0 &&
 					turns.some((turn) => turn.researchJobId === jobId);
-				if (already) return;
+				if (already) {
+					void refreshResearchJobVersionIndex(jobId);
+					return;
+				}
 				void restoreResearchJob(
 					jobId,
 					sessionEntries.find((item) => item.researchJobId === jobId),
@@ -4427,6 +4435,16 @@ export function attachAiMode(options: {
 		});
 		persistActiveThread();
 		syncLayout();
+		const tip = turns[turns.length - 1];
+		if (
+			tip?.researchJobId &&
+			researchHistoryNeedsVersionIndexRefresh({
+				researchJobId: tip.researchJobId,
+				researchPending: tip.pending,
+			})
+		) {
+			void refreshResearchJobVersionIndex(tip.researchJobId);
+		}
 	}
 
 	function persistSessionFromTurn(turn: AiAskTurn): void {
@@ -6971,6 +6989,29 @@ export function attachAiMode(options: {
 				button.title = sendHint;
 			}
 		});
+	}
+
+	async function refreshResearchJobVersionIndex(jobId: string): Promise<void> {
+		const id = (jobId || "").trim();
+		if (!id) return;
+		const data = await fetchResearchJob(id);
+		if (!data.ok || !data.job) return;
+		let changed = false;
+		const turn = turns.find((item) => item.researchJobId === id);
+		if (turn && mergeResearchJobVersionMetadata(turn, data.job)) {
+			changed = true;
+			if (!turn.pending && !turn.error) persistSessionFromTurn(turn);
+		}
+		const prior = sessionEntries.find((item) => item.researchJobId === id);
+		if (prior) {
+			const entry = { ...prior };
+			if (mergeResearchJobVersionMetadata(entry, data.job)) {
+				sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
+				writeAiAskSession(sessionEntries);
+				changed = true;
+			}
+		}
+		if (changed) syncLayout();
 	}
 
 	async function fetchResearchJob(

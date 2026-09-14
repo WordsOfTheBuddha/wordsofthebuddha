@@ -634,6 +634,13 @@ export function researchHistoryNeedsJobRestore(
 	return n === MAX_ASK_RESULTS && pool > n;
 }
 
+/** Completed research should load `versionIndex` from the job doc, not slim history. */
+export function researchHistoryNeedsVersionIndexRefresh(
+	entry: Pick<AiAskSessionEntry, "researchJobId" | "researchPending">,
+): boolean {
+	return Boolean((entry.researchJobId || "").trim()) && entry.researchPending !== true;
+}
+
 export function readAiAskSession(
 	storage: Storage | null | undefined = defaultStorage(),
 ): AiAskSessionEntry[] {

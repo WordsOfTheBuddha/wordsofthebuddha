@@ -4,8 +4,14 @@ import {
 	attachResearchToHistoryThread,
 	type AiAskSessionEntry,
 } from "./aiAskSession";
-import type { ResearchAskPhase, ResearchJobPublic } from "./aiAskResearchJob";
 import {
+	clipResearchProcessNotes,
+	type ResearchAskPhase,
+	type ResearchJobPublic,
+} from "./aiAskResearchJob";
+import {
+	clipResearchVersionIndex,
+	currentResearchVersionN,
 	healedResearchVersionIndex,
 	type ResearchReviseClarify,
 	type ResearchVersionMeta,
@@ -558,6 +564,38 @@ export function researchVerifyStepText(input: {
 	return { state: "done", text: "Checked first hits" };
 }
 
+/** Merge authoritative version metadata from a job poll without replacing the report. */
+export function mergeResearchJobVersionMetadata<
+	T extends {
+		versionIndex?: ResearchVersionMeta[];
+		processNotes?: string[];
+		researchStartedAt?: number;
+	},
+>(target: T, job: Pick<ResearchJobPublic, "versionIndex" | "processNotes" | "createdAt">): boolean {
+	const jobIndex = clipResearchVersionIndex(job.versionIndex);
+	const localIndex = clipResearchVersionIndex(target.versionIndex);
+	const jobN = jobIndex.length > 0 ? currentResearchVersionN(jobIndex) : 0;
+	const localN = localIndex.length > 0 ? currentResearchVersionN(localIndex) : 0;
+	const jobNotes = clipResearchProcessNotes(job.processNotes);
+	const localNotes = clipResearchProcessNotes(target.processNotes);
+	const takeIndex =
+		jobIndex.length > 0 && (jobN > localN || jobIndex.length > localIndex.length);
+	const takeNotes = jobNotes.length > localNotes.length;
+	if (!takeIndex && !takeNotes) return false;
+	const processNotes = takeNotes ? jobNotes : target.processNotes;
+	if (takeIndex) {
+		target.versionIndex = healedResearchVersionIndex({
+			versionIndex: jobIndex,
+			processNotes,
+			createdAt: job.createdAt ?? target.researchStartedAt,
+		});
+	}
+	if (takeNotes) {
+		target.processNotes = jobNotes;
+	}
+	return true;
+}
+
 export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	turn: T,
 	job: ResearchJobPublic,
@@ -588,14 +626,13 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 	turn.progressNote = job.progressNote || "";
 	turn.processNotes = job.processNotes || [];
 	turn.reviseClarify = nextReviseClarifyDraft(turn.reviseClarify, job.reviseClarify);
-	turn.versionIndex = healedResearchVersionIndex({
-		versionIndex:
-			Array.isArray(job.versionIndex) && job.versionIndex.length > 0
-				? job.versionIndex
-				: turn.versionIndex,
-		processNotes: turn.processNotes,
-		createdAt: turn.researchStartedAt,
-	});
+	mergeResearchJobVersionMetadata(turn, job);
+	if (!turn.versionIndex?.length) {
+		turn.versionIndex = healedResearchVersionIndex({
+			processNotes: turn.processNotes,
+			createdAt: turn.researchStartedAt,
+		});
+	}
 	if (typeof job.candidateCount === "number" && job.candidateCount > 0) {
 		turn.rerankCandidateCount = job.candidateCount;
 	}

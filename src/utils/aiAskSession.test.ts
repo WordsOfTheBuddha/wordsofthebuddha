@@ -33,6 +33,7 @@ import {
 	removeAskHistoryEntriesByQuestions,
 	isAskHistoryDocumentSizeError,
 	researchHistoryNeedsJobRestore,
+	researchHistoryNeedsVersionIndexRefresh,
 	sanitizeAskHistoryEntry,
 	slimAskHistoryEntriesForSync,
 	slimAskHistoryEntryForSync,
@@ -154,6 +155,27 @@ describe("sanitizeAskHistoryEntry research", () => {
 		assert.equal(slim.report, undefined);
 		assert.equal(slim.researchJobId, clean.researchJobId);
 		assert.equal(researchHistoryNeedsJobRestore(slim), true);
+	});
+
+	it("flags completed research for a version-index refresh from the job doc", () => {
+		assert.equal(
+			researchHistoryNeedsVersionIndexRefresh({
+				researchJobId: "job-1",
+				researchPending: false,
+			}),
+			true,
+		);
+		assert.equal(
+			researchHistoryNeedsVersionIndexRefresh({
+				researchJobId: "job-1",
+				researchPending: true,
+			}),
+			false,
+		);
+		assert.equal(
+			researchHistoryNeedsVersionIndexRefresh({ researchJobId: "", researchPending: false }),
+			false,
+		);
 	});
 
 	it("round-trips in-progress and unread research", () => {
