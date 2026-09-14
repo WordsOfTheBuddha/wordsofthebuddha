@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2872" width="920" height="2872" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2750" width="920" height="2750" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
   <title id="title">MN 70 Kīṭāgiri Sutta — At Kīṭāgiri</title>
-  <desc id="desc">Discourse illustration for MN 70: The discipline of eating only during the day, the discernment of feelings by spiritual consequence, who must act with diligence, the seven kinds of persons, the gradual twelve-step cascade to final knowledge, and the unyielding resolve of the faithful disciple.</desc>
+  <desc id="desc">Discourse illustration for MN 70: The discipline of eating only during the day, the discernment of feelings by spiritual consequence, who must act with diligence among seven kinds of persons, the gradual twelve-step cascade to final knowledge, and the unyielding resolve of the faithful disciple.</desc>
 
   <defs>
     <!-- Background vertical gradient -->
@@ -57,11 +57,11 @@
     <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#ffd700" stop-opacity="0.22" />
       <stop offset="55%" stop-color="#c8a040" stop-opacity="0.08" />
-      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0.0" />
     </radialGradient>
     <radialGradient id="bannerGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#60a088" stop-opacity="0.12" />
-      <stop offset="100%" stop-color="#60a088" stop-opacity="0" />
+      <stop offset="100%" stop-color="#60a088" stop-opacity="0.0" />
     </radialGradient>
 
     <!-- Filters -->
@@ -80,13 +80,103 @@
     <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
       <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
     </filter>
+
+    <symbol id="icon-oil-lamp" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.85) translate(0, 1.5)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <g stroke="#c8a040" stroke-width="0.6" opacity="0.5">
+            <path d="M -13 -4 A 13 13 0 0 1 -8.5 -10" />
+            <path d="M 13 -4 A 13 13 0 0 0 8.5 -10" />
+            <path d="M -9.5 -12.5 A 13 13 0 0 1 -3 -15" />
+            <path d="M 9.5 -12.5 A 13 13 0 0 0 3 -15" />
+          </g>
+          <path d="M 0 -11 C 3.6 -7, 4.6 -3, 2.2 0.4 C 1 2, -1 2, -2.2 0.4 C -4.6 -3, -3.6 -7, 0 -11 Z" stroke="#ffd700" stroke-width="1" />
+          <line x1="0" y1="0.4" x2="0" y2="3.4" stroke="#c8a040" stroke-width="0.8" />
+          <line x1="-11" y1="3.4" x2="11" y2="3.4" stroke="#c8a040" stroke-width="0.9" />
+          <path d="M -9 3.4 C -8 9.5, -4.5 12, 0 12 C 4.5 12, 8 9.5, 9 3.4" stroke="#c8a040" stroke-width="1" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-head-on-fire" viewBox="0 0 24 24">
+      <g transform="translate(12, 13) scale(0.4185) translate(-460, -995)">
+        <g opacity="0.95">
+          <path d="M460,968 Q453,988 448,1001 Q455,996 460,984 Q465,996 472,1001 Q467,988 460,968 Z" fill="#80c0a0" opacity="0.95" />
+          <path d="M450,976 Q445,990 442,999 Q448,994 452,986 Z" fill="#98d0b8" opacity="0.7" />
+          <path d="M470,976 Q475,990 478,999 Q472,994 468,986 Z" fill="#98d0b8" opacity="0.7" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-cessation-vessel" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.71231) translate(0, 5.475)">
+        <g opacity="0.85" stroke="#c8a040" fill="none" stroke-linecap="round">
+          <ellipse cx="0" cy="-2" rx="8" ry="11" fill="#c8a040" fill-opacity="0.06" stroke-width="0.7" />
+          <circle cx="0" cy="-16" r="4" stroke-width="0.6" />
+          <line x1="-4" y1="-6" x2="4" y2="-6" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+          <line x1="-5" y1="0" x2="5" y2="0" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+          <line x1="-4" y1="6" x2="4" y2="6" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-wise-attention" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.8381) translate(-14, -12)">
+        <line x1="2" y1="14" x2="26" y2="14" stroke="#c8a040" stroke-width="1.2" stroke-linecap="round" />
+        <line x1="6" y1="20" x2="22" y2="20" stroke="#c8a040" stroke-width="0.9" stroke-linecap="round" />
+        <circle cx="14" cy="8" r="4" fill="none" stroke="#ffd700" stroke-width="0.9" opacity="0.7" />
+      </g>
+    </symbol>
+    <symbol id="icon-space-base" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.28) translate(-10, -10)">
+        <circle cx="10" cy="10" r="8" fill="none" stroke="#80c0a0" stroke-width="0.5" stroke-dasharray="2,2" />
+        <circle cx="10" cy="10" r="4" fill="none" stroke="#80c0a0" stroke-width="0.4" />
+      </g>
+    </symbol>
+    <symbol id="icon-streaming-radiance" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.03024) translate(-10, -8)">
+        <circle cx="10" cy="10" r="4" fill="none" stroke="#80c0a0" stroke-width="0.6" />
+        <line x1="10" y1="2" x2="10" y2="-2" stroke="#98d0b8" stroke-width="0.5" />
+        <line x1="16" y1="5" x2="19" y2="2" stroke="#98d0b8" stroke-width="0.5" />
+        <line x1="16" y1="15" x2="19" y2="18" stroke="#98d0b8" stroke-width="0.5" />
+        <line x1="4" y1="5" x2="1" y2="2" stroke="#98d0b8" stroke-width="0.5" />
+        <line x1="4" y1="15" x2="1" y2="18" stroke="#98d0b8" stroke-width="0.5" />
+      </g>
+    </symbol>
+    <symbol id="icon-rooted-faith" viewBox="0 0 24 24">
+      <g fill="none" stroke="#80c0a0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 12 3 L 12 15" />
+        <path d="M 8 3 L 16 3" stroke-width="0.9" />
+        <circle cx="12" cy="3" r="1.2" fill="#98d0b8" stroke="none" />
+        <circle cx="12" cy="15" r="1.9" />
+        <path d="M 10.5 16 L 8 19 L 6 21" stroke-width="0.9" />
+        <path d="M 12 16 L 12 21" stroke-width="0.9" />
+        <path d="M 13.5 16 L 16 19 L 18 21" stroke-width="0.9" />
+      </g>
+    </symbol>
+    <symbol id="icon-five-faculties" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g opacity="0.85" stroke="#80c0a0" fill="none" stroke-linecap="round">
+          <line x1="-9" y1="8" x2="-9" y2="3" stroke-width="1.3" />
+          <line x1="-4.5" y1="8" x2="-4.5" y2="0" stroke-width="1.3" />
+          <line x1="0" y1="8" x2="0" y2="-3" stroke-width="1.3" />
+          <line x1="4.5" y1="8" x2="4.5" y2="-6" stroke-width="1.3" />
+          <line x1="9" y1="8" x2="9" y2="-9" stroke-width="1.3" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-relatives-heart" viewBox="0 0 24 24">
+      <g transform="translate(12, 11) scale(1.02)">
+        <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 0 5 C -8 -2 -8 -6 -4 -6 C -1 -6 0 -3 0 -3 C 0 -3 1 -6 4 -6 C 8 -6 8 -2 0 5 Z" stroke-width="0.9" />
+          <path d="M -4 8 Q -2 6 0 8 Q 2 10 4 8" stroke-width="0.6" />
+        </g>
+      </g>
+    </symbol>
   </defs>
 
   <!-- Ambient background canvas -->
-  <rect width="920" height="2872" fill="url(#bg)" />
+  <rect width="920" height="2750" fill="url(#bg)" />
   <ellipse cx="460" cy="300" rx="340" ry="160" fill="#60a088" opacity="0.025" />
-  <ellipse cx="460" cy="1140" rx="360" ry="200" fill="#7888a0" opacity="0.02" />
-  <ellipse cx="460" cy="2330" rx="340" ry="240" fill="#ffd700" opacity="0.03" />
+  <ellipse cx="460" cy="1287" rx="360" ry="200" fill="#7888a0" opacity="0.02" />
+  <ellipse cx="460" cy="2148" rx="340" ry="240" fill="#ffd700" opacity="0.03" />
 
   <!-- ===================== SECTION 0: HEADER ===================== -->
   <g id="header" transform="translate(0, 0)">
@@ -109,7 +199,7 @@
 
       <!-- Title cluster: icon + two-line title, centered as a unit -->
       <g transform="translate(84, 0)">
-        <g transform="translate(14, 31)" opacity="0.85" filter="url(#iconGlow)">
+        <g transform="translate(14, 25)" opacity="0.85" filter="url(#iconGlow)">
           <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
             <ellipse cx="0" cy="-3" rx="14" ry="5" stroke-width="1.2" />
             <path d="M -14 -3 C -14 5 -10 16 0 18 C 10 16 14 5 14 -3" stroke-width="1.2" />
@@ -144,7 +234,7 @@
 
       <!-- Title cluster: icon + two-line title, centered as a unit -->
       <g transform="translate(82.5, 0)">
-        <g transform="translate(14, 36)" opacity="0.8" filter="url(#iconGlow)">
+        <g transform="translate(14, 30)" opacity="0.8" filter="url(#iconGlow)">
           <g fill="none" stroke="#d0a0a8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M 4 -9 A 9 9 0 1 0 4 9 A 6.5 6.5 0 0 1 4 -9 Z" stroke-width="1.1" />
             <line x1="10" y1="-4" x2="14" y2="-6" stroke-width="0.9" />
@@ -185,66 +275,66 @@
       <!-- Top Premise Banner -->
       <g transform="translate(24, 18)">
         <rect x="0" y="0" width="736" height="52" rx="6" fill="#141e2e" stroke="#c8a040" stroke-opacity="0.3" stroke-width="0.7" />
-        <text x="368" y="22" text-anchor="middle" fill="#c8d8e8" font-size="11.5" font-weight="bold">“Do I teach that whatever one feels, wholesome states grow?” — NO.</text>
+        <text x="368" y="22" text-anchor="middle" fill="#c8d8e8" font-size="11.5" font-weight="bold">“Do I teach that whatever one feels, wholesome states grow?” — <tspan fill="#f87171">NO.</tspan></text>
         <text x="368" y="40" text-anchor="middle" fill="#c8a040" font-size="10.5" font-style="italic">ñātaṁ diṭṭhaṁ viditaṁ sacchikataṁ phassitaṁ paññāya · known through wisdom</text>
       </g>
 
       <!-- Row 1: Pleasant Feeling (sukha vedanā) -->
       <g id="row-pleasant" transform="translate(24, 84)">
         <rect x="0" y="0" width="736" height="92" rx="6" fill="#162232" stroke="#486888" stroke-opacity="0.35" stroke-width="0.7" />
-        <!-- Droplet icon -->
+        <!-- Droplet icon (original preserved) -->
         <g transform="translate(28, 46) scale(1.1)" opacity="0.85" filter="url(#iconGlow)">
           <path d="M 0 7 C -8 -3 -9 -7 -4 -8 C -1.5 -8.5 0 -7 0 -7 C 0 -7 1.5 -8.5 4 -8 C 9 -7 8 -3 0 7 Z" fill="none" stroke="#90b8d8" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
         </g>
         <text x="52" y="34" fill="#c8d8e8" font-size="12" font-weight="bold">Pleasant</text>
         <text x="52" y="50" fill="#88a8c8" font-size="10" font-style="italic">sukha vedanā</text>
-        <text x="52" y="66" fill="#8ca0b8" font-size="9.5">bodily · mental joy</text>
+        <text x="52" y="66" fill="#8ca0b8" font-size="9.5">bodily ease · pleasure</text>
 
         <!-- Branch A: Abandon -->
         <g transform="translate(208, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#20141e" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome ↑ · Wholesome ↓</text>
-          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.5" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">pajahatha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome <tspan fill="#f472b6" font-weight="bold">▲</tspan> · Wholesome <tspan fill="#94a3b8">▼</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.8" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">(pajahatha)</tspan></text>
         </g>
 
         <!-- Branch B: Abide In -->
         <g transform="translate(470, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#122624" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome ↓ · Wholesome ↑</text>
-          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.5" font-weight="bold">→ ABIDE IN <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">viharatha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome <tspan fill="#94a3b8">▼</tspan> · Wholesome <tspan fill="#5eead4" font-weight="bold">▲</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.8" font-weight="bold">→ ABIDE IN <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">(viharatha)</tspan></text>
         </g>
       </g>
 
       <!-- Row 2: Painful Feeling (dukkha vedanā) -->
       <g id="row-painful" transform="translate(24, 188)">
         <rect x="0" y="0" width="736" height="92" rx="6" fill="#162232" stroke="#486888" stroke-opacity="0.35" stroke-width="0.7" />
-        <!-- Flame icon -->
+        <!-- Flame icon (original preserved) -->
         <g transform="translate(28, 46) scale(0.9)" opacity="0.85" filter="url(#iconGlow)">
           <path d="M 0 10 C -7 8 -9 1 -4 -5 C -2 -8 0 -11 0 -11 C 0 -11 2 -8 4 -5 C 9 1 7 8 0 10 Z" fill="none" stroke="#d09880" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
         </g>
         <text x="52" y="34" fill="#c8d8e8" font-size="12" font-weight="bold">Painful</text>
         <text x="52" y="50" fill="#88a8c8" font-size="10" font-style="italic">dukkha vedanā</text>
-        <text x="52" y="66" fill="#8ca0b8" font-size="9.5">pain · austerity</text>
+        <text x="52" y="66" fill="#8ca0b8" font-size="9.5">bodily pain · displeasure</text>
 
         <!-- Branch A: Abandon -->
         <g transform="translate(208, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#20141e" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome ↑ · Wholesome ↓</text>
-          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.5" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">pajahatha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome <tspan fill="#f472b6" font-weight="bold">▲</tspan> · Wholesome <tspan fill="#94a3b8">▼</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.8" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">(pajahatha)</tspan></text>
         </g>
 
-        <!-- Branch B: Abide In -->
+        <!-- Branch B: Endure (Action distinction preserved) -->
         <g transform="translate(470, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#122624" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome ↓ · Wholesome ↑</text>
-          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.5" font-weight="bold">→ ENDURE <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">adhivāsetha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome <tspan fill="#94a3b8">▼</tspan> · Wholesome <tspan fill="#5eead4" font-weight="bold">▲</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.8" font-weight="bold">→ ENDURE <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">(viharatha)</tspan></text>
         </g>
       </g>
 
       <!-- Row 3: Neither-Painful-Nor-Pleasant Feeling (adukkhamasukha vedanā) -->
       <g id="row-neutral" transform="translate(24, 292)">
         <rect x="0" y="0" width="736" height="92" rx="6" fill="#162232" stroke="#486888" stroke-opacity="0.35" stroke-width="0.7" />
-        <!-- Equanimity balance icon -->
+        <!-- Equanimity balance icon (original preserved) -->
         <g transform="translate(28, 46) scale(0.9)" opacity="0.85" filter="url(#iconGlow)">
           <circle cx="0" cy="0" r="8" fill="none" stroke="#7888a0" stroke-width="1.1" />
           <line x1="-5" y1="0" x2="5" y2="0" stroke="#7888a0" stroke-width="1" />
@@ -256,15 +346,15 @@
         <!-- Branch A: Abandon -->
         <g transform="translate(208, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#20141e" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome ↑ · Wholesome ↓</text>
-          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.5" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">pajahatha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#d098a8" font-size="9.8">Unwholesome <tspan fill="#f472b6" font-weight="bold">▲</tspan> · Wholesome <tspan fill="#94a3b8">▼</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#d07888" font-size="10.8" font-weight="bold">→ ABANDON <tspan fill="#906878" font-size="9.5" font-style="italic" font-weight="normal">(pajahatha)</tspan></text>
         </g>
 
         <!-- Branch B: Abide In -->
         <g transform="translate(470, 16)">
           <rect x="0" y="0" width="248" height="60" rx="4" fill="#122624" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.6" />
-          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome ↓ · Wholesome ↑</text>
-          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.5" font-weight="bold">→ ABIDE IN <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">viharatha</tspan></text>
+          <text x="124" y="24" text-anchor="middle" fill="#90c8b0" font-size="9.8">Unwholesome <tspan fill="#94a3b8">▼</tspan> · Wholesome <tspan fill="#5eead4" font-weight="bold">▲</tspan></text>
+          <text x="124" y="46" text-anchor="middle" fill="#78d0a8" font-size="10.8" font-weight="bold">→ ABIDE IN <tspan fill="#589878" font-size="9.5" font-style="italic" font-weight="normal">(viharatha)</tspan></text>
         </g>
       </g>
 
@@ -279,196 +369,137 @@
     <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">WHO MUST ACT WITH DILIGENCE? · APPAMĀDENA KARAṆĪYAṂ</text>
     <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">“I do not say of all that they have work to do with diligence; nor do I say of all that they have no work to do”</text>
 
-    <!-- Left Card: Arahants (Work Completed) -->
-    <g id="diligence-arahants" transform="translate(68, 66)">
-      <rect x="0" y="0" width="384" height="248" rx="8" fill="url(#cardGold)" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+    <!-- Left Card: No work to do (gold) -->
+    <g id="diligence-complete" transform="translate(68, 66)">
+      <rect x="0" y="0" width="384" height="504" rx="8" fill="url(#cardGold)" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
 
-      <!-- Twin liberation orbs icon -->
-      <g transform="translate(42, 36)" opacity="0.9" filter="url(#iconGlow)">
-        <g stroke="#ffd700" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
-          <ellipse cx="-6" cy="0" rx="6" ry="8" />
-          <ellipse cx="8" cy="0" rx="6" ry="8" />
-          <line x1="0" y1="-4" x2="3" y2="-7" stroke-width="0.8" />
-          <line x1="0" y1="4" x2="3" y2="7" stroke-width="0.8" />
-        </g>
+      <!-- Card Title Group -->
+      <g transform="translate(74, 0)">
+        <use href="#icon-oil-lamp" x="-10" y="16" width="24" height="24" opacity="0.9" filter="url(#iconGlow)" />
+        <text x="32" y="28" fill="#ffd700" font-size="12.5" font-weight="bold">No Work to Do with Diligence</text>
+        <text x="32" y="44" fill="#c8a868" font-size="10.5" font-style="italic">na appamādena karaṇīyaṁ</text>
       </g>
-
-      <text x="68" y="28" fill="#ffd700" font-size="12.5" font-weight="bold">Arahants · Taints Ended</text>
-      <text x="68" y="44" fill="#c8a868" font-size="10.5" font-style="italic">arahanto khīṇāsavā</text>
 
       <line x1="20" y1="58" x2="364" y2="58" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.6" />
+      <text x="192" y="78" text-anchor="middle" fill="#e0d0b0" font-size="11">Completed training; incapable of negligence</text>
 
-      <text x="24" y="80" fill="#e0d0b0" font-size="11.2" font-weight="bold">No more work to be done with diligence:</text>
-      <g id="arahant-qualities" transform="translate(24, 98)" font-size="10.6">
-        <text x="0" y="0" fill="#c0b8a0">• Completed what had to be done <tspan fill="#888068" font-style="italic">(katakaraṇīyā)</tspan></text>
-        <text x="0" y="18" fill="#c0b8a0">• Laid down the heavy burden <tspan fill="#888068" font-style="italic">(ohitabhārā)</tspan></text>
-        <text x="0" y="36" fill="#c0b8a0">• Reached the supreme goal <tspan fill="#888068" font-style="italic">(anuppattasadatthā)</tspan></text>
-        <text x="0" y="54" fill="#c0b8a0">• Fetter of existence destroyed <tspan fill="#888068" font-style="italic">(parikkhīṇabhavasaṁyojanā)</tspan></text>
-        <text x="0" y="72" fill="#c0b8a0">• Liberated through right knowledge <tspan fill="#888068" font-style="italic">(sammadaññāvimuttā)</tspan></text>
+      <!-- Person 1 -->
+      <g id="person-both-ways" transform="translate(40, 96)">
+        <use href="#icon-cessation-vessel" x="0" y="-1" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="26" y="14" fill="#ffd700" font-size="11.2" font-weight="bold">Liberated in Both Ways <tspan fill="#c8a868" font-weight="normal" font-style="italic">(ubhatobhāgavimutta)</tspan></text>
+        <text x="30" y="31" fill="#c0b8a0" font-size="9.5">• Dwells in formless liberations <tspan fill="#888068" font-style="italic">(santā vimokkhā viharati)</tspan></text>
+        <text x="30" y="47" fill="#c0b8a0" font-size="9.5">• Taints are fully exhausted <tspan fill="#888068" font-style="italic">(āsavā parikkhīṇā)</tspan></text>
       </g>
 
-      <line x1="20" y1="190" x2="364" y2="190" stroke="#c8a040" stroke-opacity="0.22" stroke-width="0.6" />
-      <text x="192" y="210" text-anchor="middle" fill="#ffd700" font-size="11" font-weight="bold">Work with diligence is finished</text>
-      <text x="192" y="226" text-anchor="middle" fill="#c8a040" font-size="10.2" font-style="italic">kataṁ tesaṁ appamādena · abhabbā te pamajjituṁ</text>
-    </g>
+      <!-- Person 2 -->
+      <g id="person-wisdom" transform="translate(40, 164)">
+        <use href="#icon-wise-attention" x="0" y="-1" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="26" y="14" fill="#ffd700" font-size="11.2" font-weight="bold">Liberated by Wisdom <tspan fill="#c8a868" font-weight="normal" font-style="italic">(paññāvimutta)</tspan></text>
+        <text x="30" y="31" fill="#c0b8a0" font-size="9.5">• Does not contact formless liberations <tspan fill="#888068" font-style="italic">(na kāyena phusitvā)</tspan></text>
+        <text x="30" y="47" fill="#c0b8a0" font-size="9.5">• Taints are fully exhausted <tspan fill="#888068" font-style="italic">(āsavā parikkhīṇā)</tspan></text>
+      </g>
 
-    <!-- Right Card: Trainees (Work Remaining) -->
-    <g id="diligence-trainees" transform="translate(468, 66)">
-      <rect x="0" y="0" width="384" height="248" rx="8" fill="url(#cardTeal)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <!-- Balanced LHS Accomplishment Panel -->
+      <g id="panel-work-done" transform="translate(14, 236)">
+        <rect x="0" y="0" width="356" height="194" rx="6" fill="#1b160e" stroke="#c8a040" stroke-opacity="0.32" stroke-width="0.7" />
+        <text x="178" y="20" text-anchor="middle" fill="#ffd700" font-size="9.8" font-weight="bold" letter-spacing="1.2">THE WORK IS DONE · KATAṀ APPAMĀDENA</text>
+        <text x="178" y="44" text-anchor="middle" fill="#e0d0b0" font-size="10.2" font-style="italic">“For such a bhikkhu, I do not say that he still has work</text>
+        <text x="178" y="60" text-anchor="middle" fill="#e0d0b0" font-size="10.2" font-style="italic">to do with diligence. Why is that? Because his work with</text>
+        <text x="178" y="76" text-anchor="middle" fill="#e0d0b0" font-size="10.2" font-style="italic">diligence has been done. He is incapable of negligence.”</text>
 
-      <!-- Four right efforts icon -->
-      <g transform="translate(40, 36)" opacity="0.85" filter="url(#iconGlow)">
-        <g stroke="#80c0a0" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M -8 5 L -8 -5 L -4 -1 M -8 -5 L -12 -1" stroke-width="1" />
-          <path d="M 0 5 L 0 -5 L 4 -1 M 0 -5 L -4 -1" stroke-width="1" opacity="0.6" />
-          <path d="M 8 5 L 8 -5 L 12 -1 M 8 -5 L 4 -1" stroke-width="1" />
+        <line x1="20" y1="92" x2="336" y2="92" stroke="#c8a040" stroke-opacity="0.22" stroke-width="0.5" />
+        <g transform="translate(0, 102)">
+          <text x="178" y="14" fill="#c0b8a0" text-anchor="middle" font-size="9.4">Taints fully exhausted <tspan fill="#888068" font-style="italic">(āsavā parikkhīṇā honti)</tspan></text>
+          <text x="178" y="32" fill="#c0b8a0" text-anchor="middle" font-size="9.4">Directly known and realized <tspan fill="#888068" font-style="italic">(sayaṁ abhiññā sacchikatvā)</tspan></text>
+          <text x="178" y="50" fill="#c0b8a0" text-anchor="middle" font-size="9.4">Spiritual culmination reached <tspan fill="#888068" font-style="italic">(brahmacariyapariyosānaṁ)</tspan></text>
+          <text x="178" y="68" fill="#c0b8a0" text-anchor="middle" font-size="9.4">Incapable of negligence <tspan fill="#888068" font-style="italic">(abhabbo so pamajjituṁ)</tspan></text>
         </g>
       </g>
 
-      <text x="68" y="28" fill="#80c0a0" font-size="12.5" font-weight="bold">Trainees · Striving for Liberation</text>
-      <text x="68" y="44" fill="#6a9888" font-size="10.5" font-style="italic">sekkhā appattamānasā</text>
+      <line x1="20" y1="440" x2="364" y2="440" stroke="#c8a040" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="192" y="462" text-anchor="middle" fill="#ffd700" font-size="10.5" font-weight="bold">Work with diligence is finished</text>
+      <text x="192" y="480" text-anchor="middle" fill="#c8a040" font-size="9" font-style="italic">kataṁ tassa appamādena · abhabbo so pamajjituṁ</text>
+    </g>
+
+    <!-- Right Card: Work remains (teal) -->
+    <g id="diligence-remaining" transform="translate(468, 66)">
+      <rect x="0" y="0" width="384" height="504" rx="8" fill="url(#cardTeal)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <!-- Card Title Group -->
+      <g transform="translate(62, 0)">
+        <use href="#icon-head-on-fire" x="0" y="16" width="28" height="28" opacity="0.95" filter="url(#iconGlow)" />
+        <text x="42" y="28" fill="#80c0a0" font-size="12.5" font-weight="bold">Work to Do with Diligence</text>
+        <text x="42" y="44" fill="#6a9888" font-size="10.5" font-style="italic">appamādena karaṇīyaṁ</text>
+      </g>
 
       <line x1="20" y1="58" x2="364" y2="58" stroke="#60a088" stroke-opacity="0.25" stroke-width="0.6" />
+      <text x="182" y="78" text-anchor="middle" fill="#c8e0d8" font-size="11">Five trainees who still have work to do</text>
 
-      <text x="24" y="80" fill="#c8e0d8" font-size="11.2" font-weight="bold">Still have work to do with diligence:</text>
-      <g id="trainee-practice" transform="translate(24, 98)" font-size="10.6">
-        <text x="0" y="0" fill="#a0c0b8">Striving for unsurpassed security from bondage <tspan fill="#689888" font-style="italic">(yogakkhema)</tspan></text>
-        <text x="0" y="24" fill="#80b8a0" font-weight="bold">The 3 Essential Supportive Conditions:</text>
-        <text x="10" y="42" fill="#a0c0b8">1. Suitable dwelling places <tspan fill="#689888" font-style="italic">(anulomikāni senāsanāni)</tspan></text>
-        <text x="10" y="60" fill="#a0c0b8">2. Associating with good friends <tspan fill="#689888" font-style="italic">(kalyāṇamitte)</tspan></text>
-        <text x="10" y="78" fill="#a0c0b8">3. Balancing spiritual faculties <tspan fill="#689888" font-style="italic">(indriyāni samannānayamānā)</tspan></text>
+      <!-- Person 3 -->
+      <g id="person-body-witness" transform="translate(34, 88)">
+        <use href="#icon-space-base" x="0" y="0" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="25" y="13" fill="#80c0a0" font-size="11" font-weight="bold">Body-Witness <tspan fill="#6a9888" font-weight="normal" font-style="italic">(kāyasakkhī)</tspan></text>
+        <text x="29" y="28" fill="#a0c0b8" font-size="9.4">• Contacts formless liberations <tspan fill="#689888" font-style="italic">(kāyena phusitvā)</tspan></text>
+        <text x="29" y="43" fill="#a0c0b8" font-size="9.4">• Taints are partially exhausted <tspan fill="#689888" font-style="italic">(ekacce āsavā parikkhīṇā)</tspan></text>
       </g>
 
-      <line x1="20" y1="190" x2="364" y2="190" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
-      <text x="192" y="210" text-anchor="middle" fill="#80c0a0" font-size="11" font-weight="bold">Fruit of diligence: Awakening here and now</text>
-      <text x="192" y="228" text-anchor="middle" fill="#6a9888" font-size="10.2" font-style="italic">diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja vihareyyuṁ</text>
-    </g>
-  </g>
-
-  <!-- ===================== SECTION 4: THE SEVEN KINDS OF PERSONS ===================== -->
-  <g id="seven-persons" transform="translate(0, 1338)">
-    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="1.0" />
-    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE SEVEN KINDS OF PERSONS · SATTA PUGGALĀ</text>
-    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Two have finished; five still train with diligence</text>
-
-    <!-- Outer Container -->
-    <g id="persons-container" transform="translate(68, 66)">
-      <rect x="0" y="0" width="784" height="350" rx="8" fill="url(#cardNeutral)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
-
-      <!-- BUCKET 1: The 2 arahants (done with diligence) -->
-      <g id="tier-arahants" transform="translate(18, 16)">
-        <rect x="0" y="0" width="748" height="132" rx="6" fill="#1b2420" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.8" />
-        <text x="18" y="22" fill="#ffd700" font-size="10.5" font-weight="bold" letter-spacing="1">I · TAINTS FULLY ENDED — 2 ARAHANTS</text>
-        <g transform="translate(646, 8)">
-          <rect x="0" y="0" width="84" height="18" rx="9" fill="#c8a040" fill-opacity="0.14" stroke="#ffd700" stroke-opacity="0.5" stroke-width="0.7" />
-          <text x="42" y="13" text-anchor="middle" fill="#ffd700" font-size="8.5" font-weight="bold">NO MORE WORK</text>
-        </g>
-        <line x1="18" y1="30" x2="730" y2="30" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.5" />
-
-        <!-- Person 1: Ubhatobhāgavimutta -->
-        <g transform="translate(24, 40)">
-          <!-- Formless + Wisdom combined icon -->
-          <g transform="translate(12, 24)" opacity="0.85" filter="url(#iconGlow)">
-            <circle cx="0" cy="0" r="9" fill="none" stroke="#ffd700" stroke-width="0.9" stroke-dasharray="2,2" />
-            <circle cx="0" cy="0" r="4.5" fill="none" stroke="#ffd700" stroke-width="0.8" />
-          </g>
-          <text x="32" y="14" fill="#ffd700" font-size="11.5" font-weight="bold">1. Both Ways Liberated</text>
-          <text x="32" y="30" fill="#c8a868" font-size="10" font-style="italic">ubhatobhāgavimutta</text>
-          <text x="32" y="48" fill="#c8d8e8" font-size="9.8">• Touches formless with body <tspan fill="#8898a8" font-style="italic">kāyena phusitvā</tspan></text>
-          <text x="32" y="64" fill="#c8d8e8" font-size="9.8">• Taints ended by wisdom <tspan fill="#8898a8" font-style="italic">āsavā parikkhīṇā</tspan></text>
-        </g>
-
-        <!-- Divider line -->
-        <line x1="374" y1="38" x2="374" y2="122" stroke="#c8a040" stroke-opacity="0.2" stroke-width="0.6" />
-
-        <!-- Person 2: Paññāvimutta -->
-        <g transform="translate(394, 40)">
-          <!-- Wisdom icon: concentric contemplation rings (mind-contemplation motif) -->
-          <g transform="translate(12, 24)" opacity="0.85" filter="url(#iconGlow)">
-            <g fill="none" stroke="#ffd700" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="0" cy="0" r="9" stroke-width="0.9" />
-              <circle cx="0" cy="0" r="3" stroke-width="0.9" />
-            </g>
-          </g>
-          <text x="32" y="14" fill="#ffd700" font-size="11.5" font-weight="bold">2. Wisdom Liberated</text>
-          <text x="32" y="30" fill="#c8a868" font-size="10" font-style="italic">paññāvimutta</text>
-          <text x="32" y="48" fill="#c8d8e8" font-size="9.8">• No formless bodily contact</text>
-          <text x="32" y="64" fill="#c8d8e8" font-size="9.8">• Taints ended by wisdom <tspan fill="#8898a8" font-style="italic">āsavā parikkhīṇā</tspan></text>
-        </g>
+      <!-- Person 4 -->
+      <g id="person-through-view" transform="translate(34, 138)">
+        <use href="#icon-streaming-radiance" x="0" y="-1" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="25" y="13" fill="#80c0a0" font-size="11" font-weight="bold">Attained Through View <tspan fill="#6a9888" font-weight="normal" font-style="italic">(diṭṭhippatta)</tspan></text>
+        <text x="29" y="28" fill="#a0c0b8" font-size="9.4">• Dhamma penetrated with wisdom <tspan fill="#689888" font-style="italic">(dhammā paññāya vodiṭṭhā)</tspan></text>
+        <text x="29" y="43" fill="#a0c0b8" font-size="9.4">• Taints are partially exhausted <tspan fill="#689888" font-style="italic">(ekacce āsavā parikkhīṇā)</tspan></text>
       </g>
 
-      <!-- BUCKET 2: The 5 who still train (one shared work) -->
-      <g id="bucket-remaining" transform="translate(18, 158)">
-        <rect x="0" y="0" width="748" height="176" rx="6" fill="#14202a" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.8" />
-        <text x="18" y="22" fill="#80c0a0" font-size="10.5" font-weight="bold" letter-spacing="1">II · TAINTS PARTLY ENDED — 5 PERSONS</text>
-        <g transform="translate(642, 8)">
-          <rect x="0" y="0" width="88" height="18" rx="9" fill="#60a088" fill-opacity="0.14" stroke="#80c0a0" stroke-opacity="0.5" stroke-width="0.7" />
-          <text x="44" y="13" text-anchor="middle" fill="#80c0a0" font-size="8.5" font-weight="bold">WORK REMAINS</text>
-        </g>
-        <line x1="18" y1="30" x2="730" y2="30" stroke="#60a088" stroke-opacity="0.25" stroke-width="0.5" />
-
-        <!-- Person 3: Kāyasakkhī -->
-        <g transform="translate(14, 42)">
-          <text x="8" y="0" fill="#80c0a0" font-size="10" font-weight="bold">3. Body-Witness</text>
-          <text x="8" y="16" fill="#6a9888" font-size="9" font-style="italic">kāyasakkhī</text>
-          <text x="8" y="32" fill="#a0b8c8" font-size="9.2">• formless touched</text>
-          <text x="8" y="46" fill="#688878" font-size="8.8" font-style="italic">kāyena phusitvā</text>
-          <text x="8" y="60" fill="#a0b8c8" font-size="9.2">• partly ended</text>
-        </g>
-
-        <line x1="154" y1="42" x2="154" y2="114" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
-
-        <!-- Person 4: Diṭṭhippatta -->
-        <g transform="translate(160, 42)">
-          <text x="8" y="0" fill="#80c0a0" font-size="10" font-weight="bold">4. Attained by View</text>
-          <text x="8" y="16" fill="#6a9888" font-size="9" font-style="italic">diṭṭhippatta</text>
-          <text x="8" y="32" fill="#a0b8c8" font-size="9.2">• Dhamma seen</text>
-          <text x="8" y="46" fill="#688878" font-size="8.8" font-style="italic">vodiṭṭhā · penetrated</text>
-          <text x="8" y="60" fill="#a0b8c8" font-size="9.2">• partly ended</text>
-        </g>
-
-        <line x1="300" y1="42" x2="300" y2="114" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
-
-        <!-- Person 5: Saddhāvimutta -->
-        <g transform="translate(306, 42)">
-          <text x="8" y="0" fill="#80c0a0" font-size="10" font-weight="bold">5. Attained by Faith</text>
-          <text x="8" y="16" fill="#6a9888" font-size="9" font-style="italic">saddhāvimutta</text>
-          <text x="8" y="32" fill="#a0b8c8" font-size="9.2">• faith rooted</text>
-          <text x="8" y="46" fill="#688878" font-size="8.8" font-style="italic">mūlajātā patiṭṭhitā</text>
-          <text x="8" y="60" fill="#a0b8c8" font-size="9.2">• partly ended</text>
-        </g>
-
-        <line x1="446" y1="42" x2="446" y2="114" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
-
-        <!-- Person 6: Dhammānusārī -->
-        <g transform="translate(452, 42)">
-          <text x="8" y="0" fill="#80c0a0" font-size="10" font-weight="bold">6. Dhamma-Follower</text>
-          <text x="8" y="16" fill="#6a9888" font-size="9" font-style="italic">dhammānusārī</text>
-          <text x="8" y="32" fill="#a0b8c8" font-size="9.2">• reflects Dhamma</text>
-          <text x="8" y="46" fill="#688878" font-size="8.8" font-style="italic">nijjhānaṁ khamanti</text>
-          <text x="8" y="60" fill="#a0b8c8" font-size="9.2">• partly ended</text>
-        </g>
-
-        <line x1="592" y1="42" x2="592" y2="114" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
-
-        <!-- Person 7: Saddhānusārī -->
-        <g transform="translate(598, 42)">
-          <text x="8" y="0" fill="#80c0a0" font-size="10" font-weight="bold">7. Faith-Follower</text>
-          <text x="8" y="16" fill="#6a9888" font-size="9" font-style="italic">saddhānusārī</text>
-          <text x="8" y="32" fill="#a0b8c8" font-size="9.2">• faith + love</text>
-          <text x="8" y="46" fill="#688878" font-size="8.8" font-style="italic">saddhāmattaṁ pema</text>
-          <text x="8" y="60" fill="#a0b8c8" font-size="9.2">• partly ended</text>
-        </g>
-
-        <line x1="18" y1="122" x2="730" y2="122" stroke="#60a088" stroke-opacity="0.25" stroke-width="0.5" />
-        <text x="374" y="142" text-anchor="middle" fill="#80c0a0" font-size="10">Same three supports as the trainees above ↑ dwellings · good friends · balanced faculties</text>
-        <text x="374" y="160" text-anchor="middle" fill="#688878" font-size="9" font-style="italic">6–7 bear the five faculties in seed form</text>
+      <!-- Person 5 -->
+      <g id="person-through-faith" transform="translate(34, 188)">
+        <use href="#icon-rooted-faith" x="0" y="2" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="25" y="13" fill="#80c0a0" font-size="11" font-weight="bold">Attained Through Faith <tspan fill="#6a9888" font-weight="normal" font-style="italic">(saddhāvimutta)</tspan></text>
+        <text x="29" y="28" fill="#a0c0b8" font-size="9.4">• Faith in Tathāgata firmly rooted <tspan fill="#689888" font-style="italic">(tathāgate saddhā niviṭṭhā mūlajātā)</tspan></text>
+        <text x="29" y="43" fill="#a0c0b8" font-size="9.4">• Taints are partially exhausted <tspan fill="#689888" font-style="italic">(ekacce āsavā parikkhīṇā)</tspan></text>
       </g>
+
+      <!-- Person 6 -->
+      <g id="person-dhamma-follower" transform="translate(34, 238)">
+        <use href="#icon-five-faculties" x="0" y="-1" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="25" y="13" fill="#80c0a0" font-size="11" font-weight="bold">Dhamma-Follower <tspan fill="#6a9888" font-weight="normal" font-style="italic">(dhammānusārī)</tspan></text>
+        <text x="29" y="28" fill="#a0c0b8" font-size="9.4">• Accepts Dhamma with wisdom <tspan fill="#689888" font-style="italic">(paññāya mattaso nijjhānaṁ)</tspan></text>
+        <text x="29" y="43" fill="#a0c0b8" font-size="9.4">• Endowed with five faculties <tspan fill="#689888" font-style="italic">(pañcindriyāni)</tspan></text>
+      </g>
+
+      <!-- Person 7 -->
+      <g id="person-faith-follower" transform="translate(34, 288)">
+        <use href="#icon-relatives-heart" x="0" y="2" width="20" height="20" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="25" y="13" fill="#80c0a0" font-size="11" font-weight="bold">Faith-Follower <tspan fill="#6a9888" font-weight="normal" font-style="italic">(saddhānusārī)</tspan></text>
+        <text x="29" y="28" fill="#a0c0b8" font-size="9.4">• Faith and love for the Tathāgata <tspan fill="#689888" font-style="italic">(tathāgate saddhāmattaṁ pemamattaṁ)</tspan></text>
+        <text x="29" y="43" fill="#a0c0b8" font-size="9.4">• Endowed with five faculties <tspan fill="#689888" font-style="italic">(pañcindriyāni)</tspan></text>
+      </g>
+
+      <!-- Fruit of Diligence Bottom Panel: Clear 3 Supports -> Attainable Fruit Flow -->
+      <g id="panel-fruit-of-diligence" transform="translate(14, 342)">
+        <rect x="0" y="0" width="356" height="88" rx="6" fill="#102220" stroke="#60a088" stroke-opacity="0.35" stroke-width="0.7" />
+        <text x="178" y="15" text-anchor="middle" fill="#80c0a0" font-size="9.5" font-weight="bold" letter-spacing="1">THE FRUIT OF DILIGENCE · APPAMĀDAPHALAṂ</text>
+
+        <!-- The 3 Supports -->
+        <text x="178" y="30" text-anchor="middle" fill="#a0c0b8" font-size="8.8">Through three supports in practice:</text>
+        <text x="178" y="43" text-anchor="middle" fill="#cbd5e1" font-size="8.4">Proper dwellings · noble friends · balanced faculties</text>
+        <text x="178" y="55" text-anchor="middle" fill="#689888" font-size="8.1" font-style="italic">anulomikāni senāsanāni · kalyāṇamitte · indriyāni</text>
+
+        <line x1="24" y1="62" x2="332" y2="62" stroke="#60a088" stroke-opacity="0.25" stroke-width="0.5" />
+
+        <!-- The Actual Fruit: Supreme Culmination Realized Here and Now -->
+        <text x="178" y="73" text-anchor="middle" fill="#5eead4" font-size="8.6" font-weight="bold">They may realize here &amp; now the supreme spiritual culmination</text>
+        <text x="178" y="83" text-anchor="middle" fill="#78d0a8" font-size="7.8" font-style="italic">brahmacariyapariyosānaṁ diṭṭheva dhamme sacchikatvā</text>
+      </g>
+
+      <line x1="20" y1="440" x2="364" y2="440" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="192" y="462" text-anchor="middle" fill="#80c0a0" font-size="10.5" font-weight="bold">Seeing this fruit of diligence, I say: “Work remains”</text>
+      <text x="192" y="480" text-anchor="middle" fill="#6a9888" font-size="9" font-style="italic">Imaṁ appamādaphalaṁ sampassamāno ‘appamādena karaṇīyan’ti vadāmi</text>
     </g>
   </g>
 
   <!-- ===================== SECTION 5: THE GRADUAL CASCADE ===================== -->
-  <g id="gradual-cascade" transform="translate(0, 1774)">
+  <g id="gradual-cascade" transform="translate(0, 1592)">
     <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="1.0" />
     <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE GRADUAL CASCADE · ANUPUBBASIKKHĀ</text>
     <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">“Final knowledge is attained through gradual training, gradual practice, and gradual progress”</text>
@@ -537,7 +568,7 @@
       <g id="rung-3" transform="translate(260, 174)">
         <g filter="url(#shadowDrop)"><rect x="0" y="0" width="310" height="40" rx="9" fill="url(#stg3)" stroke="#6e8290" stroke-opacity="0.42" stroke-width="0.9" /></g>
         <circle cx="22" cy="20" r="11" fill="none" stroke="#b89850" stroke-opacity="0.55" stroke-width="0.9" />
-        <text x="22" y="23" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">3</text>
+        <text x="22" y="22" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">3</text>
         <text x="44" y="18" fill="#aebcc4" font-size="12.5" font-weight="bold">Paying Respect &amp; Attending</text>
         <text x="44" y="33" fill="#76808c" font-size="10.5" font-style="italic">payirupāsati</text>
       </g>
@@ -545,7 +576,7 @@
       <g id="rung-4" transform="translate(274, 222)">
         <g filter="url(#shadowDrop)"><rect x="0" y="0" width="310" height="40" rx="9" fill="url(#stg4)" stroke="#6c8480" stroke-opacity="0.42" stroke-width="0.9" /></g>
         <circle cx="22" cy="20" r="11" fill="none" stroke="#b89850" stroke-opacity="0.55" stroke-width="0.9" />
-        <text x="22" y="23" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">4</text>
+        <text x="22" y="22" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">4</text>
         <text x="44" y="18" fill="#aebcbe" font-size="12.5" font-weight="bold">Lending Ear / Paying Attention</text>
         <text x="44" y="33" fill="#78827e" font-size="10.5" font-style="italic">sotaṁ odahati</text>
       </g>
@@ -553,7 +584,7 @@
       <g id="rung-5" transform="translate(288, 270)">
         <g filter="url(#shadowDrop)"><rect x="0" y="0" width="310" height="40" rx="9" fill="url(#stg5)" stroke="#6e8870" stroke-opacity="0.44" stroke-width="0.9" /></g>
         <circle cx="22" cy="20" r="11" fill="none" stroke="#b89850" stroke-opacity="0.55" stroke-width="0.9" />
-        <text x="22" y="23" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">5</text>
+        <text x="22" y="22" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">5</text>
         <text x="44" y="18" fill="#b0bcb6" font-size="12.5" font-weight="bold">Hearing the Dhamma</text>
         <text x="44" y="33" fill="#7a8478" font-size="10.5" font-style="italic">dhammaṁ suṇāti</text>
       </g>
@@ -627,50 +658,50 @@
   </g>
 
   <!-- ===================== SECTION 6: THE DISCIPLE'S RESOLVE ===================== -->
-  <g id="disciple-resolve" transform="translate(0, 2542)">
+  <g id="disciple-resolve" transform="translate(0, 2360)">
     <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="1.0" />
     <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE DISCIPLE’S STANCE &amp; RESOLUTE STRIVING</text>
     <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">The conduct of a faithful disciple intent on deeply penetrating the Teacher’s Dhamma</text>
 
-    <!-- Large Card -->
-    <g id="resolve-card" transform="translate(68, 66)">
-      <rect x="0" y="0" width="784" height="216" rx="8" fill="url(#cardNeutral)" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+    <!-- Large Card (reduced width for balanced proportions) -->
+    <g id="resolve-card" transform="translate(140, 66)">
+      <rect x="0" y="0" width="640" height="240" rx="8" fill="url(#cardNeutral)" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
 
       <!-- Top Half: Disciple Reverence -->
-      <g transform="translate(392, 30)">
-        <text x="0" y="0" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">“The Teacher knows, I do not know.”</text>
-        <text x="0" y="19" text-anchor="middle" fill="#c8a040" font-size="10.5" font-style="italic">satthā bhagavā, sāvakohamasmi; jānāti bhagavā, nāhaṁ jānāmi</text>
-        <text x="0" y="36" text-anchor="middle" fill="#8898b0" font-size="10">Instruction becomes nourishing for growth <tspan font-style="italic" fill="#688090">ruḷhanīyaṁ ojavantaṁ</tspan></text>
+      <g transform="translate(320, 30)">
+        <text x="0" y="0" text-anchor="middle" fill="#c8d8e8" font-size="12.5" font-weight="bold">“The Teacher knows, I do not know.”</text>
+        <text x="0" y="20" text-anchor="middle" fill="#c8a040" font-size="10.5" font-style="italic">satthā bhagavā, sāvakohamasmi; jānāti bhagavā, nāhaṁ jānāmi</text>
+        <text x="0" y="38" text-anchor="middle" fill="#8898b0" font-size="10">Instruction becomes nourishing for growth <tspan font-style="italic" fill="#688090">ruḷhanīyaṁ ojavantaṁ</tspan></text>
       </g>
 
-      <line x1="40" y1="78" x2="744" y2="78" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.6" />
+      <line x1="35" y1="80" x2="605" y2="80" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.6" />
 
       <!-- Middle: The Skin, Sinew, and Bone Striving (The Lion's Roar) -->
-      <g transform="translate(392, 102)">
-        <text x="0" y="0" text-anchor="middle" fill="#ffd700" font-size="11.5" font-weight="bold">Resolute Striving · Skin, Sinews &amp; Bones</text>
-        <text x="0" y="19" text-anchor="middle" fill="#e0d0b0" font-size="10.8" font-style="italic">“Let skin, sinews, bones remain — flesh and blood dry up —</text>
-        <text x="0" y="35" text-anchor="middle" fill="#e0d0b0" font-size="10.8" font-style="italic">striving shall not slacken till the goal is won.”</text>
-        <text x="0" y="51" text-anchor="middle" fill="#9a8a68" font-size="9.5" font-style="italic">kāmaṁ taco ca nhāru ca aṭṭhi ca avasissatu …</text>
+      <g transform="translate(320, 106)">
+        <text x="0" y="0" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="bold">Resolute Striving · Skin, Sinews &amp; Bones</text>
+        <text x="0" y="20" text-anchor="middle" fill="#e0d0b0" font-size="11" font-style="italic">“Let only skin, sinews, and bones remain — let the flesh and blood dry up —</text>
+        <text x="0" y="37" text-anchor="middle" fill="#e0d0b0" font-size="11" font-style="italic">my striving shall not slacken till the goal is won.”</text>
+        <text x="0" y="55" text-anchor="middle" fill="#9a8a68" font-size="9.5" font-style="italic">kāmaṁ taco ca nhāru ca aṭṭhi ca avasissatu …</text>
       </g>
 
-      <line x1="40" y1="166" x2="744" y2="166" stroke="#c8a040" stroke-opacity="0.2" stroke-width="0.5" />
+      <line x1="35" y1="174" x2="605" y2="174" stroke="#c8a040" stroke-opacity="0.2" stroke-width="0.5" />
 
       <!-- Bottom Banner: The Two Expected Fruits -->
-      <g transform="translate(392, 188)">
+      <g transform="translate(320, 198)">
         <text x="0" y="0" text-anchor="middle" fill="#90c8b0" font-size="10.5" font-weight="bold">Two fruits: ① Final knowledge here and now <tspan fill="#708878" font-weight="normal" font-style="italic">diṭṭheva dhamme aññā</tspan></text>
-        <text x="0" y="18" text-anchor="middle" fill="#90c8b0" font-size="10.5" font-weight="bold">or ② Non-Returning if clinging remains <tspan fill="#708878" font-weight="normal" font-style="italic">sati upādisese anāgāmitā</tspan></text>
+        <text x="0" y="19" text-anchor="middle" fill="#90c8b0" font-size="10.5" font-weight="bold">or ② Non-Returning if clinging remains <tspan fill="#708878" font-weight="normal" font-style="italic">sati upādisese anāgāmitā</tspan></text>
       </g>
     </g>
   </g>
 
   <!-- ===================== SECTION 7: FOOTER ===================== -->
-  <g id="footer" transform="translate(0, 2826)">
+  <g id="footer" transform="translate(0, 2700)">
     <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
     <a href="https://wordsofthebuddha.org/mn70" target="_blank" rel="noopener noreferrer">
-      <text x="460" y="17" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn70</text>
+      <text x="460" y="18" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn70</text>
     </a>
     <!-- Lotus vignette emblem -->
-    <g transform="translate(460, 32) scale(0.24)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <g transform="translate(460, 34) scale(0.24)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
       <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
       <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
       <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />

@@ -292,7 +292,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn70"
+			],
 			"labels": [
 				"phenomena"
 			],
@@ -352,6 +355,7 @@
 				"mn9",
 				"mn25",
 				"mn43",
+				"mn70",
 				"mn77",
 				"mn111",
 				"mn140",
@@ -515,6 +519,7 @@
 				"mn2",
 				"mn18",
 				"mn43",
+				"mn70",
 				"mn110",
 				"mn138",
 				"dn9",
@@ -2057,7 +2062,10 @@
 				"an10",
 				"urgency"
 			],
-			"discourse": "an10.51",
+			"discourse": [
+				"an10.51",
+				"mn70"
+			],
 			"labels": [
 				"effort",
 				"mindfulness"
@@ -2936,6 +2944,7 @@
 			"discourse": [
 				"mn25",
 				"mn43",
+				"mn70",
 				"mn77",
 				"mn111",
 				"mn138",
@@ -3090,7 +3099,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn70"
+			],
 			"labels": [
 				"faith"
 			],
@@ -3139,6 +3151,7 @@
 			],
 			"discourse": [
 				"mn47",
+				"mn70",
 				"mn95"
 			],
 			"labels": [
@@ -3294,7 +3307,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"mn70"
+			],
 			"labels": [
 				"collectedness",
 				"effort",
@@ -3610,7 +3626,10 @@
 				"line-art",
 				"simile"
 			],
-			"discourse": "mn43",
+			"discourse": [
+				"mn43",
+				"mn70"
+			],
 			"labels": [
 				"dependent co arising",
 				"phenomena",
