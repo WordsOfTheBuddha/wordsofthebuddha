@@ -295,10 +295,10 @@ describe("resolveOpenRouterChatModel", () => {
 });
 
 describe("openRouterProviderPreferences", () => {
-	it("sorts paid GLM by price and leaves free models unscoped", () => {
+	it("uses OpenRouter native price sort for paid GLM", () => {
 		assert.deepEqual(
 			openRouterProviderPreferences(ASK_PLANNER_PAID_FALLBACK_MODEL),
-			{ sort: "price", allow_fallbacks: true, require_parameters: true },
+			{ sort: "price", allow_fallbacks: true },
 		);
 		assert.equal(
 			openRouterProviderPreferences(DEFAULT_OPENROUTER_MODEL),

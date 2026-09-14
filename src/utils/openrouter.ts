@@ -247,15 +247,15 @@ export function resolveOpenRouterChatModel(model: string): string {
 }
 
 /**
- * Paid GLM: cheapest healthy provider first, then the next cheapest
- * host of the same model. OpenRouter does that inside one request — we do
- * not hop to a second model.
+ * Paid GLM: OpenRouter’s native cheapest-first routing (`sort: "price"`).
+ * No hardcoded provider list — uptime and promos change too often. Falls
+ * through to the next-cheapest healthy host when the first is down.
  */
 export function openRouterProviderPreferences(model: string):
-	| { sort: "price"; allow_fallbacks: true; require_parameters: true }
+	| { sort: "price"; allow_fallbacks: true }
 	| undefined {
 	if (!isAskPlannerPaidFallbackModelId(model)) return undefined;
-	return { sort: "price", allow_fallbacks: true, require_parameters: true };
+	return { sort: "price", allow_fallbacks: true };
 }
 
 export interface OpenRouterUsage {
