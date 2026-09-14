@@ -50,6 +50,7 @@ import {
 	expandReportBlockIdRange,
 	REPORT_BLOCK_RANGE_MAX,
 	ensureResearchReviseMermaidFences,
+	fenceMermaidInOpMarkdown,
 	fenceMermaidMarkdown,
 	isUnfencedMermaidMarkdown,
 	resolveResearchReviseTargets,
@@ -341,6 +342,45 @@ The discourse then declares the faculties easy to grasp.
 		]);
 		assert.equal(blocks.find((b) => b.id === "p2")?.kind, "quote");
 		assert.equal(isUnfencedMermaidMarkdown(blocks.find((b) => b.id === "p3")?.markdown || ""), true);
+	});
+
+	it("parseResearchRevisePatch keeps svg fences inside writer JSON", () => {
+		const raw = JSON.stringify({
+			changelog: "Added diagram.",
+			ops: [
+				{
+					op: "insert-after",
+					id: "p1",
+					markdown:
+						"Caption intro.\n\n```svg\n<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>\n```\n\n*Figure.*",
+				},
+			],
+		});
+		const patch = parseResearchRevisePatch(raw);
+		const insert = patch?.ops?.[0];
+		assert.match(insert?.markdown || "", /^Caption intro\.\n\n```svg\n<svg/);
+		assert.match(insert?.markdown || "", /<\/svg>\n```\n\n\*Figure\.\*$/);
+	});
+
+	it("closes an opened mermaid fence before caption prose in an insert-after op", () => {
+		const markdown = [
+			"```mermaid",
+			"flowchart TB",
+			'subgraph descent["The descent into ignorance — AN 10.61/10.62"]',
+			'D1["Association with the immature"] --> D2["Not hearing the good Dhamma"]',
+			'D4["SUPERFICIAL ATTENTION"] --> D5["Superficial comprehension"]',
+			"end",
+			'subgraph ascent["The ascent to freedom — AN 10.61/10.62"]',
+			'A4["RADICAL ATTENTION"] --> A5["Mindfulness-and-clear-comprehension"]',
+			"end",
+			'D4 -.- R1["Causes unarisen unwholesome states to arise"]',
+			'A4 -.- R2["Forerunner like dawn before the sun"]',
+			"",
+			"The chart gathers the threads of the whole report into one picture.",
+		].join("\n");
+		const fenced = fenceMermaidInOpMarkdown(markdown);
+		assert.match(fenced, /^```mermaid\nflowchart TB/);
+		assert.match(fenced, /A4 -\.- R2\[[^\n]+\n```\n\nThe chart gathers/);
 	});
 
 	it("fences mermaid inside a new insert-after op", () => {

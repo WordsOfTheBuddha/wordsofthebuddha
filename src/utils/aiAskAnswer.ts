@@ -508,7 +508,7 @@ export async function buildAskAnswerEvidence(
 		let svgMarkup: string | undefined;
 		let svgSummary: string | undefined;
 		let illustrated: true | undefined;
-		if (hit.hasIllustration === true) {
+		if (hit.hasIllustration === true || svgSet.has(slug)) {
 			const wantFullSvg = svgSet.has(slug);
 			if (wantFullSvg && svgBudget >= 32) {
 				svgMarkup = loadSvg(

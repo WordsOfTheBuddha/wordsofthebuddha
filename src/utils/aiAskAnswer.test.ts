@@ -515,6 +515,35 @@ describe("buildAskAnswerEvidence", () => {
 		assert.match(pack.expanded[0]?.svgMarkup || "", /dart/);
 		assert.equal(pack.expanded[0]?.svgSummary, undefined);
 	});
+
+	it("inlines SVG for readIllustration slugs even when the hit lacks hasIllustration", async () => {
+		const pack = await buildAskAnswerEvidence(
+			[
+				{
+					slug: "an10.61",
+					title: "Ignorance",
+					description: "",
+					contentSnippet: null,
+					referenceOnly: false,
+					href: "/an10.61",
+				},
+			],
+			[],
+			async () => ({
+				slug: "an10.61",
+				title: "Ignorance",
+				description: "",
+				content: "Chain text.",
+			}),
+			4,
+			{
+				svgSlugs: ["an10.61"],
+				loadSvgMarkup: () =>
+					'<svg xmlns="http://www.w3.org/2000/svg"><text>chain</text></svg>',
+			},
+		);
+		assert.match(pack.expanded[0]?.svgMarkup || "", /chain/);
+	});
 });
 
 describe("buildAskAnswerUserPrompt", () => {

@@ -693,6 +693,11 @@ export async function writeResearchRevise(options: {
 			if (raw) {
 				logResearchReviseWriterRawOutput(raw, "empty patch after parse");
 			}
+		} else if (parsed && raw) {
+			logResearchReviseWriterRawOutput(
+				raw,
+				`parsed ok (ops=${parsed.ops?.length || 0}, edits=${parsed.edits?.length || 0})`,
+			);
 		}
 		const writerAudit = auditResearchRevisePatchConstraints({
 			patch: parsed,

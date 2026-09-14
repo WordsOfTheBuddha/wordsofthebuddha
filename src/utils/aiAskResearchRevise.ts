@@ -537,20 +537,88 @@ export function fenceMermaidMarkdown(markdown: string): string {
 	return body ? `\`\`\`mermaid\n${body}\n\`\`\`` : text;
 }
 
+const MERMAID_DIAGRAM_LINE_RE =
+	/^(?:\s*(?:subgraph|end|flowchart|graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|gitGraph)\b|.*(?:-->|---|-.-|==>|o--|x--)|.*[[({"'`]|^\s*%%|^\s*(?:classDef|class|style|direction)\s)/i;
+
+function isMermaidDiagramLine(line: string): boolean {
+	const trimmed = line.trim();
+	if (!trimmed) return true;
+	if (MERMAID_DIAGRAM_LINE_RE.test(line)) return true;
+	if (/^[A-Za-z][A-Za-z0-9_]*(\s*[[(]|\s*[-=]+>)/.test(trimmed)) return true;
+	return false;
+}
+
+function isMermaidCaptionProseLine(line: string): boolean {
+	const trimmed = line.trim();
+	if (!trimmed) return false;
+	if (isMermaidDiagramLine(line)) return false;
+	return /^[A-Z]/.test(trimmed) && /\s/.test(trimmed);
+}
+
+function splitMermaidDiagramFromProse(body: string): { diagram: string; prose: string } | null {
+	const lines = body.split("\n");
+	let sawDiagram = false;
+	for (let i = 0; i < lines.length; i += 1) {
+		const line = lines[i];
+		if (line.trim() && isMermaidDiagramLine(line)) sawDiagram = true;
+		if (sawDiagram && isMermaidCaptionProseLine(line)) {
+			const diagram = lines.slice(0, i).join("\n").trimEnd();
+			const prose = lines.slice(i).join("\n").trim();
+			if (diagram && prose) return { diagram, prose };
+			return null;
+		}
+	}
+	return null;
+}
+
+/**
+ * Close an opened ```mermaid fence before trailing caption prose the writer
+ * sometimes leaves inside the fence (renders as a pre block).
+ */
+export function closeMermaidFenceBeforeProse(markdown: string): string {
+	const text = markdown.replace(/\r\n/g, "\n").trim();
+	if (!text.startsWith("```mermaid")) return markdown;
+	const body = text.slice("```mermaid".length).replace(/^\n/, "");
+	const closeMatch = body.match(/\n```(?:\s*\n([\s\S]*)|\s*$)$/);
+	const inner = closeMatch ? body.slice(0, body.length - closeMatch[0].length) : body;
+	const trailingOutside = closeMatch?.[1]?.trim() || "";
+	const split = splitMermaidDiagramFromProse(inner);
+	if (!split) {
+		if (!closeMatch && inner.trim()) {
+			return `\`\`\`mermaid\n${inner.trimEnd()}\n\`\`\``;
+		}
+		return markdown;
+	}
+	const prose = trailingOutside
+		? `${split.prose}\n\n${trailingOutside}`.trim()
+		: split.prose;
+	return `\`\`\`mermaid\n${split.diagram}\n\`\`\`\n\n${prose}`;
+}
+
 /** Fence bare mermaid inside a writer op (including new insert-after blocks). */
 export function fenceMermaidInOpMarkdown(markdown: string): string {
-	const text = markdown.replace(/\r\n/g, "\n").trim();
-	if (!text || completeFenceInfo(text)) return markdown;
+	let text = markdown.replace(/\r\n/g, "\n").trim();
+	if (!text) return markdown;
+	if (text.startsWith("```mermaid")) {
+		text = closeMermaidFenceBeforeProse(text);
+	}
+	if (completeFenceInfo(text)) return text;
 	if (isUnfencedMermaidMarkdown(text)) {
-		return fenceMermaidMarkdown(text);
+		return closeMermaidFenceBeforeProse(fenceMermaidMarkdown(text));
 	}
 	const chunks = text.split(/\n\n+/);
-	if (chunks.length <= 1) return markdown;
-	const fenced = chunks.map((chunk) =>
-		isUnfencedMermaidMarkdown(chunk) ? fenceMermaidMarkdown(chunk) : chunk,
-	);
+	if (chunks.length <= 1) return text === markdown.trim() ? markdown : text;
+	const fenced = chunks.map((chunk) => {
+		if (!isUnfencedMermaidMarkdown(chunk)) return chunk;
+		const wrapped = fenceMermaidMarkdown(chunk);
+		return chunk.startsWith("```mermaid")
+			? closeMermaidFenceBeforeProse(wrapped)
+			: wrapped;
+	});
 	const joined = fenced.join("\n\n");
-	return joined === text ? markdown : joined;
+	if (joined !== text) return joined;
+	const trimmed = markdown.replace(/\r\n/g, "\n").trim();
+	return text === trimmed ? markdown : text;
 }
 
 /**

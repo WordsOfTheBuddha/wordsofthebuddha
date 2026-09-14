@@ -33,6 +33,14 @@ describe("extractJsonObject", () => {
 	it("returns null when there is no object", () => {
 		assert.equal(extractJsonObject("no json here"), null);
 	});
+
+	it("preserves markdown code fences inside JSON string values", () => {
+		const raw =
+			'{"markdown":"Intro\\n\\n```mermaid\\nflowchart TD\\nA --> B\\n```\\n\\n```svg\\n<svg></svg>\\n```"}';
+		const parsed = extractJsonObject(raw) as { markdown?: string };
+		assert.match(parsed.markdown || "", /```mermaid\nflowchart TD/);
+		assert.match(parsed.markdown || "", /```svg\n<svg><\/svg>\n```/);
+	});
 });
 
 describe("parseRewritePlan", () => {
