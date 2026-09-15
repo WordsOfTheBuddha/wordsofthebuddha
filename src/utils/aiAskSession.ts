@@ -70,6 +70,10 @@ export interface AiAskSessionEntry {
 	reviseBase?: string;
 	/** Version number `reviseBase` was fetched from (matches `versionIndex[n].from`). */
 	reviseBaseVersionN?: number;
+	/** Slim metadata for Research attached notes (not the full text). */
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -319,6 +323,21 @@ export function sanitizeAskHistoryEntry(
 			const versionIndex = clipResearchVersionIndex(record.versionIndex);
 			return versionIndex.length > 0 ? { versionIndex } : {};
 		})(),
+		...(typeof record.contextPreview === "string" && record.contextPreview.trim()
+			? {
+					contextPreview: clip(record.contextPreview.replace(/\s+/g, " ").trim(), 200),
+				}
+			: {}),
+		...(typeof record.contextWordCount === "number" &&
+		Number.isFinite(record.contextWordCount) &&
+		record.contextWordCount > 0
+			? { contextWordCount: Math.floor(record.contextWordCount) }
+			: {}),
+		...(typeof record.imageCount === "number" &&
+		Number.isFinite(record.imageCount) &&
+		record.imageCount > 0
+			? { imageCount: Math.min(4, Math.floor(record.imageCount)) }
+			: {}),
 	};
 }
 

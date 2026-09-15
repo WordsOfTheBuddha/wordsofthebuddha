@@ -11,6 +11,7 @@ import {
 	formatAskAnswerEvidenceBlock,
 	resolveAskWriterBudgetMs,
 } from "./aiAskAnswer";
+import { formatAttachedMaterialBlock } from "./aiAskComposition";
 import type { AiRewriteHistoryTurn } from "./aiQueryRewrite";
 import { clipAiQuestion } from "./aiAskQuestionText";
 import {
@@ -89,6 +90,8 @@ export async function writeResearchReport(options: {
 	/** Wording before planner cleanup — may still name a word count. */
 	originalQuestion?: string;
 	brief?: string;
+	/** Research-only reader-provided notes (separate from clarify brief). */
+	attachedContext?: string;
 	hits: readonly AiDiscourseHit[];
 	model?: string;
 	termQueries?: readonly string[];
@@ -138,7 +141,12 @@ export async function writeResearchReport(options: {
 		});
 		if (watchdog.signal.aborted) return empty;
 		if (!evidence.trim()) return empty;
-		const brief = (options.brief || "").replace(/\s+/g, " ").trim();
+		const brief = [
+			(options.brief || "").replace(/\s+/g, " ").trim(),
+			formatAttachedMaterialBlock(options.attachedContext || ""),
+		]
+			.filter(Boolean)
+			.join("\n\n");
 		const originalQuestion = (options.originalQuestion || "")
 			.replace(/\s+/g, " ")
 			.trim();

@@ -58,9 +58,13 @@ export const OPENROUTER_SITE_NAME = "Words of the Buddha";
 
 const OPENROUTER_API = "https://openrouter.ai/api/v1";
 
+export type OpenRouterContentPart =
+	| { type: "text"; text: string }
+	| { type: "image_url"; image_url: { url: string } };
+
 export interface OpenRouterChatMessage {
 	role: "system" | "user" | "assistant";
-	content: string;
+	content: string | OpenRouterContentPart[];
 }
 
 export interface OpenRouterChatResult {
@@ -102,9 +106,31 @@ export const ASK_PLANNER_MAX_TOKENS = 4096;
  * Writer only needs short paragraphs from excerpts. A 4096 budget with
  * medium/high effort spends the whole window on thinking and never emits JSON.
  */
-export const ASK_WRITER_MAX_TOKENS = 2048;
+export const ASK_WRITER_MAX_TOKENS = 4096;
 /** Research report — enough to finish a thorough survey; the model may stop sooner. */
 export const RESEARCH_WRITER_MAX_TOKENS = 16_384;
+
+export function openRouterImageDataUrl(mime: string, data: string): string {
+	return `data:${mime};base64,${data}`;
+}
+
+/** Build multimodal user content when images are attached. */
+export function buildOpenRouterUserContent(
+	text: string,
+	images?: readonly { mime: string; data: string }[],
+): string | OpenRouterContentPart[] {
+	if (!images || images.length === 0) return text;
+	const parts: OpenRouterContentPart[] = [{ type: "text", text }];
+	for (const image of images) {
+		parts.push({
+			type: "image_url",
+			image_url: {
+				url: openRouterImageDataUrl(image.mime, image.data),
+			},
+		});
+	}
+	return parts;
+}
 /** Write from excerpts — do not reuse the planner’s high-effort setting. */
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 

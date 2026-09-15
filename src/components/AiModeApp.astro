@@ -131,6 +131,21 @@ const defaultModel = showModelPicker
 	<form class="ai-composer ai-shell" data-ai-form data-ai-composer>
 		<label class="sr-only" for="ai-input">Ask a question</label>
 		<div class="ai-box">
+			<div class="ai-composition-attachments" data-ai-composition-attachments hidden>
+				<span class="ai-composition-context" data-ai-composition-context hidden>
+					<span class="ai-composition-context-label" data-ai-composition-context-label></span>
+					<button
+						type="button"
+						class="ai-composition-clear"
+						data-ai-composition-context-clear
+						aria-label="Remove attached notes"
+						title="Remove attached notes"
+					>
+						×
+					</button>
+				</span>
+				<div class="ai-composition-images" data-ai-composition-images hidden></div>
+			</div>
 			<textarea
 				id="ai-input"
 				data-ai-input
@@ -197,6 +212,29 @@ const defaultModel = showModelPicker
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
 		<label class="sr-only" for="ai-follow-input">Continue this conversation</label>
 		<div class="ai-box">
+			<div
+				class="ai-composition-attachments"
+				data-ai-composition-attachments
+				data-ai-follow-composition-attachments
+				hidden
+			>
+				<span class="ai-composition-context" data-ai-composition-context hidden>
+					<span
+						class="ai-composition-context-label"
+						data-ai-composition-context-label
+					></span>
+					<button
+						type="button"
+						class="ai-composition-clear"
+						data-ai-composition-context-clear
+						aria-label="Remove attached notes"
+						title="Remove attached notes"
+					>
+						×
+					</button>
+				</span>
+				<div class="ai-composition-images" data-ai-composition-images hidden></div>
+			</div>
 			<div class="ai-revise-scope" data-ai-revise-scope hidden>
 				<span class="ai-revise-chip">
 					<span class="ai-revise-chip-text" data-ai-revise-chip></span>

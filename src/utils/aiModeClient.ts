@@ -34,6 +34,17 @@ import {
 	type ResearchClarifyQuestion,
 } from "./aiAskResearchClarify";
 import {
+	clipResearchContext,
+	countContextWords,
+	formatContextChipLabel,
+	hasResearchCompositionContent,
+	MAX_RESEARCH_CONTEXT_IMAGES,
+	MAX_RESEARCH_CONTEXT_IMAGE_BYTES,
+	RESEARCH_CONTEXT_AUTO_ATTACH_CHARS,
+	researchContextPreview,
+	type ResearchContextImage,
+} from "./aiAskComposition";
+import {
 	ASK_COMPOSER_TEXTAREA_MAX_PX,
 	clipAiQuestion,
 	MAX_QUESTION_CHARS,
@@ -49,7 +60,9 @@ import {
 	type ReportContentBlock,
 	type ReportRemovedBlock,
 	clipResearchReviseHeading,
+	clipResearchReviseInstruction,
 	clipResearchReviseQuote,
+	RESEARCH_REVISE_INSTRUCTION_MAX,
 	clipResearchVersionIndex,
 	currentResearchVersionN,
 	formatResearchVersionLabel,
@@ -371,6 +384,10 @@ export interface AiAskTurn {
 		kind: string;
 		message: string;
 	};
+	/** Slim metadata for attached Research notes (not the full text). */
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 }
 
 interface AiModelsResponse {
@@ -1571,6 +1588,13 @@ function turnToSessionEntry(
 		...(typeof turn.reviseBaseVersionN === "number" && turn.reviseBaseVersionN > 0
 			? { reviseBaseVersionN: turn.reviseBaseVersionN }
 			: {}),
+		...(turn.contextPreview ? { contextPreview: turn.contextPreview } : {}),
+		...(typeof turn.contextWordCount === "number"
+			? { contextWordCount: turn.contextWordCount }
+			: {}),
+		...(typeof turn.imageCount === "number"
+			? { imageCount: turn.imageCount }
+			: {}),
 	};
 }
 
@@ -2303,6 +2327,23 @@ export function attachAiMode(options: {
 	const feedbackDialog = root.querySelector<HTMLElement>("[data-ai-feedback-dialog]");
 	const feedbackText = root.querySelector<HTMLTextAreaElement>("[data-ai-feedback-text]");
 	const feedbackError = root.querySelector<HTMLElement>("[data-ai-feedback-error]");
+	const compositionAttachments = [
+		...root.querySelectorAll<HTMLElement>("[data-ai-composition-attachments]"),
+	];
+	const compositionContextEls = [
+		...root.querySelectorAll<HTMLElement>("[data-ai-composition-context]"),
+	];
+	const compositionContextLabels = [
+		...root.querySelectorAll<HTMLElement>("[data-ai-composition-context-label]"),
+	];
+	const compositionContextClears = [
+		...root.querySelectorAll<HTMLButtonElement>(
+			"[data-ai-composition-context-clear]",
+		),
+	];
+	const compositionImageLists = [
+		...root.querySelectorAll<HTMLElement>("[data-ai-composition-images]"),
+	];
 	const reviseScope = root.querySelector<HTMLElement>("[data-ai-revise-scope]");
 	const reviseChipEl = root.querySelector<HTMLElement>("[data-ai-revise-chip]");
 	const reviseClearBtn = root.querySelector<HTMLButtonElement>("[data-ai-revise-clear]");
@@ -2375,6 +2416,8 @@ export function attachAiMode(options: {
 	let applyingAskSurfaceUrl = false;
 	let busy = false;
 	let researchChipOn = false;
+	let compositionContext = "";
+	let compositionImages: ResearchContextImage[] = [];
 	let researchPollTimer = 0;
 	let researchPollHiddenCleanup: (() => void) | null = null;
 	let reviseHeading = "";
@@ -2632,6 +2675,172 @@ export function attachAiMode(options: {
 		}
 	}
 
+	function researchCompositionEnabled(): boolean {
+		return researchPaneOn() || researchChipOn || followResearchChipOn();
+	}
+
+	function clearCompositionAttachments(): void {
+		compositionContext = "";
+		compositionImages = [];
+		syncCompositionTray();
+	}
+
+	function syncCompositionTray(): void {
+		const enabled = researchCompositionEnabled();
+		const hasContext = Boolean(compositionContext.trim());
+		const hasImages = compositionImages.length > 0;
+		const show = enabled && (hasContext || hasImages);
+		for (const el of compositionAttachments) el.hidden = !show;
+		for (const el of compositionContextEls) {
+			el.hidden = !hasContext;
+		}
+		for (const el of compositionContextLabels) {
+			el.textContent = hasContext
+				? formatContextChipLabel(compositionContext)
+				: "";
+		}
+		for (const list of compositionImageLists) {
+			list.hidden = !hasImages;
+			list.replaceChildren();
+			if (!hasImages) continue;
+			compositionImages.forEach((image, index) => {
+				const wrap = document.createElement("span");
+				wrap.className = "ai-composition-image";
+				const img = document.createElement("img");
+				img.src = `data:${image.mime};base64,${image.data}`;
+				img.alt = `Attached image ${index + 1}`;
+				const remove = document.createElement("button");
+				remove.type = "button";
+				remove.className = "ai-composition-clear";
+				remove.setAttribute("aria-label", "Remove image");
+				remove.title = "Remove image";
+				remove.textContent = "×";
+				remove.addEventListener("click", () => {
+					compositionImages = compositionImages.filter((_, i) => i !== index);
+					syncCompositionTray();
+				});
+				wrap.append(img, remove);
+				list.append(wrap);
+			});
+		}
+	}
+
+	function attachCompositionContext(text: string): void {
+		if (!researchCompositionEnabled()) return;
+		const next = clipResearchContext(
+			[compositionContext, text].filter(Boolean).join("\n\n"),
+		);
+		if (!next) return;
+		compositionContext = next;
+		syncCompositionTray();
+	}
+
+	async function resizeCompositionImage(
+		file: File,
+	): Promise<ResearchContextImage | null> {
+		const mime =
+			file.type === "image/png"
+				? "image/png"
+				: file.type === "image/webp"
+					? "image/webp"
+					: file.type === "image/gif"
+						? "image/gif"
+						: "image/jpeg";
+		let bitmap: ImageBitmap;
+		try {
+			bitmap = await createImageBitmap(file);
+		} catch {
+			return null;
+		}
+		const maxDim = 1568;
+		let width = bitmap.width;
+		let height = bitmap.height;
+		if (width > maxDim || height > maxDim) {
+			if (width >= height) {
+				height = Math.round((height * maxDim) / width);
+				width = maxDim;
+			} else {
+				width = Math.round((width * maxDim) / height);
+				height = maxDim;
+			}
+		}
+		const canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		const ctx = canvas.getContext("2d");
+		if (!ctx) {
+			bitmap.close();
+			return null;
+		}
+		ctx.drawImage(bitmap, 0, 0, width, height);
+		bitmap.close();
+		const blob = await new Promise<Blob | null>((resolve) => {
+			canvas.toBlob(resolve, mime, mime === "image/jpeg" ? 0.82 : undefined);
+		});
+		if (!blob || blob.size > MAX_RESEARCH_CONTEXT_IMAGE_BYTES) return null;
+		const bytes = new Uint8Array(await blob.arrayBuffer());
+		let binary = "";
+		for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+		return { mime, data: btoa(binary) };
+	}
+
+	async function attachCompositionImage(file: File): Promise<void> {
+		if (!researchCompositionEnabled()) return;
+		if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) return;
+		if (!file.type.startsWith("image/")) return;
+		const image = await resizeCompositionImage(file);
+		if (!image) return;
+		compositionImages = [...compositionImages, image];
+		syncCompositionTray();
+	}
+
+	function handleCompositionPaste(event: ClipboardEvent): void {
+		if (!researchCompositionEnabled()) return;
+		const items = event.clipboardData?.items;
+		if (!items) return;
+		for (const item of items) {
+			if (item.type.startsWith("image/")) {
+				const file = item.getAsFile();
+				if (file) {
+					event.preventDefault();
+					void attachCompositionImage(file);
+				}
+				return;
+			}
+		}
+		const text = event.clipboardData?.getData("text/plain") || "";
+		if (text.length > RESEARCH_CONTEXT_AUTO_ATTACH_CHARS) {
+			event.preventDefault();
+			attachCompositionContext(text);
+		}
+	}
+
+	function handleCompositionDrop(event: DragEvent): void {
+		if (!researchCompositionEnabled()) return;
+		const files = event.dataTransfer?.files;
+		if (!files || files.length === 0) return;
+		const images = [...files].filter((file) => file.type.startsWith("image/"));
+		if (images.length === 0) return;
+		event.preventDefault();
+		for (const file of images) {
+			if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
+			void attachCompositionImage(file);
+		}
+	}
+
+	function syncFollowInputMaxLength(): void {
+		if (!followInput) return;
+		followInput.maxLength = reviseFollowActive()
+			? RESEARCH_REVISE_INSTRUCTION_MAX
+			: MAX_QUESTION_CHARS;
+	}
+
+	function clipFollowInputValue(): void {
+		if (!followInput || !reviseFollowActive()) return;
+		const clipped = clipResearchReviseInstruction(followInput.value);
+		if (clipped !== followInput.value) followInput.value = clipped;
+	}
+
 	function syncReviseScope(): void {
 		const heading = clipResearchReviseHeading(reviseHeading);
 		const quote = clipResearchReviseQuote(reviseQuote);
@@ -2846,7 +3055,7 @@ export function attachAiMode(options: {
 	): Promise<void> {
 		const last = lastFinishedReportTurn();
 		if (!last || busy) return;
-		const q = clipAiQuestion(instruction);
+		const q = clipResearchReviseInstruction(instruction);
 		if (action === "revise" && !q) return;
 		if (!quota?.signedIn) {
 			if (followInput) followInput.value = q;
@@ -3735,6 +3944,8 @@ export function attachAiMode(options: {
 
 	function setResearchChipOn(next: boolean, persist = true): void {
 		researchChipOn = next && researchChipAvailable();
+		if (!researchChipOn) clearCompositionAttachments();
+		syncCompositionTray();
 		if (persist && researchChipAvailable()) {
 			try {
 				localStorage.setItem(
@@ -6813,6 +7024,7 @@ export function attachAiMode(options: {
 		root.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-compact", dock && !expanded);
+		syncFollowInputMaxLength();
 		if (followInput) {
 			followInput.rows = dock && !expanded ? 1 : 2;
 			if (dock && !expanded) followInput.style.height = "";
@@ -7680,7 +7892,7 @@ export function attachAiMode(options: {
 		},
 	): Promise<void> {
 		const q = clipAiQuestion(question);
-		if (!q || busy) return;
+		if (busy) return;
 		stopListening();
 		stopSamplePlayback();
 
@@ -7708,6 +7920,16 @@ export function attachAiMode(options: {
 					Boolean(replacingTurn && isIncompleteResearchTurn(replacingTurn))),
 			forceAsk: options?.forceAsk === true,
 		});
+
+		if (
+			!hasResearchCompositionContent({
+				question: q,
+				context: useResearch ? compositionContext : "",
+				images: useResearch ? compositionImages : [],
+			})
+		) {
+			return;
+		}
 
 		// Follow-ups must always hit the model (diversity / refinement).
 		// Only the first turn of a thread may restore a prior session answer.
@@ -7820,6 +8042,8 @@ export function attachAiMode(options: {
 					body: JSON.stringify({
 						question: q,
 						history: buildAskFollowUpHistory(turns.slice(0, -1)),
+						context: compositionContext,
+						images: compositionImages,
 					}),
 				});
 				if (!response.ok || !data.success) {
@@ -7869,6 +8093,14 @@ export function attachAiMode(options: {
 						? { interpretation: data.interpretation.trim() }
 						: {}),
 				};
+				if (compositionContext.trim()) {
+					turn.contextPreview = researchContextPreview(compositionContext);
+					turn.contextWordCount = countContextWords(compositionContext);
+				}
+				if (compositionImages.length > 0) {
+					turn.imageCount = compositionImages.length;
+				}
+				clearCompositionAttachments();
 				syncLayoutAndReveal();
 			} catch {
 				turn.pending = false;
@@ -8235,9 +8467,33 @@ export function attachAiMode(options: {
 
 	input.addEventListener("input", () => fitTextarea(input));
 	followInput?.addEventListener("input", () => {
+		clipFollowInputValue();
 		fitTextarea(followInput);
 		syncFollowComposerMode();
 	});
+	for (const button of compositionContextClears) {
+		button.addEventListener("click", () => {
+			compositionContext = "";
+			syncCompositionTray();
+		});
+	}
+	for (const box of [
+		form.querySelector(".ai-box"),
+		followForm?.querySelector(".ai-box"),
+	]) {
+		if (!box) continue;
+		box.addEventListener("paste", (event) => {
+			if (event instanceof ClipboardEvent) handleCompositionPaste(event);
+		});
+		box.addEventListener("dragover", (event) => {
+			if (!researchCompositionEnabled()) return;
+			if (event.dataTransfer?.types.includes("Files")) event.preventDefault();
+		});
+		box.addEventListener("drop", (event) => {
+			if (event instanceof DragEvent) handleCompositionDrop(event);
+		});
+	}
+	syncCompositionTray();
 	followForm?.addEventListener("focusin", () => {
 		syncFollowComposerMode();
 	});

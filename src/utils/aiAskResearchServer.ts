@@ -36,6 +36,7 @@ import {
 import { collectAskHistoryShownSlugs } from "./aiAskHistory";
 import { createJobWriteCoalescer } from "./aiAskResearchWriteCoalescer";
 import { isWithinTtl } from "./ttlCache";
+import { clipResearchContext } from "./aiAskComposition";
 import { RESEARCH_CLARIFY_BRIEF_MAX } from "./aiAskResearchClarify";
 import { loadUserAskHistory, upsertUserAskHistoryEntry } from "./aiAskHistoryServer";
 import {
@@ -163,6 +164,10 @@ export interface ResearchJobRecord {
 	runToken: string;
 	cancelRequested: boolean;
 	clarifyBrief?: string;
+	attachedContext?: string;
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 	lookingFor?: string;
 	queries?: string[];
 	fallbackQueries?: string[];
@@ -279,6 +284,16 @@ function recordFromData(
 		cancelRequested: data.cancelRequested === true,
 		clarifyBrief:
 			typeof data.clarifyBrief === "string" ? data.clarifyBrief : "",
+		attachedContext:
+			typeof data.attachedContext === "string" ? data.attachedContext : "",
+		contextPreview:
+			typeof data.contextPreview === "string" ? data.contextPreview : "",
+		contextWordCount:
+			typeof data.contextWordCount === "number"
+				? data.contextWordCount
+				: undefined,
+		imageCount:
+			typeof data.imageCount === "number" ? data.imageCount : undefined,
 		lookingFor: typeof data.lookingFor === "string" ? data.lookingFor : "",
 		queries: Array.isArray(data.queries) ? (data.queries as string[]) : [],
 		fallbackQueries: Array.isArray(data.fallbackQueries)
@@ -481,6 +496,10 @@ export async function createResearchJob(options: {
 	history?: unknown;
 	origin?: string;
 	clarifyBrief?: string;
+	attachedContext?: string;
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 }): Promise<{ job: ResearchJobPublic; runToken: string }> {
 	const id = newId();
 	const runToken = newId();
@@ -503,6 +522,20 @@ export async function createResearchJob(options: {
 		hop: 1,
 		...(options.clarifyBrief
 			? { clarifyBrief: options.clarifyBrief.slice(0, RESEARCH_CLARIFY_BRIEF_MAX) }
+			: {}),
+		...(options.attachedContext
+			? {
+					attachedContext: clipResearchContext(options.attachedContext),
+					...(options.contextPreview
+						? { contextPreview: options.contextPreview }
+						: {}),
+					...(typeof options.contextWordCount === "number"
+						? { contextWordCount: options.contextWordCount }
+						: {}),
+					...(typeof options.imageCount === "number"
+						? { imageCount: options.imageCount }
+						: {}),
+				}
 			: {}),
 	};
 	rememberJobMemory(jobKey(record.uid, record.id), record);
@@ -1394,6 +1427,7 @@ async function runResearchChainPass(
 						question,
 						originalQuestion: current.originalQuestion,
 						brief,
+						attachedContext: current.attachedContext,
 						hits: results,
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 						termQueries: plan.termQueries,
@@ -1434,6 +1468,7 @@ async function runResearchChainPass(
 						question,
 						originalQuestion: current.originalQuestion,
 						brief,
+						attachedContext: current.attachedContext,
 						hits: results,
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 						termQueries: plan.termQueries,
@@ -1876,6 +1911,7 @@ export async function runResearchJob(options: {
 					rewriteAskQuestion({
 						question: current.question,
 						history,
+						attachedContext: (current.attachedContext || "").trim(),
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 						models: [ASK_PLANNER_PAID_FALLBACK_MODEL],
 						attemptTimeoutMs: Math.min(
@@ -2243,6 +2279,7 @@ export async function runResearchJob(options: {
 						question: plan.correctedQuestion || current.question,
 						originalQuestion: current.originalQuestion,
 						brief,
+						attachedContext: current.attachedContext,
 						hits: results,
 						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 						termQueries: plan.termQueries,
@@ -2279,6 +2316,7 @@ export async function runResearchJob(options: {
 									plan.correctedQuestion || current.question,
 								originalQuestion: current.originalQuestion,
 								brief,
+								attachedContext: current.attachedContext,
 								hits: results,
 								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 								termQueries: plan.termQueries,

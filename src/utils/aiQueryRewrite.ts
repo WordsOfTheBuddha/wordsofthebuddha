@@ -644,8 +644,13 @@ export function buildRewriteMessages(
 	question: string,
 	history: readonly AiRewriteHistoryTurn[] = [],
 	libraryHints: string = getAiLibraryHintsText(),
+	attachedContext?: string,
 ): OpenRouterChatMessage[] {
 	const clipped = clipAiQuestion(question);
+	const contextBlock =
+		attachedContext && attachedContext.trim()
+			? `\n\nAttached material:\n${attachedContext.trim()}`
+			: "";
 	const recent = clipAskHistoryTurns(history, ASK_HISTORY_MAX_TURNS);
 	const allShown = formatAskAlreadyShownIds(
 		collectAskHistoryShownSlugs(history),
@@ -681,7 +686,7 @@ export function buildRewriteMessages(
 		{ role: "system", content: system },
 		{
 			role: "user",
-			content: `Question: ${clipped}${historyBlock}\n\nJSON:`,
+			content: `Question: ${clipped}${contextBlock}${historyBlock}\n\nJSON:`,
 		},
 	];
 }

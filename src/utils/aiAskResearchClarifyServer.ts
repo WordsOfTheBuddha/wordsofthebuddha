@@ -20,8 +20,15 @@ import {
 	type ResearchClarifyQuestion,
 } from "./aiAskResearchClarify";
 import {
+	clipResearchContext,
+	formatAttachedMaterialBlock,
+	type ResearchContextImage,
+	sanitizeResearchContextImages,
+} from "./aiAskComposition";
+import {
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	ASK_RESEARCH_VERIFY_REASONING_EFFORT,
+	buildOpenRouterUserContent,
 	getOpenRouterApiKey,
 	openRouterChat,
 } from "./openrouter";
@@ -32,6 +39,11 @@ export interface ResearchClarifyDraft {
 	id: string;
 	uid: string;
 	question: string;
+	attachedContext?: string;
+	attachedImages?: ResearchContextImage[];
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 	history: unknown;
 	inScope: boolean;
 	decline?: ResearchClarifyDecline;
@@ -102,6 +114,27 @@ function fromRecord(
 		id,
 		uid,
 		question,
+		...(typeof data.attachedContext === "string" && data.attachedContext.trim()
+			? { attachedContext: clipResearchContext(data.attachedContext) }
+			: {}),
+		...(Array.isArray(data.attachedImages)
+			? { attachedImages: sanitizeResearchContextImages(data.attachedImages) }
+			: {}),
+		...(typeof data.contextPreview === "string" && data.contextPreview.trim()
+			? {
+					contextPreview: data.contextPreview
+						.replace(/\s+/g, " ")
+						.trim()
+						.slice(0, 200),
+				}
+			: {}),
+		...(typeof data.contextWordCount === "number" &&
+		Number.isFinite(data.contextWordCount)
+			? { contextWordCount: Math.max(0, Math.floor(data.contextWordCount)) }
+			: {}),
+		...(typeof data.imageCount === "number" && Number.isFinite(data.imageCount)
+			? { imageCount: Math.max(0, Math.floor(data.imageCount)) }
+			: {}),
 		history: data.history,
 		inScope,
 		...(decline ? { decline } : {}),
@@ -169,6 +202,11 @@ export async function createResearchClarifyDraft(options: {
 	user: UserRecord;
 	question: string;
 	history?: unknown;
+	attachedContext?: string;
+	attachedImages?: ResearchContextImage[];
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 	parsed: ReturnType<typeof parseResearchClarify>;
 }): Promise<ResearchClarifyDraft> {
 	const now = Date.now();
@@ -176,6 +214,19 @@ export async function createResearchClarifyDraft(options: {
 		id: newId(),
 		uid: options.user.uid,
 		question: options.question,
+		...(options.attachedContext
+			? { attachedContext: clipResearchContext(options.attachedContext) }
+			: {}),
+		...(options.attachedImages && options.attachedImages.length > 0
+			? { attachedImages: options.attachedImages }
+			: {}),
+		...(options.contextPreview ? { contextPreview: options.contextPreview } : {}),
+		...(typeof options.contextWordCount === "number"
+			? { contextWordCount: options.contextWordCount }
+			: {}),
+		...(typeof options.imageCount === "number"
+			? { imageCount: options.imageCount }
+			: {}),
 		history: options.history ?? [],
 		inScope: options.parsed.inScope,
 		...(options.parsed.decline ? { decline: options.parsed.decline } : {}),
@@ -193,6 +244,8 @@ export async function createResearchClarifyDraft(options: {
 async function generateClarify(
 	question: string,
 	history: unknown,
+	attachedContext?: string,
+	attachedImages?: ResearchContextImage[],
 ): Promise<ReturnType<typeof parseResearchClarify>> {
 	if (looksLikePersonalCrisis(question)) {
 		return {
@@ -205,17 +258,21 @@ async function generateClarify(
 		return parseResearchClarify("{}");
 	}
 	try {
+		const contextBlock = formatAttachedMaterialBlock(attachedContext || "");
 		const generated = await openRouterChat({
 			model: ASK_PLANNER_PAID_FALLBACK_MODEL,
 			messages: [
 				{ role: "system", content: RESEARCH_CLARIFY_SYSTEM },
 				{
 					role: "user",
-					content: `Question: ${question}${
-						Array.isArray(history) && history.length > 0
-							? `\nEarlier turns: ${history.length}`
-							: ""
-					}\nThe corpus is fixed to the early discourses on this site. Decide inScope from the question. If the request is already clear, set questions to [] and put a short interpretation of how you will research it so the reader can confirm. Otherwise ask only the shaping questions that would actually change the report (0–3, never filler). You may set suggestedChoiceId when one option is the natural reading but another direction is also reasonable. Never ask about commentaries, later layers, or the open web.`,
+					content: buildOpenRouterUserContent(
+						`Question: ${question}${contextBlock}${
+							Array.isArray(history) && history.length > 0
+								? `\nEarlier turns: ${history.length}`
+								: ""
+						}\nThe corpus is fixed to the early discourses on this site. Decide inScope from the question and any attached material. If the request is already clear, set questions to [] and put a short interpretation of how you will research it so the reader can confirm. Otherwise ask only the shaping questions that would actually change the report (0–3, never filler). You may set suggestedChoiceId when one option is the natural reading but another direction is also reasonable. Never ask about commentaries, later layers, or the open web.`,
+						attachedImages,
+					),
 				},
 			],
 			maxTokens: 900,
@@ -239,12 +296,27 @@ export async function runResearchClarify(options: {
 	user: UserRecord;
 	question: string;
 	history?: unknown;
+	attachedContext?: string;
+	attachedImages?: ResearchContextImage[];
+	contextPreview?: string;
+	contextWordCount?: number;
+	imageCount?: number;
 }): Promise<ReturnType<typeof toPublicResearchClarify>> {
-	const parsed = await generateClarify(options.question, options.history);
+	const parsed = await generateClarify(
+		options.question,
+		options.history,
+		options.attachedContext,
+		options.attachedImages,
+	);
 	const draft = await createResearchClarifyDraft({
 		user: options.user,
 		question: options.question,
 		history: options.history,
+		attachedContext: options.attachedContext,
+		attachedImages: options.attachedImages,
+		contextPreview: options.contextPreview,
+		contextWordCount: options.contextWordCount,
+		imageCount: options.imageCount,
 		parsed,
 	});
 	return toPublicResearchClarify(draft);

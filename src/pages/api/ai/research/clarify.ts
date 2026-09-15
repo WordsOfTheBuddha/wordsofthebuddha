@@ -1,6 +1,12 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../../middleware/auth";
+import {
+	countContextWords,
+	hasResearchCompositionContent,
+	parseResearchCompositionPayload,
+	researchContextPreview,
+} from "../../../../utils/aiAskComposition";
 import { clipAiQuestion } from "../../../../utils/aiQueryRewrite";
 import { researchAuthFailure } from "../../../../utils/aiAskResearchAuth";
 import { runResearchClarify } from "../../../../utils/aiAskResearchClarifyServer";
@@ -52,20 +58,31 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		);
 	}
 
-	const question = clipAiQuestion(
-		typeof body.question === "string" ? body.question : "",
-	);
-	if (!question) {
+	const composition = parseResearchCompositionPayload(body);
+	if (!hasResearchCompositionContent(composition)) {
 		return new Response(
-			JSON.stringify({ success: false, error: "Ask a question first." }),
+			JSON.stringify({
+				success: false,
+				error: "Ask a question or attach notes first.",
+			}),
 			{ status: 400, headers: { "Content-Type": "application/json" } },
 		);
 	}
+	const question = clipAiQuestion(composition.question);
 
 	const clarify = await runResearchClarify({
 		user,
 		question,
 		history: body.history,
+		attachedContext: composition.context,
+		attachedImages: composition.images,
+		contextPreview: composition.context
+			? researchContextPreview(composition.context)
+			: undefined,
+		contextWordCount: composition.context
+			? countContextWords(composition.context)
+			: undefined,
+		imageCount: composition.images.length || undefined,
 	});
 
 	return new Response(JSON.stringify({ success: true, ...clarify }), {

@@ -103,13 +103,26 @@ function openRouterMessagesToGemini(
 	let system = "";
 	const out: GeminiChatMessage[] = [];
 	for (const message of messages) {
+		const text =
+			typeof message.content === "string"
+				? message.content
+				: message.content
+						.map((part) =>
+							part.type === "text"
+								? part.text
+								: part.type === "image_url"
+									? "[image]"
+									: "",
+						)
+						.filter(Boolean)
+						.join("\n");
 		if (message.role === "system") {
-			system = [system, message.content].filter(Boolean).join("\n\n");
+			system = [system, text].filter(Boolean).join("\n\n");
 			continue;
 		}
 		out.push({
 			role: message.role === "assistant" ? "model" : "user",
-			content: message.content,
+			content: text,
 		});
 	}
 	return { system, messages: out };
@@ -207,12 +220,18 @@ export function nextUnusableRewriteAction(options: {
 async function rewriteWithOpenRouter(options: {
 	question: string;
 	history: readonly AiRewriteHistoryTurn[];
+	attachedContext?: string;
 	model: string;
 	onReasoning?: (delta: string) => void;
 	onReasoningReset?: () => void;
 	signal?: AbortSignal;
 }): Promise<Omit<AiAskRewriteResult, "requestedModel" | "routing">> {
-	const messages = buildRewriteMessages(options.question, options.history);
+	const messages = buildRewriteMessages(
+		options.question,
+		options.history,
+		undefined,
+		options.attachedContext,
+	);
 	const plannerChat = askPlannerChatOptions(options.model);
 	let content = "";
 	let reasoning = "";
@@ -336,6 +355,8 @@ export const PLANNER_ATTEMPT_MS = 45_000;
 export async function rewriteAskQuestion(options: {
 	question: string;
 	history?: readonly AiRewriteHistoryTurn[];
+	/** Research-only reader-provided notes (not part of the question field). */
+	attachedContext?: string;
 	model: string;
 	onReasoning?: (delta: string) => void;
 	/** Clear streamed thinking from a discarded planner attempt. */
@@ -431,6 +452,7 @@ export async function rewriteAskQuestion(options: {
 					const result = await rewriteWithOpenRouter({
 						question: options.question,
 						history,
+						attachedContext: options.attachedContext,
 						model,
 						onReasoning: options.onReasoning,
 						onReasoningReset: options.onReasoningReset,

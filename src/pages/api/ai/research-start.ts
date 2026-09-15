@@ -177,6 +177,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		history: draft.history,
 		origin: new URL(request.url).origin,
 		clarifyBrief,
+		attachedContext: draft.attachedContext,
+		contextPreview: draft.contextPreview,
+		contextWordCount: draft.contextWordCount,
+		imageCount: draft.imageCount,
 	});
 	void startResearchJobWorker({
 		requestUrl: request.url,

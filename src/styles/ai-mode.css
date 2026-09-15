@@ -2530,6 +2530,82 @@
 	color: var(--warning-heading, #b45309);
 }
 
+.ai-composition-attachments {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.55rem 0.75rem 0;
+}
+
+.ai-composition-context {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	max-width: 100%;
+	padding: 0.28rem 0.3rem 0.28rem 0.65rem;
+	border-radius: 0.75rem;
+	background: color-mix(in srgb, var(--secondary-color) 12%, transparent);
+	color: var(--text-muted);
+	font-size: 0.78rem;
+	font-weight: 600;
+	line-height: 1.35;
+}
+
+.ai-composition-context-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ai-composition-clear {
+	flex: 0 0 auto;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1rem;
+	line-height: 1;
+	padding: 0 0.15rem;
+	cursor: pointer;
+	opacity: 0.75;
+}
+
+.ai-composition-clear:hover,
+.ai-composition-clear:focus-visible {
+	opacity: 1;
+}
+
+.ai-composition-images {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+}
+
+.ai-composition-image {
+	position: relative;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 0.45rem;
+	overflow: hidden;
+	border: 1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
+}
+
+.ai-composition-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.ai-composition-image .ai-composition-clear {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0 0.2rem;
+	background: color-mix(in srgb, var(--bg-color, #111) 72%, transparent);
+	border-radius: 0 0.45rem 0 0.35rem;
+}
+
 .ai-revise-scope {
 	display: flex;
 	align-items: flex-start;
