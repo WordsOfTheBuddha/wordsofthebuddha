@@ -2019,6 +2019,57 @@ function processNoteLooksLikeCompletedRevise(note: string): boolean {
 	return /^revised the report\b/i.test(n) && !/^revising the report/i.test(n);
 }
 
+function shippedVersionFromProcessNote(note: string): number {
+	const n = note.replace(/\s+/g, " ").trim();
+	if (!processNoteLooksLikeCompletedRevise(n)) return 0;
+	const match = n.match(/^revised the report(?:\s*[·•]\s*v(\d+))?/i);
+	if (match?.[1]) return Math.max(2, Number(match[1]) || 0);
+	return 2;
+}
+
+function maxShippedVersionFromProcessNotes(
+	notes?: readonly string[] | null,
+): number {
+	let max = 0;
+	for (const note of notes || []) {
+		if (typeof note !== "string") continue;
+		max = Math.max(max, shippedVersionFromProcessNote(note));
+	}
+	return max;
+}
+
+function extendResearchVersionIndexToN(
+	index: readonly ResearchVersionMeta[],
+	targetN: number,
+	options: {
+		createdAt?: number;
+		stats?: ResearchHistoryReportStats | null;
+	} = {},
+): ResearchVersionMeta[] {
+	const goal = Math.max(1, Math.floor(targetN));
+	const current = currentResearchVersionN(index);
+	if (current >= goal) return [...index];
+	const v1 =
+		index[0] ||
+		openingResearchVersionMeta(
+			options.createdAt && options.createdAt > 0 ? options.createdAt : Date.now(),
+		);
+	const stats = sanitizeResearchHistoryReportStats(options.stats);
+	const rows: ResearchVersionMeta[] = [v1];
+	for (let n = 2; n <= goal; n += 1) {
+		rows.push({
+			n,
+			at: v1.at > 0 ? v1.at + n * 1_000 : Date.now(),
+			instruction: "",
+			changelog:
+				n === 2 ? "Revised the report." : `Revised the report · v${n}`,
+			from: n - 1,
+			...(n === goal && stats ? { stats } : {}),
+		});
+	}
+	return clipResearchVersionIndex(rows);
+}
+
 export function researchProcessCompletedRevise(
 	notes?: readonly string[] | null,
 ): boolean {
@@ -2039,6 +2090,13 @@ export function healedResearchVersionIndex(input: {
 	stats?: ResearchHistoryReportStats | null;
 }): ResearchVersionMeta[] {
 	const index = clipResearchVersionIndex(input.versionIndex);
+	const shippedN = maxShippedVersionFromProcessNotes(input.processNotes);
+	if (shippedN > currentResearchVersionN(index)) {
+		return extendResearchVersionIndexToN(index, shippedN, {
+			createdAt: input.createdAt,
+			stats: input.stats,
+		});
+	}
 	if (!researchProcessCompletedRevise(input.processNotes)) return index;
 	if (currentResearchVersionN(index) >= 2) return index;
 	const v1 =

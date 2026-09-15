@@ -1652,10 +1652,14 @@ function shareTurnToAiAskTurn(
 			: {}),
 		...(turn.research || turn.report ? { research: true } : {}),
 		...(turn.report ? { report: turn.report } : {}),
-		...(share.researchJobId ? { researchJobId: share.researchJobId } : {}),
+		...(share.researchJobId || turn.researchJobId
+			? { researchJobId: share.researchJobId || turn.researchJobId }
+			: {}),
 		...(share.versionIndex && share.versionIndex.length > 0
 			? { versionIndex: share.versionIndex }
-			: {}),
+			: turn.versionIndex && turn.versionIndex.length > 0
+				? { versionIndex: turn.versionIndex }
+				: {}),
 	};
 }
 
@@ -1671,6 +1675,10 @@ function sampleToAiAskTurn(sample: AiAskSamplePublic): AiAskTurn {
 		model: sample.model,
 		createdAt: sample.updatedAt,
 		...(sample.requestId ? { requestId: sample.requestId } : {}),
+		...(sample.researchJobId ? { researchJobId: sample.researchJobId } : {}),
+		...(sample.versionIndex && sample.versionIndex.length > 0
+			? { versionIndex: sample.versionIndex }
+			: {}),
 	});
 	turn.fromShare = false;
 	turn.fromSample = true;
@@ -4708,6 +4716,16 @@ export function attachAiMode(options: {
 					...(turn.processNotes && turn.processNotes.length > 0
 						? { processNotes: turn.processNotes }
 						: {}),
+					...(turn.versionIndex && turn.versionIndex.length > 0
+						? { versionIndex: clipResearchVersionIndex(turn.versionIndex) }
+						: {}),
+					...(() => {
+						const reportStats = snapshotResearchHistoryStats(
+							turn.report,
+							turn.results,
+						);
+						return reportStats ? { reportStats } : {};
+					})(),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -4743,7 +4761,10 @@ export function attachAiMode(options: {
 				success?: boolean;
 				error?: string;
 			};
-			if (!response.ok || !data.success) {
+			const alreadyRemoved =
+				response.status === 404 &&
+				data.error === "That example is no longer published.";
+			if (!response.ok && !data.success && !alreadyRemoved) {
 				setStatus(data.error || "Could not remove this example.");
 				return;
 			}
@@ -4754,7 +4775,9 @@ export function attachAiMode(options: {
 				renderHistory();
 				syncLayout();
 			}
-			setStatus("Removed this example.");
+			if (!alreadyRemoved) {
+				setStatus("Removed this example.");
+			}
 		} catch {
 			setStatus("Could not remove this example.");
 		}
@@ -5514,9 +5537,7 @@ export function attachAiMode(options: {
 						isAdmin: isAskAdmin,
 						pending: turn.pending,
 						fromShare: turn.fromShare,
-						hasSample: Boolean(
-							publishedSample || (turn.fromSample && turn.sampleSlug),
-						),
+						hasSample: Boolean(publishedSample),
 					}),
 			),
 		});

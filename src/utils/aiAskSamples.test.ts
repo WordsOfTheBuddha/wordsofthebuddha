@@ -27,6 +27,7 @@ import {
 	readHiddenAskSampleKeys,
 	removeAskSampleLocal,
 	sampleToHistoryEntry,
+	sampleToShareTurn,
 	sanitizeAskSamplePublic,
 	upsertAskSampleLocal,
 	visibleHistorySamples,
@@ -506,6 +507,44 @@ describe("visibleHistorySamples", () => {
 			}).length,
 			0,
 		);
+	});
+});
+
+describe("sample version metadata", () => {
+	it("round-trips versionIndex and reportStats through history and share turns", () => {
+		const demo = sample("Survey how the discourses describe feeling")!;
+		const saved = sanitizeAskSamplePublic({
+			...demo,
+			research: true,
+			report: "# Feeling",
+			versionIndex: [
+				{
+					n: 1,
+					at: 1,
+					instruction: "",
+					changelog: "Original report.",
+					from: null,
+				},
+				{
+					n: 16,
+					at: 2,
+					instruction: "Title case headings",
+					changelog: "Revised the report · v16",
+					from: 15,
+					stats: { words: 6376, cited: 56, additional: 113 },
+				},
+			],
+			reportStats: { words: 6376, cited: 56, additional: 113 },
+		});
+		assert.equal(saved?.versionIndex?.[1]?.n, 16);
+		const history = sampleToHistoryEntry(saved!);
+		assert.equal(history.versionIndex?.[1]?.n, 16);
+		assert.deepEqual(history.reportStats, {
+			words: 6376,
+			cited: 56,
+			additional: 113,
+		});
+		assert.equal(sampleToShareTurn(saved!).versionIndex?.[1]?.n, 16);
 	});
 });
 

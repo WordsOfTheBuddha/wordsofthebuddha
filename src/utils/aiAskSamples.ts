@@ -458,6 +458,10 @@ export function sampleToHistoryEntry(
 		...(sample.processNotes && sample.processNotes.length > 0
 			? { processNotes: sample.processNotes }
 			: {}),
+		...(sample.versionIndex && sample.versionIndex.length > 0
+			? { versionIndex: sample.versionIndex }
+			: {}),
+		...(sample.reportStats ? { reportStats: sample.reportStats } : {}),
 	};
 }
 
@@ -476,5 +480,10 @@ export function sampleToShareTurn(sample: AiAskSamplePublic): AiAskShareTurn {
 			: {}),
 		...(isResearchAskSample(sample) ? { research: true } : {}),
 		...(sample.report ? { report: sample.report } : {}),
+		...(sample.researchJobId ? { researchJobId: sample.researchJobId } : {}),
+		...(sample.versionIndex && sample.versionIndex.length > 0
+			? { versionIndex: sample.versionIndex }
+			: {}),
+		...(sample.reportStats ? { reportStats: sample.reportStats } : {}),
 	};
 }

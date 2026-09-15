@@ -1094,6 +1094,22 @@ describe("version index", () => {
 		});
 		assert.equal(healed[1]?.n, 2);
 		assert.equal(healed[1]?.changelog, "Revised the report.");
+		const healedV16 = healedResearchVersionIndex({
+			versionIndex: [],
+			processNotes: [
+				"Started v16 revision",
+				"Considered the revision",
+				"Revised the report · v16",
+			],
+			createdAt: 1,
+			stats: { words: 6376, cited: 56, additional: 113 },
+		});
+		assert.equal(currentResearchVersionN(healedV16), 16);
+		assert.deepEqual(healedV16[15]?.stats, {
+			words: 6376,
+			cited: 56,
+			additional: 113,
+		});
 		const inFlight = healedResearchVersionIndex({
 			versionIndex: [
 				{ n: 1, at: 1, instruction: "", changelog: "Original report.", from: null },

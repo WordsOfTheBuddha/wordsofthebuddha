@@ -15,6 +15,10 @@ import {
 import { normalizeAskQuestionKey } from "./aiAskSession";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
 import {
+	sanitizeResearchHistoryReportStats,
+	type ResearchHistoryReportStats,
+} from "./aiAskResearchHistoryStats";
+import {
 	clipResearchVersionIndex,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
@@ -90,6 +94,12 @@ export interface AiAskShareTurn {
 	research?: boolean;
 	report?: string;
 	reasoning?: string;
+	/** Owner's research job — used when republishing from a live turn. */
+	researchJobId?: string;
+	/** Changelog rows at publish time (samples and shares). */
+	versionIndex?: ResearchVersionMeta[];
+	/** Compact stats stamped when the report was saved. */
+	reportStats?: ResearchHistoryReportStats;
 }
 
 export interface AiAskShareSnapshot {
@@ -568,6 +578,18 @@ export function sanitizeAskShareTurn(raw: unknown): AiAskShareTurn | null {
 					),
 				}
 			: {}),
+		...(typeof record.researchJobId === "string" &&
+		record.researchJobId.trim()
+			? { researchJobId: record.researchJobId.trim().slice(0, 80) }
+			: {}),
+		...(() => {
+			const versionIndex = clipResearchVersionIndex(record.versionIndex);
+			return versionIndex.length > 0 ? { versionIndex } : {};
+		})(),
+		...(() => {
+			const reportStats = sanitizeResearchHistoryReportStats(record.reportStats);
+			return reportStats ? { reportStats } : {};
+		})(),
 	};
 }
 
