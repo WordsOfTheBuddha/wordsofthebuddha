@@ -209,6 +209,24 @@ function storedToLike(entry: {
 	};
 }
 
+// TEMP-PROD-PROBE — remove after measurement (Vercel function-size work).
+// Counts production disk-fallback reads to decide whether the src/content fs
+// fallback (~46 MB traced into _render.func) can be DEV-gated. Intentionally
+// log-only: adds no new static src/content path strings, so bundle tracing
+// is unchanged by this probe.
+function probeContentFallback(
+	kind: "en" | "pli" | "sujato" | "plims",
+	slug: string,
+	stored: unknown,
+	diskPath: string | null,
+): void {
+	if (import.meta.env.DEV) return;
+	if (!diskPath) return;
+	console.warn(
+		`[content-fallback] HIT kind=${kind} slug=${slug} stored=${stored ? "hit" : "miss"}`,
+	);
+}
+
 /**
  * Resolve an English discourse entry. In dev, always reads the MDX file from
  * disk when present so edits show immediately without restarting Astro's
@@ -226,6 +244,7 @@ export async function getEnglishEntry(
 
 	if (stored) return storedToLike(stored);
 
+	probeContentFallback("en", slug, stored, diskPath);
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
 	return null;
 }
@@ -245,6 +264,7 @@ export async function getPaliEntry(
 
 	if (stored) return storedToLike(stored);
 
+	probeContentFallback("pli", slug, stored, diskPath);
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
 	return null;
 }
@@ -264,6 +284,7 @@ export async function getReferenceSujatoEntry(
 
 	if (stored) return storedToLike(stored);
 
+	probeContentFallback("sujato", slug, stored, diskPath);
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
 	return null;
 }
@@ -283,6 +304,7 @@ export async function getReferencePliMsEntry(
 
 	if (stored) return storedToLike(stored);
 
+	probeContentFallback("plims", slug, stored, diskPath);
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
 	return null;
 }
