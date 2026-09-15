@@ -40,6 +40,26 @@ const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 const ON_ROUTE = /^\/on\/([^/]+)$/;
 
 /**
+ * Literal garbage paths from client bugs/scanners (prod logs: `/ip` ~4.7k
+ * 302 MISS, `/null` + `/on/null` ~4k). Exact-match only — never prefix — and
+ * cacheable at the edge so repeats never invoke SSR again. If a real route
+ * ever claims one of these paths, delete it from this set.
+ */
+const GONE_PATHS = new Set(["/ip", "/null", "/on/null"]);
+
+function goneResponse(): Response {
+	return new Response("Gone", {
+		status: 410,
+		headers: {
+			"Content-Type": "text/plain; charset=utf-8",
+			"Cache-Control":
+				"public, s-maxage=86400, stale-while-revalidate=86400",
+			"X-Robots-Tag": "noindex, nofollow",
+		},
+	});
+}
+
+/**
  * View-state and share params that create alternate URLs of the same page.
  * Prerendered discourses ship static HTML, so a <meta robots> set at build
  * time cannot see these — X-Robots-Tag must be applied on the request
@@ -118,6 +138,12 @@ function rewriteURL(path: string, from: URL): URL {
 
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
+	// Exact-match garbage paths → cheap cacheable 410 before any other work.
+	// Trailing-slash variants normalized; query strings ignored (pathname only).
+	if (GONE_PATHS.has(pathname.replace(/\/+$/, "") || "/")) {
+		return goneResponse();
+	}
+
 	const researchApi = await dispatchResearchApi(context);
 	if (researchApi) {
 		return withNoindexIfNeeded(context.url, researchApi);

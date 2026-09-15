@@ -155,12 +155,22 @@ if (originalId && originalId.includes("/")) {
 	}
 }
 
-// Filter out system/browser and asset-like requests early to avoid hijacking dev/build assets
+// Filter out system/browser and asset-like requests early to avoid hijacking dev/build assets.
+// Scanner variants (WordPress sitemaps, store/blog sitemaps, Chrome traffic
+// advice) must be listed explicitly: the generic "sitemap.xml" entry does not
+// match "wp-sitemap-users-1.xml" or "sitemap-1.xml", and without this they run
+// the full SSR catch-all as uncached MISS function invocations.
 const SYSTEM_REQUEST_PATTERNS = [
 	".well-known",
 	"favicon.ico",
 	"robots.txt",
 	"sitemap.xml",
+	"wp-sitemap",
+	"sitemap-",
+	"sitemap_",
+	"sitemap.rss",
+	"-sitemap",
+	"traffic-advice",
 	"apple-touch-icon",
 	"chrome-extension",
 	"__webpack",
@@ -204,7 +214,18 @@ const isSystemRequest =
 	ASSET_EXT_REGEX.test(originalId ?? "");
 
 if (isSystemRequest) {
-	return new Response(null, { status: 404 });
+	// Cacheable plain-text 404: scanner/bot repeats are served from the edge
+	// instead of invoking SSR again. Short s-maxage (not immutable) so a
+	// future real route/file with one of these names can still take over.
+	return new Response("Not found", {
+		status: 404,
+		headers: {
+			"Content-Type": "text/plain; charset=utf-8",
+			"Cache-Control":
+				"public, s-maxage=3600, stale-while-revalidate=86400",
+			"X-Robots-Tag": "noindex, nofollow",
+		},
+	});
 }
 
 if (id && !id.includes("/") && APP_TOP_LEVEL_SLUGS.has(id)) {

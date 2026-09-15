@@ -141,6 +141,7 @@ export default defineConfig({
 	redirects: {
 		"/dhammapada": "/dhp",
 		"/suttanipata": "/snp",
+		"/sitemap.rss": "/sitemap.xml",
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
