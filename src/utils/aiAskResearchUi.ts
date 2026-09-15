@@ -352,6 +352,16 @@ export function findReportBlockElement(
 	return body.querySelectorAll<HTMLElement>(selector)[n - 1] || null;
 }
 
+/** Keep a body-docked follow bar flush when mobile chrome shrinks the visual viewport. */
+export function followDockBottomInset(input: {
+	innerHeight: number;
+	visualViewport?: Pick<VisualViewport, "height" | "offsetTop"> | null;
+}): number {
+	const vv = input.visualViewport;
+	if (!vv) return 0;
+	return Math.max(0, Math.round(input.innerHeight - vv.height - vv.offsetTop));
+}
+
 export function researchReportFollowChrome(input: {
 	research: boolean;
 	pending: boolean;

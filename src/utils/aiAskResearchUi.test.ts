@@ -76,6 +76,7 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
+	followDockBottomInset,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
 	researchReportFollowChrome,
@@ -255,6 +256,28 @@ describe("researchReportFollowChrome", () => {
 		assert.equal(idle.reportDock, true);
 		assert.equal(idle.revisingReport, false);
 		assert.equal(idle.followCompact, true);
+	});
+});
+
+describe("followDockBottomInset", () => {
+	it("returns zero when the visual viewport fills the layout viewport", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 800, offsetTop: 0 },
+			}),
+			0,
+		);
+	});
+
+	it("lifts the dock when mobile chrome shrinks the visual viewport", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 740, offsetTop: 40 },
+			}),
+			20,
+		);
 	});
 });
 

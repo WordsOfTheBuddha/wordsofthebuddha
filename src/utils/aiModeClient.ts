@@ -173,6 +173,7 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
+	followDockBottomInset,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
 	reportFollowToggleLabel,
@@ -6758,10 +6759,35 @@ export function attachAiMode(options: {
 	}
 
 	let followDockFrostRaf = 0;
+	let followDockHome: { parent: HTMLElement; next: ChildNode | null } | null =
+		null;
+
+	function syncFollowDockMount(): void {
+		if (!followForm) return;
+		const dock = root.classList.contains("is-report-dock") && !followForm.hidden;
+		followForm.classList.toggle("is-dock", dock);
+		if (dock) {
+			if (followForm.parentElement !== document.body) {
+				if (!followDockHome) {
+					followDockHome = {
+						parent: followForm.parentElement ?? root,
+						next: followForm.nextSibling,
+					};
+				}
+				document.body.appendChild(followForm);
+			}
+			return;
+		}
+		if (followForm.parentElement === document.body && followDockHome) {
+			followDockHome.parent.insertBefore(followForm, followDockHome.next);
+		}
+		followDockHome = null;
+	}
 
 	function pinReportFollowToColumn(): void {
 		if (!followForm) return;
-		if (!root.classList.contains("is-report-dock") || followForm.hidden) {
+		if (!followForm.classList.contains("is-dock")) {
+			followForm.style.removeProperty("position");
 			followForm.style.removeProperty("left");
 			followForm.style.removeProperty("width");
 			followForm.style.removeProperty("right");
@@ -6770,11 +6796,16 @@ export function attachAiMode(options: {
 			return;
 		}
 		const column = thread.getBoundingClientRect();
+		const bottomInset = followDockBottomInset({
+			innerHeight: window.innerHeight,
+			visualViewport: window.visualViewport,
+		});
+		followForm.style.position = "fixed";
 		followForm.style.left = `${column.left}px`;
 		followForm.style.width = `${column.width}px`;
 		followForm.style.right = "auto";
 		followForm.style.marginInline = "0";
-		followForm.style.removeProperty("bottom");
+		followForm.style.bottom = bottomInset > 0 ? `${bottomInset}px` : "0px";
 	}
 
 	function syncFollowComposerMode(): void {
@@ -6834,6 +6865,7 @@ export function attachAiMode(options: {
 	}
 
 	function syncFollowDockFrost(): void {
+		syncFollowDockMount();
 		pinReportFollowToColumn();
 		followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
 	}

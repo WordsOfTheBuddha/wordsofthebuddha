@@ -1833,7 +1833,7 @@
 	border-radius: var(--ai-follow-radius);
 }
 
-.ai-mode.is-report-dock .ai-follow {
+.ai-follow.is-dock {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -1846,7 +1846,7 @@
 	background: none;
 }
 
-.ai-mode.is-report-dock.is-follow-expanded .ai-follow {
+.ai-follow.is-dock.is-follow-expanded {
 	padding: 0.65rem 0 env(safe-area-inset-bottom, 0px);
 }
 
@@ -1854,7 +1854,7 @@
  * Same glass as the bar frost: fills the rounded-corner pockets and the
  * last strip down to the screen edge so report text cannot peek through.
  */
-.ai-mode.is-report-dock .ai-follow::after {
+.ai-follow.is-dock::after {
 	content: "";
 	position: fixed;
 	left: 0;
@@ -1868,12 +1868,12 @@
 	z-index: 0;
 }
 
-.ai-mode.is-report-dock .ai-follow [data-ai-research-chip],
-.ai-mode.is-report-dock .ai-follow [data-ai-new] {
+.ai-follow.is-dock [data-ai-research-chip],
+.ai-follow.is-dock [data-ai-new] {
 	display: none !important;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-box,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box,
 .ai-mode.is-research-gated .ai-composer .ai-box {
 	flex-direction: row;
 	align-items: center;
@@ -1881,7 +1881,7 @@
 	padding: 0.22rem 0.32rem 0.22rem 0.9rem;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-box textarea,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box textarea,
 .ai-mode.is-research-gated .ai-composer .ai-box textarea {
 	flex: 1;
 	min-width: 0;
@@ -1893,16 +1893,16 @@
 	line-height: 1.3;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-box-bar,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box-bar,
 .ai-mode.is-research-gated .ai-composer .ai-box-bar {
 	min-height: 0;
 	width: auto;
 	flex-shrink: 0;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-box-tools,
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow [data-ai-mic],
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-meta-row,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box-tools,
+.ai-follow.is-dock:not(.is-follow-expanded) [data-ai-mic],
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-meta-row,
 .ai-mode.is-research-gated .ai-composer .ai-box-tools,
 .ai-mode.is-research-gated .ai-composer [data-ai-mic],
 .ai-mode.is-research-gated .ai-composer .ai-meta-row,
@@ -1910,7 +1910,7 @@
 	display: none !important;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-send {
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-send {
 	background: color-mix(in srgb, var(--primary-color) 28%, var(--text-muted));
 	color: var(--background-color);
 	transform: scale(1);
@@ -1919,7 +1919,7 @@
 		transform 0.15s ease;
 }
 
-.ai-mode.is-report-dock:not(.is-follow-expanded) .ai-follow .ai-box:focus-within .ai-send {
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box:focus-within .ai-send {
 	background: var(--primary-color);
 	transform: scale(1.08);
 }
@@ -1934,14 +1934,14 @@
 	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
-.ai-mode.is-report-dock .ai-follow.is-over-thread::before {
+.ai-follow.is-dock.is-over-thread::before {
 	top: 0.35rem;
 	bottom: 0;
 	height: auto;
 	border-radius: var(--ai-follow-radius);
 }
 
-.ai-mode.is-report-dock.is-follow-expanded .ai-follow.is-over-thread::before {
+.ai-follow.is-dock.is-follow-expanded.is-over-thread::before {
 	top: 0.65rem;
 }
 
