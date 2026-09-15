@@ -48,6 +48,15 @@ describe("requestedResearchReportWords", () => {
 		assert.equal(researchReportExceedsWordHint("10,000 word report"), true);
 		assert.ok(RESEARCH_REPORT_WORD_HINT_MAX === 8_000);
 	});
+
+	it("reads a 6k–8k range from the question as in-band", () => {
+		assert.equal(
+			researchReportExceedsWordHint(
+				"Present mindfulness. Aim for a 6,000 to 8,000 word output.",
+			),
+			false,
+		);
+	});
 });
 
 describe("researchReportLengthGuidance", () => {
@@ -75,6 +84,13 @@ describe("research report length note", () => {
 		assert.equal(
 			finishResearchReportLength(body, {
 				question: "mindfulness of the body",
+			}),
+			body,
+		);
+		assert.equal(
+			finishResearchReportLength(body, {
+				question:
+					"Present mindfulness. Aim for a 6,000 to 8,000 word output.",
 			}),
 			body,
 		);

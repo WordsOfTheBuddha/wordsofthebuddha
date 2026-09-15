@@ -939,6 +939,8 @@ export interface ResearchVersionMeta {
 	changelog: string;
 	from: number | null;
 	heading?: string;
+	/** Reference screenshots sent with the revision request (not stored). */
+	imageCount?: number;
 	/** Length / citation snapshot of this version, for the drawer changelog. */
 	stats?: ResearchHistoryReportStats;
 }
@@ -962,8 +964,23 @@ export function selectionQualifiesForRevise(text: string): boolean {
 	return countWords(text) >= 2;
 }
 
+/** Live composer input: collapse horizontal runs; keep newlines and a trailing space. */
+export function normalizeResearchReviseInstructionInput(value: string): string {
+	return value
+		.replace(/\r\n/g, "\n")
+		.split("\n")
+		.map((line) => line.replace(/[ \t]+/g, " "))
+		.join("\n")
+		.replace(/\n{3,}/g, "\n\n")
+		.slice(0, RESEARCH_REVISE_INSTRUCTION_MAX);
+}
+
 export function clipResearchReviseInstruction(value: string): string {
-	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_INSTRUCTION_MAX);
+	return normalizeResearchReviseInstructionInput(value)
+		.split("\n")
+		.map((line) => line.trimEnd())
+		.join("\n")
+		.trim();
 }
 
 export function clipResearchReviseQuote(value: string): string {
@@ -995,6 +1012,23 @@ export function clipResearchReviseHeading(value: string): string {
 
 export function clipResearchChangelog(value: string): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_CHANGELOG_MAX);
+}
+
+export function researchReviseVersionChangelog(input: {
+	patchChangelog?: string;
+	instruction: string;
+	imageCount?: number;
+}): string {
+	const base = clipResearchChangelog(
+		(input.patchChangelog || "").trim() || input.instruction,
+	);
+	const count = Math.max(0, Math.floor(input.imageCount || 0));
+	if (count <= 0) return base;
+	const note =
+		count === 1
+			? "1 reference image attached."
+			: `${count} reference images attached.`;
+	return clipResearchChangelog(base ? `${base} ${note}` : note);
 }
 
 export function reportHeadingSlug(text: string): string {

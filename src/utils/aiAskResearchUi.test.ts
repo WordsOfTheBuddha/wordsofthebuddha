@@ -190,6 +190,18 @@ describe("followComposerClickShouldExpand", () => {
 		assert.equal(followComposerClickShouldExpand(textarea), true);
 		assert.equal(followComposerClickShouldExpand(stop), false);
 	});
+
+	it("does not steal focus from committed revise-row instructions", () => {
+		const { document } = new JSDOM(
+			`<!doctype html><body>
+				<div class="ai-box">
+					<textarea class="ai-revise-row-instruction"></textarea>
+				</div>
+			</body></html>`,
+		).window;
+		const row = document.querySelector(".ai-revise-row-instruction")!;
+		assert.equal(followComposerClickShouldExpand(row), false);
+	});
 });
 
 describe("isResearchReviseInProgress", () => {

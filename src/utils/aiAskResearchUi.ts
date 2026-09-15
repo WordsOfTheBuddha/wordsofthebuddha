@@ -280,7 +280,7 @@ export function followComposerFocusShouldExpand(
 export function followComposerClickShouldExpand(target: Element | null): boolean {
 	if (!target?.closest(".ai-box")) return false;
 	return !target.closest(
-		"[data-ai-stop], .ai-send-stop, [data-ai-mic], [data-ai-research-chip], .ai-revise-clear, .ai-revise-row-remove",
+		"[data-ai-stop], .ai-send-stop, [data-ai-mic], [data-ai-research-chip], .ai-revise-clear, .ai-revise-row-remove, .ai-revise-row-instruction",
 	);
 }
 

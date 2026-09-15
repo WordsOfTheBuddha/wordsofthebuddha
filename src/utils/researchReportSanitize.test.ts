@@ -27,6 +27,15 @@ describe("sanitizeResearchReportHtml", () => {
 		assert.match(html, /<\/clipPath>/);
 	});
 
+	it("keeps SVG void tags self-closed so inline diagrams render", () => {
+		const html = sanitizeResearchReportHtml(
+			`<svg viewBox="0 0 860 430"><rect x="10" y="10" width="840" height="410" fill="#faf7f0"/><text x="430" y="46" fill="#4a3c1e">Body</text><rect x="30" y="100" width="195" height="125" fill="#e8efe2"/></svg>`,
+		);
+		assert.match(html, /<rect[^>]*\/>/);
+		assert.match(html, /Body<\/text>/);
+		assert.equal((html.match(/<rect/g) || []).length, 2);
+	});
+
 	it("drops scripts, handlers, and off-site URLs", () => {
 		const html = sanitizeResearchReportHtml(
 			`<div onclick="alert(1)"><p>ok</p><script>alert(1)</script><a href="https://evil.example">x</a><a href="/mn10">MN 10</a></div>`,

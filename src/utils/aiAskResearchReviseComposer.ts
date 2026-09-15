@@ -227,13 +227,25 @@ export function reviseExpandedPlaceholder(
 	draft: ResearchReviseEditDraft,
 	showMultiHint = false,
 ): string {
-	if (!hasReviseEditScope(draft.draftScope) && draft.committed.length === 0) {
+	if (!hasReviseEditScope(draft.draftScope)) {
 		return RESEARCH_REVISE_PLACEHOLDER;
 	}
-	if (showMultiHint && draft.committed.length >= 1) {
+	if (showMultiHint && draft.committed.length >= 1 && hasReviseEditScope(draft.draftScope)) {
 		return `${RESEARCH_REVISE_SELECTION_PLACEHOLDER} ${RESEARCH_REVISE_MULTI_HINT}`;
 	}
 	return RESEARCH_REVISE_SELECTION_PLACEHOLDER;
+}
+
+/** Skip persisting when compact mode would wipe committed rows with no draft replacement. */
+export function shouldDeferReviseComposerDraftPersist(
+	draft: ResearchReviseEditDraft,
+	storedCommittedCount: number,
+): boolean {
+	return (
+		draft.committed.length === 0 &&
+		storedCommittedCount > 0 &&
+		!hasReviseComposerContent(draft)
+	);
 }
 
 export function reviseEditSlotCount(draft: ResearchReviseEditDraft): number {
@@ -312,6 +324,19 @@ export function reviseStackRenderKey(draft: ResearchReviseEditDraft): string {
 		.join(";");
 }
 
+/** Drop the draft pin; reopen the last committed row when the draft slot is empty. */
 export function clearReviseDraftScope(draft: ResearchReviseEditDraft): ResearchReviseEditDraft {
-	return { ...draft, draftScope: null };
+	if (!hasReviseEditScope(draft.draftScope)) return draft;
+	if (clipResearchReviseInstruction(draft.draftInstruction)) {
+		return { ...draft, draftScope: null };
+	}
+	if (draft.committed.length === 0) {
+		return { ...draft, draftScope: null };
+	}
+	const last = draft.committed[draft.committed.length - 1];
+	return {
+		committed: draft.committed.slice(0, -1),
+		draftScope: last.scope || null,
+		draftInstruction: last.instruction,
+	};
 }

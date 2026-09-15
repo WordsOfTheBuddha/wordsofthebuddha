@@ -1908,16 +1908,32 @@
 	padding: 0.22rem 0.32rem 0.22rem 0.9rem;
 }
 
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body {
+	flex: 1;
+	min-width: 0;
+	display: block;
+}
+
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-text-wrap {
+	width: 100%;
+	min-width: 0;
+}
+
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-box textarea,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body textarea,
 .ai-mode.is-research-gated .ai-composer .ai-box textarea {
 	flex: 1;
 	min-width: 0;
-	width: auto;
+	width: 100%;
 	min-height: 0;
 	max-height: 2.1rem;
 	padding: 0.4rem 0.15rem 0.4rem 0;
 	font-size: 1rem;
 	line-height: 1.3;
+}
+
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composition-attachments {
+	display: none !important;
 }
 
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-box-bar,
@@ -2575,12 +2591,98 @@
 	color: var(--warning-heading, #b45309);
 }
 
-.ai-composition-attachments {
+.ai-composer-text-wrap {
+	position: relative;
+	width: 100%;
+	min-width: 0;
+}
+
+.ai-composer-text-wrap textarea {
+	position: relative;
+	z-index: 1;
+}
+
+.ai-composer-mirror-host {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.ai-composer-mirror {
+	visibility: hidden;
+	width: 100%;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	padding: 0.2rem 0.15rem 0.15rem 0;
+	font: inherit;
+	font-size: 1.05rem;
+	line-height: 1.45;
+}
+
+.ai-composition-inline-layer {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.ai-composition-inline-chip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	max-width: calc(100% - 0.5rem);
+	padding: 0.28rem 0.3rem 0.28rem 0.65rem;
+	border-radius: 0.75rem;
+	background: color-mix(in srgb, var(--secondary-color) 12%, transparent);
+	color: var(--text-muted);
+	font-size: 0.78rem;
+	font-weight: 600;
+	line-height: 1.35;
+	pointer-events: auto;
+}
+
+.ai-question-attachments {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.45rem;
+	gap: 0.35rem;
+	margin-bottom: 0.35rem;
+}
+
+.ai-question-attachment {
+	display: inline-flex;
+	align-items: center;
+	max-width: 100%;
+	padding: 0.2rem 0.55rem;
+	border-radius: 0.65rem;
+	background: color-mix(in srgb, var(--secondary-color) 12%, transparent);
+	color: var(--text-muted);
+	font-size: 0.72rem;
+	font-weight: 600;
+	line-height: 1.35;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ai-composition-attachments {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	flex-shrink: 0;
+	gap: 0.35rem;
+	width: 100%;
 	padding: 0.55rem 0.75rem 0;
+}
+
+.ai-composer .ai-composer-body {
+	width: 100%;
+	min-width: 0;
 }
 
 .ai-composition-context {
@@ -2620,26 +2722,50 @@
 	opacity: 1;
 }
 
+.ai-composition-images-cap {
+	width: 100%;
+	margin: 0;
+	font-size: 0.72rem;
+	line-height: 1.3;
+	color: var(--text-muted);
+}
+
+.ai-composition-images-cap[hidden] {
+	display: none;
+}
+
 .ai-composition-images {
 	display: flex;
 	flex-wrap: wrap;
+	align-items: flex-start;
 	gap: 0.35rem;
+	width: 100%;
 }
 
 .ai-composition-image {
 	position: relative;
+	display: block;
+	flex: 0 0 auto;
 	width: 2.75rem;
 	height: 2.75rem;
+	min-width: 2.75rem;
+	min-height: 2.75rem;
+	max-width: 2.75rem;
+	max-height: 2.75rem;
 	border-radius: 0.45rem;
 	overflow: hidden;
 	border: 1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
 }
 
 .ai-composition-image img {
+	position: absolute;
+	inset: 0;
 	display: block;
 	width: 100%;
 	height: 100%;
+	margin: 0;
 	object-fit: cover;
+	object-position: center;
 }
 
 .ai-composition-image .ai-composition-clear {
@@ -2656,6 +2782,31 @@
 	align-items: flex-start;
 	gap: 0.5rem;
 	padding: 0.55rem 0.75rem 0;
+}
+
+.ai-composer-body {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+/* Expanded revise composer: one scroll for every edit, not per field. */
+.ai-follow.is-follow-expanded .ai-composer-body {
+	max-height: min(45vh, 22rem);
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.ai-follow.is-follow-expanded .ai-revise-stack {
+	max-height: none;
+	overflow: visible;
+}
+
+.ai-follow.is-follow-expanded .ai-revise-row-instruction,
+.ai-follow.is-follow-expanded .ai-composer-body textarea {
+	max-height: none;
+	overflow: hidden;
 }
 
 .ai-revise-stack {
@@ -2705,6 +2856,8 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 1.1rem;
+	line-height: 1;
 	cursor: pointer;
 }
 
@@ -2932,6 +3085,11 @@
 
 .ai-changes-btn[aria-pressed="false"]::before {
 	background: var(--text-muted);
+}
+
+/* Diff marks are painted in the DOM but only visible in changes mode. */
+.ai-report:not(.is-show-changes) .ai-change-removed {
+	display: none;
 }
 
 /* Git-like diff colours — soft fills only, no dashed frames. */

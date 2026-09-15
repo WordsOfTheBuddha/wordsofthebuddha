@@ -131,29 +131,34 @@ const defaultModel = showModelPicker
 	<form class="ai-composer ai-shell" data-ai-form data-ai-composer>
 		<label class="sr-only" for="ai-input">Ask a question</label>
 		<div class="ai-box">
-			<div class="ai-composition-attachments" data-ai-composition-attachments hidden>
-				<span class="ai-composition-context" data-ai-composition-context hidden>
-					<span class="ai-composition-context-label" data-ai-composition-context-label></span>
-					<button
-						type="button"
-						class="ai-composition-clear"
-						data-ai-composition-context-clear
-						aria-label="Remove attached notes"
-						title="Remove attached notes"
-					>
-						×
-					</button>
-				</span>
-				<div class="ai-composition-images" data-ai-composition-images hidden></div>
+			<div class="ai-composer-body">
+				<div class="ai-composition-attachments" data-ai-composition-attachments hidden>
+					<span class="ai-composition-context" data-ai-composition-context hidden>
+						<span class="ai-composition-context-label" data-ai-composition-context-label></span>
+						<button
+							type="button"
+							class="ai-composition-clear"
+							data-ai-composition-context-clear
+							aria-label="Remove attached notes"
+							title="Remove attached notes"
+						>
+							×
+						</button>
+					</span>
+					<p class="ai-composition-images-cap" data-ai-composition-images-cap hidden>
+						Max 4 images at a time.
+					</p>
+					<div class="ai-composition-images" data-ai-composition-images hidden></div>
+				</div>
+				<textarea
+					id="ai-input"
+					data-ai-input
+					rows="2"
+					maxlength={MAX_QUESTION_CHARS}
+					placeholder="Ask a question about the discourses…"
+					enterkeyhint="enter"
+				></textarea>
 			</div>
-			<textarea
-				id="ai-input"
-				data-ai-input
-				rows="2"
-				maxlength={MAX_QUESTION_CHARS}
-				placeholder="Ask a question about the discourses…"
-				enterkeyhint="enter"
-			></textarea>
 			<div class="ai-box-bar">
 				<div class="ai-box-tools">
 					<button
@@ -212,52 +217,57 @@ const defaultModel = showModelPicker
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
 		<label class="sr-only" for="ai-follow-input">Continue this conversation</label>
 		<div class="ai-box">
-			<div
-				class="ai-composition-attachments"
-				data-ai-composition-attachments
-				data-ai-follow-composition-attachments
-				hidden
-			>
-				<span class="ai-composition-context" data-ai-composition-context hidden>
-					<span
-						class="ai-composition-context-label"
-						data-ai-composition-context-label
-					></span>
-					<button
-						type="button"
-						class="ai-composition-clear"
-						data-ai-composition-context-clear
-						aria-label="Remove attached notes"
-						title="Remove attached notes"
-					>
-						×
-					</button>
-				</span>
-				<div class="ai-composition-images" data-ai-composition-images hidden></div>
+			<div class="ai-composer-body">
+				<div
+					class="ai-composition-attachments"
+					data-ai-composition-attachments
+					data-ai-follow-composition-attachments
+					hidden
+				>
+					<span class="ai-composition-context" data-ai-composition-context hidden>
+						<span
+							class="ai-composition-context-label"
+							data-ai-composition-context-label
+						></span>
+						<button
+							type="button"
+							class="ai-composition-clear"
+							data-ai-composition-context-clear
+							aria-label="Remove attached notes"
+							title="Remove attached notes"
+						>
+							×
+						</button>
+					</span>
+					<p class="ai-composition-images-cap" data-ai-composition-images-cap hidden>
+						Max 4 images at a time.
+					</p>
+					<div class="ai-composition-images" data-ai-composition-images hidden></div>
+				</div>
+				<div class="ai-revise-stack" data-ai-revise-stack hidden></div>
+				<div class="ai-revise-scope" data-ai-revise-scope hidden>
+					<span class="ai-revise-chip">
+						<span class="ai-revise-chip-text" data-ai-revise-chip></span>
+						<button
+							type="button"
+							class="ai-revise-clear"
+							data-ai-revise-clear
+							aria-label="Clear selection"
+							title="Clear selection"
+						>
+							×
+						</button>
+					</span>
+				</div>
+				<textarea
+					id="ai-follow-input"
+					data-ai-follow-input
+					rows="1"
+					maxlength={MAX_QUESTION_CHARS}
+					placeholder="Waiting for an answer…"
+					enterkeyhint="enter"
+				></textarea>
 			</div>
-			<div class="ai-revise-stack" data-ai-revise-stack hidden></div>
-			<div class="ai-revise-scope" data-ai-revise-scope hidden>
-				<span class="ai-revise-chip">
-					<span class="ai-revise-chip-text" data-ai-revise-chip></span>
-					<button
-						type="button"
-						class="ai-revise-clear"
-						data-ai-revise-clear
-						aria-label="Clear selection"
-						title="Clear selection"
-					>
-						×
-					</button>
-				</span>
-			</div>
-			<textarea
-				id="ai-follow-input"
-				data-ai-follow-input
-				rows="1"
-				maxlength={MAX_QUESTION_CHARS}
-				placeholder="Waiting for an answer…"
-				enterkeyhint="enter"
-			></textarea>
 			<div class="ai-box-bar">
 				<p class="ai-revise-cap-note" data-ai-revise-cap-note hidden>
 					Max 6 edits at a time.

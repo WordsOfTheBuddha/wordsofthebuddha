@@ -371,11 +371,10 @@ export function sanitizeResearchReportHtml(
 		}
 		const attrRaw = body.slice(nameMatch?.[0]?.length || 0);
 		const attrs = parseAttrs(attrRaw);
-		const selfClose = VOID_TAGS.has(name) || inner.endsWith("/");
-		out += `<${emitTag(name)}${attrs}>`;
-		if (selfClose && !VOID_TAGS.has(name) && name !== "use") {
-			out += `</${emitTag(name)}>`;
-		}
+		const voidTag = VOID_TAGS.has(name) || inner.endsWith("/");
+		out += voidTag
+			? `<${emitTag(name)}${attrs} />`
+			: `<${emitTag(name)}${attrs}>`;
 	}
 	return out.trim();
 }

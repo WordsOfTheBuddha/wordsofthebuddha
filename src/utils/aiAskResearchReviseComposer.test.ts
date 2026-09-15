@@ -21,6 +21,7 @@ import {
 	reviseCompactDockPlaceholder,
 	reviseExpandedPlaceholder,
 	reviseStackRenderKey,
+	shouldDeferReviseComposerDraftPersist,
 	updateCommittedReviseInstruction,
 	RESEARCH_REVISE_EDITS_MAX,
 } from "./aiAskResearchReviseComposer";
@@ -78,6 +79,42 @@ describe("revise edit draft state", () => {
 		assert.equal(hasReviseEditScope(draft.draftScope), true);
 		draft = clearReviseDraftScope(draft);
 		assert.equal(hasReviseEditScope(draft.draftScope), false);
+	});
+
+	it("reopens the last committed row when the empty draft pin is cleared", () => {
+		let draft = applyReviseSelectionToDraft(emptyReviseEditDraft(), {
+			blockIds: ["p44"],
+			quote: "The four establishments",
+		}).draft;
+		draft = { ...draft, draftInstruction: "Fix the survey image." };
+		draft = applyReviseSelectionToDraft(draft, {
+			blockIds: ["p46"],
+			quote: "Even mindfulness",
+		}).draft;
+		assert.equal(draft.committed.length, 1);
+		assert.equal(draft.committed[0]?.instruction, "Fix the survey image.");
+		assert.equal(draft.draftScope?.blockIds?.[0], "p46");
+		draft = clearReviseDraftScope(draft);
+		assert.equal(draft.committed.length, 0);
+		assert.equal(draft.draftScope?.blockIds?.[0], "p44");
+		assert.equal(draft.draftInstruction, "Fix the survey image.");
+	});
+
+	it("keeps draft text when only the draft pin is cleared", () => {
+		let draft = applyReviseSelectionToDraft(emptyReviseEditDraft(), {
+			blockIds: ["p1"],
+			quote: "Alpha",
+		}).draft;
+		draft = { ...draft, draftInstruction: "Tighten this" };
+		draft = applyReviseSelectionToDraft(draft, {
+			blockIds: ["p5"],
+			quote: "Beta",
+		}).draft;
+		draft = { ...draft, draftInstruction: "Second edit draft" };
+		draft = clearReviseDraftScope(draft);
+		assert.equal(draft.committed.length, 1);
+		assert.equal(draft.draftScope, null);
+		assert.equal(draft.draftInstruction, "Second edit draft");
 	});
 
 	it("replaces draft scope until instruction commits a row", () => {
@@ -191,10 +228,16 @@ describe("revise placeholders", () => {
 		};
 		assert.equal(
 			reviseExpandedPlaceholder(multiDraft, false),
-			RESEARCH_REVISE_SELECTION_PLACEHOLDER,
+			RESEARCH_REVISE_PLACEHOLDER,
 		);
 		assert.equal(
-			reviseExpandedPlaceholder(multiDraft, true),
+			reviseExpandedPlaceholder(
+				{
+					...multiDraft,
+					draftScope: { blockIds: ["p2"] },
+				},
+				true,
+			),
 			`${RESEARCH_REVISE_SELECTION_PLACEHOLDER} ${RESEARCH_REVISE_MULTI_HINT}`,
 		);
 	});
@@ -247,5 +290,25 @@ describe("revise placeholders", () => {
 		assert.equal(reviseEditSlotCount(draftBelowCap), RESEARCH_REVISE_EDITS_MAX);
 		assert.equal(isReviseEditsCapped(draftBelowCap), true);
 		assert.equal(isReviseEditsCapped(emptyReviseEditDraft()), false);
+	});
+});
+
+describe("shouldDeferReviseComposerDraftPersist", () => {
+	it("defers only when compact mode would drop committed rows", () => {
+		assert.equal(
+			shouldDeferReviseComposerDraftPersist(emptyReviseEditDraft(), 1),
+			true,
+		);
+		assert.equal(
+			shouldDeferReviseComposerDraftPersist(
+				{
+					committed: [],
+					draftScope: { blockIds: ["p2"] },
+					draftInstruction: "Fix the diagram.",
+				},
+				1,
+			),
+			false,
+		);
 	});
 });

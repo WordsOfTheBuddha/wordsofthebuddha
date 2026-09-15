@@ -30,6 +30,7 @@ import {
 	researchRevisionStartedNote,
 	RESEARCH_REVISE_MAX_OUTPUT_WORDS,
 	researchReviseFailedAsTooLong,
+	researchReviseVersionChangelog,
 	researchReviseWriterFailureMessage,
 	RESEARCH_REVISE_UNPARSEABLE_ERROR,
 	RESEARCH_REVISE_EMPTY_PATCH_ERROR,
@@ -39,6 +40,8 @@ import {
 	versionBodiesToKeep,
 	applyResearchReviseOps,
 	clipResearchRevisePlan,
+	clipResearchReviseInstruction,
+	normalizeResearchReviseInstructionInput,
 	clipResearchChangelog,
 	RESEARCH_REVISE_CHANGELOG_MAX,
 	numberedReportForModel,
@@ -1147,6 +1150,18 @@ describe("revise output budget", () => {
 	});
 });
 
+describe("researchReviseVersionChangelog", () => {
+	it("notes reference images in the version changelog", () => {
+		assert.equal(
+			researchReviseVersionChangelog({
+				instruction: "Fix the diagram labels.",
+				imageCount: 2,
+			}),
+			"Fix the diagram labels. 2 reference images attached.",
+		);
+	});
+});
+
 describe("researchReviseWriterFailureMessage", () => {
 	it("distinguishes unparseable output from dropped ops and empty patches", () => {
 		assert.equal(
@@ -1371,6 +1386,33 @@ describe("splitBlockIdForEnumeratedKey", () => {
 				diagram.markdown,
 			),
 			"c1",
+		);
+	});
+});
+
+describe("normalizeResearchReviseInstructionInput", () => {
+	it("keeps a trailing space while the reader is still typing", () => {
+		assert.equal(normalizeResearchReviseInstructionInput("Add "), "Add ");
+		assert.equal(
+			clipResearchReviseInstruction("Add the section"),
+			"Add the section",
+		);
+	});
+
+	it("collapses internal whitespace on submit", () => {
+		assert.equal(
+			clipResearchReviseInstruction("Add   the   section"),
+			"Add the section",
+		);
+	});
+
+	it("keeps paragraph breaks for longer revise instructions", () => {
+		const text = "Add SN 48.42 here.\n\nThen synthesize the five faculties.";
+		assert.equal(normalizeResearchReviseInstructionInput(text), text);
+		assert.equal(clipResearchReviseInstruction(text), text);
+		assert.equal(
+			normalizeResearchReviseInstructionInput("Line one\nLine two"),
+			"Line one\nLine two",
 		);
 	});
 });

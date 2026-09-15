@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { FieldValue } from "firebase-admin/firestore";
 import type { UserRecord } from "firebase-admin/auth";
+import {
+	sanitizeResearchContextImages,
+	type ResearchContextImage,
+} from "./aiAskComposition";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
 import { getSearchDocBySlug } from "../service/search/search";
 import { rewriteAskQuestion } from "./aiAskRewrite";
@@ -212,6 +216,9 @@ export interface ResearchJobRecord {
 	reviseClarify?: ResearchReviseClarify | null;
 	/** The reader's answers, folded into the resumed planner/writer calls. */
 	reviseClarifications?: string;
+	/** Reference screenshots for the in-flight revision only; cleared when the job completes. */
+	reviseAttachedImages?: ResearchContextImage[];
+	reviseImageCount?: number;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -363,6 +370,13 @@ function recordFromData(
 			typeof data.reviseClarifications === "string"
 				? data.reviseClarifications
 				: "",
+		reviseAttachedImages: sanitizeResearchContextImages(data.reviseAttachedImages),
+		reviseImageCount:
+			typeof data.reviseImageCount === "number" &&
+			Number.isFinite(data.reviseImageCount) &&
+			data.reviseImageCount > 0
+				? Math.floor(data.reviseImageCount)
+				: undefined,
 	};
 }
 
@@ -773,6 +787,8 @@ export async function abandonResearchReviseCycle(
 		reviseFromVersion: null,
 		reviseClarify: null,
 		reviseClarifications: "",
+		reviseAttachedImages: [],
+		reviseImageCount: undefined,
 	});
 }
 
@@ -813,6 +829,8 @@ export async function requestResearchJobCancel(
 			reviseFromVersion: null,
 			reviseClarify: null,
 			reviseClarifications: "",
+			reviseAttachedImages: [],
+			reviseImageCount: undefined,
 		});
 		return recordToPublic(next);
 	}

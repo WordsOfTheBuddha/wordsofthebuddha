@@ -1,4 +1,5 @@
 import type { UserRecord } from "firebase-admin/auth";
+import type { ResearchContextImage } from "./aiAskComposition";
 import { resolveAskWriterBudgetMs } from "./aiAskAnswer";
 import type { AskQuotaView } from "./aiAskQuota";
 import { consumeAskQuota } from "./aiAskQuotaServer";
@@ -40,6 +41,7 @@ import {
 	researchRevisePatchIsEmpty,
 	researchRevisePlanNote,
 	researchRevisePlanSummary,
+	researchReviseVersionChangelog,
 	researchReviseWriterFailureMessage,
 	reviseEditsPlannerInstruction,
 	reviseEvidenceRequestedIds,
@@ -307,6 +309,8 @@ async function restoreCompleteJob(
 		reviseFromVersion: null,
 		reviseClarify: null,
 		reviseClarifications: "",
+		reviseAttachedImages: [],
+		reviseImageCount: undefined,
 	});
 }
 
@@ -400,6 +404,8 @@ export async function beginResearchRevise(options: {
 	jobId?: string;
 	shareSlug?: string;
 	fromVersion?: number | null;
+	attachedImages?: ResearchContextImage[];
+	imageCount?: number;
 }): Promise<ResearchReviseResult> {
 	const edits =
 		options.edits && options.edits.length > 0
@@ -477,6 +483,8 @@ export async function beginResearchRevise(options: {
 		reviseFromVersion: fromVersion,
 		reviseClarify: null,
 		reviseClarifications: "",
+		reviseAttachedImages: options.attachedImages || [],
+		reviseImageCount: options.imageCount,
 	});
 	return {
 		ok: true,
@@ -543,6 +551,7 @@ export async function runResearchReviseJob(options: {
 		// Pass 1 — the planner picks the target blocks and what evidence the
 		// writer needs (one search round, a few full reads). Runs under the
 		// “Considering the revision…” hop already recorded at start.
+		const attachedImages = record.reviseAttachedImages || [];
 		const planned = await planResearchRevise({
 			report: baseReport,
 			instruction,
@@ -552,6 +561,7 @@ export async function runResearchReviseJob(options: {
 			clarifications,
 			heading,
 			quote,
+			attachedImages,
 		});
 		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
 		if (!record) return;
@@ -666,6 +676,7 @@ export async function runResearchReviseJob(options: {
 			quote,
 			evidence: gathered.evidence,
 			plan,
+			attachedImages,
 			timeoutMs: resolveAskWriterBudgetMs(Date.now() - workerStarted),
 		});
 		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
@@ -691,14 +702,23 @@ export async function runResearchReviseJob(options: {
 		const report = replaceResearchSourcesSection(spliced, hits);
 		const n = nextResearchRevisionN(index);
 		const stats = snapshotResearchHistoryStats(report, hits);
+		const reviseImageCount =
+			record.reviseImageCount ||
+			record.reviseAttachedImages?.length ||
+			0;
 		const meta: ResearchVersionMeta = {
 			n,
 			at: Date.now(),
 			instruction,
-			changelog: written.patch.changelog || clipResearchChangelog(instruction),
+			changelog: researchReviseVersionChangelog({
+				patchChangelog: written.patch.changelog,
+				instruction,
+				imageCount: reviseImageCount,
+			}),
 			from: fromVersion && fromVersion !== currentN ? fromVersion : currentN,
 			...(heading ? { heading } : {}),
 			...(stats ? { stats } : {}),
+			...(reviseImageCount > 0 ? { imageCount: reviseImageCount } : {}),
 		};
 		const nextIndex =
 			index.length > 0

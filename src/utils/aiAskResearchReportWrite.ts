@@ -141,19 +141,19 @@ export async function writeResearchReport(options: {
 		});
 		if (watchdog.signal.aborted) return empty;
 		if (!evidence.trim()) return empty;
-		const brief = [
-			(options.brief || "").replace(/\s+/g, " ").trim(),
-			formatAttachedMaterialBlock(options.attachedContext || ""),
-		]
-			.filter(Boolean)
-			.join("\n\n");
+		const clarifyBrief = (options.brief || "").replace(/\s+/g, " ").trim();
+		const attachedBlock = formatAttachedMaterialBlock(
+			options.attachedContext || "",
+		);
+		const brief = [clarifyBrief, attachedBlock].filter(Boolean).join("\n\n");
 		const originalQuestion = (options.originalQuestion || "")
 			.replace(/\s+/g, " ")
 			.trim();
 		const lengthSources = {
 			question: options.question,
 			originalQuestion,
-			brief,
+			// Attached prior reports can quote old word-count asks; honor this turn only.
+			brief: clarifyBrief,
 		};
 		const guidance = [
 			options.guidance,

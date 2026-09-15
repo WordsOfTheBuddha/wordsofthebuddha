@@ -2,6 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
 import { isAskQuotaSignedIn } from "../../../utils/aiAskQuota";
+import { sanitizeResearchContextImages } from "../../../utils/aiAskComposition";
 import {
 	normalizeResearchReviseEdits,
 } from "../../../utils/aiAskResearchRevise";
@@ -74,6 +75,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		quote: typeof body.quote === "string" ? body.quote : "",
 	});
 	const primary = edits[0];
+	const attachedImages = sanitizeResearchContextImages(body.images);
+	const imageCountRaw = body.imageCount;
+	const imageCount =
+		typeof imageCountRaw === "number" && Number.isFinite(imageCountRaw)
+			? Math.max(0, Math.floor(imageCountRaw))
+			: attachedImages.length;
 	const shared = {
 		request,
 		user,
@@ -87,6 +94,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			typeof fromVersion === "number" && Number.isFinite(fromVersion)
 				? fromVersion
 				: null,
+		attachedImages,
+		imageCount: imageCount > 0 ? imageCount : undefined,
 	};
 
 	if (action === "answer") {

@@ -1,3 +1,4 @@
+import type { ResearchContextImage } from "./aiAskComposition";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { toPublicAskHit } from "./aiDiscourseHits";
 import {
@@ -55,9 +56,25 @@ import {
 	ASK_PLANNER_PAID_FALLBACK_MODEL,
 	ASK_WRITER_REASONING_EFFORT,
 	askWriterChatOptions,
+	buildOpenRouterUserContent,
 	getOpenRouterApiKey,
 	openRouterChat,
 } from "./openrouter";
+
+function reviseReferenceImagesLead(count: number): string {
+	if (count <= 0) return "";
+	return `${count} reference image${count === 1 ? "" : "s"} attached by the reader (screenshots of visual issues, diagrams, etc.). Use them to understand what to fix.\n\n`;
+}
+
+function reviseModelUserContent(
+	text: string,
+	images?: readonly ResearchContextImage[],
+): string | ReturnType<typeof buildOpenRouterUserContent> {
+	return buildOpenRouterUserContent(
+		`${reviseReferenceImagesLead(images?.length || 0)}${text}`,
+		images,
+	);
+}
 
 /** Paid GLM allows 131k completions; 50k covers a full cited report. */
 export const RESEARCH_REVISE_WRITER_MAX_TOKENS = 50_000;
@@ -164,6 +181,7 @@ export async function planResearchRevise(options: {
 	heading?: string;
 	quote?: string;
 	edits?: readonly ResearchReviseEdit[];
+	attachedImages?: readonly ResearchContextImage[];
 	signal?: AbortSignal;
 	timeoutMs?: number;
 }): Promise<{ plan: ResearchRevisePlan | null; model: string }> {
@@ -200,22 +218,25 @@ export async function planResearchRevise(options: {
 				{ role: "system", content: RESEARCH_REVISE_PLAN_SYSTEM },
 				{
 					role: "user",
-					content: `Current revision instruction: ${instruction}
+					content: reviseModelUserContent(
+						`Current revision instruction: ${instruction}
 ${reviseClarificationsBlock(options.clarifications)}${options.originalQuestion ? `Original research request (background): ${options.originalQuestion}\n` : ""}${
-						options.clarifyBrief
-							? `Original research preferences and emphasis choices:\n${options.clarifyBrief}\n`
-							: ""
-					}${editsBlock ? `${editsBlock}\n` : ""}${
-						heading ? `Pinned heading: ${heading}\n` : ""
-					}${
-						quoteForModel
-							? `Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quoteForModel}\n`
-							: ""
-					}
+							options.clarifyBrief
+								? `Original research preferences and emphasis choices:\n${options.clarifyBrief}\n`
+								: ""
+						}${editsBlock ? `${editsBlock}\n` : ""}${
+							heading ? `Pinned heading: ${heading}\n` : ""
+						}${
+							quoteForModel
+								? `Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quoteForModel}\n`
+								: ""
+						}
 Report with block ids:
 ${numberedReportForModel(blocks)}
 
 JSON:`,
+						options.attachedImages,
+					),
 				},
 			],
 		});
@@ -638,6 +659,7 @@ export async function writeResearchRevise(options: {
 	edits?: readonly ResearchReviseEdit[];
 	evidence?: string;
 	plan?: ResearchRevisePlan | null;
+	attachedImages?: readonly ResearchContextImage[];
 	signal?: AbortSignal;
 	timeoutMs?: number;
 }): Promise<{
@@ -677,18 +699,21 @@ export async function writeResearchRevise(options: {
 				{ role: "system", content: RESEARCH_REVISE_SYSTEM },
 				{
 					role: "user",
-					content: buildReviseWriterMessage({
-						blocks,
-						instruction,
-						originalQuestion: options.originalQuestion,
-						clarifyBrief: options.clarifyBrief,
-						clarifications: options.clarifications,
-						heading: options.heading,
-						quote: options.quote,
-						edits: options.edits,
-						evidence: options.evidence,
-						plan: options.plan,
-					}),
+					content: reviseModelUserContent(
+						buildReviseWriterMessage({
+							blocks,
+							instruction,
+							originalQuestion: options.originalQuestion,
+							clarifyBrief: options.clarifyBrief,
+							clarifications: options.clarifications,
+							heading: options.heading,
+							quote: options.quote,
+							edits: options.edits,
+							evidence: options.evidence,
+							plan: options.plan,
+						}),
+						options.attachedImages,
+					),
 				},
 			],
 		});

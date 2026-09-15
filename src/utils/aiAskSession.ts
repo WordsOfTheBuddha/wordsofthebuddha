@@ -73,6 +73,8 @@ export interface AiAskSessionEntry {
 	/** Slim metadata for Research attached notes (not the full text). */
 	contextPreview?: string;
 	contextWordCount?: number;
+	/** e.g. "Clipboard (527 lines)" — display label only. */
+	contextAttachmentLabel?: string;
 	imageCount?: number;
 }
 
@@ -332,6 +334,15 @@ export function sanitizeAskHistoryEntry(
 		Number.isFinite(record.contextWordCount) &&
 		record.contextWordCount > 0
 			? { contextWordCount: Math.floor(record.contextWordCount) }
+			: {}),
+		...(typeof record.contextAttachmentLabel === "string" &&
+		record.contextAttachmentLabel.trim()
+			? {
+					contextAttachmentLabel: clip(
+						record.contextAttachmentLabel.replace(/\s+/g, " ").trim(),
+						80,
+					),
+				}
 			: {}),
 		...(typeof record.imageCount === "number" &&
 		Number.isFinite(record.imageCount) &&

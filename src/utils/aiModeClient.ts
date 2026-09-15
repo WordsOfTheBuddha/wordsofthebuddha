@@ -34,13 +34,35 @@ import {
 	type ResearchClarifyQuestion,
 } from "./aiAskResearchClarify";
 import {
+	COMPOSITION_CHIP_PAD_CHAR,
+	COMPOSITION_CONTEXT_CHIP_MARKER,
+	compositionDroppedImageFiles,
+	compositionMarkerArrowAdjust,
 	clipResearchContext,
+	compositionChipPadCount,
+	compositionContextInsertPosition,
+	compositionLineStart,
+	compositionMarkerIndices,
+	compositionMarkerPadLength,
+	compositionMarkerRegions,
+	insertCompositionContextClip,
+	mergeCompositionContexts,
 	countContextWords,
 	formatContextChipLabel,
+	guessImageMimeFromName,
 	hasResearchCompositionContent,
+	isCompositionImageFile,
 	MAX_RESEARCH_CONTEXT_IMAGES,
 	MAX_RESEARCH_CONTEXT_IMAGE_BYTES,
+	normalizeCompositionCaret,
+	parseResearchCompositionDraft,
+	RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY,
 	researchContextPreview,
+	serializeResearchCompositionDraft,
+	shouldAttachPasteAsCompositionContext,
+	sanitizeResearchContextImages,
+	stripCompositionChipMarkers,
+	type ResearchCompositionDraft,
 	type ResearchContextImage,
 } from "./aiAskComposition";
 import {
@@ -59,6 +81,7 @@ import {
 	type ReportContentBlock,
 	type ReportRemovedBlock,
 	clipResearchReviseInstruction,
+	normalizeResearchReviseInstructionInput,
 	RESEARCH_REVISE_INSTRUCTION_MAX,
 	clipResearchVersionIndex,
 	currentResearchVersionN,
@@ -98,6 +121,7 @@ import {
 	reviseExpandedPlaceholder,
 	isReviseEditsCapped,
 	reviseStackRenderKey,
+	shouldDeferReviseComposerDraftPersist,
 	REVISE_QUOTE_CHIP_MAX,
 	scopeFromDomSelection,
 	scopeFromReportPin,
@@ -416,6 +440,8 @@ export interface AiAskTurn {
 	/** Slim metadata for attached Research notes (not the full text). */
 	contextPreview?: string;
 	contextWordCount?: number;
+	/** e.g. "Clipboard (527 lines)" — display label only. */
+	contextAttachmentLabel?: string;
 	imageCount?: number;
 }
 
@@ -1547,9 +1573,23 @@ function speechRecognitionCtor(): (new () => BrowserSpeechRecognition) | null {
 	return w.SpeechRecognition || w.webkitSpeechRecognition || null;
 }
 
+/** Tall enough for multi-paragraph revise instructions; parent body scrolls. */
+const REVISE_COMPOSER_TEXTAREA_MAX_PX = 12_000;
+
+function reviseComposerTextareaUncapped(el: HTMLTextAreaElement): boolean {
+	if (!el.closest(".ai-follow.is-follow-expanded")) return false;
+	return (
+		el.classList.contains("ai-revise-row-instruction") ||
+		el.hasAttribute("data-ai-follow-input")
+	);
+}
+
 function fitTextarea(el: HTMLTextAreaElement): void {
 	el.style.height = "auto";
-	el.style.height = `${Math.min(Math.max(el.scrollHeight, 28), ASK_COMPOSER_TEXTAREA_MAX_PX)}px`;
+	const cap = reviseComposerTextareaUncapped(el)
+		? REVISE_COMPOSER_TEXTAREA_MAX_PX
+		: ASK_COMPOSER_TEXTAREA_MAX_PX;
+	el.style.height = `${Math.min(Math.max(el.scrollHeight, 28), cap)}px`;
 }
 
 function fitClarifyOther(el: HTMLTextAreaElement): void {
@@ -1621,10 +1661,34 @@ function turnToSessionEntry(
 		...(typeof turn.contextWordCount === "number"
 			? { contextWordCount: turn.contextWordCount }
 			: {}),
+		...(turn.contextAttachmentLabel
+			? { contextAttachmentLabel: turn.contextAttachmentLabel }
+			: {}),
 		...(typeof turn.imageCount === "number"
 			? { imageCount: turn.imageCount }
 			: {}),
 	};
+}
+
+function renderQuestionAttachmentsHtml(turn: AiAskTurn): string {
+	const chips: string[] = [];
+	if (turn.contextAttachmentLabel) {
+		const title = turn.contextPreview
+			? ` title="${escapeHtml(turn.contextPreview)}"`
+			: "";
+		chips.push(
+			`<span class="ai-question-attachment ai-question-attachment-notes"${title}>${escapeHtml(turn.contextAttachmentLabel)}</span>`,
+		);
+	}
+	if (typeof turn.imageCount === "number" && turn.imageCount > 0) {
+		const label =
+			turn.imageCount === 1 ? "1 image" : `${turn.imageCount} images`;
+		chips.push(
+			`<span class="ai-question-attachment ai-question-attachment-images">${escapeHtml(label)}</span>`,
+		);
+	}
+	if (chips.length === 0) return "";
+	return `<div class="ai-question-attachments">${chips.join("")}</div>`;
 }
 
 function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
@@ -1671,6 +1735,16 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 		...(entry.reviseBase ? { reviseBase: entry.reviseBase } : {}),
 		...(typeof entry.reviseBaseVersionN === "number" && entry.reviseBaseVersionN > 0
 			? { reviseBaseVersionN: entry.reviseBaseVersionN }
+			: {}),
+		...(entry.contextPreview ? { contextPreview: entry.contextPreview } : {}),
+		...(typeof entry.contextWordCount === "number"
+			? { contextWordCount: entry.contextWordCount }
+			: {}),
+		...(entry.contextAttachmentLabel
+			? { contextAttachmentLabel: entry.contextAttachmentLabel }
+			: {}),
+		...(typeof entry.imageCount === "number"
+			? { imageCount: entry.imageCount }
 			: {}),
 	};
 }
@@ -2362,6 +2436,9 @@ export function attachAiMode(options: {
 	const compositionImageLists = [
 		...root.querySelectorAll<HTMLElement>("[data-ai-composition-images]"),
 	];
+	const compositionImageCaps = [
+		...root.querySelectorAll<HTMLElement>("[data-ai-composition-images-cap]"),
+	];
 	const reviseScope = root.querySelector<HTMLElement>("[data-ai-revise-scope]");
 	const reviseStackEl = root.querySelector<HTMLElement>("[data-ai-revise-stack]");
 	const reviseCapNoteEl = root.querySelector<HTMLElement>("[data-ai-revise-cap-note]");
@@ -2436,8 +2513,25 @@ export function attachAiMode(options: {
 	let applyingAskSurfaceUrl = false;
 	let busy = false;
 	let researchChipOn = false;
-	let compositionContext = "";
+	let compositionContexts: string[] = [];
 	let compositionImages: ResearchContextImage[] = [];
+	let compositionImagesLoading = 0;
+	let compositionContextTextarea: HTMLTextAreaElement | null = null;
+	let compositionMutating = false;
+	let compositionDraftHydrated = false;
+	let storedResearchCompositionDraft: ResearchCompositionDraft | null | undefined;
+	/** Images from the last Research submit, restored on cancel/stop. */
+	let pendingResearchSubmitImages: ResearchContextImage[] | null = null;
+	/** Images from the last Revise submit, restored on cancel/failure. */
+	let lastReviseSubmitImages: ResearchContextImage[] = [];
+	const compositionMirrorHosts = new WeakMap<
+		HTMLTextAreaElement,
+		{
+			mirror: HTMLDivElement;
+			mirrorHost: HTMLDivElement;
+			layer: HTMLDivElement;
+		}
+	>();
 	let researchPollTimer = 0;
 	let researchPollHiddenCleanup: (() => void) | null = null;
 	let reviseEditDraft: ResearchReviseEditDraft = emptyReviseEditDraft();
@@ -2796,25 +2890,884 @@ export function attachAiMode(options: {
 		return researchPaneOn() || researchChipOn || followResearchChipOn();
 	}
 
-	function clearCompositionAttachments(): void {
-		compositionContext = "";
+	function compositionImagesEnabled(): boolean {
+		return researchCompositionEnabled() || reviseFollowActive();
+	}
+
+	function compositionDropEnabled(): boolean {
+		if (compositionImagesEnabled()) return true;
+		return Boolean(
+			followForm &&
+				!followForm.hidden &&
+				root.classList.contains("is-report-dock") &&
+				(researchPaneOn() ||
+					researchChipOn ||
+					reviseFollowActive() ||
+					Boolean(lastFinishedReportTurn()?.research)),
+		);
+	}
+
+	function expandFollowComposerForCompositionDrop(): void {
+		if (
+			!followForm ||
+			followForm.hidden ||
+			!root.classList.contains("is-report-dock") ||
+			root.classList.contains("is-follow-expanded")
+		) {
+			return;
+		}
+		followComposerHoldCompact = false;
+		followComposerPinnedOpen = true;
+		syncFollowComposerMode();
+	}
+
+	function clearCompositionAttachments(options?: {
+		clearDraft?: boolean;
+		persistDraft?: boolean;
+	}): void {
+		clearCompositionContext();
 		compositionImages = [];
+		compositionImagesLoading = 0;
+		if (options?.clearDraft !== false) {
+			clearResearchCompositionDraftStorage();
+		}
+		syncCompositionTray({
+			persistDraft: options?.persistDraft,
+		});
+	}
+
+	function snapshotResearchSubmitImages(
+		images: readonly ResearchContextImage[],
+	): void {
+		const sanitized = sanitizeResearchContextImages(images);
+		pendingResearchSubmitImages =
+			sanitized.length > 0 ? sanitized : null;
+	}
+
+	function clearPendingResearchSubmitImages(): void {
+		pendingResearchSubmitImages = null;
+	}
+
+	function restorePendingResearchImagesToComposer(): void {
+		if (!pendingResearchSubmitImages?.length) return;
+		if (compositionImages.length > 0) return;
+		compositionImages = [...pendingResearchSubmitImages];
+		syncCompositionTray();
+		persistResearchCompositionDraft();
+	}
+
+	function snapshotReviseSubmitImages(
+		images: readonly ResearchContextImage[],
+	): void {
+		lastReviseSubmitImages = sanitizeResearchContextImages(images);
+	}
+
+	function clearReviseSubmitImages(): void {
+		lastReviseSubmitImages = [];
+	}
+
+	function restoreReviseSubmitImagesToComposer(): void {
+		if (!lastReviseSubmitImages.length) return;
+		if (compositionImages.length > 0) return;
+		compositionImages = [...lastReviseSubmitImages];
+		syncCompositionTray();
+		persistResearchCompositionDraft();
+	}
+
+	function researchCompositionDraftEligible(): boolean {
+		return researchCompositionEnabled() && !reviseFollowActive() && turns.length === 0;
+	}
+
+	function clearResearchCompositionDraftStorage(): void {
+		storedResearchCompositionDraft = null;
+		try {
+			sessionStorage.removeItem(RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY);
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function loadStoredResearchCompositionDraft(): ResearchCompositionDraft | null {
+		if (storedResearchCompositionDraft !== undefined) {
+			return storedResearchCompositionDraft;
+		}
+		try {
+			storedResearchCompositionDraft = parseResearchCompositionDraft(
+				sessionStorage.getItem(RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY),
+			);
+		} catch {
+			storedResearchCompositionDraft = null;
+		}
+		return storedResearchCompositionDraft;
+	}
+
+	function writeResearchCompositionDraftStorage(
+		question: string,
+		images: ResearchContextImage[],
+	): void {
+		const trimmedQuestion = stripCompositionChipMarkers(question);
+		const sanitizedImages = sanitizeResearchContextImages(images);
+		if (
+			!hasResearchCompositionContent({
+				question: trimmedQuestion,
+				context: "",
+				images: sanitizedImages,
+			})
+		) {
+			clearResearchCompositionDraftStorage();
+			return;
+		}
+		try {
+			const serialized = serializeResearchCompositionDraft({
+				question: trimmedQuestion,
+				context: "",
+				images: sanitizedImages,
+			});
+			sessionStorage.setItem(RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY, serialized);
+			storedResearchCompositionDraft = parseResearchCompositionDraft(serialized);
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function persistResearchCompositionDraft(): void {
+		if (!compositionDraftHydrated) return;
+		const stored = loadStoredResearchCompositionDraft();
+		if (researchCompositionDraftEligible()) {
+			writeResearchCompositionDraftStorage(
+				input?.value || "",
+				compositionImages,
+			);
+			return;
+		}
+		if (compositionImages.length > 0) {
+			writeResearchCompositionDraftStorage(
+				stored?.question ||
+					stripCompositionChipMarkers(input?.value || ""),
+				compositionImages,
+			);
+		}
+	}
+
+	function applyResearchCompositionDraftFromStorage(): void {
+		const draft = loadStoredResearchCompositionDraft();
+		if (!draft) return;
+		if (
+			compositionImages.length === 0 &&
+			draft.images.length > 0 &&
+			compositionImagesEnabled()
+		) {
+			compositionImages = [...draft.images];
+		}
+		if (researchCompositionDraftEligible()) {
+			compositionContexts = [];
+			compositionContextTextarea = null;
+			if (input && draft.question) {
+				input.value = draft.question;
+				fitTextarea(input);
+			}
+		}
+		syncCompositionTray({ persistDraft: false });
+	}
+
+	function maybeApplyResearchCompositionDraft(): void {
+		if (!compositionDraftHydrated) return;
+		applyResearchCompositionDraftFromStorage();
+	}
+
+	function restoreResearchCompositionDraft(): void {
+		if (compositionDraftHydrated) return;
+		compositionDraftHydrated = true;
+		applyResearchCompositionDraftFromStorage();
+	}
+
+	function reserveCompositionImageSlot(): boolean {
+		const remaining =
+			MAX_RESEARCH_CONTEXT_IMAGES -
+			compositionImages.length -
+			compositionImagesLoading;
+		if (remaining <= 0) return false;
+		compositionImagesLoading += 1;
+		return true;
+	}
+
+	function releaseCompositionImageSlot(): void {
+		compositionImagesLoading = Math.max(0, compositionImagesLoading - 1);
+	}
+
+	function guardCompositionSelection(textarea: HTMLTextAreaElement): void {
+		const start = textarea.selectionStart ?? 0;
+		const end = textarea.selectionEnd ?? start;
+		const next = normalizeCompositionCaret(textarea.value, start, end);
+		if (next.start !== start || next.end !== end) {
+			textarea.setSelectionRange(next.start, next.end);
+		}
+	}
+
+	function handleCompositionMarkerKeydown(
+		event: KeyboardEvent,
+		textarea: HTMLTextAreaElement,
+	): void {
+		const regions = compositionMarkerRegions(textarea.value);
+		if (regions.length === 0) return;
+		const start = textarea.selectionStart ?? 0;
+		const end = textarea.selectionEnd ?? start;
+		const arrow = compositionMarkerArrowAdjust(
+			textarea.value,
+			event.key === "ArrowLeft" ? "ArrowLeft" : "ArrowRight",
+			start,
+			end,
+		);
+		if (arrow) {
+			event.preventDefault();
+			textarea.setSelectionRange(arrow.start, arrow.end);
+			return;
+		}
+		if (event.key === "Backspace" || event.key === "Delete") {
+			for (const region of regions) {
+				const touchesMarker =
+					(start < region.end && end > region.start) ||
+					(event.key === "Backspace" && start === end && start === region.end);
+				if (!touchesMarker) continue;
+				event.preventDefault();
+				if (event.key === "Backspace" && start === end && start === region.end) {
+					textarea.setSelectionRange(region.start, region.start);
+				}
+				return;
+			}
+		}
+	}
+
+	function mergedCompositionContext(): string {
+		return mergeCompositionContexts(compositionContexts);
+	}
+
+	function clearCompositionContext(): void {
+		if (compositionContextTextarea) {
+			removeAllCompositionContextMarkers(compositionContextTextarea);
+		}
+		compositionContexts = [];
+		compositionContextTextarea = null;
 		syncCompositionTray();
 	}
 
-	function syncCompositionTray(): void {
-		const enabled = researchCompositionEnabled();
-		const hasContext = Boolean(compositionContext.trim());
+	function removeAllCompositionContextMarkers(
+		textarea: HTMLTextAreaElement,
+	): void {
+		while (textarea.value.includes(COMPOSITION_CONTEXT_CHIP_MARKER)) {
+			removeCompositionContextMarkerAt(textarea, 0);
+		}
+	}
+
+	function removeCompositionContextMarkerAt(
+		textarea: HTMLTextAreaElement,
+		chipIndex: number,
+	): void {
+		const markerIndex = compositionMarkerIndices(textarea.value)[chipIndex];
+		if (markerIndex === undefined) return;
+		const start = textarea.selectionStart ?? textarea.value.length;
+		const end = textarea.selectionEnd ?? start;
+		const padLen = compositionMarkerPadLength(textarea.value, markerIndex);
+		const removeEnd = markerIndex + 1 + padLen;
+		textarea.value =
+			textarea.value.slice(0, markerIndex) + textarea.value.slice(removeEnd);
+		const removed = 1 + padLen;
+		const nextStart =
+			start > markerIndex ? Math.max(markerIndex, start - removed) : start;
+		const nextEnd =
+			end > markerIndex ? Math.max(markerIndex, end - removed) : end;
+		textarea.setSelectionRange(nextStart, nextEnd);
+		fitTextarea(textarea);
+	}
+
+	function removeCompositionContextAt(
+		textarea: HTMLTextAreaElement,
+		chipIndex: number,
+	): void {
+		removeCompositionContextMarkerAt(textarea, chipIndex);
+		compositionContexts = compositionContexts.filter((_, index) => index !== chipIndex);
+		if (compositionContexts.length === 0) {
+			compositionContextTextarea = null;
+		}
+		syncCompositionTray();
+	}
+
+	function measureComposerCharWidth(textarea: HTMLTextAreaElement): number {
+		const host = ensureCompositionMirrorHost(textarea);
+		const probe = document.createElement("span");
+		probe.textContent = COMPOSITION_CHIP_PAD_CHAR;
+		host.mirror.append(probe);
+		const width = probe.getBoundingClientRect().width;
+		probe.remove();
+		return width > 0 ? width : 8;
+	}
+
+	function applyMirrorTypography(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+	): void {
+		const style = getComputedStyle(textarea);
+		mirror.style.width = `${textarea.clientWidth}px`;
+		mirror.style.font = style.font;
+		mirror.style.fontSize = style.fontSize;
+		mirror.style.fontFamily = style.fontFamily;
+		mirror.style.fontWeight = style.fontWeight;
+		mirror.style.lineHeight = style.lineHeight;
+		mirror.style.letterSpacing = style.letterSpacing;
+		mirror.style.padding = style.padding;
+		mirror.style.whiteSpace = "pre-wrap";
+		mirror.style.overflowWrap = style.overflowWrap;
+	}
+
+	function compositionTextareaContentRight(
+		textarea: HTMLTextAreaElement,
+	): number {
+		const style = getComputedStyle(textarea);
+		const rect = textarea.getBoundingClientRect();
+		return rect.right - (parseFloat(style.paddingRight) || 0);
+	}
+
+	function measureCompositionChipLabelWidth(label: string): number {
+		const probe = document.createElement("span");
+		probe.className = "ai-composition-inline-chip";
+		probe.style.position = "absolute";
+		probe.style.visibility = "hidden";
+		probe.style.pointerEvents = "none";
+		const labelEl = document.createElement("span");
+		labelEl.className = "ai-composition-context-label";
+		labelEl.textContent = label;
+		const remove = document.createElement("button");
+		remove.type = "button";
+		remove.className = "ai-composition-clear";
+		remove.textContent = "×";
+		probe.append(labelEl, remove);
+		document.body.append(probe);
+		const width = probe.getBoundingClientRect().width;
+		probe.remove();
+		return width > 0 ? width : 120;
+	}
+
+	function insertCompositionLineBreakBefore(
+		textarea: HTMLTextAreaElement,
+		index: number,
+	): number {
+		if (index > 0 && textarea.value[index - 1] === "\n") return index;
+		textarea.value =
+			textarea.value.slice(0, index) + "\n" + textarea.value.slice(index);
+		const start = textarea.selectionStart ?? textarea.value.length;
+		const end = textarea.selectionEnd ?? start;
+		const nextStart = start > index ? start + 1 : start;
+		const nextEnd = end > index ? end + 1 : end;
+		textarea.setSelectionRange(nextStart, nextEnd);
+		fitTextarea(textarea);
+		if (textarea === followInput) {
+			clipFollowInputValue();
+			syncFollowComposerMode();
+		}
+		return index + 1;
+	}
+
+	function measureCompositionCaretPoint(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		index: number,
+	): { left: number; top: number } | null {
+		const value = textarea.value;
+		if (index < 0 || index > value.length) return null;
+		applyMirrorTypography(textarea, mirror);
+		mirror.replaceChildren();
+		const probe = document.createElement("span");
+		probe.className = "ai-composition-index-probe";
+		probe.textContent = "\u200b";
+		let probePlaced = false;
+		const markerIndices = compositionMarkerIndices(value);
+		let pos = 0;
+		for (let i = 0; i < markerIndices.length; i++) {
+			const markerIndex = markerIndices[i];
+			const textBeforeMarker = value.slice(pos, markerIndex);
+			if (!probePlaced) {
+				if (index <= markerIndex) {
+					const relativeIndex = index - pos;
+					mirror.append(
+						document.createTextNode(textBeforeMarker.slice(0, relativeIndex)),
+					);
+					mirror.append(probe);
+					probePlaced = true;
+					mirror.append(
+						document.createTextNode(textBeforeMarker.slice(relativeIndex)),
+					);
+				} else {
+					mirror.append(document.createTextNode(textBeforeMarker));
+				}
+			} else {
+				mirror.append(document.createTextNode(textBeforeMarker));
+			}
+			const anchor = document.createElement("span");
+			anchor.className = "ai-composition-chip-anchor";
+			anchor.dataset.chipIndex = String(i);
+			mirror.append(anchor);
+			const padLen = compositionMarkerPadLength(value, markerIndex);
+			mirror.append(
+				document.createTextNode(
+					value.slice(
+						markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length,
+						markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length + padLen,
+					),
+				),
+			);
+			const endAnchor = document.createElement("span");
+			endAnchor.className = "ai-composition-chip-end-anchor";
+			endAnchor.dataset.chipEnd = String(i);
+			mirror.append(endAnchor);
+			pos = markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length + padLen;
+		}
+		if (!probePlaced) {
+			const tail = value.slice(pos);
+			const relativeIndex = index - pos;
+			mirror.append(document.createTextNode(tail.slice(0, relativeIndex)));
+			mirror.append(probe);
+			mirror.append(document.createTextNode(tail.slice(relativeIndex)));
+			probePlaced = true;
+		} else if (pos < value.length) {
+			mirror.append(document.createTextNode(value.slice(pos)));
+		}
+		if (!probePlaced) return null;
+		const rect = probe.getBoundingClientRect();
+		return { left: rect.left, top: rect.top };
+	}
+
+	function compositionChipShouldBreakBefore(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		chipIndex: number,
+		chipWidths: readonly number[],
+	): boolean {
+		const markerIndices = compositionMarkerIndices(textarea.value);
+		const markerIndex = markerIndices[chipIndex];
+		if (markerIndex === undefined) return false;
+		const lineStart = compositionLineStart(textarea.value, markerIndex);
+		if (markerIndex <= lineStart) return false;
+		buildCompositionMirror(textarea, mirror);
+		const anchor = mirror.querySelector<HTMLElement>(
+			`[data-chip-index="${chipIndex}"]`,
+		);
+		if (!anchor) return false;
+		const chipWidth = chipWidths[chipIndex] || 0;
+		const anchorRect = anchor.getBoundingClientRect();
+		const maxRight = compositionTextareaContentRight(textarea);
+		if (anchorRect.left + chipWidth > maxRight + 1) return true;
+		const lineStartPoint = measureCompositionCaretPoint(
+			textarea,
+			mirror,
+			lineStart,
+		);
+		if (lineStartPoint && anchorRect.top > lineStartPoint.top + 1) {
+			return true;
+		}
+		return false;
+	}
+
+	function reflowCompositionChipLineWraps(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		chipWidths: readonly number[],
+	): boolean {
+		for (let chipIndex = 0; chipIndex < chipWidths.length; chipIndex++) {
+			const markerIndices = compositionMarkerIndices(textarea.value);
+			const markerIndex = markerIndices[chipIndex];
+			if (markerIndex === undefined) break;
+			if (
+				!compositionChipShouldBreakBefore(
+					textarea,
+					mirror,
+					chipIndex,
+					chipWidths,
+				)
+			) {
+				continue;
+			}
+			insertCompositionLineBreakBefore(textarea, markerIndex);
+			return true;
+		}
+		return false;
+	}
+
+	function reflowAllCompositionChipLineWraps(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		chipWidths: readonly number[],
+	): void {
+		while (reflowCompositionChipLineWraps(textarea, mirror, chipWidths)) {
+			/* keep wrapping until stable */
+		}
+	}
+
+	function ensureCompositionIndexFitsChip(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		at: number,
+		chipWidth: number,
+	): number {
+		if (chipWidth <= 0) return at;
+		const lineStart = compositionLineStart(textarea.value, at);
+		if (at <= lineStart) return at;
+		const caretPoint = measureCompositionCaretPoint(textarea, mirror, at);
+		if (!caretPoint) return at;
+		const lineStartPoint = measureCompositionCaretPoint(
+			textarea,
+			mirror,
+			lineStart,
+		);
+		if (lineStartPoint && caretPoint.top > lineStartPoint.top + 1) {
+			return insertCompositionLineBreakBefore(textarea, at);
+		}
+		if (
+			caretPoint.left + chipWidth <=
+			compositionTextareaContentRight(textarea) + 1
+		) {
+			return at;
+		}
+		return insertCompositionLineBreakBefore(textarea, at);
+	}
+
+	function stabilizeCompositionChipLayout(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		chipWidths: readonly number[],
+	): void {
+		for (let pass = 0; pass < 8; pass++) {
+			reflowAllCompositionChipLineWraps(textarea, mirror, chipWidths);
+			for (let index = 0; index < chipWidths.length; index++) {
+				fitCompositionChipPad(textarea, mirror, index, chipWidths[index]);
+			}
+			let needsAnotherPass = false;
+			for (let index = 0; index < chipWidths.length; index++) {
+				if (
+					compositionChipShouldBreakBefore(
+						textarea,
+						mirror,
+						index,
+						chipWidths,
+					)
+				) {
+					needsAnotherPass = true;
+					break;
+				}
+			}
+			if (!needsAnotherPass) break;
+		}
+	}
+
+	function applyCompositionChipPad(
+		textarea: HTMLTextAreaElement,
+		markerIndex: number,
+		padCount: number,
+	): void {
+		const afterMarker = textarea.value.slice(
+			markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length,
+		);
+		const existingPad = compositionMarkerPadLength(textarea.value, markerIndex);
+		const rest = afterMarker.slice(existingPad);
+		if (existingPad === padCount) return;
+		const start = textarea.selectionStart ?? textarea.value.length;
+		const end = textarea.selectionEnd ?? start;
+		textarea.value =
+			textarea.value.slice(0, markerIndex + 1) +
+			COMPOSITION_CHIP_PAD_CHAR.repeat(padCount) +
+			rest;
+		const delta = padCount - existingPad;
+		const nextStart = start > markerIndex ? start + delta : start;
+		const nextEnd = end > markerIndex ? end + delta : end;
+		textarea.setSelectionRange(nextStart, nextEnd);
+	}
+
+	function measureRenderedChipSlotWidth(
+		mirror: HTMLDivElement,
+		chipIndex: number,
+	): number {
+		const start = mirror.querySelector<HTMLElement>(
+			`[data-chip-index="${chipIndex}"]`,
+		);
+		const end = mirror.querySelector<HTMLElement>(
+			`[data-chip-end="${chipIndex}"]`,
+		);
+		if (!start || !end) return 0;
+		return end.getBoundingClientRect().left - start.getBoundingClientRect().left;
+	}
+
+	function fitCompositionChipPad(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+		chipIndex: number,
+		chipWidth: number,
+	): number {
+		const markerIndex = compositionMarkerIndices(textarea.value)[chipIndex];
+		if (markerIndex === undefined) return 0;
+		const existingPad = compositionMarkerPadLength(textarea.value, markerIndex);
+		const charWidth = measureComposerCharWidth(textarea);
+		let padCount = compositionChipPadCount(chipWidth, charWidth, existingPad);
+		const maxPad = Math.max(240, padCount + 32);
+		while (padCount <= maxPad) {
+			applyCompositionChipPad(textarea, markerIndex, padCount);
+			buildCompositionMirror(textarea, mirror);
+			const rendered = measureRenderedChipSlotWidth(mirror, chipIndex);
+			if (rendered >= chipWidth + 1) return padCount;
+			padCount++;
+		}
+		return padCount;
+	}
+
+	function layoutCompositionChipPads(textarea: HTMLTextAreaElement): void {
+		if (compositionContexts.length === 0) return;
+		const host = ensureCompositionMirrorHost(textarea);
+		const mirror = host.mirror;
+		const layer = host.layer;
+		buildCompositionMirror(textarea, mirror);
+		layer.hidden = false;
+		layer.replaceChildren();
+		const chips: HTMLElement[] = [];
+		const markerCount = compositionMarkerIndices(textarea.value).length;
+		for (let index = 0; index < markerCount; index++) {
+			const chip = document.createElement("span");
+			chip.className = "ai-composition-inline-chip";
+			const label = document.createElement("span");
+			label.className = "ai-composition-context-label";
+			label.textContent = formatContextChipLabel(
+				compositionContexts[index] || "",
+			);
+			chip.append(label);
+			layer.append(chip);
+			chips.push(chip);
+		}
+		const chipWidths = chips.map(
+			(chip) => chip.getBoundingClientRect().width || 120,
+		);
+		stabilizeCompositionChipLayout(textarea, mirror, chipWidths);
+	}
+
+	function positionCursorAfterCompositionChipIndex(
+		textarea: HTMLTextAreaElement,
+		chipIndex: number,
+	): void {
+		const markerIndex = compositionMarkerIndices(textarea.value)[chipIndex];
+		if (markerIndex === undefined) return;
+		const host = ensureCompositionMirrorHost(textarea);
+		const chip = host.layer.querySelectorAll<HTMLElement>(
+			".ai-composition-inline-chip",
+		)[chipIndex];
+		const chipWidth = chip?.getBoundingClientRect().width ?? 120;
+		fitCompositionChipPad(textarea, host.mirror, chipIndex, chipWidth);
+		const markerAfter = compositionMarkerIndices(textarea.value)[chipIndex];
+		if (markerAfter === undefined) return;
+		const cursor =
+			markerAfter +
+			COMPOSITION_CONTEXT_CHIP_MARKER.length +
+			compositionMarkerPadLength(textarea.value, markerAfter);
+		textarea.setSelectionRange(cursor, cursor);
+		textarea.focus();
+		syncInlineContextChip(textarea);
+	}
+
+	function buildCompositionMirror(
+		textarea: HTMLTextAreaElement,
+		mirror: HTMLDivElement,
+	): void {
+		applyMirrorTypography(textarea, mirror);
+		mirror.replaceChildren();
+		const markerIndices = compositionMarkerIndices(textarea.value);
+		let pos = 0;
+		for (let index = 0; index < markerIndices.length; index++) {
+			const markerIndex = markerIndices[index];
+			mirror.append(
+				document.createTextNode(textarea.value.slice(pos, markerIndex)),
+			);
+			const anchor = document.createElement("span");
+			anchor.className = "ai-composition-chip-anchor";
+			anchor.dataset.chipIndex = String(index);
+			mirror.append(anchor);
+			const padLen = compositionMarkerPadLength(textarea.value, markerIndex);
+			mirror.append(
+				document.createTextNode(
+					textarea.value.slice(
+						markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length,
+						markerIndex + COMPOSITION_CONTEXT_CHIP_MARKER.length + padLen,
+					),
+				),
+			);
+			const endAnchor = document.createElement("span");
+			endAnchor.className = "ai-composition-chip-end-anchor";
+			endAnchor.dataset.chipEnd = String(index);
+			mirror.append(endAnchor);
+			pos =
+				markerIndex +
+				COMPOSITION_CONTEXT_CHIP_MARKER.length +
+				padLen;
+		}
+		mirror.append(document.createTextNode(textarea.value.slice(pos)));
+	}
+
+	function ensureCompositionMirrorHost(
+		textarea: HTMLTextAreaElement,
+	): {
+		mirror: HTMLDivElement;
+		mirrorHost: HTMLDivElement;
+		layer: HTMLDivElement;
+	} {
+		const existing = compositionMirrorHosts.get(textarea);
+		if (existing) return existing;
+		const wrap = document.createElement("div");
+		wrap.className = "ai-composer-text-wrap";
+		textarea.parentNode?.insertBefore(wrap, textarea);
+		const mirrorHost = document.createElement("div");
+		mirrorHost.className = "ai-composer-mirror-host";
+		mirrorHost.setAttribute("aria-hidden", "true");
+		const mirror = document.createElement("div");
+		mirror.className = "ai-composer-mirror";
+		mirrorHost.append(mirror);
+		const layer = document.createElement("div");
+		layer.className = "ai-composition-inline-layer";
+		layer.hidden = true;
+		wrap.append(mirrorHost, textarea, layer);
+		const host = { mirror, mirrorHost, layer };
+		compositionMirrorHosts.set(textarea, host);
+		const allowCompositionDrop = (event: Event): void => {
+			if (!compositionDropEnabled()) return;
+			event.preventDefault();
+			if (
+				event instanceof DragEvent &&
+				event.type === "dragover" &&
+				event.dataTransfer
+			) {
+				event.dataTransfer.dropEffect = "copy";
+			}
+			if (event instanceof DragEvent && event.type === "drop") {
+				handleCompositionDrop(event);
+			}
+		};
+		wrap.addEventListener("dragenter", allowCompositionDrop);
+		wrap.addEventListener("dragover", allowCompositionDrop);
+		wrap.addEventListener("drop", allowCompositionDrop);
+		textarea.addEventListener("scroll", () => {
+			mirrorHost.scrollTop = textarea.scrollTop;
+			syncInlineContextChip(textarea);
+		});
+		textarea.addEventListener("input", () => {
+			if (compositionMutating) return;
+			const markerCount = compositionMarkerIndices(textarea.value).length;
+			if (compositionContexts.length > 0 && markerCount === 0) {
+				clearCompositionContext();
+				return;
+			}
+			if (compositionContexts.length > markerCount) {
+				compositionContexts = compositionContexts.slice(0, markerCount);
+			}
+			syncInlineContextChip(textarea);
+			persistResearchCompositionDraft();
+		});
+		textarea.addEventListener("keydown", (event) => {
+			if (event instanceof KeyboardEvent) {
+				handleCompositionMarkerKeydown(event, textarea);
+			}
+		});
+		textarea.addEventListener("mouseup", () => {
+			guardCompositionSelection(textarea);
+		});
+		textarea.addEventListener("keyup", () => {
+			guardCompositionSelection(textarea);
+		});
+		document.addEventListener("selectionchange", () => {
+			if (document.activeElement === textarea) {
+				guardCompositionSelection(textarea);
+			}
+		});
+		return host;
+	}
+
+	function syncInlineContextChip(textarea?: HTMLTextAreaElement | null): void {
+		const targets = textarea
+			? [textarea]
+			: [input, followInput].filter(
+					(el): el is HTMLTextAreaElement => el instanceof HTMLTextAreaElement,
+				);
+		for (const target of targets) {
+			const host = ensureCompositionMirrorHost(target);
+			const layer = host.layer;
+			const hasContext =
+				compositionContexts.length > 0 &&
+				researchCompositionEnabled() &&
+				compositionContextTextarea === target;
+			if (!hasContext) {
+				layer.hidden = true;
+				layer.replaceChildren();
+				continue;
+			}
+			const markerIndices = compositionMarkerIndices(target.value);
+			if (markerIndices.length === 0) {
+				layer.hidden = true;
+				layer.replaceChildren();
+				continue;
+			}
+			const mirror = host.mirror;
+			buildCompositionMirror(target, mirror);
+			host.mirrorHost.scrollTop = target.scrollTop;
+			layer.hidden = false;
+			layer.replaceChildren();
+			const chips: HTMLElement[] = [];
+			for (let index = 0; index < markerIndices.length; index++) {
+				const chip = document.createElement("span");
+				chip.className = "ai-composition-inline-chip";
+				const label = document.createElement("span");
+				label.className = "ai-composition-context-label";
+				label.textContent = formatContextChipLabel(
+					compositionContexts[index] || "",
+				);
+				const remove = document.createElement("button");
+				remove.type = "button";
+				remove.className = "ai-composition-clear";
+				remove.setAttribute("aria-label", "Remove attached notes");
+				remove.title = "Remove attached notes";
+				remove.textContent = "×";
+				remove.addEventListener("click", () => {
+					removeCompositionContextAt(target, index);
+				});
+				chip.append(label, remove);
+				layer.append(chip);
+				chips.push(chip);
+			}
+			const chipWidths = chips.map(
+				(chip) => chip.getBoundingClientRect().width || 120,
+			);
+			stabilizeCompositionChipLayout(target, mirror, chipWidths);
+			buildCompositionMirror(target, mirror);
+			host.mirrorHost.scrollTop = target.scrollTop;
+			const textareaRect = target.getBoundingClientRect();
+			for (let index = 0; index < chips.length; index++) {
+				const anchor = mirror.querySelector<HTMLElement>(
+					`[data-chip-index="${index}"]`,
+				);
+				if (!anchor) continue;
+				const anchorRect = anchor.getBoundingClientRect();
+				chips[index].style.transform = `translate(${anchorRect.left - textareaRect.left}px, ${anchorRect.top - textareaRect.top}px)`;
+			}
+		}
+	}
+
+	function syncCompositionTray(options?: { persistDraft?: boolean }): void {
+		const enabled = compositionImagesEnabled();
 		const hasImages = compositionImages.length > 0;
-		const show = enabled && (hasContext || hasImages);
-		for (const el of compositionAttachments) el.hidden = !show;
+		for (const el of compositionAttachments) {
+			el.hidden = !(enabled && hasImages);
+		}
 		for (const el of compositionContextEls) {
-			el.hidden = !hasContext;
+			el.hidden = true;
 		}
 		for (const el of compositionContextLabels) {
-			el.textContent = hasContext
-				? formatContextChipLabel(compositionContext)
-				: "";
+			el.textContent = "";
+		}
+		syncInlineContextChip();
+		const atImageCap = compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES;
+		for (const cap of compositionImageCaps) {
+			cap.hidden = !(hasImages && atImageCap);
 		}
 		for (const list of compositionImageLists) {
 			list.hidden = !hasImages;
@@ -2840,16 +3793,9 @@ export function attachAiMode(options: {
 				list.append(wrap);
 			});
 		}
-	}
-
-	function attachCompositionContext(text: string): void {
-		if (!researchCompositionEnabled()) return;
-		const next = clipResearchContext(
-			[compositionContext, text].filter(Boolean).join("\n\n"),
-		);
-		if (!next) return;
-		compositionContext = next;
-		syncCompositionTray();
+		if (options?.persistDraft !== false) {
+			persistResearchCompositionDraft();
+		}
 	}
 
 	function activeComposerTextarea(): HTMLTextAreaElement | null {
@@ -2859,28 +3805,35 @@ export function attachAiMode(options: {
 		return input;
 	}
 
-	function insertTextAtCursor(
-		textarea: HTMLTextAreaElement,
+	function shouldAttachPasteAsContext(
 		text: string,
-	): { inserted: string; overflow: string } {
-		const max =
-			textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS;
+		textarea: HTMLTextAreaElement,
+	): boolean {
+		if (!researchCompositionEnabled()) return false;
 		const start = textarea.selectionStart ?? textarea.value.length;
 		const end = textarea.selectionEnd ?? start;
-		const before = textarea.value.slice(0, start);
-		const after = textarea.value.slice(end);
-		const available = Math.max(0, max - before.length - after.length);
-		const inserted = text.slice(0, available);
-		const overflow = text.slice(inserted.length);
-		textarea.value = before + inserted + after;
-		const pos = start + inserted.length;
-		textarea.setSelectionRange(pos, pos);
+		return shouldAttachPasteAsCompositionContext(text, {
+			composerTextLength: textarea.value.length,
+			selectionLength: Math.max(0, end - start),
+			maxQuestionChars:
+				textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS,
+		});
+	}
+
+	function insertCompositionContextMarker(
+		textarea: HTMLTextAreaElement,
+		at: number,
+	): void {
+		const before = textarea.value.slice(0, at);
+		const after = textarea.value.slice(at);
+		textarea.value = before + COMPOSITION_CONTEXT_CHIP_MARKER + after;
+		const cursor = at + COMPOSITION_CONTEXT_CHIP_MARKER.length;
+		textarea.setSelectionRange(cursor, cursor);
 		fitTextarea(textarea);
 		if (textarea === followInput) {
 			clipFollowInputValue();
 			syncFollowComposerMode();
 		}
-		return { inserted, overflow };
 	}
 
 	function clipboardImageFiles(event: ClipboardEvent): File[] {
@@ -2889,82 +3842,134 @@ export function attachAiMode(options: {
 		if (!dt) return files;
 		if (dt.files?.length) {
 			for (const file of dt.files) {
-				if (file.type.startsWith("image/")) files.push(file);
+				if (isCompositionImageFile(file)) files.push(file);
 			}
 		}
 		if (files.length === 0) {
 			for (const item of dt.items || []) {
 				if (!item.type.startsWith("image/")) continue;
 				const file = item.getAsFile();
-				if (file) files.push(file);
+				if (file && isCompositionImageFile(file)) files.push(file);
 			}
 		}
 		return files;
 	}
 
+	function normalizeCompositionImageFile(file: File): File {
+		if (file.type.startsWith("image/")) return file;
+		const mime = guessImageMimeFromName(file.name);
+		if (!mime) return file;
+		return new File([file], file.name || "image", { type: mime });
+	}
+
+	async function loadCompositionImageBitmap(
+		file: File,
+	): Promise<ImageBitmap | null> {
+		try {
+			return await createImageBitmap(file);
+		} catch {
+			const url = URL.createObjectURL(file);
+			try {
+				const image = new Image();
+				await new Promise<void>((resolve, reject) => {
+					image.onload = () => resolve();
+					image.onerror = () => reject(new Error("image load failed"));
+					image.src = url;
+				});
+				return await createImageBitmap(image);
+			} catch {
+				return null;
+			} finally {
+				URL.revokeObjectURL(url);
+			}
+		}
+	}
+
 	async function resizeCompositionImage(
 		file: File,
 	): Promise<ResearchContextImage | null> {
-		const mime =
-			file.type === "image/png"
-				? "image/png"
+		const bitmap = await loadCompositionImageBitmap(file);
+		if (!bitmap) return null;
+		const outputMimes =
+			file.type === "image/gif"
+				? ["image/gif", "image/webp", "image/jpeg"]
 				: file.type === "image/webp"
-					? "image/webp"
-					: file.type === "image/gif"
-						? "image/gif"
-						: "image/jpeg";
-		let bitmap: ImageBitmap;
+					? ["image/webp", "image/jpeg"]
+					: file.type === "image/png"
+						? ["image/png", "image/jpeg", "image/webp"]
+						: ["image/jpeg", "image/webp", "image/png"];
 		try {
-			bitmap = await createImageBitmap(file);
-		} catch {
-			return null;
-		}
-		const maxDim = 1568;
-		let width = bitmap.width;
-		let height = bitmap.height;
-		if (width > maxDim || height > maxDim) {
-			if (width >= height) {
-				height = Math.round((height * maxDim) / width);
-				width = maxDim;
-			} else {
-				width = Math.round((width * maxDim) / height);
-				height = maxDim;
+			let maxDim = 1568;
+			for (let dimAttempt = 0; dimAttempt < 5; dimAttempt++) {
+				let width = bitmap.width;
+				let height = bitmap.height;
+				if (width > maxDim || height > maxDim) {
+					if (width >= height) {
+						height = Math.round((height * maxDim) / width);
+						width = maxDim;
+					} else {
+						width = Math.round((width * maxDim) / height);
+						height = maxDim;
+					}
+				}
+				const canvas = document.createElement("canvas");
+				canvas.width = width;
+				canvas.height = height;
+				const ctx = canvas.getContext("2d");
+				if (!ctx) return null;
+				ctx.drawImage(bitmap, 0, 0, width, height);
+				for (const mime of outputMimes) {
+					const qualities =
+						mime === "image/jpeg" || mime === "image/webp"
+							? [0.88, 0.72, 0.58, 0.44, 0.3]
+							: [undefined];
+					for (const quality of qualities) {
+						const blob = await new Promise<Blob | null>((resolve) => {
+							canvas.toBlob(resolve, mime, quality);
+						});
+						if (
+							!blob ||
+							blob.size > MAX_RESEARCH_CONTEXT_IMAGE_BYTES
+						) {
+							continue;
+						}
+						const bytes = new Uint8Array(await blob.arrayBuffer());
+						let binary = "";
+						for (let i = 0; i < bytes.length; i++) {
+							binary += String.fromCharCode(bytes[i]);
+						}
+						return { mime, data: btoa(binary) };
+					}
+				}
+				maxDim = Math.round(maxDim * 0.72);
 			}
-		}
-		const canvas = document.createElement("canvas");
-		canvas.width = width;
-		canvas.height = height;
-		const ctx = canvas.getContext("2d");
-		if (!ctx) {
-			bitmap.close();
 			return null;
+		} finally {
+			bitmap.close();
 		}
-		ctx.drawImage(bitmap, 0, 0, width, height);
-		bitmap.close();
-		const blob = await new Promise<Blob | null>((resolve) => {
-			canvas.toBlob(resolve, mime, mime === "image/jpeg" ? 0.82 : undefined);
-		});
-		if (!blob || blob.size > MAX_RESEARCH_CONTEXT_IMAGE_BYTES) return null;
-		const bytes = new Uint8Array(await blob.arrayBuffer());
-		let binary = "";
-		for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-		return { mime, data: btoa(binary) };
 	}
 
 	async function attachCompositionImage(file: File): Promise<void> {
-		if (!researchCompositionEnabled()) return;
-		if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) return;
-		if (!file.type.startsWith("image/")) return;
-		const image = await resizeCompositionImage(file);
-		if (!image) return;
-		compositionImages = [...compositionImages, image];
-		syncCompositionTray();
+		if (!compositionImagesEnabled() && !compositionDropEnabled()) return;
+		if (!isCompositionImageFile(file)) return;
+		if (!reserveCompositionImageSlot()) return;
+		try {
+			const image = await resizeCompositionImage(
+				normalizeCompositionImageFile(file),
+			);
+			if (image && compositionImages.length < MAX_RESEARCH_CONTEXT_IMAGES) {
+				compositionImages = [...compositionImages, image];
+			}
+		} finally {
+			releaseCompositionImageSlot();
+			syncCompositionTray();
+		}
 	}
 
 	function handleCompositionPaste(event: ClipboardEvent): void {
 		const imageFiles = clipboardImageFiles(event);
 		if (imageFiles.length > 0) {
-			if (!researchCompositionEnabled()) return;
+			if (!compositionImagesEnabled()) return;
 			event.preventDefault();
 			for (const file of imageFiles) {
 				if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
@@ -2977,32 +3982,65 @@ export function attachAiMode(options: {
 		if (!text) return;
 
 		const textarea = activeComposerTextarea();
-		if (!textarea) return;
-
-		const start = textarea.selectionStart ?? textarea.value.length;
-		const end = textarea.selectionEnd ?? start;
-		const before = textarea.value.slice(0, start);
-		const after = textarea.value.slice(end);
-		const max =
-			textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS;
-		const fits = before.length + text.length + after.length <= max;
-
-		if (fits) return;
+		if (!textarea || !shouldAttachPasteAsContext(text, textarea)) return;
 
 		event.preventDefault();
-		const { overflow } = insertTextAtCursor(textarea, text);
-		if (overflow && researchCompositionEnabled()) {
-			attachCompositionContext(overflow);
+		event.stopPropagation();
+		event.stopImmediatePropagation();
+		compositionMutating = true;
+		try {
+			if (compositionContextTextarea && compositionContextTextarea !== textarea) {
+				removeAllCompositionContextMarkers(compositionContextTextarea);
+				compositionContexts = [];
+			}
+			if (
+				compositionContextTextarea === textarea &&
+				compositionContexts.length > 0
+			) {
+				layoutCompositionChipPads(textarea);
+			}
+			const start = textarea.selectionStart ?? textarea.value.length;
+			let { insertIndex, at } = compositionContextInsertPosition(
+				textarea.value,
+				start,
+			);
+			const host = ensureCompositionMirrorHost(textarea);
+			const nextLabel = formatContextChipLabel(
+				clipResearchContext(text) || text,
+			);
+			const nextChipWidth = measureCompositionChipLabelWidth(nextLabel);
+			at = ensureCompositionIndexFitsChip(
+				textarea,
+				host.mirror,
+				at,
+				nextChipWidth,
+			);
+			insertIndex = compositionMarkerIndices(textarea.value).filter(
+				(index) => index < at,
+			).length;
+			compositionContextTextarea = textarea;
+			compositionContexts = insertCompositionContextClip(
+				compositionContexts,
+				text,
+				insertIndex,
+			);
+			insertCompositionContextMarker(textarea, at);
+			syncCompositionTray();
+			positionCursorAfterCompositionChipIndex(textarea, insertIndex);
+		} finally {
+			compositionMutating = false;
 		}
 	}
 
 	function handleCompositionDrop(event: DragEvent): void {
-		if (!researchCompositionEnabled()) return;
-		const files = event.dataTransfer?.files;
-		if (!files || files.length === 0) return;
-		const images = [...files].filter((file) => file.type.startsWith("image/"));
+		if (!compositionDropEnabled()) return;
+		const dt = event.dataTransfer;
+		if (!dt) return;
+		const images = compositionDroppedImageFiles(dt);
 		if (images.length === 0) return;
 		event.preventDefault();
+		event.stopPropagation();
+		expandFollowComposerForCompositionDrop();
 		for (const file of images) {
 			if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
 			void attachCompositionImage(file);
@@ -3018,8 +4056,8 @@ export function attachAiMode(options: {
 
 	function clipFollowInputValue(): void {
 		if (!followInput || !reviseFollowActive()) return;
-		const clipped = clipResearchReviseInstruction(followInput.value);
-		if (clipped !== followInput.value) followInput.value = clipped;
+		const normalized = normalizeResearchReviseInstructionInput(followInput.value);
+		if (normalized !== followInput.value) followInput.value = normalized;
 	}
 
 	function currentReviseReportMarkdown(): string {
@@ -3084,7 +4122,10 @@ export function attachAiMode(options: {
 
 	function scrollReviseComposerToLatest(): void {
 		requestAnimationFrame(() => {
-			if (reviseStackEl && !reviseStackEl.hidden) {
+			const body = followForm?.querySelector<HTMLElement>(".ai-composer-body");
+			if (body) {
+				body.scrollTop = body.scrollHeight;
+			} else if (reviseStackEl && !reviseStackEl.hidden) {
 				reviseStackEl.scrollTop = reviseStackEl.scrollHeight;
 			}
 			followInput?.scrollIntoView({ block: "nearest" });
@@ -3094,13 +4135,25 @@ export function attachAiMode(options: {
 	function renderReviseStack(force = false): void {
 		if (!reviseStackEl) return;
 		const key = `${reviseEditDraft.committed.length}:${reviseStackRenderKey(reviseEditDraft)}`;
-		if (!force && key === reviseStackRenderCache && reviseStackEl.childElementCount > 0) {
-			reviseStackEl.hidden = reviseEditDraft.committed.length === 0;
+		const rowCount = reviseEditDraft.committed.length;
+		if (rowCount === 0) {
+			reviseStackRenderCache = key;
+			reviseStackEl.replaceChildren();
+			reviseStackEl.hidden = true;
+			return;
+		}
+		if (
+			!force &&
+			key === reviseStackRenderCache &&
+			reviseStackEl.childElementCount > 0 &&
+			reviseStackEl.childElementCount === rowCount
+		) {
+			reviseStackEl.hidden = false;
 			return;
 		}
 		reviseStackRenderCache = key;
 		reviseStackEl.replaceChildren();
-		reviseStackEl.hidden = reviseEditDraft.committed.length === 0;
+		reviseStackEl.hidden = false;
 		reviseEditDraft.committed.forEach((row, index) => {
 			const rowEl = document.createElement("div");
 			rowEl.className = "ai-revise-row is-committed";
@@ -3126,8 +4179,7 @@ export function attachAiMode(options: {
 			removeRow.className = "ai-revise-row-remove";
 			removeRow.setAttribute("aria-label", RESEARCH_REVISE_REMOVE_EDIT);
 			removeRow.title = RESEARCH_REVISE_REMOVE_EDIT;
-			removeRow.innerHTML =
-				'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" d="M5 12h14"/></svg>';
+			removeRow.textContent = "×";
 			removeRow.addEventListener("click", (event) => {
 				event.preventDefault();
 				event.stopPropagation();
@@ -3176,6 +4228,7 @@ export function attachAiMode(options: {
 	}
 
 	function syncReviseScope(options: { scrollToLatest?: boolean } = {}): void {
+		reviseEditDraft = reviseDraftFromComposer();
 		renderReviseStack();
 		const showDraftScope = hasReviseEditScope(reviseEditDraft.draftScope);
 		const draftLabel = showDraftScope
@@ -3213,7 +4266,19 @@ export function attachAiMode(options: {
 	}
 
 	function clearReviseScope(keepPrompt = true): void {
-		reviseEditDraft = clearReviseDraftScope(reviseEditDraft);
+		const committedBefore = reviseEditDraft.committed.length;
+		reviseEditDraft = clearReviseDraftScope(reviseDraftFromComposer());
+		if (reviseEditDraft.committed.length !== committedBefore) {
+			reviseStackRenderCache = "";
+			renderReviseStack(true);
+		}
+		if (followInput) {
+			followInput.value = keepPrompt ? reviseEditDraft.draftInstruction : "";
+			if (!keepPrompt) {
+				reviseEditDraft = { ...reviseEditDraft, draftInstruction: "" };
+			}
+			fitTextarea(followInput);
+		}
 		headingReviseBtn?.remove();
 		headingReviseBtn = null;
 		hideSelectionRevise();
@@ -3222,10 +4287,8 @@ export function attachAiMode(options: {
 		} catch {
 			/* ignore */
 		}
-		if (!keepPrompt) {
-			/* keep the typed prompt; Clear only drops the chip */
-		}
 		syncReviseScope();
+		if (followInput && !followInput.disabled) followInput.focus();
 	}
 
 	function resetReviseEdits(clearPrompt = false): void {
@@ -3411,10 +4474,12 @@ export function attachAiMode(options: {
 						(storedJobId && storedJobId === jobId) ||
 						(storedSlug && storedSlug === slug) ||
 						(!storedJobId && !storedSlug);
+					const storedCommitted = Array.isArray(parsed.committed)
+						? parsed.committed.length
+						: 0;
 					if (
 						sameReport &&
-						Array.isArray(parsed.committed) &&
-						parsed.committed.length > 0
+						shouldDeferReviseComposerDraftPersist(draft, storedCommitted)
 					) {
 						return;
 					}
@@ -3696,6 +4761,7 @@ export function attachAiMode(options: {
 			draftInstruction: lastReviseEditDraft.draftInstruction,
 		};
 		reviseStackRenderCache = "";
+		restoreReviseSubmitImagesToComposer();
 		if (!followInput) {
 			syncReviseScope();
 			persistReviseComposerDraft();
@@ -3710,6 +4776,7 @@ export function attachAiMode(options: {
 
 	function clearReviseInstructionDraft(): void {
 		lastReviseInstruction = "";
+		clearReviseSubmitImages();
 	}
 
 	function displayedReportMarkdown(turn: AiAskTurn): string {
@@ -3751,6 +4818,8 @@ export function attachAiMode(options: {
 		stopListening();
 		busy = true;
 		root.classList.add("is-busy");
+		let reviseImages: ResearchContextImage[] = [];
+		let reviseImageCount = 0;
 		if (action === "revise") {
 			lastReviseInstruction = q;
 			lastReviseEditDraft = draft;
@@ -3766,7 +4835,12 @@ export function attachAiMode(options: {
 				researchRevisionStartedNote(nextResearchRevisionN(last.versionIndex || [])),
 			);
 			last.progressNote = RESEARCH_REVISE_CONSIDERING_NOTE;
+			reviseImages = [...compositionImages];
+			reviseImageCount = reviseImages.length;
+			snapshotReviseSubmitImages(compositionImages);
 			resetReviseEdits(true);
+			compositionImages = [];
+			syncCompositionTray();
 			syncFollowComposerMode();
 			syncLayout();
 			revealReviseProgress();
@@ -3794,6 +4868,9 @@ export function attachAiMode(options: {
 					jobId: last.researchJobId || "",
 					shareSlug: shareSlugForRevise() || last.shareSlug || "",
 					fromVersion: reviseFromVersion,
+					...(reviseImageCount > 0
+						? { images: reviseImages, imageCount: reviseImageCount }
+						: {}),
 				}),
 			});
 			if (data.quota) applyQuota(data.quota);
@@ -4627,8 +5704,15 @@ export function attachAiMode(options: {
 
 	function setResearchChipOn(next: boolean, persist = true): void {
 		researchChipOn = next && researchChipAvailable();
-		if (!researchChipOn) clearCompositionAttachments();
-		syncCompositionTray();
+		if (!researchChipOn) {
+			clearCompositionAttachments({
+				clearDraft: false,
+				persistDraft: false,
+			});
+		} else {
+			syncCompositionTray();
+			maybeApplyResearchCompositionDraft();
+		}
 		if (persist && researchChipAvailable()) {
 			try {
 				localStorage.setItem(
@@ -5029,8 +6113,10 @@ export function attachAiMode(options: {
 				busy = false;
 				root.classList.remove("is-busy", "is-research-busy");
 				syncLayout();
+				maybeApplyResearchCompositionDraft();
 			});
 		}
+		maybeApplyResearchCompositionDraft();
 	}
 
 	function leaveAskHome(options?: { url?: "back" | "replace" | "none" }): void {
@@ -7017,6 +8103,7 @@ export function attachAiMode(options: {
 			<div class="ai-question-row">
 				${backBtn}
 				<div class="ai-question-wrap" data-ai-question>
+					${renderQuestionAttachmentsHtml(turn)}
 					<p class="ai-question" data-ai-question-text>${escapeHtml(turn.question)}</p>
 					<button type="button" class="ai-question-more" data-ai-question-more hidden aria-expanded="false">Show more</button>
 				</div>
@@ -7750,6 +8837,11 @@ export function attachAiMode(options: {
 			if (dock && !expanded) followInput.style.height = "";
 			else fitTextarea(followInput);
 		}
+		if (expanded && reviseStackEl) {
+			reviseStackEl
+				.querySelectorAll<HTMLTextAreaElement>(".ai-revise-row-instruction")
+				.forEach((instruction) => fitTextarea(instruction));
+		}
 		if (followInput && reviseFollowActive()) {
 			const showMultiHint = shouldShowReviseMultiHint(draft);
 			followInput.placeholder =
@@ -8197,6 +9289,8 @@ export function attachAiMode(options: {
 		}
 		if (!turn.pending && !turn.error) {
 			clearReviseInstructionDraft();
+			clearPendingResearchSubmitImages();
+			clearResearchCompositionDraftStorage();
 			setResearchChipOn(false);
 			persistSessionFromTurn(turn);
 			const hidden = typeof document !== "undefined" && document.hidden;
@@ -8386,7 +9480,10 @@ export function attachAiMode(options: {
 			persistSessionFromTurn(turn);
 		}
 		void refreshQuota();
-		if (turn.research && !turn.report) setResearchChipOn(true);
+		if (turn.research && !turn.report) {
+			setResearchChipOn(true);
+			restorePendingResearchImagesToComposer();
+		}
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy", "is-revise-busy");
 		syncLayout();
@@ -8536,6 +9633,7 @@ export function attachAiMode(options: {
 				setResearchChipOn(true);
 			} else {
 				setResearchChipOn(false);
+				maybeApplyResearchCompositionDraft();
 			}
 			syncLayoutAndReveal();
 			setRestoringResearch(false);
@@ -8543,6 +9641,7 @@ export function attachAiMode(options: {
 				if (!turn.error) persistSessionFromTurn(turn);
 				restoreStoredPreviewVersion(turn);
 				restoreReviseComposerDraft();
+				maybeApplyResearchCompositionDraft();
 				return true;
 			}
 			busy = true;
@@ -8552,6 +9651,7 @@ export function attachAiMode(options: {
 			busy = false;
 			root.classList.remove("is-busy", "is-research-busy");
 			syncLayout();
+			maybeApplyResearchCompositionDraft();
 			return true;
 		} catch (error) {
 			setStatus(
@@ -8575,6 +9675,7 @@ export function attachAiMode(options: {
 		const last = turns[turns.length - 1];
 		if (!isClarifyingTurn(last) && !last?.researchDeclined) return;
 		turns = turns.slice(0, -1);
+		restorePendingResearchImagesToComposer();
 		syncLayout();
 		if (turns.length === 0) input?.focus();
 		else followInput?.focus();
@@ -8677,7 +9778,7 @@ export function attachAiMode(options: {
 			forceAsk?: boolean;
 		},
 	): Promise<void> {
-		const q = clipAiQuestion(question);
+		const q = clipAiQuestion(stripCompositionChipMarkers(question));
 		if (busy) return;
 		stopListening();
 		stopSamplePlayback();
@@ -8710,7 +9811,7 @@ export function attachAiMode(options: {
 		if (
 			!hasResearchCompositionContent({
 				question: q,
-				context: useResearch ? compositionContext : "",
+				context: useResearch ? mergedCompositionContext() : "",
 				images: useResearch ? compositionImages : [],
 			})
 		) {
@@ -8785,6 +9886,29 @@ export function attachAiMode(options: {
 			pendingReplaceQuestions = null;
 			pendingReplaceJobIds = null;
 		}
+		const submitImages = sanitizeResearchContextImages(compositionImages);
+		const submitContext = mergedCompositionContext();
+		const researchAttachments = useResearch
+			? {
+					context: submitContext,
+					images: submitImages,
+					contextPreview: submitContext.trim()
+						? researchContextPreview(submitContext)
+						: undefined,
+					contextWordCount: submitContext.trim()
+						? countContextWords(submitContext)
+						: undefined,
+					contextAttachmentLabel: submitContext.trim()
+						? formatContextChipLabel(submitContext)
+						: undefined,
+					imageCount:
+						submitImages.length > 0 ? submitImages.length : undefined,
+				}
+			: null;
+		if (useResearch) {
+			snapshotResearchSubmitImages(submitImages);
+			clearCompositionAttachments({ clearDraft: true });
+		}
 		const turn: AiAskTurn = {
 			question: q,
 			originalQuestion: q,
@@ -8800,6 +9924,18 @@ export function attachAiMode(options: {
 			pending: true,
 			phase: "rewrite",
 			...(useResearch ? { research: true } : {}),
+			...(researchAttachments?.contextPreview
+				? { contextPreview: researchAttachments.contextPreview }
+				: {}),
+			...(typeof researchAttachments?.contextWordCount === "number"
+				? { contextWordCount: researchAttachments.contextWordCount }
+				: {}),
+			...(researchAttachments?.contextAttachmentLabel
+				? { contextAttachmentLabel: researchAttachments.contextAttachmentLabel }
+				: {}),
+			...(typeof researchAttachments?.imageCount === "number"
+				? { imageCount: researchAttachments.imageCount }
+				: {}),
 		};
 		turns.push(turn);
 		syncLayoutAndReveal();
@@ -8812,7 +9948,7 @@ export function attachAiMode(options: {
 				turns = turns.filter((item) => item !== turn);
 			}
 		};
-		if (useResearch) {
+		if (useResearch && researchAttachments) {
 			try {
 				const { response, data } = await fetchAiJson<{
 					success?: boolean;
@@ -8828,8 +9964,8 @@ export function attachAiMode(options: {
 					body: JSON.stringify({
 						question: q,
 						history: buildAskFollowUpHistory(turns.slice(0, -1)),
-						context: compositionContext,
-						images: compositionImages,
+						context: researchAttachments.context,
+						images: researchAttachments.images,
 					}),
 				});
 				if (!response.ok || !data.success) {
@@ -8841,6 +9977,7 @@ export function attachAiMode(options: {
 							target.value = q;
 							fitTextarea(target);
 						}
+						restorePendingResearchImagesToComposer();
 						void refreshQuota();
 						openQuotaDialog(
 							quota?.needsEmailVerification ? "verify" : "signin",
@@ -8851,11 +9988,13 @@ export function attachAiMode(options: {
 					}
 					if (restoreOnFail) {
 						abortReplace();
+						restorePendingResearchImagesToComposer();
 						syncLayout();
 						setStatus(data.error || "Could not prepare those questions.");
 						return;
 					}
 					turn.error = data.error || "Could not prepare those questions.";
+					restorePendingResearchImagesToComposer();
 					syncLayout();
 					return;
 				}
@@ -8867,6 +10006,7 @@ export function attachAiMode(options: {
 						message: data.decline.message || "",
 					};
 					setResearchChipOn(false);
+					restorePendingResearchImagesToComposer();
 					syncLayoutAndReveal();
 					return;
 				}
@@ -8879,23 +10019,17 @@ export function attachAiMode(options: {
 						? { interpretation: data.interpretation.trim() }
 						: {}),
 				};
-				if (compositionContext.trim()) {
-					turn.contextPreview = researchContextPreview(compositionContext);
-					turn.contextWordCount = countContextWords(compositionContext);
-				}
-				if (compositionImages.length > 0) {
-					turn.imageCount = compositionImages.length;
-				}
-				clearCompositionAttachments();
 				syncLayoutAndReveal();
 			} catch {
 				turn.pending = false;
 				turn.phase = "done";
 				if (restoreOnFail) {
 					abortReplace();
+					restorePendingResearchImagesToComposer();
 					setStatus("Network error. Try again.");
 				} else {
 					turn.error = "Network error. Try again.";
+					restorePendingResearchImagesToComposer();
 				}
 				syncLayout();
 			} finally {
@@ -9251,7 +10385,10 @@ export function attachAiMode(options: {
 		}
 	});
 
-	input.addEventListener("input", () => fitTextarea(input));
+	input.addEventListener("input", () => {
+		fitTextarea(input);
+		persistResearchCompositionDraft();
+	});
 	followInput?.addEventListener("input", () => {
 		reviseEditDraft = {
 			...reviseEditDraft,
@@ -9263,15 +10400,17 @@ export function attachAiMode(options: {
 	});
 	for (const button of compositionContextClears) {
 		button.addEventListener("click", () => {
-			compositionContext = "";
-			syncCompositionTray();
+			clearCompositionContext();
 		});
 	}
-	for (const box of [
+	const compositionDropTargets = [
 		form.querySelector(".ai-box"),
 		followForm?.querySelector(".ai-box"),
-	]) {
-		if (!box) continue;
+		followForm,
+	].filter((el): el is HTMLElement => el instanceof HTMLElement);
+	for (const box of compositionDropTargets) {
+		if (box.dataset.aiCompositionPaste === "1") continue;
+		box.dataset.aiCompositionPaste = "1";
 		box.addEventListener(
 			"paste",
 			(event) => {
@@ -9279,14 +10418,35 @@ export function attachAiMode(options: {
 			},
 			true,
 		);
+		box.addEventListener("dragenter", (event) => {
+			if (!compositionDropEnabled()) return;
+			event.preventDefault();
+		});
 		box.addEventListener("dragover", (event) => {
-			if (!researchCompositionEnabled()) return;
-			if (event.dataTransfer?.types.includes("Files")) event.preventDefault();
+			if (!compositionDropEnabled()) return;
+			event.preventDefault();
+			if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
 		});
 		box.addEventListener("drop", (event) => {
 			if (event instanceof DragEvent) handleCompositionDrop(event);
 		});
 	}
+	for (const textarea of [input, followInput]) {
+		if (!textarea) continue;
+		textarea.addEventListener("dragover", (event) => {
+			if (!compositionDropEnabled()) return;
+			event.preventDefault();
+			if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+		});
+		textarea.addEventListener("drop", (event) => {
+			if (event instanceof DragEvent) handleCompositionDrop(event);
+		});
+	}
+	window.addEventListener("resize", () => {
+		syncInlineContextChip();
+	});
+	ensureCompositionMirrorHost(input);
+	if (followInput) ensureCompositionMirrorHost(followInput);
 	syncCompositionTray();
 	followForm?.addEventListener("focusin", () => {
 		syncFollowComposerMode();
@@ -9665,8 +10825,10 @@ export function attachAiMode(options: {
 	});
 
 	loadResearchChipPreference();
+	restoreResearchCompositionDraft();
 
 	window.addEventListener("pagehide", () => {
+		persistResearchCompositionDraft();
 		persistReviseComposerDraft();
 		for (const turn of turns) {
 			if (turn.research && turn.pending && turn.researchJobId) {
@@ -9774,9 +10936,14 @@ export function attachAiMode(options: {
 
 	renderHistory();
 	syncResearchChip();
+	maybeApplyResearchCompositionDraft();
 	watchPendingResearchHistory();
 	void loadModels();
-	if (!restoreResearchId) void ensureQuotaRefresh();
+	if (!restoreResearchId) {
+		void ensureQuotaRefresh().then(() => {
+			maybeApplyResearchCompositionDraft();
+		});
+	}
 	const historySync = syncHistoryFromServer();
 	void historySync.then(() => {
 		void hydrateOpenResearchJobs();
