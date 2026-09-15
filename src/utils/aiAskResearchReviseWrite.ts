@@ -12,6 +12,7 @@ import {
 	clipResearchReviseHeading,
 	clipResearchReviseInstruction,
 	clipResearchReviseQuote,
+	formatResearchReviseQuoteForModel,
 	clipResearchRevisePlan,
 	auditResearchRevisePatchConstraints,
 	constrainResearchRevisePatch,
@@ -20,16 +21,19 @@ import {
 	logResearchReviseWriterRawOutput,
 	mermaidBlocksToFence,
 	resolveResearchReviseTargets,
+	pinnedBlockIdsFromReviseEdits,
 	numberedReportForModel,
 	parseResearchRevisePatch,
 	reportBlocksContainingText,
 	researchReviseFailedAsTooLong,
 	researchReviseNeedsSearch,
 	researchRevisePatchIsEmpty,
+	reviseEditsPlannerScopeBlock,
 	reviseEvidenceRequestedIds,
 	RESEARCH_REVISE_TARGETS_MAX,
 	splitReportBlocks,
 	type ResearchReportBlock,
+	type ResearchReviseEdit,
 	type ResearchRevisePatch,
 	type ResearchRevisePlan,
 } from "./aiAskResearchRevise";
@@ -76,6 +80,7 @@ ${RESEARCH_REVISE_BLOCK_ID_NOTE}
 Rules:
 - "summary": the plan in the reader's terms, as short clauses joined by " · " — e.g. "delete ¶12 (duplicate of ¶11) · fence the diagram in ¶72 · add SN 47.10, 47.20, 47.42 after ¶35". Write paragraph ids as ¶12 (never p12); name headings and diagrams by their text. This line is shown to the reader while the revision runs.
 - "questions": normally an empty array. Ask (at most 2) only when the instruction is genuinely ambiguous and guessing would risk editing the wrong block or doing the wrong thing — e.g. the reader's block number does not match the content they describe, an instruction could mean two different edits, or a named passage appears in several places. Never ask about style guidance, about things the report itself settles, or to confirm a plan you are confident in. Each question: {"id":"which","prompt":"one plain sentence, under 120 characters","choices":[{"id":"a","label":"a concrete option — for blocks, quote their opening words","blockId":"p11"}],"suggestedChoiceId":"a"}. Give 2–4 choices, each a real, specific alternative (the harness adds an "Other" free-text choice). Include "blockId" when a choice points at a block. Set "suggestedChoiceId" to the choice you would pick. When questions are present, still fill targets/intent/summary with your best reading.
+- When edits are placeholder or test text (random keystrokes, single letters, numbers only), ask whether to cancel the revision or apply nothing — do not offer a choice to "retype" or "wait while the reader retypes"; rewording happens in the revise composer (Cancel, edit, resubmit) or via the harness "Other" choice if they truly mean something else.
 - If the user message contains "Reader's answers", the questions have been asked and answered: follow those answers, treat them as part of the instruction, and return "questions": [].
 - "targets": every block the revision must update, insert next to, or delete. If the reader names several changes, include targets for every one. If the reader pinned a passage, its block is a target. Write a run of consecutive blocks as one range ("p31-p38", "p21-p30"); the harness expands it. Kind-wide work uses an alias instead of listing ids: "quotes" (every blockquote), "headings", "diagrams" (fenced or broken mermaid), "paragraphs", or "all" / "report" for a whole-report restyle. Never trim the list to fit — an omitted block cannot be edited at all.
 - Moving blocks (“X belongs after Y”, “move ¶31–38 under the Cook sub-section”): targets are the moved range AND the anchor block they land after (the last block of the destination sub-section, e.g. the final paragraph under the "Cook" heading). Say in "intent" which block is the anchor.
@@ -158,6 +163,7 @@ export async function planResearchRevise(options: {
 	clarifications?: string;
 	heading?: string;
 	quote?: string;
+	edits?: readonly ResearchReviseEdit[];
 	signal?: AbortSignal;
 	timeoutMs?: number;
 }): Promise<{ plan: ResearchRevisePlan | null; model: string }> {
@@ -168,7 +174,15 @@ export async function planResearchRevise(options: {
 	if (!instruction || blocks.length === 0) return empty;
 	const heading = clipResearchReviseHeading(options.heading || "");
 	const quote = clipResearchReviseQuote(options.quote || "");
-	const pinnedIds = quote ? reportBlocksContainingText(blocks, quote) : [];
+	const quoteForModel = quote ? formatResearchReviseQuoteForModel(quote) : "";
+	const edits = options.edits?.length ? options.edits : [];
+	const pinnedIds =
+		edits.length > 0
+			? pinnedBlockIdsFromReviseEdits(edits, blocks)
+			: quote
+				? reportBlocksContainingText(blocks, quote)
+				: [];
+	const editsBlock = reviseEditsPlannerScopeBlock(edits, blocks);
 	const watchdog = createWatchdogAbortSignal({
 		idleMs: ASK_WRITER_IDLE_MS,
 		maxMs: options.timeoutMs ?? RESEARCH_REVISE_PLANNER_BUDGET_MS,
@@ -191,10 +205,11 @@ ${reviseClarificationsBlock(options.clarifications)}${options.originalQuestion ?
 						options.clarifyBrief
 							? `Original research preferences and emphasis choices:\n${options.clarifyBrief}\n`
 							: ""
-					}
-${heading ? `Pinned heading: ${heading}\n` : ""}${
-						quote
-							? `Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quote}\n`
+					}${editsBlock ? `${editsBlock}\n` : ""}${
+						heading ? `Pinned heading: ${heading}\n` : ""
+					}${
+						quoteForModel
+							? `Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quoteForModel}\n`
 							: ""
 					}
 Report with block ids:
@@ -551,13 +566,22 @@ export function buildReviseWriterMessage(options: {
 	clarifications?: string;
 	heading?: string;
 	quote?: string;
+	edits?: readonly ResearchReviseEdit[];
 	evidence?: string;
 	plan?: ResearchRevisePlan | null;
 }): string {
 	const heading = clipResearchReviseHeading(options.heading || "");
 	const quote = clipResearchReviseQuote(options.quote || "");
+	const quoteForModel = quote ? formatResearchReviseQuoteForModel(quote) : "";
 	const evidence = (options.evidence || "").trim();
-	const pinnedIds = quote ? reportBlocksContainingText(options.blocks, quote) : [];
+	const edits = options.edits?.length ? options.edits : [];
+	const pinnedIds =
+		edits.length > 0
+			? pinnedBlockIdsFromReviseEdits(edits, options.blocks)
+			: quote
+				? reportBlocksContainingText(options.blocks, quote)
+				: [];
+	const editsBlock = reviseEditsPlannerScopeBlock(edits, options.blocks);
 	const known = new Set(options.blocks.map((block) => block.id));
 	const targets = [
 		...new Set([...pinnedIds, ...(options.plan?.targets || [])]),
@@ -579,10 +603,11 @@ export function buildReviseWriterMessage(options: {
 		);
 	}
 	if (options.plan?.intent) lines.push(`Plan (from a first pass over the report): ${options.plan.intent}`);
+	if (editsBlock) lines.push(editsBlock);
 	if (heading) lines.push(`Pinned heading: ${heading} (edit within this section)`);
-	if (quote) {
+	if (quoteForModel) {
 		lines.push(
-			`Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quote}`,
+			`Pinned passage (the reader selected this${pinnedIds.length ? `; it sits in ${pinnedIds.join(", ")}` : ""}): ${quoteForModel}`,
 		);
 	}
 	if (targets.length) {
@@ -610,6 +635,7 @@ export async function writeResearchRevise(options: {
 	clarifications?: string;
 	heading?: string;
 	quote?: string;
+	edits?: readonly ResearchReviseEdit[];
 	evidence?: string;
 	plan?: ResearchRevisePlan | null;
 	signal?: AbortSignal;
@@ -659,6 +685,7 @@ export async function writeResearchRevise(options: {
 						clarifications: options.clarifications,
 						heading: options.heading,
 						quote: options.quote,
+						edits: options.edits,
 						evidence: options.evidence,
 						plan: options.plan,
 					}),

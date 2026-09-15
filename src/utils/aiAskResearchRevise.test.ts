@@ -46,6 +46,8 @@ import {
 	researchRevisePatchIsEmpty,
 	normalizeReportBlockId,
 	splitReportBlocks,
+	splitBlockIdForEnumeratedKey,
+	formatResearchReviseQuoteForModel,
 	stripReportBlockTags,
 	expandReportBlockIdRange,
 	REPORT_BLOCK_RANGE_MAX,
@@ -1306,5 +1308,69 @@ describe("revise plan: reader summary and clarifying questions", () => {
 		assert.match(message, /→ ¶2 “Beta\.” \(block p2\)/);
 		assert.equal(reviseClarificationsBlock(""), "");
 		assert.equal(reviseClarificationsBlock("  "), "");
+	});
+});
+
+describe("formatResearchReviseQuoteForModel", () => {
+	it("keeps short selections verbatim", () => {
+		const text = "Two things follow immediately from this formula.";
+		assert.equal(formatResearchReviseQuoteForModel(text), text);
+	});
+
+	it("uses head and tail for long selections", () => {
+		const text = `${"Alpha beta gamma. ".repeat(40)}Omega final sentence.`;
+		const out = formatResearchReviseQuoteForModel(text);
+		assert.match(out, /^Alpha beta/);
+		assert.match(out, /Omega final sentence\.$/);
+		assert.match(out, / … /);
+		assert.ok(out.length <= 800);
+	});
+});
+
+describe("splitBlockIdForEnumeratedKey", () => {
+	it("maps a rendered table block to tN even when list items shifted the index", () => {
+		const markdown = [
+			"Intro paragraph.",
+			"",
+			"- one",
+			"- two",
+			"",
+			"| A | B |",
+			"|---|---|",
+			"| 1 | 2 |",
+		].join("\n");
+		const enumerated = enumerateReportBlocks(markdown);
+		const tableBlock = enumerated.find((block) => block.markdown.includes("| A |"));
+		assert.ok(tableBlock);
+		assert.equal(
+			splitBlockIdForEnumeratedKey(
+				markdown,
+				tableBlock.key,
+				tableBlock.markdown,
+			),
+			"t1",
+		);
+	});
+
+	it("maps fenced mermaid to cN", () => {
+		const markdown = [
+			"Lead-in.",
+			"",
+			"```mermaid",
+			"flowchart LR",
+			"A --> B",
+			"```",
+		].join("\n");
+		const enumerated = enumerateReportBlocks(markdown);
+		const diagram = enumerated.find((block) => block.markdown.includes("flowchart"));
+		assert.ok(diagram);
+		assert.equal(
+			splitBlockIdForEnumeratedKey(
+				markdown,
+				diagram.key,
+				diagram.markdown,
+			),
+			"c1",
+		);
 	});
 });

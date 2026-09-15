@@ -197,6 +197,7 @@ const defaultModel = showModelPicker
 	<form class="ai-follow ai-shell" data-ai-follow-form hidden>
 		<label class="sr-only" for="ai-follow-input">Continue this conversation</label>
 		<div class="ai-box">
+			<div class="ai-revise-stack" data-ai-revise-stack hidden></div>
 			<div class="ai-revise-scope" data-ai-revise-scope hidden>
 				<span class="ai-revise-chip">
 					<span class="ai-revise-chip-text" data-ai-revise-chip></span>
@@ -220,6 +221,9 @@ const defaultModel = showModelPicker
 				enterkeyhint="enter"
 			></textarea>
 			<div class="ai-box-bar">
+				<p class="ai-revise-cap-note" data-ai-revise-cap-note hidden>
+					Max 6 edits at a time.
+				</p>
 				<div class="ai-box-tools">
 					<button
 						type="button"

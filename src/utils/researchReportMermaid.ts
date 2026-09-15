@@ -183,6 +183,15 @@ export async function hydrateResearchReportMermaid(
 			}
 			const wrap = document.createElement("div");
 			wrap.className = "ai-report-diagram";
+			if (node.dataset.reportBlockIdx) {
+				wrap.dataset.reportBlockIdx = node.dataset.reportBlockIdx;
+			}
+			if (node.dataset.reportBlockKey) {
+				wrap.dataset.reportBlockKey = node.dataset.reportBlockKey;
+			}
+			if (node.dataset.reportBlockId) {
+				wrap.dataset.reportBlockId = node.dataset.reportBlockId;
+			}
 			wrap.innerHTML = svg;
 			node.replaceWith(wrap);
 		} catch (err) {

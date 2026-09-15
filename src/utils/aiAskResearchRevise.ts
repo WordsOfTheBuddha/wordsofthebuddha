@@ -19,6 +19,8 @@ export const RESEARCH_REVISE_CHANGELOG_MAX = 2_400;
 export const RESEARCH_REVISE_INSTRUCTION_MAX = 2_000;
 export const RESEARCH_REVISE_QUOTE_MAX = 800;
 export const RESEARCH_REVISE_HEADING_MAX = 180;
+/** Max scoped edit items the reader can send in one revision request. */
+export const RESEARCH_REVISE_EDITS_MAX = 6;
 /** Version bodies kept in the subcollection. */
 export const RESEARCH_REVISE_BODIES_MAX = 8;
 export const RESEARCH_REVISE_TOO_LONG_ERROR =
@@ -354,6 +356,58 @@ const RULE_LINE = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
  * fence or `>` line interrupts a paragraph; fenced code stays whole; a list
  * stays one block even when blank lines sit between its items.
  */
+export function primaryKeyForSplitBlock(block: ResearchReportBlock): string {
+	const kind: ReportDiffBlockKind =
+		block.kind === "heading"
+			? "heading"
+			: block.kind === "quote"
+				? "quote"
+				: block.kind === "code"
+					? "code"
+					: block.kind === "list"
+						? "list"
+						: block.kind === "other"
+							? "other"
+							: "paragraph";
+	let text = block.markdown;
+	if (block.kind === "heading") text = text.replace(/^#{1,6}\s+/, "");
+	if (block.kind === "quote") text = text.replace(/^\s*>\s?/gm, "");
+	if (block.kind === "code") {
+		text = text.replace(/^```\w*\n?/, "").replace(/\n```\s*$/, "");
+	}
+	return reportDiffBlockKey(kind, text);
+}
+
+/** Map a stamped DOM block key to the writer's [[cN]] / [[tN]] / [[pN]] id. */
+export function splitBlockIdForEnumeratedKey(
+	markdown: string,
+	enumeratedKey: string,
+	enumeratedMarkdown = "",
+): string {
+	const key = (enumeratedKey || "").trim();
+	if (key) {
+		for (const block of splitReportBlocks(markdown)) {
+			if (primaryKeyForSplitBlock(block) === key) return block.id;
+		}
+	}
+	const norm = normalizeReportBlockText(
+		enumeratedMarkdown.trim() ||
+			(key.includes(":") ? key.slice(key.indexOf(":") + 1) : key),
+	);
+	if (!norm) return "";
+	for (const block of splitReportBlocks(markdown)) {
+		const splitNorm = normalizeReportBlockText(block.markdown);
+		if (
+			splitNorm === norm ||
+			splitNorm.includes(norm) ||
+			norm.includes(splitNorm)
+		) {
+			return block.id;
+		}
+	}
+	return "";
+}
+
 export function splitReportBlocks(markdown: string): ResearchReportBlock[] {
 	const text = stripSourcesForRevise(markdown).replace(/\r\n/g, "\n");
 	if (!text.trim()) return [];
@@ -913,6 +967,25 @@ export function clipResearchReviseInstruction(value: string): string {
 
 export function clipResearchReviseQuote(value: string): string {
 	return value.replace(/\s+/g, " ").trim().slice(0, RESEARCH_REVISE_QUOTE_MAX);
+}
+
+/** Head/tail excerpt for planner and writer prompts; block ids carry the anchor. */
+export function formatResearchReviseQuoteForModel(value: string): string {
+	const text = value.replace(/\s+/g, " ").trim();
+	if (!text) return "";
+	const max = RESEARCH_REVISE_QUOTE_MAX;
+	if (text.length <= 240) return text.slice(0, max);
+	const headBudget = Math.floor(max * 0.45);
+	const tailBudget = max - headBudget - 3;
+	let head = text.slice(0, headBudget);
+	const headSpace = head.lastIndexOf(" ");
+	if (headSpace > headBudget * 0.55) head = head.slice(0, headSpace);
+	let tail = text.slice(text.length - tailBudget);
+	const tailSpace = tail.indexOf(" ");
+	if (tailSpace >= 0 && tailSpace < tailBudget * 0.35) {
+		tail = tail.slice(tailSpace + 1);
+	}
+	return `${head.trim()} … ${tail.trim()}`.slice(0, max);
 }
 
 export function clipResearchReviseHeading(value: string): string {
@@ -1933,6 +2006,127 @@ export function reportBlocksContainingText(
 	}
 	const index = locateReviseParagraph(bodies, text);
 	return index >= 0 && blocks[index] ? [blocks[index].id] : [];
+}
+
+/** One reader edit: optional pin + instruction (API + job storage). */
+export interface ResearchReviseEdit {
+	instruction: string;
+	blockIds?: string[];
+	heading?: string;
+	quote?: string;
+}
+
+function parseResearchReviseEdit(raw: unknown): ResearchReviseEdit | null {
+	if (!raw || typeof raw !== "object") return null;
+	const record = raw as Record<string, unknown>;
+	const instruction = clipResearchReviseInstruction(
+		typeof record.instruction === "string" ? record.instruction : "",
+	);
+	if (!instruction) return null;
+	const edit: ResearchReviseEdit = { instruction };
+	const heading = clipResearchReviseHeading(
+		typeof record.heading === "string" ? record.heading : "",
+	);
+	const quote = clipResearchReviseQuote(
+		typeof record.quote === "string" ? record.quote : "",
+	);
+	if (heading) edit.heading = heading;
+	if (quote) edit.quote = quote;
+	if (Array.isArray(record.blockIds)) {
+		const blockIds = record.blockIds
+			.filter((id): id is string => typeof id === "string")
+			.map((id) => id.trim())
+			.filter((id) => /^[phtc]\d{1,4}$/i.test(id))
+			.slice(0, RESEARCH_REVISE_TARGETS_MAX);
+		if (blockIds.length > 0) edit.blockIds = blockIds;
+	}
+	return edit;
+}
+
+/** Accept `edits[]` or legacy single instruction + heading/quote. */
+export function normalizeResearchReviseEdits(body: {
+	edits?: unknown;
+	instruction?: string;
+	heading?: string;
+	quote?: string;
+}): ResearchReviseEdit[] {
+	if (Array.isArray(body.edits) && body.edits.length > 0) {
+		const parsed = body.edits
+			.map(parseResearchReviseEdit)
+			.filter((edit): edit is ResearchReviseEdit => Boolean(edit))
+			.slice(0, RESEARCH_REVISE_EDITS_MAX);
+		if (parsed.length > 0) return parsed;
+	}
+	const instruction = clipResearchReviseInstruction(body.instruction || "");
+	if (!instruction) return [];
+	const edit: ResearchReviseEdit = { instruction };
+	const heading = clipResearchReviseHeading(body.heading || "");
+	const quote = clipResearchReviseQuote(body.quote || "");
+	if (heading) edit.heading = heading;
+	if (quote) edit.quote = quote;
+	return [edit];
+}
+
+export function sanitizeResearchReviseEdits(raw: unknown): ResearchReviseEdit[] {
+	if (!Array.isArray(raw)) return [];
+	return raw
+		.map(parseResearchReviseEdit)
+		.filter((edit): edit is ResearchReviseEdit => Boolean(edit))
+		.slice(0, RESEARCH_REVISE_EDITS_MAX);
+}
+
+const knownBlockIds = (
+	blocks: readonly ResearchReportBlock[],
+): Set<string> => new Set(blocks.map((block) => block.id));
+
+/** Resolve pinned block ids for one edit (explicit ids, else quote lookup). */
+export function resolveReviseEditBlockIds(
+	edit: ResearchReviseEdit,
+	blocks: readonly ResearchReportBlock[],
+): string[] {
+	const known = knownBlockIds(blocks);
+	const fromIds = (edit.blockIds || []).filter((id) => known.has(id));
+	if (fromIds.length > 0) return fromIds;
+	if (edit.quote) return reportBlocksContainingText(blocks, edit.quote);
+	return [];
+}
+
+export function pinnedBlockIdsFromReviseEdits(
+	edits: readonly ResearchReviseEdit[],
+	blocks: readonly ResearchReportBlock[],
+): string[] {
+	return [
+		...new Set(edits.flatMap((edit) => resolveReviseEditBlockIds(edit, blocks))),
+	];
+}
+
+export function reviseEditsPlannerInstruction(
+	edits: readonly ResearchReviseEdit[],
+): string {
+	if (edits.length === 1) return edits[0]?.instruction || "";
+	return edits
+		.map((edit, index) => `Edit ${index + 1}: ${edit.instruction}`)
+		.join("\n");
+}
+
+export function reviseEditsPlannerScopeBlock(
+	edits: readonly ResearchReviseEdit[],
+	blocks: readonly ResearchReportBlock[],
+): string {
+	if (edits.length <= 1) return "";
+	const lines: string[] = ["The reader requested these distinct edits:"];
+	edits.forEach((edit, index) => {
+		lines.push(`${index + 1}. ${edit.instruction}`);
+		if (edit.heading) lines.push(`   Section: ${edit.heading}`);
+		const ids = resolveReviseEditBlockIds(edit, blocks);
+		if (ids.length > 0) lines.push(`   Blocks: ${ids.join(", ")}`);
+		else if (edit.quote) {
+			lines.push(
+				`   Passage: ${formatResearchReviseQuoteForModel(edit.quote)}`,
+			);
+		}
+	});
+	return lines.join("\n");
 }
 
 export function reportSectionContainingText(
