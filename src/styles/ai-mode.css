@@ -1055,6 +1055,106 @@
 	-webkit-overflow-scrolling: touch;
 }
 
+.ai-report-diagram.has-diagram-viewer {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.7rem;
+	background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
+}
+
+.ai-diagram-toolbar {
+	position: absolute;
+	top: 0.45rem;
+	right: 0.45rem;
+	z-index: 2;
+	display: flex;
+	gap: 0.2rem;
+	padding: 0.2rem;
+	border: 1px solid var(--surface-border);
+	border-radius: 0.55rem;
+	background: color-mix(in srgb, var(--surface-elevated) 94%, transparent);
+	backdrop-filter: blur(8px);
+}
+
+.ai-diagram-btn {
+	display: grid;
+	place-items: center;
+	width: 2.15rem;
+	height: 2.15rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0.4rem;
+	background: transparent;
+	color: var(--text-muted);
+	cursor: pointer;
+}
+
+.ai-diagram-btn:hover,
+.ai-diagram-btn:focus-visible {
+	color: var(--text-color);
+	background: color-mix(in srgb, var(--surface-border) 55%, transparent);
+	outline: none;
+}
+
+.ai-diagram-viewport {
+	overflow: auto;
+	max-height: min(70vh, 34rem);
+	padding: 2.75rem 0.65rem 0.85rem;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+	touch-action: pan-x pan-y;
+}
+
+.ai-diagram-viewport:focus-visible {
+	outline: 2px solid color-mix(in srgb, var(--primary-color) 55%, transparent);
+	outline-offset: -2px;
+}
+
+.ai-diagram-scroll {
+	position: relative;
+	overflow: hidden;
+}
+
+.ai-diagram-canvas {
+	transform-origin: 0 0;
+}
+
+.ai-report-diagram.has-diagram-viewer svg,
+.ai-diagram-canvas svg {
+	display: block;
+	max-width: none;
+	width: 100%;
+	height: auto;
+	margin: 0;
+}
+
+.ai-report-diagram.is-fullscreen {
+	position: fixed;
+	inset: 0;
+	z-index: 12000;
+	margin: 0;
+	border-radius: 0;
+	border: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.ai-report-diagram.is-fullscreen .ai-diagram-viewport {
+	flex: 1;
+	max-height: none;
+	padding-top: 3.25rem;
+}
+
+.ai-report-diagram.is-fullscreen .ai-diagram-toolbar {
+	top: 0.65rem;
+	right: 0.65rem;
+}
+
+body.ai-diagram-fullscreen-open {
+	overflow: hidden;
+}
+
 .ai-report-diagram svg,
 .ai-report-html svg,
 .ai-report-html > svg,
@@ -1063,6 +1163,11 @@
 	max-width: 100%;
 	height: auto;
 	margin: 0 auto;
+}
+
+.ai-report-diagram.has-diagram-viewer svg {
+	max-width: none;
+	margin: 0;
 }
 
 .ai-report-mermaid,

@@ -1,4 +1,5 @@
 import { sanitizeResearchReportHtml } from "./researchReportSanitize";
+import { enhanceResearchReportDiagrams } from "./researchReportDiagramViewer";
 import {
 	isMermaidErrorSvg,
 	normalizeMermaidSource,
@@ -199,4 +200,5 @@ export async function hydrateResearchReportMermaid(
 			node.setAttribute("data-ai-mermaid-done", "error");
 		}
 	}
+	enhanceResearchReportDiagrams(root);
 }
