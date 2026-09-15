@@ -99,7 +99,9 @@ import {
 	researchProcessCompletedRevise,
 	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
 	sanitizeResearchReviseClarify,
+	sanitizeResearchReviseEdits,
 	type ResearchReviseClarify,
+	type ResearchReviseEdit,
 } from "./aiAskResearchRevise";
 import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import { sendResearchEmail } from "./researchEmail";
@@ -204,6 +206,7 @@ export interface ResearchJobRecord {
 	reviseInstruction?: string;
 	reviseHeading?: string;
 	reviseQuote?: string;
+	reviseEdits?: ResearchReviseEdit[];
 	reviseFromVersion?: number | null;
 	/** Planner questions the revision is paused on (status revise-clarifying). */
 	reviseClarify?: ResearchReviseClarify | null;
@@ -348,6 +351,7 @@ function recordFromData(
 		reviseHeading:
 			typeof data.reviseHeading === "string" ? data.reviseHeading : "",
 		reviseQuote: typeof data.reviseQuote === "string" ? data.reviseQuote : "",
+		reviseEdits: sanitizeResearchReviseEdits(data.reviseEdits),
 		reviseFromVersion:
 			typeof data.reviseFromVersion === "number" &&
 			Number.isFinite(data.reviseFromVersion) &&
@@ -765,6 +769,7 @@ export async function abandonResearchReviseCycle(
 		reviseInstruction: "",
 		reviseHeading: "",
 		reviseQuote: "",
+		reviseEdits: [],
 		reviseFromVersion: null,
 		reviseClarify: null,
 		reviseClarifications: "",
@@ -781,16 +786,30 @@ export async function requestResearchJobCancel(
 		// The reader declined the questions: a quiet return to the report.
 		return recordToPublic(await abandonResearchReviseCycle(record, ""));
 	}
-	if (isResearchJobRevising(record.status)) {
-		const next = await writeJob(record, {
+	if (record.status === "revising") {
+		// Re-read: the planner may have just parked on clarify, or another
+		// request may have stopped the job while we were in flight.
+		const fresh = await readJob(uid, jobId);
+		if (!fresh) return null;
+		if (isResearchJobReviseClarifying(fresh.status)) {
+			return recordToPublic(await abandonResearchReviseCycle(fresh, ""));
+		}
+		if (fresh.status !== "revising") {
+			return recordToPublic(fresh);
+		}
+		// Bump runToken so a planner still running cannot park the job on
+		// clarify questions after the reader stops.
+		const next = await writeJob(fresh, {
 			status: "complete",
 			progressNote: "",
-			processNotes: dropOpenResearchRevisionCycle(record.processNotes),
+			processNotes: dropOpenResearchRevisionCycle(fresh.processNotes),
 			error: "Revision stopped.",
 			cancelRequested: false,
+			runToken: newId(),
 			reviseInstruction: "",
 			reviseHeading: "",
 			reviseQuote: "",
+			reviseEdits: [],
 			reviseFromVersion: null,
 			reviseClarify: null,
 			reviseClarifications: "",

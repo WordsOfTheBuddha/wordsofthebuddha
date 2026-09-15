@@ -34,12 +34,14 @@ import {
 	currentResearchVersionN,
 	mergeResearchHits,
 	nextResearchRevisionN,
+	normalizeResearchReviseEdits,
 	openingResearchVersionMeta,
 	researchRevisionStartedNote,
 	researchRevisePatchIsEmpty,
 	researchRevisePlanNote,
 	researchRevisePlanSummary,
 	researchReviseWriterFailureMessage,
+	reviseEditsPlannerInstruction,
 	reviseEvidenceRequestedIds,
 	isResearchReviseClarifyExpired,
 	RESEARCH_REVISE_CLARIFY_EXPIRED_ERROR,
@@ -49,7 +51,9 @@ import {
 	RESEARCH_REVISE_TOO_LONG_ERROR,
 	RESEARCH_REVISE_WAITING_NOTE,
 	RESEARCH_REVISE_WRITING_NOTE,
+	sanitizeResearchReviseEdits,
 	versionBodiesToKeep,
+	type ResearchReviseEdit,
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
 import {
@@ -310,6 +314,33 @@ function newClarifyId(): string {
 	return `rc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
+/** True while the stored job is still this revise worker's run. */
+async function readActiveReviseWorkerRecord(
+	uid: string,
+	jobId: string,
+	runToken: string,
+): Promise<ResearchJobRecord | null> {
+	const fresh = await readJob(uid, jobId);
+	if (!fresh || fresh.status !== "revising") return null;
+	if (runToken && fresh.runToken !== runToken) return null;
+	return fresh;
+}
+
+async function writeReviseJobIfActive(
+	record: ResearchJobRecord,
+	patch: Partial<ResearchJobRecord>,
+	runToken: string,
+): Promise<ResearchJobRecord | null> {
+	const fresh = await readActiveReviseWorkerRecord(record.uid, record.id, runToken);
+	if (!fresh) return null;
+	const written = await writeJob(fresh, patch);
+	if (runToken && written.runToken !== runToken) return null;
+	if (typeof patch.status === "string" && written.status !== patch.status) {
+		return null;
+	}
+	return written;
+}
+
 /**
  * Resume a revision the planner paused on its questions. Validates the answers
  * against the stored questions, folds them into the instruction context, and
@@ -365,18 +396,24 @@ export async function beginResearchRevise(options: {
 	instruction: string;
 	heading?: string;
 	quote?: string;
+	edits?: ResearchReviseEdit[];
 	jobId?: string;
 	shareSlug?: string;
 	fromVersion?: number | null;
 }): Promise<ResearchReviseResult> {
-	const instruction = clipResearchReviseInstruction(options.instruction);
-	const heading = clipResearchReviseHeading(options.heading || "");
-	const quote = clipResearchReviseQuote(options.quote || "");
+	const edits =
+		options.edits && options.edits.length > 0
+			? options.edits
+			: normalizeResearchReviseEdits(options);
+	const instruction = reviseEditsPlannerInstruction(edits);
+	const primary = edits[0];
+	const heading = clipResearchReviseHeading(primary?.heading || options.heading || "");
+	const quote = clipResearchReviseQuote(primary?.quote || options.quote || "");
 	const fromVersion =
 		typeof options.fromVersion === "number" && options.fromVersion > 0
 			? Math.floor(options.fromVersion)
 			: null;
-	if (!instruction) {
+	if (!instruction || edits.length === 0) {
 		return {
 			ok: false,
 			code: "invalid",
@@ -436,6 +473,7 @@ export async function beginResearchRevise(options: {
 		reviseInstruction: instruction,
 		reviseHeading: heading,
 		reviseQuote: quote,
+		reviseEdits: edits,
 		reviseFromVersion: fromVersion,
 		reviseClarify: null,
 		reviseClarifications: "",
@@ -456,11 +494,21 @@ export async function runResearchReviseJob(options: {
 }): Promise<void> {
 	let record = await readJob(options.uid, options.jobId);
 	if (!record || record.status !== "revising") return;
-	if (options.runToken && record.runToken && record.runToken !== options.runToken) {
+	const runToken = options.runToken || record.runToken || "";
+	if (runToken && record.runToken && record.runToken !== runToken) {
 		return;
 	}
 
 	const instruction = clipResearchReviseInstruction(record.reviseInstruction || "");
+	const storedEdits = sanitizeResearchReviseEdits(record.reviseEdits);
+	const edits =
+		storedEdits.length > 0
+			? storedEdits
+			: normalizeResearchReviseEdits({
+					instruction,
+					heading: record.reviseHeading || "",
+					quote: record.reviseQuote || "",
+				});
 	const heading = clipResearchReviseHeading(record.reviseHeading || "");
 	const quote = clipResearchReviseQuote(record.reviseQuote || "");
 	const fromVersion =
@@ -498,34 +546,44 @@ export async function runResearchReviseJob(options: {
 		const planned = await planResearchRevise({
 			report: baseReport,
 			instruction,
+			edits,
 			originalQuestion: record.originalQuestion,
 			clarifyBrief: record.clarifyBrief,
 			clarifications,
 			heading,
 			quote,
 		});
+		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
+		if (!record) return;
 		const plan = planned.plan;
 		// The reader sees the planner's reading as a hop within seconds, and can
 		// stop the revision if it is wrong.
 		const planNote = plan ? researchRevisePlanNote(plan) : "";
 		if (planNote) {
-			record = await writeJob(record, { progressNote: planNote });
+			const next = await writeReviseJobIfActive(record, { progressNote: planNote }, runToken);
+			if (!next) return;
+			record = next;
 		}
 		// Genuine ambiguity: park the job on the questions. Nothing has been
 		// written; the route resumes the worker once the reader answers.
 		if (!clarifications && plan?.questions?.length) {
 			paused = true;
-			await writeJob(record, {
-				status: "revise-clarifying",
-				progressNote: RESEARCH_REVISE_WAITING_NOTE,
-				reviseClarify: {
-					id: newClarifyId(),
-					questions: plan.questions,
-					interpretation: researchRevisePlanSummary(plan),
-					fromVersion,
-					expiresAt: Date.now() + RESEARCH_REVISE_CLARIFY_TTL_MS,
+			const parked = await writeReviseJobIfActive(
+				record,
+				{
+					status: "revise-clarifying",
+					progressNote: RESEARCH_REVISE_WAITING_NOTE,
+					reviseClarify: {
+						id: newClarifyId(),
+						questions: plan.questions,
+						interpretation: researchRevisePlanSummary(plan),
+						fromVersion,
+						expiresAt: Date.now() + RESEARCH_REVISE_CLARIFY_TTL_MS,
+					},
 				},
-			});
+				runToken,
+			);
+			if (!parked) paused = false;
 			return;
 		}
 		const evidencePlan = planReviseEvidence({
@@ -534,9 +592,13 @@ export async function runResearchReviseJob(options: {
 			plan,
 		});
 		if (evidencePlan.needsSearch) {
-			record = await writeJob(record, {
-				progressNote: RESEARCH_REVISE_SEARCH_NOTE,
-			});
+			const next = await writeReviseJobIfActive(
+				record,
+				{ progressNote: RESEARCH_REVISE_SEARCH_NOTE },
+				runToken,
+			);
+			if (!next) return;
+			record = next;
 		}
 		console.warn(
 			`[ai/research/revise] job ${record.id} evidence plan: search=${evidencePlan.needsSearch} reread=${evidencePlan.reread.length} queries=${evidencePlan.queries.length} readFull=${(plan?.readFull || []).join(",")} readPali=${(plan?.readPali || []).join(",")} readIllustration=${(plan?.readIllustration || []).join(",")}`,
@@ -546,6 +608,8 @@ export async function runResearchReviseJob(options: {
 			existingHits: current.results,
 			plan,
 		});
+		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
+		if (!record) return;
 		const requestedIds = reviseEvidenceRequestedIds({
 			instruction,
 			plan,
@@ -569,13 +633,23 @@ export async function runResearchReviseJob(options: {
 							readIllustration: gathered.readIllustration,
 						})
 					: formatResearchReadLabelsProgress(readLabels);
-			record = await writeJob(record, {
-				progressNote: readNote,
-			});
+			const next = await writeReviseJobIfActive(
+				record,
+				{ progressNote: readNote },
+				runToken,
+			);
+			if (!next) return;
+			record = next;
 		}
-		record = await writeJob(record, {
-			progressNote: RESEARCH_REVISE_WRITING_NOTE,
-		});
+		{
+			const next = await writeReviseJobIfActive(
+				record,
+				{ progressNote: RESEARCH_REVISE_WRITING_NOTE },
+				runToken,
+			);
+			if (!next) return;
+			record = next;
+		}
 		console.warn(
 			`[ai/research/revise] job ${record.id} writing (evidenceChars=${gathered.evidence.length})`,
 		);
@@ -584,6 +658,7 @@ export async function runResearchReviseJob(options: {
 		const written = await writeResearchRevise({
 			report: baseReport,
 			instruction,
+			edits,
 			originalQuestion: record.originalQuestion,
 			clarifyBrief: record.clarifyBrief,
 			clarifications,
@@ -593,6 +668,8 @@ export async function runResearchReviseJob(options: {
 			plan,
 			timeoutMs: resolveAskWriterBudgetMs(Date.now() - workerStarted),
 		});
+		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
+		if (!record) return;
 		if (written.tooLong) {
 			await restoreCompleteJob(record, RESEARCH_REVISE_TOO_LONG_ERROR);
 			return;

@@ -76,6 +76,7 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
+	followDockBottomInset,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
 	researchReportFollowChrome,
@@ -136,44 +137,22 @@ describe("reportFollowToggleLabel", () => {
 });
 
 describe("followComposerShouldExpand", () => {
-	it("stays compact until focus, typed text, or a Revising chip", () => {
+	it("stays compact until the reader opens or focuses the dock", () => {
 		assert.equal(
 			followComposerShouldExpand({
 				focused: false,
-				hasText: false,
-				hasReviseChip: false,
 			}),
 			false,
 		);
 		assert.equal(
 			followComposerShouldExpand({
 				focused: true,
-				hasText: false,
-				hasReviseChip: false,
 			}),
 			true,
 		);
 		assert.equal(
 			followComposerShouldExpand({
 				focused: false,
-				hasText: true,
-				hasReviseChip: false,
-			}),
-			true,
-		);
-		assert.equal(
-			followComposerShouldExpand({
-				focused: false,
-				hasText: false,
-				hasReviseChip: true,
-			}),
-			true,
-		);
-		assert.equal(
-			followComposerShouldExpand({
-				focused: false,
-				hasText: false,
-				hasReviseChip: false,
 				pinnedOpen: true,
 			}),
 			true,
@@ -255,6 +234,28 @@ describe("researchReportFollowChrome", () => {
 		assert.equal(idle.reportDock, true);
 		assert.equal(idle.revisingReport, false);
 		assert.equal(idle.followCompact, true);
+	});
+});
+
+describe("followDockBottomInset", () => {
+	it("returns zero when the visual viewport fills the layout viewport", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 800, offsetTop: 0 },
+			}),
+			0,
+		);
+	});
+
+	it("lifts the dock when mobile chrome shrinks the visual viewport", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 740, offsetTop: 40 },
+			}),
+			20,
+		);
 	});
 });
 
@@ -1223,7 +1224,7 @@ describe("Research pane copy", () => {
 		assert.equal(RESEARCH_HISTORY_LABEL, "Recent reports");
 		assert.equal(
 			ASK_LIMITS_NOTE,
-			"Freely accessible · made possible by generous donors",
+			"Freely offered · sustained by dāna",
 		);
 		assert.equal(RESEARCH_LIMITS_NOTE, ASK_LIMITS_NOTE);
 		assert.equal(

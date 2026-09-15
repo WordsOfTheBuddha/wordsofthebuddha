@@ -3,9 +3,7 @@ import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
 import { isAskQuotaSignedIn } from "../../../utils/aiAskQuota";
 import {
-	clipResearchReviseHeading,
-	clipResearchReviseInstruction,
-	clipResearchReviseQuote,
+	normalizeResearchReviseEdits,
 } from "../../../utils/aiAskResearchRevise";
 import {
 	answerResearchReviseClarify,
@@ -69,18 +67,20 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			: typeof fromRaw === "string"
 				? Number(fromRaw)
 				: null;
+	const edits = normalizeResearchReviseEdits({
+		edits: body.edits,
+		instruction: typeof body.instruction === "string" ? body.instruction : "",
+		heading: typeof body.heading === "string" ? body.heading : "",
+		quote: typeof body.quote === "string" ? body.quote : "",
+	});
+	const primary = edits[0];
 	const shared = {
 		request,
 		user,
-		instruction: clipResearchReviseInstruction(
-			typeof body.instruction === "string" ? body.instruction : "",
-		),
-		heading: clipResearchReviseHeading(
-			typeof body.heading === "string" ? body.heading : "",
-		),
-		quote: clipResearchReviseQuote(
-			typeof body.quote === "string" ? body.quote : "",
-		),
+		edits,
+		instruction: primary?.instruction || "",
+		heading: primary?.heading || "",
+		quote: primary?.quote || "",
 		jobId: typeof body.jobId === "string" ? body.jobId : "",
 		shareSlug: typeof body.shareSlug === "string" ? body.shareSlug : "",
 		fromVersion:

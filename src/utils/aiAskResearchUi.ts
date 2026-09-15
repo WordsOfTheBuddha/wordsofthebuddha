@@ -26,6 +26,8 @@ export {
 } from "./aiAskResearchHistoryStats";
 
 export const RESEARCH_CHIP_STORAGE_KEY = "ai-mode-research";
+export const REVISE_MULTI_HINT_STORAGE_KEY = "ai-mode-revise-multi-hint";
+export const REVISE_COMPOSER_DRAFT_STORAGE_KEY = "ai-mode-revise-composer-draft";
 export const RESEARCH_PLACEHOLDER =
 	"Ask for a cited report based on the Words of the Buddha…";
 export const RESEARCH_SIGNED_OUT_PLACEHOLDER =
@@ -37,9 +39,14 @@ export const ASK_WAITING_PLACEHOLDER = "Waiting for an answer…";
 export const ASK_FOLLOW_PLACEHOLDER = "Follow up in this conversation";
 export const RESEARCH_FOLLOW_PLACEHOLDER = "Follow up with a wider search";
 export const RESEARCH_REVISE_PLACEHOLDER = "Revise this report";
+export const RESEARCH_REVISE_SELECTION_PLACEHOLDER = "What should change here?";
 export const RESEARCH_ASK_WITHOUT_EDITING = "Ask a follow-up instead";
 export const RESEARCH_REVISE_INSTEAD = "Revise this report instead";
 export const RESEARCH_REVISE_CLEAR = "Clear";
+export const RESEARCH_REVISE_REMOVE_EDIT = "Remove edit";
+export const RESEARCH_REVISE_MULTI_HINT =
+	"When you add another selection, it starts a new edit below.";
+export const RESEARCH_REVISE_EDITS_CAP = "Max 6 edits at a time.";
 export const RESEARCH_REVISE_REPORT = "Revise report";
 export const RESEARCH_VERSIONS_ACTION = "Versions";
 export const RESEARCH_RESTORE_ACTION = "Restore as current";
@@ -49,7 +56,7 @@ export const RESEARCH_REVISE_ACCOUNT_TITLE =
 export const RESEARCH_REVISE_ACCOUNT_BODY =
 	"Revising updates this report in place and uses one Ask. Create a free account to continue.";
 export const ASK_LIMITS_NOTE =
-	"Freely accessible · made possible by generous donors";
+	"Freely offered · sustained by dāna";
 export const RESEARCH_LIMITS_NOTE = ASK_LIMITS_NOTE;
 
 /** Menu-screen donor note under Search / Ask / Research. */
@@ -253,19 +260,12 @@ export function shouldReviseResearchFollow(input: {
 	return input.lastTurnResearch && input.hasReport;
 }
 
-/** Compact revise dock stays one row until focus, typed text, or a Revising chip. */
+/** Compact revise dock stays one row until the reader opens or focuses it. */
 export function followComposerShouldExpand(input: {
 	focused: boolean;
-	hasText: boolean;
-	hasReviseChip: boolean;
 	pinnedOpen?: boolean;
 }): boolean {
-	return (
-		input.pinnedOpen ||
-		input.focused ||
-		input.hasText ||
-		input.hasReviseChip
-	);
+	return input.pinnedOpen || input.focused;
 }
 
 /** Pause/stop should cancel without expanding the compact dock. */
@@ -273,14 +273,14 @@ export function followComposerFocusShouldExpand(
 	activeElement: Element | null,
 ): boolean {
 	if (!activeElement) return false;
-	return !activeElement.closest("[data-ai-stop]");
+	return !activeElement.closest("[data-ai-stop], .ai-send-stop");
 }
 
 /** Clicks on the composer shell expand it; action buttons are excluded. */
 export function followComposerClickShouldExpand(target: Element | null): boolean {
 	if (!target?.closest(".ai-box")) return false;
 	return !target.closest(
-		"[data-ai-stop], [data-ai-mic], [data-ai-research-chip], .ai-revise-clear",
+		"[data-ai-stop], .ai-send-stop, [data-ai-mic], [data-ai-research-chip], .ai-revise-clear, .ai-revise-row-remove",
 	);
 }
 
@@ -347,9 +347,19 @@ export function findReportBlockElement(
 		kind === "h"
 			? ":scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6"
 			: kind === "c"
-				? ":scope > pre, :scope > .mermaid, :scope > [data-mermaid]"
-				: ":scope > table, :scope > hr";
+				? ":scope > pre, :scope > .mermaid, :scope > [data-mermaid], :scope > .ai-report-diagram, :scope > .ai-report-mermaid, :scope > .ai-report-code, :scope > .ai-report-html"
+				: ":scope > table, :scope > hr, :scope > .ai-report-table-wrap, :scope > .ai-report-html";
 	return body.querySelectorAll<HTMLElement>(selector)[n - 1] || null;
+}
+
+/** Keep a body-docked follow bar flush when mobile chrome shrinks the visual viewport. */
+export function followDockBottomInset(input: {
+	innerHeight: number;
+	visualViewport?: Pick<VisualViewport, "height" | "offsetTop"> | null;
+}): number {
+	const vv = input.visualViewport;
+	if (!vv) return 0;
+	return Math.max(0, Math.round(input.innerHeight - vv.height - vv.offsetTop));
 }
 
 export function researchReportFollowChrome(input: {

@@ -58,9 +58,7 @@ import {
 	type ReportBlockDiff,
 	type ReportContentBlock,
 	type ReportRemovedBlock,
-	clipResearchReviseHeading,
 	clipResearchReviseInstruction,
-	clipResearchReviseQuote,
 	RESEARCH_REVISE_INSTRUCTION_MAX,
 	clipResearchVersionIndex,
 	currentResearchVersionN,
@@ -79,9 +77,33 @@ import {
 	RESEARCH_REVISE_CLARIFY_TITLE,
 	RESEARCH_REVISE_BODIES_MAX,
 	RESEARCH_REVISE_CONSIDERING_NOTE,
+	splitBlockIdForEnumeratedKey,
+	splitReportBlocks,
 	type ResearchVersionMeta,
 	versionBodiesToKeep,
 } from "./aiAskResearchRevise";
+import {
+	abbreviateReviseQuote,
+	applyReviseSelectionToDraft,
+	buildSubmittableReviseEdits,
+	canSubmitReviseEdits,
+	clearReviseDraftScope,
+	emptyReviseEditDraft,
+	formatReviseEditScopeLabel,
+	hasReviseComposerContent,
+	hasReviseEditScope,
+	removeCommittedReviseRow,
+	updateCommittedReviseInstruction,
+	reviseCompactDockPlaceholder,
+	reviseExpandedPlaceholder,
+	isReviseEditsCapped,
+	reviseStackRenderKey,
+	REVISE_QUOTE_CHIP_MAX,
+	scopeFromDomSelection,
+	scopeFromReportPin,
+	type ResearchReviseEditDraft,
+	type ResearchReviseEditScope,
+} from "./aiAskResearchReviseComposer";
 import {
 	formatResearchHitTitle,
 	renderAskBriefingHtml,
@@ -134,6 +156,8 @@ import {
 	isAskResearchEnabled,
 	RESEARCH_CHIP_STORAGE_KEY,
 	RESEARCH_CHIP_TITLE,
+	REVISE_MULTI_HINT_STORAGE_KEY,
+	REVISE_COMPOSER_DRAFT_STORAGE_KEY,
 	RESEARCH_COMPOSER_LABEL,
 	RESEARCH_DELETE_ACTION,
 	RESEARCH_DELETE_CONFIRM,
@@ -151,6 +175,9 @@ import {
 	RESEARCH_REVISE_ACCOUNT_BODY,
 	RESEARCH_REVISE_ACCOUNT_TITLE,
 	RESEARCH_REVISE_CLEAR,
+	RESEARCH_REVISE_EDITS_CAP,
+	RESEARCH_REVISE_REMOVE_EDIT,
+	RESEARCH_REVISE_SELECTION_PLACEHOLDER,
 	RESEARCH_REVISE_FROM_ACTION,
 	RESEARCH_REVISE_REPORT,
 	RESEARCH_SIGNIN_BODY,
@@ -185,6 +212,7 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
+	followDockBottomInset,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
 	reportFollowToggleLabel,
@@ -379,6 +407,8 @@ export interface AiAskTurn {
 	};
 	/** Planner questions a revision is paused on; the report is still the base. */
 	reviseClarify?: ResearchReviseClarifyDraft;
+	/** Ignore stale polls after the reader stops a revise/research job locally. */
+	researchLocalCancelToken?: number;
 	researchDeclined?: {
 		kind: string;
 		message: string;
@@ -1798,29 +1828,7 @@ export function firstRangeClientRect(range: {
 }
 
 /** Longest chip text before a selection is shown as start … end. */
-export const REVISE_QUOTE_CHIP_MAX = 150;
-
-/**
- * Selection text for the composer chip: short quotes verbatim, long ones as
- * their opening and closing words so the reader can see both ends of the
- * passage being revised.
- */
-export function abbreviateReviseQuote(
-	quote: string,
-	max = REVISE_QUOTE_CHIP_MAX,
-): string {
-	const text = quote.replace(/\s+/g, " ").trim();
-	if (text.length <= max) return text;
-	const headBudget = Math.floor(max * 0.55);
-	const tailBudget = max - headBudget;
-	let head = text.slice(0, headBudget);
-	const headSpace = head.lastIndexOf(" ");
-	if (headSpace > headBudget * 0.6) head = head.slice(0, headSpace);
-	let tail = text.slice(text.length - tailBudget);
-	const tailSpace = tail.indexOf(" ");
-	if (tailSpace >= 0 && tailSpace < tailBudget * 0.4) tail = tail.slice(tailSpace + 1);
-	return `${head.trim()} … ${tail.trim()}`;
-}
+export { REVISE_QUOTE_CHIP_MAX, abbreviateReviseQuote };
 
 export function reviseScopeLabel(heading: string, quote: string): string {
 	if (heading.trim()) return `Revising · ${heading.trim()}`;
@@ -1966,7 +1974,7 @@ export function stampReviseDiffBase(
 }
 
 export const REPORT_CHANGE_BLOCK_SELECTOR =
-	":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote, :scope > ul > li, :scope > ol > li, :scope > .ai-report-table-wrap, :scope > .ai-report-mermaid, :scope > .ai-report-code, :scope > .ai-report-html, :scope > hr";
+	":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > blockquote, :scope > ul > li, :scope > ol > li, :scope > .ai-report-table-wrap, :scope > .ai-report-mermaid, :scope > .ai-report-diagram, :scope > .ai-report-code, :scope > .ai-report-html, :scope > hr";
 
 function reportBlockKeyFromElement(el: HTMLElement): string {
 	if (el.dataset.reportBlockKey) return el.dataset.reportBlockKey;
@@ -1985,6 +1993,16 @@ export function stampReportBlockKeys(body: ParentNode, markdown: string): number
 		const el = els[index];
 		if (!el) return;
 		el.dataset.reportBlockIdx = String(index);
+		const blockId = splitBlockIdForEnumeratedKey(
+			markdown,
+			block.key,
+			block.markdown,
+		);
+		if (blockId) {
+			el.dataset.reportBlockId = blockId;
+		} else {
+			delete el.dataset.reportBlockId;
+		}
 		if (block.key.length >= REPORT_BLOCK_KEY_MIN) {
 			el.dataset.reportBlockKey = block.key;
 			stamped += 1;
@@ -1995,6 +2013,7 @@ export function stampReportBlockKeys(body: ParentNode, markdown: string): number
 	for (let i = blocks.length; i < els.length; i += 1) {
 		delete els[i].dataset.reportBlockKey;
 		delete els[i].dataset.reportBlockIdx;
+		delete els[i].dataset.reportBlockId;
 	}
 	return stamped;
 }
@@ -2344,6 +2363,8 @@ export function attachAiMode(options: {
 		...root.querySelectorAll<HTMLElement>("[data-ai-composition-images]"),
 	];
 	const reviseScope = root.querySelector<HTMLElement>("[data-ai-revise-scope]");
+	const reviseStackEl = root.querySelector<HTMLElement>("[data-ai-revise-stack]");
+	const reviseCapNoteEl = root.querySelector<HTMLElement>("[data-ai-revise-cap-note]");
 	const reviseChipEl = root.querySelector<HTMLElement>("[data-ai-revise-chip]");
 	const reviseClearBtn = root.querySelector<HTMLButtonElement>("[data-ai-revise-clear]");
 	const askWithoutEditingBtn = root.querySelector<HTMLButtonElement>(
@@ -2419,10 +2440,12 @@ export function attachAiMode(options: {
 	let compositionImages: ResearchContextImage[] = [];
 	let researchPollTimer = 0;
 	let researchPollHiddenCleanup: (() => void) | null = null;
-	let reviseHeading = "";
-	let reviseQuote = "";
+	let reviseEditDraft: ResearchReviseEditDraft = emptyReviseEditDraft();
+	let lastReviseEditDraft: ResearchReviseEditDraft = emptyReviseEditDraft();
 	let followAskMode = false;
 	let followComposerPinnedOpen = false;
+	/** After Stop, keep the dock compact until the reader taps to expand. */
+	let followComposerHoldCompact = false;
 	let reviseFromVersion: number | null = null;
 	let previewVersion: { n: number; report: string } | null = null;
 	let previewVersionToken = 0;
@@ -2464,6 +2487,16 @@ export function attachAiMode(options: {
 		});
 	}
 	let researchPollToken = 0;
+	let researchLocalCancelToken = 0;
+
+	function researchJobWouldReviveAfterLocalCancel(
+		turn: AiAskTurn,
+		job: ResearchJobPublic,
+	): boolean {
+		if (!turn.researchLocalCancelToken) return false;
+		if (!job.pending) return false;
+		return job.status === "revising" || job.status === "revise-clarifying";
+	}
 	let samplePlaybackTimer = 0;
 	let samplePlaybackToken = 0;
 	const watchingResearchJobs = new Set<string>();
@@ -2610,6 +2643,91 @@ export function attachAiMode(options: {
 	): AiAskTurn["researchClarify"] | ResearchReviseClarifyDraft | undefined {
 		if (!turn) return undefined;
 		return kind === "revise" ? turn.reviseClarify : turn.researchClarify;
+	}
+
+	function bindClarifyOtherInput(inputEl: HTMLTextAreaElement): void {
+		if (inputEl.dataset.bound === "1") return;
+		inputEl.dataset.bound = "1";
+		fitClarifyOther(inputEl);
+		inputEl.addEventListener("input", () => {
+			const index = Number(inputEl.getAttribute("data-turn-index"));
+			const questionId = inputEl.getAttribute("data-question-id") || "";
+			const turn = turns[index];
+			const draft = clarifyDraftFor(turn, inputEl.getAttribute("data-clarify-kind"));
+			if (!draft || !questionId) return;
+			const currentAnswer = draft.answers[questionId] || {
+				choiceId: RESEARCH_CLARIFY_OTHER_ID,
+			};
+			draft.answers = {
+				...draft.answers,
+				[questionId]: {
+					...currentAnswer,
+					choiceId: RESEARCH_CLARIFY_OTHER_ID,
+					otherText: inputEl.value.slice(0, RESEARCH_CLARIFY_MAX_OTHER),
+				},
+			};
+			fitClarifyOther(inputEl);
+			syncClarifyBar();
+		});
+	}
+
+	/** Toggle clarify chips without rebuilding the thread (avoids scroll drift). */
+	function patchClarifyChoiceUi(
+		turnIndex: number,
+		kind: string | null,
+		questionId: string,
+	): void {
+		const turn = turns[turnIndex];
+		const draft = clarifyDraftFor(turn, kind);
+		if (!draft) return;
+		const qWrap = thread.querySelector<HTMLElement>(
+			`[data-ai-clarify-choice][data-turn-index="${turnIndex}"][data-question-id="${questionId}"]`,
+		)?.closest(".ai-clarify-q");
+		qWrap
+			?.querySelectorAll<HTMLButtonElement>("[data-ai-clarify-choice]")
+			.forEach((button) => {
+				if (kind && button.getAttribute("data-clarify-kind") !== kind) return;
+				const qId = button.getAttribute("data-question-id") || "";
+				const cId = button.getAttribute("data-choice-id") || "";
+				const on = draft.answers[qId]?.choiceId === cId;
+				if (button.classList.contains("is-on") !== on) {
+					button.classList.toggle("is-on", on);
+				}
+				button.setAttribute("aria-checked", on ? "true" : "false");
+			});
+		if (!qWrap) {
+			syncClarifyBar();
+			return;
+		}
+		const selected = draft.answers[questionId]?.choiceId || "";
+		let other = qWrap.querySelector<HTMLTextAreaElement>("[data-ai-clarify-other]");
+		if (selected === RESEARCH_CLARIFY_OTHER_ID) {
+			if (!other) {
+				other = document.createElement("textarea");
+				other.className = "ai-clarify-other";
+				other.setAttribute("data-ai-clarify-other", "");
+				if (kind) other.setAttribute("data-clarify-kind", kind);
+				other.setAttribute("data-turn-index", String(turnIndex));
+				other.setAttribute("data-question-id", questionId);
+				other.rows = 2;
+				other.maxLength = RESEARCH_CLARIFY_MAX_OTHER;
+				other.placeholder = "Add a short note";
+				other.value = draft.answers[questionId]?.otherText || "";
+				qWrap.appendChild(other);
+				bindClarifyOtherInput(other);
+			} else {
+				other.hidden = false;
+			}
+		} else if (other) {
+			other.hidden = true;
+		}
+		if (clarifyStartBtn) {
+			const canContinue = canStartResearchClarify(
+				draft.questions,
+				answersFromClarifyState(draft.answers),
+			);
+			clarifyStartBtn.disabled = !canContinue;
+		}
 	}
 
 	function isClarifyingTurn(turn: AiAskTurn | undefined): boolean {
@@ -2904,18 +3022,184 @@ export function attachAiMode(options: {
 		if (clipped !== followInput.value) followInput.value = clipped;
 	}
 
-	function syncReviseScope(): void {
-		const heading = clipResearchReviseHeading(reviseHeading);
-		const quote = clipResearchReviseQuote(reviseQuote);
-		const label = reviseScopeLabel(heading, quote);
-		if (reviseChipEl) {
-			reviseChipEl.textContent = label;
-			reviseChipEl.title = heading || quote;
+	function currentReviseReportMarkdown(): string {
+		const last = lastFinishedReportTurn();
+		if (!last) return "";
+		return displayedReportMarkdown(last).trim();
+	}
+
+	function reviseDraftFromComposer(): ResearchReviseEditDraft {
+		const liveInstruction = followInput?.value ?? "";
+		const draft: ResearchReviseEditDraft = {
+			...reviseEditDraft,
+			// Compact mode clears the textarea for the placeholder shell; fall
+			// back to the stored draft instruction in that case.
+			draftInstruction:
+				liveInstruction || reviseEditDraft.draftInstruction || "",
+		};
+		if (!reviseStackEl || draft.committed.length === 0) return draft;
+		const instructions = [
+			...reviseStackEl.querySelectorAll<HTMLTextAreaElement>(
+				".ai-revise-row-instruction",
+			),
+		];
+		if (instructions.length !== draft.committed.length) return draft;
+		return {
+			...draft,
+			committed: draft.committed.map((row, index) => ({
+				...row,
+				instruction: instructions[index]?.value ?? row.instruction,
+			})),
+		};
+	}
+
+	let reviseStackRenderCache = "";
+	let reviseComposerRestored = false;
+	let reviseComposerHydrated = false;
+	let reviseCapNoteTimer = 0;
+
+	function finishReviseComposerHydration(): void {
+		reviseComposerHydrated = true;
+	}
+
+	function reviseMultiHintSeen(): boolean {
+		try {
+			return localStorage.getItem(REVISE_MULTI_HINT_STORAGE_KEY) === "1";
+		} catch {
+			return false;
 		}
-		if (reviseScope) reviseScope.hidden = !label;
+	}
+
+	function markReviseMultiHintSeen(): void {
+		try {
+			localStorage.setItem(REVISE_MULTI_HINT_STORAGE_KEY, "1");
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function shouldShowReviseMultiHint(draft: ResearchReviseEditDraft): boolean {
+		return draft.committed.length >= 1 && !reviseMultiHintSeen();
+	}
+
+	function scrollReviseComposerToLatest(): void {
+		requestAnimationFrame(() => {
+			if (reviseStackEl && !reviseStackEl.hidden) {
+				reviseStackEl.scrollTop = reviseStackEl.scrollHeight;
+			}
+			followInput?.scrollIntoView({ block: "nearest" });
+		});
+	}
+
+	function renderReviseStack(force = false): void {
+		if (!reviseStackEl) return;
+		const key = `${reviseEditDraft.committed.length}:${reviseStackRenderKey(reviseEditDraft)}`;
+		if (!force && key === reviseStackRenderCache && reviseStackEl.childElementCount > 0) {
+			reviseStackEl.hidden = reviseEditDraft.committed.length === 0;
+			return;
+		}
+		reviseStackRenderCache = key;
+		reviseStackEl.replaceChildren();
+		reviseStackEl.hidden = reviseEditDraft.committed.length === 0;
+		reviseEditDraft.committed.forEach((row, index) => {
+			const rowEl = document.createElement("div");
+			rowEl.className = "ai-revise-row is-committed";
+
+			const head = document.createElement("div");
+			head.className = "ai-revise-row-head";
+			const scopeLabel = formatReviseEditScopeLabel(row.scope);
+			if (hasReviseEditScope(row.scope)) {
+				const scopeEl = document.createElement("div");
+				scopeEl.className = "ai-revise-scope";
+				const chip = document.createElement("span");
+				chip.className = "ai-revise-chip";
+				const text = document.createElement("span");
+				text.className = "ai-revise-chip-text";
+				text.textContent = scopeLabel;
+				text.title = row.scope?.heading || row.scope?.quote || scopeLabel;
+				chip.append(text);
+				scopeEl.append(chip);
+				head.append(scopeEl);
+			}
+			const removeRow = document.createElement("button");
+			removeRow.type = "button";
+			removeRow.className = "ai-revise-row-remove";
+			removeRow.setAttribute("aria-label", RESEARCH_REVISE_REMOVE_EDIT);
+			removeRow.title = RESEARCH_REVISE_REMOVE_EDIT;
+			removeRow.innerHTML =
+				'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" d="M5 12h14"/></svg>';
+			removeRow.addEventListener("click", (event) => {
+				event.preventDefault();
+				event.stopPropagation();
+				reviseEditDraft = removeCommittedReviseRow(reviseEditDraft, index);
+				syncReviseScope();
+			});
+			head.append(removeRow);
+			rowEl.append(head);
+
+			const instruction = document.createElement("textarea");
+			instruction.className = "ai-revise-row-instruction";
+			instruction.rows = 1;
+			instruction.maxLength = RESEARCH_REVISE_INSTRUCTION_MAX;
+			instruction.value = row.instruction;
+			instruction.setAttribute(
+				"aria-label",
+				RESEARCH_REVISE_SELECTION_PLACEHOLDER,
+			);
+			instruction.addEventListener("input", () => {
+				reviseEditDraft = updateCommittedReviseInstruction(
+					reviseEditDraft,
+					index,
+					instruction.value,
+				);
+				fitTextarea(instruction);
+				syncFollowComposerMode();
+			});
+			rowEl.append(instruction);
+			reviseStackEl.append(rowEl);
+			fitTextarea(instruction);
+		});
+	}
+
+	function syncReviseCapNote(show = isReviseEditsCapped(reviseDraftFromComposer())): void {
+		if (!reviseCapNoteEl) return;
+		reviseCapNoteEl.hidden = !show;
+	}
+
+	function flashReviseCapNote(ms = 5000): void {
+		syncReviseCapNote(true);
+		if (reviseCapNoteTimer) window.clearTimeout(reviseCapNoteTimer);
+		reviseCapNoteTimer = window.setTimeout(() => {
+			reviseCapNoteTimer = 0;
+			syncReviseCapNote(isReviseEditsCapped(reviseDraftFromComposer()));
+		}, ms);
+	}
+
+	function syncReviseScope(options: { scrollToLatest?: boolean } = {}): void {
+		renderReviseStack();
+		const showDraftScope = hasReviseEditScope(reviseEditDraft.draftScope);
+		const draftLabel = showDraftScope
+			? formatReviseEditScopeLabel(reviseEditDraft.draftScope)
+			: "";
+		if (reviseChipEl) {
+			reviseChipEl.textContent = draftLabel;
+			reviseChipEl.title =
+				reviseEditDraft.draftScope?.heading ||
+				reviseEditDraft.draftScope?.quote ||
+				draftLabel;
+		}
+		if (reviseScope) {
+			reviseScope.hidden = !showDraftScope;
+			reviseScope.classList.toggle("is-draft", showDraftScope);
+		}
 		if (reviseClearBtn) {
 			reviseClearBtn.setAttribute("aria-label", RESEARCH_REVISE_CLEAR);
 			reviseClearBtn.title = RESEARCH_REVISE_CLEAR;
+		}
+		if (reviseCapNoteEl) {
+			if (!reviseCapNoteTimer) {
+				syncReviseCapNote(isReviseEditsCapped(reviseDraftFromComposer()));
+			}
 		}
 		if (askWithoutEditingBtn) {
 			const onReport = Boolean(lastFinishedReportTurn());
@@ -2924,18 +3208,177 @@ export function attachAiMode(options: {
 			askWithoutEditingBtn.textContent = reportFollowToggleLabel(followAskMode);
 		}
 		syncFollowComposerMode();
+		if (options.scrollToLatest) scrollReviseComposerToLatest();
+		persistReviseComposerDraft();
 	}
 
 	function clearReviseScope(keepPrompt = true): void {
-		reviseHeading = "";
-		reviseQuote = "";
+		reviseEditDraft = clearReviseDraftScope(reviseEditDraft);
 		headingReviseBtn?.remove();
 		headingReviseBtn = null;
 		hideSelectionRevise();
+		try {
+			window.getSelection()?.removeAllRanges();
+		} catch {
+			/* ignore */
+		}
 		if (!keepPrompt) {
 			/* keep the typed prompt; Clear only drops the chip */
 		}
 		syncReviseScope();
+	}
+
+	function resetReviseEdits(clearPrompt = false): void {
+		reviseEditDraft = emptyReviseEditDraft();
+		reviseStackRenderCache = "";
+		clearReviseComposerDraftStorage();
+		headingReviseBtn?.remove();
+		headingReviseBtn = null;
+		hideSelectionRevise();
+		if (clearPrompt && followInput) {
+			followInput.value = "";
+			fitTextarea(followInput);
+		}
+		syncReviseScope();
+	}
+
+	function applyRevisePin(scope: ResearchReviseEditScope | null): void {
+		if (!scope) return;
+		const committedBefore = reviseEditDraft.committed.length;
+		const result = applyReviseSelectionToDraft(reviseDraftFromComposer(), scope);
+		reviseEditDraft = result.draft;
+		if (result.capped) {
+			setStatus(RESEARCH_REVISE_EDITS_CAP);
+			flashReviseCapNote();
+		} else if (
+			isReviseEditsCapped(reviseEditDraft) &&
+			reviseEditDraft.committed.length > committedBefore
+		) {
+			flashReviseCapNote();
+		}
+		if (followInput) {
+			followInput.value = reviseEditDraft.draftInstruction;
+			fitTextarea(followInput);
+		}
+		syncReviseScope({
+			scrollToLatest: reviseEditDraft.committed.length > committedBefore,
+		});
+	}
+
+	function lastReportAnswerBody(): HTMLElement | null {
+		return lastReportElement()?.querySelector<HTMLElement>(".ai-answer-body") ?? null;
+	}
+
+	function rangeIntersectsNode(range: Range, node: Node): boolean {
+		const nodeRange = document.createRange();
+		try {
+			nodeRange.selectNodeContents(node);
+		} catch {
+			return false;
+		}
+		return (
+			range.compareBoundaryPoints(Range.END_TO_START, nodeRange) < 0 &&
+			range.compareBoundaryPoints(Range.START_TO_END, nodeRange) > 0
+		);
+	}
+
+	function refineReviseSelectionBlockIds(
+		ids: readonly string[],
+		_selection: string,
+		markdown: string,
+	): string[] {
+		if (ids.length === 0) return [];
+		const sel = _selection.replace(/\s+/g, " ").trim().toLowerCase();
+		let out = [...ids];
+		if (sel) {
+			const blocks = splitReportBlocks(markdown);
+			out = out.filter((id) => {
+				if (!/^h\d+$/i.test(id)) return true;
+				const block = blocks.find((item) => item.id === id);
+				if (!block) return false;
+				const heading = block.markdown.replace(/^#+\s+/, "").trim().toLowerCase();
+				if (!heading) return false;
+				const snippet = heading.slice(0, 24);
+				return sel.includes(snippet) || snippet.includes(sel.slice(0, 24));
+			});
+		}
+		return [...new Set(out)];
+	}
+
+	function stampReviseReportBlockIds(turn: AiAskTurn | undefined): void {
+		if (!turn) return;
+		const body = lastReportElement()?.querySelector<HTMLElement>(".ai-answer-body");
+		const markdown = displayedReportMarkdown(turn).trim();
+		if (body && markdown) stampReportBlockKeys(body, markdown);
+	}
+
+	function reportBlockIdsFromDomRange(range: Range, body: Element): string[] {
+		const markdown = currentReviseReportMarkdown();
+		const blocks = splitReportBlocks(markdown);
+		const selection = window.getSelection()?.toString() || "";
+		const ids: string[] = [];
+		const seen = new Set<string>();
+		for (const el of body.querySelectorAll<HTMLElement>(
+			REPORT_CHANGE_BLOCK_SELECTOR,
+		)) {
+			if (!rangeIntersectsNode(range, el)) continue;
+			const stampedId = el.dataset.reportBlockId?.trim() || "";
+			const idx = Number(el.dataset.reportBlockIdx);
+			const id =
+				stampedId ||
+				(Number.isFinite(idx) ? blocks[idx]?.id : "") ||
+				"";
+			if (id && !seen.has(id)) {
+				seen.add(id);
+				ids.push(id);
+			}
+		}
+		if (ids.length > 0) {
+			return refineReviseSelectionBlockIds(
+				ids.sort(
+					(a, b) =>
+						blocks.findIndex((block) => block.id === a) -
+						blocks.findIndex((block) => block.id === b),
+				),
+				selection,
+				markdown,
+			);
+		}
+		const structuralSelected = [
+			...body.querySelectorAll<HTMLElement>(
+				".ai-report-table-wrap, .ai-report-diagram, .ai-report-mermaid, .ai-report-code",
+			),
+		].some((el) => rangeIntersectsNode(range, el));
+		if (structuralSelected) return [];
+		const paraNums: number[] = [];
+		for (const el of body.querySelectorAll<HTMLElement>(
+			"[data-paragraph-number]",
+		)) {
+			if (!rangeIntersectsNode(range, el)) continue;
+			const n = Number(el.getAttribute("data-paragraph-number"));
+			if (Number.isFinite(n) && n > 0) paraNums.push(n);
+		}
+		return [...new Set(paraNums.sort((a, b) => a - b))].map((n) => `p${n}`);
+	}
+
+	function scopeFromLiveSelection(): ResearchReviseEditScope | null {
+		const sel = window.getSelection();
+		const selection = sel?.toString() || "";
+		if (!selectionQualifiesForRevise(selection) || !sel?.rangeCount) {
+			return null;
+		}
+		const range = sel.getRangeAt(0);
+		const body = lastReportAnswerBody();
+		const blockIds =
+			body && body.contains(range.commonAncestorContainer)
+				? reportBlockIdsFromDomRange(range, body)
+				: [];
+		return scopeFromDomSelection(
+			currentReviseReportMarkdown(),
+			selection,
+			sel.anchorNode,
+			blockIds,
+		);
 	}
 
 	function openReviseComposer(): void {
@@ -2947,15 +3390,140 @@ export function attachAiMode(options: {
 		syncFollowComposerMode();
 	}
 
+	function persistReviseComposerDraft(): void {
+		if (!reviseComposerHydrated) return;
+		const last = lastFinishedReportTurn();
+		if (!last || isReviseInProgress(last)) return;
+		const draft = reviseDraftFromComposer();
+		try {
+			if (!hasReviseComposerContent(draft)) return;
+			const jobId = last.researchJobId || "";
+			const slug = shareSlugForRevise() || last.shareSlug || "";
+			if (draft.committed.length === 0) {
+				const raw = localStorage.getItem(REVISE_COMPOSER_DRAFT_STORAGE_KEY);
+				if (raw) {
+					const parsed = JSON.parse(raw) as Record<string, unknown>;
+					const storedJobId =
+						typeof parsed.jobId === "string" ? parsed.jobId : "";
+					const storedSlug =
+						typeof parsed.shareSlug === "string" ? parsed.shareSlug : "";
+					const sameReport =
+						(storedJobId && storedJobId === jobId) ||
+						(storedSlug && storedSlug === slug) ||
+						(!storedJobId && !storedSlug);
+					if (
+						sameReport &&
+						Array.isArray(parsed.committed) &&
+						parsed.committed.length > 0
+					) {
+						return;
+					}
+				}
+			}
+			localStorage.setItem(
+				REVISE_COMPOSER_DRAFT_STORAGE_KEY,
+				JSON.stringify({
+					jobId: last.researchJobId || "",
+					shareSlug: shareSlugForRevise() || last.shareSlug || "",
+					fromVersion: reviseFromVersion,
+					committed: draft.committed,
+					draftScope: draft.draftScope,
+					draftInstruction: draft.draftInstruction,
+				}),
+			);
+		} catch {
+			/* ignore */
+		}
+	}
+
+	function restoreReviseComposerDraft(): void {
+		if (reviseComposerRestored) {
+			finishReviseComposerHydration();
+			return;
+		}
+		try {
+			const last = lastFinishedReportTurn();
+			if (!last) return;
+			const raw = localStorage.getItem(REVISE_COMPOSER_DRAFT_STORAGE_KEY);
+			if (!raw) return;
+			const parsed = JSON.parse(raw) as Record<string, unknown>;
+			const jobId = last.researchJobId || "";
+			const slug = shareSlugForRevise() || last.shareSlug || "";
+			if (
+				typeof parsed.jobId === "string" &&
+				parsed.jobId &&
+				jobId &&
+				parsed.jobId !== jobId
+			) {
+				return;
+			}
+			if (
+				typeof parsed.shareSlug === "string" &&
+				parsed.shareSlug &&
+				slug &&
+				parsed.shareSlug !== slug
+			) {
+				return;
+			}
+			const committed = Array.isArray(parsed.committed)
+				? (parsed.committed as ResearchReviseEditDraft["committed"])
+				: [];
+			const draftScope =
+				parsed.draftScope && typeof parsed.draftScope === "object"
+					? (parsed.draftScope as ResearchReviseEditScope)
+					: null;
+			const draftInstruction =
+				typeof parsed.draftInstruction === "string"
+					? parsed.draftInstruction
+					: "";
+			if (
+				committed.length === 0 &&
+				!draftScope &&
+				!draftInstruction.trim()
+			) {
+				return;
+			}
+			reviseComposerRestored = true;
+			reviseEditDraft = {
+				committed,
+				draftScope,
+				draftInstruction,
+			};
+			if (typeof parsed.fromVersion === "number") {
+				reviseFromVersion = parsed.fromVersion;
+			}
+			reviseStackRenderCache = "";
+			if (followInput) {
+				followInput.value = reviseEditDraft.draftInstruction;
+				fitTextarea(followInput);
+			}
+			syncReviseScope();
+		} catch {
+			/* ignore */
+		} finally {
+			finishReviseComposerHydration();
+		}
+	}
+
+	function clearReviseComposerDraftStorage(): void {
+		try {
+			localStorage.removeItem(REVISE_COMPOSER_DRAFT_STORAGE_KEY);
+		} catch {
+			/* ignore */
+		}
+	}
+
 	function rememberPendingRevise(): void {
 		const last = lastFinishedReportTurn();
+		const draft = reviseDraftFromComposer();
 		try {
 			sessionStorage.setItem(
 				REVISE_PENDING_KEY,
 				JSON.stringify({
-					instruction: followInput?.value || "",
-					heading: reviseHeading,
-					quote: reviseQuote,
+					instruction: draft.draftInstruction,
+					committed: draft.committed,
+					draftScope: draft.draftScope,
+					edits: buildSubmittableReviseEdits(draft),
 					jobId: last?.researchJobId || "",
 					shareSlug: shareSlugForRevise() || last?.shareSlug || "",
 					fromVersion: reviseFromVersion,
@@ -2968,8 +3536,8 @@ export function attachAiMode(options: {
 
 	function takePendingRevise(): {
 		instruction: string;
-		heading: string;
-		quote: string;
+		committed: ResearchReviseEditDraft["committed"];
+		draftScope: ResearchReviseEditScope | null;
 		jobId: string;
 		shareSlug: string;
 		fromVersion: number | null;
@@ -2979,11 +3547,18 @@ export function attachAiMode(options: {
 			if (!raw) return null;
 			sessionStorage.removeItem(REVISE_PENDING_KEY);
 			const parsed = JSON.parse(raw) as Record<string, unknown>;
+			const committed = Array.isArray(parsed.committed)
+				? (parsed.committed as ResearchReviseEditDraft["committed"])
+				: [];
+			const draftScope =
+				parsed.draftScope && typeof parsed.draftScope === "object"
+					? (parsed.draftScope as ResearchReviseEditScope)
+					: null;
 			return {
 				instruction:
 					typeof parsed.instruction === "string" ? parsed.instruction : "",
-				heading: typeof parsed.heading === "string" ? parsed.heading : "",
-				quote: typeof parsed.quote === "string" ? parsed.quote : "",
+				committed,
+				draftScope,
 				jobId: typeof parsed.jobId === "string" ? parsed.jobId : "",
 				shareSlug:
 					typeof parsed.shareSlug === "string" ? parsed.shareSlug : "",
@@ -3001,6 +3576,23 @@ export function attachAiMode(options: {
 			pending: turn?.pending,
 			hasReport: Boolean((turn?.report || "").trim()),
 		});
+	}
+
+	function researchStopActive(): boolean {
+		return turns.some(
+			(turn) =>
+				(turn.pending && turn.research && turn.researchJobId) ||
+				isReviseInProgress(turn),
+		);
+	}
+
+	function allSendButtons(): HTMLButtonElement[] {
+		const buttons = [
+			...root.querySelectorAll<HTMLButtonElement>(".ai-send"),
+		];
+		const followSend = followForm?.querySelector<HTMLButtonElement>(".ai-send");
+		if (followSend && !buttons.includes(followSend)) buttons.push(followSend);
+		return buttons;
 	}
 
 	function captureRevisePendingSource(turn: AiAskTurn): void {
@@ -3093,11 +3685,27 @@ export function attachAiMode(options: {
 	}
 
 	function restoreReviseInstructionToComposer(): void {
-		const text = lastReviseInstruction.trim();
-		if (!text || !followInput) return;
-		followInput.value = text;
+		reviseEditDraft = {
+			committed: lastReviseEditDraft.committed.map((row) => ({
+				...row,
+				scope: row.scope ? { ...row.scope } : undefined,
+			})),
+			draftScope: lastReviseEditDraft.draftScope
+				? { ...lastReviseEditDraft.draftScope }
+				: null,
+			draftInstruction: lastReviseEditDraft.draftInstruction,
+		};
+		reviseStackRenderCache = "";
+		if (!followInput) {
+			syncReviseScope();
+			persistReviseComposerDraft();
+			return;
+		}
+		followInput.value = reviseEditDraft.draftInstruction;
 		fitTextarea(followInput);
 		followInput.focus();
+		syncReviseScope();
+		persistReviseComposerDraft();
 	}
 
 	function clearReviseInstructionDraft(): void {
@@ -3118,10 +3726,16 @@ export function attachAiMode(options: {
 	): Promise<void> {
 		const last = lastFinishedReportTurn();
 		if (!last || busy) return;
-		const q = clipResearchReviseInstruction(instruction);
-		if (action === "revise" && !q) return;
+		const draft = reviseDraftFromComposer();
+		if (instruction.trim()) draft.draftInstruction = instruction;
+		const edits = buildSubmittableReviseEdits(draft);
+		const q =
+			action === "revise"
+				? edits.map((edit) => edit.instruction).join("\n\n")
+				: clipAiQuestion(instruction);
+		if (action === "revise" && !canSubmitReviseEdits(edits)) return;
 		if (!quota?.signedIn) {
-			if (followInput) followInput.value = q;
+			if (followInput) followInput.value = draft.draftInstruction;
 			rememberPendingRevise();
 			openQuotaDialog("revise", q);
 			return;
@@ -3139,8 +3753,12 @@ export function attachAiMode(options: {
 		root.classList.add("is-busy");
 		if (action === "revise") {
 			lastReviseInstruction = q;
+			lastReviseEditDraft = draft;
 			captureRevisePendingSource(last);
 			showReviseChanges = false;
+			last.error = undefined;
+			last.researchLocalCancelToken = 0;
+			followComposerHoldCompact = false;
 			last.pending = true;
 			last.phase = "answer";
 			last.processNotes = rememberResearchProcessNote(
@@ -3148,11 +3766,7 @@ export function attachAiMode(options: {
 				researchRevisionStartedNote(nextResearchRevisionN(last.versionIndex || [])),
 			);
 			last.progressNote = RESEARCH_REVISE_CONSIDERING_NOTE;
-			if (followInput) {
-				followInput.value = "";
-				followInput.blur();
-				fitTextarea(followInput);
-			}
+			resetReviseEdits(true);
 			syncFollowComposerMode();
 			syncLayout();
 			revealReviseProgress();
@@ -3160,6 +3774,7 @@ export function attachAiMode(options: {
 			setStatus("Restoring…");
 		}
 		try {
+			const primary = edits[0];
 			const { response, data } = await fetchAiJson<{
 				success?: boolean;
 				job?: ResearchJobPublic;
@@ -3172,9 +3787,10 @@ export function attachAiMode(options: {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					action,
-					instruction: q,
-					heading: reviseHeading,
-					quote: reviseQuote,
+					edits,
+					instruction: primary?.instruction || q,
+					heading: primary?.heading || "",
+					quote: primary?.quote || "",
 					jobId: last.researchJobId || "",
 					shareSlug: shareSlugForRevise() || last.shareSlug || "",
 					fromVersion: reviseFromVersion,
@@ -3501,8 +4117,9 @@ export function attachAiMode(options: {
 	}
 
 	function pinHeading(heading: HTMLElement): void {
-		reviseHeading = heading.getAttribute("data-report-heading") || "";
-		reviseQuote = "";
+		const scope = scopeFromReportPin(currentReviseReportMarkdown(), {
+			heading: heading.getAttribute("data-report-heading") || "",
+		});
 		headingReviseBtn?.remove();
 		headingReviseBtn = document.createElement("button");
 		headingReviseBtn.type = "button";
@@ -3520,7 +4137,8 @@ export function attachAiMode(options: {
 				if (node !== heading) node.classList.remove("is-revise-heading");
 			});
 		heading.append(headingReviseBtn);
-		syncReviseScope();
+		applyRevisePin(scope);
+		openReviseComposer();
 	}
 
 	let selectionPointerDown = false;
@@ -3721,6 +4339,7 @@ export function attachAiMode(options: {
 		if (report) {
 			syncReportParagraphNumbers(report);
 			bindReportParagraphToggle(report);
+			stampReviseReportBlockIds(turn);
 		}
 		thread.querySelectorAll<HTMLElement>("[data-report-heading]").forEach(
 			(heading) => {
@@ -4001,7 +4620,8 @@ export function attachAiMode(options: {
 		const researchBusy = turns.some(
 			(turn) => turn.pending && turn.research && turn.researchJobId,
 		);
-		syncStopButtons(researchBusy);
+		const reviseBusy = turns.some((turn) => isReviseInProgress(turn));
+		syncStopButtons(researchBusy || reviseBusy, reviseBusy);
 		renderMeters();
 	}
 
@@ -4387,6 +5007,7 @@ export function attachAiMode(options: {
 			turn.fromCache = false;
 			return turn;
 		});
+		restoreReviseComposerDraft();
 		syncLayout();
 		const lastResearch = [...turns]
 			.reverse()
@@ -6792,6 +7413,7 @@ export function attachAiMode(options: {
 		root.classList.toggle("has-thread", hasThread);
 		const last = turns[turns.length - 1];
 		const clarifying = isClarifyingTurn(last);
+		const reviseClarifying = !clarifying && isReviseClarifyingTurn(last);
 		const declinedOpen =
 			Boolean(last?.researchDeclined) && !last?.researchJobId;
 		const researchBusy = turns.some(
@@ -6807,8 +7429,12 @@ export function attachAiMode(options: {
 		});
 		root.classList.toggle("is-research-busy", researchBusy);
 		root.classList.toggle("is-revise-busy", reviseBusy);
+		if (followForm) {
+			followForm.classList.toggle("is-research-busy", researchBusy);
+			followForm.classList.toggle("is-revise-busy", reviseBusy);
+		}
 		root.classList.toggle("is-report-dock", chrome.reportDock);
-		syncStopButtons(researchBusy, reviseBusy);
+		syncStopButtons(researchBusy || reviseBusy, reviseBusy);
 		const threadPending = turns.some((turn) => turn.pending);
 		if (followInput) followInput.disabled = threadPending;
 		followForm
@@ -6833,9 +7459,14 @@ export function attachAiMode(options: {
 				(!shareMode && (!hasThread || clarifying || declinedOpen)) ||
 				(shareMode && !finishedReport) ||
 				clarifying ||
+				reviseClarifying ||
 				declinedOpen;
 		}
 		syncClarifyBar();
+		root.classList.toggle(
+			"is-clarify-bar-open",
+			Boolean(clarifyBar && !clarifyBar.hidden),
+		);
 		hideDiscourseCitationPopover();
 		thread.innerHTML = turns.map((turn, index) => renderTurn(turn, index)).join("");
 		thread.querySelectorAll<HTMLElement>("[data-ai-feedback-turn]").forEach((row) => {
@@ -6935,13 +7566,15 @@ export function attachAiMode(options: {
 		);
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-clarify-choice]").forEach(
 			(button) => {
-				button.addEventListener("click", () => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
 					const index = Number(button.getAttribute("data-turn-index"));
 					const questionId = button.getAttribute("data-question-id") || "";
 					const choiceId = button.getAttribute("data-choice-id") || "";
-					const blockId = button.getAttribute("data-block-id") || "";
+					const kind = button.getAttribute("data-clarify-kind");
 					const turn = turns[index];
-					const draft = clarifyDraftFor(turn, button.getAttribute("data-clarify-kind"));
+					const draft = clarifyDraftFor(turn, kind);
 					if (!draft || !questionId || !choiceId) return;
 					draft.answers = {
 						...draft.answers,
@@ -6952,42 +7585,25 @@ export function attachAiMode(options: {
 								: {}),
 						},
 					};
-					syncLayout();
+					patchClarifyChoiceUi(index, kind, questionId);
 					if (choiceId === RESEARCH_CLARIFY_OTHER_ID) {
 						const other = thread.querySelector<HTMLTextAreaElement>(
-							`[data-ai-clarify-other][data-question-id="${questionId}"]`,
+							`[data-ai-clarify-other][data-turn-index="${index}"][data-question-id="${questionId}"]`,
 						);
 						other?.focus();
-						if (other) fitClarifyOther(other);
-					} else if (blockId) {
-						revealReportBlock(blockId);
 					}
+				});
+				button.addEventListener("dblclick", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const blockId = button.getAttribute("data-block-id") || "";
+					if (blockId) revealReportBlock(blockId);
 				});
 			},
 		);
 		thread.querySelectorAll<HTMLTextAreaElement>("[data-ai-clarify-other]").forEach(
 			(inputEl) => {
-				fitClarifyOther(inputEl);
-				inputEl.addEventListener("input", () => {
-					const index = Number(inputEl.getAttribute("data-turn-index"));
-					const questionId = inputEl.getAttribute("data-question-id") || "";
-					const turn = turns[index];
-					const draft = clarifyDraftFor(turn, inputEl.getAttribute("data-clarify-kind"));
-					if (!draft || !questionId) return;
-					const currentAnswer = draft.answers[questionId] || {
-						choiceId: RESEARCH_CLARIFY_OTHER_ID,
-					};
-					draft.answers = {
-						...draft.answers,
-						[questionId]: {
-							...currentAnswer,
-							choiceId: RESEARCH_CLARIFY_OTHER_ID,
-							otherText: inputEl.value.slice(0, RESEARCH_CLARIFY_MAX_OTHER),
-						},
-					};
-					fitClarifyOther(inputEl);
-					syncClarifyBar();
-				});
+				bindClarifyOtherInput(inputEl);
 			},
 		);
 		thread
@@ -7005,7 +7621,7 @@ export function attachAiMode(options: {
 				});
 			});
 		if (thread) pinClampedAskThinking(thread);
-		if (last?.pending) {
+		if (last?.pending && !reviseClarifying) {
 			scrollAskProcessToLatest(
 				thread.querySelector(".ai-turn:last-child .ai-process"),
 				{ focus: true },
@@ -7016,10 +7632,11 @@ export function attachAiMode(options: {
 		if (lastTurn) {
 			bindReportRevise(lastTurn, turns.length - 1);
 			if (!isReviseInProgress(lastTurn)) applyReportChangeMarks(lastTurn);
-			// The strip clamps its height; keep the newest hop in view.
-			scrollAskProcessToLatest(
-				thread.querySelector(".ai-turn:last-child .ai-process"),
-			);
+			if (!reviseClarifying) {
+				scrollAskProcessToLatest(
+					thread.querySelector(".ai-turn:last-child .ai-process"),
+				);
+			}
 			if (!hydratingReviseBase && shouldHydrateReviseBase(lastTurn)) {
 				void hydrateReviseBaseIfNeeded(lastTurn);
 			}
@@ -7028,14 +7645,41 @@ export function attachAiMode(options: {
 		if (!shareMode) renderHistory();
 		syncFollowComposerMode();
 		scheduleFollowDockFrost();
-		void hydrateResearchReportMermaid(thread);
+		void hydrateResearchReportMermaid(thread).then(() => {
+			stampReviseReportBlockIds(lastTurn);
+		});
 	}
 
 	let followDockFrostRaf = 0;
+	let followDockHome: { parent: HTMLElement; next: ChildNode | null } | null =
+		null;
+
+	function syncFollowDockMount(): void {
+		if (!followForm) return;
+		const dock = root.classList.contains("is-report-dock") && !followForm.hidden;
+		followForm.classList.toggle("is-dock", dock);
+		if (dock) {
+			if (followForm.parentElement !== document.body) {
+				if (!followDockHome) {
+					followDockHome = {
+						parent: followForm.parentElement ?? root,
+						next: followForm.nextSibling,
+					};
+				}
+				document.body.appendChild(followForm);
+			}
+			return;
+		}
+		if (followForm.parentElement === document.body && followDockHome) {
+			followDockHome.parent.insertBefore(followForm, followDockHome.next);
+		}
+		followDockHome = null;
+	}
 
 	function pinReportFollowToColumn(): void {
 		if (!followForm) return;
-		if (!root.classList.contains("is-report-dock") || followForm.hidden) {
+		if (!followForm.classList.contains("is-dock")) {
+			followForm.style.removeProperty("position");
 			followForm.style.removeProperty("left");
 			followForm.style.removeProperty("width");
 			followForm.style.removeProperty("right");
@@ -7044,11 +7688,16 @@ export function attachAiMode(options: {
 			return;
 		}
 		const column = thread.getBoundingClientRect();
+		const bottomInset = followDockBottomInset({
+			innerHeight: window.innerHeight,
+			visualViewport: window.visualViewport,
+		});
+		followForm.style.position = "fixed";
 		followForm.style.left = `${column.left}px`;
 		followForm.style.width = `${column.width}px`;
 		followForm.style.right = "auto";
 		followForm.style.marginInline = "0";
-		followForm.style.removeProperty("bottom");
+		followForm.style.bottom = bottomInset > 0 ? `${bottomInset}px` : "0px";
 	}
 
 	function syncFollowComposerMode(): void {
@@ -7065,23 +7714,16 @@ export function attachAiMode(options: {
 				followForm.contains(active) &&
 				followComposerFocusShouldExpand(active),
 		);
-		const hasText = Boolean(
-			(followInput?.value || "").replace(/\s+/g, " ").trim(),
-		);
-		const hasReviseChip = Boolean(
-			clipResearchReviseHeading(reviseHeading) ||
-				clipResearchReviseQuote(reviseQuote),
-		);
+		const draft = reviseDraftFromComposer();
 		const expanded = Boolean(
 			dock &&
+				!followComposerHoldCompact &&
 				followComposerShouldExpand({
 					focused,
-					hasText,
-					hasReviseChip,
 					pinnedOpen: followComposerPinnedOpen,
 				}),
 		);
-		if (dock && !expanded && !focused && !hasText && !hasReviseChip) {
+		if (dock && !expanded && !focused) {
 			followComposerPinnedOpen = false;
 		}
 		root.classList.toggle("is-follow-expanded", expanded);
@@ -7090,8 +7732,46 @@ export function attachAiMode(options: {
 		syncFollowInputMaxLength();
 		if (followInput) {
 			followInput.rows = dock && !expanded ? 1 : 2;
+			if (followInput && reviseFollowActive() && dock) {
+				if (!expanded) {
+					reviseEditDraft = reviseDraftFromComposer();
+					if (followInput.value !== "") {
+						followInput.value = "";
+						followInput.style.height = "";
+					}
+				} else if (
+					!followInput.value &&
+					(reviseEditDraft.draftInstruction || "").length > 0
+				) {
+					followInput.value = reviseEditDraft.draftInstruction;
+					fitTextarea(followInput);
+				}
+			}
 			if (dock && !expanded) followInput.style.height = "";
 			else fitTextarea(followInput);
+		}
+		if (followInput && reviseFollowActive()) {
+			const showMultiHint = shouldShowReviseMultiHint(draft);
+			followInput.placeholder =
+				dock && !expanded
+					? reviseCompactDockPlaceholder(draft)
+					: reviseExpandedPlaceholder(draft, showMultiHint);
+			if (showMultiHint && dock && expanded) {
+				markReviseMultiHintSeen();
+			}
+		}
+		const followSend = followForm?.querySelector<HTMLButtonElement>(".ai-send");
+		if (followSend) {
+			const stopBusy =
+				root.classList.contains("is-research-busy") ||
+				root.classList.contains("is-revise-busy");
+			if (stopBusy) {
+				followSend.disabled = false;
+			} else if (reviseFollowActive()) {
+				followSend.disabled = !canSubmitReviseEdits(
+					buildSubmittableReviseEdits(reviseDraftFromComposer()),
+				);
+			}
 		}
 	}
 
@@ -7109,6 +7789,7 @@ export function attachAiMode(options: {
 	}
 
 	function syncFollowDockFrost(): void {
+		syncFollowDockMount();
 		pinReportFollowToColumn();
 		followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
 	}
@@ -7311,19 +7992,30 @@ export function attachAiMode(options: {
 	}
 
 	function syncStopButtons(
-		researchBusy: boolean,
+		stopBusy: boolean,
 		reviseBusy = false,
 	): void {
 		const sendHint = askSendShortcutLabel();
-		root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
-			if (researchBusy) {
+		allSendButtons().forEach((button) => {
+			if (stopBusy) {
+				button.type = "button";
 				button.setAttribute("data-ai-stop", "1");
 				const stopLabel = reviseBusy ? "Stop revision" : "Pause research";
 				button.setAttribute("aria-label", stopLabel);
 				button.title = stopLabel;
 			} else {
+				button.type = "submit";
 				button.removeAttribute("data-ai-stop");
-				button.setAttribute("aria-label", button.closest("[data-ai-follow-form]") ? "Ask follow-up" : researchPaneOn() ? "Research" : "Ask");
+				button.setAttribute(
+					"aria-label",
+					button.closest("[data-ai-follow-form]")
+						? reviseFollowActive()
+							? "Revise report"
+							: "Ask follow-up"
+						: researchPaneOn()
+							? "Research"
+							: "Ask",
+				);
 				button.title = sendHint;
 			}
 		});
@@ -7427,6 +8119,10 @@ export function attachAiMode(options: {
 						fallback: "Could not load research.",
 					});
 					break;
+				}
+				if (token !== researchPollToken) return;
+				if (researchJobWouldReviveAfterLocalCancel(turn, data.job)) {
+					continue;
 				}
 				const key = `${data.job.status}\0${data.job.progressNote || ""}\0${(data.job.processNotes || []).join("|")}`;
 				if (key !== stallKey) {
@@ -7631,12 +8327,31 @@ export function attachAiMode(options: {
 		window.setTimeout(() => el.classList.remove("is-clarify-target"), 2200);
 	}
 
+	let cancelInFlight = false;
+
 	async function cancelActiveResearch(): Promise<void> {
+		if (cancelInFlight) return;
 		const turn = [...turns]
 			.reverse()
 			.find((item) => item.pending && item.researchJobId);
 		if (!turn?.researchJobId) return;
+		cancelInFlight = true;
+		const revising = isReviseInProgress(turn) || Boolean(revisePendingSource);
+		turn.researchLocalCancelToken = ++researchLocalCancelToken;
 		stopResearchPoll();
+		followComposerPinnedOpen = false;
+		followComposerHoldCompact = true;
+		const hadReviseClarify = Boolean(turn.reviseClarify);
+		if (hadReviseClarify) {
+			turn.reviseClarify = undefined;
+		}
+		turn.pending = false;
+		turn.phase = "done";
+		turn.progressNote = "";
+		turn.error = revising ? "Revision stopped." : "Research stopped.";
+		busy = true;
+		root.classList.add("is-busy");
+		syncLayout();
 		try {
 			const { data } = await fetchAiJson<{
 				job?: ResearchJobPublic;
@@ -7647,16 +8362,19 @@ export function attachAiMode(options: {
 				body: JSON.stringify({ action: "cancel" }),
 			});
 			if (data.researchQuota) applyQuota(quota, data.researchQuota);
-			if (data.job) applyResearchJobToTurn(turn, data.job);
-			else {
+			if (data.job && !researchJobWouldReviveAfterLocalCancel(turn, data.job)) {
+				applyResearchJobToTurn(turn, data.job);
+			} else if (!data.job) {
 				turn.pending = false;
 				turn.phase = "done";
-				turn.error = "Research stopped.";
+				turn.error = revising ? "Revision stopped." : "Research stopped.";
+				turn.reviseClarify = undefined;
 			}
 		} catch {
 			turn.pending = false;
 			turn.phase = "done";
-			turn.error = "Research stopped.";
+			turn.error = revising ? "Revision stopped." : "Research stopped.";
+			turn.reviseClarify = undefined;
 		}
 		if (isReviseInProgress(turn) || revisePendingSource) {
 			restoreReviseFailureView();
@@ -7664,11 +8382,15 @@ export function attachAiMode(options: {
 		} else {
 			clearReviseVersionState();
 		}
+		if (turn.research && (turn.report || "").trim() && !turn.pending) {
+			persistSessionFromTurn(turn);
+		}
 		void refreshQuota();
 		if (turn.research && !turn.report) setResearchChipOn(true);
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy", "is-revise-busy");
 		syncLayout();
+		cancelInFlight = false;
 	}
 
 	async function retryIncompleteResearchTurn(
@@ -7820,6 +8542,7 @@ export function attachAiMode(options: {
 			if (!turn.pending) {
 				if (!turn.error) persistSessionFromTurn(turn);
 				restoreStoredPreviewVersion(turn);
+				restoreReviseComposerDraft();
 				return true;
 			}
 			busy = true;
@@ -8530,6 +9253,10 @@ export function attachAiMode(options: {
 
 	input.addEventListener("input", () => fitTextarea(input));
 	followInput?.addEventListener("input", () => {
+		reviseEditDraft = {
+			...reviseEditDraft,
+			draftInstruction: followInput.value,
+		};
 		clipFollowInputValue();
 		fitTextarea(followInput);
 		syncFollowComposerMode();
@@ -8570,18 +9297,48 @@ export function attachAiMode(options: {
 		followComposerPinnedOpen = false;
 		syncFollowComposerMode();
 	});
-	followForm
-		?.querySelector(".ai-box")
-		?.addEventListener("click", (event) => {
+	root.addEventListener(
+		"pointerdown",
+		(event) => {
+			if (!root.classList.contains("is-report-dock")) return;
+			if (!followForm || followForm.hidden) return;
 			const target = event.target;
 			if (!(target instanceof Element)) return;
-			if (!root.classList.contains("is-report-dock")) return;
-			if (root.classList.contains("is-follow-expanded")) return;
-			if (!followComposerClickShouldExpand(target)) return;
-			followComposerPinnedOpen = true;
-			if (followInput && !followInput.disabled) followInput.focus();
+			if (followForm.contains(target)) return;
+			if (target.closest("[data-ai-revise-float], [data-ai-clarify-bar]")) return;
+			followComposerPinnedOpen = false;
 			syncFollowComposerMode();
-		});
+		},
+		true,
+	);
+	followForm?.addEventListener("click", (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		if (target.closest(".ai-send[data-ai-stop], .ai-send-stop")) {
+			if (!researchStopActive()) {
+				syncStopButtons(false);
+				if (reviseFollowActive()) {
+					if (followInput) void reviseReport(followInput.value);
+				} else if (followInput) {
+					void ask(followInput.value, followInput, {
+						forceAsk: followAskMode,
+					});
+				}
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			void cancelActiveResearch();
+			return;
+		}
+		if (!root.classList.contains("is-report-dock")) return;
+		if (root.classList.contains("is-follow-expanded")) return;
+		if (!followComposerClickShouldExpand(target)) return;
+		followComposerHoldCompact = false;
+		followComposerPinnedOpen = true;
+		if (followInput && !followInput.disabled) followInput.focus();
+		syncFollowComposerMode();
+	});
 	root.addEventListener(
 		"click",
 		(event) => {
@@ -8589,21 +9346,19 @@ export function attachAiMode(options: {
 			if (!(target instanceof Element)) return;
 			const stop = target.closest<HTMLButtonElement>(".ai-send[data-ai-stop]");
 			if (!stop) return;
+			if (!researchStopActive()) {
+				syncStopButtons(false);
+				return;
+			}
 			event.preventDefault();
 			event.stopPropagation();
-			if (
-				turns.some(
-					(turn) => turn.pending && turn.research && turn.researchJobId,
-				)
-			) {
-				void cancelActiveResearch();
-			}
+			void cancelActiveResearch();
 		},
 		true,
 	);
 
 	const sendHint = askSendShortcutLabel();
-	root.querySelectorAll<HTMLButtonElement>(".ai-send").forEach((button) => {
+	allSendButtons().forEach((button) => {
 		button.title = sendHint;
 		button.setAttribute("aria-keyshortcuts", "Control+Enter Meta+Enter");
 	});
@@ -8667,24 +9422,25 @@ export function attachAiMode(options: {
 		},
 	);
 
-	reviseClearBtn?.addEventListener("click", () => {
+	reviseClearBtn?.addEventListener("click", (event) => {
+		event.preventDefault();
+		event.stopPropagation();
 		clearReviseScope();
 	});
 	askWithoutEditingBtn?.addEventListener("click", () => {
 		if (!lastFinishedReportTurn() || !followInput) return;
 		followAskMode = !followAskMode;
-		if (followAskMode) clearReviseScope();
+		if (followAskMode) resetReviseEdits();
 		else syncReviseScope();
 		followInput.focus();
 		syncResearchChip();
 		syncFollowComposerMode();
 	});
 	reviseFloat?.addEventListener("click", () => {
-		const selection = window.getSelection()?.toString() || "";
-		if (!selectionQualifiesForRevise(selection)) return;
-		reviseQuote = clipResearchReviseQuote(selection);
-		reviseHeading = "";
+		const scope = scopeFromLiveSelection();
+		if (!scope) return;
 		hideSelectionRevise();
+		applyRevisePin(scope);
 		openReviseComposer();
 	});
 	versionsDrawer?.querySelector("[data-ai-versions-close]")?.addEventListener(
@@ -8911,6 +9667,7 @@ export function attachAiMode(options: {
 	loadResearchChipPreference();
 
 	window.addEventListener("pagehide", () => {
+		persistReviseComposerDraft();
 		for (const turn of turns) {
 			if (turn.research && turn.pending && turn.researchJobId) {
 				persistResearchHistory(turn, { pending: true, unread: false });
@@ -9021,7 +9778,11 @@ export function attachAiMode(options: {
 	void loadModels();
 	if (!restoreResearchId) void ensureQuotaRefresh();
 	const historySync = syncHistoryFromServer();
-	void historySync.then(() => hydrateOpenResearchJobs());
+	void historySync.then(() => {
+		void hydrateOpenResearchJobs();
+		if (turns.length > 0) restoreReviseComposerDraft();
+		else finishReviseComposerHydration();
+	});
 	if (openQuestion && turns.length === 0) {
 		void historySync.then(() => {
 			if (turns.length === 0 && openFromHistory(openQuestion)) {
@@ -9034,15 +9795,18 @@ export function attachAiMode(options: {
 	void ensureQuotaRefresh().then(() => {
 		const pending = takePendingRevise();
 		if (!pending || !quota?.signedIn) return;
-		reviseHeading = pending.heading;
-		reviseQuote = pending.quote;
+		reviseEditDraft = {
+			committed: pending.committed,
+			draftScope: pending.draftScope,
+			draftInstruction: pending.instruction,
+		};
 		reviseFromVersion = pending.fromVersion;
 		if (followInput && pending.instruction) {
 			followInput.value = pending.instruction;
 			fitTextarea(followInput);
 		}
 		syncReviseScope();
-		if (lastFinishedReportTurn() && pending.instruction) {
+		if (lastFinishedReportTurn() && canSubmitReviseEdits(buildSubmittableReviseEdits(reviseEditDraft))) {
 			void reviseReport(pending.instruction);
 		}
 	});
