@@ -40,7 +40,6 @@ import {
 	hasResearchCompositionContent,
 	MAX_RESEARCH_CONTEXT_IMAGES,
 	MAX_RESEARCH_CONTEXT_IMAGE_BYTES,
-	RESEARCH_CONTEXT_AUTO_ATTACH_CHARS,
 	researchContextPreview,
 	type ResearchContextImage,
 } from "./aiAskComposition";
@@ -2735,6 +2734,56 @@ export function attachAiMode(options: {
 		syncCompositionTray();
 	}
 
+	function activeComposerTextarea(): HTMLTextAreaElement | null {
+		const active = document.activeElement;
+		if (active === input || active === followInput) return active;
+		if (followForm && !followForm.hidden && followInput) return followInput;
+		return input;
+	}
+
+	function insertTextAtCursor(
+		textarea: HTMLTextAreaElement,
+		text: string,
+	): { inserted: string; overflow: string } {
+		const max =
+			textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS;
+		const start = textarea.selectionStart ?? textarea.value.length;
+		const end = textarea.selectionEnd ?? start;
+		const before = textarea.value.slice(0, start);
+		const after = textarea.value.slice(end);
+		const available = Math.max(0, max - before.length - after.length);
+		const inserted = text.slice(0, available);
+		const overflow = text.slice(inserted.length);
+		textarea.value = before + inserted + after;
+		const pos = start + inserted.length;
+		textarea.setSelectionRange(pos, pos);
+		fitTextarea(textarea);
+		if (textarea === followInput) {
+			clipFollowInputValue();
+			syncFollowComposerMode();
+		}
+		return { inserted, overflow };
+	}
+
+	function clipboardImageFiles(event: ClipboardEvent): File[] {
+		const files: File[] = [];
+		const dt = event.clipboardData;
+		if (!dt) return files;
+		if (dt.files?.length) {
+			for (const file of dt.files) {
+				if (file.type.startsWith("image/")) files.push(file);
+			}
+		}
+		if (files.length === 0) {
+			for (const item of dt.items || []) {
+				if (!item.type.startsWith("image/")) continue;
+				const file = item.getAsFile();
+				if (file) files.push(file);
+			}
+		}
+		return files;
+	}
+
 	async function resizeCompositionImage(
 		file: File,
 	): Promise<ResearchContextImage | null> {
@@ -2795,23 +2844,37 @@ export function attachAiMode(options: {
 	}
 
 	function handleCompositionPaste(event: ClipboardEvent): void {
-		if (!researchCompositionEnabled()) return;
-		const items = event.clipboardData?.items;
-		if (!items) return;
-		for (const item of items) {
-			if (item.type.startsWith("image/")) {
-				const file = item.getAsFile();
-				if (file) {
-					event.preventDefault();
-					void attachCompositionImage(file);
-				}
-				return;
-			}
-		}
-		const text = event.clipboardData?.getData("text/plain") || "";
-		if (text.length > RESEARCH_CONTEXT_AUTO_ATTACH_CHARS) {
+		const imageFiles = clipboardImageFiles(event);
+		if (imageFiles.length > 0) {
+			if (!researchCompositionEnabled()) return;
 			event.preventDefault();
-			attachCompositionContext(text);
+			for (const file of imageFiles) {
+				if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
+				void attachCompositionImage(file);
+			}
+			return;
+		}
+
+		const text = event.clipboardData?.getData("text/plain") || "";
+		if (!text) return;
+
+		const textarea = activeComposerTextarea();
+		if (!textarea) return;
+
+		const start = textarea.selectionStart ?? textarea.value.length;
+		const end = textarea.selectionEnd ?? start;
+		const before = textarea.value.slice(0, start);
+		const after = textarea.value.slice(end);
+		const max =
+			textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS;
+		const fits = before.length + text.length + after.length <= max;
+
+		if (fits) return;
+
+		event.preventDefault();
+		const { overflow } = insertTextAtCursor(textarea, text);
+		if (overflow && researchCompositionEnabled()) {
+			attachCompositionContext(overflow);
 		}
 	}
 
@@ -8482,9 +8545,13 @@ export function attachAiMode(options: {
 		followForm?.querySelector(".ai-box"),
 	]) {
 		if (!box) continue;
-		box.addEventListener("paste", (event) => {
-			if (event instanceof ClipboardEvent) handleCompositionPaste(event);
-		});
+		box.addEventListener(
+			"paste",
+			(event) => {
+				if (event instanceof ClipboardEvent) handleCompositionPaste(event);
+			},
+			true,
+		);
 		box.addEventListener("dragover", (event) => {
 			if (!researchCompositionEnabled()) return;
 			if (event.dataTransfer?.types.includes("Files")) event.preventDefault();

@@ -64,7 +64,7 @@ describe("aiAskComposition", () => {
 		);
 	});
 
-	it("auto-attach threshold is 500 chars", () => {
+	it("documents overflow threshold constant", () => {
 		assert.equal(RESEARCH_CONTEXT_AUTO_ATTACH_CHARS, 500);
 	});
 
@@ -81,7 +81,7 @@ describe("plan limits", () => {
 		assert.equal(ASK_WRITER_MAX_TOKENS, 4096);
 	});
 
-	it("keeps revise instruction cap at 2000", () => {
-		assert.equal(RESEARCH_REVISE_INSTRUCTION_MAX, 2000);
+	it("keeps revise instruction cap at 12000", () => {
+		assert.equal(RESEARCH_REVISE_INSTRUCTION_MAX, 12_000);
 	});
 });

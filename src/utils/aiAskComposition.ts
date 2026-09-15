@@ -15,7 +15,7 @@ export const MAX_RESEARCH_CONTEXT_IMAGES = 4;
 export const MAX_RESEARCH_CONTEXT_IMAGE_BYTES = 500_000;
 /** ~2 MB total base64 payload for all images. */
 export const MAX_RESEARCH_CONTEXT_IMAGES_TOTAL_BYTES = 2_000_000;
-/** Paste longer than this becomes an attachment chip (Research only). */
+/** Text that does not fit in the composer overflows to the context chip (Research). */
 export const RESEARCH_CONTEXT_AUTO_ATTACH_CHARS = 500;
 /** Preview stored in session/history sync. */
 export const RESEARCH_CONTEXT_PREVIEW_CHARS = 200;

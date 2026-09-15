@@ -16,7 +16,8 @@ import {
 /** Soft clip for a large patch (~50k completion tokens). Ingest stays 100k chars. */
 export const RESEARCH_REVISE_MAX_OUTPUT_WORDS = 35_000;
 export const RESEARCH_REVISE_CHANGELOG_MAX = 2_400;
-export const RESEARCH_REVISE_INSTRUCTION_MAX = 2_000;
+/** Per scoped edit — room for detailed instructions beyond the 8k question field. */
+export const RESEARCH_REVISE_INSTRUCTION_MAX = 12_000;
 export const RESEARCH_REVISE_QUOTE_MAX = 800;
 export const RESEARCH_REVISE_HEADING_MAX = 180;
 /** Version bodies kept in the subcollection. */
