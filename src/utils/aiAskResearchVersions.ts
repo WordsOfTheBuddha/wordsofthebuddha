@@ -5,6 +5,7 @@ import {
 	clipResearchReport,
 	RESEARCH_REPORT_MAX_CHARS,
 } from "./aiAskResearchReport";
+import { isAskSampleSlug } from "./aiAskSamples";
 import { normalizeAskShareSlug } from "./aiAskShare";
 import { snapshotResearchHistoryStats } from "./aiAskResearchHistoryStats";
 import {
@@ -16,6 +17,7 @@ import {
 
 const jobBodyMemory = new Map<string, Map<number, string>>();
 const shareBodyMemory = new Map<string, Map<number, string>>();
+const sampleBodyMemory = new Map<string, Map<number, string>>();
 
 function jobMemKey(uid: string, jobId: string): string {
 	return `${uid}:${jobId}`;
@@ -31,6 +33,10 @@ function jobVersionsCol(uid: string, jobId: string) {
 
 function shareVersionsCol(slug: string) {
 	return db!.collection("askShares").doc(slug).collection("versions");
+}
+
+function sampleVersionsCol(slug: string) {
+	return db!.collection("askSamples").doc(slug).collection("versions");
 }
 
 function clipBody(report: string): string {
@@ -60,6 +66,7 @@ function writeMemory(
 export function resetResearchVersionMemoryForTests(): void {
 	jobBodyMemory.clear();
 	shareBodyMemory.clear();
+	sampleBodyMemory.clear();
 }
 
 export async function writeResearchVersionBody(options: {
@@ -224,4 +231,77 @@ export async function copyJobVersionsToShare(options: {
 			await writeShareVersionBody({ slug: options.slug, n, report });
 		}),
 	);
+}
+
+export async function writeSampleVersionBody(options: {
+	slug: string;
+	n: number;
+	report: string;
+}): Promise<void> {
+	const slug = options.slug.trim().toLowerCase();
+	const n = Math.floor(options.n);
+	const report = clipBody(options.report);
+	if (!isAskSampleSlug(slug) || n < 1 || !report) return;
+	writeMemory(sampleBodyMemory, slug, n, report);
+	if (!isFirebaseInitialized || !db) return;
+	await sampleVersionsCol(slug)
+		.doc(String(n))
+		.set(
+			{
+				n,
+				report,
+				updatedAt: FieldValue.serverTimestamp(),
+			},
+			{ merge: true },
+		);
+}
+
+export async function readSampleVersionBody(options: {
+	slug: string;
+	n: number;
+}): Promise<string | null> {
+	const slug = options.slug.trim().toLowerCase();
+	const n = Math.floor(options.n);
+	if (!isAskSampleSlug(slug) || n < 1) return null;
+	const mem = readMemory(sampleBodyMemory, slug, n);
+	if (mem) return mem;
+	if (!isFirebaseInitialized || !db) return null;
+	const snap = await sampleVersionsCol(slug).doc(String(n)).get();
+	if (!snap.exists) return null;
+	const report = (snap.data() as { report?: unknown }).report;
+	return typeof report === "string" && report.trim() ? clipBody(report) : null;
+}
+
+export async function copyJobVersionsToSample(options: {
+	uid: string;
+	jobId: string;
+	slug: string;
+	index: readonly ResearchVersionMeta[];
+	currentReport: string;
+}): Promise<void> {
+	const keep = versionBodiesToKeep(options.index);
+	const currentN = keep[keep.length - 1] || 1;
+	await Promise.all(
+		keep.map(async (n) => {
+			const report =
+				n === currentN
+					? clipBody(options.currentReport)
+					: (await readResearchVersionBody({
+							uid: options.uid,
+							jobId: options.jobId,
+							n,
+						})) || "";
+			if (!report) return;
+			await writeSampleVersionBody({ slug: options.slug, n, report });
+		}),
+	);
+}
+
+export async function deleteSampleVersionBodies(slug: string): Promise<void> {
+	const clean = slug.trim().toLowerCase();
+	if (!isAskSampleSlug(clean)) return;
+	sampleBodyMemory.delete(clean);
+	if (!isFirebaseInitialized || !db) return;
+	const snaps = await sampleVersionsCol(clean).listDocuments();
+	await Promise.all(snaps.map((ref) => ref.delete()));
 }

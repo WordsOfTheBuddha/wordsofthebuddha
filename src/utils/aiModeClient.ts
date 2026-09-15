@@ -3136,7 +3136,10 @@ export function attachAiMode(options: {
 				);
 			},
 		);
-		if (versionsActions) versionsActions.hidden = previewN === currentN;
+		if (versionsActions) {
+			versionsActions.hidden =
+				previewN === currentN || turn.fromSample === true;
+		}
 		if (versionsReviseBtn) {
 			versionsReviseBtn.textContent = RESEARCH_REVISE_FROM_ACTION;
 		}
@@ -3160,12 +3163,16 @@ export function attachAiMode(options: {
 			return;
 		}
 		const jobId = turn.researchJobId || "";
-		const slug = shareSlugForRevise() || turn.shareSlug || "";
-		const url = turn.fromShare && slug
-			? `/api/ai/share?slug=${encodeURIComponent(slug)}&version=${n}`
-			: jobId
-				? researchJobApiPath(jobId, n)
-				: "";
+		const shareSlug = shareSlugForRevise() || turn.shareSlug || "";
+		const sampleSlug =
+			turn.fromSample && turn.sampleSlug ? turn.sampleSlug.trim() : "";
+		const url = turn.fromShare && shareSlug
+			? `/api/ai/share?slug=${encodeURIComponent(shareSlug)}&version=${n}`
+			: sampleSlug
+				? `/api/ai/sample?slug=${encodeURIComponent(sampleSlug)}&version=${n}`
+				: jobId
+					? researchJobApiPath(jobId, n)
+					: "";
 		if (!url) return;
 		const token = ++previewVersionToken;
 		try {

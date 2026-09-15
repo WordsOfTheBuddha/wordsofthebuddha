@@ -18,6 +18,16 @@ import {
 	sanitizeResearchJobResult,
 } from "./aiAskResearchJob";
 import { normalizeAskQuestionKey } from "./aiAskSession";
+import {
+	clipResearchVersionIndex,
+	currentResearchVersionN,
+} from "./aiAskResearchRevise";
+import {
+	copyJobVersionsToSample,
+	deleteSampleVersionBodies,
+	readSampleVersionBody,
+	writeSampleVersionBody,
+} from "./aiAskResearchVersions";
 
 function sampleRef(slug: string) {
 	return db!.collection(ASK_SAMPLE_COLLECTION).doc(slug);
@@ -198,6 +208,25 @@ export async function upsertAskSample(options: {
 		processNotes,
 	};
 	await sampleRef(slug).set(payload);
+	const report = (turn.report || "").trim();
+	if (research && report) {
+		const index = clipResearchVersionIndex(turn.versionIndex);
+		if (options.uid && jobId && index.length > 0) {
+			await copyJobVersionsToSample({
+				uid: options.uid,
+				jobId,
+				slug,
+				index,
+				currentReport: report,
+			});
+		} else {
+			await writeSampleVersionBody({
+				slug,
+				n: currentResearchVersionN(index),
+				report,
+			});
+		}
+	}
 	clearAskSamplesCache();
 	const sample = sanitizeAskSamplePublic({
 		...turn,
@@ -230,6 +259,14 @@ export async function deleteAskSample(options: {
 		return { ok: false, error: "That example is no longer published." };
 	}
 	await sampleRef(slug).delete();
+	await deleteSampleVersionBodies(slug);
 	clearAskSamplesCache();
 	return { ok: true, slug: existing.slug };
+}
+
+export async function loadAskSampleVersion(
+	slug: string,
+	n: number,
+): Promise<string | null> {
+	return readSampleVersionBody({ slug, n });
 }
