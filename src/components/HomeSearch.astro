@@ -3,8 +3,11 @@
  * Home hero search gateway: wide input + autosuggest, redirects to /search for results.
  */
 import SearchIcon from "../assets/search.svg?raw";
+import { isAskResearchEnabled } from "../utils/aiAskResearchUi";
 import "../styles/search-gateway.css";
 import "../styles/ai-mode.css";
+
+const researchEnabled = isAskResearchEnabled();
 
 const starterChips = [
 	{ label: "MN 10", href: "/mn10" },
@@ -17,6 +20,11 @@ const starterChips = [
 	<nav class="ai-mode-switch home-search-mode-switch" aria-label="Mode">
 		<a href="/" class="is-active" aria-current="page">Search</a>
 		<a href="/search?mode=ask">Ask</a>
+		{
+			researchEnabled && (
+				<a href="/search?mode=research">Research</a>
+			)
+		}
 	</nav>
 	<form
 		id="home-search-form"
