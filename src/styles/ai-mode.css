@@ -1849,6 +1849,20 @@ body.ai-diagram-fullscreen-open {
 	width: 100%;
 }
 
+.ai-mode.has-home-lane .ai-history,
+.ai-mode:has(.ai-history:not([hidden])) .ai-history {
+	margin-top: 3rem;
+}
+
+.ai-mode.has-home-lane:not(.has-thread) .ai-composer,
+.ai-mode:has(.ai-history:not([hidden])):not(.has-thread) .ai-composer:not([hidden]) {
+	margin-top: auto;
+}
+
+.ai-mode:has(.ai-history:not([hidden])) .ai-empty {
+	display: none !important;
+}
+
 .ai-history-label {
 	text-align: center;
 	color: var(--text-muted);

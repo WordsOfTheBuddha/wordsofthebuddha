@@ -237,6 +237,7 @@ import {
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
 	followDockBottomInset,
+	askSampleFollowDock,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
 	reportFollowToggleLabel,
@@ -274,6 +275,7 @@ import {
 	ASK_SAMPLE_SAVE_LABEL,
 	ASK_SAMPLE_SAVE_LABEL_SHORT,
 	askSampleConfirmMessage,
+	askSampleSavedStatusMessage,
 	askSampleHideKey,
 	askSamplePlaybackPatch,
 	askSamplePlaybackSteps,
@@ -283,7 +285,8 @@ import {
 	askSampleAdminAction,
 	hideAskSampleKey,
 	isResearchAskSample,
-	publishedAskSample,
+	publishedAskSampleForTurn,
+	turnResearchSampleLane,
 	readHiddenAskSampleKeys,
 	removeAskSampleLocal,
 	RESEARCH_SAMPLE_NOTE,
@@ -2639,6 +2642,7 @@ export function attachAiMode(options: {
 		if (next) quota = next;
 		if (nextResearch !== undefined) researchQuota = nextResearch;
 		syncResearchChip();
+		if (turns.length === 0) syncLayout();
 	}
 
 	function researchUiOn(): boolean {
@@ -6141,6 +6145,8 @@ export function attachAiMode(options: {
 		stopSamplePlayback();
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy");
+		followComposerHoldCompact = false;
+		followComposerPinnedOpen = false;
 		clearAskThreadResumeIntent(undefined, { research: researchPaneOn() });
 		turns = [];
 		setStatus("");
@@ -6580,7 +6586,7 @@ export function attachAiMode(options: {
 				.map((item) => sanitizeAskSamplePublic(item))
 				.filter((item): item is AiAskSamplePublic => Boolean(item));
 			renderHistory();
-			if (turns.length > 0) syncLayout();
+			syncLayout();
 		} catch {
 			/* samples are optional until an admin marks one */
 		}
@@ -6634,6 +6640,8 @@ export function attachAiMode(options: {
 		options?: { playback?: boolean },
 	): void {
 		stopSamplePlayback();
+		followComposerHoldCompact = true;
+		followComposerPinnedOpen = false;
 		const token = samplePlaybackToken;
 		pendingReplaceQuestions = null;
 		pendingReplaceJobIds = null;
@@ -6700,16 +6708,17 @@ export function attachAiMode(options: {
 		) {
 			return;
 		}
+		const researchLane = turnResearchSampleLane(turn, {
+			researchPane: researchPaneOn(),
+		});
 		const replacing = Boolean(
-			publishedAskSample(askSamples, {
-				question: turn.question,
-				originalQuestion: turn.originalQuestion,
-				research: turn.research === true,
+			publishedAskSampleForTurn(askSamples, turn, {
+				researchPane: researchPaneOn(),
 			}),
 		);
-		if (!window.confirm(askSampleConfirmMessage(replacing, { research: turn.research === true }))) return;
-		const research =
-			turn.research === true || Boolean((turn.report || "").trim());
+		if (!window.confirm(askSampleConfirmMessage(replacing, { research: researchLane })))
+			return;
+		const research = researchLane;
 		try {
 			const response = await fetch("/api/ai/admin/sample", {
 				method: "POST",
@@ -6763,10 +6772,11 @@ export function attachAiMode(options: {
 			const saved = sanitizeAskSamplePublic(data.sample);
 			if (saved) {
 				askSamples = upsertAskSampleLocal(askSamples, saved);
+				turn.sampleSlug = saved.slug;
 				renderHistory();
 				syncLayout();
 			}
-			setStatus("Saved as the example for this question.");
+			setStatus(askSampleSavedStatusMessage(research));
 		} catch {
 			setStatus("Could not save this example.");
 		}
@@ -6792,6 +6802,9 @@ export function attachAiMode(options: {
 				return;
 			}
 			askSamples = removeAskSampleLocal(askSamples, slug);
+			for (const turn of turns) {
+				if (turn.sampleSlug === slug) turn.sampleSlug = undefined;
+			}
 			if (fromSample) {
 				leaveAskHome({ url: "replace" });
 			} else {
@@ -6807,11 +6820,8 @@ export function attachAiMode(options: {
 	}
 
 	function removeTurnSample(turn: AiAskTurn): void {
-		const published = publishedAskSample(askSamples, {
-			question: turn.question,
-			originalQuestion: turn.originalQuestion,
-			sampleSlug: turn.sampleSlug,
-			research: turn.research === true,
+		const published = publishedAskSampleForTurn(askSamples, turn, {
+			researchPane: researchPaneOn(),
 		});
 		const slug = published?.slug || (turn.fromSample ? turn.sampleSlug : "") || "";
 		if (
@@ -7533,11 +7543,8 @@ export function attachAiMode(options: {
 							: "Delete this Ask"
 				}">Delete</button>`
 				: "";
-		const publishedSample = publishedAskSample(askSamples, {
-			question: turn.question,
-			originalQuestion: turn.originalQuestion,
-			sampleSlug: turn.sampleSlug,
-			research: turn.research === true,
+		const publishedSample = publishedAskSampleForTurn(askSamples, turn, {
+			researchPane: researchPaneOn(),
 		});
 		const sampleAction = askSampleAdminAction({
 			canSave: Boolean(
@@ -8520,7 +8527,10 @@ export function attachAiMode(options: {
 			followForm.classList.toggle("is-research-busy", researchBusy);
 			followForm.classList.toggle("is-revise-busy", reviseBusy);
 		}
-		root.classList.toggle("is-report-dock", chrome.reportDock);
+		root.classList.toggle(
+			"is-report-dock",
+			chrome.reportDock || askSampleFollowDock(turns),
+		);
 		syncStopButtons(researchBusy || reviseBusy, reviseBusy);
 		const threadPending = turns.some((turn) => turn.pending);
 		if (followInput) followInput.disabled = threadPending;
@@ -8531,8 +8541,6 @@ export function attachAiMode(options: {
 			});
 		syncResearchChip();
 		const restoring = root.classList.contains("is-restoring-research");
-		empty.hidden = hasThread || shareMode || restoring;
-		composer.hidden = hasThread || shareMode || restoring;
 		if (historyEl) {
 			if (hasThread || restoring || shareMode) {
 				historyEl.hidden = true;
@@ -8540,6 +8548,12 @@ export function attachAiMode(options: {
 				renderHistory();
 			}
 		}
+		const homeHistoryVisible = Boolean(historyEl && !historyEl.hidden);
+		root.classList.toggle("has-home-lane", homeHistoryVisible);
+		// Collapse the flex spacer when Recent/Pinned is showing — it was
+		// pushing the history list halfway down the viewport.
+		empty.hidden = hasThread || shareMode || restoring || homeHistoryVisible;
+		composer.hidden = hasThread || shareMode || restoring;
 		if (followForm) {
 			const finishedReport = Boolean(lastFinishedReportTurn());
 			followForm.hidden =
@@ -10894,6 +10908,7 @@ export function attachAiMode(options: {
 	if (!askSurfaceVisible) {
 		renderHistory();
 		syncResearchChip();
+		syncLayout();
 		void loadModels();
 		void refreshQuota();
 		return;
@@ -10936,6 +10951,7 @@ export function attachAiMode(options: {
 
 	renderHistory();
 	syncResearchChip();
+	syncLayout();
 	maybeApplyResearchCompositionDraft();
 	watchPendingResearchHistory();
 	void loadModels();

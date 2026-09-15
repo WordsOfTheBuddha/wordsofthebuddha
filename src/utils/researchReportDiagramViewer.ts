@@ -110,6 +110,26 @@ function fitView(state: ViewerState): void {
 	state.viewport.scrollTop = 0;
 }
 
+/** Swap the rendered SVG after a theme change and refit the viewport. */
+export function updateDiagramViewerSvg(
+	diagram: HTMLElement,
+	svg: SVGSVGElement,
+): void {
+	const state = viewers.get(diagram);
+	if (state) {
+		state.canvas.replaceChildren(svg);
+		state.svg = svg;
+		const { width, height } = readSvgNaturalSize(svg);
+		state.naturalWidth = width;
+		state.naturalHeight = height;
+		fitView(state);
+		return;
+	}
+	const existing = diagram.querySelector("svg");
+	if (existing) existing.replaceWith(svg);
+	else diagram.prepend(svg);
+}
+
 function zoomBy(state: ViewerState, factor: number): void {
 	const viewport = state.viewport;
 	const centerX = viewport.scrollLeft + viewport.clientWidth / 2;

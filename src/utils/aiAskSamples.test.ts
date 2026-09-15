@@ -8,6 +8,7 @@ import {
 	ASK_SAMPLE_REMOVE_TITLE,
 	askSampleAdminAction,
 	askSampleConfirmMessage,
+	askSampleSavedStatusMessage,
 	askSampleHideKey,
 	askSampleKeyFingerprint,
 	askSampleMatchesQuestion,
@@ -24,6 +25,8 @@ import {
 	isAskSampleSlug,
 	pickAskSampleSourceResults,
 	publishedAskSample,
+	publishedAskSampleForTurn,
+	turnResearchSampleLane,
 	readHiddenAskSampleKeys,
 	removeAskSampleLocal,
 	sampleToHistoryEntry,
@@ -297,6 +300,55 @@ describe("askSampleAdminAction", () => {
 			null,
 		);
 		assert.equal(ASK_SAMPLE_REMOVE_LABEL, "Remove as Sample");
+	});
+});
+
+describe("publishedAskSampleForTurn", () => {
+	it("matches research samples by job id and report body", () => {
+		const report = sample("Survey how the discourses describe feeling")!;
+		report.research = true;
+		report.researchJobId = "job-abc";
+		report.report = "## Feeling";
+		assert.equal(
+			publishedAskSampleForTurn(
+				[report],
+				{
+					question: "Reworded question on screen",
+					researchJobId: "job-abc",
+					report: "## Feeling",
+				},
+				{ researchPane: true },
+			)?.slug,
+			report.slug,
+		);
+		assert.equal(
+			turnResearchSampleLane({ report: "## Feeling" }, { researchPane: false }),
+			true,
+		);
+		assert.equal(
+			publishedAskSampleForTurn(
+				[report],
+				{
+					question: report.question,
+					report: "## Feeling",
+				},
+				{ researchPane: true },
+			)?.slug,
+			report.slug,
+		);
+	});
+});
+
+describe("askSampleSavedStatusMessage", () => {
+	it("uses research-specific copy for research samples", () => {
+		assert.equal(
+			askSampleSavedStatusMessage(true),
+			"Saved as a sample Research report.",
+		);
+		assert.equal(
+			askSampleSavedStatusMessage(false),
+			"Saved as the example for this question.",
+		);
 	});
 });
 

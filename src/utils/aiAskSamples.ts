@@ -28,6 +28,10 @@ export const ASK_SAMPLE_HIDE_TITLE = "Hide this sample from your list?";
 export const ASK_SAMPLE_HIDE_CONFIRM =
 	"It stays available for others.";
 export const ASK_SAMPLE_REMOVE_TITLE = "Remove this sample for everyone?";
+export const ASK_SAMPLE_SAVED_STATUS =
+	"Saved as the example for this question.";
+export const RESEARCH_SAMPLE_SAVED_STATUS =
+	"Saved as a sample Research report.";
 /** Samples fill Recent until the reader has this many of their own in the lane. */
 export const ASK_SAMPLE_SHOW_UNTIL_OWN = 17;
 export const HIDDEN_ASK_SAMPLES_KEY = "ai-ask-hidden-samples-v1";
@@ -180,13 +184,29 @@ export function findAskSampleForExample(
 	return findAskSample(lane, question);
 }
 
-/** Published example for this open turn (slug wins, else question + lane). */
+/** Whether this open turn belongs on the Research sample lane. */
+export function turnResearchSampleLane(
+	turn: {
+		research?: boolean;
+		report?: string;
+	},
+	options?: { researchPane?: boolean },
+): boolean {
+	return (
+		turn.research === true ||
+		Boolean((turn.report || "").trim()) ||
+		options?.researchPane === true
+	);
+}
+
+/** Published example for this open turn (slug / job id, else question + lane). */
 export function publishedAskSample(
 	samples: readonly AiAskSamplePublic[],
 	input: {
 		question: string;
 		originalQuestion?: string;
 		sampleSlug?: string;
+		researchJobId?: string;
 		research?: boolean;
 	},
 ): AiAskSamplePublic | null {
@@ -195,6 +215,13 @@ export function publishedAskSample(
 		const bySlug = samples.find((sample) => sample.slug === slug);
 		if (bySlug) return bySlug;
 	}
+	const jobId = (input.researchJobId || "").trim();
+	if (jobId) {
+		const byJob = samples.find(
+			(sample) => (sample.researchJobId || "").trim() === jobId,
+		);
+		if (byJob) return byJob;
+	}
 	const research = input.research === true;
 	return (
 		findAskSampleForExample(samples, input.question, { research }) ||
@@ -202,6 +229,27 @@ export function publishedAskSample(
 			? findAskSampleForExample(samples, input.originalQuestion, { research })
 			: null)
 	);
+}
+
+export function publishedAskSampleForTurn(
+	samples: readonly AiAskSamplePublic[],
+	turn: {
+		question: string;
+		originalQuestion?: string;
+		sampleSlug?: string;
+		researchJobId?: string;
+		research?: boolean;
+		report?: string;
+	},
+	options?: { researchPane?: boolean },
+): AiAskSamplePublic | null {
+	return publishedAskSample(samples, {
+		question: turn.question,
+		originalQuestion: turn.originalQuestion,
+		sampleSlug: turn.sampleSlug,
+		researchJobId: turn.researchJobId,
+		research: turnResearchSampleLane(turn, options),
+	});
 }
 
 export function upsertAskSampleLocal(
@@ -336,6 +384,10 @@ export function askSampleRemoveConfirmMessage(options?: {
 		return "Readers will no longer see this illustration. Their own reports are unchanged.";
 	}
 	return "Readers will no longer see this illustration. Their own Asks are unchanged.";
+}
+
+export function askSampleSavedStatusMessage(research = false): string {
+	return research ? RESEARCH_SAMPLE_SAVED_STATUS : ASK_SAMPLE_SAVED_STATUS;
 }
 
 export function askSampleConfirmMessage(

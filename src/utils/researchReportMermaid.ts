@@ -1,5 +1,8 @@
 import { sanitizeResearchReportHtml } from "./researchReportSanitize";
-import { enhanceResearchReportDiagrams } from "./researchReportDiagramViewer";
+import {
+	enhanceResearchReportDiagrams,
+	updateDiagramViewerSvg,
+} from "./researchReportDiagramViewer";
 import {
 	isMermaidErrorSvg,
 	normalizeMermaidSource,
@@ -16,6 +19,8 @@ type MermaidModule = { default?: MermaidApi } & MermaidApi;
 
 let mermaidMod: MermaidApi | null = null;
 let mermaidTheme = "";
+let themeSyncInstalled = false;
+let themeSyncRoot: ParentNode | null = null;
 
 function unwrapMermaid(mod: MermaidModule): MermaidApi {
 	return (mod.default ?? mod) as MermaidApi;
@@ -159,9 +164,66 @@ export async function replaceMermaidPlaceholdersWithSvg(
 	);
 }
 
+function mermaidDark(): boolean {
+	return (
+		typeof document !== "undefined" &&
+		document.documentElement.classList.contains("dark")
+	);
+}
+
+function stampMermaidSource(diagram: HTMLElement, source: string): void {
+	if (!source) return;
+	diagram.dataset.aiMermaidSource = source;
+}
+
+export function installResearchReportMermaidThemeSync(
+	root: ParentNode,
+): void {
+	themeSyncRoot = root;
+	if (themeSyncInstalled || typeof document === "undefined") return;
+	themeSyncInstalled = true;
+	let lastDark = mermaidDark();
+	const observer = new MutationObserver(() => {
+		const dark = mermaidDark();
+		if (dark === lastDark) return;
+		lastDark = dark;
+		const target = themeSyncRoot || document;
+		void rethemeResearchReportMermaid(target);
+	});
+	observer.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["class"],
+	});
+}
+
+export async function rethemeResearchReportMermaid(
+	root: ParentNode,
+): Promise<void> {
+	if (typeof document === "undefined") return;
+	const dark = mermaidDark();
+	for (const diagram of root.querySelectorAll<HTMLElement>(
+		".ai-report-diagram[data-ai-mermaid-source]",
+	)) {
+		const source = diagram.dataset.aiMermaidSource || "";
+		if (!source) continue;
+		try {
+			const svgMarkup = await mermaidSourceToSvg(source, dark);
+			if (!svgMarkup) continue;
+			const tmp = document.createElement("div");
+			tmp.innerHTML = svgMarkup;
+			const svg = tmp.querySelector("svg");
+			if (!svg) continue;
+			updateDiagramViewerSvg(diagram, svg);
+		} catch (err) {
+			logMermaidIssue("retheme failed", err);
+		}
+	}
+}
+
 export async function hydrateResearchReportMermaid(
 	root: ParentNode,
 ): Promise<void> {
+	installResearchReportMermaidThemeSync(root);
 	if (typeof document === "undefined") return;
 	const nodes = [
 		...root.querySelectorAll<HTMLElement>(
@@ -169,9 +231,7 @@ export async function hydrateResearchReportMermaid(
 		),
 	];
 	if (nodes.length === 0) return;
-	const dark =
-		typeof document !== "undefined" &&
-		document.documentElement.classList.contains("dark");
+	const dark = mermaidDark();
 	for (const node of nodes) {
 		node.setAttribute("data-ai-mermaid-done", "1");
 		const source = (node.textContent || "").trim();
@@ -184,6 +244,7 @@ export async function hydrateResearchReportMermaid(
 			}
 			const wrap = document.createElement("div");
 			wrap.className = "ai-report-diagram";
+			stampMermaidSource(wrap, source);
 			if (node.dataset.reportBlockIdx) {
 				wrap.dataset.reportBlockIdx = node.dataset.reportBlockIdx;
 			}

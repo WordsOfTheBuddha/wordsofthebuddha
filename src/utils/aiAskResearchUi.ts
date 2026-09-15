@@ -362,6 +362,19 @@ export function followDockBottomInset(input: {
 	return Math.max(0, Math.round(input.innerHeight - vv.height - vv.offsetTop));
 }
 
+/** Finished Ask sample threads use the compact follow dock. */
+export function askSampleFollowDock(
+	turns: readonly {
+		fromSample?: boolean;
+		research?: boolean;
+	}[],
+): boolean {
+	if (turns.length === 0) return false;
+	return turns.every(
+		(turn) => turn.fromSample === true && turn.research !== true,
+	);
+}
+
 export function researchReportFollowChrome(input: {
 	research: boolean;
 	pending: boolean;
@@ -399,8 +412,7 @@ export function researchEmptyComposerGated(input: {
 	return (
 		input.researchPane &&
 		!input.hasThread &&
-		input.quotaReady &&
-		!input.signedIn
+		(!input.quotaReady || !input.signedIn)
 	);
 }
 

@@ -91,6 +91,9 @@ const researchEnabled = isAskResearchEnabled();
 				if (ask && researchId && askRoot) {
 					askRoot.classList.add("is-restoring-research");
 				}
+				if (askRoot && research) {
+					askRoot.classList.add("is-research-gated");
+				}
 				var sponsor = document.querySelector("[data-ai-sponsor-note]");
 				if (sponsor) sponsor.hidden = !ask;
 				var researchSignin = document.querySelector("[data-ai-research-signin]");

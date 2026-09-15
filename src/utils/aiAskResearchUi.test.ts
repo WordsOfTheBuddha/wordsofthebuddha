@@ -79,6 +79,7 @@ import {
 	followDockBottomInset,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
+	askSampleFollowDock,
 	researchReportFollowChrome,
 	reportFollowToggleLabel,
 	RESEARCH_SIGNED_OUT_PLACEHOLDER,
@@ -225,6 +226,20 @@ describe("isResearchReviseInProgress", () => {
 	});
 });
 
+describe("askSampleFollowDock", () => {
+	it("docks the follow composer for Ask samples only", () => {
+		assert.equal(
+			askSampleFollowDock([{ fromSample: true, research: false }]),
+			true,
+		);
+		assert.equal(
+			askSampleFollowDock([{ fromSample: true, research: true }]),
+			false,
+		);
+		assert.equal(askSampleFollowDock([{ fromSample: false }]), false);
+	});
+});
+
 describe("researchReportFollowChrome", () => {
 	it("keeps the report dock visible during a pending revise so the reader can stop", () => {
 		const accepted = researchReportFollowChrome({
@@ -298,7 +313,7 @@ describe("researchEmptyComposerGated", () => {
 				quotaReady: false,
 				signedIn: false,
 			}),
-			false,
+			true,
 		);
 		assert.equal(
 			researchEmptyComposerGated({
