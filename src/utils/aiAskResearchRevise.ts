@@ -2183,3 +2183,12 @@ export function versionBodiesToKeep(
 	return nums.slice(nums.length - max);
 }
 
+/** True when a stored report body may exist for this version number. */
+export function isResearchVersionBodyStored(
+	n: number,
+	index: readonly ResearchVersionMeta[],
+	max = RESEARCH_REVISE_BODIES_MAX,
+): boolean {
+	return versionBodiesToKeep(index, max).includes(n);
+}
+

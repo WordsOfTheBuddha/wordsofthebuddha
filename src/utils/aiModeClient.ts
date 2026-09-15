@@ -65,8 +65,10 @@ import {
 	selectionQualifiesForRevise,
 	RESEARCH_REVISE_CLARIFY_CONTINUE,
 	RESEARCH_REVISE_CLARIFY_TITLE,
+	RESEARCH_REVISE_BODIES_MAX,
 	RESEARCH_REVISE_CONSIDERING_NOTE,
 	type ResearchVersionMeta,
+	versionBodiesToKeep,
 } from "./aiAskResearchRevise";
 import {
 	formatResearchHitTitle,
@@ -2129,11 +2131,19 @@ export function previousResearchVersion(
  * One row of the Versions drawer: version + when, the reader's instruction,
  * the writer's changelog, and a stats line with deltas against the base.
  */
+export const RESEARCH_VERSIONS_CHANGELOG_ONLY_TAG = "changelog only";
+
+export const researchVersionsFootnoteHtml = (
+	max = RESEARCH_REVISE_BODIES_MAX,
+): string =>
+	`Only the last ${max} versions can be opened. Older rows show revision notes only.`;
+
 export function researchVersionRowHtml(
 	row: ResearchVersionMeta,
 	options: {
 		current?: boolean;
 		preview?: boolean;
+		previewable?: boolean;
 		previous?: ResearchVersionMeta;
 		fallbackStats?: ResearchHistoryReportStats;
 		changesChip?: { label: string; pressed: boolean };
@@ -2144,9 +2154,12 @@ export function researchVersionRowHtml(
 	const when = relative
 		? `<span class="ai-versions-when" title="${escapeHtml(absolute)}" aria-label="${escapeHtml(absolute)}">${escapeHtml(relative)}</span>`
 		: "";
+	const previewable = options.previewable !== false;
 	const tag = options.current
 		? `<span class="ai-versions-tag">current</span>`
-		: "";
+		: !previewable
+			? `<span class="ai-versions-tag ai-versions-tag-muted">${RESEARCH_VERSIONS_CHANGELOG_ONLY_TAG}</span>`
+			: "";
 	const scope = (row.heading || "").trim();
 	const instruction = (row.instruction || "").trim();
 	const ask = instruction
@@ -2174,13 +2187,15 @@ export function researchVersionRowHtml(
 		"ai-versions-row",
 		options.current ? "is-current" : "",
 		options.preview ? "is-preview" : "",
+		!previewable ? "is-metadata-only" : "",
 	]
 		.filter(Boolean)
 		.join(" ");
+	const interactive = previewable
+		? `role="button" tabindex="0" aria-pressed="${options.preview ? "true" : "false"}"`
+		: `aria-disabled="true"`;
 	// A div, not a <button>: the “You asked” text must stay selectable.
-	return `<li><div role="button" tabindex="0" data-ai-version-n="${row.n}" class="${classes}" aria-pressed="${
-		options.preview ? "true" : "false"
-	}"><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${body}${
+	return `<li><div data-ai-version-n="${row.n}" data-ai-version-previewable="${previewable ? "true" : "false"}" class="${classes}" ${interactive}><span class="ai-versions-row-head"><span class="ai-versions-n">v${row.n}</span>${tag}${when}</span>${body}${
 		statsLine ? `<span class="ai-versions-stats">${escapeHtml(statsLine)}</span>` : ""
 	}${changesChip}</div></li>`;
 }
@@ -2297,6 +2312,9 @@ export function attachAiMode(options: {
 	const reviseFloat = root.querySelector<HTMLButtonElement>("[data-ai-revise-float]");
 	const versionsDrawer = root.querySelector<HTMLElement>("[data-ai-versions-drawer]");
 	const versionsList = root.querySelector<HTMLElement>("[data-ai-versions-list]");
+	const versionsFootnote = root.querySelector<HTMLElement>(
+		"[data-ai-versions-footnote]",
+	);
 	const versionsActions = root.querySelector<HTMLElement>("[data-ai-versions-actions]");
 	const versionsReviseBtn = root.querySelector<HTMLButtonElement>(
 		"[data-ai-versions-revise]",
@@ -3071,11 +3089,24 @@ export function attachAiMode(options: {
 			isLatestTurn: true,
 		});
 		const changesLabel = researchChangesChipLabelForTurn(turn);
+		const bodyStoredNs = new Set(versionBodiesToKeep(index));
+		const isVersionPreviewable = (n: number) =>
+			n === currentN || bodyStoredNs.has(n);
+		const hasMetadataOnlyRows = rows.some(
+			(row) => !isVersionPreviewable(row.n),
+		);
+		if (versionsFootnote) {
+			versionsFootnote.hidden = !hasMetadataOnlyRows;
+			if (hasMetadataOnlyRows) {
+				versionsFootnote.textContent = researchVersionsFootnoteHtml();
+			}
+		}
 		versionsList.innerHTML = rows
 			.map((row) =>
 				researchVersionRowHtml(row, {
 					current: row.n === currentN,
 					preview: row.n === previewN,
+					previewable: isVersionPreviewable(row.n),
 					previous: previousResearchVersion(index, row),
 					fallbackStats: row.n === currentN ? liveStats : undefined,
 					changesChip:
@@ -3090,23 +3121,27 @@ export function attachAiMode(options: {
 			.join("");
 		versionsList.querySelectorAll<HTMLElement>("[data-ai-version-n]").forEach(
 			(row) => {
+				const previewable =
+					row.getAttribute("data-ai-version-previewable") === "true";
 				const open = () => {
 					const n = Number(row.getAttribute("data-ai-version-n"));
 					void previewResearchVersion(turn, n);
 				};
-				row.addEventListener("click", (event) => {
-					const target = event.target as HTMLElement | null;
-					if (target?.closest("[data-ai-versions-copy]")) return;
-					// Dragging across “You asked” to copy it must not switch versions.
-					if (selectionInside(row)) return;
-					open();
-				});
-				row.addEventListener("keydown", (event) => {
-					if (event.key !== "Enter" && event.key !== " ") return;
-					if ((event.target as HTMLElement | null)?.closest("button")) return;
-					event.preventDefault();
-					open();
-				});
+				if (previewable) {
+					row.addEventListener("click", (event) => {
+						const target = event.target as HTMLElement | null;
+						if (target?.closest("[data-ai-versions-copy]")) return;
+						// Dragging across “You asked” to copy it must not switch versions.
+						if (selectionInside(row)) return;
+						open();
+					});
+					row.addEventListener("keydown", (event) => {
+						if (event.key !== "Enter" && event.key !== " ") return;
+						if ((event.target as HTMLElement | null)?.closest("button")) return;
+						event.preventDefault();
+						open();
+					});
+				}
 				const copy = row.querySelector<HTMLButtonElement>("[data-ai-versions-copy]");
 				const askText = row.querySelector<HTMLElement>("[data-ai-versions-ask]");
 				copy?.addEventListener("click", (event) => {

@@ -984,7 +984,9 @@ describe("researchVersionRowHtml", () => {
 		assert.match(html, /52 cited \(\+2\)/);
 		assert.doesNotMatch(html, /additional sources \(/);
 		// Not a <button>: the ask must stay selectable, with a copy control.
-		assert.match(html, /<div role="button" tabindex="0" data-ai-version-n="2"/);
+		assert.match(html, /data-ai-version-n="2"/);
+		assert.match(html, /role="button" tabindex="0"/);
+		assert.match(html, /data-ai-version-previewable="true"/);
 		assert.doesNotMatch(html, /<button type="button" data-ai-version-n/);
 		assert.match(html, /data-ai-versions-copy/);
 		assert.match(html, /data-ai-versions-ask>“Add quotes on faculties”/);
@@ -997,6 +999,25 @@ describe("researchVersionRowHtml", () => {
 		);
 		assert.match(html, /10 words · 2 cited/);
 		assert.doesNotMatch(html, /\(\+/);
+	});
+
+	it("marks metadata-only rows as non-interactive", () => {
+		const html = researchVersionRowHtml(
+			{
+				n: 3,
+				at: Date.now(),
+				instruction: "Tighten the intro",
+				changelog: "Shortened the opening paragraph.",
+				from: 2,
+			},
+			{ previewable: false },
+		);
+		assert.match(html, /is-metadata-only/);
+		assert.match(html, /changelog only/);
+		assert.match(html, /data-ai-version-previewable="false"/);
+		assert.match(html, /aria-disabled="true"/);
+		assert.doesNotMatch(html, /role="button"/);
+		assert.doesNotMatch(html, /tabindex="0"/);
 	});
 
 	it("shows the changes chip only when requested for the selected current row", () => {

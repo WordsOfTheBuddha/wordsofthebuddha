@@ -3080,6 +3080,28 @@ html.dark .ai-paragraph-btn:focus-visible {
 	border-color: color-mix(in srgb, var(--secondary-color) 55%, var(--surface-border));
 }
 
+.ai-versions-row.is-metadata-only {
+	cursor: default;
+	color: var(--text-muted);
+	background: color-mix(in srgb, var(--surface-elevated) 35%, var(--background-color));
+}
+
+.ai-versions-row.is-metadata-only:hover {
+	background: color-mix(in srgb, var(--surface-elevated) 35%, var(--background-color));
+}
+
+.ai-versions-row.is-metadata-only .ai-versions-n {
+	color: var(--text-muted);
+}
+
+.ai-versions-footnote {
+	margin: 0;
+	padding: 0 1rem 0.65rem;
+	font-size: 0.78rem;
+	line-height: 1.4;
+	color: var(--text-muted);
+}
+
 .ai-versions-ask-head {
 	display: flex;
 	align-items: center;
@@ -3143,6 +3165,16 @@ html.dark .ai-paragraph-btn:focus-visible {
 	color: var(--secondary-color);
 	border: 1px solid color-mix(in srgb, var(--secondary-color) 55%, transparent);
 	align-self: center;
+}
+
+.ai-versions-tag.ai-versions-tag-muted {
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	padding: 0.02rem 0.35rem;
+	color: color-mix(in srgb, var(--text-muted) 88%, transparent);
+	border-color: color-mix(in srgb, var(--text-muted) 28%, transparent);
+	background: color-mix(in srgb, var(--text-muted) 6%, transparent);
 }
 
 .ai-versions-row-head .ai-versions-when {
