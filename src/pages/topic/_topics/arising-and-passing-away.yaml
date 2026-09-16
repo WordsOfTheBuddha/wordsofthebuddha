@@ -5,6 +5,7 @@ synonyms:
     - appearance and disappearance
     - formation and dissolution
     - origination and vanishing
+    - arising and going-away
 pali:
     - udayabbaya
     - udayatthagāmī
@@ -12,6 +13,8 @@ pali:
     - samudaya
     - atthaṅgama
 redirects:
+    - arising and going-away
+    - arising and going
     - arising-and-passing-away
     - arising and passing away
     - rise-and-fall
@@ -64,6 +67,8 @@ discourses:
       note: "Impermanence of the aggregates"
     - id: sn22.109
       note: "Stream-enterer discerns the aggregates"
+    - id: sn22.126
+      note: "Subject to arising and going-away"
     - id: sn22.78
       note: "Lion’s roar; five aggregates"
     - id: an5.30
