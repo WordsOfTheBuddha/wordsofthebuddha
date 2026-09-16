@@ -4195,8 +4195,10 @@ export function attachAiMode(options: {
 			removeRow.addEventListener("click", (event) => {
 				event.preventDefault();
 				event.stopPropagation();
+				followComposerPinnedOpen = true;
 				reviseEditDraft = removeCommittedReviseRow(reviseEditDraft, index);
 				syncReviseScope();
+				followInput?.focus();
 			});
 			head.append(removeRow);
 			rowEl.append(head);

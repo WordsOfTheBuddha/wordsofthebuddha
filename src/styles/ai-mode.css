@@ -3009,6 +3009,31 @@ body.ai-diagram-fullscreen-open {
 	outline: none;
 }
 
+/* Draft instruction lines up with committed edit text (stack pad + field pad). */
+.ai-follow.is-follow-expanded
+	.ai-revise-stack:not([hidden])
+	~ .ai-composer-text-wrap
+	textarea[data-ai-follow-input],
+.ai-follow.is-follow-expanded
+	.ai-revise-scope:not([hidden])
+	~ .ai-composer-text-wrap
+	textarea[data-ai-follow-input] {
+	padding: 0.15rem 0.15rem 0;
+	padding-left: 0.9rem;
+}
+
+.ai-follow.is-follow-expanded
+	.ai-revise-stack:not([hidden])
+	~ .ai-composer-text-wrap
+	.ai-composer-mirror,
+.ai-follow.is-follow-expanded
+	.ai-revise-scope:not([hidden])
+	~ .ai-composer-text-wrap
+	.ai-composer-mirror {
+	padding: 0.15rem 0.15rem 0;
+	padding-left: 0.9rem;
+}
+
 .ai-revise-scope.is-draft {
 	padding-top: 0;
 }
