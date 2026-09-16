@@ -135,6 +135,11 @@ import {
 } from "./aiAskResearchReport";
 import { hydrateResearchReportMermaid } from "./researchReportMermaid";
 import {
+	openResearchImageOverlay,
+	researchContextImageDataUrl,
+	researchContextImageFilename,
+} from "./researchImageOverlay";
+import {
 	decorateReportParagraphNumbers,
 	readShowParagraphNumbers,
 	writeShowParagraphNumbers,
@@ -448,6 +453,7 @@ export interface AiAskTurn {
 	/** e.g. "Clipboard (527 lines)" — display label only. */
 	contextAttachmentLabel?: string;
 	imageCount?: number;
+	attachedImages?: ResearchContextImage[];
 }
 
 interface AiModelsResponse {
@@ -1675,6 +1681,9 @@ function turnToSessionEntry(
 		...(typeof turn.imageCount === "number"
 			? { imageCount: turn.imageCount }
 			: {}),
+		...(turn.attachedImages && turn.attachedImages.length > 0
+			? { attachedImages: turn.attachedImages }
+			: {}),
 	};
 }
 
@@ -1688,7 +1697,15 @@ function renderQuestionAttachmentsHtml(turn: AiAskTurn): string {
 			`<span class="ai-question-attachment ai-question-attachment-notes"${title}>${escapeHtml(turn.contextAttachmentLabel)}</span>`,
 		);
 	}
-	if (typeof turn.imageCount === "number" && turn.imageCount > 0) {
+	const attachedImages = turn.attachedImages || [];
+	if (attachedImages.length > 0) {
+		attachedImages.forEach((image, index) => {
+			const src = researchContextImageDataUrl(image);
+			chips.push(
+				`<button type="button" class="ai-question-image" data-ai-image-preview data-ai-image-index="${index}" aria-label="View attached image ${index + 1}" title="View attached image ${index + 1}"><img src="${escapeHtml(src)}" alt="Attached image ${index + 1}" loading="lazy" draggable="false"></button>`,
+			);
+		});
+	} else if (typeof turn.imageCount === "number" && turn.imageCount > 0) {
 		const label =
 			turn.imageCount === 1 ? "1 image" : `${turn.imageCount} images`;
 		chips.push(
@@ -1756,6 +1773,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 			: {}),
 		...(typeof entry.imageCount === "number"
 			? { imageCount: entry.imageCount }
+			: {}),
+		...(entry.attachedImages && entry.attachedImages.length > 0
+			? { attachedImages: entry.attachedImages }
 			: {}),
 	};
 }
@@ -3789,8 +3809,14 @@ export function attachAiMode(options: {
 				const wrap = document.createElement("span");
 				wrap.className = "ai-composition-image";
 				const img = document.createElement("img");
-				img.src = `data:${image.mime};base64,${image.data}`;
+				img.src = researchContextImageDataUrl(image);
 				img.alt = `Attached image ${index + 1}`;
+				img.addEventListener("click", () => {
+					openResearchImageOverlay(image, {
+						filename: researchContextImageFilename(image, index),
+						alt: `Attached image ${index + 1}`,
+					});
+				});
 				const remove = document.createElement("button");
 				remove.type = "button";
 				remove.className = "ai-composition-clear";
@@ -9962,6 +9988,7 @@ export function attachAiMode(options: {
 			...(typeof researchAttachments?.imageCount === "number"
 				? { imageCount: researchAttachments.imageCount }
 				: {}),
+			...(submitImages.length > 0 ? { attachedImages: submitImages } : {}),
 		};
 		turns.push(turn);
 		syncLayoutAndReveal();
@@ -10716,6 +10743,26 @@ export function attachAiMode(options: {
 		const index = Number(button.getAttribute("data-turn-index"));
 		if (!Number.isFinite(index)) return;
 		toggleTurnThinking(index);
+	});
+
+	thread.addEventListener("click", (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		const preview = target.closest("[data-ai-image-preview]");
+		if (!(preview instanceof HTMLElement) || !thread.contains(preview)) return;
+		const turnEl = preview.closest(".ai-turn");
+		if (!turnEl) return;
+		const turnNodes = thread.querySelectorAll(".ai-turn");
+		const turnIndex = Array.from(turnNodes).indexOf(turnEl);
+		if (turnIndex < 0) return;
+		const turn = turns[turnIndex];
+		const imageIndex = Number(preview.getAttribute("data-ai-image-index"));
+		const image = turn?.attachedImages?.[imageIndex];
+		if (!image) return;
+		openResearchImageOverlay(image, {
+			filename: researchContextImageFilename(image, imageIndex),
+			alt: `Attached image ${imageIndex + 1}`,
+		});
 	});
 
 	thread.addEventListener(

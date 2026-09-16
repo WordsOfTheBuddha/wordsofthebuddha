@@ -17,6 +17,10 @@ import {
 	type ResearchHistoryReportStats,
 } from "./aiAskResearchHistoryStats";
 import { normalizeAskSummaryProse } from "./linkifyAskSummary";
+import {
+	sanitizeResearchContextImages,
+	type ResearchContextImage,
+} from "./aiAskComposition";
 
 export interface AiAskSessionEntry {
 	/** Display wording (typo-corrected when available). */
@@ -78,6 +82,8 @@ export interface AiAskSessionEntry {
 	/** e.g. "Clipboard (527 lines)" — display label only. */
 	contextAttachmentLabel?: string;
 	imageCount?: number;
+	/** Base64 images attached with the question — kept for in-tab restore only. */
+	attachedImages?: ResearchContextImage[];
 }
 
 const SESSION_KEY = "ai-ask-session-v1";
@@ -360,6 +366,10 @@ export function sanitizeAskHistoryEntry(
 		record.imageCount > 0
 			? { imageCount: Math.min(4, Math.floor(record.imageCount)) }
 			: {}),
+		...(() => {
+			const attachedImages = sanitizeResearchContextImages(record.attachedImages);
+			return attachedImages.length > 0 ? { attachedImages } : {};
+		})(),
 	};
 }
 
@@ -569,6 +579,7 @@ export function slimAskHistoryEntryForSync(
 		reasoning: _reasoning,
 		thread: _thread,
 		results: _results,
+		attachedImages: _attachedImages,
 		...rest
 	} = clean;
 	return sanitizeAskHistoryEntry({

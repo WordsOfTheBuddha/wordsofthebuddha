@@ -2789,6 +2789,34 @@ body.ai-diagram-fullscreen-open {
 	text-overflow: ellipsis;
 }
 
+.ai-question-image {
+	position: relative;
+	display: block;
+	flex: 0 0 auto;
+	width: 2.75rem;
+	height: 2.75rem;
+	min-width: 2.75rem;
+	min-height: 2.75rem;
+	max-width: 2.75rem;
+	max-height: 2.75rem;
+	padding: 0;
+	border: 1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
+	border-radius: 0.45rem;
+	overflow: hidden;
+	background: transparent;
+	cursor: pointer;
+}
+
+.ai-question-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	object-fit: cover;
+	object-position: center;
+	pointer-events: none;
+}
+
 .ai-composition-attachments {
 	display: flex;
 	flex-direction: column;
@@ -2885,6 +2913,7 @@ body.ai-diagram-fullscreen-open {
 	margin: 0;
 	object-fit: cover;
 	object-position: center;
+	cursor: pointer;
 }
 
 .ai-composition-image .ai-composition-clear {
@@ -3809,4 +3838,77 @@ html.dark .ai-paragraph-btn:focus-visible {
 	}
 }
 
+.ai-image-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 12000;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	padding: 0;
+	background: color-mix(in srgb, #000 72%, transparent);
+	backdrop-filter: blur(2px);
+}
+
+.ai-image-overlay-toolbar {
+	position: absolute;
+	top: 0.85rem;
+	right: 0.85rem;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.ai-image-overlay-stage {
+	flex: 1;
+	min-height: 0;
+	width: 100%;
+	overflow: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3.5rem 1rem 1rem;
+	-webkit-overflow-scrolling: touch;
+}
+
+.ai-image-overlay-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0.55rem;
+	background: color-mix(in srgb, #fff 10%, transparent);
+	color: #fff;
+	cursor: pointer;
+}
+
+.ai-image-overlay-btn:hover:not(:disabled),
+.ai-image-overlay-btn:focus-visible:not(:disabled) {
+	background: color-mix(in srgb, #fff 18%, transparent);
+}
+
+.ai-image-overlay-btn:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+.ai-image-overlay-img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-width: none;
+	max-height: none;
+	object-fit: contain;
+	border-radius: 0.35rem;
+	box-shadow: 0 1.5rem 4rem color-mix(in srgb, #000 45%, transparent);
+}
+
+html.ai-image-overlay-open {
+	overflow: hidden;
+}
 
