@@ -52,6 +52,8 @@ export interface AiAskSessionEntry {
 	thread?: AiAskSessionEntry[];
 	/** Completed Deep Research turn. */
 	research?: boolean;
+	/** Clarify planner reading — shown on exported PDFs when present. */
+	researchInterpretation?: string;
 	researchJobId?: string;
 	report?: string;
 	/** Card preview — server history stores this instead of `report`. */
@@ -312,6 +314,15 @@ export function sanitizeAskHistoryEntry(
 			: {}),
 		...(thread.length > 1 ? { thread } : {}),
 		...(record.research === true ? { research: true } : {}),
+		...(typeof record.researchInterpretation === "string" &&
+		record.researchInterpretation.trim()
+			? {
+					researchInterpretation: clip(
+						record.researchInterpretation.replace(/\s+/g, " ").trim(),
+						280,
+					),
+				}
+			: {}),
 		...(typeof record.researchJobId === "string" && record.researchJobId.trim()
 			? { researchJobId: clip(record.researchJobId, 80) }
 			: {}),

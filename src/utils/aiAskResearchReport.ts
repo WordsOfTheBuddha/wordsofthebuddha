@@ -313,6 +313,38 @@ export function stripResearchSourcesSection(markdown: string): string {
 	).report;
 }
 
+function stripMarkdownInline(value: string): string {
+	return value
+		.replace(/\*\*|__|\*|_|`/g, "")
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+/** First heading in the report body (not Sources) — used for PDF/EPUB cover titles. */
+export function researchReportTitle(markdown: string): string {
+	const body = stripResearchSourcesSection(markdown).trim();
+	const match = body.match(/^#{1,4}\s+(.+)$/m);
+	if (!match) return "";
+	return stripMarkdownInline(match[1] || "");
+}
+
+/** Clarify planner reading for the preface question line — empty when absent. */
+export function researchExportQuestion(input: {
+	interpretation?: string;
+}): string {
+	return (input.interpretation || "").replace(/\s+/g, " ").trim();
+}
+
+/** Cover title: report heading, then a neutral fallback. */
+export function researchExportCoverTitle(
+	input: { report: string },
+	fallback = "Research report",
+): string {
+	const fromReport = researchReportTitle(input.report);
+	return fromReport || fallback;
+}
+
 /** Ask briefing: prose paragraphs, or the report renderer when they asked for structure. */
 export function renderAskBriefingHtml(
 	summary: string,

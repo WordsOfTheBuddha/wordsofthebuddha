@@ -7,6 +7,8 @@ import { currentResearchVersionN } from "./aiAskResearchRevise";
 import { FieldValue } from "firebase-admin/firestore";
 import type { UserRecord } from "firebase-admin/auth";
 import { db, isFirebaseInitialized } from "../service/firebase/server";
+import type { ResearchJobResult } from "./aiAskResearchJob";
+import type { ResearchVersionMeta } from "./aiAskResearchRevise";
 import {
 	ASK_SHARE_COLLECTION,
 	askSharePath,
@@ -200,4 +202,42 @@ export async function publishAskShare(options: {
 	}
 
 	throw new Error("Could not allocate a unique share slug.");
+}
+
+/** Publish a finished research report so its /research/{slug} URL works without Copy link. */
+export async function autoPublishResearchShare(options: {
+	result: ResearchJobResult;
+	researchJobId?: string;
+	versionIndex?: ResearchVersionMeta[];
+	user?: UserRecord | null;
+}): Promise<{ slug: string; path: string } | null> {
+	const report = (options.result.report || "").trim();
+	if (!report || options.result.results.length === 0) return null;
+	try {
+		const published = await publishAskShare({
+			preferredSlug: options.result.shareSlug,
+			question: options.result.question,
+			lookingFor: options.result.lookingFor,
+			queries: options.result.queries,
+			fallbackQueries: options.result.fallbackQueries,
+			summary: options.result.summary || "",
+			results: options.result.results,
+			model: options.result.model,
+			requestId: options.result.requestId,
+			research: true,
+			report,
+			reasoning: options.result.reasoning,
+			candidateCount: options.result.candidateCount,
+			researchJobId: options.researchJobId,
+			versionIndex: options.versionIndex,
+			user: options.user,
+		});
+		return { slug: published.slug, path: published.path };
+	} catch (error) {
+		console.warn(
+			"[ai/research] auto-publish share failed",
+			error instanceof Error ? error.message : error,
+		);
+		return null;
+	}
 }

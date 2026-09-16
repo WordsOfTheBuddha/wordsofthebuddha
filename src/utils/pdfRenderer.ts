@@ -1024,10 +1024,14 @@ function buildAskContent(collection: CollectionPdf): string {
     ${buildChapterToc(ch)}
   </div>
 `;
+		const questionLine =
+			ch.title.trim() &&
+			`<p class="ask-preface-kicker">Question</p>
+    <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
+    `;
 		html += `<section class="ask-turn"${breakAttr}>
   <div class="ask-preface">
-    <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
-    <h2 class="ask-question">${escapeHtml(ch.title)}</h2>
+    ${questionLine}
     ${askSummaryHtml(ch.description, ch.discourses, research)}
   </div>
 ${toc}`;

@@ -9,6 +9,8 @@ import { db, isFirebaseInitialized } from "../service/firebase/server";
 import { getSearchDocBySlug } from "../service/search/search";
 import { rewriteAskQuestion } from "./aiAskRewrite";
 import { resolveAskShareSlug } from "./aiAskShare";
+import { autoPublishResearchShare } from "./aiAskShareServer";
+import { researchInterpretationFromClarifyBrief } from "./aiAskResearchClarify";
 import { resolveAskPersonHits } from "./aiAskPersons";
 import {
 	AI_SEARCH_CANDIDATE_LIMIT,
@@ -1642,6 +1644,12 @@ async function runResearchChainPass(
 		if (current.runToken !== record.runToken) return "done";
 		current = await attachOpeningResearchVersion(current);
 		await persistHistory(current, result);
+		await autoPublishResearchShare({
+			result,
+			researchJobId: current.id,
+			versionIndex: current.versionIndex,
+			user: { uid: current.uid } as UserRecord,
+		});
 		await finishEmail(current, true);
 		return "done";
 	} catch (error) {
@@ -1824,6 +1832,12 @@ export async function runResearchJob(options: {
 			summary,
 		});
 		await persistHistory(current, result);
+		await autoPublishResearchShare({
+			result,
+			researchJobId: current.id,
+			versionIndex: current.versionIndex,
+			user: { uid: current.uid } as UserRecord,
+		});
 		await finishEmail(current, ok);
 		if (result.results.length === 0) {
 			current = await settleResearchJobQuota(current);
@@ -2495,6 +2509,12 @@ export async function persistHistory(
 				summary: result.summary,
 				report: result.report,
 				shareSlug: result.shareSlug,
+				...((): { researchInterpretation?: string } => {
+					const reading = researchInterpretationFromClarifyBrief(
+						record.clarifyBrief || "",
+					);
+					return reading ? { researchInterpretation: reading } : {};
+				})(),
 				at:
 					record.createdAt && record.createdAt > 0
 						? record.createdAt

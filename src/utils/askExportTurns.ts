@@ -1,5 +1,11 @@
 import type { AiDiscourseHit } from "./aiDiscourseHits";
-import { stripResearchSourcesSection } from "./aiAskResearchReport";
+import { askSharePath } from "./aiAskShare";
+import { researchInterpretationFromClarifyBrief } from "./aiAskResearchClarify";
+import {
+	researchExportCoverTitle,
+	researchExportQuestion,
+	stripResearchSourcesSection,
+} from "./aiAskResearchReport";
 
 export const ASK_EXPORT_OPEN_EVENT = "ask-export-open";
 
@@ -23,6 +29,8 @@ export type AskExportTurnView = {
 	summary: string;
 	discourses: AskExportDiscourseView[];
 	research?: boolean;
+	/** PDF/EPUB cover title for a research report. */
+	reportTitle?: string;
 };
 
 export type AskExportOpenDetail = {
@@ -39,9 +47,14 @@ type ExportableTurn = {
 	summary?: string;
 	report?: string;
 	research?: boolean;
+	researchInterpretation?: string;
+	researchClarify?: { interpretation?: string };
 	results: AiDiscourseHit[];
+	shareSlug?: string;
 	sharePath?: string;
 };
+
+const ASK_EXPORT_SHARE_PATH_RE = /^\/(ask|research)\/[a-z0-9-]+$/i;
 
 /** Compact slugs named in the write-up, excluding the appended Sources list. */
 export function researchCitedSlugSet(report: string): Set<string> {
@@ -179,12 +192,21 @@ export function askTurnsForExport(
 		const research = turn.research === true || Boolean(turn.report);
 		const summary = (turn.report || turn.summary || "").trim();
 		if (turn.results.length === 0 && !(research && summary)) continue;
+		const interpretation =
+			turn.researchInterpretation ||
+			turn.researchClarify?.interpretation ||
+			"";
+		const exportQuestion = research
+			? researchExportQuestion({ interpretation })
+			: turn.question.trim() || "Ask";
+		const reportTitle = research
+			? researchExportCoverTitle({ report: summary })
+			: undefined;
 		out.push({
-			question:
-				turn.question.trim() || (research ? "Research report" : "Ask"),
+			question: exportQuestion,
 			summary,
 			discourses: discourseViewsForTurn(turn, research),
-			...(research ? { research: true } : {}),
+			...(research ? { research: true, reportTitle } : {}),
 		});
 	}
 	return out;
@@ -195,10 +217,15 @@ export function askExportSharePathFromTurns(
 	locationPathname?: string,
 ): string | undefined {
 	const loc = (locationPathname || "").trim();
-	if (/^\/ask\/[a-z0-9-]+$/i.test(loc)) return loc;
+	if (ASK_EXPORT_SHARE_PATH_RE.test(loc)) return loc;
 	for (let i = turns.length - 1; i >= 0; i--) {
-		const path = turns[i]?.sharePath?.trim();
-		if (path && /^\/ask\/[a-z0-9-]+$/i.test(path)) return path;
+		const turn = turns[i];
+		const path = turn?.sharePath?.trim();
+		if (path && ASK_EXPORT_SHARE_PATH_RE.test(path)) return path;
+		const slug = turn?.shareSlug?.trim();
+		if (slug) {
+			return askSharePath(slug, { research: turn?.research === true });
+		}
 	}
 	return undefined;
 }

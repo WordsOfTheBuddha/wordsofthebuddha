@@ -138,6 +138,10 @@ describe("askExportCollectionUrl", () => {
 			"www.wordsofthebuddha.org/ask/mindfulness-of-the-body",
 		);
 		assert.equal(
+			askExportCollectionUrl("/research/mindfulness-of-the-body", "research"),
+			"www.wordsofthebuddha.org/research/mindfulness-of-the-body",
+		);
+		assert.equal(
 			askExportCollectionUrl(),
 			"www.wordsofthebuddha.org/search?mode=ask",
 		);

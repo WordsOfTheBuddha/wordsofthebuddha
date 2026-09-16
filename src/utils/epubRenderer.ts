@@ -400,9 +400,13 @@ ${items
 	)
 	.join("\n")}
   </ol>`;
-	return `<section class="ask-preface">
-  <p class="ask-preface-kicker">${research ? "Research report" : "Question"}</p>
+	const questionLine =
+		question.trim() &&
+		`<p class="ask-preface-kicker">Question</p>
   <h1 class="ask-question">${escapeXml(question)}</h1>
+  `;
+	return `<section class="ask-preface">
+  ${questionLine}
   ${askSummaryXhtml(summary, research, citationItems)}
 ${toc}
 </section>`;

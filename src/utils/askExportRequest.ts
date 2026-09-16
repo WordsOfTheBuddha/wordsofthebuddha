@@ -121,7 +121,7 @@ export function parseAskExportRequest(
 			}
 		}
 		turns.push({
-			question: question || (research ? "Research report" : "Ask"),
+			question: research ? question : question || "Ask",
 			summary,
 			selectedDiscourseSlugs: slugs,
 		});

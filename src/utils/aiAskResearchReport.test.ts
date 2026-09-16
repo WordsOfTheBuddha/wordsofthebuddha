@@ -7,6 +7,9 @@ import {
 	parseResearchReportMarkdown,
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
+	researchExportCoverTitle,
+	researchExportQuestion,
+	researchReportTitle,
 	replaceResearchSourcesSection,
 	RESEARCH_REPORT_SYSTEM,
 	takeResearchReadPaliRequest,
@@ -429,6 +432,49 @@ describe("fallbackResearchReport", () => {
 			hits: [],
 		});
 		assert.match(md, /did not return matching discourses/i);
+	});
+});
+
+describe("research export labels", () => {
+	it("reads the first report heading for the cover title", () => {
+		assert.equal(
+			researchReportTitle(`## Mindfulness in the Nikāyas
+
+See MN 10.
+
+## Sources
+
+- MN 10`),
+			"Mindfulness in the Nikāyas",
+		);
+	});
+
+	it("uses only the clarify interpretation for the export question", () => {
+		assert.equal(
+			researchExportQuestion({
+				interpretation:
+					"Survey how mindfulness is defined and practiced in the Nikāyas.",
+			}),
+			"Survey how mindfulness is defined and practiced in the Nikāyas.",
+		);
+		assert.equal(
+			researchExportQuestion({
+				interpretation: "",
+				lookingFor: "mindfulness (sati)",
+				question: "Present a lucid explanation of mindfulness.",
+			}),
+			"",
+		);
+	});
+
+	it("uses the report heading for the cover when present", () => {
+		assert.equal(
+			researchExportCoverTitle({
+				report: "## Mindfulness in the Nikāyas\n\nBody.",
+			}),
+			"Mindfulness in the Nikāyas",
+		);
+		assert.equal(researchExportCoverTitle({ report: "No heading here." }), "Research report");
 	});
 });
 

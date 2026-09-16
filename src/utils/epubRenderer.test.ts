@@ -333,7 +333,7 @@ describe("buildCollectionEpub", () => {
 			chapters: [
 				{
 					slug: "ask-turn-1",
-					title: "What is mindfulness?",
+					title: "",
 					description: "## Thesis\n\nSee MN 10.",
 					discourses: [],
 				},
@@ -357,8 +357,8 @@ describe("buildCollectionEpub", () => {
 			"utf8",
 		);
 		assert.ok(preface);
-		assert.match(preface, /Research report/);
-		assert.match(preface, /What is mindfulness\?/);
+		assert.doesNotMatch(preface, /ask-preface-kicker/);
+		assert.match(preface, /Thesis/);
 		assert.match(preface, /href="https:\/\/www\.wordsofthebuddha\.org\/mn10"/);
 		assert.doesNotMatch(preface, /Discourses in this report/);
 	});

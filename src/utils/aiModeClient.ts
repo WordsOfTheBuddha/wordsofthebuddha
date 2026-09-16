@@ -432,6 +432,8 @@ export interface AiAskTurn {
 		answers: Record<string, { choiceId: string; otherText?: string }>;
 		interpretation?: string;
 	};
+	/** Clarify planner reading — kept after the job starts for PDF export. */
+	researchInterpretation?: string;
 	/** Planner questions a revision is paused on; the report is still the base. */
 	reviseClarify?: ResearchReviseClarifyDraft;
 	/** Ignore stale polls after the reader stops a revise/research job locally. */
@@ -1649,6 +1651,9 @@ function turnToSessionEntry(
 			: {}),
 		...(thread ? { thread } : {}),
 		...(turn.research ? { research: true } : {}),
+		...(turn.researchInterpretation
+			? { researchInterpretation: turn.researchInterpretation }
+			: {}),
 		...(turn.researchJobId ? { researchJobId: turn.researchJobId } : {}),
 		...(turn.processNotes && turn.processNotes.length > 0
 			? { processNotes: turn.processNotes }
@@ -1727,6 +1732,9 @@ function sessionEntryToTurn(entry: AiAskSessionEntry): AiAskTurn {
 			: undefined,
 		saved: entry.saved === true,
 		...(entry.research ? { research: true } : {}),
+		...(entry.researchInterpretation
+			? { researchInterpretation: entry.researchInterpretation }
+			: {}),
 		...(entry.researchJobId ? { researchJobId: entry.researchJobId } : {}),
 		...(entry.research && entry.at ? { researchStartedAt: entry.at } : {}),
 		...(entry.processNotes && entry.processNotes.length > 0
@@ -9761,6 +9769,8 @@ export function attachAiMode(options: {
 				syncLayout();
 				return;
 			}
+			const clarifyReading = (turn.researchClarify?.interpretation || "").trim();
+			if (clarifyReading) turn.researchInterpretation = clarifyReading;
 			turn.researchClarify = undefined;
 			applyResearchJobToTurn(turn, data.job);
 			setResearchChipOn(false);

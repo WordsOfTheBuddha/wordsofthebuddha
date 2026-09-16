@@ -17,6 +17,7 @@ import {
 	type ResearchVersionMeta,
 } from "./aiAskResearchRevise";
 import { suggestedClarifyAnswers } from "./aiAskResearchClarify";
+import { askSharePath } from "./aiAskShare";
 import { REPORT_PARAGRAPH_SELECTOR } from "./paragraphNumbers";
 
 export {
@@ -452,6 +453,7 @@ export interface ResearchTurnFields {
 	summary?: string;
 	report?: string;
 	shareSlug?: string;
+	sharePath?: string;
 	pending: boolean;
 	phase: ResearchAskPhase;
 	rerankCandidateCount?: number;
@@ -666,7 +668,10 @@ export function applyResearchJobToTurn<T extends ResearchTurnFields>(
 		turn.persons = result.persons;
 		turn.summary = result.summary || "";
 		if (result.report) turn.report = result.report;
-		if (result.shareSlug) turn.shareSlug = result.shareSlug;
+		if (result.shareSlug) {
+			turn.shareSlug = result.shareSlug;
+			turn.sharePath = askSharePath(result.shareSlug, { research: true });
+		}
 		if (result.model) turn.model = result.model;
 		if (result.requestId) turn.requestId = result.requestId;
 		if (result.reasoning) turn.reasoning = result.reasoning;

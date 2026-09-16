@@ -531,6 +531,12 @@ export function formatResearchClarifyBrief(
 	return lines.join("\n").slice(0, RESEARCH_CLARIFY_BRIEF_MAX);
 }
 
+/** Parse the clarify planner reading back out of a stored brief. */
+export function researchInterpretationFromClarifyBrief(brief: string): string {
+	const match = brief.replace(/\r\n/g, "\n").match(/^Reading:\s*(.+)$/m);
+	return match ? clipInterpretation(match[1] || "") : "";
+}
+
 export function answersFromClarifyState(
 	answers: Record<string, { choiceId: string; otherText?: string }>,
 ): ResearchClarifyAnswer[] {

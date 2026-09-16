@@ -786,7 +786,11 @@ import "../styles/collection-pdf-export.css";
 				keyTerms: includeDiscourses && keyTermsInput.checked,
 			};
 			if (currentSharePath) postBody.sharePath = currentSharePath;
-			if (currentTurns[0]?.question) postBody.title = currentTurns[0].question;
+			const coverTitle =
+				currentResearch && currentTurns[0]?.reportTitle
+					? currentTurns[0].reportTitle
+					: currentTurns[0]?.question;
+			if (coverTitle) postBody.title = coverTitle;
 			if (currentResearch) postBody.kind = "research";
 			if (includeImages) {
 				const mode = dlg.querySelector<HTMLInputElement>(

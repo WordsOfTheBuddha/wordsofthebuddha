@@ -62,6 +62,53 @@ describe("askTurnsForExport", () => {
 		assert.equal(turns[0]?.discourses[0]?.cited, true);
 	});
 
+	it("uses report title and clarify interpretation for research export", () => {
+		const turns = askTurnsForExport([
+			{
+				question:
+					"Present a lucid explanation of mindfulness with style notes.",
+				lookingFor: "mindfulness (sati)",
+				researchInterpretation:
+					"Survey how mindfulness is defined and practiced in the Nikāyas.",
+				report: "## Mindfulness in the Nikāyas\n\nMN 10.",
+				research: true,
+				results: [hit],
+			},
+		]);
+		assert.equal(turns[0]?.reportTitle, "Mindfulness in the Nikāyas");
+		assert.equal(
+			turns[0]?.question,
+			"Survey how mindfulness is defined and practiced in the Nikāyas.",
+		);
+	});
+
+	it("omits the export question when no clarify interpretation exists", () => {
+		const turns = askTurnsForExport([
+			{
+				question: "Present a lucid explanation of mindfulness.",
+				lookingFor: "mindfulness (sati)",
+				report: "## Mindfulness in the Nikāyas\n\nMN 10.",
+				research: true,
+				results: [hit],
+			},
+		]);
+		assert.equal(turns[0]?.question, "");
+	});
+
+	it("derives share path from shareSlug before publish", () => {
+		assert.equal(
+			askExportSharePathFromTurns([
+				{
+					question: "Q",
+					results: [hit],
+					research: true,
+					shareSlug: "mindfulness-of-the-body",
+				},
+			]),
+			"/research/mindfulness-of-the-body",
+		);
+	});
+
 	it("keeps a research report with no discourses for report-only download", () => {
 		const turns = askTurnsForExport([
 			{
@@ -202,6 +249,32 @@ describe("askExportSharePathFromTurns", () => {
 				{ question: "Q", results: [hit], sharePath: "/ask/from-turn" },
 			]),
 			"/ask/from-turn",
+		);
+	});
+
+	it("accepts /research/ share paths", () => {
+		assert.equal(
+			askExportSharePathFromTurns(
+				[
+					{
+						question: "Q",
+						results: [hit],
+						sharePath: "/research/mindfulness-of-the-body",
+					},
+				],
+				"/research/mindfulness-of-the-body",
+			),
+			"/research/mindfulness-of-the-body",
+		);
+		assert.equal(
+			askExportSharePathFromTurns([
+				{
+					question: "Q",
+					results: [hit],
+					sharePath: "/research/mindfulness-of-the-body",
+				},
+			]),
+			"/research/mindfulness-of-the-body",
 		);
 	});
 });
