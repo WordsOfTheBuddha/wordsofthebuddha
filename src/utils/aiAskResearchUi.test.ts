@@ -77,6 +77,11 @@ import {
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
 	followDockBottomInset,
+	isMobileReportDockCompact,
+	isMobileReportDockExpanded,
+	mobileReportDockFabLanePx,
+	mobileReportDockViewportRect,
+	reportFollowDockRect,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
 	askSampleFollowDock,
@@ -281,7 +286,63 @@ describe("followDockBottomInset", () => {
 				innerHeight: 800,
 				visualViewport: { height: 740, offsetTop: 40 },
 			}),
-			20,
+			60,
+		);
+	});
+
+	it("ignores visual viewport scroll offset so the dock does not drift while reading", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 800, offsetTop: 120 },
+			}),
+			0,
+		);
+	});
+});
+
+describe("reportFollowDockRect", () => {
+	it("insets a compact mobile dock between bottom FAB lanes", () => {
+		const lane = mobileReportDockFabLanePx(16);
+		assert.equal(lane, 64);
+		assert.deepEqual(
+			reportFollowDockRect({
+				columnLeft: 8,
+				columnWidth: 360,
+				innerHeight: 800,
+				visualViewport: { height: 740, offsetTop: 40 },
+				mobileCompact: true,
+			}),
+			{ left: 8 + lane, width: 360 - lane * 2, bottom: 0 },
+		);
+	});
+
+	it("only applies mobile inset below the compact breakpoint", () => {
+		assert.equal(
+			isMobileReportDockCompact(true, 640),
+			true,
+		);
+		assert.equal(
+			isMobileReportDockCompact(true, 641),
+			false,
+		);
+	});
+
+	it("uses the visual viewport width when the mobile dock expands", () => {
+		assert.deepEqual(
+			mobileReportDockViewportRect({ width: 390, offsetLeft: 0 }, 360),
+			{ left: 0, width: 390 },
+		);
+		assert.deepEqual(
+			reportFollowDockRect({
+				columnLeft: 12,
+				columnWidth: 360,
+				innerHeight: 800,
+				visualViewport: { height: 800, offsetTop: 0, width: 390, offsetLeft: 0 },
+				mobileCompact: false,
+				mobileExpanded: true,
+			}),
+			{ left: 0, width: 390, bottom: 0 },
 		);
 	});
 });

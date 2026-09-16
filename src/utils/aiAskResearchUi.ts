@@ -360,7 +360,91 @@ export function followDockBottomInset(input: {
 }): number {
 	const vv = input.visualViewport;
 	if (!vv) return 0;
-	return Math.max(0, Math.round(input.innerHeight - vv.height - vv.offsetTop));
+	// offsetTop tracks page scroll and must not move a body-fixed dock.
+	return Math.max(0, Math.round(input.innerHeight - vv.height));
+}
+
+export const MOBILE_REPORT_DOCK_BREAKPOINT_PX = 640;
+export const MOBILE_REPORT_DOCK_EDGE_REM = 0.75;
+export const MOBILE_REPORT_DOCK_FAB_REM = 2.75;
+export const MOBILE_REPORT_DOCK_FAB_GAP_REM = 0.5;
+
+export function mobileReportDockFabLanePx(rootFontSize = 16): number {
+	return Math.round(
+		(MOBILE_REPORT_DOCK_EDGE_REM +
+			MOBILE_REPORT_DOCK_FAB_REM +
+			MOBILE_REPORT_DOCK_FAB_GAP_REM) *
+			rootFontSize,
+	);
+}
+
+export function isMobileReportDockCompact(
+	followCompact: boolean,
+	viewportWidth: number,
+	breakpoint = MOBILE_REPORT_DOCK_BREAKPOINT_PX,
+): boolean {
+	return followCompact && viewportWidth <= breakpoint;
+}
+
+export function isMobileReportDockExpanded(
+	followExpanded: boolean,
+	viewportWidth: number,
+	breakpoint = MOBILE_REPORT_DOCK_BREAKPOINT_PX,
+): boolean {
+	return followExpanded && viewportWidth <= breakpoint;
+}
+
+export function mobileReportDockViewportRect(
+	visualViewport?: Pick<VisualViewport, "width" | "offsetLeft"> | null,
+	fallbackWidth = 0,
+): { left: number; width: number } {
+	const width = Math.round(visualViewport?.width ?? fallbackWidth);
+	const left = Math.round(visualViewport?.offsetLeft ?? 0);
+	if (width > 0) {
+		return { left: Math.max(0, left), width };
+	}
+	return { left: 0, width: Math.max(0, fallbackWidth) };
+}
+
+export function reportFollowDockRect(input: {
+	columnLeft: number;
+	columnWidth: number;
+	innerHeight: number;
+	visualViewport?: Pick<
+		VisualViewport,
+		"height" | "offsetTop" | "width" | "offsetLeft"
+	> | null;
+	mobileCompact: boolean;
+	mobileExpanded?: boolean;
+	rootFontSize?: number;
+}): { left: number; width: number; bottom: number } {
+	if (input.mobileExpanded) {
+		const viewport = mobileReportDockViewportRect(
+			input.visualViewport,
+			input.columnWidth,
+		);
+		return {
+			left: viewport.left,
+			width: viewport.width,
+			bottom: followDockBottomInset({
+				innerHeight: input.innerHeight,
+				visualViewport: input.visualViewport,
+			}),
+		};
+	}
+	const lane = input.mobileCompact
+		? mobileReportDockFabLanePx(input.rootFontSize)
+		: 0;
+	return {
+		left: input.columnLeft + lane,
+		width: Math.max(0, input.columnWidth - lane * 2),
+		bottom: input.mobileCompact
+			? 0
+			: followDockBottomInset({
+					innerHeight: input.innerHeight,
+					visualViewport: input.visualViewport,
+				}),
+	};
 }
 
 /** Finished Ask sample threads use the compact follow dock. */

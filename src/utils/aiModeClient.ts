@@ -241,7 +241,9 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
-	followDockBottomInset,
+	isMobileReportDockCompact,
+	isMobileReportDockExpanded,
+	reportFollowDockRect,
 	askSampleFollowDock,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
@@ -8825,16 +8827,32 @@ export function attachAiMode(options: {
 			return;
 		}
 		const column = thread.getBoundingClientRect();
-		const bottomInset = followDockBottomInset({
+		const mobileCompact = isMobileReportDockCompact(
+			followForm.classList.contains("is-follow-compact"),
+			window.innerWidth,
+		);
+		const mobileExpanded = isMobileReportDockExpanded(
+			followForm.classList.contains("is-follow-expanded"),
+			window.innerWidth,
+		);
+		const rect = reportFollowDockRect({
+			columnLeft: column.left,
+			columnWidth: column.width,
 			innerHeight: window.innerHeight,
 			visualViewport: window.visualViewport,
+			mobileCompact,
+			mobileExpanded,
+			rootFontSize:
+				Number.parseFloat(
+					getComputedStyle(document.documentElement).fontSize,
+				) || 16,
 		});
 		followForm.style.position = "fixed";
-		followForm.style.left = `${column.left}px`;
-		followForm.style.width = `${column.width}px`;
+		followForm.style.left = `${rect.left}px`;
+		followForm.style.width = `${rect.width}px`;
 		followForm.style.right = "auto";
 		followForm.style.marginInline = "0";
-		followForm.style.bottom = bottomInset > 0 ? `${bottomInset}px` : "0px";
+		followForm.style.bottom = rect.bottom > 0 ? `${rect.bottom}px` : "0px";
 	}
 
 	function syncFollowComposerMode(): void {
@@ -8915,6 +8933,15 @@ export function attachAiMode(options: {
 				);
 			}
 		}
+		document.documentElement.classList.toggle(
+			"is-report-dock",
+			Boolean(root.classList.contains("is-report-dock")),
+		);
+		document.documentElement.classList.toggle(
+			"is-report-dock-compact",
+			Boolean(dock && followForm?.classList.contains("is-follow-compact")),
+		);
+		scheduleFollowDockFrost();
 	}
 
 	function followDockOverlapsThread(): boolean {
@@ -10921,7 +10948,6 @@ export function attachAiMode(options: {
 	});
 	window.addEventListener("scroll", scheduleFollowDockFrost, { passive: true });
 	window.visualViewport?.addEventListener("resize", scheduleFollowDockFrost);
-	window.visualViewport?.addEventListener("scroll", scheduleFollowDockFrost);
 
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);

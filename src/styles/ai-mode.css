@@ -3836,6 +3836,80 @@ html.dark .ai-paragraph-btn:focus-visible {
 	.ai-versions-actions {
 		padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
 	}
+
+	/*
+	 * Compact report dock: keep the revise pill between the ToC and scroll-top
+	 * FABs on one baseline, with safe-area padding on the dock itself.
+	 */
+	html.is-report-dock-compact {
+		--ai-mobile-fab: 2.75rem;
+		--ai-mobile-edge: max(0.75rem, env(safe-area-inset-left, 0px));
+		--ai-mobile-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+	}
+
+	html.is-report-dock-compact .mobile-toc-toggle[data-toc-placement="fixed"] {
+		bottom: var(--ai-mobile-bottom);
+		left: var(--ai-mobile-edge);
+		z-index: 8;
+	}
+
+	html.is-report-dock-compact .scroll-to-top-button.visible {
+		bottom: var(--ai-mobile-bottom);
+		right: max(0.75rem, env(safe-area-inset-right, 0px));
+		z-index: 8;
+	}
+
+	html.is-report-dock-compact .ai-mode.has-thread.is-report-dock {
+		padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+	}
+
+	html.is-report-dock-compact .ai-follow.is-dock.is-follow-compact:not(.is-follow-expanded) {
+		z-index: 7;
+		padding: 0 max(0.5rem, env(safe-area-inset-right, 0px))
+			var(--ai-mobile-bottom) max(0.5rem, env(safe-area-inset-left, 0px));
+	}
+
+	html.is-report-dock-compact
+		.ai-follow.is-dock.is-follow-compact:not(.is-follow-expanded)
+		.ai-box {
+		min-height: var(--ai-mobile-fab);
+		padding: 0.1rem 0.18rem 0.1rem 0.65rem;
+		border-radius: 999px;
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+	}
+
+	html.is-report-dock-compact
+		.ai-follow.is-dock.is-follow-compact:not(.is-follow-expanded)
+		.ai-box
+		textarea,
+	html.is-report-dock-compact
+		.ai-follow.is-dock.is-follow-compact:not(.is-follow-expanded)
+		.ai-composer-body
+		textarea {
+		font-size: 0.9rem;
+		line-height: 1.25;
+		max-height: 1.75rem;
+		padding: 0.24rem 0.08rem 0.24rem 0;
+	}
+
+	html.is-report-dock-compact
+		.ai-follow.is-dock.is-follow-compact:not(.is-follow-expanded)
+		.ai-send {
+		width: 2.125rem;
+		height: 2.125rem;
+		min-width: 2.125rem;
+	}
+
+	html.is-report-dock .ai-follow.is-dock.is-follow-expanded {
+		z-index: 55;
+		padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
+		padding-right: max(0.65rem, env(safe-area-inset-right, 0px));
+		padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+	}
+
+	html.is-report-dock .ai-follow.is-dock.is-follow-expanded .ai-box {
+		border-radius: 1rem;
+	}
 }
 
 .ai-image-overlay {
