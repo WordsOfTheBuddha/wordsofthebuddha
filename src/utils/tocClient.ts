@@ -152,7 +152,8 @@ function resolveContentRoot(selector: string): HTMLElement | null {
 }
 
 function findById(root: ParentNode, id: string): HTMLElement | null {
-	if (root instanceof HTMLElement && root.id === id) return root;
+	const el = root as HTMLElement;
+	if (typeof el.getAttribute === "function" && el.id === id) return el;
 	const escaped = id.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 	return root.querySelector<HTMLElement>(`[id="${escaped}"]`);
 }
@@ -424,10 +425,14 @@ export function attachTableOfContents(
 		}
 		const tops = [];
 		for (const heading of headings) {
-			if (!heading.id || !isTrackableTocHeading(heading)) continue;
+			if (!heading.id) continue;
+			// Discourses collect from `.interleaved-article`, which is hidden in
+			// split view. Measure the visible clone (usually `#panel1`) instead.
+			const measured = visibleHeadingForId(heading.id);
+			if (!measured || !isTrackableTocHeading(measured)) continue;
 			tops.push({
 				id: heading.id,
-				top: heading.getBoundingClientRect().top,
+				top: measured.getBoundingClientRect().top,
 			});
 		}
 		if (tops.length === 0) return;

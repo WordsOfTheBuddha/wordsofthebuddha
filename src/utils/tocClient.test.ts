@@ -4,6 +4,7 @@ import { JSDOM } from "jsdom";
 import {
 	attachTableOfContents,
 	detachTableOfContents,
+	DISCOURSE_TOC_HEADING_SELECTOR,
 	DISCOURSE_TOC_MIN_HEADINGS,
 	findVisibleElementById,
 	RESEARCH_TOC_CONTENT_SELECTOR,
@@ -222,6 +223,37 @@ describe("scrollYToAlignHeading", () => {
 	});
 });
 
+function discourseTableOfContentsOptions() {
+	return {
+		contentSelector: ".interleaved-article",
+		headingSelector: DISCOURSE_TOC_HEADING_SELECTOR,
+		nestedTag: "H4",
+		minHeadings: DISCOURSE_TOC_MIN_HEADINGS,
+		requireNamed: true,
+		placement: "fixed" as const,
+		desktopNavId: "post-toc",
+		mobileNavId: "mobile-toc-nav",
+		mobileToggleId: "mobile-toc-toggle",
+		mobileOverlayId: "mobile-toc-overlay",
+		mobileCloseId: "mobile-toc-close",
+		activeClass: "has-toc",
+	};
+}
+
+function stubRect(top: number): DOMRect {
+	return {
+		top,
+		bottom: top + 20,
+		left: 0,
+		right: 0,
+		width: 0,
+		height: 20,
+		x: 0,
+		y: top,
+		toJSON: () => ({}),
+	} as DOMRect;
+}
+
 describe("attachTableOfContents scroll spy", () => {
 	function mountResearchReportToc() {
 		const dom = new JSDOM(
@@ -246,11 +278,13 @@ describe("attachTableOfContents scroll spy", () => {
 			document: globalThis.document,
 			localStorage: globalThis.localStorage,
 			requestAnimationFrame: globalThis.requestAnimationFrame,
+			HTMLElement: globalThis.HTMLElement,
 		};
 		globalThis.window = window as unknown as Window & typeof globalThis;
 		globalThis.document = window.document;
 		globalThis.localStorage = window.localStorage;
 		globalThis.AbortController = window.AbortController;
+		globalThis.HTMLElement = window.HTMLElement;
 		window.localStorage.setItem("layout", "split");
 		window.HTMLElement.prototype.checkVisibility = () => true;
 		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
@@ -268,6 +302,7 @@ describe("attachTableOfContents scroll spy", () => {
 				globalThis.document = previous.document;
 				globalThis.localStorage = previous.localStorage;
 				globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+				globalThis.HTMLElement = previous.HTMLElement;
 			},
 		};
 	}
@@ -317,6 +352,99 @@ describe("attachTableOfContents scroll spy", () => {
 			assert.equal(
 				nav.querySelector('a[href="#rh-two"]')?.classList.contains("active"),
 				true,
+			);
+		} finally {
+			ctx.restore();
+		}
+	});
+
+	function mountDiscourseSplitToc() {
+		const dom = new JSDOM(
+			`<!doctype html><html class="pali-on split"><body>
+				<nav id="post-toc"></nav>
+				<article class="interleaved-article" aria-hidden="true">
+					<h3 id="1-observing-the-body">1. Observing the Body</h3>
+					<h4 id="14-contemplating-the-disagreeable-in-the-body">1.4. Contemplating the Disagreeable in the Body</h4>
+				</article>
+				<div class="split-wrapper" aria-hidden="false">
+					<article id="panel1" class="split-panel">
+						<h3 id="1-observing-the-body">1. Observing the Body</h3>
+						<h4 id="14-contemplating-the-disagreeable-in-the-body">1.4. Contemplating the Disagreeable in the Body</h4>
+					</article>
+					<article id="panel2" class="split-panel"></article>
+				</div>
+			</body></html>`,
+			{ url: "https://example.test/mn/mn10/" },
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+			localStorage: globalThis.localStorage,
+			requestAnimationFrame: globalThis.requestAnimationFrame,
+			HTMLElement: globalThis.HTMLElement,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.localStorage = window.localStorage;
+		globalThis.AbortController = window.AbortController;
+		globalThis.HTMLElement = window.HTMLElement;
+		window.localStorage.setItem("layout", "split");
+		window.HTMLElement.prototype.checkVisibility = function () {
+			return !this.closest('[aria-hidden="true"]');
+		};
+		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+			cb(0);
+			return 1;
+		};
+		Object.defineProperty(window, "scrollY", { value: 0, writable: true, configurable: true });
+		Object.defineProperty(window, "innerWidth", { value: 1440, configurable: true });
+		window.scrollTo = () => {};
+		return {
+			window,
+			restore() {
+				detachTableOfContents("post-toc");
+				globalThis.window = previous.window;
+				globalThis.document = previous.document;
+				globalThis.localStorage = previous.localStorage;
+				globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+				globalThis.HTMLElement = previous.HTMLElement;
+			},
+		};
+	}
+
+	it("highlights the visible split-panel heading, not the hidden interleaved copy", () => {
+		const ctx = mountDiscourseSplitToc();
+		try {
+			assert.equal(attachTableOfContents(discourseTableOfContentsOptions()), true);
+			const nav = ctx.window.document.getElementById("post-toc");
+			assert.ok(nav);
+			assert.equal(nav.querySelectorAll("a").length, 2);
+
+			const panel = ctx.window.document.getElementById("panel1");
+			assert.ok(panel);
+			const one = panel.querySelector<HTMLElement>(
+				'[id="1-observing-the-body"]',
+			);
+			const two = panel.querySelector<HTMLElement>(
+				'[id="14-contemplating-the-disagreeable-in-the-body"]',
+			);
+			assert.ok(one && two);
+			one.getBoundingClientRect = () => stubRect(-400);
+			two.getBoundingClientRect = () => stubRect(40);
+
+			ctx.window.dispatchEvent(new ctx.window.Event("scroll"));
+			assert.equal(
+				nav
+					.querySelector('a[href="#14-contemplating-the-disagreeable-in-the-body"]')
+					?.classList.contains("active"),
+				true,
+			);
+			assert.equal(
+				nav
+					.querySelector('a[href="#1-observing-the-body"]')
+					?.classList.contains("active"),
+				false,
 			);
 		} finally {
 			ctx.restore();
