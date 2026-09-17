@@ -299,6 +299,16 @@ describe("followDockBottomInset", () => {
 			0,
 		);
 	});
+
+	it("extends the dock when Firefox reports a taller visual viewport", () => {
+		assert.equal(
+			followDockBottomInset({
+				innerHeight: 800,
+				visualViewport: { height: 860, offsetTop: 0 },
+			}),
+			-60,
+		);
+	});
 });
 
 describe("reportFollowDockRect", () => {
@@ -313,7 +323,21 @@ describe("reportFollowDockRect", () => {
 				visualViewport: { height: 740, offsetTop: 40 },
 				mobileCompact: true,
 			}),
-			{ left: 8 + lane, width: 360 - lane * 2, bottom: 0 },
+			{ left: 8 + lane, width: 360 - lane * 2, bottom: 60 },
+		);
+	});
+
+	it("pulls a compact mobile dock down when the visual viewport is taller", () => {
+		const lane = mobileReportDockFabLanePx(16);
+		assert.deepEqual(
+			reportFollowDockRect({
+				columnLeft: 8,
+				columnWidth: 360,
+				innerHeight: 800,
+				visualViewport: { height: 860, offsetTop: 0 },
+				mobileCompact: true,
+			}),
+			{ left: 8 + lane, width: 360 - lane * 2, bottom: -60 },
 		);
 	});
 

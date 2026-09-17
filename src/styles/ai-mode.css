@@ -2005,7 +2005,7 @@ body.ai-diagram-fullscreen-open {
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: var(--ai-follow-dock-bottom, 0px);
 	height: max(env(safe-area-inset-bottom, 0px), var(--ai-follow-radius));
 	background: transparent;
 	backdrop-filter: saturate(180%) blur(20px);

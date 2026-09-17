@@ -8824,6 +8824,7 @@ export function attachAiMode(options: {
 			followForm.style.removeProperty("right");
 			followForm.style.removeProperty("margin-inline");
 			followForm.style.removeProperty("bottom");
+			followForm.style.removeProperty("--ai-follow-dock-bottom");
 			return;
 		}
 		const column = thread.getBoundingClientRect();
@@ -8852,7 +8853,9 @@ export function attachAiMode(options: {
 		followForm.style.width = `${rect.width}px`;
 		followForm.style.right = "auto";
 		followForm.style.marginInline = "0";
-		followForm.style.bottom = rect.bottom > 0 ? `${rect.bottom}px` : "0px";
+		const bottom = `${rect.bottom}px`;
+		followForm.style.bottom = bottom;
+		followForm.style.setProperty("--ai-follow-dock-bottom", bottom);
 	}
 
 	function syncFollowComposerMode(): void {

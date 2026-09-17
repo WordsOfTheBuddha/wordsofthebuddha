@@ -353,7 +353,11 @@ export function findReportBlockElement(
 	return body.querySelectorAll<HTMLElement>(selector)[n - 1] || null;
 }
 
-/** Keep a body-docked follow bar flush when mobile chrome shrinks the visual viewport. */
+/**
+ * Align a body-fixed dock with the visual viewport bottom.
+ * Positive when mobile chrome shrinks the visual viewport; negative on Firefox
+ * Android when the visual viewport is taller than the layout viewport.
+ */
 export function followDockBottomInset(input: {
 	innerHeight: number;
 	visualViewport?: Pick<VisualViewport, "height" | "offsetTop"> | null;
@@ -361,7 +365,7 @@ export function followDockBottomInset(input: {
 	const vv = input.visualViewport;
 	if (!vv) return 0;
 	// offsetTop tracks page scroll and must not move a body-fixed dock.
-	return Math.max(0, Math.round(input.innerHeight - vv.height));
+	return Math.round(input.innerHeight - vv.height);
 }
 
 export const MOBILE_REPORT_DOCK_BREAKPOINT_PX = 640;
@@ -438,12 +442,10 @@ export function reportFollowDockRect(input: {
 	return {
 		left: input.columnLeft + lane,
 		width: Math.max(0, input.columnWidth - lane * 2),
-		bottom: input.mobileCompact
-			? 0
-			: followDockBottomInset({
-					innerHeight: input.innerHeight,
-					visualViewport: input.visualViewport,
-				}),
+		bottom: followDockBottomInset({
+			innerHeight: input.innerHeight,
+			visualViewport: input.visualViewport,
+		}),
 	};
 }
 
