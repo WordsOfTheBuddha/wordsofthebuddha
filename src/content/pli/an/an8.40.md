@@ -1,6 +1,6 @@
 ---
 title: Duccaritavipāka sutta - Result of Misconduct
-description: The Buddha explains the karmic results of breaking the five precepts and engaging in wrong speech. Even the lightest result brings specific corresponding suffering in a human birth, such as a short lifespan.
+description: The Buddha explains the karmic results of breaking the five precepts and engaging in wrong speech. Even the lightest result for a human being brings specific corresponding suffering, such as a short lifespan.
 qualities: slaughtering, stealing, sexual misconduct, wrong speech, consuming intoxicants, negligence
 theme: wisdom, cultivating discernment
 priority: 1.2

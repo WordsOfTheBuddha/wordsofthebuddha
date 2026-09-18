@@ -1,11 +1,10 @@
 ---
 title: Samiddhi sutta - With Samiddhi
-description: A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.
-qualities: sensual desire, mindfulness, clear awareness, suffering, conceit, imperturbable, discontentment, unwholesome, discernment
+description: Urged by a deity to enjoy youth before time passes, Samiddhi brings her inquiry to the Buddha, who reveals how anchoring in what can be named delivers beings into death’s yoke.
+qualities: sensual desire, mindfulness, clear awareness, suffering, conceit, imperturbable, discontentment, unwholesome, discernment, name
 theme: cultivating discernment, wisdom
 slug: sn1.20
 character: Venerable Samiddhi
-topic: sensual pleasures
 priority: 2
 ---
 

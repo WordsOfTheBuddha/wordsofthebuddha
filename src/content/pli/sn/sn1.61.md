@@ -1,9 +1,10 @@
 ---
 title: Nāma sutta - Name
-description: What has weighed down everything? Beyond what is there nothing further? What is the one thing that has everything under its sway?
+description: What overcomes everything? What is it that nothing excels? What is the one thing that has everything under its sway?
 qualities: name
-theme: principle, inspiration
+theme: wisdom, inspiration
 slug: sn1.61
+priority: 1.1
 ---
 
 “Kiṁsu sabbaṁ addhabhavi,
