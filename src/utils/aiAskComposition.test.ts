@@ -24,12 +24,26 @@ import {
 	compositionMarkerRegions,
 	stripCompositionChipMarkers,
 	sanitizeResearchContextImages,
+	compositionCollapsedDeleteChipIndex,
+	compositionEditDeleteSelection,
 	compositionMarkerRegion,
 	normalizeCompositionCaret,
 	compositionMarkerArrowAdjust,
 	parseResearchCompositionDraft,
 	serializeResearchCompositionDraft,
 	MAX_RESEARCH_CONTEXT_IMAGES,
+	MAX_RESEARCH_CONTEXT_IMAGES_TOTAL_BYTES,
+	RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG,
+	RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG,
+	RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG,
+	RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG,
+	RESEARCH_COMPOSITION_MAX_IMAGES_MSG,
+	RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG,
+	compositionImagesTotalBytes,
+	contextWasClipped,
+	formatCompositionImagesPartialAdd,
+	researchContextImageByteLength,
+	wouldExceedCompositionImageTotalBytes,
 } from "./aiAskComposition";
 import { RESEARCH_REVISE_INSTRUCTION_MAX } from "./aiAskResearchRevise";
 import { ASK_WRITER_MAX_TOKENS } from "./openrouter";
@@ -158,11 +172,89 @@ describe("aiAskComposition", () => {
 		const marked = `before${COMPOSITION_CONTEXT_CHIP_MARKER}${COMPOSITION_CHIP_PAD_CHAR.repeat(4)}after`;
 		const region = compositionMarkerRegion(marked);
 		assert.ok(region);
-		const inside = normalizeCompositionCaret(marked, region!.start + 2, region!.start + 2);
-		assert.equal(inside.start, region!.end);
+		const firstPad = normalizeCompositionCaret(
+			marked,
+			region!.start + 1,
+			region!.start + 1,
+		);
+		assert.equal(firstPad.start, region!.start);
+		const deeperPad = normalizeCompositionCaret(
+			marked,
+			region!.start + 3,
+			region!.start + 3,
+		);
+		assert.equal(deeperPad.start, region!.end);
 		assert.equal(
 			compositionMarkerArrowAdjust(marked, "ArrowLeft", region!.end, region!.end)?.start,
 			region!.start,
+		);
+		const inside = compositionMarkerArrowAdjust(
+			marked,
+			"ArrowLeft",
+			region!.start + 2,
+			region!.start + 2,
+		);
+		assert.equal(inside?.start, region!.start);
+	});
+
+	it("skips adjacent chips when moving the caret with arrow keys", () => {
+		const chip = `${COMPOSITION_CONTEXT_CHIP_MARKER}${COMPOSITION_CHIP_PAD_CHAR.repeat(2)}`;
+		const marked = `${chip}${chip}tail`;
+		const regions = compositionMarkerRegions(marked);
+		assert.equal(regions.length, 2);
+		const second = regions[1];
+		const leftFromBoundary = compositionMarkerArrowAdjust(
+			marked,
+			"ArrowLeft",
+			second.start,
+			second.start,
+		);
+		assert.equal(leftFromBoundary?.start, regions[0].start);
+		const rightFromBoundary = compositionMarkerArrowAdjust(
+			marked,
+			"ArrowRight",
+			regions[0].end,
+			regions[0].end,
+		);
+		assert.equal(rightFromBoundary?.start, second.end);
+	});
+
+	it("deletes chips intersecting a selection", () => {
+		const chip = `${COMPOSITION_CONTEXT_CHIP_MARKER}${COMPOSITION_CHIP_PAD_CHAR.repeat(3)}`;
+		const marked = `${chip}hello${chip}world`;
+		const first = compositionMarkerRegions(marked)[0];
+		const second = compositionMarkerRegions(marked)[1];
+		const all = compositionEditDeleteSelection(marked, 0, marked.length);
+		assert.equal(all?.value, "");
+		assert.equal(all?.caret, 0);
+		assert.deepEqual(all?.removedChipIndices, [0, 1]);
+		const partial = compositionEditDeleteSelection(
+			marked,
+			first.start,
+			first.end + 2,
+		);
+		assert.equal(partial?.value, "llo" + chip + "world");
+		assert.deepEqual(partial?.removedChipIndices, [0]);
+		const between = compositionEditDeleteSelection(
+			marked,
+			first.end,
+			second.start,
+		);
+		assert.equal(between, null);
+	});
+
+	it("maps collapsed delete keys to chip indices", () => {
+		const chip = `${COMPOSITION_CONTEXT_CHIP_MARKER}${COMPOSITION_CHIP_PAD_CHAR.repeat(2)}`;
+		const marked = `${chip}after`;
+		const region = compositionMarkerRegion(marked);
+		assert.ok(region);
+		assert.equal(
+			compositionCollapsedDeleteChipIndex(marked, region!.end, "backward"),
+			0,
+		);
+		assert.equal(
+			compositionCollapsedDeleteChipIndex(marked, region!.start, "forward"),
+			0,
 		);
 	});
 
@@ -200,6 +292,63 @@ describe("aiAskComposition", () => {
 			}),
 		);
 		assert.equal(parsed?.images.length, MAX_RESEARCH_CONTEXT_IMAGES);
+	});
+
+	it("detects when pasted context was clipped", () => {
+		const long = "word ".repeat(MAX_RESEARCH_CONTEXT_WORDS + 10);
+		const clipped = clipResearchContext(long);
+		assert.equal(contextWasClipped(long, clipped), true);
+		assert.equal(contextWasClipped("short note", "short note"), false);
+		assert.equal(contextWasClipped("short note", clipResearchContext("short note")), false);
+	});
+
+	it("exports attachment status messages", () => {
+		assert.equal(RESEARCH_COMPOSITION_MAX_IMAGES_MSG, "Max 4 images at a time.");
+		assert.match(
+			RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG,
+			/JPEG, PNG, WebP, and GIF/,
+		);
+		assert.equal(
+			RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG,
+			"That image is too large to attach.",
+		);
+		assert.equal(
+			RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG,
+			"Total attached image size is full.",
+		);
+		assert.match(RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG, /50,000 words/);
+		assert.equal(
+			RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG,
+			"That paste is too large to attach as notes.",
+		);
+	});
+
+	it("formats partial image add notices", () => {
+		assert.equal(
+			formatCompositionImagesPartialAdd(2),
+			"Added 2 images. Max 4 images at a time.",
+		);
+		assert.equal(
+			formatCompositionImagesPartialAdd(1),
+			"Added 1 image. Max 4 images at a time.",
+		);
+	});
+
+	it("tracks total attached image bytes", () => {
+		const image = { mime: "image/jpeg", data: "aGVsbG8=" };
+		assert.equal(researchContextImageByteLength(image), 5);
+		assert.equal(compositionImagesTotalBytes([image, image]), 10);
+		assert.equal(
+			wouldExceedCompositionImageTotalBytes(
+				[{ mime: "image/jpeg", data: "a".repeat(2_666_664) }],
+				500_000,
+			),
+			true,
+		);
+		assert.equal(
+			wouldExceedCompositionImageTotalBytes([], MAX_RESEARCH_CONTEXT_IMAGES_TOTAL_BYTES),
+			false,
+		);
 	});
 });
 

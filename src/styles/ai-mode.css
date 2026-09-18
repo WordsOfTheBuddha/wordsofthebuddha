@@ -2055,6 +2055,11 @@ body.ai-diagram-fullscreen-open {
 	display: none !important;
 }
 
+/* Inline clipboard chips only belong in the expanded composer. */
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composition-inline-layer {
+	display: none !important;
+}
+
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-box-bar,
 .ai-mode.is-research-gated .ai-composer .ai-box-bar {
 	min-height: 0;

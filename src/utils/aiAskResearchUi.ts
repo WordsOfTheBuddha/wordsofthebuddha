@@ -41,8 +41,7 @@ export const ASK_FOLLOW_PLACEHOLDER = "Follow up in this conversation";
 export const RESEARCH_FOLLOW_PLACEHOLDER = "Follow up with a wider search";
 export const RESEARCH_REVISE_PLACEHOLDER = "Revise this report";
 export const RESEARCH_REVISE_SELECTION_PLACEHOLDER = "What should change here?";
-export const RESEARCH_ASK_WITHOUT_EDITING = "Ask a follow-up instead";
-export const RESEARCH_REVISE_INSTEAD = "Revise this report instead";
+export const RESEARCH_NEW_REPORT_ACTION = "+ New Research";
 export const RESEARCH_REVISE_CLEAR = "Clear";
 export const RESEARCH_REVISE_REMOVE_EDIT = "Remove edit";
 export const RESEARCH_REVISE_MULTI_HINT =
@@ -136,6 +135,21 @@ export const RESEARCH_PIN_ACTION = "Pin this report";
 export const RESEARCH_UNPIN_ACTION = "Unpin this report";
 export const RESEARCH_DELETE_ACTION = "Delete this report";
 
+/** Finished research report — keeps Share / Download after follow-up Asks. */
+export function isFinishedResearchReportTurn(input: {
+	pending?: boolean;
+	error?: string;
+	research?: boolean;
+	hasReport?: boolean;
+}): boolean {
+	return (
+		input.research === true &&
+		input.hasReport === true &&
+		input.pending !== true &&
+		!Boolean((input.error || "").trim())
+	);
+}
+
 /** Pin / Share / Delete on an open Ask or Research turn. */
 export function openAskTurnActionFlags(input: {
 	pending?: boolean;
@@ -160,6 +174,13 @@ export function openAskTurnActionFlags(input: {
 	const fromSample = input.fromSample === true;
 	const hasHits = input.resultCount > 0;
 	const jobId = (input.researchJobId || "").trim();
+	const finishedReport = isFinishedResearchReportTurn({
+		pending,
+		error: input.error,
+		research: input.research,
+		hasReport: input.hasReport,
+	});
+	const showReportExportActions = input.isTip || finishedReport;
 	const showPin = !pending && !error && input.isPinnableTip === true;
 	// Research jobs are keyed by id — empty / failed reports still need Delete.
 	const showDelete =
@@ -172,12 +193,12 @@ export function openAskTurnActionFlags(input: {
 	const showShare =
 		!pending &&
 		!error &&
-		input.isTip &&
+		showReportExportActions &&
 		(hasHits || input.hasReport === true);
 	const showDownload =
 		!pending &&
 		!error &&
-		input.isTip &&
+		showReportExportActions &&
 		input.research === true &&
 		(hasHits || input.hasReport === true);
 	return { showPin, showDelete, showShare, showDownload };
@@ -242,20 +263,14 @@ export function askFollowPlaceholder(input: {
 	return ASK_FOLLOW_PLACEHOLDER;
 }
 
-/** On a finished report, the meta toggle switches Revise ↔ Ask follow-up. */
-export function reportFollowToggleLabel(askMode: boolean): string {
-	return askMode ? RESEARCH_REVISE_INSTEAD : RESEARCH_ASK_WITHOUT_EDITING;
-}
-
 /** Finished report + chip off → Revise (Ask credit), not a new Research hop. */
 export function shouldReviseResearchFollow(input: {
 	lastTurnResearch: boolean;
 	lastTurnPending: boolean;
 	hasReport: boolean;
 	researchChipOn: boolean;
-	forceAsk?: boolean;
 }): boolean {
-	if (input.forceAsk || input.researchChipOn || input.lastTurnPending) {
+	if (input.researchChipOn || input.lastTurnPending) {
 		return false;
 	}
 	return input.lastTurnResearch && input.hasReport;
@@ -281,7 +296,7 @@ export function followComposerFocusShouldExpand(
 export function followComposerClickShouldExpand(target: Element | null): boolean {
 	if (!target?.closest(".ai-box")) return false;
 	return !target.closest(
-		"[data-ai-stop], .ai-send-stop, [data-ai-mic], [data-ai-research-chip], .ai-revise-clear, .ai-revise-row-remove, .ai-revise-row-instruction",
+		"[data-ai-stop], .ai-send-stop, [data-ai-mic], [data-ai-research-chip], .ai-revise-clear, .ai-revise-row-remove, .ai-revise-row-instruction, .ai-composition-inline-chip, .ai-composition-inline-layer, .ai-composition-clear",
 	);
 }
 

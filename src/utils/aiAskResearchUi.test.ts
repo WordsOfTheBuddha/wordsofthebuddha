@@ -53,6 +53,7 @@ import {
 	canShowResearchChip,
 	isAskResearchEnabled,
 	askHistoryCardMenuFlags,
+	isFinishedResearchReportTurn,
 	openAskTurnActionFlags,
 	RESEARCH_EMAIL_PENDING_NOTE,
 	researchHistoryTimestamp,
@@ -86,7 +87,7 @@ import {
 	isResearchReviseInProgress,
 	askSampleFollowDock,
 	researchReportFollowChrome,
-	reportFollowToggleLabel,
+	RESEARCH_NEW_REPORT_ACTION,
 	RESEARCH_SIGNED_OUT_PLACEHOLDER,
 	SEARCH_TERMS_SOURCING_LABEL,
 	dedupeSourcingSearchTerms,
@@ -135,10 +136,9 @@ describe("askFollowPlaceholder", () => {
 	});
 });
 
-describe("reportFollowToggleLabel", () => {
-	it("switches between Ask a follow-up instead and Revise this report instead", () => {
-		assert.equal(reportFollowToggleLabel(false), "Ask a follow-up instead");
-		assert.equal(reportFollowToggleLabel(true), "Revise this report instead");
+describe("RESEARCH_NEW_REPORT_ACTION", () => {
+	it("labels the link to start a fresh report", () => {
+		assert.equal(RESEARCH_NEW_REPORT_ACTION, "+ New Research");
 	});
 });
 
@@ -207,6 +207,22 @@ describe("followComposerClickShouldExpand", () => {
 		).window;
 		const row = document.querySelector(".ai-revise-row-instruction")!;
 		assert.equal(followComposerClickShouldExpand(row), false);
+	});
+
+	it("does not expand when clicking a clipboard context chip", () => {
+		const { document } = new JSDOM(
+			`<!doctype html><body>
+				<div class="ai-box">
+					<span class="ai-composition-inline-chip">
+						<button type="button" class="ai-composition-clear">×</button>
+					</span>
+				</div>
+			</body></html>`,
+		).window;
+		const chip = document.querySelector(".ai-composition-inline-chip")!;
+		const clear = document.querySelector(".ai-composition-clear")!;
+		assert.equal(followComposerClickShouldExpand(chip), false);
+		assert.equal(followComposerClickShouldExpand(clear), false);
 	});
 });
 
@@ -413,7 +429,7 @@ describe("researchEmptyComposerGated", () => {
 });
 
 describe("shouldReviseResearchFollow", () => {
-	it("revises a finished report unless Research or Ask-without-editing is on", () => {
+	it("revises a finished report unless Research is on again", () => {
 		assert.equal(
 			shouldReviseResearchFollow({
 				lastTurnResearch: true,
@@ -429,16 +445,6 @@ describe("shouldReviseResearchFollow", () => {
 				lastTurnPending: false,
 				hasReport: true,
 				researchChipOn: true,
-			}),
-			false,
-		);
-		assert.equal(
-			shouldReviseResearchFollow({
-				lastTurnResearch: true,
-				lastTurnPending: false,
-				hasReport: true,
-				researchChipOn: false,
-				forceAsk: true,
 			}),
 			false,
 		);
@@ -738,6 +744,20 @@ describe("openAskTurnActionFlags", () => {
 			}).showDownload,
 			false,
 		);
+	});
+
+	it("keeps Share and Download on a finished report that is no longer the tip", () => {
+		const flags = openAskTurnActionFlags({
+			isTip: false,
+			research: true,
+			researchJobId: "job-report",
+			resultCount: 4,
+			hasReport: true,
+			isPinnableTip: false,
+		});
+		assert.equal(flags.showShare, true);
+		assert.equal(flags.showDownload, true);
+		assert.equal(flags.showDelete, false);
 	});
 
 	it("shows Delete on a failed Research job", () => {

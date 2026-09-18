@@ -40,11 +40,14 @@ import {
 	compositionMarkerArrowAdjust,
 	clipResearchContext,
 	compositionChipPadCount,
+	compositionCollapsedDeleteChipIndex,
 	compositionContextInsertPosition,
+	compositionEditDeleteSelection,
 	compositionLineStart,
 	compositionMarkerIndices,
 	compositionMarkerPadLength,
 	compositionMarkerRegions,
+	contextWasClipped,
 	insertCompositionContextClip,
 	mergeCompositionContexts,
 	countContextWords,
@@ -56,19 +59,30 @@ import {
 	MAX_RESEARCH_CONTEXT_IMAGE_BYTES,
 	normalizeCompositionCaret,
 	parseResearchCompositionDraft,
+	RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG,
+	RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG,
+	RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG,
+	RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG,
+	RESEARCH_COMPOSITION_MAX_IMAGES_MSG,
+	RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG,
 	RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY,
+	researchContextImageByteLength,
 	researchContextPreview,
 	serializeResearchCompositionDraft,
 	shouldAttachPasteAsCompositionContext,
+	formatAttachedMaterialBlock,
 	sanitizeResearchContextImages,
 	stripCompositionChipMarkers,
+	wouldExceedCompositionImageTotalBytes,
 	type ResearchCompositionDraft,
 	type ResearchContextImage,
 } from "./aiAskComposition";
 import {
 	ASK_COMPOSER_TEXTAREA_MAX_PX,
 	clipAiQuestion,
+	MAX_ASK_CONTEXT_CHARS,
 	MAX_QUESTION_CHARS,
+	maxAskQuestionChars,
 } from "./aiAskQuestionText";
 import {
 	changedReportBlockKeys,
@@ -226,6 +240,7 @@ import {
 	applyAskButtonFeedback,
 	flashAskButtonFeedback,
 	isIncompleteResearchTurn,
+	isFinishedResearchReportTurn,
 	openAskTurnActionFlags,
 	readAskButtonIdle,
 	researchHistoryCardStatsLabel,
@@ -243,11 +258,12 @@ import {
 	followComposerShouldExpand,
 	isMobileReportDockCompact,
 	isMobileReportDockExpanded,
+	MOBILE_REPORT_DOCK_BREAKPOINT_PX,
 	reportFollowDockRect,
 	askSampleFollowDock,
 	researchReportFollowChrome,
 	researchEmptyComposerGated,
-	reportFollowToggleLabel,
+	RESEARCH_NEW_REPORT_ACTION,
 	RESEARCH_SIGNED_OUT_PLACEHOLDER,
 	SEARCH_TERMS_SOURCING_LABEL,
 	dedupeSourcingSearchTerms,
@@ -1598,7 +1614,7 @@ function reviseComposerTextareaUncapped(el: HTMLTextAreaElement): boolean {
 }
 
 function fitTextarea(el: HTMLTextAreaElement): void {
-	el.style.height = "auto";
+	el.style.height = "0px";
 	const cap = reviseComposerTextareaUncapped(el)
 		? REVISE_COMPOSER_TEXTAREA_MAX_PX
 		: ASK_COMPOSER_TEXTAREA_MAX_PX;
@@ -2472,6 +2488,12 @@ export function attachAiMode(options: {
 	const compositionImageCaps = [
 		...root.querySelectorAll<HTMLElement>("[data-ai-composition-images-cap]"),
 	];
+	const compositionImageAttachButtons = [
+		...root.querySelectorAll<HTMLButtonElement>("[data-ai-composition-image]"),
+	];
+	const compositionImageInput = root.querySelector<HTMLInputElement>(
+		"[data-ai-composition-image-input]",
+	);
 	const reviseScope = root.querySelector<HTMLElement>("[data-ai-revise-scope]");
 	const reviseStackEl = root.querySelector<HTMLElement>("[data-ai-revise-stack]");
 	const reviseCapNoteEl = root.querySelector<HTMLElement>("[data-ai-revise-cap-note]");
@@ -2551,6 +2573,7 @@ export function attachAiMode(options: {
 	let compositionImagesLoading = 0;
 	let compositionContextTextarea: HTMLTextAreaElement | null = null;
 	let compositionMutating = false;
+	let compositionDeleteHandledThisTick = false;
 	let compositionDraftHydrated = false;
 	let storedResearchCompositionDraft: ResearchCompositionDraft | null | undefined;
 	/** Images from the last Research submit, restored on cancel/stop. */
@@ -2565,11 +2588,20 @@ export function attachAiMode(options: {
 			layer: HTMLDivElement;
 		}
 	>();
+	let inlineContextChipSyncRaf = 0;
+	let pendingInlineContextChipTarget: HTMLTextAreaElement | null | undefined;
+	let compositionChipSyncAfterPinTimer = 0;
+	let pendingCompositionChipRelayout = false;
+	let wasFollowDockExpanded = false;
+	let lastFollowDockPinWidth = 0;
+	const compositionLayoutWidthByTextarea = new WeakMap<
+		HTMLTextAreaElement,
+		number
+	>();
 	let researchPollTimer = 0;
 	let researchPollHiddenCleanup: (() => void) | null = null;
 	let reviseEditDraft: ResearchReviseEditDraft = emptyReviseEditDraft();
 	let lastReviseEditDraft: ResearchReviseEditDraft = emptyReviseEditDraft();
-	let followAskMode = false;
 	let followComposerPinnedOpen = false;
 	/** After Stop, keep the dock compact until the reader taps to expand. */
 	let followComposerHoldCompact = false;
@@ -2646,11 +2678,133 @@ export function attachAiMode(options: {
 		}
 	}
 
-	function setStatus(text: string): void {
-		statuses.forEach((el) => {
+	function followDockCompact(): boolean {
+		return Boolean(
+			root.classList.contains("is-report-dock") &&
+				followForm &&
+				!followForm.hidden &&
+				!root.classList.contains("is-follow-expanded"),
+		);
+	}
+
+	function followComposerScrollBody(): HTMLElement | null {
+		if (!followForm?.classList.contains("is-follow-expanded")) return null;
+		return followForm.querySelector<HTMLElement>(".ai-composer-body");
+	}
+
+	let lockedFollowComposerScrollTop: number | null = null;
+	let followComposerScrollAnchor: number | null = null;
+	let followComposerScrollLockDepth = 0;
+	let followComposerScrollUnlockRaf = 0;
+
+	function armFollowComposerScrollAnchor(): void {
+		const body = followComposerScrollBody();
+		if (body) followComposerScrollAnchor = body.scrollTop;
+	}
+
+	function releaseFollowComposerScrollAnchor(): void {
+		followComposerScrollAnchor = null;
+	}
+
+	function beginFollowComposerScrollLock(): void {
+		if (followComposerScrollLockDepth === 0) {
+			const body = followComposerScrollBody();
+			const top = body?.scrollTop ?? null;
+			lockedFollowComposerScrollTop = top;
+			if (top !== null) followComposerScrollAnchor = top;
+		}
+		followComposerScrollLockDepth += 1;
+	}
+
+	function restoreFollowComposerScroll(): void {
+		const body = followComposerScrollBody();
+		const top = lockedFollowComposerScrollTop ?? followComposerScrollAnchor;
+		if (body && top !== null) {
+			body.scrollTop = top;
+		}
+	}
+
+	function scheduleFollowComposerScrollRestore(frames = 12): void {
+		if (followComposerScrollUnlockRaf) {
+			cancelAnimationFrame(followComposerScrollUnlockRaf);
+		}
+		let remaining = frames;
+		const tick = () => {
+			restoreFollowComposerScroll();
+			remaining -= 1;
+			if (remaining > 0) {
+				followComposerScrollUnlockRaf = requestAnimationFrame(tick);
+			} else {
+				followComposerScrollUnlockRaf = 0;
+				lockedFollowComposerScrollTop = null;
+				if (!compositionChipSyncAfterPinTimer) {
+					releaseFollowComposerScrollAnchor();
+				}
+			}
+		};
+		followComposerScrollUnlockRaf = requestAnimationFrame(tick);
+	}
+
+	function endFollowComposerScrollLock(): void {
+		followComposerScrollLockDepth = Math.max(0, followComposerScrollLockDepth - 1);
+		restoreFollowComposerScroll();
+		if (followComposerScrollLockDepth > 0) return;
+		if (lockedFollowComposerScrollTop === null && followComposerScrollAnchor === null) {
+			return;
+		}
+		scheduleFollowComposerScrollRestore();
+	}
+
+	/** Keep expanded revise compose from jumping to the top during chip layout. */
+	function preserveFollowComposerScroll<T>(run: () => T): T {
+		beginFollowComposerScrollLock();
+		try {
+			return run();
+		} finally {
+			endFollowComposerScrollLock();
+		}
+	}
+
+	function setComposerSelection(
+		textarea: HTMLTextAreaElement,
+		start: number,
+		end = start,
+	): void {
+		const bodyScroll = followComposerScrollBody()?.scrollTop ?? null;
+		const textareaScroll = textarea.scrollTop;
+		textarea.setSelectionRange(start, end);
+		textarea.scrollTop = textareaScroll;
+		if (bodyScroll !== null) {
+			const body = followComposerScrollBody();
+			if (body) body.scrollTop = bodyScroll;
+		}
+	}
+
+	let deferredStatus = "";
+
+	function setStatus(text: string, options?: { showInCompactDock?: boolean }): void {
+		const showInCompact = options?.showInCompactDock ?? false;
+		const compact = followDockCompact();
+		if (text && compact && !showInCompact) {
+			deferredStatus = text;
+			for (const el of statuses) {
+				el.textContent = text;
+				el.hidden = true;
+			}
+			return;
+		}
+		deferredStatus = "";
+		for (const el of statuses) {
 			el.textContent = text;
 			el.hidden = !text;
-		});
+		}
+	}
+
+	function flushDeferredStatus(): void {
+		if (!deferredStatus || followDockCompact()) return;
+		const pending = deferredStatus;
+		deferredStatus = "";
+		setStatus(pending);
 	}
 
 	function currentReturnTo(): string {
@@ -2671,8 +2825,44 @@ export function attachAiMode(options: {
 	): void {
 		if (next) quota = next;
 		if (nextResearch !== undefined) researchQuota = nextResearch;
+		syncComposerMaxLength();
 		syncResearchChip();
 		if (turns.length === 0) syncLayout();
+	}
+
+	function syncComposerMaxLength(): void {
+		const max = maxAskQuestionChars(Boolean(quota?.signedIn));
+		if (input) input.maxLength = max;
+		syncFollowInputMaxLength();
+	}
+
+	function questionCharLimitForTextarea(textarea: HTMLTextAreaElement): number {
+		if (reviseFollowActive() && textarea === followInput) {
+			return RESEARCH_REVISE_INSTRUCTION_MAX;
+		}
+		return maxAskQuestionChars(Boolean(quota?.signedIn));
+	}
+
+	function askContextPasteEnabled(textarea: HTMLTextAreaElement): boolean {
+		if (!quota?.signedIn) return false;
+		if (researchPaneOn()) return false;
+		if (reviseFollowActive()) return false;
+		if (textarea === followInput && lastFinishedReportTurn()) return false;
+		return textarea === input || textarea === followInput;
+	}
+
+	function compositionContextPasteEnabled(
+		textarea: HTMLTextAreaElement,
+	): boolean {
+		return (
+			researchCompositionEnabled() || askContextPasteEnabled(textarea)
+		);
+	}
+
+	function buildAskSubmitQuestion(question: string): string {
+		const context = mergedCompositionContext();
+		if (!context.trim()) return question;
+		return `${question}${formatAttachedMaterialBlock(context)}`;
 	}
 
 	function researchUiOn(): boolean {
@@ -2904,7 +3094,6 @@ export function attachAiMode(options: {
 			lastTurnPending: Boolean(last?.pending),
 			hasReport: Boolean((last?.report || "").trim()),
 			researchChipOn: followResearchChipOn(),
-			forceAsk: followAskMode,
 		});
 	}
 
@@ -2939,20 +3128,6 @@ export function attachAiMode(options: {
 					reviseFollowActive() ||
 					Boolean(lastFinishedReportTurn()?.research)),
 		);
-	}
-
-	function expandFollowComposerForCompositionDrop(): void {
-		if (
-			!followForm ||
-			followForm.hidden ||
-			!root.classList.contains("is-report-dock") ||
-			root.classList.contains("is-follow-expanded")
-		) {
-			return;
-		}
-		followComposerHoldCompact = false;
-		followComposerPinnedOpen = true;
-		syncFollowComposerMode();
 	}
 
 	function clearCompositionAttachments(options?: {
@@ -3130,44 +3305,115 @@ export function attachAiMode(options: {
 	}
 
 	function guardCompositionSelection(textarea: HTMLTextAreaElement): void {
+		if (compositionMutating) return;
 		const start = textarea.selectionStart ?? 0;
 		const end = textarea.selectionEnd ?? start;
 		const next = normalizeCompositionCaret(textarea.value, start, end);
 		if (next.start !== start || next.end !== end) {
-			textarea.setSelectionRange(next.start, next.end);
+			setComposerSelection(textarea, next.start, next.end);
 		}
+	}
+
+	function applyCompositionDeleteEdit(
+		textarea: HTMLTextAreaElement,
+		selStart: number,
+		selEnd: number,
+	): boolean {
+		if (selStart === selEnd) return false;
+		const edit = compositionEditDeleteSelection(
+			textarea.value,
+			selStart,
+			selEnd,
+		);
+		if (!edit) return false;
+		armFollowComposerScrollAnchor();
+		compositionMutating = true;
+		try {
+			textarea.value = edit.value;
+			for (const chipIndex of [...edit.removedChipIndices].sort((a, b) => b - a)) {
+				compositionContexts = compositionContexts.filter(
+					(_, index) => index !== chipIndex,
+				);
+			}
+			if (compositionContexts.length === 0) {
+				compositionContextTextarea = null;
+			}
+			setComposerSelection(textarea, edit.caret, edit.caret);
+			fitTextarea(textarea);
+			if (textarea === followInput) clipFollowInputValue();
+			syncCompositionTray();
+		} finally {
+			compositionMutating = false;
+		}
+		syncInlineContextChip(textarea);
+		persistResearchCompositionDraft();
+		return true;
+	}
+
+	function handleCompositionDelete(
+		textarea: HTMLTextAreaElement,
+		inputType: string,
+	): boolean {
+		if (compositionDeleteHandledThisTick) return true;
+		const regions = compositionMarkerRegions(textarea.value);
+		if (regions.length === 0) return false;
+		const selStart = textarea.selectionStart ?? 0;
+		const selEnd = textarea.selectionEnd ?? selStart;
+		const backward =
+			inputType === "Backspace" || inputType === "deleteContentBackward";
+		const forward =
+			inputType === "Delete" || inputType === "deleteContentForward";
+
+		if (selStart === selEnd) {
+			if (!backward && !forward) return false;
+			const chipIndex = compositionCollapsedDeleteChipIndex(
+				textarea.value,
+				selStart,
+				backward ? "backward" : "forward",
+			);
+			if (chipIndex === null) return false;
+			removeCompositionContextAt(textarea, chipIndex);
+			persistResearchCompositionDraft();
+			compositionDeleteHandledThisTick = true;
+			requestAnimationFrame(() => {
+				compositionDeleteHandledThisTick = false;
+			});
+			return true;
+		}
+
+		const handled = applyCompositionDeleteEdit(textarea, selStart, selEnd);
+		if (handled) {
+			compositionDeleteHandledThisTick = true;
+			requestAnimationFrame(() => {
+				compositionDeleteHandledThisTick = false;
+			});
+		}
+		return handled;
 	}
 
 	function handleCompositionMarkerKeydown(
 		event: KeyboardEvent,
 		textarea: HTMLTextAreaElement,
 	): void {
-		const regions = compositionMarkerRegions(textarea.value);
-		if (regions.length === 0) return;
-		const start = textarea.selectionStart ?? 0;
-		const end = textarea.selectionEnd ?? start;
-		const arrow = compositionMarkerArrowAdjust(
-			textarea.value,
-			event.key === "ArrowLeft" ? "ArrowLeft" : "ArrowRight",
-			start,
-			end,
-		);
-		if (arrow) {
-			event.preventDefault();
-			textarea.setSelectionRange(arrow.start, arrow.end);
+		if (compositionMarkerRegions(textarea.value).length === 0) return;
+		if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+			const start = textarea.selectionStart ?? 0;
+			const end = textarea.selectionEnd ?? start;
+			const arrow = compositionMarkerArrowAdjust(
+				textarea.value,
+				event.key,
+				start,
+				end,
+			);
+			if (arrow) {
+				event.preventDefault();
+				setComposerSelection(textarea, arrow.start, arrow.end);
+			}
 			return;
 		}
 		if (event.key === "Backspace" || event.key === "Delete") {
-			for (const region of regions) {
-				const touchesMarker =
-					(start < region.end && end > region.start) ||
-					(event.key === "Backspace" && start === end && start === region.end);
-				if (!touchesMarker) continue;
+			if (handleCompositionDelete(textarea, event.key)) {
 				event.preventDefault();
-				if (event.key === "Backspace" && start === end && start === region.end) {
-					textarea.setSelectionRange(region.start, region.start);
-				}
-				return;
 			}
 		}
 	}
@@ -3210,7 +3456,7 @@ export function attachAiMode(options: {
 			start > markerIndex ? Math.max(markerIndex, start - removed) : start;
 		const nextEnd =
 			end > markerIndex ? Math.max(markerIndex, end - removed) : end;
-		textarea.setSelectionRange(nextStart, nextEnd);
+		setComposerSelection(textarea, nextStart, nextEnd);
 		fitTextarea(textarea);
 	}
 
@@ -3218,16 +3464,28 @@ export function attachAiMode(options: {
 		textarea: HTMLTextAreaElement,
 		chipIndex: number,
 	): void {
-		removeCompositionContextMarkerAt(textarea, chipIndex);
-		compositionContexts = compositionContexts.filter((_, index) => index !== chipIndex);
-		if (compositionContexts.length === 0) {
-			compositionContextTextarea = null;
-		}
-		syncCompositionTray();
+		armFollowComposerScrollAnchor();
+		preserveFollowComposerScroll(() => {
+			compositionMutating = true;
+			try {
+				removeCompositionContextMarkerAt(textarea, chipIndex);
+				compositionContexts = compositionContexts.filter(
+					(_, index) => index !== chipIndex,
+				);
+				if (compositionContexts.length === 0) {
+					compositionContextTextarea = null;
+				}
+				syncCompositionTray();
+			} finally {
+				compositionMutating = false;
+			}
+			syncInlineContextChip(textarea);
+		});
 	}
 
 	function measureComposerCharWidth(textarea: HTMLTextAreaElement): number {
 		const host = ensureCompositionMirrorHost(textarea);
+		applyMirrorTypography(textarea, host.mirror);
 		const probe = document.createElement("span");
 		probe.textContent = COMPOSITION_CHIP_PAD_CHAR;
 		host.mirror.append(probe);
@@ -3292,11 +3550,11 @@ export function attachAiMode(options: {
 		const end = textarea.selectionEnd ?? start;
 		const nextStart = start > index ? start + 1 : start;
 		const nextEnd = end > index ? end + 1 : end;
-		textarea.setSelectionRange(nextStart, nextEnd);
+		setComposerSelection(textarea, nextStart, nextEnd);
 		fitTextarea(textarea);
 		if (textarea === followInput) {
 			clipFollowInputValue();
-			syncFollowComposerMode();
+			if (!compositionMutating) syncFollowComposerMode();
 		}
 		return index + 1;
 	}
@@ -3468,11 +3726,18 @@ export function attachAiMode(options: {
 		textarea: HTMLTextAreaElement,
 		mirror: HTMLDivElement,
 		chipWidths: readonly number[],
+		allowPadShrink = false,
 	): void {
 		for (let pass = 0; pass < 8; pass++) {
 			reflowAllCompositionChipLineWraps(textarea, mirror, chipWidths);
 			for (let index = 0; index < chipWidths.length; index++) {
-				fitCompositionChipPad(textarea, mirror, index, chipWidths[index]);
+				fitCompositionChipPad(
+					textarea,
+					mirror,
+					index,
+					chipWidths[index],
+					allowPadShrink,
+				);
 			}
 			let needsAnotherPass = false;
 			for (let index = 0; index < chipWidths.length; index++) {
@@ -3512,7 +3777,7 @@ export function attachAiMode(options: {
 		const delta = padCount - existingPad;
 		const nextStart = start > markerIndex ? start + delta : start;
 		const nextEnd = end > markerIndex ? end + delta : end;
-		textarea.setSelectionRange(nextStart, nextEnd);
+		setComposerSelection(textarea, nextStart, nextEnd);
 	}
 
 	function measureRenderedChipSlotWidth(
@@ -3534,12 +3799,17 @@ export function attachAiMode(options: {
 		mirror: HTMLDivElement,
 		chipIndex: number,
 		chipWidth: number,
+		allowPadShrink = false,
 	): number {
 		const markerIndex = compositionMarkerIndices(textarea.value)[chipIndex];
 		if (markerIndex === undefined) return 0;
 		const existingPad = compositionMarkerPadLength(textarea.value, markerIndex);
 		const charWidth = measureComposerCharWidth(textarea);
-		let padCount = compositionChipPadCount(chipWidth, charWidth, existingPad);
+		let padCount = compositionChipPadCount(
+			chipWidth,
+			charWidth,
+			allowPadShrink ? 0 : existingPad,
+		);
 		const maxPad = Math.max(240, padCount + 32);
 		while (padCount <= maxPad) {
 			applyCompositionChipPad(textarea, markerIndex, padCount);
@@ -3597,8 +3867,8 @@ export function attachAiMode(options: {
 			markerAfter +
 			COMPOSITION_CONTEXT_CHIP_MARKER.length +
 			compositionMarkerPadLength(textarea.value, markerAfter);
-		textarea.setSelectionRange(cursor, cursor);
-		textarea.focus();
+		setComposerSelection(textarea, cursor, cursor);
+		textarea.focus({ preventScroll: true });
 		syncInlineContextChip(textarea);
 	}
 
@@ -3664,6 +3934,24 @@ export function attachAiMode(options: {
 		wrap.append(mirrorHost, textarea, layer);
 		const host = { mirror, mirrorHost, layer };
 		compositionMirrorHosts.set(textarea, host);
+		layer.addEventListener(
+			"pointerdown",
+			(event) => {
+				const target = event.target;
+				if (!(target instanceof Element)) return;
+				if (!target.closest(".ai-composition-clear")) return;
+				const chip = target.closest(".ai-composition-inline-chip");
+				if (!chip) return;
+				event.preventDefault();
+				event.stopPropagation();
+				const chips = [
+					...layer.querySelectorAll<HTMLElement>(".ai-composition-inline-chip"),
+				];
+				const index = chips.indexOf(chip as HTMLElement);
+				if (index >= 0) removeCompositionContextAt(textarea, index);
+			},
+			true,
+		);
 		const allowCompositionDrop = (event: Event): void => {
 			if (!compositionDropEnabled()) return;
 			event.preventDefault();
@@ -3682,8 +3970,7 @@ export function attachAiMode(options: {
 		wrap.addEventListener("dragover", allowCompositionDrop);
 		wrap.addEventListener("drop", allowCompositionDrop);
 		textarea.addEventListener("scroll", () => {
-			mirrorHost.scrollTop = textarea.scrollTop;
-			syncInlineContextChip(textarea);
+			repositionInlineContextChips(textarea);
 		});
 		textarea.addEventListener("input", () => {
 			if (compositionMutating) return;
@@ -3703,6 +3990,20 @@ export function attachAiMode(options: {
 				handleCompositionMarkerKeydown(event, textarea);
 			}
 		});
+		textarea.addEventListener("beforeinput", (event) => {
+			if (compositionMutating) return;
+			if (!(event instanceof InputEvent)) return;
+			const deleteTypes = new Set([
+				"deleteContentBackward",
+				"deleteContentForward",
+				"deleteByCut",
+				"deleteContent",
+			]);
+			if (!deleteTypes.has(event.inputType)) return;
+			if (handleCompositionDelete(textarea, event.inputType)) {
+				event.preventDefault();
+			}
+		});
 		textarea.addEventListener("mouseup", () => {
 			guardCompositionSelection(textarea);
 		});
@@ -3717,72 +4018,209 @@ export function attachAiMode(options: {
 		return host;
 	}
 
-	function syncInlineContextChip(textarea?: HTMLTextAreaElement | null): void {
+	function compositionLayoutWidthChanged(textarea: HTMLTextAreaElement): boolean {
+		const width = textarea.clientWidth;
+		if (width < 1) return false;
+		const previous = compositionLayoutWidthByTextarea.get(textarea);
+		compositionLayoutWidthByTextarea.set(textarea, width);
+		if (previous === undefined) return false;
+		return Math.abs(width - previous) > 6;
+	}
+
+	function resetCompositionChipPads(textarea: HTMLTextAreaElement): void {
+		compositionMutating = true;
+		try {
+			for (const markerIndex of compositionMarkerIndices(textarea.value)) {
+				applyCompositionChipPad(textarea, markerIndex, 1);
+			}
+		} finally {
+			compositionMutating = false;
+		}
+	}
+
+	function scheduleCompositionChipSyncAfterDockPin(): void {
+		if (followDockCompact()) {
+			releaseFollowComposerScrollAnchor();
+			return;
+		}
+		const textarea = compositionContextTextarea;
+		if (!textarea || compositionContexts.length === 0) {
+			releaseFollowComposerScrollAnchor();
+			return;
+		}
+		const width = textarea.clientWidth;
+		const previous = compositionLayoutWidthByTextarea.get(textarea);
+		const widthChanged =
+			width >= 1 &&
+			previous !== undefined &&
+			Math.abs(width - previous) > 6;
+		const relayout = pendingCompositionChipRelayout || widthChanged;
+		if (!relayout && width >= 1) {
+			repositionInlineContextChips(textarea);
+			releaseFollowComposerScrollAnchor();
+			return;
+		}
+		window.clearTimeout(compositionChipSyncAfterPinTimer);
+		const delay =
+			window.innerWidth <= MOBILE_REPORT_DOCK_BREAKPOINT_PX ? 120 : 16;
+		compositionChipSyncAfterPinTimer = window.setTimeout(() => {
+			compositionChipSyncAfterPinTimer = 0;
+			preserveFollowComposerScroll(() => {
+				const needsRelayout =
+					pendingCompositionChipRelayout ||
+					compositionLayoutWidthChanged(textarea);
+				pendingCompositionChipRelayout = false;
+				if (needsRelayout) resetCompositionChipPads(textarea);
+				if (textarea.clientWidth < 1) {
+					scheduleSyncInlineContextChipAfterLayout(textarea);
+					return;
+				}
+				syncInlineContextChip(textarea, { allowPadShrink: needsRelayout });
+			});
+			releaseFollowComposerScrollAnchor();
+		}, delay);
+	}
+
+	function repositionInlineContextChips(textarea: HTMLTextAreaElement): void {
+		const host = compositionMirrorHosts.get(textarea);
+		if (!host || host.layer.hidden) return;
+		const chips = host.layer.querySelectorAll<HTMLElement>(
+			".ai-composition-inline-chip",
+		);
+		if (chips.length === 0) return;
+		host.mirrorHost.scrollTop = textarea.scrollTop;
+		const textareaRect = textarea.getBoundingClientRect();
+		for (let index = 0; index < chips.length; index++) {
+			const anchor = host.mirror.querySelector<HTMLElement>(
+				`[data-chip-index="${index}"]`,
+			);
+			if (!anchor) continue;
+			const anchorRect = anchor.getBoundingClientRect();
+			chips[index].style.transform = `translate(${anchorRect.left - textareaRect.left}px, ${anchorRect.top - textareaRect.top}px)`;
+		}
+	}
+
+	function scheduleSyncInlineContextChip(
+		textarea?: HTMLTextAreaElement | null,
+	): void {
+		pendingInlineContextChipTarget = textarea ?? null;
+		if (inlineContextChipSyncRaf) return;
+		inlineContextChipSyncRaf = requestAnimationFrame(() => {
+			inlineContextChipSyncRaf = 0;
+			const target = pendingInlineContextChipTarget;
+			pendingInlineContextChipTarget = undefined;
+			syncInlineContextChip(target);
+		});
+	}
+
+	function scheduleSyncInlineContextChipAfterLayout(
+		textarea?: HTMLTextAreaElement | null,
+	): void {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				syncInlineContextChip(textarea);
+			});
+		});
+	}
+
+	function syncInlineContextChip(
+		textarea?: HTMLTextAreaElement | null,
+		options?: { allowPadShrink?: boolean },
+	): void {
 		const targets = textarea
 			? [textarea]
 			: [input, followInput].filter(
 					(el): el is HTMLTextAreaElement => el instanceof HTMLTextAreaElement,
 				);
 		for (const target of targets) {
-			const host = ensureCompositionMirrorHost(target);
-			const layer = host.layer;
-			const hasContext =
-				compositionContexts.length > 0 &&
-				researchCompositionEnabled() &&
-				compositionContextTextarea === target;
-			if (!hasContext) {
-				layer.hidden = true;
-				layer.replaceChildren();
-				continue;
-			}
-			const markerIndices = compositionMarkerIndices(target.value);
-			if (markerIndices.length === 0) {
-				layer.hidden = true;
-				layer.replaceChildren();
-				continue;
-			}
-			const mirror = host.mirror;
-			buildCompositionMirror(target, mirror);
-			host.mirrorHost.scrollTop = target.scrollTop;
-			layer.hidden = false;
-			layer.replaceChildren();
-			const chips: HTMLElement[] = [];
-			for (let index = 0; index < markerIndices.length; index++) {
-				const chip = document.createElement("span");
-				chip.className = "ai-composition-inline-chip";
-				const label = document.createElement("span");
-				label.className = "ai-composition-context-label";
-				label.textContent = formatContextChipLabel(
-					compositionContexts[index] || "",
-				);
-				const remove = document.createElement("button");
-				remove.type = "button";
-				remove.className = "ai-composition-clear";
-				remove.setAttribute("aria-label", "Remove attached notes");
-				remove.title = "Remove attached notes";
-				remove.textContent = "×";
-				remove.addEventListener("click", () => {
-					removeCompositionContextAt(target, index);
-				});
-				chip.append(label, remove);
-				layer.append(chip);
-				chips.push(chip);
-			}
-			const chipWidths = chips.map(
-				(chip) => chip.getBoundingClientRect().width || 120,
-			);
-			stabilizeCompositionChipLayout(target, mirror, chipWidths);
-			buildCompositionMirror(target, mirror);
-			host.mirrorHost.scrollTop = target.scrollTop;
-			const textareaRect = target.getBoundingClientRect();
-			for (let index = 0; index < chips.length; index++) {
-				const anchor = mirror.querySelector<HTMLElement>(
-					`[data-chip-index="${index}"]`,
-				);
-				if (!anchor) continue;
-				const anchorRect = anchor.getBoundingClientRect();
-				chips[index].style.transform = `translate(${anchorRect.left - textareaRect.left}px, ${anchorRect.top - textareaRect.top}px)`;
-			}
+			preserveFollowComposerScroll(() => {
+				compositionMutating = true;
+				try {
+					const host = ensureCompositionMirrorHost(target);
+					const layer = host.layer;
+					const hasContext =
+						compositionContexts.length > 0 &&
+						compositionContextTextarea === target &&
+						compositionContextPasteEnabled(target);
+					if (!hasContext) {
+						layer.hidden = true;
+						layer.replaceChildren();
+						return;
+					}
+					if (target.clientWidth < 1) {
+						scheduleSyncInlineContextChipAfterLayout(target);
+						return;
+					}
+					const markerIndices = compositionMarkerIndices(target.value);
+					if (markerIndices.length === 0) {
+						layer.hidden = true;
+						layer.replaceChildren();
+						return;
+					}
+					const mirror = host.mirror;
+					buildCompositionMirror(target, mirror);
+					host.mirrorHost.scrollTop = target.scrollTop;
+					layer.hidden = false;
+					layer.replaceChildren();
+					const chips: HTMLElement[] = [];
+					for (let index = 0; index < markerIndices.length; index++) {
+						const chip = document.createElement("span");
+						chip.className = "ai-composition-inline-chip";
+						const label = document.createElement("span");
+						label.className = "ai-composition-context-label";
+						label.textContent = formatContextChipLabel(
+							compositionContexts[index] || "",
+						);
+						const remove = document.createElement("button");
+						remove.type = "button";
+						remove.className = "ai-composition-clear";
+						remove.setAttribute("aria-label", "Remove attached notes");
+						remove.title = "Remove attached notes";
+						remove.textContent = "×";
+						chip.append(label, remove);
+						layer.append(chip);
+						chips.push(chip);
+					}
+					const chipWidths = chips.map(
+						(chip) => chip.getBoundingClientRect().width || 120,
+					);
+					stabilizeCompositionChipLayout(
+						target,
+						mirror,
+						chipWidths,
+						options?.allowPadShrink,
+					);
+					buildCompositionMirror(target, mirror);
+					host.mirrorHost.scrollTop = target.scrollTop;
+					repositionInlineContextChips(target);
+				} finally {
+					compositionMutating = false;
+				}
+			});
+		}
+	}
+
+	function syncCompositionImageAttachButtons(): void {
+		const enabled = compositionImagesEnabled();
+		const hasImages = compositionImages.length > 0;
+		const dockCompact = followDockCompact();
+		for (const button of compositionImageAttachButtons) {
+			button.hidden = !enabled || (dockCompact && !hasImages);
+		}
+	}
+
+	function syncCompositionImageInput(): void {
+		if (!compositionImageInput) return;
+		const remaining = Math.max(
+			0,
+			MAX_RESEARCH_CONTEXT_IMAGES -
+				compositionImages.length -
+				compositionImagesLoading,
+		);
+		if (remaining <= 1) {
+			compositionImageInput.removeAttribute("multiple");
+		} else {
+			compositionImageInput.multiple = true;
 		}
 	}
 
@@ -3798,11 +4236,13 @@ export function attachAiMode(options: {
 		for (const el of compositionContextLabels) {
 			el.textContent = "";
 		}
-		syncInlineContextChip();
 		const atImageCap = compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES;
 		for (const cap of compositionImageCaps) {
-			cap.hidden = !(hasImages && atImageCap);
+			cap.hidden = !(enabled && atImageCap);
+			cap.textContent = RESEARCH_COMPOSITION_MAX_IMAGES_MSG;
 		}
+		syncCompositionImageAttachButtons();
+		syncCompositionImageInput();
 		for (const list of compositionImageLists) {
 			list.hidden = !hasImages;
 			list.replaceChildren();
@@ -3849,14 +4289,13 @@ export function attachAiMode(options: {
 		text: string,
 		textarea: HTMLTextAreaElement,
 	): boolean {
-		if (!researchCompositionEnabled()) return false;
+		if (!compositionContextPasteEnabled(textarea)) return false;
 		const start = textarea.selectionStart ?? textarea.value.length;
 		const end = textarea.selectionEnd ?? start;
 		return shouldAttachPasteAsCompositionContext(text, {
 			composerTextLength: textarea.value.length,
 			selectionLength: Math.max(0, end - start),
-			maxQuestionChars:
-				textarea.maxLength > 0 ? textarea.maxLength : MAX_QUESTION_CHARS,
+			maxQuestionChars: questionCharLimitForTextarea(textarea),
 		});
 	}
 
@@ -3868,11 +4307,11 @@ export function attachAiMode(options: {
 		const after = textarea.value.slice(at);
 		textarea.value = before + COMPOSITION_CONTEXT_CHIP_MARKER + after;
 		const cursor = at + COMPOSITION_CONTEXT_CHIP_MARKER.length;
-		textarea.setSelectionRange(cursor, cursor);
+		setComposerSelection(textarea, cursor, cursor);
 		fitTextarea(textarea);
 		if (textarea === followInput) {
 			clipFollowInputValue();
-			syncFollowComposerMode();
+			if (!compositionMutating) syncFollowComposerMode();
 		}
 	}
 
@@ -3989,20 +4428,72 @@ export function attachAiMode(options: {
 		}
 	}
 
-	async function attachCompositionImage(file: File): Promise<void> {
-		if (!compositionImagesEnabled() && !compositionDropEnabled()) return;
-		if (!isCompositionImageFile(file)) return;
-		if (!reserveCompositionImageSlot()) return;
+	type CompositionImageAttachResult =
+		| "added"
+		| "unsupported"
+		| "cap"
+		| "too_large"
+		| "total_full";
+
+	async function attachCompositionImage(
+		file: File,
+	): Promise<CompositionImageAttachResult> {
+		if (!compositionImagesEnabled() && !compositionDropEnabled()) return "cap";
+		if (!isCompositionImageFile(file)) {
+			setStatus(RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG);
+			return "unsupported";
+		}
+		if (!reserveCompositionImageSlot()) {
+			return "cap";
+		}
 		try {
 			const image = await resizeCompositionImage(
 				normalizeCompositionImageFile(file),
 			);
-			if (image && compositionImages.length < MAX_RESEARCH_CONTEXT_IMAGES) {
-				compositionImages = [...compositionImages, image];
+			if (!image) {
+				setStatus(RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG);
+				return "too_large";
 			}
+			const bytes = researchContextImageByteLength(image);
+			if (wouldExceedCompositionImageTotalBytes(compositionImages, bytes)) {
+				setStatus(RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG);
+				return "total_full";
+			}
+			if (compositionImages.length < MAX_RESEARCH_CONTEXT_IMAGES) {
+				compositionImages = [...compositionImages, image];
+				return "added";
+			}
+			return "cap";
 		} finally {
 			releaseCompositionImageSlot();
+		}
+	}
+
+	async function handleCompositionImageFiles(
+		files: readonly File[],
+	): Promise<void> {
+		if (!compositionImagesEnabled() && !compositionDropEnabled()) return;
+		if (files.length === 0) return;
+		try {
+			for (const file of files) {
+				if (
+					compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES &&
+					compositionImagesLoading === 0
+				) {
+					break;
+				}
+				const result = await attachCompositionImage(file);
+				if (result === "added") continue;
+				if (result === "cap") break;
+			}
+		} finally {
 			syncCompositionTray();
+			if (root.classList.contains("is-report-dock")) {
+				pendingCompositionChipRelayout = true;
+				scheduleFollowDockFrost();
+			} else if (compositionContextTextarea) {
+				scheduleSyncInlineContextChipAfterLayout(compositionContextTextarea);
+			}
 		}
 	}
 
@@ -4011,10 +4502,7 @@ export function attachAiMode(options: {
 		if (imageFiles.length > 0) {
 			if (!compositionImagesEnabled()) return;
 			event.preventDefault();
-			for (const file of imageFiles) {
-				if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
-				void attachCompositionImage(file);
-			}
+			void handleCompositionImageFiles(imageFiles);
 			return;
 		}
 
@@ -4027,6 +4515,19 @@ export function attachAiMode(options: {
 		event.preventDefault();
 		event.stopPropagation();
 		event.stopImmediatePropagation();
+		const clipped = clipResearchContext(
+			text,
+			askContextPasteEnabled(textarea)
+				? MAX_ASK_CONTEXT_CHARS
+				: undefined,
+		);
+		if (!clipped.trim()) {
+			setStatus(RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG);
+			return;
+		}
+		const contextTrimmed = contextWasClipped(text, clipped);
+		armFollowComposerScrollAnchor();
+		beginFollowComposerScrollLock();
 		compositionMutating = true;
 		try {
 			if (compositionContextTextarea && compositionContextTextarea !== textarea) {
@@ -4045,9 +4546,7 @@ export function attachAiMode(options: {
 				start,
 			);
 			const host = ensureCompositionMirrorHost(textarea);
-			const nextLabel = formatContextChipLabel(
-				clipResearchContext(text) || text,
-			);
+			const nextLabel = formatContextChipLabel(clipped);
 			const nextChipWidth = measureCompositionChipLabelWidth(nextLabel);
 			at = ensureCompositionIndexFitsChip(
 				textarea,
@@ -4061,14 +4560,27 @@ export function attachAiMode(options: {
 			compositionContextTextarea = textarea;
 			compositionContexts = insertCompositionContextClip(
 				compositionContexts,
-				text,
+				clipped,
 				insertIndex,
 			);
 			insertCompositionContextMarker(textarea, at);
 			syncCompositionTray();
 			positionCursorAfterCompositionChipIndex(textarea, insertIndex);
+			if (contextTrimmed) {
+				setStatus(RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG);
+			}
+			if (compositionContextPasteEnabled(textarea)) {
+				pendingCompositionChipRelayout = true;
+				syncInlineContextChip(textarea);
+				if (root.classList.contains("is-report-dock")) {
+					scheduleFollowDockFrost();
+				} else {
+					scheduleSyncInlineContextChipAfterLayout(textarea);
+				}
+			}
 		} finally {
 			compositionMutating = false;
+			endFollowComposerScrollLock();
 		}
 	}
 
@@ -4080,18 +4592,12 @@ export function attachAiMode(options: {
 		if (images.length === 0) return;
 		event.preventDefault();
 		event.stopPropagation();
-		expandFollowComposerForCompositionDrop();
-		for (const file of images) {
-			if (compositionImages.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
-			void attachCompositionImage(file);
-		}
+		void handleCompositionImageFiles(images);
 	}
 
 	function syncFollowInputMaxLength(): void {
 		if (!followInput) return;
-		followInput.maxLength = reviseFollowActive()
-			? RESEARCH_REVISE_INSTRUCTION_MAX
-			: MAX_QUESTION_CHARS;
+		followInput.maxLength = questionCharLimitForTextarea(followInput);
 	}
 
 	function clipFollowInputValue(): void {
@@ -4298,9 +4804,8 @@ export function attachAiMode(options: {
 		}
 		if (askWithoutEditingBtn) {
 			const onReport = Boolean(lastFinishedReportTurn());
-			if (!onReport) followAskMode = false;
 			askWithoutEditingBtn.hidden = !onReport;
-			askWithoutEditingBtn.textContent = reportFollowToggleLabel(followAskMode);
+			askWithoutEditingBtn.textContent = RESEARCH_NEW_REPORT_ACTION;
 		}
 		syncFollowComposerMode();
 		if (options.scrollToLatest) scrollReviseComposerToLatest();
@@ -4488,7 +4993,6 @@ export function attachAiMode(options: {
 
 	function openReviseComposer(): void {
 		if (!followForm || !followInput) return;
-		followAskMode = false;
 		syncReviseScope();
 		followForm.hidden = false;
 		followInput.focus();
@@ -7504,13 +8008,23 @@ export function attachAiMode(options: {
 		return -1;
 	}
 
-	function openAskDownload(): void {
-		const exportTurns = askTurnsForExport(turns).filter(
+	function openAskDownload(turnIndex?: number): void {
+		const scopedTurns =
+			typeof turnIndex === "number" &&
+			turnIndex >= 0 &&
+			turnIndex < turns.length
+				? [turns[turnIndex]]
+				: turns;
+		const exportTurns = askTurnsForExport(scopedTurns).filter(
 			(turn) => turn.research === true,
 		);
 		if (exportTurns.length === 0) return;
 		const sharePath = askExportSharePathFromTurns(
-			turns,
+			typeof turnIndex === "number" &&
+				turnIndex >= 0 &&
+				turnIndex < turns.length
+				? turns.slice(0, turnIndex + 1)
+				: turns,
 			window.location.pathname,
 		);
 		window.dispatchEvent(
@@ -7526,6 +8040,14 @@ export function attachAiMode(options: {
 
 	function shareActionsHtml(turn: AiAskTurn, turnIndex: number): string {
 		const tip = turnIndex === turns.length - 1;
+		const hasReport = Boolean((turn.report || "").trim());
+		const finishedResearchReport = isFinishedResearchReportTurn({
+			pending: turn.pending,
+			error: turn.error,
+			research: turn.research,
+			hasReport,
+		});
+		const showSampleOnTurn = tip || finishedResearchReport;
 		const flags = openAskTurnActionFlags({
 			pending: turn.pending,
 			error: turn.error,
@@ -7535,7 +8057,7 @@ export function attachAiMode(options: {
 			research: turn.research,
 			researchJobId: turn.researchJobId,
 			resultCount: turn.results.length,
-			hasReport: Boolean((turn.report || "").trim()),
+			hasReport,
 			isPinnableTip: turnIndex === latestPinnableTurnIndex(),
 		});
 		const conversation = turns.length > 1;
@@ -7586,7 +8108,7 @@ export function attachAiMode(options: {
 		});
 		const sampleAction = askSampleAdminAction({
 			canSave: Boolean(
-				tip &&
+				showSampleOnTurn &&
 					canMarkAskAsSample({
 						isAdmin: isAskAdmin,
 						pending: turn.pending,
@@ -7596,11 +8118,11 @@ export function attachAiMode(options: {
 						fromShare: turn.fromShare,
 						fromSample: turn.fromSample,
 						research: turn.research,
-						hasReport: Boolean((turn.report || "").trim()),
+						hasReport,
 					}),
 			),
 			canRemove: Boolean(
-				tip &&
+				showSampleOnTurn &&
 					canRemoveAskSample({
 						isAdmin: isAskAdmin,
 						pending: turn.pending,
@@ -8661,7 +9183,10 @@ export function attachAiMode(options: {
 		);
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-download]").forEach((button) => {
 			button.addEventListener("click", () => {
-				openAskDownload();
+				const index = Number(button.getAttribute("data-turn-index"));
+				openAskDownload(
+					Number.isFinite(index) && index >= 0 ? index : undefined,
+				);
 			});
 		});
 		thread.querySelectorAll<HTMLButtonElement>("[data-ai-copy-answer]").forEach((button) => {
@@ -8858,6 +9383,16 @@ export function attachAiMode(options: {
 		followForm.style.setProperty("--ai-follow-dock-bottom", bottom);
 	}
 
+	function fitExpandedFollowComposerFields(): void {
+		if (!followForm?.classList.contains("is-follow-expanded")) return;
+		preserveFollowComposerScroll(() => {
+			if (followInput) fitTextarea(followInput);
+			reviseStackEl
+				?.querySelectorAll<HTMLTextAreaElement>(".ai-revise-row-instruction")
+				.forEach((instruction) => fitTextarea(instruction));
+		});
+	}
+
 	function syncFollowComposerMode(): void {
 		const dock = Boolean(
 			root.classList.contains("is-report-dock") &&
@@ -8887,6 +9422,19 @@ export function attachAiMode(options: {
 		root.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-expanded", expanded);
 		followForm?.classList.toggle("is-follow-compact", dock && !expanded);
+		document.documentElement.classList.toggle(
+			"is-report-dock",
+			Boolean(root.classList.contains("is-report-dock")),
+		);
+		document.documentElement.classList.toggle(
+			"is-report-dock-compact",
+			Boolean(dock && followForm?.classList.contains("is-follow-compact")),
+		);
+		if (dock) {
+			pinReportFollowToColumn();
+			void followForm?.offsetWidth;
+			lastFollowDockPinWidth = followForm?.getBoundingClientRect().width ?? 0;
+		}
 		syncFollowInputMaxLength();
 		if (followInput) {
 			followInput.rows = dock && !expanded ? 1 : 2;
@@ -8902,17 +9450,11 @@ export function attachAiMode(options: {
 					(reviseEditDraft.draftInstruction || "").length > 0
 				) {
 					followInput.value = reviseEditDraft.draftInstruction;
-					fitTextarea(followInput);
 				}
 			}
 			if (dock && !expanded) followInput.style.height = "";
-			else fitTextarea(followInput);
 		}
-		if (expanded && reviseStackEl) {
-			reviseStackEl
-				.querySelectorAll<HTMLTextAreaElement>(".ai-revise-row-instruction")
-				.forEach((instruction) => fitTextarea(instruction));
-		}
+		if (expanded) fitExpandedFollowComposerFields();
 		if (followInput && reviseFollowActive()) {
 			const showMultiHint = shouldShowReviseMultiHint(draft);
 			followInput.placeholder =
@@ -8936,14 +9478,20 @@ export function attachAiMode(options: {
 				);
 			}
 		}
-		document.documentElement.classList.toggle(
-			"is-report-dock",
-			Boolean(root.classList.contains("is-report-dock")),
-		);
-		document.documentElement.classList.toggle(
-			"is-report-dock-compact",
-			Boolean(dock && followForm?.classList.contains("is-follow-compact")),
-		);
+		syncCompositionImageAttachButtons();
+		flushDeferredStatus();
+		const justExpandedMobile =
+			expanded &&
+			!wasFollowDockExpanded &&
+			window.innerWidth <= MOBILE_REPORT_DOCK_BREAKPOINT_PX;
+		if (
+			justExpandedMobile &&
+			compositionContextTextarea === followInput &&
+			compositionContexts.length > 0
+		) {
+			pendingCompositionChipRelayout = true;
+		}
+		wasFollowDockExpanded = expanded;
 		scheduleFollowDockFrost();
 	}
 
@@ -8961,9 +9509,17 @@ export function attachAiMode(options: {
 	}
 
 	function syncFollowDockFrost(): void {
-		syncFollowDockMount();
-		pinReportFollowToColumn();
-		followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
+		preserveFollowComposerScroll(() => {
+			syncFollowDockMount();
+			pinReportFollowToColumn();
+			followForm?.classList.toggle("is-over-thread", followDockOverlapsThread());
+			const pinWidth = followForm?.getBoundingClientRect().width ?? 0;
+			if (Math.abs(pinWidth - lastFollowDockPinWidth) > 6) {
+				lastFollowDockPinWidth = pinWidth;
+				fitExpandedFollowComposerFields();
+			}
+			scheduleCompositionChipSyncAfterDockPin();
+		});
 	}
 
 	function scheduleFollowDockFrost(): void {
@@ -9860,7 +10416,6 @@ export function attachAiMode(options: {
 			forceAsk?: boolean;
 		},
 	): Promise<void> {
-		const q = clipAiQuestion(stripCompositionChipMarkers(question));
 		if (busy) return;
 		stopListening();
 		stopSamplePlayback();
@@ -9889,6 +10444,22 @@ export function attachAiMode(options: {
 					Boolean(replacingTurn && isIncompleteResearchTurn(replacingTurn))),
 			forceAsk: options?.forceAsk === true,
 		});
+
+		if (
+			!useResearch &&
+			!replacing &&
+			options?.forceAsk !== true &&
+			lastFinishedReportTurn()
+		) {
+			return;
+		}
+
+		const askLimit = maxAskQuestionChars(Boolean(quota?.signedIn));
+		const rawQuestion = stripCompositionChipMarkers(question);
+		const composedQuestion = useResearch
+			? rawQuestion
+			: buildAskSubmitQuestion(rawQuestion);
+		const q = clipAiQuestion(composedQuestion, askLimit);
 
 		if (
 			!hasResearchCompositionContent({
@@ -10021,6 +10592,9 @@ export function attachAiMode(options: {
 			...(submitImages.length > 0 ? { attachedImages: submitImages } : {}),
 		};
 		turns.push(turn);
+		if (!useResearch && compositionContexts.length > 0) {
+			clearCompositionAttachments({ clearDraft: false });
+		}
 		syncLayoutAndReveal();
 		const abortReplace = (): void => {
 			if (restoreOnFail) {
@@ -10411,7 +10985,9 @@ export function attachAiMode(options: {
 		listening = true;
 		root.classList.add("is-listening");
 		micButtons.forEach((button) => button.setAttribute("aria-pressed", "true"));
-		setStatus("Listening… tap the mic when you're done, then press Send.");
+		setStatus("Listening… tap the mic when you're done, then press Send.", {
+			showInCompactDock: true,
+		});
 		recognition.start();
 	}
 
@@ -10457,15 +11033,11 @@ export function attachAiMode(options: {
 			void cancelActiveResearch();
 			return;
 		}
-		if (reviseFollowActive()) {
+		if (reviseFollowActive() || lastFinishedReportTurn()) {
 			if (followInput) void reviseReport(followInput.value);
 			return;
 		}
-		if (followInput) {
-			void ask(followInput.value, followInput, {
-				forceAsk: followAskMode,
-			});
-		}
+		if (followInput) void ask(followInput.value, followInput);
 	});
 
 	input.addEventListener("input", () => {
@@ -10479,6 +11051,14 @@ export function attachAiMode(options: {
 		};
 		clipFollowInputValue();
 		fitTextarea(followInput);
+		if (compositionMutating) return;
+		const hasChipMarkers =
+			compositionMarkerIndices(followInput.value).length > 0 ||
+			compositionContexts.length > 0;
+		if (hasChipMarkers) {
+			scheduleSyncInlineContextChip(followInput);
+			return;
+		}
 		syncFollowComposerMode();
 	});
 	for (const button of compositionContextClears) {
@@ -10486,6 +11066,20 @@ export function attachAiMode(options: {
 			clearCompositionContext();
 		});
 	}
+	for (const button of compositionImageAttachButtons) {
+		button.addEventListener("click", () => {
+			if (!compositionImagesEnabled()) return;
+			syncCompositionImageInput();
+			compositionImageInput?.click();
+		});
+	}
+	compositionImageInput?.addEventListener("change", () => {
+		const files = compositionImageInput.files
+			? [...compositionImageInput.files]
+			: [];
+		compositionImageInput.value = "";
+		void handleCompositionImageFiles(files);
+	});
 	const compositionDropTargets = [
 		form.querySelector(".ai-box"),
 		followForm?.querySelector(".ai-box"),
@@ -10526,11 +11120,26 @@ export function attachAiMode(options: {
 		});
 	}
 	window.addEventListener("resize", () => {
-		syncInlineContextChip();
+		if (!root.classList.contains("is-report-dock")) {
+			scheduleSyncInlineContextChip();
+		}
 	});
 	ensureCompositionMirrorHost(input);
 	if (followInput) ensureCompositionMirrorHost(followInput);
+	const followComposerBody = followForm?.querySelector<HTMLElement>(
+		".ai-composer-body",
+	);
+	followComposerBody?.addEventListener(
+		"scroll",
+		() => {
+			if (compositionContextTextarea) {
+				repositionInlineContextChips(compositionContextTextarea);
+			}
+		},
+		{ passive: true },
+	);
 	syncCompositionTray();
+	scheduleSyncInlineContextChipAfterLayout();
 	followForm?.addEventListener("focusin", () => {
 		syncFollowComposerMode();
 	});
@@ -10560,12 +11169,10 @@ export function attachAiMode(options: {
 		if (target.closest(".ai-send[data-ai-stop], .ai-send-stop")) {
 			if (!researchStopActive()) {
 				syncStopButtons(false);
-				if (reviseFollowActive()) {
+				if (reviseFollowActive() || lastFinishedReportTurn()) {
 					if (followInput) void reviseReport(followInput.value);
 				} else if (followInput) {
-					void ask(followInput.value, followInput, {
-						forceAsk: followAskMode,
-					});
+					void ask(followInput.value, followInput);
 				}
 				return;
 			}
@@ -10630,11 +11237,11 @@ export function attachAiMode(options: {
 				void cancelActiveResearch();
 				return;
 			}
-			if (reviseFollowActive()) {
+			if (reviseFollowActive() || lastFinishedReportTurn()) {
 				void reviseReport(followInput.value);
 				return;
 			}
-			void ask(followInput.value, followInput, { forceAsk: followAskMode });
+			void ask(followInput.value, followInput);
 		});
 	}
 
@@ -10671,13 +11278,8 @@ export function attachAiMode(options: {
 		clearReviseScope();
 	});
 	askWithoutEditingBtn?.addEventListener("click", () => {
-		if (!lastFinishedReportTurn() || !followInput) return;
-		followAskMode = !followAskMode;
-		if (followAskMode) resetReviseEdits();
-		else syncReviseScope();
-		followInput.focus();
-		syncResearchChip();
-		syncFollowComposerMode();
+		if (!lastFinishedReportTurn()) return;
+		window.location.assign(searchResearchHref());
 	});
 	reviseFloat?.addEventListener("click", () => {
 		const scope = scopeFromLiveSelection();
@@ -11037,6 +11639,7 @@ export function attachAiMode(options: {
 		}
 	}
 
+	syncComposerMaxLength();
 	renderHistory();
 	syncResearchChip();
 	syncLayout();

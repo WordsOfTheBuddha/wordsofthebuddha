@@ -28,6 +28,7 @@ import {
 	parseAskHistory,
 	resolveRewriteExcludeSlugs,
 } from "../../../utils/aiQueryRewrite";
+import { maxAskQuestionChars } from "../../../utils/aiAskQuestionText";
 import { collectAskHistoryShownSlugs } from "../../../utils/aiAskHistory";
 import {
 	buildAiAskTelemetryAskEvent,
@@ -99,8 +100,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		);
 	}
 
+	const rawQuestion =
+		typeof body.question === "string" ? body.question : "";
+
+	const session = cookies.get("__session")?.value;
+	const user = await verifyUserForAskQuota(session, { cookies });
 	const question = clipAiQuestion(
-		typeof body.question === "string" ? body.question : "",
+		rawQuestion,
+		maxAskQuestionChars(Boolean(user)),
 	);
 	if (!question) {
 		return new Response(
@@ -108,9 +115,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			{ status: 400, headers: { "Content-Type": "application/json" } },
 		);
 	}
-
-	const session = cookies.get("__session")?.value;
-	const user = await verifyUserForAskQuota(session, { cookies });
 	const quotaResult = await consumeAskQuota({ request, user });
 	if (!quotaResult.allowed) {
 		const view = quotaResult.view;

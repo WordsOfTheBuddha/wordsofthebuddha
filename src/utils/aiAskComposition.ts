@@ -15,6 +15,20 @@ export const MAX_RESEARCH_CONTEXT_IMAGES = 4;
 export const MAX_RESEARCH_CONTEXT_IMAGE_BYTES = 500_000;
 /** ~2 MB total base64 payload for all images. */
 export const MAX_RESEARCH_CONTEXT_IMAGES_TOTAL_BYTES = 2_000_000;
+
+export const RESEARCH_COMPOSITION_MAX_IMAGES_MSG = "Max 4 images at a time.";
+export const RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG =
+	"Only JPEG, PNG, WebP, and GIF images are supported.";
+export const RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG =
+	"That image is too large to attach.";
+export const RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG =
+	"Total attached image size is full.";
+export const RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG = `Attached notes were trimmed to the supported limit (${MAX_RESEARCH_CONTEXT_WORDS.toLocaleString()} words).`;
+export const RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG =
+	"That paste is too large to attach as notes.";
+
+export const COMPOSITION_IMAGE_ACCEPT =
+	"image/jpeg,image/png,image/webp,image/gif,image/*";
 /** Text that does not fit in the composer overflows to the context chip (Research). */
 export const RESEARCH_CONTEXT_AUTO_ATTACH_CHARS = 500;
 /** Invisible marker inserted in the composer where the context chip is anchored. */
@@ -246,6 +260,39 @@ function base64ByteLength(data: string): number {
 	return Math.floor((data.length * 3) / 4) - padding;
 }
 
+export function researchContextImageByteLength(
+	image: Pick<ResearchContextImage, "data">,
+): number {
+	return base64ByteLength(image.data);
+}
+
+export function compositionImagesTotalBytes(
+	images: readonly ResearchContextImage[],
+): number {
+	return images.reduce((sum, image) => sum + researchContextImageByteLength(image), 0);
+}
+
+export function wouldExceedCompositionImageTotalBytes(
+	images: readonly ResearchContextImage[],
+	nextBytes: number,
+): boolean {
+	if (nextBytes <= 0) return false;
+	return (
+		compositionImagesTotalBytes(images) + nextBytes >
+		MAX_RESEARCH_CONTEXT_IMAGES_TOTAL_BYTES
+	);
+}
+
+export function contextWasClipped(original: string, clipped: string): boolean {
+	if (!original.trim()) return false;
+	if (!clipped.trim()) return true;
+	return normalizeResearchContextText(original) !== normalizeResearchContextText(clipped);
+}
+
+export function formatCompositionImagesPartialAdd(added: number): string {
+	return `Added ${added} image${added === 1 ? "" : "s"}. ${RESEARCH_COMPOSITION_MAX_IMAGES_MSG}`;
+}
+
 export function sanitizeResearchContextImages(
 	raw: unknown,
 ): ResearchContextImage[] {
@@ -336,9 +383,100 @@ export function normalizeCompositionCaret(
 		const insideEnd = end > region.start && end < region.end;
 		if (!insideStart && !insideEnd) continue;
 		if (start !== end) return { start: region.end, end: region.end };
+		// First pad cell only → before the chip; deeper in the pad → after it
+		// (covers arrow drift and post-layout caret at a former region.end).
+		if (start <= region.start + 1) {
+			return { start: region.start, end: region.start };
+		}
 		return { start: region.end, end: region.end };
 	}
 	return { start, end };
+}
+
+export function compositionSelectionTouchesMarker(
+	selStart: number,
+	selEnd: number,
+	region: { start: number; end: number },
+): boolean {
+	return selStart < region.end && selEnd > region.start;
+}
+
+/** Chip index to remove when Backspace/Delete is pressed with a collapsed caret. */
+export function compositionCollapsedDeleteChipIndex(
+	value: string,
+	caret: number,
+	direction: "backward" | "forward",
+): number | null {
+	const regions = compositionMarkerRegions(value);
+	for (let index = 0; index < regions.length; index++) {
+		const region = regions[index];
+		if (direction === "backward" && caret === region.end) return index;
+		if (direction === "forward" && caret === region.start) return index;
+	}
+	return null;
+}
+
+function adjustSelectionAfterRegionRemovals(
+	selStart: number,
+	selEnd: number,
+	removed: readonly { start: number; end: number }[],
+): { start: number; end: number } {
+	let start = selStart;
+	let end = selEnd;
+	for (const region of [...removed].sort((a, b) => a.start - b.start)) {
+		const len = region.end - region.start;
+		if (region.end <= start) {
+			start -= len;
+			end -= len;
+			continue;
+		}
+		if (region.start >= end) continue;
+		if (region.start < start) start = region.start;
+		const overlapStart = Math.max(region.start, start);
+		const overlapEnd = Math.min(region.end, end);
+		end -= overlapEnd - overlapStart;
+		if (start > end) start = end;
+	}
+	return { start: Math.max(0, start), end: Math.max(start, end) };
+}
+
+/** Delete a selection that intersects one or more chip marker regions. */
+export function compositionEditDeleteSelection(
+	value: string,
+	selStart: number,
+	selEnd: number,
+): {
+	value: string;
+	caret: number;
+	removedChipIndices: number[];
+} | null {
+	const regions = compositionMarkerRegions(value);
+	const removed = regions
+		.map((region, chipIndex) => ({ region, chipIndex }))
+		.filter(({ region }) =>
+			compositionSelectionTouchesMarker(selStart, selEnd, region),
+		);
+	if (removed.length === 0) return null;
+
+	let nextValue = value;
+	for (const { region } of [...removed].sort((a, b) => b.region.start - a.region.start)) {
+		nextValue =
+			nextValue.slice(0, region.start) + nextValue.slice(region.end);
+	}
+	const adjusted = adjustSelectionAfterRegionRemovals(
+		selStart,
+		selEnd,
+		removed.map(({ region }) => region),
+	);
+	nextValue =
+		nextValue.slice(0, adjusted.start) + nextValue.slice(adjusted.end);
+	return {
+		value: nextValue,
+		caret: adjusted.start,
+		removedChipIndices: removed
+			.map(({ chipIndex }) => chipIndex)
+			.sort((a, b) => a - b),
+	};
 }
 
 export function compositionMarkerArrowAdjust(
@@ -348,7 +486,18 @@ export function compositionMarkerArrowAdjust(
 	end: number,
 ): { start: number; end: number } | null {
 	if (start !== end) return null;
-	for (const region of compositionMarkerRegions(value)) {
+	const regions = compositionMarkerRegions(value);
+	if (regions.length === 0) return null;
+
+	for (const region of regions) {
+		if (start <= region.start || start >= region.end) continue;
+		return key === "ArrowLeft"
+			? { start: region.start, end: region.start }
+			: { start: region.end, end: region.end };
+	}
+
+	for (let index = 0; index < regions.length; index++) {
+		const region = regions[index];
 		if (key === "ArrowLeft" && start === region.end) {
 			return { start: region.start, end: region.start };
 		}
@@ -356,6 +505,33 @@ export function compositionMarkerArrowAdjust(
 			return { start: region.end, end: region.end };
 		}
 	}
+
+	if (key === "ArrowLeft") {
+		for (let index = 0; index < regions.length; index++) {
+			const region = regions[index];
+			if (start !== region.start) continue;
+			const prev = index > 0 ? regions[index - 1] : undefined;
+			if (prev && prev.end === region.start) {
+				return { start: prev.start, end: prev.start };
+			}
+			if (region.start <= 0) return null;
+			return { start: region.start - 1, end: region.start - 1 };
+		}
+	}
+
+	if (key === "ArrowRight") {
+		for (let index = 0; index < regions.length; index++) {
+			const region = regions[index];
+			if (start !== region.end) continue;
+			const next = index + 1 < regions.length ? regions[index + 1] : undefined;
+			if (next && next.start === region.end) {
+				return { start: next.end, end: next.end };
+			}
+			if (region.end >= value.length) return null;
+			return { start: region.end + 1, end: region.end + 1 };
+		}
+	}
+
 	return null;
 }
 

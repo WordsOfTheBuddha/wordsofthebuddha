@@ -8,6 +8,10 @@ import {
 import { ASK_LIMITS_NOTE, RESEARCH_CHIP_TITLE, RESEARCH_SIGNIN_EMPTY_NOTE } from "../utils/aiAskResearchUi";
 import { MAX_QUESTION_CHARS } from "../utils/aiAskQuestionText";
 import {
+	COMPOSITION_IMAGE_ACCEPT,
+	RESEARCH_COMPOSITION_MAX_IMAGES_MSG,
+} from "../utils/aiAskComposition";
+import {
 	RESEARCH_TOC_CONTENT_SELECTOR,
 	RESEARCH_TOC_HEADING_SELECTOR,
 	RESEARCH_TOC_MIN_HEADINGS,
@@ -45,6 +49,13 @@ const defaultModel = showModelPicker
 	data-share-mode={shareMode ? "1" : "0"}
 	data-share-snapshot={shareMode ? shareSnapshot : undefined}
 >
+	<input
+		type="file"
+		class="sr-only"
+		data-ai-composition-image-input
+		hidden
+		accept={COMPOSITION_IMAGE_ACCEPT}
+	/>
 	<script is:inline>
 		(function () {
 			var root = document.currentScript && document.currentScript.parentElement;
@@ -146,7 +157,7 @@ const defaultModel = showModelPicker
 						</button>
 					</span>
 					<p class="ai-composition-images-cap" data-ai-composition-images-cap hidden>
-						Max 4 images at a time.
+						{RESEARCH_COMPOSITION_MAX_IMAGES_MSG}
 					</p>
 					<div class="ai-composition-images" data-ai-composition-images hidden></div>
 				</div>
@@ -176,6 +187,18 @@ const defaultModel = showModelPicker
 					</button>
 				</div>
 				<div class="ai-box-actions">
+					<button
+						type="button"
+						class="ai-icon-btn"
+						data-ai-composition-image
+						hidden
+						aria-label="Attach image"
+						title="Attach image"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+						</svg>
+					</button>
 					<button
 						type="button"
 						class="ai-icon-btn"
@@ -240,7 +263,7 @@ const defaultModel = showModelPicker
 						</button>
 					</span>
 					<p class="ai-composition-images-cap" data-ai-composition-images-cap hidden>
-						Max 4 images at a time.
+						{RESEARCH_COMPOSITION_MAX_IMAGES_MSG}
 					</p>
 					<div class="ai-composition-images" data-ai-composition-images hidden></div>
 				</div>
@@ -291,6 +314,18 @@ const defaultModel = showModelPicker
 					<button
 						type="button"
 						class="ai-icon-btn"
+						data-ai-composition-image
+						hidden
+						aria-label="Attach image"
+						title="Attach image"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+						</svg>
+					</button>
+					<button
+						type="button"
+						class="ai-icon-btn"
 						data-ai-mic
 						aria-label="Voice follow-up"
 						aria-pressed="false"
@@ -326,7 +361,7 @@ const defaultModel = showModelPicker
 				data-ai-ask-without-editing
 				hidden
 			>
-				Ask a follow-up instead
+				+ New Research
 			</button>
 			<p class="ai-meter" data-ai-meter aria-live="polite" hidden></p>
 		</div>
