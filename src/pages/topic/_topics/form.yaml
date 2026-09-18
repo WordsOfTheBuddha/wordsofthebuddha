@@ -1,5 +1,5 @@
 title: "Form"
-description: "Materiality—the four great elements and the form derived from them—encompassing both one’s body and external objects, whether near or far, gross or subtle. It is that which is affected: by cold and heat, hunger and thirst, and contact with the world. It is the first of the five aggregates."
+description: "Materiality—the four great elements and the form derived from them—encompassing both one’s body and external objects, whether near or far, gross or subtle. It is that which is affected: by cold and heat, hunger and thirst, and contact with the world."
 pali:
     - rūpa
 synonyms:
@@ -27,7 +27,6 @@ related:
     - intentional-constructs
     - consciousness
     - name
-    - mindfulness-of-body
 opposite:
     - formless
 discourses:
@@ -67,5 +66,7 @@ discourses:
       note: "how to attend to form at each stage of awakening"
     - id: snp3.12
       note: "Duality on form"
+    - id: sn12.67
+      note: "Simile of two sheaves of reeds"
     - id: iti73
       note: "Completely comprehending forms; not caught in the formless"
