@@ -1,11 +1,8 @@
 ---
+title: Metta sutta - Loving-kindness
 slug: an7.62
 character:
   - "Sakka, lord of the gods"
-source: suttacentral/bilara-data
-title: Mettasutta
-edition: ms
-granularity: paragraph
 ---
 
 “Mā, bhikkhave, puññānaṁ bhāyittha. Sukhassetaṁ, bhikkhave, adhivacanaṁ yadidaṁ puññāni. Abhijānāmi kho panāhaṁ, bhikkhave, dīgharattaṁ katānaṁ puññānaṁ dīgharattaṁ iṭṭhaṁ kantaṁ manāpaṁ vipākaṁ paccanubhūtaṁ. Satta vassāni mettacittaṁ bhāvesiṁ. Satta vassāni mettacittaṁ bhāvetvā satta saṁvaṭṭavivaṭṭakappe nayimaṁ lokaṁ punāgamāsiṁ. Saṁvaṭṭamāne sudāhaṁ, bhikkhave, loke ābhassarūpago homi, vivaṭṭamāne loke suññaṁ brahmavimānaṁ upapajjāmi.
