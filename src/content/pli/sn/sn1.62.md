@@ -1,9 +1,10 @@
 ---
+title: Citta sutta - Mind
+description: By what is the world led astray? By what is it carried away? What is the one thing that has everything under its sway?
+qualities: consciousness
+theme: wisdom, inspiration
 slug: sn1.62
-source: suttacentral/bilara-data
-title: Cittasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Kenassu nīyati loko,
