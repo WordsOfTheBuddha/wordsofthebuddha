@@ -1,10 +1,11 @@
 ---
 title: Majjhe sutta - Middle
 description: A number of elder bhikkhus are discussing the meaning of the Buddha's words from the verse on ‘Metteyya’s Questions’ in the Sutta Nipāta. They each share a well-spoken explanation and then present it to the Buddha, who presents his intended meaning when he spoke those words.
-qualities: wisdom, ending, craving, direct knowledge, complete comprehension, inspiration
+qualities: wisdom, ending, craving, direct knowledge, complete comprehension, inspiration, name, form, consciousness
 theme: inspiration, wisdom
 slug: an6.61
 simile: seamstress
+priority: 1.3
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye.

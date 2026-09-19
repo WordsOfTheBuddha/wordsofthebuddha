@@ -1,6 +1,6 @@
 ---
 title: Samiddhi sutta - With Samiddhi
-description: Urged by a deity to enjoy youth before time passes, Samiddhi brings her inquiry to the Buddha, who reveals how anchoring in what can be named delivers beings into death’s yoke.
+description: Urged by a deity to enjoy youth before time passes, Samiddhi brings her inquiry to the Buddha, who reveals how being established in the nameable leads one to come under death’s yoke.
 qualities: sensual desire, mindfulness, clear awareness, suffering, conceit, imperturbable, discontentment, unwholesome, discernment, name
 theme: cultivating discernment, wisdom
 slug: sn1.20
