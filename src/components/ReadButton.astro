@@ -56,6 +56,7 @@ const userId = null;
 
 <script>
 	import { initDiscourseLearningActivity } from "../utils/learningActivityClient";
+	import { readNavAuthCache } from "../utils/navAuthClient";
 	import { loadPageUserState } from "../utils/pageUserStateClient";
 	import {
 		isSlugFullyRead,
@@ -66,6 +67,15 @@ const userId = null;
 	import { showSignInPrompt } from "../utils/signInPrompt";
 
 	const btn = document.getElementById("readButton");
+	// Seed from navbar's cached auth so clicks before page-state resolves
+	// don't flash the sign-in prompt for logged-in users.
+	try {
+		if (readNavAuthCache()?.signedIn) {
+			btn?.setAttribute("data-authenticated", "true");
+		}
+	} catch {
+		/* ignore cache errors */
+	}
 	const check = document.getElementById("readCheckIcon");
 	const dashedCheck = document.getElementById("readCheckDashedIcon");
 	const readLabel = document.getElementById("readLabel");
@@ -312,6 +322,25 @@ const userId = null;
 
 		btn.addEventListener("click", async () => {
 			userInteractedWithReadButton = true; // Set flag on first interaction
+
+			// Page-state may still be resolving (Firebase verify + Firestore).
+			// Wait for it instead of flashing the sign-in prompt to logged-in users.
+			if (btn.dataset.loading === "true") {
+				btn.classList.add("animate-pulse");
+				try {
+					const pending = await loadPageUserState();
+					if (pending) {
+						btn.setAttribute(
+							"data-authenticated",
+							pending.signedIn.toString(),
+						);
+					}
+				} catch {
+					/* fall through to cached auth state */
+				} finally {
+					btn.classList.remove("animate-pulse");
+				}
+			}
 
 			const isAuthenticated = btn.dataset.authenticated === "true";
 			if (!isAuthenticated) {
