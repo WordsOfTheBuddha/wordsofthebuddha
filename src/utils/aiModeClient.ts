@@ -300,8 +300,6 @@ import {
 	askSampleConfirmMessage,
 	askSampleSavedStatusMessage,
 	askSampleHideKey,
-	askSamplePlaybackPatch,
-	askSamplePlaybackSteps,
 	askSampleRemoveConfirmMessage,
 	canMarkAskAsSample,
 	canRemoveAskSample,
@@ -319,7 +317,6 @@ import {
 	upsertAskSampleLocal,
 	visibleHistorySamples,
 	type AiAskSamplePublic,
-	type AskSamplePlaybackPhase,
 } from "./aiAskSamples";
 import {
 	ASK_HISTORY_PREVIEW_LIMIT,
@@ -2656,8 +2653,6 @@ export function attachAiMode(options: {
 		if (!job.pending) return false;
 		return job.status === "revising" || job.status === "revise-clarifying";
 	}
-	let samplePlaybackTimer = 0;
-	let samplePlaybackToken = 0;
 	const watchingResearchJobs = new Set<string>();
 	let feedbackPromptShown = false;
 	let feedbackHintTimer = 0;
@@ -6684,7 +6679,6 @@ export function attachAiMode(options: {
 			syncAskSurfaceUrl({ jobId: null, open: null, sample: null, push: false });
 		}
 		stopResearchPoll();
-		stopSamplePlayback();
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy");
 		followComposerHoldCompact = false;
@@ -7134,57 +7128,18 @@ export function attachAiMode(options: {
 		}
 	}
 
-	function stopSamplePlayback(): void {
-		samplePlaybackToken += 1;
-		window.clearTimeout(samplePlaybackTimer);
-		samplePlaybackTimer = 0;
-	}
-
-	function applySamplePlayback(
-		turn: AiAskTurn,
-		sample: AiAskSamplePublic,
-		phase: AskSamplePlaybackPhase,
-	): void {
-		const patch = askSamplePlaybackPatch(sample, phase);
-		turn.pending = patch.pending;
-		turn.phase = patch.phase;
-		turn.lookingFor = patch.lookingFor;
-		turn.queries = patch.queries;
-		turn.fallbackQueries = patch.fallbackQueries;
-		turn.summary = patch.summary;
-		turn.results = patch.results;
-		if (patch.research) turn.research = true;
-		if (patch.pending) turn.report = undefined;
-		else if (patch.report) turn.report = patch.report;
-		else turn.report = sample.report;
-		if (patch.rerankCandidateCount) {
-			turn.rerankCandidateCount = patch.rerankCandidateCount;
-			turn.rerankShowCount = patch.rerankShowCount;
-		} else {
-			turn.rerankCandidateCount = undefined;
-			turn.rerankShowCount = undefined;
-		}
-	}
-
-	function openSampleFromUrl(
-		slug: string,
-		options?: { playback?: boolean },
-	): boolean {
+	function openSampleFromUrl(slug: string): boolean {
 		const sample = askSamples.find((item) => item.slug === slug);
 		if (!sample) return false;
 		if (isResearchAskSample(sample) !== researchPaneOn()) return false;
-		openAskSample(sample, { playback: options?.playback === true });
+		openAskSample(sample);
 		return true;
 	}
 
-	function openAskSample(
-		sample: AiAskSamplePublic,
-		options?: { playback?: boolean },
-	): void {
-		stopSamplePlayback();
+	/** Samples open instantly like a previously run report — no staged run. */
+	function openAskSample(sample: AiAskSamplePublic): void {
 		followComposerHoldCompact = true;
 		followComposerPinnedOpen = false;
-		const token = samplePlaybackToken;
 		pendingReplaceQuestions = null;
 		pendingReplaceJobIds = null;
 		clearAskResumeFromDiscourse(undefined, { research: researchPaneOn() });
@@ -7193,45 +7148,11 @@ export function attachAiMode(options: {
 			jobId: null,
 			open: null,
 		});
-		const turn = sampleToAiAskTurn(sample);
-		const playback = options?.playback !== false;
-		const steps = askSamplePlaybackSteps(sample);
-		if (!playback) {
-			applySamplePlayback(turn, sample, "done");
-			turns = [turn];
-			busy = false;
-			root.classList.remove("is-busy");
-			syncLayout();
-			thread.firstElementChild?.scrollIntoView({ block: "start" });
-			return;
-		}
-		applySamplePlayback(turn, sample, steps[0]?.phase || "rewrite");
-		turns = [turn];
-		busy = true;
-		root.classList.add("is-busy");
+		turns = [sampleToAiAskTurn(sample)];
+		busy = false;
+		root.classList.remove("is-busy");
 		syncLayout();
 		thread.firstElementChild?.scrollIntoView({ block: "start" });
-
-		const playFrom = (index: number): void => {
-			if (token !== samplePlaybackToken) return;
-			const step = steps[index];
-			if (!step) return;
-			applySamplePlayback(turn, sample, step.phase);
-			if (step.phase === "done") {
-				busy = false;
-				root.classList.remove("is-busy");
-				syncLayout();
-				return;
-			}
-			syncLayout();
-			const next = steps[index + 1];
-			if (!next) return;
-			samplePlaybackTimer = window.setTimeout(
-				() => playFrom(index + 1),
-				Math.max(0, next.atMs - step.atMs),
-			);
-		};
-		playFrom(0);
 	}
 
 	async function saveTurnAsSample(turn: AiAskTurn): Promise<void> {
@@ -10418,7 +10339,6 @@ export function attachAiMode(options: {
 	): Promise<void> {
 		if (busy) return;
 		stopListening();
-		stopSamplePlayback();
 
 		const replaceTurnIndex = options?.replaceTurnIndex;
 		const replacing =

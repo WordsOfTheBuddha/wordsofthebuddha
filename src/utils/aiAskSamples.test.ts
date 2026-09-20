@@ -2,8 +2,6 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	ASK_SAMPLE_NOTE,
-	ASK_SAMPLE_PLAYBACK,
-	RESEARCH_SAMPLE_PLAYBACK,
 	ASK_SAMPLE_REMOVE_LABEL,
 	ASK_SAMPLE_REMOVE_TITLE,
 	askSampleAdminAction,
@@ -12,8 +10,6 @@ import {
 	askSampleHideKey,
 	askSampleKeyFingerprint,
 	askSampleMatchesQuestion,
-	askSamplePlaybackPatch,
-	askSamplePlaybackSteps,
 	askSampleRemoveConfirmMessage,
 	askSampleTurnFromBody,
 	canMarkAskAsSample,
@@ -399,29 +395,17 @@ describe("upsertAskSampleLocal", () => {
 	});
 });
 
-describe("ask sample playback", () => {
-	it("holds the process steps for a few seconds before revealing hits", () => {
-		assert.equal(ASK_SAMPLE_PLAYBACK[0]?.phase, "rewrite");
-		assert.equal(ASK_SAMPLE_PLAYBACK.at(-1)?.phase, "done");
-		assert.equal(ASK_SAMPLE_PLAYBACK.at(-1)?.atMs, 3000);
+describe("ask sample instant open", () => {
+	it("samples carry the finished answer without staged process steps", () => {
 		const demo = sample("What happens after death for an ordinary person?")!;
 		demo.lookingFor = "after death";
 		demo.candidateCount = 40;
-		const rewrite = askSamplePlaybackPatch(demo, "rewrite");
-		assert.equal(rewrite.pending, true);
-		assert.equal(rewrite.results.length, 0);
-		assert.equal(rewrite.lookingFor, "");
-		const search = askSamplePlaybackPatch(demo, "search");
-		assert.equal(search.pending, true);
-		assert.equal(search.lookingFor, "after death");
-		assert.equal(search.results.length, 0);
-		const done = askSamplePlaybackPatch(demo, "done");
-		assert.equal(done.pending, false);
-		assert.equal(done.results.length, 1);
+		assert.equal(demo.results.length, 1);
+		assert.equal(demo.lookingFor, "after death");
 		assert.match(ASK_SAMPLE_NOTE, /illustration from a prior ask/);
 	});
 
-	it("paints research hops then the report without a ranking delay", () => {
+	it("research samples carry the finished report directly", () => {
 		const report = sample("Survey how the discourses describe feeling")!;
 		report.research = true;
 		report.report = "# Feeling";
@@ -430,26 +414,9 @@ describe("ask sample playback", () => {
 			"Read AN 3.85, SN 48.53 in full",
 			"Going deeper",
 		];
-		const steps = askSamplePlaybackSteps(report);
-		assert.equal(steps[0]?.phase, "search");
-		assert.equal(steps.at(-1)?.phase, "done");
-		assert.equal(steps.at(-1)?.atMs, 800);
-		assert.ok((steps.at(-1)?.atMs || 0) < ASK_SAMPLE_PLAYBACK.at(-1)!.atMs);
-		assert.equal(RESEARCH_SAMPLE_PLAYBACK.length, 2);
-		const searching = askSamplePlaybackPatch(report, "search");
-		assert.equal(searching.pending, true);
-		assert.equal(searching.research, true);
-		assert.equal(searching.report, undefined);
-		assert.equal(searching.results.length, 0);
-		assert.equal(searching.rerankCandidateCount, 505);
-		assert.equal(searching.rerankShowCount, 1);
-		const done = askSamplePlaybackPatch(report, "done");
-		assert.equal(done.pending, false);
-		assert.equal(done.report, "# Feeling");
-		assert.equal(done.research, true);
-		assert.deepEqual(askSamplePlaybackSteps(sample("What is anger?")!), [
-			...ASK_SAMPLE_PLAYBACK,
-		]);
+		assert.equal(report.report, "# Feeling");
+		assert.equal(report.research, true);
+		assert.equal(report.results.length, 1);
 	});
 });
 
