@@ -256,6 +256,7 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
+	followDockVisualTranslateY,
 	isMobileReportDockCompact,
 	isMobileReportDockExpanded,
 	MOBILE_REPORT_DOCK_BREAKPOINT_PX,
@@ -2775,31 +2776,61 @@ export function attachAiMode(options: {
 		}
 	}
 
+	let currentStatusText = "";
 	let deferredStatus = "";
 
-	function setStatus(text: string, options?: { showInCompactDock?: boolean }): void {
-		const showInCompact = options?.showInCompactDock ?? false;
-		const compact = followDockCompact();
-		if (text && compact && !showInCompact) {
-			deferredStatus = text;
-			for (const el of statuses) {
-				el.textContent = text;
-				el.hidden = true;
-			}
-			return;
+	function shouldShowFollowComposerStatus(): boolean {
+		if (!currentStatusText) return false;
+		if (followDockCompact()) return false;
+		if (!root.classList.contains("is-follow-expanded")) return false;
+		if (reviseFollowActive()) {
+			const draft = reviseDraftFromComposer();
+			const typed = (followInput?.value || "").trim();
+			if (!hasReviseComposerContent(draft) && !typed) return false;
 		}
-		deferredStatus = "";
+		return true;
+	}
+
+	function shouldShowMainComposerStatus(): boolean {
+		if (!currentStatusText) return false;
+		if (root.classList.contains("is-research-gated")) return false;
+		return true;
+	}
+
+	function syncStatusPresentation(): void {
 		for (const el of statuses) {
-			el.textContent = text;
-			el.hidden = !text;
+			const inFollow = Boolean(el.closest("[data-ai-follow-form]"));
+			el.textContent = currentStatusText;
+			if (!currentStatusText) {
+				el.hidden = true;
+				continue;
+			}
+			el.hidden = inFollow
+				? !shouldShowFollowComposerStatus()
+				: !shouldShowMainComposerStatus();
 		}
+	}
+
+	function setStatus(text: string, options?: { showInCompactDock?: boolean }): void {
+		currentStatusText = text;
+		const showInCompact = options?.showInCompactDock ?? false;
+		if (text && followDockCompact() && !showInCompact) {
+			deferredStatus = text;
+		} else {
+			deferredStatus = "";
+		}
+		syncStatusPresentation();
 	}
 
 	function flushDeferredStatus(): void {
 		if (!deferredStatus || followDockCompact()) return;
-		const pending = deferredStatus;
+		currentStatusText = deferredStatus;
 		deferredStatus = "";
-		setStatus(pending);
+		syncStatusPresentation();
+	}
+
+	function followSendStatusBlocked(): boolean {
+		return Boolean(currentStatusText && followDockCompact());
 	}
 
 	function currentReturnTo(): string {
@@ -9270,7 +9301,9 @@ export function attachAiMode(options: {
 			followForm.style.removeProperty("right");
 			followForm.style.removeProperty("margin-inline");
 			followForm.style.removeProperty("bottom");
-			followForm.style.removeProperty("--ai-follow-dock-bottom");
+			document.documentElement.style.removeProperty(
+				"--ai-follow-dock-translate",
+			);
 			return;
 		}
 		const column = thread.getBoundingClientRect();
@@ -9285,7 +9318,6 @@ export function attachAiMode(options: {
 		const rect = reportFollowDockRect({
 			columnLeft: column.left,
 			columnWidth: column.width,
-			innerHeight: window.innerHeight,
 			visualViewport: window.visualViewport,
 			mobileCompact,
 			mobileExpanded,
@@ -9299,9 +9331,20 @@ export function attachAiMode(options: {
 		followForm.style.width = `${rect.width}px`;
 		followForm.style.right = "auto";
 		followForm.style.marginInline = "0";
-		const bottom = `${rect.bottom}px`;
-		followForm.style.bottom = bottom;
-		followForm.style.setProperty("--ai-follow-dock-bottom", bottom);
+		followForm.style.bottom = "0";
+		document.documentElement.style.setProperty("--ai-follow-dock-translate", "0px");
+		void followForm.offsetHeight;
+		const vv = window.visualViewport;
+		if (vv) {
+			const translateY = followDockVisualTranslateY({
+				elementBottom: followForm.getBoundingClientRect().bottom,
+				visualViewport: vv,
+			});
+			document.documentElement.style.setProperty(
+				"--ai-follow-dock-translate",
+				`${translateY}px`,
+			);
+		}
 	}
 
 	function fitExpandedFollowComposerFields(): void {
@@ -9393,6 +9436,8 @@ export function attachAiMode(options: {
 				root.classList.contains("is-revise-busy");
 			if (stopBusy) {
 				followSend.disabled = false;
+			} else if (followSendStatusBlocked()) {
+				followSend.disabled = true;
 			} else if (reviseFollowActive()) {
 				followSend.disabled = !canSubmitReviseEdits(
 					buildSubmittableReviseEdits(reviseDraftFromComposer()),
@@ -9400,6 +9445,7 @@ export function attachAiMode(options: {
 			}
 		}
 		syncCompositionImageAttachButtons();
+		syncStatusPresentation();
 		flushDeferredStatus();
 		const justExpandedMobile =
 			expanded &&
@@ -10971,6 +11017,7 @@ export function attachAiMode(options: {
 		};
 		clipFollowInputValue();
 		fitTextarea(followInput);
+		syncStatusPresentation();
 		if (compositionMutating) return;
 		const hasChipMarkers =
 			compositionMarkerIndices(followInput.value).length > 0 ||
@@ -11473,6 +11520,9 @@ export function attachAiMode(options: {
 	});
 	window.addEventListener("scroll", scheduleFollowDockFrost, { passive: true });
 	window.visualViewport?.addEventListener("resize", scheduleFollowDockFrost);
+	window.visualViewport?.addEventListener("scroll", scheduleFollowDockFrost, {
+		passive: true,
+	});
 
 	// Prefill only — never auto-submit. Mode switches must not spend credits.
 	const params = new URLSearchParams(window.location.search);

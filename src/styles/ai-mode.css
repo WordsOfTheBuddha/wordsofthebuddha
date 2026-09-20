@@ -1987,6 +1987,7 @@ body.ai-diagram-fullscreen-open {
 	width: min(var(--ai-max), calc(100% - 2rem));
 	margin-inline: auto;
 	z-index: 6;
+	transform: translateY(var(--ai-follow-dock-translate, 0px));
 	/* Safe-area is inner padding so the dock stays flush on the viewport. */
 	padding: 0.35rem 0 env(safe-area-inset-bottom, 0px);
 	background: none;
@@ -2005,7 +2006,7 @@ body.ai-diagram-fullscreen-open {
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: var(--ai-follow-dock-bottom, 0px);
+	bottom: 0;
 	height: max(env(safe-area-inset-bottom, 0px), var(--ai-follow-radius));
 	background: transparent;
 	backdrop-filter: saturate(180%) blur(20px);
@@ -2049,6 +2050,18 @@ body.ai-diagram-fullscreen-open {
 	padding: 0.4rem 0.15rem 0.4rem 0;
 	font-size: 1rem;
 	line-height: 1.3;
+	overflow: hidden;
+	overflow-y: hidden;
+	white-space: nowrap;
+	resize: none;
+}
+
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-box textarea::placeholder,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body textarea::placeholder,
+.ai-mode.is-research-gated .ai-composer .ai-box textarea::placeholder {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-composition-attachments {
@@ -2076,11 +2089,26 @@ body.ai-diagram-fullscreen-open {
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-box-tools,
 .ai-follow.is-dock:not(.is-follow-expanded) [data-ai-mic],
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-meta-row,
+.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-notice,
 .ai-mode.is-research-gated .ai-composer .ai-box-tools,
 .ai-mode.is-research-gated .ai-composer [data-ai-mic],
 .ai-mode.is-research-gated .ai-composer .ai-meta-row,
+.ai-mode.is-research-gated .ai-composer > .ai-status,
 .ai-mode.is-research-gated .ai-research-signin {
 	display: none !important;
+}
+
+.ai-follow .ai-composer-notice {
+	display: none;
+	margin: 0;
+	padding: 0.35rem 0.55rem 0.1rem;
+	text-align: left;
+	font-size: 0.8rem;
+	line-height: 1.35;
+}
+
+.ai-follow.is-follow-expanded .ai-composer-notice:not([hidden]) {
+	display: block;
 }
 
 .ai-follow.is-dock:not(.is-follow-expanded) .ai-send {
@@ -3854,14 +3882,22 @@ html.dark .ai-paragraph-btn:focus-visible {
 
 	html.is-report-dock-compact .mobile-toc-toggle[data-toc-placement="fixed"] {
 		bottom: var(--ai-mobile-bottom);
+		transform: translateY(var(--ai-follow-dock-translate, 0px));
 		left: var(--ai-mobile-edge);
 		z-index: 8;
 	}
 
 	html.is-report-dock-compact .scroll-to-top-button.visible {
 		bottom: var(--ai-mobile-bottom);
+		transform: translateY(var(--ai-follow-dock-translate, 0px));
 		right: max(0.75rem, env(safe-area-inset-right, 0px));
 		z-index: 8;
+	}
+
+	html.is-report-dock-compact .scroll-to-top-button.visible:hover {
+		transform: translateY(
+			calc(var(--ai-follow-dock-translate, 0px) - 3px)
+		);
 	}
 
 	html.is-report-dock-compact .ai-mode.has-thread.is-report-dock {
@@ -3895,6 +3931,9 @@ html.dark .ai-paragraph-btn:focus-visible {
 		line-height: 1.25;
 		max-height: 1.75rem;
 		padding: 0.24rem 0.08rem 0.24rem 0;
+		overflow: hidden;
+		overflow-y: hidden;
+		white-space: nowrap;
 	}
 
 	html.is-report-dock-compact

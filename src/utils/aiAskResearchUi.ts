@@ -31,8 +31,7 @@ export const REVISE_MULTI_HINT_STORAGE_KEY = "ai-mode-revise-multi-hint";
 export const REVISE_COMPOSER_DRAFT_STORAGE_KEY = "ai-mode-revise-composer-draft";
 export const RESEARCH_PLACEHOLDER =
 	"Ask for a cited report based on the Words of the Buddha…";
-export const RESEARCH_SIGNED_OUT_PLACEHOLDER =
-	"Create an account or Sign in to start a research";
+export const RESEARCH_SIGNED_OUT_PLACEHOLDER = "Sign in to start research";
 export const ASK_PLACEHOLDER = "Ask a question about the discourses…";
 export const ASK_COMPOSER_LABEL = "Ask a question";
 export const RESEARCH_COMPOSER_LABEL = "Ask for a cited report";
@@ -368,19 +367,24 @@ export function findReportBlockElement(
 	return body.querySelectorAll<HTMLElement>(selector)[n - 1] || null;
 }
 
+/** Screen Y of the visual viewport bottom edge. */
+export function followDockVisualBottom(
+	visualViewport: Pick<VisualViewport, "height" | "offsetTop">,
+): number {
+	return Math.round(visualViewport.offsetTop + visualViewport.height);
+}
+
 /**
- * Align a body-fixed dock with the visual viewport bottom.
- * Positive when mobile chrome shrinks the visual viewport; negative on Firefox
- * Android when the visual viewport is taller than the layout viewport.
+ * `translateY` needed to align a `bottom: 0` fixed dock with the visual
+ * viewport bottom. Positive moves the dock down; negative moves it up.
  */
-export function followDockBottomInset(input: {
-	innerHeight: number;
+export function followDockVisualTranslateY(input: {
+	elementBottom: number;
 	visualViewport?: Pick<VisualViewport, "height" | "offsetTop"> | null;
 }): number {
 	const vv = input.visualViewport;
 	if (!vv) return 0;
-	// offsetTop tracks page scroll and must not move a body-fixed dock.
-	return Math.round(input.innerHeight - vv.height);
+	return followDockVisualBottom(vv) - Math.round(input.elementBottom);
 }
 
 export const MOBILE_REPORT_DOCK_BREAKPOINT_PX = 640;
@@ -428,7 +432,6 @@ export function mobileReportDockViewportRect(
 export function reportFollowDockRect(input: {
 	columnLeft: number;
 	columnWidth: number;
-	innerHeight: number;
 	visualViewport?: Pick<
 		VisualViewport,
 		"height" | "offsetTop" | "width" | "offsetLeft"
@@ -436,7 +439,7 @@ export function reportFollowDockRect(input: {
 	mobileCompact: boolean;
 	mobileExpanded?: boolean;
 	rootFontSize?: number;
-}): { left: number; width: number; bottom: number } {
+}): { left: number; width: number } {
 	if (input.mobileExpanded) {
 		const viewport = mobileReportDockViewportRect(
 			input.visualViewport,
@@ -445,10 +448,6 @@ export function reportFollowDockRect(input: {
 		return {
 			left: viewport.left,
 			width: viewport.width,
-			bottom: followDockBottomInset({
-				innerHeight: input.innerHeight,
-				visualViewport: input.visualViewport,
-			}),
 		};
 	}
 	const lane = input.mobileCompact
@@ -457,10 +456,6 @@ export function reportFollowDockRect(input: {
 	return {
 		left: input.columnLeft + lane,
 		width: Math.max(0, input.columnWidth - lane * 2),
-		bottom: followDockBottomInset({
-			innerHeight: input.innerHeight,
-			visualViewport: input.visualViewport,
-		}),
 	};
 }
 

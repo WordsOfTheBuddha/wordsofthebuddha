@@ -77,7 +77,8 @@ import {
 	followComposerClickShouldExpand,
 	followComposerFocusShouldExpand,
 	followComposerShouldExpand,
-	followDockBottomInset,
+	followDockVisualBottom,
+	followDockVisualTranslateY,
 	isMobileReportDockCompact,
 	isMobileReportDockExpanded,
 	mobileReportDockFabLanePx,
@@ -285,44 +286,63 @@ describe("researchReportFollowChrome", () => {
 	});
 });
 
-describe("followDockBottomInset", () => {
-	it("returns zero when the visual viewport fills the layout viewport", () => {
+describe("followDockVisualTranslateY", () => {
+	it("returns zero when the dock already sits on the visual viewport bottom", () => {
 		assert.equal(
-			followDockBottomInset({
-				innerHeight: 800,
+			followDockVisualTranslateY({
+				elementBottom: 800,
 				visualViewport: { height: 800, offsetTop: 0 },
 			}),
 			0,
 		);
 	});
 
-	it("lifts the dock when mobile chrome shrinks the visual viewport", () => {
+	it("moves the dock up when mobile chrome shrinks the visual viewport", () => {
 		assert.equal(
-			followDockBottomInset({
-				innerHeight: 800,
+			followDockVisualTranslateY({
+				elementBottom: 800,
 				visualViewport: { height: 740, offsetTop: 40 },
+			}),
+			-20,
+		);
+	});
+
+	it("tracks visual viewport scroll offset", () => {
+		assert.equal(
+			followDockVisualTranslateY({
+				elementBottom: 800,
+				visualViewport: { height: 800, offsetTop: 120 },
+			}),
+			120,
+		);
+	});
+
+	it("moves the dock down when the visual viewport is taller than layout", () => {
+		assert.equal(
+			followDockVisualTranslateY({
+				elementBottom: 800,
+				visualViewport: { height: 860, offsetTop: 0 },
 			}),
 			60,
 		);
 	});
 
-	it("ignores visual viewport scroll offset so the dock does not drift while reading", () => {
+	it("keeps the dock flush while scrolling on Firefox", () => {
 		assert.equal(
-			followDockBottomInset({
-				innerHeight: 800,
-				visualViewport: { height: 800, offsetTop: 120 },
+			followDockVisualTranslateY({
+				elementBottom: 800,
+				visualViewport: { height: 860, offsetTop: 50 },
 			}),
-			0,
+			110,
 		);
 	});
+});
 
-	it("extends the dock when Firefox reports a taller visual viewport", () => {
+describe("followDockVisualBottom", () => {
+	it("sums visual viewport offset and height", () => {
 		assert.equal(
-			followDockBottomInset({
-				innerHeight: 800,
-				visualViewport: { height: 860, offsetTop: 0 },
-			}),
-			-60,
+			followDockVisualBottom({ height: 740, offsetTop: 40 }),
+			780,
 		);
 	});
 });
@@ -335,25 +355,23 @@ describe("reportFollowDockRect", () => {
 			reportFollowDockRect({
 				columnLeft: 8,
 				columnWidth: 360,
-				innerHeight: 800,
 				visualViewport: { height: 740, offsetTop: 40 },
 				mobileCompact: true,
 			}),
-			{ left: 8 + lane, width: 360 - lane * 2, bottom: 60 },
+			{ left: 8 + lane, width: 360 - lane * 2 },
 		);
 	});
 
-	it("pulls a compact mobile dock down when the visual viewport is taller", () => {
+	it("keeps horizontal inset when the visual viewport is taller", () => {
 		const lane = mobileReportDockFabLanePx(16);
 		assert.deepEqual(
 			reportFollowDockRect({
 				columnLeft: 8,
 				columnWidth: 360,
-				innerHeight: 800,
 				visualViewport: { height: 860, offsetTop: 0 },
 				mobileCompact: true,
 			}),
-			{ left: 8 + lane, width: 360 - lane * 2, bottom: -60 },
+			{ left: 8 + lane, width: 360 - lane * 2 },
 		);
 	});
 
@@ -377,12 +395,11 @@ describe("reportFollowDockRect", () => {
 			reportFollowDockRect({
 				columnLeft: 12,
 				columnWidth: 360,
-				innerHeight: 800,
 				visualViewport: { height: 800, offsetTop: 0, width: 390, offsetLeft: 0 },
 				mobileCompact: false,
 				mobileExpanded: true,
 			}),
-			{ left: 0, width: 390, bottom: 0 },
+			{ left: 0, width: 390 },
 		);
 	});
 });
@@ -1342,10 +1359,7 @@ describe("Research pane copy", () => {
 			RESEARCH_PLACEHOLDER,
 			"Ask for a cited report based on the Words of the Buddha…",
 		);
-		assert.equal(
-			RESEARCH_SIGNED_OUT_PLACEHOLDER,
-			"Create an account or Sign in to start a research",
-		);
+		assert.equal(RESEARCH_SIGNED_OUT_PLACEHOLDER, "Sign in to start research");
 		assert.equal(ASK_COMPOSER_LABEL, "Ask a question");
 		assert.equal(RESEARCH_COMPOSER_LABEL, "Ask for a cited report");
 		assert.equal(
