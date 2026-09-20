@@ -1,3 +1,4 @@
+import { decodeHtmlEntities } from "./htmlEntities";
 import { sanitizeResearchReportHtml } from "./researchReportSanitize";
 import {
 	enhanceResearchReportDiagrams,
@@ -68,15 +69,6 @@ async function importMermaid(): Promise<MermaidApi> {
 	}
 }
 
-function decodeReportEntities(value: string): string {
-	return value
-		.replace(/&lt;/g, "<")
-		.replace(/&gt;/g, ">")
-		.replace(/&quot;/g, '"')
-		.replace(/&#39;/g, "'")
-		.replace(/&amp;/g, "&");
-}
-
 function mermaidInitConfig(theme: string): Record<string, unknown> {
 	return {
 		startOnLoad: false,
@@ -138,7 +130,7 @@ export async function replaceMermaidPlaceholders(
 	if (matches.length === 0) return html;
 	let out = html;
 	for (const match of matches) {
-		const source = decodeReportEntities(match[1] || "").trim();
+		const source = decodeHtmlEntities(match[1] || "").trim();
 		if (!source || !match[0]) continue;
 		try {
 			const svg = await renderSvg(source);

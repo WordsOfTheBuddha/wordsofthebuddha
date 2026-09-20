@@ -46,6 +46,20 @@ MN 10 sets out the four establishments.
 		assert.doesNotMatch(html, /data-cite-title/);
 	});
 
+	it("keeps apostrophes and unicode clean in heading ids and labels", () => {
+		const html = renderResearchReportHtml(
+			`## The trainer's-eye view: Pessa in MN 51
+
+Body.`,
+			[],
+		);
+		assert.match(html, /id="rh-the-trainer-s-eye-view-pessa-in-mn-51"/);
+		assert.match(
+			html,
+			/data-report-heading="The trainer's-eye view: Pessa in MN 51"/,
+		);
+	});
+
 	it("does not link discourse IDs in headings", () => {
 		const html = renderResearchReportHtml(
 			`## Chapter 6 — Arising and Passing: SN 47.42's Conditional Analysis

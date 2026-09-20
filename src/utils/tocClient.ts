@@ -7,6 +7,7 @@
  * sections to navigate — typically MN and DN, and some longer SN/AN suttas.
  */
 
+import { decodeHtmlEntities } from "./htmlEntities";
 import { slugify } from "./slugify";
 
 export const DISCOURSE_TOC_MIN_HEADINGS = 2;
@@ -305,7 +306,7 @@ function collectHeadings(
 
 function tocHeadingLabel(heading: HTMLElement): string {
 	const attr = heading.getAttribute("data-report-heading");
-	if (attr) return headingLabel(attr);
+	if (attr) return headingLabel(decodeHtmlEntities(attr));
 	return headingLabel(heading.textContent || "");
 }
 

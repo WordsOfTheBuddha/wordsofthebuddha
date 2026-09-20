@@ -1,5 +1,7 @@
 import { extractJsonObject } from "./extractJsonObject";
 import { prefixedAiDiscourseIdsInText } from "./aiSearchQuery";
+import { decodeHtmlEntities } from "./htmlEntities";
+import { slugify } from "./slugify";
 // Browser-safe: planner parsing runs in aiModeClient. The fs-backed
 // clipDiscourseSvgRequestSlugs would drag node:fs into the client bundle;
 // the server re-clips with the existence check and is the source of truth.
@@ -1032,12 +1034,7 @@ export function researchReviseVersionChangelog(input: {
 }
 
 export function reportHeadingSlug(text: string): string {
-	const slug = text
-		.toLowerCase()
-		.normalize("NFKD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-+|-+$/g, "")
+	const slug = slugify(decodeHtmlEntities(text))
 		.slice(0, 72)
 		.replace(/-+$/g, "");
 	return slug || "section";
@@ -1055,13 +1052,7 @@ export function normalizeReportHeading(value: string): string {
 }
 
 export function stripHtmlToPlain(html: string): string {
-	return html
-		.replace(/<[^>]+>/g, " ")
-		.replace(/&nbsp;/gi, " ")
-		.replace(/&amp;/gi, "&")
-		.replace(/&lt;/gi, "<")
-		.replace(/&gt;/gi, ">")
-		.replace(/&quot;/gi, '"')
+	return decodeHtmlEntities(html.replace(/<[^>]+>/g, " "))
 		.replace(/\s+/g, " ")
 		.trim();
 }

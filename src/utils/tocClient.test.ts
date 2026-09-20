@@ -54,6 +54,42 @@ describe("isNamedSectionHeading", () => {
 	});
 });
 
+describe("research report ToC labels", () => {
+	it("decodes apostrophe entities in data-report-heading", () => {
+		const dom = new JSDOM(
+			`<!doctype html><html><body>
+				<nav id="post-toc"></nav>
+				<div class="ai-turn"><div class="ai-report"><div class="ai-answer-body">
+					<h2 id="rh-trainer" data-report-heading="The trainer&#39;s-eye view">The trainer&#39;s-eye view</h2>
+					<p>Body</p>
+					<h2 id="rh-next" data-report-heading="Next">Next</h2>
+					<p>More</p>
+				</div></div></div>
+			</body></html>`,
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.AbortController = window.AbortController;
+		try {
+			const options = researchTableOfContentsOptions();
+			assert.equal(attachTableOfContents(options), true);
+			const link = window.document.querySelector(
+				'#post-toc a[href="#rh-trainer"]',
+			);
+			assert.equal(link?.textContent, "The trainer's-eye view");
+		} finally {
+			detachTableOfContents("post-toc");
+			globalThis.window = previous.window;
+			globalThis.document = previous.document;
+		}
+	});
+});
+
 describe("slugifyHeading", () => {
 	it("matches the markdown heading id style", () => {
 		assert.equal(
