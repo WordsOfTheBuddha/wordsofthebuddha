@@ -13,8 +13,6 @@ interface Props {
 const { showAuth = false, showSearch = true, showBrand = true } = Astro.props;
 const authEnabled = Boolean(showAuth);
 const hideGuestAuth = showAuth === "signed-in";
-/** Path + query so Ask (`/search?mode=ask`) survives sign-in / sign-out. */
-const currentPath = `${Astro.url.pathname}${Astro.url.search}`;
 const pathOnly = Astro.url.pathname;
 const isInReviewSection =
 	pathOnly === "/review-room" || pathOnly === "/profile";
@@ -22,7 +20,6 @@ const isInReviewSection =
 // Never personalize HTML with a session lookup. That was a Firebase
 // revocation round-trip on every SSR discourse TTFB. Ship an empty slot —
 // never a guest Register button. Client hydration paints the real control.
-const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 ---
 
 <nav
@@ -69,7 +66,6 @@ const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 					class="relative"
 					data-state="pending"
 					data-guest-cta={hideGuestAuth ? "hidden" : "shown"}
-					data-register-href={registerHref}
 					aria-busy="true"
 				/>
 			)
@@ -148,9 +144,11 @@ const registerHref = `/register?returnTo=${encodeURIComponent(currentPath)}`;
 	}
 
 	function slotOptions(slot: HTMLElement) {
+		const returnTo = `${location.pathname}${location.search}`;
 		return {
-			registerHref: slot.getAttribute("data-register-href") || "/register",
-			returnTo: `${location.pathname}${location.search}`,
+			// Prerendered pages bake `/search` without view-state query params.
+			registerHref: `/register?returnTo=${encodeURIComponent(returnTo)}`,
+			returnTo,
 			hideGuestCta: slot.getAttribute("data-guest-cta") === "hidden",
 		};
 	}

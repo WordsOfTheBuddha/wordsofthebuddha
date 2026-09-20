@@ -96,12 +96,19 @@ function searchRedirectPath(location: string): string {
 	}
 }
 
+/** Auth endpoints may redirect to `/search` after sign-in or sign-out. */
+const API_SEARCH_REDIRECT_ALLOWLIST = new Set([
+	"/api/auth/signin",
+	"/api/auth/signout",
+]);
+
 /** `/api/*` must never 302 onto the discourse catch-all `/search` page. */
 function jsonIfApiFellThroughToSearch(
 	pathname: string,
 	response: Response,
 ): Response {
 	if (!pathname.startsWith("/api/")) return response;
+	if (API_SEARCH_REDIRECT_ALLOWLIST.has(pathname)) return response;
 	if (response.status < 300 || response.status >= 400) return response;
 	if (searchRedirectPath(response.headers.get("Location") || "") !== "/search") {
 		return response;
