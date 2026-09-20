@@ -1,10 +1,12 @@
 ---
+title: Soṇadaṇḍa sutta - With Soṇadaṇḍa
+description: When the wealthy and esteemed brahmin Soṇadaṇḍa goes to meet the Buddha, he is questioned on what qualities truly define a brahmin. Setting aside social pedigree, scriptural recitation, and physical appearance, Soṇadaṇḍa recognizes that only virtue and wisdom are essential, and the Buddha reveals how virtue and wisdom are purified through spiritual training.
+qualities: ethical conduct, wisdom, learning, personal existence view, examination, discernment, clinging to rules and observances
+theme: wisdom, cultivating discernment
 slug: dn4
 character: Brahmin Soṇadaṇḍa
-source: suttacentral/bilara-data
-title: Soṇadaṇḍasutta
-edition: ms
-granularity: paragraph
+simile: hand washing hand, foot washing foot
+priority: 1.6
 ---
 
 1. Campeyyakabrāhmaṇagahapatikā
@@ -196,5 +198,3 @@ Atha kho soṇadaṇḍo brāhmaṇo bhagavato adhivāsanaṁ viditvā uṭṭh�
 Atha kho soṇadaṇḍo brāhmaṇo bhagavantaṁ bhuttāviṁ onītapattapāṇiṁ aññataraṁ nīcaṁ āsanaṁ gahetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho soṇadaṇḍo brāhmaṇo bhagavantaṁ etadavoca: “ahañceva kho pana, bho gotama, parisagato samāno āsanā vuṭṭhahitvā bhavantaṁ gotamaṁ abhivādeyyaṁ, tena maṁ sā parisā paribhaveyya. Yaṁ kho pana sā parisā paribhaveyya, yasopi tassa hāyetha. Yassa kho pana yaso hāyetha, bhogāpi tassa hāyeyyuṁ. Yasoladdhā kho panamhākaṁ bhogā. Ahañceva kho pana, bho gotama, parisagato samāno añjaliṁ paggaṇheyyaṁ, āsanā me taṁ bhavaṁ gotamo paccuṭṭhānaṁ dhāretu. Ahañceva kho pana, bho gotama, parisagato samāno veṭhanaṁ omuñceyyaṁ, sirasā me taṁ bhavaṁ gotamo abhivādanaṁ dhāretu. Ahañceva kho pana, bho gotama, yānagato samāno yānā paccorohitvā bhavantaṁ gotamaṁ abhivādeyyaṁ, tena maṁ sā parisā paribhaveyya. Yaṁ kho pana sā parisā paribhaveyya, yasopi tassa hāyetha, yassa kho pana yaso hāyetha, bhogāpi tassa hāyeyyuṁ. Yasoladdhā kho panamhākaṁ bhogā. Ahañceva kho pana, bho gotama, yānagato samāno patodalaṭṭhiṁ abbhunnāmeyyaṁ, yānā me taṁ bhavaṁ gotamo paccorohanaṁ dhāretu. Ahañceva kho pana, bho gotama, yānagato samāno chattaṁ apanāmeyyaṁ, sirasā me taṁ bhavaṁ gotamo abhivādanaṁ dhāretū”ti.
 
 Atha kho bhagavā soṇadaṇḍaṁ brāhmaṇaṁ dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṁsetvā uṭṭhāyāsanā pakkāmīti.
-
-Soṇadaṇḍasuttaṁ niṭṭhitaṁ catutthaṁ.
