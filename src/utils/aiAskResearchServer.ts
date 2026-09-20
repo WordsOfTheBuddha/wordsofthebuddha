@@ -68,6 +68,10 @@ import {
 	type ResearchJobStatus,
 } from "./aiAskResearchJob";
 import {
+	RESEARCH_STALE_RECOVERY_ERROR,
+	shouldRecoverStuckResearchJob,
+} from "./aiAskResearchRecovery";
+import {
 	fallbackResearchReport,
 	formatResearchSourceLine,
 	type ResearchReportResult,
@@ -221,6 +225,8 @@ export interface ResearchJobRecord {
 	/** Reference screenshots for the in-flight revision only; cleared when the job completes. */
 	reviseAttachedImages?: ResearchContextImage[];
 	reviseImageCount?: number;
+	/** Last Firestore write; used to detect orphaned serverless workers. */
+	updatedAt?: number;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -228,8 +234,9 @@ const memory = new Map<string, ResearchJobRecord>();
 const memoryWrittenAt = new Map<string, number>();
 
 function rememberJobMemory(key: string, record: ResearchJobRecord): void {
-	memory.set(key, record);
-	memoryWrittenAt.set(key, Date.now());
+	const now = Date.now();
+	memory.set(key, { ...record, updatedAt: now });
+	memoryWrittenAt.set(key, now);
 }
 
 function jobKey(uid: string, jobId: string): string {
@@ -326,6 +333,7 @@ function recordFromData(
 			typeof data.progressNote === "string" ? data.progressNote : undefined,
 		processNotes: clipResearchProcessNotes(data.processNotes),
 		createdAt: timestampMillis(data.createdAt),
+		updatedAt: timestampMillis(data.updatedAt),
 		quotaSettled: data.quotaSettled === true,
 		quotaRefunded: data.quotaRefunded === true,
 		chainPass: data.chainPass === 2 ? 2 : data.chainPass === 1 ? 1 : undefined,
@@ -439,7 +447,8 @@ export async function writeJob(
 		...patch,
 		...(processNotes !== undefined ? { processNotes } : {}),
 	};
-	const next = { ...record, ...merged };
+	const now = Date.now();
+	const next = { ...record, ...merged, updatedAt: now };
 	const stored: Record<string, unknown> = {
 		updatedAt: FieldValue.serverTimestamp(),
 	};
@@ -593,12 +602,32 @@ function readDisplayJob(uid: string, jobId: string): ResearchJobRecord | null {
 	return null;
 }
 
+async function recoverStuckResearchJobIfNeeded(
+	record: ResearchJobRecord,
+): Promise<ResearchJobRecord> {
+	if (!shouldRecoverStuckResearchJob(record)) return record;
+	const draft = sanitizeResearchJobResult(record.draftResult);
+	if (draft?.report) {
+		await finalizeFromDraft(record.uid, record.id);
+		return (await readJob(record.uid, record.id)) || record;
+	}
+	const failed = await writeJob(record, {
+		status: "failed",
+		error: RESEARCH_STALE_RECOVERY_ERROR,
+		progressNote: "",
+	});
+	return await settleResearchJobQuota(failed);
+}
+
 export async function getResearchJobForUser(
 	uid: string,
 	jobId: string,
 ): Promise<ResearchJobPublic | null> {
-	const record = readDisplayJob(uid, jobId) ?? (await readJob(uid, jobId));
+	let record = readDisplayJob(uid, jobId) ?? (await readJob(uid, jobId));
 	if (!record) return null;
+	if (!isResearchJobTerminal(record.status)) {
+		record = await recoverStuckResearchJobIfNeeded(record);
+	}
 	if (
 		isResearchJobReviseClarifying(record.status) &&
 		(!record.reviseClarify || isResearchReviseClarifyExpired(record.reviseClarify))
