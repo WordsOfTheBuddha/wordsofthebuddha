@@ -4,6 +4,7 @@ import {
 	RESEARCH_ENQUEUE_TIMEOUT_MS,
 	RESEARCH_HANDOFF_MARGIN_MS,
 	researchWriterBudgetWithMargin,
+	shouldChainResearchPass,
 	shouldRetryResearchWriter,
 	shouldRunResearchPaliReread,
 	shouldYieldResearchFirstPass,
@@ -54,5 +55,66 @@ describe("researchWriterBudgetWithMargin", () => {
 
 	it("caps a fresh pass at the writer max", () => {
 		assert.equal(researchWriterBudgetWithMargin(0), 150_000);
+	});
+});
+
+describe("shouldChainResearchPass", () => {
+	it("chains when the first write never happened, even with nothing unread", () => {
+		// The prod fallback case: writer failed, everything pre-marked read,
+		// continue-eval skipped — the fallback must not ship as final.
+		assert.equal(
+			shouldChainResearchPass({
+				batchSize: 0,
+				extraQueryCount: 0,
+				extraPaliCount: 0,
+				needsFirstWrite: true,
+				resultCount: 7,
+			}),
+			true,
+		);
+	});
+
+	it("does not chain an empty result set even when the write failed", () => {
+		assert.equal(
+			shouldChainResearchPass({
+				batchSize: 0,
+				extraQueryCount: 0,
+				extraPaliCount: 0,
+				needsFirstWrite: true,
+				resultCount: 0,
+			}),
+			false,
+		);
+	});
+
+	it("does not chain a finished report with nothing left to do", () => {
+		assert.equal(
+			shouldChainResearchPass({
+				batchSize: 0,
+				extraQueryCount: 0,
+				extraPaliCount: 0,
+				needsFirstWrite: false,
+				resultCount: 7,
+			}),
+			false,
+		);
+	});
+
+	it("keeps chaining on unread batches and extra queries or pali reads", () => {
+		const base = {
+			extraQueryCount: 0,
+			extraPaliCount: 0,
+			needsFirstWrite: false,
+			resultCount: 7,
+		};
+		assert.equal(shouldChainResearchPass({ ...base, batchSize: 3 }), true);
+		assert.equal(
+			shouldChainResearchPass({ ...base, batchSize: 0, extraQueryCount: 2 }),
+			true,
+		);
+		assert.equal(
+			shouldChainResearchPass({ ...base, batchSize: 0, extraPaliCount: 1 }),
+			true,
+		);
 	});
 });

@@ -132,14 +132,24 @@ import {
 
 const RESEARCH_PLAN_MS = 60_000;
 const RESEARCH_ASSEMBLE_MS = 20_000;
-export {
+import {
 	RESEARCH_ENQUEUE_TIMEOUT_MS,
 	RESEARCH_HANDOFF_MARGIN_MS,
 	researchWriterBudgetWithMargin,
+	shouldChainResearchPass,
 	shouldRetryResearchWriter,
 	shouldRunResearchPaliReread,
 	shouldYieldResearchFirstPass,
 } from "./aiAskResearchHandoff";
+export {
+	RESEARCH_ENQUEUE_TIMEOUT_MS,
+	RESEARCH_HANDOFF_MARGIN_MS,
+	researchWriterBudgetWithMargin,
+	shouldChainResearchPass,
+	shouldRetryResearchWriter,
+	shouldRunResearchPaliReread,
+	shouldYieldResearchFirstPass,
+};
 const RESEARCH_RERANK_CAPS = {
 	typicalLimit: RESEARCH_RERANK_MAX_LIMIT,
 	hardLimit: RESEARCH_RERANK_HARD_LIMIT,
@@ -1934,6 +1944,9 @@ export async function runResearchJob(options: {
 	};
 
 	const queueContinueIfNeeded = async (): Promise<boolean> => {
+		// Capture before assembleArtifact(): it fills the closure `report`
+		// with fallback filler when empty, which would hide a missing write.
+		const needsFirstWrite = !report;
 		const artifact = assembleArtifact();
 		if (!artifact.report || artifact.results.length === 0) return false;
 		const alreadyRead = current.fullReadSlugs || [];
@@ -1978,9 +1991,24 @@ export async function runResearchJob(options: {
 				);
 			}
 		}
-		const { batch, rest } = nextUnreadFullBatch([...extraFull, ...unread]);
-		const wantChain =
-			batch.length > 0 || extraQueries.length > 0 || extraPali.length > 0;
+		let { batch, rest } = nextUnreadFullBatch([...extraFull, ...unread]);
+		if (needsFirstWrite && batch.length === 0 && artifact.results.length > 0) {
+			// The writer never produced a real report: hand pass 2 the
+			// selected slugs to read so it rewrites instead of finalizing
+			// the fallback (chain pass bails to draft when reads are empty).
+			const forced = nextUnreadFullBatch(
+				artifact.results.map((hit) => hit.slug),
+			);
+			batch = forced.batch;
+			rest = forced.rest;
+		}
+		const wantChain = shouldChainResearchPass({
+			batchSize: batch.length,
+			extraQueryCount: extraQueries.length,
+			extraPaliCount: extraPali.length,
+			needsFirstWrite,
+			resultCount: artifact.results.length,
+		});
 		logResearchHop({
 			hop: 1,
 			pool: pool.length,
@@ -1989,6 +2017,7 @@ export async function runResearchJob(options: {
 			fullRead: alreadyRead.length,
 			unreadFull: unread.length,
 			continue: extraQueries.length > 0,
+			needsFirstWrite,
 			runPosted: wantChain,
 		});
 		if (!wantChain) return false;
@@ -2408,12 +2437,14 @@ export async function runResearchJob(options: {
 				selected: results.map((hit) => hit.slug),
 			});
 			const openingFull = opening.readNow;
+			// NOTE: unreadFull/fullReadSlugs are persisted only after a real
+			// report lands (below). Marking everything read up front meant a
+			// failed writer left queueContinueIfNeeded with no unread work,
+			// so the fallback shipped as final instead of chaining to pass 2.
 			current = await writeJob(current, {
 				status: "answering",
 				showCount: results.length,
 				candidateCount: foundCount,
-				unreadFull: opening.unreadFull,
-				fullReadSlugs: openingFull,
 				progressNote:
 					openingFull.length > 0 || scoutReadPali.length > 0
 						? formatResearchReadProgress({
@@ -2453,6 +2484,19 @@ export async function runResearchJob(options: {
 					() => shouldRetryResearchWriter(timeLeft(startedAt)),
 				);
 				if (written.report) {
+					try {
+						current = await writeJob(current, {
+							unreadFull: opening.unreadFull,
+							fullReadSlugs: openingFull,
+						});
+					} catch (persistError) {
+						console.warn(
+							"[ai/research] read bookkeeping failed — continuing with in-memory batch",
+							persistError instanceof Error
+								? persistError.message
+								: persistError,
+						);
+					}
 					const remainingBeforePali = timeLeft(startedAt);
 					if (!shouldRunResearchPaliReread(remainingBeforePali)) {
 						console.warn(

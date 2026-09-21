@@ -38,6 +38,37 @@ export function shouldYieldResearchFirstPass(timeLeftMs: number): boolean {
 	return timeLeftMs <= RESEARCH_HANDOFF_MARGIN_MS + ASK_WRITER_MIN_MS;
 }
 
+export interface ResearchChainPassDecision {
+	batchSize: number;
+	extraQueryCount: number;
+	extraPaliCount: number;
+	/**
+	 * No real report was written yet (raw report empty before the fallback
+	 * filler). Forces a chain while results exist so a fallback never ships
+	 * as final when a rewrite pass could still run.
+	 */
+	needsFirstWrite: boolean;
+	resultCount: number;
+}
+
+/**
+ * Whether the first pass should chain to pass 2. Besides new queries/reads,
+ * a missing first write with results on hand always chains — completing
+ * there would ship the fallback as the final report.
+ */
+export function shouldChainResearchPass(
+	input: ResearchChainPassDecision,
+): boolean {
+	if (
+		input.batchSize > 0 ||
+		input.extraQueryCount > 0 ||
+		input.extraPaliCount > 0
+	) {
+		return true;
+	}
+	return input.needsFirstWrite && input.resultCount > 0;
+}
+
 /**
  * Writer budget that always leaves the handoff margin on the table.
  * Returns 0 when the remaining time cannot cover a minimal writer run.
