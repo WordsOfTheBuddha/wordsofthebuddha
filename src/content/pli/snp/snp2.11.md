@@ -1,10 +1,12 @@
 ---
+title: Rāhula sutta - With Rāhula
+description: "Warning against the pitfalls of familiarity, the Buddha frequently admonished young Rāhula to shun sensual craving, abide in secluded lodgings, maintain bodily mindfulness, and develop signless meditation so as to eradicate all lingering conceit and attain lasting peace."
+qualities: mindfulness, recognition of unattractiveness, sense restraint, collectedness, giving up, conceit, solitude, tranquility
+theme: training guideline, wisdom, inspiration
 slug: snp2.11
 character: Venerable Rāhula
-source: suttacentral/bilara-data
-title: Rāhulasutta
-edition: ms
-granularity: paragraph
+simile: torch-bearer of mankind
+priority: 1.5
 ---
 
 “Kacci abhiṇhasaṁvāsā,
@@ -48,5 +50,3 @@ Tato mānābhisamayā,
 Upasanto carissatī”ti.
 
 Itthaṁ sudaṁ bhagavā āyasmantaṁ rāhulaṁ imāhi gāthāhi abhiṇhaṁ ovadatīti.
-
-Rāhulasuttaṁ ekādasamaṁ.
