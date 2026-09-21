@@ -1,10 +1,13 @@
 ---
+title: Sela sutta - With Sela
+description: Hearing the rare word “Buddha,” the learned brahmin Sela pays a visits the Teacher. Declaring himself the supreme King of the Dhamma rather than an earthly emperor, the Buddha inspires the brahmin Sela and three hundred followers to renounce the world and win liberation.
+qualities: giving, faith, arahant, liberation
+theme: inspiration, story
 slug: snp3.7
-character: Keṇiya Jaṭila
-source: suttacentral/bilara-data
-title: Selasutta
-edition: ms
-granularity: paragraph
+character:
+  - Keṇiya Jaṭila
+  - Brahmin Sela
+priority: 1.1
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā aṅguttarāpesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ aḍḍhateḷasehi bhikkhusatehi yena āpaṇaṁ nāma aṅguttarāpānaṁ nigamo tadavasari. Assosi kho keṇiyo jaṭilo: “samaṇo khalu, bho, gotamo sakyaputto sakyakulā pabbajito aṅguttarāpesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ aḍḍhateḷasehi bhikkhusatehi āpaṇaṁ anuppatto. Taṁ kho pana bhavantaṁ gotamaṁ evaṁ kalyāṇo kittisaddo abbhuggato: ‘itipi so bhagavā arahaṁ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṁ buddho bhagavā’ti. So imaṁ lokaṁ sadevakaṁ samārakaṁ sabrahmakaṁ sassamaṇabrāhmaṇiṁ pajaṁ sadevamanussaṁ sayaṁ abhiññā sacchikatvā pavedeti. So dhammaṁ deseti ādikalyāṇaṁ majjhekalyāṇaṁ pariyosānakalyāṇaṁ sātthaṁ sabyañjanaṁ, kevalaparipuṇṇaṁ parisuddhaṁ brahmacariyaṁ pakāseti. Sādhu kho pana tathārūpānaṁ arahataṁ dassanaṁ hotī”ti.
@@ -61,14 +64,14 @@ anuyantā bhavantu te;
 Rājābhirājā manujindo,
 rajjaṁ kārehi gotama”.
 
+“Rājāhamasmi selāti,
 (bhagavā)
-
 Dhammarājā anuttaro;
 Dhammena cakkaṁ vattemi,
 Cakkaṁ appaṭivattiyaṁ”.
 
+“Sambuddho paṭijānāsi,
 (iti selo brāhmaṇo)
-
 Dhammarājā anuttaro;
 ‘Dhammena cakkaṁ vattemi’,
 Iti bhāsasi gotama.
@@ -78,8 +81,8 @@ Sāvako satthuranvayo;
 Ko te tamanuvatteti,
 Dhammacakkaṁ pavattitaṁ”.
 
+“Mayā pavattitaṁ cakkaṁ,
 (selāti bhagavā)
-
 Dhammacakkaṁ anuttaraṁ;
 Sāriputto anuvatteti,
 Anujāto tathāgataṁ.
@@ -129,8 +132,8 @@ Yācanti pañjalīkatā;
 “Brahmacariyaṁ carissāma,
 Bhagavā tava santike”.
 
+“Svākkhātaṁ brahmacariyaṁ,
 (selāti bhagavā)
-
 Sandiṭṭhikamakālikaṁ;
 Yattha amoghā pabbajjā,
 Appamattassa sikkhato”ti.
@@ -172,5 +175,3 @@ Bhikkhavo tisatā ime,
 Tiṭṭhanti pañjalīkatā;
 Pāde vīra pasārehi,
 Nāgā vandantu satthuno”ti.
-
-Selasuttaṁ sattamaṁ.
