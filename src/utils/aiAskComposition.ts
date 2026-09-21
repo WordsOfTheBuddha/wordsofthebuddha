@@ -177,6 +177,40 @@ export function mergeCompositionContexts(contexts: readonly string[]): string {
 	);
 }
 
+export interface ResolvedResearchSubmitAttachments {
+	/** Sanitized image payload, explicit-first, capped at 4. */
+	images: ResearchContextImage[];
+	/** Individual context clips backing `context` (explicit first). */
+	contexts: string[];
+	/** Merged + clipped context text. */
+	context: string;
+}
+
+/**
+ * Merge explicit per-submit attachments (e.g. re-send from the Edit box or a
+ * retry) with the live composer state. Explicit content wins ordering so the
+ * sanitize caps keep the attachments being researched, not composer drafts.
+ */
+export function resolveResearchSubmitAttachments(input: {
+	globalImages?: readonly ResearchContextImage[];
+	globalContexts?: readonly string[];
+	overrideImages?: readonly ResearchContextImage[];
+	overrideContext?: string;
+}): ResolvedResearchSubmitAttachments {
+	const images = sanitizeResearchContextImages([
+		...(input.overrideImages || []),
+		...(input.globalImages || []),
+	]);
+	const override = clipResearchContext(input.overrideContext || "");
+	const contexts = [
+		...(override.trim() ? [override] : []),
+		...(input.globalContexts || [])
+			.map((context) => clipResearchContext(context))
+			.filter((context) => context.trim()),
+	];
+	return { images, contexts, context: mergeCompositionContexts(contexts) };
+}
+
 /** Where to anchor the next context chip relative to existing markers. */
 export function compositionLineStart(value: string, index: number): number {
 	const clamped = Math.max(0, Math.min(index, value.length));

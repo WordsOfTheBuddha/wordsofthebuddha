@@ -1329,6 +1329,47 @@ body.ai-diagram-fullscreen-open {
 	color: #fff;
 }
 
+.ai-question-edit-attachments {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.35rem;
+	margin-bottom: 0.45rem;
+}
+
+.ai-question-edit-attachments[hidden] {
+	display: none;
+}
+
+.ai-question-edit-attachments .is-unavailable {
+	border: 1px dashed color-mix(in srgb, var(--text-muted) 45%, transparent);
+	background: transparent;
+}
+
+.ai-question-edit-image {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 0.15rem;
+}
+
+.ai-question-edit-attach {
+	border: 1px dashed color-mix(in srgb, var(--text-muted) 45%, transparent);
+	background: transparent;
+	color: var(--text-muted);
+	border-radius: 999px;
+	padding: 0.2rem 0.7rem;
+	font-size: 0.78rem;
+	font-weight: 600;
+	line-height: 1.35;
+	cursor: pointer;
+}
+
+.ai-question-edit-attach:hover,
+.ai-question-edit-attach:focus-visible {
+	color: var(--text-color);
+	border-color: var(--text-muted);
+}
+
 .ai-looking,
 .ai-empty-hits,
 .ai-error {

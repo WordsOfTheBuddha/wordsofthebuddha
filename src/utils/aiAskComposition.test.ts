@@ -43,6 +43,7 @@ import {
 	contextWasClipped,
 	formatCompositionImagesPartialAdd,
 	researchContextImageByteLength,
+	resolveResearchSubmitAttachments,
 	wouldExceedCompositionImageTotalBytes,
 } from "./aiAskComposition";
 import { RESEARCH_REVISE_INSTRUCTION_MAX } from "./aiAskResearchRevise";
@@ -124,6 +125,53 @@ describe("aiAskComposition", () => {
 		assert.match(formatContextChipLabel(next[1]), /2 words/);
 		assert.match(mergeCompositionContexts(next), /line one/);
 		assert.match(mergeCompositionContexts(next), /alpha beta/);
+	});
+
+	it("resolves explicit re-send attachments explicit-first", () => {
+		const override = { mime: "image/png", data: "aGVsbG8=" };
+		const global = { mime: "image/jpeg", data: "d29ybGQ=" };
+		const resolved = resolveResearchSubmitAttachments({
+			globalImages: [global],
+			globalContexts: ["global notes here and more words"],
+			overrideImages: [override],
+			overrideContext: "explicit notes",
+		});
+		assert.equal(resolved.images.length, 2);
+		assert.deepEqual(resolved.images[0], override);
+		assert.match(resolved.context, /explicit notes/);
+		assert.match(resolved.context, /global notes/);
+		assert.ok(
+			resolved.context.indexOf("explicit notes") <
+				resolved.context.indexOf("global notes"),
+		);
+	});
+
+	it("resolves empty overrides to the live composer state", () => {
+		const global = { mime: "image/jpeg", data: "d29ybGQ=" };
+		const resolved = resolveResearchSubmitAttachments({
+			globalImages: [global],
+			globalContexts: ["  "],
+			overrideContext: "   ",
+		});
+		assert.equal(resolved.images.length, 1);
+		assert.equal(resolved.context, "");
+		assert.deepEqual(resolved.contexts, []);
+	});
+
+	it("caps resolved images at the composition limit", () => {
+		const make = (data: string) => ({ mime: "image/png", data });
+		const resolved = resolveResearchSubmitAttachments({
+			globalImages: [make("Z2xvYmFs")],
+			overrideImages: [
+				make("bzE="),
+				make("bzI="),
+				make("bzM="),
+				make("bzQ="),
+				make("bzU="),
+			],
+		});
+		assert.equal(resolved.images.length, MAX_RESEARCH_CONTEXT_IMAGES);
+		assert.equal(resolved.images[0]?.data, "bzE=");
 	});
 
 	it("supports multiple inline chip markers", () => {

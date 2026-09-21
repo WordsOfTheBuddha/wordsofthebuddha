@@ -36,6 +36,7 @@ import {
 import {
 	COMPOSITION_CHIP_PAD_CHAR,
 	COMPOSITION_CONTEXT_CHIP_MARKER,
+	COMPOSITION_IMAGE_ACCEPT,
 	compositionDroppedImageFiles,
 	compositionMarkerArrowAdjust,
 	clipResearchContext,
@@ -68,6 +69,7 @@ import {
 	RESEARCH_COMPOSITION_DRAFT_STORAGE_KEY,
 	researchContextImageByteLength,
 	researchContextPreview,
+	resolveResearchSubmitAttachments,
 	serializeResearchCompositionDraft,
 	shouldAttachPasteAsCompositionContext,
 	formatAttachedMaterialBlock,
@@ -2894,10 +2896,10 @@ export function attachAiMode(options: {
 		);
 	}
 
-	function buildAskSubmitQuestion(question: string): string {
-		const context = mergedCompositionContext();
-		if (!context.trim()) return question;
-		return `${question}${formatAttachedMaterialBlock(context)}`;
+	function buildAskSubmitQuestion(question: string, context?: string): string {
+		const material = context === undefined ? mergedCompositionContext() : context;
+		if (!material.trim()) return question;
+		return `${question}${formatAttachedMaterialBlock(material)}`;
 	}
 
 	function researchUiOn(): boolean {
@@ -9847,6 +9849,314 @@ export function attachAiMode(options: {
 		editInput.focus();
 		editInput.setSelectionRange(editInput.value.length, editInput.value.length);
 
+		// Research re-send working set for this edit box. Seeded from the
+		// pending submit snapshot, the live turn, the history row, then the
+		// same-browser store — first source with data wins per kind. Anything
+		// unrecoverable is shown as a dismissible info label only.
+		const editState = {
+			clips: [] as string[],
+			images: [] as ResearchContextImage[],
+			touched: false,
+		};
+		const dismissedEditInfo = new Set<"notes" | "images">();
+		const rememberedEditEntry =
+			turn.research === true &&
+			typeof turn.researchJobId === "string" &&
+			turn.researchJobId.trim()
+				? sessionEntries.find(
+						(item) => item.researchJobId === turn.researchJobId,
+					)
+				: undefined;
+		const originalEditNotesLabel =
+			turn.contextAttachmentLabel ||
+			rememberedEditEntry?.contextAttachmentLabel ||
+			"";
+		const originalEditImageCount =
+			turn.attachedImages?.length ||
+			turn.imageCount ||
+			rememberedEditEntry?.attachedImages?.length ||
+			rememberedEditEntry?.imageCount ||
+			0;
+
+		async function seedEditAttachments(): Promise<void> {
+			let clips = [...(pendingResearchSubmitContexts || [])];
+			let images = sanitizeResearchContextImages(
+				pendingResearchSubmitImages || turn.attachedImages || [],
+			);
+			if (images.length === 0 && rememberedEditEntry?.attachedImages?.length) {
+				images = sanitizeResearchContextImages(
+					rememberedEditEntry.attachedImages,
+				);
+			}
+			const jobId = (turn.researchJobId || "").trim();
+			if ((clips.length === 0 || images.length === 0) && jobId) {
+				try {
+					const stored = await loadResearchAttachments(jobId);
+					if (stored) {
+						if (clips.length === 0 && stored.contextFull.trim()) {
+							clips = [stored.contextFull];
+						}
+						if (images.length === 0 && stored.images.length > 0) {
+							images = [...stored.images];
+						}
+					}
+				} catch {
+					/* attachment store is best-effort */
+				}
+			}
+			// Never overwrite attachments the reader already added/removed.
+			if (!editState.touched) {
+				editState.clips = clips;
+				editState.images = images;
+			}
+		}
+
+		const editSeedPromise = researchEdit
+			? seedEditAttachments()
+			: Promise.resolve();
+
+		const attachWrap = document.createElement("div");
+		attachWrap.className = "ai-question-edit-attachments";
+		attachWrap.hidden = true;
+
+		function renderEditAttachments(): void {
+			if (!researchEdit || !wrap.isConnected) return;
+			attachWrap.replaceChildren();
+			for (const [index, clip] of editState.clips.entries()) {
+				const chip = document.createElement("span");
+				chip.className =
+					"ai-question-attachment ai-question-attachment-notes";
+				chip.textContent = formatContextChipLabel(clip);
+				chip.title = researchContextPreview(clip);
+				const remove = document.createElement("button");
+				remove.type = "button";
+				remove.className = "ai-composition-clear";
+				remove.setAttribute("aria-label", "Remove attached notes");
+				remove.title = "Remove attached notes";
+				remove.textContent = "×";
+				remove.addEventListener("click", () => {
+					editState.clips = editState.clips.filter((_, i) => i !== index);
+					editState.touched = true;
+					renderEditAttachments();
+				});
+				chip.appendChild(remove);
+				attachWrap.appendChild(chip);
+			}
+			if (
+				editState.clips.length === 0 &&
+				!dismissedEditInfo.has("notes") &&
+				originalEditNotesLabel.trim()
+			) {
+				const info = document.createElement("span");
+				info.className =
+					"ai-question-attachment ai-question-attachment-notes is-unavailable";
+				info.textContent = originalEditNotesLabel;
+				info.title =
+					"Originally attached — full text unavailable in this browser. Paste again to include it.";
+				const dismiss = document.createElement("button");
+				dismiss.type = "button";
+				dismiss.className = "ai-composition-clear";
+				dismiss.setAttribute("aria-label", "Dismiss");
+				dismiss.title = "Dismiss";
+				dismiss.textContent = "×";
+				dismiss.addEventListener("click", () => {
+					dismissedEditInfo.add("notes");
+					editState.touched = true;
+					renderEditAttachments();
+				});
+				info.appendChild(dismiss);
+				attachWrap.appendChild(info);
+			}
+			for (const [index, image] of editState.images.entries()) {
+				const holder = document.createElement("span");
+				holder.className = "ai-question-edit-image";
+				const preview = document.createElement("button");
+				preview.type = "button";
+				preview.className = "ai-question-image";
+				preview.setAttribute("aria-label", `View attached image ${index + 1}`);
+				preview.title = `View attached image ${index + 1}`;
+				const img = document.createElement("img");
+				img.src = researchContextImageDataUrl(image);
+				img.alt = `Attached image ${index + 1}`;
+				img.draggable = false;
+				preview.appendChild(img);
+				preview.addEventListener("click", () => {
+					openResearchImageOverlay(image, {
+						filename: researchContextImageFilename(image, index),
+						alt: `Attached image ${index + 1}`,
+					});
+				});
+				const remove = document.createElement("button");
+				remove.type = "button";
+				remove.className = "ai-composition-clear";
+				remove.setAttribute("aria-label", "Remove image");
+				remove.title = "Remove image";
+				remove.textContent = "×";
+				remove.addEventListener("click", () => {
+					editState.images = editState.images.filter((_, i) => i !== index);
+					editState.touched = true;
+					renderEditAttachments();
+				});
+				holder.append(preview, remove);
+				attachWrap.appendChild(holder);
+			}
+			if (
+				editState.images.length === 0 &&
+				!dismissedEditInfo.has("images") &&
+				originalEditImageCount > 0
+			) {
+				const info = document.createElement("span");
+				info.className =
+					"ai-question-attachment ai-question-attachment-images is-unavailable";
+				info.textContent =
+					originalEditImageCount === 1
+						? "1 image"
+						: `${originalEditImageCount} images`;
+				info.title =
+					"Originally attached — files unavailable in this browser. Attach again to include them.";
+				const dismiss = document.createElement("button");
+				dismiss.type = "button";
+				dismiss.className = "ai-composition-clear";
+				dismiss.setAttribute("aria-label", "Dismiss");
+				dismiss.title = "Dismiss";
+				dismiss.textContent = "×";
+				dismiss.addEventListener("click", () => {
+					dismissedEditInfo.add("images");
+					editState.touched = true;
+					renderEditAttachments();
+				});
+				info.appendChild(dismiss);
+				attachWrap.appendChild(info);
+			}
+			const attachButton = document.createElement("button");
+			attachButton.type = "button";
+			attachButton.className = "ai-question-edit-attach";
+			attachButton.textContent = "Attach image";
+			attachButton.setAttribute("aria-label", "Attach image");
+			const fileInput = document.createElement("input");
+			fileInput.type = "file";
+			fileInput.accept = COMPOSITION_IMAGE_ACCEPT;
+			fileInput.multiple = true;
+			fileInput.hidden = true;
+			attachButton.addEventListener("click", () => fileInput.click());
+			fileInput.addEventListener("change", () => {
+				const files = fileInput.files ? [...fileInput.files] : [];
+				fileInput.value = "";
+				void addEditImageFiles(files);
+			});
+			attachWrap.append(attachButton, fileInput);
+			attachWrap.hidden = false;
+		}
+
+		async function addEditImageFiles(files: readonly File[]): Promise<void> {
+			const room = MAX_RESEARCH_CONTEXT_IMAGES - editState.images.length;
+			if (room <= 0) {
+				setStatus(RESEARCH_COMPOSITION_MAX_IMAGES_MSG);
+				return;
+			}
+			let added = 0;
+			for (const file of files.slice(0, room)) {
+				if (editState.images.length >= MAX_RESEARCH_CONTEXT_IMAGES) break;
+				if (!isCompositionImageFile(file)) {
+					setStatus(RESEARCH_COMPOSITION_UNSUPPORTED_IMAGE_MSG);
+					continue;
+				}
+				const image = await resizeCompositionImage(
+					normalizeCompositionImageFile(file),
+				);
+				if (!image) {
+					setStatus(RESEARCH_COMPOSITION_IMAGE_TOO_LARGE_MSG);
+					continue;
+				}
+				if (
+					wouldExceedCompositionImageTotalBytes(
+						editState.images,
+						researchContextImageByteLength(image),
+					)
+				) {
+					setStatus(RESEARCH_COMPOSITION_IMAGES_TOTAL_FULL_MSG);
+					break;
+				}
+				editState.images = [...editState.images, image];
+				added += 1;
+			}
+			if (added > 0) {
+				editState.touched = true;
+				renderEditAttachments();
+			}
+		}
+
+		async function resolveEditAttachments(): Promise<{
+			context: string;
+			images: ResearchContextImage[];
+			touched: boolean;
+		}> {
+			if (!researchEdit) return { context: "", images: [], touched: false };
+			try {
+				await editSeedPromise;
+			} catch {
+				/* seed is best-effort */
+			}
+			return {
+				context: mergeCompositionContexts(editState.clips),
+				images: [...editState.images],
+				touched: editState.touched,
+			};
+		}
+
+		if (researchEdit) {
+			wrap.prepend(attachWrap);
+			renderEditAttachments();
+			void editSeedPromise.then(() => {
+				renderEditAttachments();
+			});
+			editInput.addEventListener("paste", (event) => {
+				if (!(event instanceof ClipboardEvent)) return;
+				const imageFiles = clipboardImageFiles(event);
+				if (imageFiles.length > 0) {
+					event.preventDefault();
+					void addEditImageFiles(imageFiles);
+					return;
+				}
+				const text = event.clipboardData?.getData("text/plain") || "";
+				if (!text) return;
+				const start = editInput.selectionStart ?? editInput.value.length;
+				const end = editInput.selectionEnd ?? start;
+				if (
+					!shouldAttachPasteAsCompositionContext(text, {
+						composerTextLength: editInput.value.length,
+						selectionLength: Math.max(0, end - start),
+						maxQuestionChars: MAX_QUESTION_CHARS,
+					})
+				) {
+					return;
+				}
+				event.preventDefault();
+				event.stopPropagation();
+				const clipped = clipResearchContext(text);
+				if (!clipped.trim()) {
+					setStatus(RESEARCH_COMPOSITION_CONTEXT_TOO_LARGE_MSG);
+					return;
+				}
+				editState.clips = [...editState.clips, clipped];
+				editState.touched = true;
+				if (contextWasClipped(text, clipped)) {
+					setStatus(RESEARCH_COMPOSITION_CONTEXT_TRIM_MSG);
+				}
+				renderEditAttachments();
+			});
+			wrap.addEventListener("drop", (event) => {
+				if (!(event instanceof DragEvent)) return;
+				const dt = event.dataTransfer;
+				if (!dt) return;
+				const images = compositionDroppedImageFiles(dt);
+				if (images.length === 0) return;
+				event.preventDefault();
+				event.stopPropagation();
+				void addEditImageFiles(images);
+			});
+		}
+
 		const cancel = (): void => {
 			syncLayout();
 		};
@@ -9854,18 +10164,38 @@ export function attachAiMode(options: {
 		const submitResearch = (): void => {
 			const next = editedQuestion();
 			if (!next || busy) return;
-			if (isIncompleteResearchTurn(turn)) {
-				void retryIncompleteResearchTurn(turnIndex, next);
-				return;
-			}
-			setResearchChipOn(true);
-			void ask(next, null, { replaceTurnIndex: turnIndex, forceResearch: true });
+			void (async () => {
+				const explicit = await resolveEditAttachments();
+				if (isIncompleteResearchTurn(turn)) {
+					void retryIncompleteResearchTurn(turnIndex, next, explicit);
+					return;
+				}
+				setResearchChipOn(true);
+				void ask(next, null, {
+					replaceTurnIndex: turnIndex,
+					forceResearch: true,
+					attachments: {
+						context: explicit.context,
+						images: explicit.images,
+					},
+				});
+			})();
 		};
 		const submitAsk = (): void => {
 			const next = editedQuestion();
 			if (!next || busy) return;
-			setResearchChipOn(false);
-			void ask(next, null, { replaceTurnIndex: turnIndex, forceAsk: true });
+			void (async () => {
+				const explicit = await resolveEditAttachments();
+				setResearchChipOn(false);
+				void ask(next, null, {
+					replaceTurnIndex: turnIndex,
+					forceAsk: true,
+					attachments: {
+						context: explicit.context,
+						images: explicit.images,
+					},
+				});
+			})();
 		};
 		const submit = (): void => {
 			if (researchEdit) {
@@ -10429,20 +10759,75 @@ export function attachAiMode(options: {
 		return restored;
 	}
 
+	/** The turn once carried attachments (labels, counts, or bytes). */
+	function hadAttachmentIndicators(turn: AiAskTurn): boolean {
+		if (
+			turn.attachedImages?.length ||
+			turn.contextAttachmentLabel ||
+			turn.contextPreview ||
+			turn.imageCount
+		) {
+			return true;
+		}
+		const jobId = (turn.researchJobId || "").trim();
+		if (!jobId) return false;
+		const remembered = sessionEntries.find(
+			(item) => item.researchJobId === jobId,
+		);
+		return Boolean(
+			remembered &&
+				(remembered.attachedImages?.length ||
+					remembered.contextAttachmentLabel ||
+					remembered.contextPreview ||
+					remembered.imageCount),
+		);
+	}
+
 	async function retryIncompleteResearchTurn(
 		turnIndex: number,
 		question?: string,
+		explicit?: {
+			context: string;
+			images: readonly ResearchContextImage[];
+			touched: boolean;
+		},
 	): Promise<void> {
 		const turn = turns[turnIndex];
 		if (!turn || busy || turn.fromShare) return;
 		const next = clipAiQuestion(question ?? turn.question);
 		if (!next) return;
-		if (turn.researchJobId && sameResearchRetryQuestion(next, turn)) {
+		// Rehydrate confirmation chips first: turns rebuilt from the server
+		// job carry no attachment fields until the history row / store fills them.
+		try {
+			if (await backfillTurnAttachmentsFromStore(turn)) {
+				if (turns[turnIndex] === turn) syncLayout();
+			}
+		} catch {
+			/* attachment store is best-effort */
+		}
+		// Unchanged re-runs reuse the server job (and its credit); edited
+		// questions or changed attachments start a new job carrying them.
+		const resendChanged =
+			explicit?.touched === true || !sameResearchRetryQuestion(next, turn);
+		if (turn.researchJobId && !resendChanged) {
 			await restartResearchJobTurn(turn, turnIndex);
 			return;
 		}
 		setResearchChipOn(true);
-		await preloadReplacementAttachments(turn);
+		if (explicit && (explicit.context.trim() || explicit.images.length > 0)) {
+			void ask(next, null, {
+				replaceTurnIndex: turnIndex,
+				forceResearch: true,
+				attachments: { context: explicit.context, images: explicit.images },
+			});
+			return;
+		}
+		const restored = await preloadReplacementAttachments(turn);
+		if (!restored && hadAttachmentIndicators(turn)) {
+			setStatus(
+				"Previous attachments couldn't be restored — re-attach them to include them in this research.",
+			);
+		}
 		void ask(next, null, { replaceTurnIndex: turnIndex, forceResearch: true });
 	}
 
@@ -10644,19 +11029,19 @@ export function attachAiMode(options: {
 			};
 			applyResearchJobToTurn(turn, job);
 			const history =
-			fromHistory ||
-			sessionEntries.find((item) => item.researchJobId === job.id);
+				fromHistory ||
+				sessionEntries.find((item) => item.researchJobId === job.id);
 			// The public job omits attachment fields — rehydrate confirmation
 			// chips from the history row, then full bytes from the local store.
 			applyStoredAttachmentMetadata(turn, history);
 			const priorTurns = askHistoryEntriesForRestore(history)
-			.filter((item) => item.researchJobId !== job.id)
-			.map((item) => sessionEntryToTurn(item));
+				.filter((item) => item.researchJobId !== job.id)
+				.map((item) => sessionEntryToTurn(item));
 			turns = [...priorTurns, turn];
-		void backfillTurnAttachmentsFromStore(turn).then((changed) => {
+			void backfillTurnAttachmentsFromStore(turn).then((changed) => {
 				if (changed && turns[turns.length - 1] === turn) syncLayout();
 			});
-		syncResearchJobUrl(job.id);
+			syncResearchJobUrl(job.id);
 			if (turn.pending) {
 				persistResearchHistory(turn, { pending: true, unread: false });
 			}
@@ -10811,6 +11196,14 @@ export function attachAiMode(options: {
 			replaceTurnIndex?: number;
 			forceResearch?: boolean;
 			forceAsk?: boolean;
+			/**
+			 * Explicit re-send attachments (Edit-box working set, retry
+			 * preload). Merged explicit-first with the live composer state.
+			 */
+			attachments?: {
+				context?: string;
+				images?: readonly ResearchContextImage[];
+			};
 		},
 	): Promise<void> {
 		if (busy) return;
@@ -10852,16 +11245,24 @@ export function attachAiMode(options: {
 
 		const askLimit = maxAskQuestionChars(Boolean(quota?.signedIn));
 		const rawQuestion = stripCompositionChipMarkers(question);
+		const submitResolved = resolveResearchSubmitAttachments({
+			globalImages: compositionImages,
+			globalContexts: compositionContexts,
+			overrideImages: options?.attachments?.images,
+			overrideContext: options?.attachments?.context,
+		});
+		const submitImages = submitResolved.images;
+		const submitContext = submitResolved.context;
 		const composedQuestion = useResearch
 			? rawQuestion
-			: buildAskSubmitQuestion(rawQuestion);
+			: buildAskSubmitQuestion(rawQuestion, submitContext);
 		const q = clipAiQuestion(composedQuestion, askLimit);
 
 		if (
 			!hasResearchCompositionContent({
 				question: q,
-				context: useResearch ? mergedCompositionContext() : "",
-				images: useResearch ? compositionImages : [],
+				context: useResearch ? submitContext : "",
+				images: useResearch ? submitImages : [],
 			})
 		) {
 			return;
@@ -10935,8 +11336,6 @@ export function attachAiMode(options: {
 			pendingReplaceQuestions = null;
 			pendingReplaceJobIds = null;
 		}
-		const submitImages = sanitizeResearchContextImages(compositionImages);
-		const submitContext = mergedCompositionContext();
 		const researchAttachments = useResearch
 			? {
 					context: submitContext,
@@ -10956,7 +11355,7 @@ export function attachAiMode(options: {
 			: null;
 		if (useResearch) {
 			snapshotResearchSubmitImages(submitImages);
-			snapshotResearchSubmitContexts(compositionContexts);
+			snapshotResearchSubmitContexts(submitResolved.contexts);
 			clearCompositionAttachments({ clearDraft: true });
 		}
 		const turn: AiAskTurn = {
