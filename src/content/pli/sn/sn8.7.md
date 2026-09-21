@@ -1,12 +1,13 @@
 ---
+title: Pavāraṇā sutta - The Invitation
+description: On the full moon night of the Pavāraṇā ceremony, the Buddha invites the assembly of five hundred arahant bhikkhus to reproach him for any bodily or verbal fault. Sāriputta declares that the Buddha is blameless, the Buddha extols Sāriputta’s great wisdom, and Venerable Vaṅgīsa utters verses in praise of the pure assembly and the Buddha.
+qualities: ethical conduct, wisdom, craving
+theme: inspiration
 slug: sn8.7
 character:
   - Venerable Sāriputta
   - Venerable Vaṅgīsa
-source: suttacentral/bilara-data
-title: Pavāraṇāsutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi sabbeheva arahantehi. Tena kho pana samayena bhagavā tadahuposathe pannarase pavāraṇāya bhikkhusaṅghaparivuto abbhokāse nisinno hoti.
