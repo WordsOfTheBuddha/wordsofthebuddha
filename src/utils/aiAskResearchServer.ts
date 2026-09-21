@@ -132,6 +132,14 @@ import {
 
 const RESEARCH_PLAN_MS = 60_000;
 const RESEARCH_ASSEMBLE_MS = 20_000;
+export {
+	RESEARCH_ENQUEUE_TIMEOUT_MS,
+	RESEARCH_HANDOFF_MARGIN_MS,
+	researchWriterBudgetWithMargin,
+	shouldRetryResearchWriter,
+	shouldRunResearchPaliReread,
+	shouldYieldResearchFirstPass,
+} from "./aiAskResearchHandoff";
 const RESEARCH_RERANK_CAPS = {
 	typicalLimit: RESEARCH_RERANK_MAX_LIMIT,
 	hardLimit: RESEARCH_RERANK_HARD_LIMIT,
@@ -983,10 +991,18 @@ async function retryOnce<T>(
 	label: string,
 	fn: () => Promise<T>,
 	onRetry?: () => void | Promise<void>,
+	shouldRetry?: () => boolean,
 ): Promise<T> {
 	try {
 		return await fn();
 	} catch (error) {
+		if (shouldRetry && !shouldRetry()) {
+			console.warn(
+				`[ai/research] ${label} failed, skipping retry to preserve handoff margin`,
+				error instanceof Error ? error.message : error,
+			);
+			throw error;
+		}
 		console.warn(
 			`[ai/research] ${label} failed, retrying`,
 			error instanceof Error ? error.message : error,
@@ -1198,8 +1214,16 @@ async function enqueueResearchContinue(options: {
 	origin: string;
 }): Promise<boolean> {
 	const base = (options.requestUrl || options.origin || "").replace(/\/+$/, "");
-	if (!base) return false;
+	if (!base) {
+		console.error("[ai/research] continue enqueue skipped: no base URL");
+		return false;
+	}
 	for (let attempt = 0; attempt < 2; attempt++) {
+		const controller = new AbortController();
+		const timer = setTimeout(
+			() => controller.abort(),
+			RESEARCH_ENQUEUE_TIMEOUT_MS,
+		);
 		try {
 			const runUrl = new URL("/api/ai/research/run", `${base}/`);
 			const res = await fetch(runUrl, {
@@ -1210,13 +1234,35 @@ async function enqueueResearchContinue(options: {
 					jobId: options.jobId,
 					runToken: options.runToken,
 				}),
+				signal: controller.signal,
 			});
-			if (res.ok) return true;
+			if (res.ok) {
+				console.info("[ai/research] continue enqueued", {
+					jobId: options.jobId,
+					attempt: attempt + 1,
+				});
+				return true;
+			}
+			let body = "";
+			try {
+				body = (await res.text()).slice(0, 300);
+			} catch {
+				body = "";
+			}
+			console.error("[ai/research] continue enqueue non-ok", {
+				jobId: options.jobId,
+				attempt: attempt + 1,
+				status: res.status,
+				body,
+			});
 		} catch (error) {
-			console.warn(
-				"[ai/research] continue enqueue failed",
-				error instanceof Error ? error.message : error,
-			);
+			console.warn("[ai/research] continue enqueue failed", {
+				jobId: options.jobId,
+				attempt: attempt + 1,
+				error: error instanceof Error ? error.message : error,
+			});
+		} finally {
+			clearTimeout(timer);
 		}
 	}
 	return false;
@@ -1247,7 +1293,14 @@ export async function runResearchJobAndMaybeChain(options: {
 		origin: record.origin,
 	});
 	if (enqueued) return;
-	await runResearchJob(options);
+	// Do NOT run the next pass inline: this invocation is already near the
+	// Vercel 300s cap, so continuing here guarantees a timeout kill that
+	// leaves nothing scheduled. The job stays chained with its draftResult;
+	// stale-recovery on poll finalizes the draft report instead.
+	console.error(
+		"[ai/research] continue enqueue failed after retries; leaving job chained",
+		{ jobId: options.jobId, hop },
+	);
 }
 
 function surveyPlan(
@@ -1287,7 +1340,7 @@ async function runResearchChainPass(
 	const draft = sanitizeResearchJobResult(current.draftResult);
 	if (!draft?.report) {
 		await finalizeFromDraft(current.uid, current.id, current.runToken);
-		return;
+		return "done";
 	}
 	const continueQueries = (current.continueQueries || []).filter(Boolean);
 	let readFull = (current.continueReadFull || []).filter(Boolean);
@@ -1471,7 +1524,7 @@ async function runResearchChainPass(
 		}
 
 		results = await withCatalogTitles(results);
-		const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
+		const writerBudget = researchWriterBudgetWithMargin(Date.now() - startedAt);
 		if (
 			results.length === 0 ||
 			!getOpenRouterApiKey() ||
@@ -1520,46 +1573,49 @@ async function runResearchChainPass(
 				() => {
 					streamWrites.queueProgressNote("Rewriting the report again…");
 				},
+				() => shouldRetryResearchWriter(timeLeft(startedAt)),
 			);
-			const followed = await followUpResearchPaliRead({
-				written,
-				startedAt,
-				onProgress: async (reads) => {
-					current = await writeJob(current, {
-						status: "answering",
-						progressNote: formatResearchReadProgress(reads),
-					});
-					await throwIfCancelled(current);
-				},
-				write: (timeoutMs) =>
-					writeResearchReport({
-						question,
-						originalQuestion: current.originalQuestion,
-						brief,
-						attachedContext: current.attachedContext,
-						hits: results,
-						model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-						termQueries: plan.termQueries,
-						guidance: current.continueGuidance || plan.rankingGuidance,
-						history,
-						timeoutMs,
-						priorReport: written.report,
-						namedQueries: [
-							...collectDirectDiscourseIds({ question }),
-							...plan.queries,
-							...plan.fallbackQueries,
-							...(plan.termQueries || []),
-						],
-						readFullSlugs: [...readFull, ...(written.readPali || [])],
-						readPaliSlugs: written.readPali,
-						readIllustrationSlugs: written.readIllustration,
-						onReasoning: (delta) => {
-							const next = `${current.reasoning || ""}${delta}`;
-							current = { ...current, reasoning: next };
-							streamWrites.queueReasoning();
+			const followed = shouldRunResearchPaliReread(timeLeft(startedAt))
+				? await followUpResearchPaliRead({
+						written,
+						startedAt,
+						onProgress: async (reads) => {
+							current = await writeJob(current, {
+								status: "answering",
+								progressNote: formatResearchReadProgress(reads),
+							});
+							await throwIfCancelled(current);
 						},
-					}),
-			});
+						write: (timeoutMs) =>
+							writeResearchReport({
+								question,
+								originalQuestion: current.originalQuestion,
+								brief,
+								attachedContext: current.attachedContext,
+								hits: results,
+								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+								termQueries: plan.termQueries,
+								guidance: current.continueGuidance || plan.rankingGuidance,
+								history,
+								timeoutMs,
+								priorReport: written.report,
+								namedQueries: [
+									...collectDirectDiscourseIds({ question }),
+									...plan.queries,
+									...plan.fallbackQueries,
+									...(plan.termQueries || []),
+								],
+								readFullSlugs: [...readFull, ...(written.readPali || [])],
+								readPaliSlugs: written.readPali,
+								readIllustrationSlugs: written.readIllustration,
+								onReasoning: (delta) => {
+									const next = `${current.reasoning || ""}${delta}`;
+									current = { ...current, reasoning: next };
+									streamWrites.queueReasoning();
+								},
+							}),
+					})
+				: written;
 			if (!followed.report) {
 				await commitDraft();
 				return "done";
@@ -2320,7 +2376,23 @@ export async function runResearchJob(options: {
 
 		results = await withCatalogTitles(results);
 
-		const writerBudget = resolveAskWriterBudgetMs(Date.now() - startedAt);
+		const remainingBeforeWrite = timeLeft(startedAt);
+		if (
+			results.length > 0 &&
+			getOpenRouterApiKey() &&
+			shouldYieldResearchFirstPass(remainingBeforeWrite)
+		) {
+			console.warn(
+				"[ai/research] yielding before report to preserve handoff",
+				{
+					jobId: current.id,
+					elapsedMs: Date.now() - startedAt,
+					remainingMs: remainingBeforeWrite,
+					results: results.length,
+				},
+			);
+		}
+		const writerBudget = researchWriterBudgetWithMargin(Date.now() - startedAt);
 		if (results.length > 0 && getOpenRouterApiKey() && writerBudget > 0) {
 			const writerGuidance = [plan.rankingGuidance, scoutGuidance]
 				.filter(Boolean)
@@ -2378,49 +2450,65 @@ export async function runResearchJob(options: {
 					() => {
 						streamWrites.queueProgressNote("Writing the report again…");
 					},
+					() => shouldRetryResearchWriter(timeLeft(startedAt)),
 				);
 				if (written.report) {
-					const followed = await followUpResearchPaliRead({
-						written,
-						startedAt,
-						onProgress: async (reads) => {
-							current = await writeJob(current, {
-								status: "answering",
-								progressNote: formatResearchReadProgress(reads),
-							});
-							await throwIfCancelled(current);
-						},
-						write: (timeoutMs) =>
-							writeResearchReport({
-								question:
-									plan.correctedQuestion || current.question,
-								originalQuestion: current.originalQuestion,
-								brief,
-								attachedContext: current.attachedContext,
-								hits: results,
-								model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-								termQueries: plan.termQueries,
-								guidance: writerGuidance,
-								history,
-								timeoutMs,
-								priorReport: written.report,
-								namedQueries: writerNamedQueries,
-								readFullSlugs: [
-									...openingFull,
-									...(written.readPali || []),
-								],
-								readPaliSlugs: written.readPali,
-								readIllustrationSlugs: written.readIllustration,
-								onReasoning: (delta) => {
-									const next = `${current.reasoning || ""}${delta}`;
-									current = { ...current, reasoning: next };
-									streamWrites.queueReasoning();
-								},
-							}),
-					});
-					report = followed.report;
-					usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
-					if (followed.reasoning) reasoning = followed.reasoning;
+					const remainingBeforePali = timeLeft(startedAt);
+					if (!shouldRunResearchPaliReread(remainingBeforePali)) {
+						console.warn(
+							"[ai/research] skipping pali reread to preserve handoff",
+							{
+								jobId: current.id,
+								elapsedMs: Date.now() - startedAt,
+								remainingMs: remainingBeforePali,
+							},
+						);
+						report = written.report;
+						usedModel = `${usedModel} + ${written.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
+						if (written.reasoning) reasoning = written.reasoning;
+					} else {
+						const followed = await followUpResearchPaliRead({
+							written,
+							startedAt,
+							onProgress: async (reads) => {
+								current = await writeJob(current, {
+									status: "answering",
+									progressNote: formatResearchReadProgress(reads),
+								});
+								await throwIfCancelled(current);
+							},
+							write: (timeoutMs) =>
+								writeResearchReport({
+									question:
+										plan.correctedQuestion || current.question,
+									originalQuestion: current.originalQuestion,
+									brief,
+									attachedContext: current.attachedContext,
+									hits: results,
+									model: ASK_PLANNER_PAID_FALLBACK_MODEL,
+									termQueries: plan.termQueries,
+									guidance: writerGuidance,
+									history,
+									timeoutMs,
+									priorReport: written.report,
+									namedQueries: writerNamedQueries,
+									readFullSlugs: [
+										...openingFull,
+										...(written.readPali || []),
+									],
+									readPaliSlugs: written.readPali,
+									readIllustrationSlugs: written.readIllustration,
+									onReasoning: (delta) => {
+										const next = `${current.reasoning || ""}${delta}`;
+										current = { ...current, reasoning: next };
+										streamWrites.queueReasoning();
+									},
+								}),
+						});
+						report = followed.report;
+						usedModel = `${usedModel} + ${followed.model || ASK_PLANNER_PAID_FALLBACK_MODEL}`;
+						if (followed.reasoning) reasoning = followed.reasoning;
+					}
 				}
 			} catch (error) {
 				console.warn(

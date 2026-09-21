@@ -1,0 +1,52 @@
+import {
+	ASK_FUNCTION_BUDGET_MS,
+	ASK_WRITER_MIN_MS,
+	resolveAskWriterBudgetMs,
+} from "./aiAskAnswer";
+
+/**
+ * Headroom reserved at the end of a pass for the chained-state Firestore
+ * write plus the self-fetch POST to `/api/ai/research/run`. Writer retries
+ * and Pali re-reads are skipped once the remaining budget drops to this, so
+ * the handoff can still fire before Vercel's 300s function cap kills us.
+ */
+export const RESEARCH_HANDOFF_MARGIN_MS = 30_000;
+/** Per-attempt timeout for the self-fetch handoff to the next function run. */
+export const RESEARCH_ENQUEUE_TIMEOUT_MS = 10_000;
+
+/**
+ * Retry the report writer only when enough budget remains for another
+ * writer attempt plus the handoff margin. Prevents the double-writer
+ * timeout seen in prod (593 matches, writer ran twice past the 300s cap).
+ */
+export function shouldRetryResearchWriter(timeLeftMs: number): boolean {
+	return timeLeftMs > RESEARCH_HANDOFF_MARGIN_MS + ASK_WRITER_MIN_MS;
+}
+
+/** Run the Pali re-read only when the handoff margin is still intact. */
+export function shouldRunResearchPaliReread(timeLeftMs: number): boolean {
+	return timeLeftMs > RESEARCH_HANDOFF_MARGIN_MS;
+}
+
+/**
+ * Yield the first pass before the report writer when the remaining budget
+ * cannot cover a minimal writer run plus the handoff. Callers should skip
+ * the writer and chain with the current artifact so `enqueueResearchContinue`
+ * still fires while time remains.
+ */
+export function shouldYieldResearchFirstPass(timeLeftMs: number): boolean {
+	return timeLeftMs <= RESEARCH_HANDOFF_MARGIN_MS + ASK_WRITER_MIN_MS;
+}
+
+/**
+ * Writer budget that always leaves the handoff margin on the table.
+ * Returns 0 when the remaining time cannot cover a minimal writer run.
+ */
+export function researchWriterBudgetWithMargin(elapsedMs: number): number {
+	const remaining = ASK_FUNCTION_BUDGET_MS - Math.max(0, elapsedMs);
+	if (remaining <= RESEARCH_HANDOFF_MARGIN_MS + ASK_WRITER_MIN_MS) return 0;
+	return Math.min(
+		resolveAskWriterBudgetMs(elapsedMs),
+		remaining - RESEARCH_HANDOFF_MARGIN_MS,
+	);
+}

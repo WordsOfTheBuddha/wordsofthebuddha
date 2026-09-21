@@ -21,6 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
 			{ status: 400, headers: { "Content-Type": "application/json" } },
 		);
 	}
+	console.info("[ai/research/run] received", { jobId, uid });
 	const work = runResearchJobAndMaybeChain({
 		uid,
 		jobId,
