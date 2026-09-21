@@ -64,6 +64,9 @@ import {
 	ASK_CLIPBOARD_FAILED_LABEL,
 	ASK_CLIPBOARD_COPIED_MS,
 	ASK_CLIPBOARD_FAILED_MS,
+	ASK_SHARE_FAILED_LABEL,
+	ASK_SHARE_SAVED_COPY_FAILED_LABEL,
+	copyTextWithClipboardFallback,
 	flashAskButtonFeedback,
 	readAskButtonIdle,
 	restoreAskButtonIdle,
@@ -1349,6 +1352,89 @@ describe("flashAskButtonFeedback", () => {
 			button.querySelector(".ai-share-label-full")?.textContent,
 			"Share link",
 		);
+	});
+
+	it("keeps the saved-but-uncopied label distinct from a share failure", () => {
+		assert.notEqual(ASK_SHARE_SAVED_COPY_FAILED_LABEL, ASK_SHARE_FAILED_LABEL);
+		assert.match(ASK_SHARE_SAVED_COPY_FAILED_LABEL, /copy failed/i);
+	});
+});
+
+describe("copyTextWithClipboardFallback", () => {
+	function stubGlobals(navigatorStub: unknown, documentStub: unknown) {
+		const prevNavigator = (globalThis as unknown as Record<string, unknown>)
+			.navigator;
+		const prevNavigatorDescriptor = Object.getOwnPropertyDescriptor(
+			globalThis,
+			"navigator",
+		);
+		const prevDocument = (globalThis as unknown as Record<string, unknown>)
+			.document;
+		Object.defineProperty(globalThis, "navigator", {
+			value: navigatorStub,
+			writable: true,
+			configurable: true,
+		});
+		(globalThis as unknown as Record<string, unknown>).document = documentStub;
+		return () => {
+			if (prevNavigatorDescriptor) {
+				Object.defineProperty(globalThis, "navigator", prevNavigatorDescriptor);
+			} else {
+				Reflect.deleteProperty(globalThis, "navigator");
+			}
+			(globalThis as unknown as Record<string, unknown>).document = prevDocument;
+		};
+	}
+
+	it("uses the async clipboard when available", async () => {
+		let written = "";
+		const restore = stubGlobals(
+			{
+				clipboard: {
+					writeText: async (text: string) => {
+						written = text;
+					},
+				},
+			},
+			undefined,
+		);
+		try {
+			assert.equal(await copyTextWithClipboardFallback("https://x.test/ask/abc"), true);
+			assert.equal(written, "https://x.test/ask/abc");
+		} finally {
+			restore();
+		}
+	});
+
+	it("falls back to execCommand when the async clipboard rejects", async () => {
+		const { window } = new JSDOM(`<!doctype html><html><body></body></html>`);
+		const doc = window.document;
+		(doc as unknown as Record<string, unknown>).execCommand = () => true;
+		const restore = stubGlobals(
+			{
+				clipboard: {
+					writeText: async () => {
+						throw new Error("denied");
+					},
+				},
+			},
+			doc,
+		);
+		try {
+			assert.equal(await copyTextWithClipboardFallback("https://x.test/ask/abc"), true);
+		} finally {
+			restore();
+		}
+	});
+
+	it("returns false when no copy mechanism is available", async () => {
+		const restore = stubGlobals(undefined, undefined);
+		try {
+			assert.equal(await copyTextWithClipboardFallback("https://x.test/ask/abc"), false);
+			assert.equal(await copyTextWithClipboardFallback(""), false);
+		} finally {
+			restore();
+		}
 	});
 });
 

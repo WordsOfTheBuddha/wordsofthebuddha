@@ -236,6 +236,8 @@ import {
 	ASK_CLIPBOARD_FAILED_LABEL,
 	ASK_SHARE_COPIED_LABEL,
 	ASK_SHARE_FAILED_LABEL,
+	ASK_SHARE_SAVED_COPY_FAILED_LABEL,
+	copyTextWithClipboardFallback,
 	askHistoryCardMenuFlags,
 	applyAskButtonFeedback,
 	flashAskButtonFeedback,
@@ -7656,6 +7658,7 @@ export function attachAiMode(options: {
 							: {}),
 					}))
 				: undefined;
+		let shareUrl: string;
 		try {
 			const response = await fetch("/api/ai/share", {
 				method: "POST",
@@ -7679,25 +7682,63 @@ export function attachAiMode(options: {
 						: {}),
 				}),
 			});
-			const data = (await response.json()) as {
+			let data: {
 				success?: boolean;
 				path?: string;
 				error?: string;
-			};
+			} | null = null;
+			try {
+				data = (await response.json()) as {
+					success?: boolean;
+					path?: string;
+					error?: string;
+				};
+			} catch (parseError) {
+				console.warn("[ai/share] response parse failed", {
+					status: response.status,
+					research: entry.research === true || Boolean(entry.report),
+					error:
+						parseError instanceof Error ? parseError.message : parseError,
+				});
+				flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
+				return;
+			}
 			if (!response.ok || !data.success || !data.path) {
+				console.warn("[ai/share] publish failed", {
+					status: response.status,
+					error: data?.error,
+					research: entry.research === true || Boolean(entry.report),
+				});
 				flashAskButtonFeedback(
 					button,
-					data.error || ASK_SHARE_FAILED_LABEL,
+					data?.error || ASK_SHARE_FAILED_LABEL,
 					"error",
 					idle,
 				);
 				return;
 			}
-			const url = new URL(data.path, window.location.origin).toString();
-			await navigator.clipboard.writeText(url);
-			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
-		} catch {
+			shareUrl = new URL(data.path, window.location.origin).toString();
+		} catch (error) {
+			console.warn("[ai/share] publish request failed", {
+				research: entry.research === true || Boolean(entry.report),
+				error: error instanceof Error ? error.message : error,
+			});
 			flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
+			return;
+		}
+		const copied = await copyTextWithClipboardFallback(shareUrl);
+		if (copied) {
+			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
+		} else {
+			console.warn("[ai/share] clipboard copy failed after publish", {
+				research: entry.research === true || Boolean(entry.report),
+			});
+			flashAskButtonFeedback(
+				button,
+				ASK_SHARE_SAVED_COPY_FAILED_LABEL,
+				"error",
+				idle,
+			);
 		}
 	}
 
@@ -8236,11 +8277,27 @@ export function attachAiMode(options: {
 					turn.sharePath,
 					previewN && previewN < currentN ? previewN : null,
 				);
-				await navigator.clipboard.writeText(
+				const copied = await copyTextWithClipboardFallback(
 					new URL(sharePath, window.location.origin).toString(),
 				);
-				flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
-			} catch {
+				if (copied) {
+					flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
+				} else {
+					console.warn("[ai/share] clipboard copy failed for published link", {
+						path: turn.sharePath,
+					});
+					flashAskButtonFeedback(
+						button,
+						ASK_CLIPBOARD_FAILED_LABEL,
+						"error",
+						idle,
+					);
+				}
+			} catch (error) {
+				console.warn("[ai/share] published link copy failed", {
+					path: turn.sharePath,
+					error: error instanceof Error ? error.message : error,
+				});
 				flashAskButtonFeedback(
 					button,
 					ASK_CLIPBOARD_FAILED_LABEL,
@@ -8255,6 +8312,7 @@ export function attachAiMode(options: {
 			return;
 		}
 		applyAskButtonFeedback(button, "Sharing…", "busy");
+		let shareUrl: string;
 		try {
 			const response = await fetch("/api/ai/share", {
 				method: "POST",
@@ -8284,16 +8342,38 @@ export function attachAiMode(options: {
 					...(thread.length > 1 ? { thread } : {}),
 				}),
 			});
-			const data = (await response.json()) as {
+			let data: {
 				success?: boolean;
 				path?: string;
 				slug?: string;
 				error?: string;
-			};
+			} | null = null;
+			try {
+				data = (await response.json()) as {
+					success?: boolean;
+					path?: string;
+					slug?: string;
+					error?: string;
+				};
+			} catch (parseError) {
+				console.warn("[ai/share] response parse failed", {
+					status: response.status,
+					research: turn.research === true || Boolean(turn.report),
+					error:
+						parseError instanceof Error ? parseError.message : parseError,
+				});
+				flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
+				return;
+			}
 			if (!response.ok || !data.success || !data.path) {
+				console.warn("[ai/share] publish failed", {
+					status: response.status,
+					error: data?.error,
+					research: turn.research === true || Boolean(turn.report),
+				});
 				flashAskButtonFeedback(
 					button,
-					data.error || ASK_SHARE_FAILED_LABEL,
+					data?.error || ASK_SHARE_FAILED_LABEL,
 					"error",
 					idle,
 				);
@@ -8312,12 +8392,29 @@ export function attachAiMode(options: {
 				data.path,
 				previewN && previewN < currentN ? previewN : null,
 			);
-			const url = new URL(sharePath, window.location.origin).toString();
-			await navigator.clipboard.writeText(url);
-			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
+			shareUrl = new URL(sharePath, window.location.origin).toString();
 			persistSessionFromTurn(turn);
-		} catch {
+		} catch (error) {
+			console.warn("[ai/share] publish request failed", {
+				research: turn.research === true || Boolean(turn.report),
+				error: error instanceof Error ? error.message : error,
+			});
 			flashAskButtonFeedback(button, ASK_SHARE_FAILED_LABEL, "error", idle);
+			return;
+		}
+		const copied = await copyTextWithClipboardFallback(shareUrl);
+		if (copied) {
+			flashAskButtonFeedback(button, ASK_SHARE_COPIED_LABEL, "copied", idle);
+		} else {
+			console.warn("[ai/share] clipboard copy failed after publish", {
+				path: turn.sharePath,
+			});
+			flashAskButtonFeedback(
+				button,
+				ASK_SHARE_SAVED_COPY_FAILED_LABEL,
+				"error",
+				idle,
+			);
 		}
 	}
 

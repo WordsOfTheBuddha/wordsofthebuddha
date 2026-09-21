@@ -830,6 +830,12 @@ export const ASK_CLIPBOARD_COPIED_LABEL = "Copied";
 export const ASK_CLIPBOARD_FAILED_LABEL = "Could not copy";
 export const ASK_SHARE_COPIED_LABEL = "Link copied";
 export const ASK_SHARE_FAILED_LABEL = "Could not share";
+/**
+ * The share was published but the link could not be placed on the clipboard.
+ * Kept distinct from `ASK_SHARE_FAILED_LABEL` so a repro tells us whether
+ * the publish or the copy failed.
+ */
+export const ASK_SHARE_SAVED_COPY_FAILED_LABEL = "Share saved — copy failed";
 export const ASK_CLIPBOARD_COPIED_MS = 1600;
 export const ASK_CLIPBOARD_FAILED_MS = 1800;
 
@@ -924,6 +930,55 @@ export function flashAskButtonFeedback(
 		() => restoreAskButtonIdle(button, idle),
 		kind === "copied" ? ASK_CLIPBOARD_COPIED_MS : ASK_CLIPBOARD_FAILED_MS,
 	);
+}
+
+/**
+ * Clipboard write with an `execCommand("copy")` fallback for browsers where
+ * the async Clipboard API is unavailable or denies permission (notably
+ * Firefox). Resolves true when the text was likely copied.
+ */
+export async function copyTextWithClipboardFallback(
+	text: string,
+): Promise<boolean> {
+	if (!text) return false;
+	try {
+		const clipboard = globalThis.navigator?.clipboard;
+		if (clipboard?.writeText) {
+			await clipboard.writeText(text);
+			return true;
+		}
+	} catch {
+		/* fall through to the legacy path */
+	}
+	try {
+		const doc = globalThis.document;
+		if (!doc?.body) return false;
+		const active = (doc.activeElement as HTMLElement | null) ?? null;
+		const area = doc.createElement("textarea");
+		area.value = text;
+		area.setAttribute("readonly", "");
+		area.style.cssText =
+			"position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
+		doc.body.appendChild(area);
+		area.select();
+		try {
+			area.setSelectionRange(0, area.value.length);
+		} catch {
+			/* select() already covers most browsers */
+		}
+		const done = doc.execCommand("copy");
+		area.remove();
+		if (active && typeof active.focus === "function") {
+			try {
+				active.focus();
+			} catch {
+				/* ignore focus restore failures */
+			}
+		}
+		return done === true;
+	} catch {
+		return false;
+	}
 }
 
 export const REPORT_PARAGRAPH_SHOW_TITLE = "Show paragraph numbering";
