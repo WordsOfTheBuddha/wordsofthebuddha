@@ -1042,7 +1042,16 @@ export function wrapAskAnswerHtml(input: {
 
 export function researchJobToHistoryEntry(
 	job: ResearchJobPublic,
-	existing?: { at?: number; thread?: AiAskSessionEntry[] },
+	existing?: Pick<
+		AiAskSessionEntry,
+		| "at"
+		| "thread"
+		| "contextPreview"
+		| "contextWordCount"
+		| "contextAttachmentLabel"
+		| "imageCount"
+		| "attachedImages"
+	>,
 ): AiAskSessionEntry {
 	const result = job.result;
 	const entry: AiAskSessionEntry = {
@@ -1071,6 +1080,24 @@ export function researchJobToHistoryEntry(
 		}),
 		research: true,
 		researchJobId: job.id,
+		// The public job carries no attachment fields; keep the local row's
+		// confirmation metadata so server hydrations don't drop the chips.
+		...(existing?.contextPreview
+			? { contextPreview: existing.contextPreview }
+			: {}),
+		...(typeof existing?.contextWordCount === "number" &&
+		existing.contextWordCount > 0
+			? { contextWordCount: existing.contextWordCount }
+			: {}),
+		...(existing?.contextAttachmentLabel
+			? { contextAttachmentLabel: existing.contextAttachmentLabel }
+			: {}),
+		...(typeof existing?.imageCount === "number" && existing.imageCount > 0
+			? { imageCount: existing.imageCount }
+			: {}),
+		...(existing?.attachedImages && existing.attachedImages.length > 0
+			? { attachedImages: existing.attachedImages }
+			: {}),
 		...(job.processNotes && job.processNotes.length > 0
 			? { processNotes: job.processNotes }
 			: {}),

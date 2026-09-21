@@ -37,6 +37,7 @@ import {
 	sanitizeAskHistoryEntry,
 	slimAskHistoryEntriesForSync,
 	slimAskHistoryEntryForSync,
+	stripAttachmentBytesForQuota,
 	trimAskHistoryEntries,
 	upsertAiAskSessionEntry,
 	visibleAskHistoryEntries,
@@ -1300,5 +1301,74 @@ describe("slim Ask history for Firestore", () => {
 		assert.ok(
 			askHistoryFirestoreBytes(slim) < ASK_HISTORY_FIRESTORE_TARGET_BYTES,
 		);
+	});
+});
+
+describe("research attachment metadata in history", () => {
+	it("keeps attachment labels and image bytes when merging job copies", () => {
+		const local = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-attach",
+			report: "## A",
+			contextPreview: "line one line two",
+			contextWordCount: 4,
+			contextAttachmentLabel: "Clipboard (2 lines)",
+			imageCount: 2,
+			attachedImages: [
+				{ mime: "image/png", data: "aGVsbG8=" },
+				{ mime: "image/jpeg", data: "d29ybGQ=" },
+			],
+		});
+		const remote = entry("Who is a trainee?", 10, {
+			research: true,
+			researchJobId: "job-attach",
+			report: "## A",
+		});
+		const merged = mergeAskHistoryEntries([local], [remote]);
+		assert.equal(merged.length, 1);
+		assert.equal(merged[0]?.contextAttachmentLabel, "Clipboard (2 lines)");
+		assert.equal(merged[0]?.contextPreview, "line one line two");
+		assert.equal(merged[0]?.contextWordCount, 4);
+		assert.equal(merged[0]?.imageCount, 2);
+		assert.equal(merged[0]?.attachedImages?.length, 2);
+	});
+
+	it("keeps attachment confirmation labels in the Firestore sync copy", () => {
+		const slim = slimAskHistoryEntryForSync(
+			entry("Who is a trainee?", 10, {
+				research: true,
+				researchJobId: "job-attach",
+				report: "## A",
+				contextPreview: "line one line two",
+				contextAttachmentLabel: "Clipboard (2 lines)",
+				imageCount: 2,
+				attachedImages: [{ mime: "image/png", data: "aGVsbG8=" }],
+			}),
+		);
+		assert.equal(slim?.contextAttachmentLabel, "Clipboard (2 lines)");
+		assert.equal(slim?.imageCount, 2);
+		assert.equal(slim?.attachedImages, undefined);
+	});
+
+	it("strips image bytes oldest-first for quota without dropping labels", () => {
+		const image = { mime: "image/png", data: "aGVsbG8=" };
+		const entries = [
+			entry("newest", 3, {
+				research: true,
+				researchJobId: "job-new",
+				imageCount: 1,
+				attachedImages: [image],
+			}),
+			entry("older", 2, {
+				research: true,
+				researchJobId: "job-old",
+				imageCount: 1,
+				attachedImages: [image],
+			}),
+		];
+		const stripped = stripAttachmentBytesForQuota(entries, 1);
+		assert.equal(stripped[0]?.attachedImages?.length, 1);
+		assert.equal(stripped[1]?.attachedImages, undefined);
+		assert.equal(stripped[1]?.imageCount, 1);
 	});
 });

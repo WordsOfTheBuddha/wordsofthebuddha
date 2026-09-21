@@ -708,20 +708,49 @@ export function readAiAskSession(
 	}
 }
 
+/**
+ * Full image bytes live in the IndexedDB attachment store; localStorage keeps
+ * bytes only as a fast path. Newest entries keep them, older rows keep the
+ * lightweight `imageCount` label so a quota failure never drops history.
+ */
+export function stripAttachmentBytesForQuota(
+	entries: readonly AiAskSessionEntry[],
+	keepNewestWithBytes: number,
+): AiAskSessionEntry[] {
+	let kept = 0;
+	return entries.map((entry) => {
+		if (!entry.attachedImages || entry.attachedImages.length === 0) {
+			return entry;
+		}
+		if (kept < keepNewestWithBytes) {
+			kept += 1;
+			return entry;
+		}
+		const { attachedImages: _drop, ...rest } = entry;
+		return rest;
+	});
+}
+
 export function writeAiAskSession(
 	entries: readonly AiAskSessionEntry[],
 	storage: Storage | null | undefined = defaultStorage(),
 ): void {
 	if (!storage) return;
+	const trimmed = trimAskHistoryEntries(entries, AI_ASK_SESSION_LIMIT);
 	try {
-		storage.setItem(
-			SESSION_KEY,
-			JSON.stringify({
-				entries: trimAskHistoryEntries(entries, AI_ASK_SESSION_LIMIT),
-			}),
-		);
+		storage.setItem(SESSION_KEY, JSON.stringify({ entries: trimmed }));
+		return;
 	} catch {
-		/* quota / private mode */
+		/* quota / private mode — fall through to stripped retries */
+	}
+	for (const keep of [3, 0]) {
+		try {
+			const stripped = stripAttachmentBytesForQuota(trimmed, keep);
+			storage.setItem(SESSION_KEY, JSON.stringify({ entries: stripped }));
+			return;
+		} catch {
+			/* try a smaller payload */
+		}
 	}
 }
 
@@ -813,6 +842,25 @@ function fillHistoryGaps(
 		winner.candidateCount || 0,
 		other.candidateCount || 0,
 	);
+	// Attachment metadata must survive local↔remote merges, otherwise reopened
+	// reports lose their "+N images / Clipboard (N lines)" confirmation chips.
+	const contextPreview = pickLongerText(
+		winner.contextPreview,
+		other.contextPreview,
+	);
+	const contextAttachmentLabel = pickLongerText(
+		winner.contextAttachmentLabel,
+		other.contextAttachmentLabel,
+	);
+	const contextWordCount = Math.max(
+		winner.contextWordCount || 0,
+		other.contextWordCount || 0,
+	);
+	const imageCount = Math.max(winner.imageCount || 0, other.imageCount || 0);
+	const attachedImages =
+		(winner.attachedImages?.length || 0) >= (other.attachedImages?.length || 0)
+			? winner.attachedImages
+			: other.attachedImages;
 	const filled = sanitizeAskHistoryEntry({
 		...winner,
 		...(report ? { report } : {}),
@@ -823,6 +871,11 @@ function fillHistoryGaps(
 		...(thread && thread.length > 1 ? { thread } : {}),
 		...(processNotes && processNotes.length > 0 ? { processNotes } : {}),
 		...(candidateCount > 0 ? { candidateCount } : {}),
+		...(contextPreview ? { contextPreview } : {}),
+		...(contextAttachmentLabel ? { contextAttachmentLabel } : {}),
+		...(contextWordCount > 0 ? { contextWordCount } : {}),
+		...(imageCount > 0 ? { imageCount } : {}),
+		...(attachedImages && attachedImages.length > 0 ? { attachedImages } : {}),
 		...(winner.reportStats || other.reportStats
 			? {
 					reportStats: winner.reportStats || other.reportStats,

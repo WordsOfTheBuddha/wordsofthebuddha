@@ -1194,6 +1194,28 @@ describe("researchJobToHistoryEntry", () => {
 		const entry = researchJobToHistoryEntry(job, { at: 99 });
 		assert.equal(entry.at, 5);
 	});
+
+	it("keeps local attachment confirmation metadata the job omits", () => {
+		const job = toResearchJobPublic({
+			id: "job-attach",
+			status: "complete",
+			question: "Who is a sekha?",
+			createdAt: 5,
+		});
+		const entry = researchJobToHistoryEntry(job, {
+			at: 5,
+			contextPreview: "line one line two",
+			contextWordCount: 4,
+			contextAttachmentLabel: "Clipboard (2 lines)",
+			imageCount: 2,
+			attachedImages: [{ mime: "image/png", data: "aGVsbG8=" }],
+		});
+		assert.equal(entry.contextAttachmentLabel, "Clipboard (2 lines)");
+		assert.equal(entry.contextPreview, "line one line two");
+		assert.equal(entry.contextWordCount, 4);
+		assert.equal(entry.imageCount, 2);
+		assert.equal(entry.attachedImages?.length, 1);
+	});
 });
 
 describe("researchHistoryTimestamp", () => {

@@ -154,6 +154,11 @@ import {
 	researchContextImageFilename,
 } from "./researchImageOverlay";
 import {
+	deleteResearchAttachments,
+	loadResearchAttachments,
+	saveResearchAttachments,
+} from "./researchAttachmentStore";
+import {
 	decorateReportParagraphNumbers,
 	readShowParagraphNumbers,
 	writeShowParagraphNumbers,
@@ -2578,6 +2583,8 @@ export function attachAiMode(options: {
 	let storedResearchCompositionDraft: ResearchCompositionDraft | null | undefined;
 	/** Images from the last Research submit, restored on cancel/stop. */
 	let pendingResearchSubmitImages: ResearchContextImage[] | null = null;
+	/** Pasted-notes clips from the last Research submit, restored on cancel/stop. */
+	let pendingResearchSubmitContexts: string[] | null = null;
 	/** Images from the last Revise submit, restored on cancel/failure. */
 	let lastReviseSubmitImages: ResearchContextImage[] = [];
 	const compositionMirrorHosts = new WeakMap<
@@ -3181,8 +3188,24 @@ export function attachAiMode(options: {
 			sanitized.length > 0 ? sanitized : null;
 	}
 
+	function snapshotResearchSubmitContexts(contexts: readonly string[]): void {
+		const clips = contexts
+			.map((context) => clipResearchContext(context))
+			.filter((context) => context.trim());
+		pendingResearchSubmitContexts = clips.length > 0 ? clips : null;
+	}
+
 	function clearPendingResearchSubmitImages(): void {
 		pendingResearchSubmitImages = null;
+	}
+
+	function clearPendingResearchSubmitContexts(): void {
+		pendingResearchSubmitContexts = null;
+	}
+
+	function clearPendingResearchSubmitAttachments(): void {
+		clearPendingResearchSubmitImages();
+		clearPendingResearchSubmitContexts();
 	}
 
 	function restorePendingResearchImagesToComposer(): void {
@@ -3191,6 +3214,91 @@ export function attachAiMode(options: {
 		compositionImages = [...pendingResearchSubmitImages];
 		syncCompositionTray();
 		persistResearchCompositionDraft();
+	}
+
+	function restorePendingResearchContextsToComposer(): void {
+		if (!pendingResearchSubmitContexts?.length) return;
+		if (compositionContexts.length > 0) return;
+		restoreCompositionContextsToComposer(pendingResearchSubmitContexts);
+	}
+
+	function restorePendingResearchAttachmentsToComposer(): void {
+		restorePendingResearchImagesToComposer();
+		restorePendingResearchContextsToComposer();
+	}
+
+	/**
+	 * Durably store a turn's attachments (full pasted-notes text + image bytes)
+	 * in the same-browser IndexedDB store, keyed by researchJobId. Saves merge,
+	 * so later calls after the pending submit snapshot was cleared only fill
+	 * gaps and never wipe stored bytes.
+	 */
+	function saveTurnAttachmentsToStore(turn: AiAskTurn): void {
+		const jobId = (turn.researchJobId || "").trim();
+		if (!turn.research || !jobId) return;
+		const contextFull = mergeCompositionContexts(
+			pendingResearchSubmitContexts || [],
+		);
+		const images = sanitizeResearchContextImages(
+			pendingResearchSubmitImages || turn.attachedImages || [],
+		);
+		if (!contextFull.trim() && images.length === 0) return;
+		const keepJobIds = sessionEntries
+			.map((entry) => entry.researchJobId || "")
+			.filter(Boolean);
+		void saveResearchAttachments(
+			{
+				jobId,
+				contextFull,
+				images,
+				...(turn.contextPreview
+					? { contextPreview: turn.contextPreview }
+					: {}),
+				...(typeof turn.contextWordCount === "number"
+					? { contextWordCount: turn.contextWordCount }
+					: {}),
+				...(turn.contextAttachmentLabel
+					? { contextAttachmentLabel: turn.contextAttachmentLabel }
+					: {}),
+				...(typeof turn.imageCount === "number"
+					? { imageCount: turn.imageCount }
+					: {}),
+			},
+			{ keepJobIds },
+		).catch(() => {
+			/* attachment store is best-effort */
+		});
+	}
+
+	/**
+	 * Put pasted-notes clips back into the composer as a single chip (content
+	 * identical, markers re-anchored). Used when a submit fails or is stopped
+	 * so the notes survive for an immediate retry.
+	 */
+	function restoreCompositionContextsToComposer(
+		clips: readonly string[],
+	): boolean {
+		const merged = clipResearchContext(
+			clips
+				.map((clip) => clip.trim())
+				.filter(Boolean)
+				.join("\n\n"),
+		);
+		if (!merged.trim()) return false;
+		const textarea = activeComposerTextarea();
+		compositionContexts = [merged];
+		if (textarea && compositionContextPasteEnabled(textarea)) {
+			compositionContextTextarea = textarea;
+			const at = textarea.selectionStart ?? textarea.value.length;
+			insertCompositionContextMarker(textarea, at);
+			syncCompositionTray();
+			positionCursorAfterCompositionChipIndex(textarea, 0);
+		} else {
+			compositionContextTextarea = null;
+			syncCompositionTray();
+		}
+		persistResearchCompositionDraft();
+		return true;
 	}
 
 	function snapshotReviseSubmitImages(
@@ -6834,6 +6942,7 @@ export function attachAiMode(options: {
 			);
 		}
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, entry);
+		saveTurnAttachmentsToStore(turn);
 		writeAiAskSession(sessionEntries);
 		renderHistory();
 		void fetch("/api/ai/history", {
@@ -7039,6 +7148,20 @@ export function attachAiMode(options: {
 			}
 			return turn;
 		});
+		// Rows whose image bytes were stripped (quota/Firestore) still carry
+		// count/label metadata; upgrade them with same-browser bytes when held.
+		for (const restoredTurn of turns) {
+			if (
+				!restoredTurn.attachedImages?.length &&
+				(restoredTurn.imageCount || restoredTurn.contextAttachmentLabel)
+			) {
+				void backfillTurnAttachmentsFromStore(restoredTurn).then(
+					(changed) => {
+						if (changed && turns.includes(restoredTurn)) syncLayout();
+					},
+				);
+			}
+		}
 		persistActiveThread();
 		syncLayout();
 		const tip = turns[turns.length - 1];
@@ -7444,6 +7567,11 @@ export function attachAiMode(options: {
 				: openThreadMatchesQuestions(keys));
 		if (jobId) {
 			sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [jobId]);
+			// Drop same-browser attachment bytes with the report; anything
+			// missed ages out via the store's entry/byte budget.
+			void deleteResearchAttachments(jobId).catch(() => {
+				/* attachment store is best-effort */
+			});
 		} else {
 			sessionEntries = removeAskHistoryEntriesByQuestions(sessionEntries, keys, {
 				research: researchPaneOn(),
@@ -8218,6 +8346,29 @@ export function attachAiMode(options: {
 			}));
 	}
 
+	/**
+	 * Note appended to a copied report so pasted notes / images submitted with
+	 * the question are not silently dropped from the pasted copy.
+	 */
+	function formatCopyAttachmentNote(turn: AiAskTurn): string {
+		const parts: string[] = [];
+		if (turn.contextAttachmentLabel) {
+			const words =
+				typeof turn.contextWordCount === "number" && turn.contextWordCount > 0
+					? `, ${turn.contextWordCount.toLocaleString()} words`
+					: "";
+			parts.push(`${turn.contextAttachmentLabel}${words}`);
+		}
+		const images = turn.attachedImages?.length || turn.imageCount || 0;
+		if (images > 0) {
+			parts.push(
+				`${images} image${images === 1 ? "" : "s"} attached to the original question`,
+			);
+		}
+		if (parts.length === 0) return "";
+		return `\n\n_Attached inputs (${parts.join("; ")}) are not part of the copied text — reopen the report to view them._`;
+	}
+
 	async function copyAskAnswer(
 		turn: AiAskTurn,
 		button: HTMLButtonElement,
@@ -8225,11 +8376,13 @@ export function attachAiMode(options: {
 		const kind = button.getAttribute("data-copy-kind") === "report"
 			? "report"
 			: "answer";
-		const text =
+		const body =
 			kind === "report"
 				? displayedReportMarkdown(turn).trim()
 				: (turn.summary || "").trim();
-		if (!text) return;
+		if (!body) return;
+		const text =
+			kind === "report" ? `${body}${formatCopyAttachmentNote(turn)}` : body;
 		const idle = readAskButtonIdle(button);
 		try {
 			await navigator.clipboard.writeText(text);
@@ -8803,6 +8956,22 @@ export function attachAiMode(options: {
 				normalizeAskQuestionKey(entry.question)
 				? `<span class="ai-history-root">Started with: ${escapeHtml(rootQuestion)}</span>`
 				: "";
+		const attachmentImages =
+			typeof entry.imageCount === "number" && entry.imageCount > 0
+			? `${entry.imageCount} image${entry.imageCount === 1 ? "" : "s"}`
+			: entry.attachedImages?.length
+				? `${entry.attachedImages.length} image${entry.attachedImages.length === 1 ? "" : "s"}`
+				: "";
+		const attachmentText = [
+			entry.contextAttachmentLabel || "",
+			attachmentImages,
+		]
+			.filter(Boolean)
+			.join(" · ");
+		const attachmentRow =
+			!sample && attachmentText
+				? `<span class="ai-history-attachments">${escapeHtml(attachmentText)}</span>`
+				: "";
 		const q = escapeHtml(entry.question);
 		const sampleAttr = options?.sampleSlug
 			? ` data-ai-history-sample="${escapeHtml(options.sampleSlug)}"`
@@ -8855,6 +9024,7 @@ export function attachAiMode(options: {
 							${rootRow}
 							${threadRow}
 							${researchRow}
+							${attachmentRow}
 							${resultsRow}
 						</button>
 						${menu}
@@ -9989,7 +10159,7 @@ export function attachAiMode(options: {
 		}
 		if (!turn.pending && !turn.error) {
 			clearReviseInstructionDraft();
-			clearPendingResearchSubmitImages();
+			clearPendingResearchSubmitAttachments();
 			clearResearchCompositionDraftStorage();
 			setResearchChipOn(false);
 			persistSessionFromTurn(turn);
@@ -10182,12 +10352,81 @@ export function attachAiMode(options: {
 		void refreshQuota();
 		if (turn.research && !turn.report) {
 			setResearchChipOn(true);
-			restorePendingResearchImagesToComposer();
+			restorePendingResearchAttachmentsToComposer();
 		}
 		busy = false;
 		root.classList.remove("is-busy", "is-research-busy", "is-revise-busy");
 		syncLayout();
 		cancelInFlight = false;
+	}
+
+	/**
+	 * Auto-resend for failed/incomplete research: refill an empty composer with
+	 * the previous attempt's attachments (pending submit → live turn bytes →
+	 * history row → IndexedDB) so "Research again" reuses notes/images without
+	 * re-pasting. Never overwrites attachments the reader already added.
+	 */
+	async function preloadReplacementAttachments(
+		turn: AiAskTurn,
+	): Promise<boolean> {
+		if (!turn.research || turn.fromShare) return false;
+		if (compositionImages.length > 0 || compositionContexts.length > 0) {
+			return false;
+		}
+		const jobId = (turn.researchJobId || "").trim();
+		let images = sanitizeResearchContextImages(
+			pendingResearchSubmitImages || turn.attachedImages || [],
+		);
+		let clips = [...(pendingResearchSubmitContexts || [])];
+		if (jobId && (clips.length === 0 || images.length === 0)) {
+			const remembered = sessionEntries.find(
+				(item) => item.researchJobId === jobId,
+			);
+			if (
+				remembered &&
+				images.length === 0 &&
+				remembered.attachedImages?.length
+			) {
+				images = sanitizeResearchContextImages(remembered.attachedImages);
+			}
+			if (clips.length === 0 || images.length === 0) {
+				try {
+					const stored = await loadResearchAttachments(jobId);
+					if (stored) {
+						if (clips.length === 0 && stored.contextFull.trim()) {
+							clips = [stored.contextFull];
+						}
+						if (images.length === 0 && stored.images.length > 0) {
+							images = [...stored.images];
+						}
+					}
+				} catch {
+					/* attachment store is best-effort */
+				}
+			}
+		}
+		let restored = false;
+		if (images.length > 0) {
+			compositionImages = [...images];
+			restored = true;
+		}
+		if (clips.length > 0 && restoreCompositionContextsToComposer(clips)) {
+			restored = true;
+		} else if (restored) {
+			syncCompositionTray();
+			persistResearchCompositionDraft();
+		}
+		if (restored) {
+			const parts: string[] = [];
+			if (images.length > 0) {
+				parts.push(
+					`${images.length} image${images.length === 1 ? "" : "s"}`,
+				);
+			}
+			if (clips.length > 0) parts.push("attached notes");
+			setStatus(`Re-attached ${parts.join(" + ")} from the previous attempt.`);
+		}
+		return restored;
 	}
 
 	async function retryIncompleteResearchTurn(
@@ -10203,6 +10442,7 @@ export function attachAiMode(options: {
 			return;
 		}
 		setResearchChipOn(true);
+		await preloadReplacementAttachments(turn);
 		void ask(next, null, { replaceTurnIndex: turnIndex, forceResearch: true });
 	}
 
@@ -10267,11 +10507,98 @@ export function attachAiMode(options: {
 		}
 		if (fallbackAsk) {
 			setResearchChipOn(true);
+			await preloadReplacementAttachments(turn);
 			void ask(turn.question, null, {
 				replaceTurnIndex: turnIndex,
 				forceResearch: true,
 			});
 		}
+	}
+
+	/**
+	 * Copy attachment confirmation metadata (and bytes when present) from a
+	 * history row onto a turn rebuilt from the server job, which carries none.
+	 * Only fills gaps — never overwrites live turn data.
+	 */
+	function applyStoredAttachmentMetadata(
+		turn: AiAskTurn,
+		entry: AiAskSessionEntry | null | undefined,
+	): void {
+		if (!entry) return;
+		if (!turn.contextPreview && entry.contextPreview) {
+			turn.contextPreview = entry.contextPreview;
+		}
+		if (
+			typeof turn.contextWordCount !== "number" &&
+			typeof entry.contextWordCount === "number"
+		) {
+			turn.contextWordCount = entry.contextWordCount;
+		}
+		if (!turn.contextAttachmentLabel && entry.contextAttachmentLabel) {
+			turn.contextAttachmentLabel = entry.contextAttachmentLabel;
+		}
+		if (
+			typeof turn.imageCount !== "number" &&
+			typeof entry.imageCount === "number"
+		) {
+			turn.imageCount = entry.imageCount;
+		}
+		if (
+			(!turn.attachedImages || turn.attachedImages.length === 0) &&
+			entry.attachedImages?.length
+		) {
+			turn.attachedImages = sanitizeResearchContextImages(
+				entry.attachedImages,
+			);
+		}
+	}
+
+	/**
+	 * Backfill full attachment bytes from the same-browser store for turns
+	 * that only carry count/label metadata (e.g. quota-stripped history rows
+	 * or server-hydrated jobs). Returns true when the turn gained data.
+	 */
+	async function backfillTurnAttachmentsFromStore(
+		turn: AiAskTurn,
+	): Promise<boolean> {
+		const jobId = (turn.researchJobId || "").trim();
+		if (!jobId) return false;
+		if (turn.attachedImages?.length) return false;
+		let stored = null;
+		try {
+			stored = await loadResearchAttachments(jobId);
+		} catch {
+			return false;
+		}
+		if (!stored) return false;
+		let changed = false;
+		if (stored.images.length > 0) {
+			turn.attachedImages = [...stored.images];
+			changed = true;
+		}
+		if (!turn.contextPreview && stored.contextPreview) {
+			turn.contextPreview = stored.contextPreview;
+			changed = true;
+		}
+		if (
+			typeof turn.contextWordCount !== "number" &&
+			typeof stored.contextWordCount === "number"
+		) {
+			turn.contextWordCount = stored.contextWordCount;
+			changed = true;
+		}
+		if (!turn.contextAttachmentLabel && stored.contextAttachmentLabel) {
+			turn.contextAttachmentLabel = stored.contextAttachmentLabel;
+			changed = true;
+		}
+		if (
+			typeof turn.imageCount !== "number" &&
+			typeof stored.imageCount === "number"
+		) {
+			turn.imageCount = stored.imageCount;
+			changed = true;
+		}
+		return changed;
 	}
 
 	async function restoreResearchJob(
@@ -10317,13 +10644,19 @@ export function attachAiMode(options: {
 			};
 			applyResearchJobToTurn(turn, job);
 			const history =
-				fromHistory ||
-				sessionEntries.find((item) => item.researchJobId === job.id);
+			fromHistory ||
+			sessionEntries.find((item) => item.researchJobId === job.id);
+			// The public job omits attachment fields — rehydrate confirmation
+			// chips from the history row, then full bytes from the local store.
+			applyStoredAttachmentMetadata(turn, history);
 			const priorTurns = askHistoryEntriesForRestore(history)
-				.filter((item) => item.researchJobId !== job.id)
-				.map((item) => sessionEntryToTurn(item));
+			.filter((item) => item.researchJobId !== job.id)
+			.map((item) => sessionEntryToTurn(item));
 			turns = [...priorTurns, turn];
-			syncResearchJobUrl(job.id);
+		void backfillTurnAttachmentsFromStore(turn).then((changed) => {
+				if (changed && turns[turns.length - 1] === turn) syncLayout();
+			});
+		syncResearchJobUrl(job.id);
 			if (turn.pending) {
 				persistResearchHistory(turn, { pending: true, unread: false });
 			}
@@ -10375,7 +10708,7 @@ export function attachAiMode(options: {
 		const last = turns[turns.length - 1];
 		if (!isClarifyingTurn(last) && !last?.researchDeclined) return;
 		turns = turns.slice(0, -1);
-		restorePendingResearchImagesToComposer();
+		restorePendingResearchAttachmentsToComposer();
 		syncLayout();
 		if (turns.length === 0) input?.focus();
 		else followInput?.focus();
@@ -10623,6 +10956,7 @@ export function attachAiMode(options: {
 			: null;
 		if (useResearch) {
 			snapshotResearchSubmitImages(submitImages);
+			snapshotResearchSubmitContexts(compositionContexts);
 			clearCompositionAttachments({ clearDraft: true });
 		}
 		const turn: AiAskTurn = {
@@ -10697,7 +11031,7 @@ export function attachAiMode(options: {
 							target.value = q;
 							fitTextarea(target);
 						}
-						restorePendingResearchImagesToComposer();
+						restorePendingResearchAttachmentsToComposer();
 						void refreshQuota();
 						openQuotaDialog(
 							quota?.needsEmailVerification ? "verify" : "signin",
@@ -10708,13 +11042,13 @@ export function attachAiMode(options: {
 					}
 					if (restoreOnFail) {
 						abortReplace();
-						restorePendingResearchImagesToComposer();
+						restorePendingResearchAttachmentsToComposer();
 						syncLayout();
 						setStatus(data.error || "Could not prepare those questions.");
 						return;
 					}
 					turn.error = data.error || "Could not prepare those questions.";
-					restorePendingResearchImagesToComposer();
+					restorePendingResearchAttachmentsToComposer();
 					syncLayout();
 					return;
 				}
@@ -10726,7 +11060,7 @@ export function attachAiMode(options: {
 						message: data.decline.message || "",
 					};
 					setResearchChipOn(false);
-					restorePendingResearchImagesToComposer();
+					restorePendingResearchAttachmentsToComposer();
 					syncLayoutAndReveal();
 					return;
 				}
@@ -10745,11 +11079,11 @@ export function attachAiMode(options: {
 				turn.phase = "done";
 				if (restoreOnFail) {
 					abortReplace();
-					restorePendingResearchImagesToComposer();
+					restorePendingResearchAttachmentsToComposer();
 					setStatus("Network error. Try again.");
 				} else {
 					turn.error = "Network error. Try again.";
-					restorePendingResearchImagesToComposer();
+					restorePendingResearchAttachmentsToComposer();
 				}
 				syncLayout();
 			} finally {

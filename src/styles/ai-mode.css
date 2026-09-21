@@ -1915,7 +1915,8 @@ body.ai-diagram-fullscreen-open {
 }
 
 .ai-history-thread,
-.ai-history-root {
+.ai-history-root,
+.ai-history-attachments {
 	display: block;
 	font-size: 0.78rem;
 	line-height: 1.35;
