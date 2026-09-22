@@ -99,6 +99,10 @@ function activeThreadKey(research?: boolean): string {
 export const AI_ASK_SESSION_LIMIT = 20;
 /** Same 20-row cap as Ask, on its own lane. Unpinned rows drop first. */
 export const AI_RESEARCH_SESSION_LIMIT = AI_ASK_SESSION_LIMIT;
+/** Pinned conversations are exempt from the 20-recent cap, up to this many per lane. */
+export const AI_ASK_PIN_LIMIT = 10;
+/** Same 10-pin cap as Ask, on its own lane. */
+export const AI_RESEARCH_PIN_LIMIT = AI_ASK_PIN_LIMIT;
 /** Recent-Asks preview above the composer; the Pinned tab shows every pin. */
 export const ASK_HISTORY_PREVIEW_LIMIT = 5;
 export type AskHistoryTab = "recent" | "pinned";
@@ -127,7 +131,6 @@ export const ASK_HISTORY_SYNC_EXCERPT_MAX = 180;
 const SYNC_ASK_RESULT_LIMIT = 12;
 const SYNC_RESULT_CARD_LIMIT = 6;
 const SYNC_REASONING_MAX = 400;
-const SYNC_SUMMARY_CLIP = 400;
 const SYNC_PENDING_NOTES = 2;
 
 export function normalizeAskQuestionKey(question: string): string {
@@ -194,7 +197,9 @@ export function sanitizeAskHistoryEntry(
 		if (!item || typeof item !== "object") continue;
 		const hit = item as Record<string, unknown>;
 		const slug = clip(typeof hit.slug === "string" ? hit.slug : "", 64);
-		const href = clip(typeof hit.href === "string" ? hit.href : "", 120);
+		// href is derivable from the slug — derive it instead of dropping the hit.
+		const href =
+			clip(typeof hit.href === "string" ? hit.href : "", 120) || `/${slug}`;
 		if (!slug || !href) continue;
 		results.push({
 			slug,
@@ -437,25 +442,23 @@ export function askHistoryLaneEntries(
 function trimHistoryLane(
 	entries: readonly AiAskSessionEntry[],
 	limit: number,
+	pinLimit: number,
 ): AiAskSessionEntry[] {
-	const out = [...entries];
-	while (out.length > limit) {
-		let dropIndex = -1;
-		for (let i = out.length - 1; i >= 0; i--) {
-			if (!out[i]?.saved) {
-				dropIndex = i;
-				break;
-			}
-		}
-		if (dropIndex === -1) out.pop();
-		else out.splice(dropIndex, 1);
-	}
-	return out;
+	// Newest-first input: keep the newest `limit` unpinned rows plus the
+	// newest `pinLimit` pins, preserving original order.
+	const unsaved = new Set(
+		entries.filter((entry) => entry?.saved !== true).slice(0, limit),
+	);
+	const saved = new Set(
+		entries.filter((entry) => entry?.saved === true).slice(0, pinLimit),
+	);
+	return entries.filter((entry) => unsaved.has(entry) || saved.has(entry));
 }
 
 /**
- * Newest-first trim. Ask and Research each keep `limit` unsaved rows.
- * Pinned rows are kept until unpinned (same rule as Ask).
+ * Newest-first trim. Ask and Research each keep `limit` recent unpinned rows
+ * plus up to their pin cap (`AI_ASK_PIN_LIMIT` / `AI_RESEARCH_PIN_LIMIT`).
+ * Pins never count toward the recent cap.
  */
 export function trimAskHistoryEntries(
 	entries: readonly AiAskSessionEntry[],
@@ -468,12 +471,14 @@ export function trimAskHistoryEntries(
 		trimHistoryLane(
 			out.filter((entry) => !isResearchHistoryEntry(entry)),
 			limit,
+			AI_ASK_PIN_LIMIT,
 		),
 	);
 	const research = new Set(
 		trimHistoryLane(
 			out.filter((entry) => isResearchHistoryEntry(entry)),
 			limit,
+			AI_RESEARCH_PIN_LIMIT,
 		),
 	);
 	return out.filter((entry) => ask.has(entry) || research.has(entry));
@@ -513,17 +518,25 @@ export function isAskHistoryDocumentSizeError(error: unknown): boolean {
 	);
 }
 
-function slimHistoryHit(
-	hit: AiDiscourseHit,
-	keepTitle: boolean,
-): AiDiscourseHit {
+/**
+ * Server / Firestore copy. Hits keep slug + title + href only — description
+ * and snippets ride the live response and are dropped here to stay under
+ * 1 MiB. Answer summaries are always kept in full so restored threads read
+ * exactly what was shown.
+ */
+function slimHistoryHit(hit: AiDiscourseHit): AiDiscourseHit {
+	const slug = hit.slug;
 	return {
-		slug: hit.slug,
-		title: keepTitle ? hit.title : hit.slug,
+		slug,
+		title: hit.title || slug,
 		description: "",
 		contentSnippet: null,
 		referenceOnly: hit.referenceOnly === true,
-		href: hit.href,
+		...(typeof hit.volpage === "string" && hit.volpage
+			? { volpage: hit.volpage }
+			: {}),
+		href: hit.href || `/${slug}`,
+		...publicIllustrationFields(hit),
 	};
 }
 
@@ -555,7 +568,7 @@ export function slimAskHistoryEntryForSync(
 				: SYNC_ASK_RESULT_LIMIT;
 	const results = clean.results
 		.slice(0, Math.max(resultCap, research ? 0 : 1))
-		.map((hit) => slimHistoryHit(hit, level === 0 && !research));
+		.map((hit) => slimHistoryHit(hit));
 	const thread =
 		level >= 2 || !clean.thread
 			? []
@@ -589,12 +602,7 @@ export function slimAskHistoryEntryForSync(
 		...(research || level >= 2
 			? {}
 			: clean.summary
-				? {
-						summary:
-							level >= 1
-								? clip(clean.summary, SYNC_SUMMARY_CLIP)
-								: clean.summary,
-					}
+				? { summary: clean.summary }
 				: {}),
 		...(research && excerpt ? { reportExcerpt: excerpt } : {}),
 		...(reportStats ? { reportStats } : {}),
@@ -634,7 +642,7 @@ function dropUnsavedHistoryUntilUnderBudget(
 	return next;
 }
 
-/** Slim + progressively drop heavy fields; keep the 20+20 row caps. */
+/** Slim + progressively drop heavy fields; keep the 20 recent + pins caps. */
 export function slimAskHistoryEntriesForSync(
 	raw: unknown,
 	limit = AI_ASK_SESSION_LIMIT,

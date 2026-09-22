@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+	AI_ASK_PIN_LIMIT,
 	AI_ASK_SESSION_LIMIT,
 	AI_RESEARCH_SESSION_LIMIT,
 	ASK_HISTORY_FIRESTORE_LIMIT_BYTES,
@@ -107,7 +108,7 @@ describe("upsertAiAskSessionEntry", () => {
 });
 
 describe("trimAskHistoryEntries", () => {
-	it("keeps saved Asks when trimming past the limit", () => {
+	it("keeps saved Asks outside the recent limit", () => {
 		const entries = [
 			entry("newest", 100),
 			entry("saved old", 50, { saved: true }),
@@ -116,9 +117,21 @@ describe("trimAskHistoryEntries", () => {
 			),
 		];
 		const trimmed = trimAskHistoryEntries(entries, AI_ASK_SESSION_LIMIT);
-		assert.equal(trimmed.length, AI_ASK_SESSION_LIMIT);
+		assert.equal(trimmed.length, AI_ASK_SESSION_LIMIT + 1);
 		assert.ok(trimmed.some((item) => item.question === "saved old" && item.saved));
 		assert.ok(trimmed.some((item) => item.question === "newest"));
+	});
+
+	it("caps pins at the pin limit", () => {
+		const entries = Array.from(
+			{ length: AI_ASK_PIN_LIMIT + 3 },
+			(_, i) => entry(`pinned ${i}`, 100 - i, { saved: true }),
+		);
+		const trimmed = trimAskHistoryEntries(entries, AI_ASK_SESSION_LIMIT);
+		assert.equal(trimmed.length, AI_ASK_PIN_LIMIT);
+		assert.ok(trimmed.every((item) => item.saved));
+		assert.ok(trimmed.some((item) => item.question === "pinned 0"));
+		assert.ok(!trimmed.some((item) => item.question === `pinned ${AI_ASK_PIN_LIMIT + 2}`));
 	});
 });
 
@@ -1004,7 +1017,7 @@ describe("Ask vs Research history lanes", () => {
 			);
 		}
 		const reports = askHistoryLaneEntries(entries, true);
-		assert.equal(reports.length, AI_RESEARCH_SESSION_LIMIT);
+		assert.equal(reports.length, AI_RESEARCH_SESSION_LIMIT + 1);
 		assert.ok(
 			reports.some((item) => item.question === "pinned report" && item.saved),
 		);
@@ -1159,9 +1172,11 @@ describe("slim Ask history for Firestore", () => {
 		assert.equal(merged[0]?.researchJobId, "job-a");
 	});
 
-	it("clips Ask thread snapshots on the server payload", () => {
+	it("keeps full Ask summaries and titles on the server payload", () => {
+		const summary = `SN 47.10 itself does not attach any attainment prerequisite. ${"More detail. ".repeat(100)}`;
 		const root = entry("What is mindfulness?", 1, {
 			reasoning: "long ".repeat(200),
+			summary,
 			results: Array.from({ length: 20 }, (_, i) => ({
 				slug: `sn47.${i + 1}`,
 				title: "Satipatthana",
@@ -1172,19 +1187,74 @@ describe("slim Ask history for Firestore", () => {
 			})),
 		});
 		const follow = entry("What about the second one?", 2, {
-			thread: [root, entry("What about the second one?", 2)],
+			summary,
+			thread: [root, entry("What about the second one?", 2, { summary })],
 			reasoning: "more ".repeat(200),
 		});
 		const slim = slimAskHistoryEntryForSync(follow);
 		assert.ok(slim);
 		assert.ok((slim.reasoning || "").length <= 400);
 		assert.ok((slim.thread?.length || 0) <= 6);
+		// Thread answers survive the round-trip verbatim (no 400-char clip).
+		const expected = sanitizeAskHistoryEntry(root)?.summary || "";
+		assert.ok(expected.length > 400);
+		assert.equal(slim.thread?.[0]?.summary, expected);
+		assert.equal(slim.thread?.[1]?.summary, expected);
 		assert.ok(
 			(slim.thread || []).every(
 				(turn) =>
 					!turn.report &&
-					(turn.results || []).every((hit) => hit.contentSnippet === null),
+					(turn.results || []).every(
+						(hit) =>
+							hit.contentSnippet === null &&
+							hit.description === "" &&
+							hit.title !== hit.slug,
+					),
 			),
+		);
+		// Titles are kept (not replaced by slugs) on every turn.
+		assert.equal(slim.thread?.[0]?.results[0]?.title, "Satipatthana");
+	});
+
+	it("keeps 20 recents plus 10 pins under the Firestore budget", () => {
+		const ask = (i: number, saved: boolean) =>
+			entry(`ask ${i}`, i, {
+				saved,
+				summary: "briefing ".repeat(200),
+				reasoning: "think ".repeat(200),
+				results: Array.from({ length: 6 }, (_, j) => ({
+					slug: `an${j + 1}`,
+					title: "Aṅguttara",
+					description: "d".repeat(80),
+					contentSnippet: "s".repeat(200),
+					referenceOnly: false,
+					href: `/an${j + 1}`,
+				})),
+				thread: [
+					entry(`ask ${i} root`, i, {
+						summary: "briefing ".repeat(200),
+						results: Array.from({ length: 6 }, (_, j) => ({
+							slug: `an${j + 1}`,
+							title: "Aṅguttara",
+							description: "d".repeat(80),
+							contentSnippet: "s".repeat(200),
+							referenceOnly: false,
+							href: `/an${j + 1}`,
+						})),
+					}),
+					entry(`ask ${i}`, i, { summary: "briefing ".repeat(200) }),
+				],
+			});
+		const mixed = [
+			...Array.from({ length: AI_ASK_SESSION_LIMIT }, (_, i) => ask(i, false)),
+			...Array.from({ length: AI_ASK_PIN_LIMIT }, (_, i) =>
+				ask(AI_ASK_SESSION_LIMIT + i, true),
+			),
+		];
+		const slim = slimAskHistoryEntriesForSync(mixed);
+		assert.equal(slim.length, AI_ASK_SESSION_LIMIT + AI_ASK_PIN_LIMIT);
+		assert.ok(
+			askHistoryFirestoreBytes(slim) < ASK_HISTORY_FIRESTORE_TARGET_BYTES,
 		);
 	});
 

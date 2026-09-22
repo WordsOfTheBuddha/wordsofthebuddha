@@ -331,6 +331,8 @@ import {
 } from "./aiAskSamples";
 import {
 	ASK_HISTORY_PREVIEW_LIMIT,
+	AI_ASK_PIN_LIMIT,
+	AI_RESEARCH_PIN_LIMIT,
 	askHistoryEntriesForRestore,
 	askHistoryEntriesForTab,
 	askHistoryLaneEntries,
@@ -339,6 +341,7 @@ import {
 	findAiAskSessionEntry,
 	formatAskAbsoluteTime,
 	formatAskRelativeTime,
+	isResearchHistoryEntry,
 	markAskResumeFromDiscourse,
 	mergeAskHistoryEntries,
 	normalizeAskQuestionKey,
@@ -7556,6 +7559,23 @@ export function attachAiMode(options: {
 			return;
 		}
 		const nextSaved = !target.saved;
+		if (nextSaved) {
+			const research = target.research === true;
+			const match =
+				findAiAskSessionEntry(sessionEntries, target.question, {
+					research,
+				}) ||
+				findAiAskSessionEntry(sessionEntries, target.originalQuestion || "", {
+					research,
+				});
+			const limit = pinLimitFor(research);
+			if (match?.saved !== true && pinCountFor(research) >= limit) {
+				setStatus(
+					`Pin limit reached — unpin a pinned conversation to pin another (max ${limit}).`,
+				);
+				return;
+			}
+		}
 		// One pin for the whole thread — keep the flag only on the final turn.
 		for (const item of turns) {
 			item.saved = false;
@@ -7749,10 +7769,30 @@ export function attachAiMode(options: {
 		);
 	}
 
+	function pinLimitFor(research: boolean): number {
+		return research ? AI_RESEARCH_PIN_LIMIT : AI_ASK_PIN_LIMIT;
+	}
+
+	function pinCountFor(research: boolean): number {
+		return pinnedAskHistoryEntries(
+			askHistoryLaneEntries(sessionEntries, research),
+		).length;
+	}
+
 	function toggleHistoryEntryPin(entry: AiAskSessionEntry): void {
 		if (!signedInForHistory) {
 			openQuotaDialog("save");
 			return;
+		}
+		if (entry.saved !== true) {
+			const research = isResearchHistoryEntry(entry);
+			const limit = pinLimitFor(research);
+			if (pinCountFor(research) >= limit) {
+				setStatus(
+					`Pin limit reached — unpin a pinned conversation to pin another (max ${limit}).`,
+				);
+				return;
+			}
 		}
 		const next = { ...entry, saved: !entry.saved };
 		sessionEntries = upsertAiAskSessionEntry(sessionEntries, next);
