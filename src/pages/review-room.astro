@@ -20,6 +20,7 @@ import { loadUserAskHistory } from "../utils/aiAskHistoryServer";
 import {
 	askHistoryLaneEntries,
 	formatAskRelativeTime,
+	normalizeAskQuestionKey,
 	orderAskHistoryByRecent,
 	pinnedAskHistoryEntries,
 	type AiAskSessionEntry,
@@ -35,8 +36,12 @@ import {
 	ASK_HISTORY_ARIA,
 	ASK_HISTORY_HINT_RECENT,
 	ASK_HISTORY_LABEL,
+	ASK_OPTIONS_ARIA,
 	isAskResearchEnabled,
 	researchHistoryCardStatsLabel,
+	RESEARCH_OPTIONS_ARIA,
+	RESEARCH_PIN_ACTION,
+	RESEARCH_UNPIN_ACTION,
 	REVIEW_ROOM_ASK_EMPTY,
 	REVIEW_ROOM_ASK_NEW_LABEL,
 	REVIEW_ROOM_REPORT_EMPTY,
@@ -71,6 +76,7 @@ import { formatListenStat, type ListenStatDisplay } from "../utils/listenActivit
 import { loadUserListenActivity } from "../utils/listenActivityServer";
 
 const PIN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M16 12V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`;
+const MORE_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
 
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
@@ -865,11 +871,20 @@ try {
 									class="ask-history-list"
 									data-ask-lane-list="ask"
 								>
-									{askLaneEntries.map((entry) => (
-										<a
-											href={openAskHistoryHref(
-												entry.question,
-											)}
+									{askLaneEntries.map((entry) => {
+									const threadCount = entry.thread?.length || 0;
+									const rootQuestion =
+										threadCount > 1 && entry.thread?.[0]?.question
+											? entry.thread[0].question
+											: "";
+									const showRoot =
+										Boolean(rootQuestion) &&
+										normalizeAskQuestionKey(rootQuestion) !==
+											normalizeAskQuestionKey(entry.question);
+									const showThread = threadCount > 1;
+									const pinLabel = entry.saved ? "Unpin" : "Pin";
+									return (
+										<div
 											class:list={[
 												"ask-row",
 												{ "is-pinned": entry.saved },
@@ -878,44 +893,102 @@ try {
 											data-ask-pinned={
 												entry.saved ? "1" : "0"
 											}
+											data-ask-q={entry.question}
 										>
-											<div class="ask-row-head">
-												<p class="ask-row-q">
-													{entry.question}
-												</p>
-												<span class="ask-row-meta">
-													{entry.saved && (
-														<span
-															class="ask-row-pin"
-															title="Pinned"
-															aria-label="Pinned"
-															set:html={
-																PIN_ICON_SVG
-															}
-														/>
-													)}
-													<span class="ask-row-when">
-														{formatAskRelativeTime(
-															entry.at,
+											<a
+												class="ask-row-main"
+												href={openAskHistoryHref(
+													entry.question,
+												)}
+											>
+												<div class="ask-row-head">
+													<p class="ask-row-q">
+														{entry.question}
+													</p>
+													<span class="ask-row-meta">
+														{entry.saved && (
+															<span
+																class="ask-row-pin"
+																title="Pinned"
+																aria-label="Pinned"
+																set:html={
+																	PIN_ICON_SVG
+																}
+															/>
 														)}
+														<span class="ask-row-when">
+															{formatAskRelativeTime(
+																entry.at,
+															)}
+														</span>
 													</span>
-												</span>
-											</div>
-											{entry.summary && (
-												<p class="ask-row-summary">
-													{entry.summary}
+												</div>
+												{showRoot && (
+													<p class="ask-row-root">
+														Started with: {rootQuestion}
+													</p>
+												)}
+												{showThread && (
+													<p class="ask-row-thread">
+														{threadCount} turns in this
+														conversation
+													</p>
+												)}
+												<p class="ask-row-results">
+													{entry.results
+														.slice(0, 6)
+														.map((hit) =>
+															transformId(hit.slug),
+														)
+														.join(" · ")}
 												</p>
-											)}
-											<p class="ask-row-results">
-												{entry.results
-													.slice(0, 6)
-													.map((hit) =>
-														transformId(hit.slug),
-													)
-													.join(" · ")}
-											</p>
-										</a>
-									))}
+											</a>
+											<div class="ask-row-menu">
+												<button
+													type="button"
+													class="ask-row-menu-btn"
+													data-ask-menu-toggle
+													data-ask-q={entry.question}
+													aria-label={ASK_OPTIONS_ARIA}
+													aria-expanded="false"
+													title={ASK_OPTIONS_ARIA}
+													set:html={MORE_ICON_SVG}
+												/>
+												<div
+													class="ask-row-menu-panel"
+													hidden
+													role="menu"
+												>
+													<button
+														type="button"
+														role="menuitem"
+														data-ask-pin
+														data-ask-q={entry.question}
+													>
+														{pinLabel}
+													</button>
+													<button
+														type="button"
+														role="menuitem"
+														data-ask-share
+														data-ask-q={entry.question}
+													>
+														Share link
+													</button>
+													<button
+														type="button"
+														role="menuitem"
+														class="is-danger"
+														data-ask-delete
+														data-ask-q={entry.question}
+													>
+														Delete
+													</button>
+												</div>
+											</div>
+										</div>
+									);
+								})}
 								</div>
 							)
 						}
@@ -941,17 +1014,18 @@ try {
 													: entry.researchUnread
 														? "Research ready"
 														: "";
+											const pinLabel = entry.saved
+												? RESEARCH_UNPIN_ACTION
+												: RESEARCH_PIN_ACTION;
+											const href = entry.researchJobId
+												? openAskResearchHref(
+														entry.researchJobId,
+													)
+												: openResearchHistoryHref(
+														entry.question,
+													);
 											return (
-												<a
-													href={
-														entry.researchJobId
-															? openAskResearchHref(
-																	entry.researchJobId,
-																)
-															: openResearchHistoryHref(
-																	entry.question,
-																)
-													}
+												<div
 													class:list={[
 														"ask-row",
 														"is-report",
@@ -968,57 +1042,118 @@ try {
 													data-ask-pinned={
 														entry.saved ? "1" : "0"
 													}
+													data-ask-q={entry.question}
+													data-ask-job={
+														entry.researchJobId || ""
+													}
 												>
-													<div class="ask-row-head">
-														<p class="ask-row-q">
-															{entry.question}
-														</p>
-														<span class="ask-row-meta">
-															{entry.researchUnread && (
-																<span
-																	class="ask-row-unread"
-																	title="Unread"
-																	aria-label="Unread"
-																/>
-															)}
-															{entry.saved && (
-																<span
-																	class="ask-row-pin"
-																	title="Pinned"
-																	aria-label="Pinned"
-																	set:html={
-																		PIN_ICON_SVG
-																	}
-																/>
-															)}
-															<span class="ask-row-when">
-																{formatAskRelativeTime(
-																	entry.at,
+													<a class="ask-row-main" href={href}>
+														<div class="ask-row-head">
+															<p class="ask-row-q">
+																{entry.question}
+															</p>
+															<span class="ask-row-meta">
+																{entry.researchUnread && (
+																	<span
+																		class="ask-row-unread"
+																		title="Unread"
+																		aria-label="Unread"
+																	/>
 																)}
+																{entry.saved && (
+																	<span
+																		class="ask-row-pin"
+																		title="Pinned"
+																		aria-label="Pinned"
+																		set:html={
+																			PIN_ICON_SVG
+																		}
+																	/>
+																)}
+																<span class="ask-row-when">
+																	{formatAskRelativeTime(
+																		entry.at,
+																	)}
+																</span>
 															</span>
-														</span>
-													</div>
-													{status && (
-														<p
-															class:list={[
-																"ask-row-status",
-																{
-																	"is-pending":
-																		entry.researchPending,
-																	"is-ready":
-																		entry.researchUnread,
-																},
-															]}
+														</div>
+														{status && (
+															<p
+																class:list={[
+																	"ask-row-status",
+																	{
+																		"is-pending":
+																			entry.researchPending,
+																		"is-ready":
+																			entry.researchUnread,
+																	},
+																]}
+															>
+																{status}
+															</p>
+														)}
+														{stats && (
+															<p class="ask-row-results">
+																{stats}
+															</p>
+														)}
+													</a>
+													<div class="ask-row-menu">
+														<button
+															type="button"
+															class="ask-row-menu-btn"
+															data-ask-menu-toggle
+															data-ask-q={entry.question}
+															data-ask-job={
+																entry.researchJobId || ""
+															}
+															aria-label={RESEARCH_OPTIONS_ARIA}
+															aria-expanded="false"
+															title={RESEARCH_OPTIONS_ARIA}
+															set:html={MORE_ICON_SVG}
+														/>
+														<div
+															class="ask-row-menu-panel"
+															hidden
+															role="menu"
 														>
-															{status}
-														</p>
-													)}
-													{stats && (
-														<p class="ask-row-results">
-															{stats}
-														</p>
-													)}
-												</a>
+															<button
+																type="button"
+																role="menuitem"
+																data-ask-pin
+																data-ask-q={entry.question}
+																data-ask-job={
+																	entry.researchJobId || ""
+																}
+															>
+																{pinLabel}
+															</button>
+															<button
+																type="button"
+																role="menuitem"
+																data-ask-share
+																data-ask-q={entry.question}
+																data-ask-job={
+																	entry.researchJobId || ""
+																}
+															>
+																Share link
+															</button>
+															<button
+																type="button"
+																role="menuitem"
+																class="is-danger"
+																data-ask-delete
+																data-ask-q={entry.question}
+																data-ask-job={
+																	entry.researchJobId || ""
+																}
+															>
+																Delete
+															</button>
+														</div>
+													</div>
+												</div>
 											);
 										})}
 									</div>
@@ -1213,15 +1348,23 @@ try {
 		readListenActivityBuffer,
 	} from "../utils/listenActivityClient";
 	import {
+		filterDeletedResearchJobs,
+		findAiAskSessionEntry,
 		normalizeAskQuestionKey,
 		preservePendingResearchHistory,
-		filterDeletedResearchJobs,
 		readAiAskSession,
 		readDeletedResearchJobIds,
+		removeAskHistoryEntriesByJobIds,
+		removeAskHistoryEntriesByQuestions,
 		sanitizeAskHistoryEntries,
 		slimAskHistoryEntriesForSync,
+		upsertAiAskSessionEntry,
 		writeAiAskSession,
 	} from "../utils/aiAskSession";
+	import {
+		ASK_DELETE_CONFIRM,
+		RESEARCH_DELETE_CONFIRM,
+	} from "../utils/aiAskResearchUi";
 	import {
 		reviewRoomAsksHashId,
 		reviewRoomHistoryLaneFromHash,
@@ -1888,6 +2031,282 @@ try {
 				pinTabByLane[askLaneIsResearch ? "research" : "ask"] = tab;
 				applyPinFilter();
 			});
+		});
+
+		function closeAllAskMenus() {
+			panel
+				.querySelectorAll<HTMLElement>(".ask-row-menu-panel")
+				.forEach((menuPanel) => {
+					menuPanel.hidden = true;
+				});
+			panel
+				.querySelectorAll<HTMLButtonElement>("[data-ask-menu-toggle]")
+				.forEach((toggle) => {
+					toggle.setAttribute("aria-expanded", "false");
+				});
+		}
+
+		function findReviewEntry(
+			question: string,
+			jobId: string,
+			rowLane: string,
+		) {
+			const entries = readAiAskSession();
+			if (jobId) {
+				const byJob = entries.find(
+					(item) => (item.researchJobId || "") === jobId,
+				);
+				if (byJob) return byJob;
+			}
+			return findAiAskSessionEntry(entries, question, {
+				research: rowLane === "research",
+				...(jobId ? { researchJobId: jobId } : {}),
+			});
+		}
+
+		async function copyReviewLink(text: string): Promise<boolean> {
+			if (!text) return false;
+			try {
+				const clipboard = globalThis.navigator?.clipboard;
+				if (clipboard?.writeText) {
+					await clipboard.writeText(text);
+					return true;
+				}
+			} catch {
+				/* fall through */
+			}
+			try {
+				const doc = globalThis.document;
+				if (!doc?.body) return false;
+				const area = doc.createElement("textarea");
+				area.value = text;
+				area.setAttribute("readonly", "");
+				area.style.cssText =
+					"position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
+				doc.body.appendChild(area);
+				area.select();
+				const done = doc.execCommand("copy");
+				area.remove();
+				return done === true;
+			} catch {
+				return false;
+			}
+		}
+
+		panel
+			.querySelectorAll<HTMLButtonElement>("[data-ask-menu-toggle]")
+			.forEach((toggle) => {
+				toggle.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const menu = toggle.closest(".ask-row-menu");
+					const menuPanel =
+						menu?.querySelector<HTMLElement>(".ask-row-menu-panel");
+					if (!menuPanel) return;
+					const willOpen = menuPanel.hidden;
+					closeAllAskMenus();
+					if (willOpen) {
+						menuPanel.hidden = false;
+						toggle.setAttribute("aria-expanded", "true");
+					}
+				});
+			});
+
+		panel
+			.querySelectorAll<HTMLButtonElement>("[data-ask-pin]")
+			.forEach((button) => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const question = button.getAttribute("data-ask-q") || "";
+					const jobId = button.getAttribute("data-ask-job") || "";
+					const row = button.closest(".ask-row");
+					const lane =
+						row?.getAttribute("data-ask-lane") || "ask";
+					closeAllAskMenus();
+					const entry = findReviewEntry(question, jobId, lane);
+					if (!entry) {
+						window.location.reload();
+						return;
+					}
+					const next = { ...entry, saved: !entry.saved };
+					const updated = upsertAiAskSessionEntry(
+						readAiAskSession(),
+						next,
+					);
+					writeAiAskSession(updated);
+					void fetch("/api/ai/history", {
+						method: "POST",
+						credentials: "same-origin",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							entry: slimAskHistoryEntriesForSync([next])[0] || next,
+						}),
+					}).finally(() => {
+						window.location.reload();
+					});
+				});
+			});
+
+		panel
+			.querySelectorAll<HTMLButtonElement>("[data-ask-share]")
+			.forEach((button) => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const question = button.getAttribute("data-ask-q") || "";
+					const jobId = button.getAttribute("data-ask-job") || "";
+					const row = button.closest(".ask-row");
+					const lane =
+						row?.getAttribute("data-ask-lane") || "ask";
+					const originalText = button.textContent || "Share link";
+					const entry = findReviewEntry(question, jobId, lane);
+					if (!entry || entry.results.length === 0) {
+						closeAllAskMenus();
+						return;
+					}
+					button.disabled = true;
+					button.textContent = "Sharing…";
+					const thread =
+						entry.thread && entry.thread.length > 1
+							? entry.thread.map((item) => ({
+									question: item.question,
+									lookingFor: item.lookingFor,
+									queries: item.queries,
+									fallbackQueries: item.fallbackQueries,
+									summary: item.summary || "",
+									results: item.results,
+									model: item.model,
+									...(item.requestId
+										? { requestId: item.requestId }
+										: {}),
+									...(typeof item.candidateCount === "number" &&
+									item.candidateCount > 0
+										? { candidateCount: item.candidateCount }
+										: {}),
+								}))
+							: undefined;
+					void fetch("/api/ai/share", {
+						method: "POST",
+						credentials: "same-origin",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							question: entry.question,
+							lookingFor: entry.lookingFor,
+							queries: entry.queries,
+							fallbackQueries: entry.fallbackQueries,
+							summary: entry.summary || "",
+							results: entry.results,
+							model: entry.model,
+							requestId: entry.requestId,
+							shareSlug: entry.shareSlug,
+							...(entry.research ? { research: true } : {}),
+							...(entry.report ? { report: entry.report } : {}),
+							...(thread ? { thread } : {}),
+							...(entry.researchJobId
+								? { researchJobId: entry.researchJobId }
+								: {}),
+						}),
+					})
+						.then(async (response) => {
+							const data = (await response.json()) as {
+								success?: boolean;
+								path?: string;
+							};
+							if (!response.ok || !data.success || !data.path) {
+								throw new Error("share failed");
+							}
+							const url = new URL(data.path, window.location.origin).toString();
+							const copied = await copyReviewLink(url);
+							button.textContent = copied
+								? "Link copied"
+								: "Share saved — copy failed";
+							if (!copied) {
+								window.prompt("Copy share link:", url);
+							}
+						})
+						.catch(() => {
+							button.textContent = "Could not share";
+						})
+						.finally(() => {
+							closeAllAskMenus();
+							window.setTimeout(() => {
+								button.disabled = false;
+								button.textContent = originalText;
+							}, 1600);
+						});
+				});
+			});
+
+		panel
+			.querySelectorAll<HTMLButtonElement>("[data-ask-delete]")
+			.forEach((button) => {
+				button.addEventListener("click", (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					const question = button.getAttribute("data-ask-q") || "";
+					const jobId = button.getAttribute("data-ask-job") || "";
+					const row = button.closest(".ask-row");
+					const lane =
+						row?.getAttribute("data-ask-lane") || "ask";
+					const isResearch = lane === "research";
+					closeAllAskMenus();
+					if (
+						!window.confirm(
+							isResearch ? RESEARCH_DELETE_CONFIRM : ASK_DELETE_CONFIRM,
+						)
+					) {
+						return;
+					}
+					const keys = [question].filter(Boolean);
+					if (jobId) {
+						const updated = removeAskHistoryEntriesByJobIds(
+							readAiAskSession(),
+							[jobId],
+						);
+						writeAiAskSession(updated);
+						void fetch("/api/ai/history", {
+							method: "POST",
+							credentials: "same-origin",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({
+								action: "delete",
+								researchJobId: jobId,
+								research: true,
+							}),
+						}).finally(() => {
+							window.location.reload();
+						});
+						return;
+					}
+					if (keys.length === 0) return;
+					const updated = removeAskHistoryEntriesByQuestions(
+						readAiAskSession(),
+						keys,
+						{ research: isResearch },
+					);
+					writeAiAskSession(updated);
+					void fetch("/api/ai/history", {
+						method: "POST",
+						credentials: "same-origin",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							action: "delete",
+							questions: keys,
+							research: isResearch,
+						}),
+					}).finally(() => {
+						window.location.reload();
+					});
+				});
+			});
+
+		document.addEventListener("click", (event) => {
+			if (!(event.target instanceof Node)) return;
+			if (!panel.contains(event.target)) closeAllAskMenus();
+		});
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") closeAllAskMenus();
 		});
 	}
 
