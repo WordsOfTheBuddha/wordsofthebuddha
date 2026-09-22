@@ -7291,6 +7291,15 @@ export function attachAiMode(options: {
 		writeAiAskSession(sessionEntries);
 		persistActiveThread();
 		renderHistory();
+		if (!turn.research) {
+			// Keep the URL describing what's on screen so a reload restores
+			// this thread tip instead of a stale `open` entry.
+			syncAskSurfaceUrl({
+				jobId: null,
+				open: entry.question,
+				sample: null,
+			});
+		}
 		postHistoryEntry(entry, {
 			replaceQuestions,
 			replaceJobIds,
