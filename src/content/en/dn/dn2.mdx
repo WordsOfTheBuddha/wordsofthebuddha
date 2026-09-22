@@ -1,7 +1,7 @@
 ---
 title: Sāmaññaphala sutta - The Fruits of the Spiritual Life
 description: "King Ajātasattu of Magadha visits the Buddha on a moonlit night to ask about the visible fruits of the spiritual life in the present world. The Buddha systematically outlines the progressive fruits of the spiritual journey: from basic social freedom and ethical purity, through sense restraint, mindfulness, and contentment, to the abandonment of the five hindrances, the four jhānas, and the eight higher knowledges culminating in complete liberation."
-qualities: spiritual life, ethical conduct, jhana, direct knowledge, liberation, collectedness, sense restraint, contentment, giving up, psychic power, wrong view, right view, radical comprehension
+qualities: spiritual life, ethical conduct, jhana, direct knowledge, liberation, collectedness, sense restraint, contentment, giving up, psychic power, wrong view, right view, radical comprehension, gradual training guidelines
 theme: training guideline, wisdom, inspiration
 slug: dn2
 character:
