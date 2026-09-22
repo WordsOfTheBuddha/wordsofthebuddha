@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { JSDOM } from "jsdom";
 import {
 	annotateResearchCitationLinks,
 	formatDiscourseCitationTitle,
+	installDiscourseCitationPopovers,
 	slugFromCitationHref,
 } from "./discourseCitationPopover";
 
@@ -92,5 +94,108 @@ describe("annotateResearchCitationLinks", () => {
 		);
 		assert.match(html, /data-cite-title="[^"]*&quot;The Root Sequence&quot;"/);
 		assert.match(html, /data-cite-desc="He says &quot;this is not mine&quot;\."/);
+	});
+});
+
+describe("installDiscourseCitationPopovers", () => {
+	it("shows the shared panel for compact source rows inside .ai-hits", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div id="thread">
+					<details class="ai-sources" open>
+						<summary>Sources · 1 discourse</summary>
+						<ol class="ai-hits ai-sources-list">
+							<li data-result-type="discourse"><a href="/dn2" class="search-discourse-card ai-source-ref" data-search-result data-cite-title="DN 2 - Sāmaññaphala sutta" data-cite-desc="King Ajātasattu visits."><span class="ai-source-id">DN 2</span><span class="ai-source-title">Sāmaññaphala sutta</span></a></li>
+						</ol>
+					</details>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		const previousElement = (globalThis as Record<string, unknown>).Element;
+		const previousAnchor = (globalThis as Record<string, unknown>)
+			.HTMLAnchorElement;
+		const previousHtmlElement = (globalThis as Record<string, unknown>)
+			.HTMLElement;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		(globalThis as Record<string, unknown>).Element = dom.window.Element;
+		(globalThis as Record<string, unknown>).HTMLAnchorElement =
+			dom.window.HTMLAnchorElement;
+		(globalThis as Record<string, unknown>).HTMLElement =
+			dom.window.HTMLElement;
+		try {
+			const thread = document.querySelector("#thread")!;
+			installDiscourseCitationPopovers(thread);
+			const link = thread.querySelector(
+				"a.ai-source-ref",
+			) as HTMLAnchorElement;
+			link.dispatchEvent(
+				new dom.window.MouseEvent("mouseover", { bubbles: true }),
+			);
+			const panel = document.getElementById("ai-citation-popover");
+			assert.ok(panel?.classList.contains("is-shown"));
+			assert.equal(
+				panel?.querySelector(".ai-citation-popover-title")?.textContent,
+				"DN 2 - Sāmaññaphala sutta",
+			);
+			assert.equal(
+				panel?.querySelector(".ai-citation-popover-desc")?.textContent,
+				"King Ajātasattu visits.",
+			);
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+			(globalThis as Record<string, unknown>).Element = previousElement;
+			(globalThis as Record<string, unknown>).HTMLAnchorElement =
+				previousAnchor;
+			(globalThis as Record<string, unknown>).HTMLElement =
+				previousHtmlElement;
+		}
+	});
+
+	it("ignores source rows outside .ai-hits", () => {
+		const dom = new JSDOM(`<!doctype html>
+			<html><body>
+				<div id="thread">
+					<p><a href="/dn2" class="ai-source-ref" data-cite-title="DN 2 - Sāmaññaphala sutta">DN 2</a></p>
+				</div>
+			</body></html>`);
+		const { document } = dom.window;
+		const previousWindow = globalThis.window;
+		const previousDocument = globalThis.document;
+		const previousElement = (globalThis as Record<string, unknown>).Element;
+		const previousAnchor = (globalThis as Record<string, unknown>)
+			.HTMLAnchorElement;
+		const previousHtmlElement = (globalThis as Record<string, unknown>)
+			.HTMLElement;
+		globalThis.window = dom.window as unknown as Window & typeof globalThis;
+		globalThis.document = document;
+		(globalThis as Record<string, unknown>).Element = dom.window.Element;
+		(globalThis as Record<string, unknown>).HTMLAnchorElement =
+			dom.window.HTMLAnchorElement;
+		(globalThis as Record<string, unknown>).HTMLElement =
+			dom.window.HTMLElement;
+		try {
+			const thread = document.querySelector("#thread")!;
+			installDiscourseCitationPopovers(thread);
+			const link = thread.querySelector(
+				"a.ai-source-ref",
+			) as HTMLAnchorElement;
+			link.dispatchEvent(
+				new dom.window.MouseEvent("mouseover", { bubbles: true }),
+			);
+			const panel = document.getElementById("ai-citation-popover");
+			assert.ok(!panel || !panel.classList.contains("is-shown"));
+		} finally {
+			globalThis.window = previousWindow;
+			globalThis.document = previousDocument;
+			(globalThis as Record<string, unknown>).Element = previousElement;
+			(globalThis as Record<string, unknown>).HTMLAnchorElement =
+				previousAnchor;
+			(globalThis as Record<string, unknown>).HTMLElement =
+				previousHtmlElement;
+		}
 	});
 });

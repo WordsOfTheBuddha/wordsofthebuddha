@@ -115,10 +115,17 @@ export function annotateResearchCitationLinks(
 
 function citationLinkFromEvent(target: EventTarget | null): HTMLAnchorElement | null {
 	if (!(target instanceof Element)) return null;
-	const link = target.closest("a.ai-summary-ref[data-cite-title]");
+	const link = target.closest("a[data-cite-title]");
 	if (!(link instanceof HTMLAnchorElement)) return null;
-	if (!link.closest(".ai-report")) return null;
-	return link;
+	// Report citations live in `.ai-report`; compact source rows
+	// (`a.ai-source-ref`) live in `.ai-hits`. Same shared panel serves both.
+	if (link.matches("a.ai-summary-ref") && link.closest(".ai-report")) {
+		return link;
+	}
+	if (link.matches("a.ai-source-ref") && link.closest(".ai-hits")) {
+		return link;
+	}
+	return null;
 }
 
 function ensurePanel(): HTMLElement {

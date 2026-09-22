@@ -1023,6 +1023,24 @@
 	margin: 0;
 }
 
+@media (max-width: 767px) {
+	/* Mobile: maximize source-text width — minimal box padding, slightly
+	   smaller rows (more chars per line), and the smallest number gutter
+	   that still fits 3-digit markers. */
+	.ai-sources {
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
+	}
+
+	.ai-hits.ai-sources-list {
+		margin-left: 2rem;
+	}
+
+	.ai-hits.ai-sources-list .search-discourse-card {
+		font-size: 0.875rem;
+	}
+}
+
 .ai-report-table-wrap {
 	overflow-x: auto;
 	margin: 0 0 0.9rem;
@@ -1876,6 +1894,86 @@ body.ai-diagram-fullscreen-open {
 	.ai-hit-snippet-extra {
 		display: -webkit-box;
 	}
+}
+
+/* Compact numbered source list (Ask + Research v1): title-only rows.
+   Descriptions/snippets surface via the shared citation popover on
+   hover/focus. Scoped to `ol.ai-sources-list` so Search/Explore postcards
+   and the inline `div.ai-hits` variant keep their own styling. */
+.ai-hits.ai-sources-list {
+	list-style: decimal;
+	/* Wide gutter: outside markers grow leftward, so 3-digit numbers
+	   (100+ discourses) need room or they crowd the container edge. */
+	margin: 0.5rem 0 0.25rem 2.5rem;
+	padding: 0;
+}
+
+.ai-hits.ai-sources-list > li {
+	margin: 0;
+	padding: 0;
+}
+
+.ai-hits.ai-sources-list > li::marker {
+	font-variant-numeric: tabular-nums;
+}
+
+.ai-hits.ai-sources-list > li + li {
+	border-top: 1px solid var(--surface-border);
+}
+
+.ai-hits.ai-sources-list .search-discourse-card {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	width: 100%;
+	padding: 0.3rem 0;
+	margin: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+	color: var(--text-color);
+	font-size: 0.92rem;
+	line-height: 1.55;
+	text-decoration: none;
+	overflow: hidden;
+}
+
+@media (min-width: 768px) {
+	/* Web: one row per source with ellipsis; the full title stays
+	   visible in the hover/focus citation popover. */
+	.ai-hits.ai-sources-list .search-discourse-card {
+		display: block;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.ai-hits.ai-sources-list .ai-source-title {
+		overflow-wrap: normal;
+	}
+}
+
+.ai-hits.ai-sources-list .search-discourse-card:hover {
+	box-shadow: none;
+}
+
+.ai-source-id {
+	font-weight: 600;
+	color: var(--link-color);
+	white-space: nowrap;
+}
+
+.ai-source-sep {
+	color: var(--text-muted);
+}
+
+.ai-hits.ai-sources-list .ai-source-title {
+	overflow-wrap: anywhere;
+}
+
+.ai-source-ref:hover .ai-source-title {
+	text-decoration: underline;
 }
 
 .ai-cache-note {

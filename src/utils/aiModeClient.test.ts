@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
 import {
+	aiSourceRowHtml,
 	applyAskProcessStreamPatch,
 	applyAskThinkingStreamPatch,
 	askReasoningIsLong,
@@ -265,22 +266,89 @@ describe("askResultsCaption", () => {
 });
 
 describe("researchSourcesBlockHtml", () => {
-	it("wraps Ask and Research hits in a collapsed details block", () => {
+	it("wraps Ask and Research hits in a collapsed numbered list", () => {
 		const research = researchSourcesBlockHtml(
 			"Sources · 2 discourses",
-			`<div data-result-type="discourse">MN 70</div>`,
+			`<li data-result-type="discourse">MN 70</li>`,
 		);
 		assert.match(research, /<details class="ai-sources">/);
 		assert.match(research, /<summary>Sources · 2 discourses<\/summary>/);
 		assert.doesNotMatch(research, /\sopen[\s>]/);
+		assert.match(research, /<ol class="ai-hits ai-sources-list">/);
 		assert.match(research, /MN 70/);
 
 		const ask = researchSourcesBlockHtml(
 			"Showing 12 discourses · picked from 186",
-			`<div data-result-type="discourse">MN 10</div>`,
+			`<li data-result-type="discourse">MN 10</li>`,
 		);
 		assert.match(ask, /<details class="ai-sources">/);
 		assert.match(ask, /<summary>Showing 12 discourses · picked from 186<\/summary>/);
+		assert.match(ask, /<ol class="ai-hits ai-sources-list">/);
+	});
+});
+
+describe("aiSourceRowHtml", () => {
+	const baseHit = {
+		slug: "dn2",
+		title: "Sāmaññaphala sutta - The Fruits of the Spiritual Life",
+		description: "King Ajātasattu visits the Buddha on a moonlit night.",
+		contentSnippet: "Content match around guarding the senses.",
+		referenceOnly: false,
+		href: "/dn2",
+	};
+
+	it("renders a title-only row with popover data attributes", () => {
+		const row = aiSourceRowHtml(baseHit);
+		assert.match(row, /^<li data-result-type="discourse">/);
+		assert.match(row, /class="search-discourse-card ai-source-ref /);
+		assert.match(row, /data-search-result/);
+		assert.match(row, />DN 2<\/span>/);
+		assert.match(row, /Sāmaññaphala sutta - The Fruits of the Spiritual Life/);
+		assert.match(
+			row,
+			/data-cite-title="DN 2 - Sāmaññaphala sutta - The Fruits of the Spiritual Life"/,
+		);
+		assert.match(
+			row,
+			/data-cite-desc="King Ajātasattu visits the Buddha on a moonlit night\. Content match around guarding the senses\."/,
+		);
+		// v1: no inline description, snippet, PTS, or badges in the row.
+		assert.doesNotMatch(row, /ai-hit-desc/);
+		assert.doesNotMatch(row, /ai-hit-snippet/);
+		assert.doesNotMatch(row, /PTS/);
+		assert.doesNotMatch(row, /Reference/);
+		assert.doesNotMatch(row, /<h2/);
+	});
+
+	it("omits the snippet from research popover copy and research titles", () => {
+		const row = aiSourceRowHtml(
+			{ ...baseHit, volpage: "PTS 1.47–1.86" },
+			true,
+		);
+		assert.match(row, /data-cite-desc="King Ajātasattu visits/);
+		assert.doesNotMatch(row, /Content match around/);
+		assert.doesNotMatch(row, /PTS 1\.47/);
+	});
+
+	it("escapes quotes in popover copy", () => {
+		const row = aiSourceRowHtml({
+			...baseHit,
+			title: `Mūlapariyāya sutta - "The Root Sequence"`,
+			description: `He says "this is not mine".`,
+			contentSnippet: null,
+		});
+		assert.match(row, /data-cite-title="[^"]*&quot;The Root Sequence&quot;"/);
+		assert.match(row, /data-cite-desc="He says &quot;this is not mine&quot;\."/);
+	});
+
+	it("omits the desc attribute when there is no description or snippet", () => {
+		const row = aiSourceRowHtml({
+			...baseHit,
+			description: "",
+			contentSnippet: null,
+		});
+		assert.doesNotMatch(row, /data-cite-desc/);
+		assert.match(row, /data-cite-title="DN 2 - Sāmaññaphala sutta/);
 	});
 });
 

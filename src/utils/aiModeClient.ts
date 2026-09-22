@@ -171,6 +171,7 @@ import {
 	researchTableOfContentsOptions,
 } from "./tocClient";
 import {
+	formatDiscourseCitationTitle,
 	hideDiscourseCitationPopover,
 	installDiscourseCitationPopovers,
 } from "./discourseCitationPopover";
@@ -902,7 +903,34 @@ export function researchSourcesBlockHtml(
 	const label = (caption || "").trim();
 	const body = (hitsHtml || "").trim();
 	if (!label || !body) return body;
-	return `<details class="ai-sources"><summary>${label}</summary><div class="ai-hits">${body}</div></details>`;
+	return `<details class="ai-sources"><summary>${label}</summary><ol class="ai-hits ai-sources-list">${body}</ol></details>`;
+}
+
+/**
+ * Compact numbered source row (Ask + Research v1): title-only `ID Title`.
+ * Description/snippet ride along as `data-cite-*` so the shared citation
+ * popover shows them on hover/focus. PTS stays out for v1.
+ */
+export function aiSourceRowHtml(hit: AiDiscourseHit, research = false): string {
+	const id = escapeHtml(transformId(hit.slug));
+	const displayTitle = research ? formatResearchHitTitle(hit.title) : hit.title;
+	const citeTitle = escapeHtml(
+		formatDiscourseCitationTitle(hit.slug, displayTitle),
+	);
+	const descText = stripHtml(hit.description || "")
+		.replace(/\s+/g, " ")
+		.trim();
+	const snippetText =
+		!research && hit.contentSnippet
+			? stripHtml(hit.contentSnippet).replace(/\s+/g, " ").trim()
+			: "";
+	const citeDesc = escapeHtml(
+		descText && snippetText && snippetText !== descText
+			? `${descText} ${snippetText}`
+			: descText || snippetText,
+	);
+	const descAttr = citeDesc ? ` data-cite-desc="${citeDesc}"` : "";
+	return `<li data-result-type="discourse"><a href="${escapeHtml(hit.href)}" class="search-discourse-card ai-source-ref block no-underline text-inherit" data-search-result data-cite-title="${citeTitle}"${descAttr}><span class="ai-source-id">${id}</span><span class="ai-source-sep" aria-hidden="true"> – </span><span class="ai-source-title">${escapeHtml(displayTitle)}</span></a></li>`;
 }
 
 /** Compact DEV line: which planner models were actually called and which answered. */
@@ -8006,47 +8034,8 @@ export function attachAiMode(options: {
 	}
 
 	function renderHit(hit: AiDiscourseHit, research = false): string {
-		const id = escapeHtml(transformId(hit.slug));
-		const title = escapeHtml(
-			research ? formatResearchHitTitle(hit.title) : hit.title,
-		);
-		const description = hit.description
-			? `<p class="ai-hit-desc">${escapeHtml(stripHtml(hit.description))}</p>`
-			: "";
-		const snippet =
-			!research && hit.contentSnippet
-				? `<p class="ai-hit-snippet${hit.description ? " ai-hit-snippet-extra" : ""}">${escapeHtml(stripHtml(hit.contentSnippet))}</p>`
-				: "";
-		const badge = hit.referenceOnly
-			? `<span class="inline-block ml-1.5 px-1 py-0 text-[0.65rem] font-semibold uppercase tracking-wide text-[var(--text-muted)] align-middle">Reference</span>`
-			: "";
-		const vizHref = `/${hit.slug}?viz=1`;
-		const vizIcon = hit.hasIllustration
-			? `<span class="discourse-viz-icon ml-1 align-middle" role="link" tabindex="0" aria-label="Open visualization" title="Visualization" onclick="event.preventDefault();event.stopPropagation();window.location.href='${escapeHtml(vizHref)}'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();window.location.href='${escapeHtml(vizHref)}'}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg></span>`
-			: "";
-		const volpage =
-			research && hit.volpage
-				? `<div class="mt-2 flex justify-end"><span class="text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(hit.volpage)}">${escapeHtml(hit.volpage)}</span></div>`
-				: "";
-		// Ask cards stay slim. Research sources match Search: ID, Pāli, English, description, PTS.
-		return `<div data-result-type="discourse">
-			<a href="${escapeHtml(hit.href)}" class="search-discourse-card block no-underline text-inherit" data-search-result>
-				<div class="flex items-start">
-					<div class="min-w-0 pr-4">
-						<h2 class="text-base sm:text-lg font-semibold text-text leading-snug">
-							<span class="id font-normal text-[var(--link-color)]">
-								${id}&nbsp; <span style="color:var(--text-color)">${title}</span>
-							</span>
-							${badge}
-							${vizIcon}
-						</h2>
-					</div>
-				</div>
-				${description}
-				${snippet}
-				${volpage}
-			</a>
-		</div>`;
+		// Compact numbered rows; details surface via the shared citation popover.
+		return aiSourceRowHtml(hit, research);
 	}
 
 	function queryChipsHtml(queries: readonly string[], className: string): string {
@@ -8828,7 +8817,7 @@ export function attachAiMode(options: {
 				hitCards && captionText
 					? researchSourcesBlockHtml(escapeHtml(captionText), hitCards)
 					: hitCards
-						? `<div class="ai-hits">${hitCards}</div>`
+						? `<ol class="ai-hits ai-sources-list">${hitCards}</ol>`
 						: personBlock
 							? ""
 							: emptyHitsHtml(turn);
