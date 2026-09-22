@@ -305,3 +305,16 @@ export async function deleteSampleVersionBodies(slug: string): Promise<void> {
 	const snaps = await sampleVersionsCol(clean).listDocuments();
 	await Promise.all(snaps.map((ref) => ref.delete()));
 }
+
+/** Hard-delete helper: drop version bodies for a deleted research job. */
+export async function deleteJobVersionBodies(options: {
+	uid: string;
+	jobId: string;
+}): Promise<void> {
+	const jobId = clipResearchJobId(options.jobId);
+	if (!options.uid || !jobId) return;
+	jobBodyMemory.delete(jobMemKey(options.uid, jobId));
+	if (!isFirebaseInitialized || !db) return;
+	const snaps = await jobVersionsCol(options.uid, jobId).listDocuments();
+	await Promise.all(snaps.map((ref) => ref.delete()));
+}

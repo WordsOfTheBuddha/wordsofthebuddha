@@ -1,2 +1,2 @@
 export const prerender = false;
-export { GET, POST } from "../research-job/[id]";
+export { GET, POST, DELETE } from "../research-job/[id]";

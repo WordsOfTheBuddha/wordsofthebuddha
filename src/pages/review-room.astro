@@ -1215,7 +1215,9 @@ try {
 	import {
 		normalizeAskQuestionKey,
 		preservePendingResearchHistory,
+		filterDeletedResearchJobs,
 		readAiAskSession,
+		readDeletedResearchJobIds,
 		sanitizeAskHistoryEntries,
 		slimAskHistoryEntriesForSync,
 		writeAiAskSession,
@@ -1567,13 +1569,25 @@ try {
 			if (sessionStorage.getItem(ASK_SYNC_FLAG) === "1") return;
 			const local = readAiAskSession();
 			if (local.length === 0) return;
+			const deletedIds = readDeletedResearchJobIds(
+				typeof localStorage === "undefined" ? null : localStorage,
+			);
+			const syncable =
+				deletedIds.length > 0
+					? filterDeletedResearchJobs(local, deletedIds)
+					: local;
+			if (syncable.length === 0) {
+				writeAiAskSession(syncable);
+				sessionStorage.setItem(ASK_SYNC_FLAG, "1");
+				return;
+			}
 			const response = await fetch("/api/ai/history", {
 				method: "POST",
 				credentials: "same-origin",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					action: "sync",
-					entries: slimAskHistoryEntriesForSync(local),
+					entries: slimAskHistoryEntriesForSync(syncable),
 				}),
 			});
 			const data = (await response.json()) as {
@@ -1584,16 +1598,20 @@ try {
 				return;
 			}
 			const merged = preservePendingResearchHistory(
-				local,
+				syncable,
 				sanitizeAskHistoryEntries(data.entries),
 			);
-			writeAiAskSession(merged);
+			const visible =
+				deletedIds.length > 0
+					? filterDeletedResearchJobs(merged, deletedIds)
+					: merged;
+			writeAiAskSession(visible);
 			sessionStorage.setItem(ASK_SYNC_FLAG, "1");
 			const known = new Set(boot.askKeys);
-			const missingOnPage = merged.some(
+			const missingOnPage = visible.some(
 				(entry) => !known.has(normalizeAskQuestionKey(entry.question)),
 			);
-			if (missingOnPage || merged.length !== boot.askCount) {
+			if (missingOnPage || visible.length !== boot.askCount) {
 				window.location.reload();
 			}
 		} catch {

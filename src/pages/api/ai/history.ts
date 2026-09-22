@@ -8,6 +8,7 @@ import {
 	syncUserAskHistory,
 	upsertUserAskHistoryEntry,
 } from "../../../utils/aiAskHistoryServer";
+import { deleteResearchJobForUser } from "../../../utils/aiAskResearchServer";
 import {
 	isAskHistoryDocumentSizeError,
 	sanitizeAskHistoryEntries,
@@ -89,6 +90,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					? body.researchJobId.trim()
 					: "";
 			if (researchJobId) {
+				const deleted = await deleteResearchJobForUser(
+					user.uid,
+					researchJobId,
+				);
+				if (!deleted.ok && deleted.code === "protected") {
+					return historyResponse(
+						{ success: false, code: deleted.code, error: deleted.error },
+						403,
+					);
+				}
 				const entries = await removeUserAskHistoryByJobIds(user, [
 					researchJobId,
 				]);

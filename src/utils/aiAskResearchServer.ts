@@ -100,7 +100,7 @@ import {
 	buildResearchReportEvidence,
 	writeResearchReport,
 } from "./aiAskResearchReportWrite";
-import { seedResearchOpeningVersion, writeResearchVersionBody } from "./aiAskResearchVersions";
+import { seedResearchOpeningVersion, writeResearchVersionBody, deleteJobVersionBodies } from "./aiAskResearchVersions";
 import {
 	clipResearchVersionIndex,
 	currentResearchVersionN,
@@ -245,6 +245,14 @@ export interface ResearchJobRecord {
 	reviseImageCount?: number;
 	/** Last Firestore write; used to detect orphaned serverless workers. */
 	updatedAt?: number;
+	/**
+	 * Future site-discovery submission lock. When true, the report has been
+	 * submitted for site discovery and hard-delete must be refused.
+	 * Not set by any flow yet — reserved so delete can enforce it later.
+	 */
+	submittedForDiscovery?: boolean;
+	/** Alias for submittedForDiscovery (same protection). */
+	discoverable?: boolean;
 }
 
 const memory = new Map<string, ResearchJobRecord>();
@@ -405,7 +413,19 @@ function recordFromData(
 			data.reviseImageCount > 0
 				? Math.floor(data.reviseImageCount)
 				: undefined,
+		...(data.submittedForDiscovery === true
+			? { submittedForDiscovery: true as const }
+			: {}),
+		...(data.discoverable === true ? { discoverable: true as const } : {}),
 	};
+}
+
+export function isResearchJobProtectedFromDelete(
+	record: Pick<ResearchJobRecord, "submittedForDiscovery" | "discoverable">,
+): boolean {
+	return (
+		record.submittedForDiscovery === true || record.discoverable === true
+	);
 }
 
 export async function readJob(
@@ -812,6 +832,69 @@ export async function listRecentResearchJobsForUser(
 		})
 		.slice(0, Math.max(1, Math.min(20, Math.floor(limit))))
 		.map(recordToPublic);
+}
+
+/**
+ * Hard-delete a research job: version bodies + job doc + in-memory copy.
+ * History rows are removed separately via the askHistory delete path.
+ * Returns `protected` when the report was submitted for site discovery.
+ */
+export async function deleteResearchJobForUser(
+	uid: string,
+	jobId: string,
+): Promise<
+	| { ok: true }
+	| { ok: false; code: "not_found" | "protected"; error: string }
+> {
+	const id = clipResearchJobId(jobId);
+	if (!id || !uid) {
+		return { ok: false, code: "not_found", error: "Research not found." };
+	}
+	const key = jobKey(uid, id);
+	const record = await readJob(uid, id);
+	memory.delete(key);
+	memoryWrittenAt.delete(key);
+	if (!record) {
+		// Still clear versions so a half-deleted job cannot rehydrate.
+		try {
+			await deleteJobVersionBodies({ uid, jobId: id });
+		} catch {
+			/* best-effort */
+		}
+		if (isFirebaseInitialized && db) {
+			try {
+				await jobsCol(uid).doc(id).delete();
+			} catch {
+				/* already gone */
+			}
+		}
+		return { ok: false, code: "not_found", error: "Research not found." };
+	}
+	if (isResearchJobProtectedFromDelete(record)) {
+		// Restore memory copy — the delete was refused.
+		rememberJobMemory(key, record);
+		return {
+			ok: false,
+			code: "protected",
+			error: "Submitted reports cannot be deleted.",
+		};
+	}
+	try {
+		await deleteJobVersionBodies({ uid, jobId: id });
+	} catch {
+		/* keep going — job doc delete is the load-bearing part */
+	}
+	if (isFirebaseInitialized && db) {
+		try {
+			await jobsCol(uid).doc(id).delete();
+		} catch (error) {
+			console.warn(
+				"[ai/research] job delete failed",
+				error instanceof Error ? error.message : error,
+			);
+		}
+	}
+	return { ok: true };
 }
 
 /**

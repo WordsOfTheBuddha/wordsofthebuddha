@@ -1381,3 +1381,81 @@ export function shouldRestoreActiveAskThread(
 	if (navigationType === "reload") return true;
 	return false;
 }
+
+/**
+ * Tombstones for hard-deleted research jobs. The job doc is deleted
+ * server-side, but a stale tab can still POST an old `local` list via
+ * `action:sync` (merge wins) and resurrect the row. Filtering merged lists
+ * through these ids keeps a delete sticky across tabs and reloads.
+ */
+export const DELETED_RESEARCH_JOBS_KEY = "ai-ask-deleted-research-jobs-v1";
+const DELETED_RESEARCH_JOBS_LIMIT = 100;
+
+export function normalizeDeletedResearchJobId(jobId: string): string {
+	return (jobId || "").replace(/\s+/g, "").trim().slice(0, 80);
+}
+
+export function readDeletedResearchJobIds(
+	storage: Storage | null | undefined = defaultStorage(),
+): string[] {
+	if (!storage) return [];
+	try {
+		const raw = storage.getItem(DELETED_RESEARCH_JOBS_KEY);
+		if (!raw) return [];
+		const parsed = JSON.parse(raw) as { ids?: unknown };
+		if (!Array.isArray(parsed.ids)) return [];
+		const out: string[] = [];
+		const seen = new Set<string>();
+		for (const item of parsed.ids) {
+			if (typeof item !== "string") continue;
+			const id = normalizeDeletedResearchJobId(item);
+			if (!id || seen.has(id)) continue;
+			seen.add(id);
+			out.push(id);
+			if (out.length >= DELETED_RESEARCH_JOBS_LIMIT) break;
+		}
+		return out;
+	} catch {
+		return [];
+	}
+}
+
+export function rememberDeletedResearchJobIds(
+	jobIds: readonly string[],
+	storage: Storage | null | undefined = defaultStorage(),
+): string[] {
+	const ids = jobIds
+		.map((id) => normalizeDeletedResearchJobId(id))
+		.filter(Boolean);
+	if (ids.length === 0 || !storage) return readDeletedResearchJobIds(storage);
+	try {
+		const prior = readDeletedResearchJobIds(storage);
+		const next = [...ids, ...prior].filter(
+			(id, index, all) => all.indexOf(id) === index,
+		).slice(0, DELETED_RESEARCH_JOBS_LIMIT);
+		storage.setItem(DELETED_RESEARCH_JOBS_KEY, JSON.stringify({ ids: next }));
+		return next;
+	} catch {
+		return readDeletedResearchJobIds(storage);
+	}
+}
+
+/** Drop history rows whose job was hard-deleted. Other lanes are left alone. */
+export function filterDeletedResearchJobs(
+	entries: readonly AiAskSessionEntry[],
+	deletedIds: readonly string[] | ReadonlySet<string>,
+): AiAskSessionEntry[] {
+	const ids =
+		deletedIds instanceof Set
+			? deletedIds
+			: new Set(
+					deletedIds
+						.map((id) => normalizeDeletedResearchJobId(id))
+						.filter(Boolean),
+				);
+	if (ids.size === 0) return [...entries];
+	return entries.filter((entry) => {
+		const jobId = researchJobIdOf(entry);
+		return !jobId || !ids.has(jobId);
+	});
+}

@@ -350,6 +350,10 @@ import {
 	priorResearchJobIdsInThread,
 	readActiveAskThread,
 	readAiAskSession,
+	readDeletedResearchJobIds,
+	rememberDeletedResearchJobIds,
+	filterDeletedResearchJobs,
+	normalizeDeletedResearchJobId,
 	removeAskHistoryEntriesByJobIds,
 	removeAskHistoryEntriesByQuestions,
 	researchHistoryNeedsJobRestore,
@@ -2593,6 +2597,18 @@ export function attachAiMode(options: {
 
 	let turns: AiAskTurn[] = [];
 	let sessionEntries = readAiAskSession();
+	/** Hard-deleted research jobs — never re-add from sync/hydrate/watch. */
+	const deletedResearchJobIds = new Set<string>(
+		readDeletedResearchJobIds(
+			typeof localStorage === "undefined" ? null : localStorage,
+		),
+	);
+	if (deletedResearchJobIds.size > 0) {
+		sessionEntries = filterDeletedResearchJobs(
+			sessionEntries,
+			deletedResearchJobIds,
+		);
+	}
 	let quota: AiAskQuotaView | null = null;
 	let researchQuota: ResearchQuotaView | null = null;
 	let isAskAdmin = false;
@@ -2697,6 +2713,26 @@ export function attachAiMode(options: {
 		return job.status === "revising" || job.status === "revise-clarifying";
 	}
 	const watchingResearchJobs = new Set<string>();
+
+	function isResearchJobDeleted(jobId: string): boolean {
+		const id = normalizeDeletedResearchJobId(jobId);
+		return Boolean(id) && deletedResearchJobIds.has(id);
+	}
+
+	function markResearchJobDeleted(jobId: string): void {
+		const id = normalizeDeletedResearchJobId(jobId);
+		if (!id || deletedResearchJobIds.has(id)) return;
+		deletedResearchJobIds.add(id);
+		try {
+			rememberDeletedResearchJobIds(
+				[id],
+				typeof localStorage === "undefined" ? null : localStorage,
+			);
+		} catch {
+			/* tombstone stays in memory */
+		}
+		watchingResearchJobs.delete(id);
+	}
 	let feedbackPromptShown = false;
 	let feedbackHintTimer = 0;
 	let listening = false;
@@ -6801,7 +6837,15 @@ export function attachAiMode(options: {
 			research: researchPaneOn(),
 		});
 		if (active.length === 0) return;
-		turns = active.map((entry) => {
+		const visible =
+			deletedResearchJobIds.size > 0
+				? filterDeletedResearchJobs(active, deletedResearchJobIds)
+				: active;
+		if (visible.length === 0) {
+			clearAskThreadResumeIntent(undefined, { research: researchPaneOn() });
+			return;
+		}
+		turns = visible.map((entry) => {
 			const turn = sessionEntryToTurn(entry);
 			turn.fromCache = false;
 			return turn;
@@ -6950,6 +6994,7 @@ export function attachAiMode(options: {
 		flags: { pending: boolean; unread: boolean },
 	): void {
 		if (shareMode || !turn.research || !turn.researchJobId) return;
+		if (isResearchJobDeleted(turn.researchJobId)) return;
 		const prior = sessionEntries.find(
 			(item) => item.researchJobId === turn.researchJobId,
 		);
@@ -7046,14 +7091,26 @@ export function attachAiMode(options: {
 	): Promise<void> {
 		const jobId = entry.researchJobId || "";
 		if (!jobId || watchingResearchJobs.has(jobId)) return;
+		if (isResearchJobDeleted(jobId)) return;
 		watchingResearchJobs.add(jobId);
 		try {
 			while (turns.length === 0) {
 				await waitForResearchWatchWindow(RESEARCH_WATCH_POLL_MS);
 				if (turns.length > 0) return;
+				if (isResearchJobDeleted(jobId)) return;
 				const data = await fetchResearchJob(jobId);
+				if (data.status === 404) {
+					// Job was hard-deleted — drop any lingering row.
+					sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [
+						jobId,
+					]);
+					writeAiAskSession(sessionEntries);
+					if (turns.length === 0) renderHistory();
+					return;
+				}
 				if (!data.ok || !data.job) return;
 				if (data.job.pending) continue;
+				if (isResearchJobDeleted(jobId)) return;
 				const latest =
 					sessionEntries.find((item) => item.researchJobId === jobId) ||
 					entry;
@@ -7090,6 +7147,7 @@ export function attachAiMode(options: {
 			let changed = false;
 			for (const job of jobs) {
 				if (!job.id) continue;
+				if (isResearchJobDeleted(job.id)) continue;
 				const existing = sessionEntries.find(
 					(item) => item.researchJobId === job.id,
 				);
@@ -7130,6 +7188,12 @@ export function attachAiMode(options: {
 				changed = true;
 			}
 			if (!changed) return;
+			if (deletedResearchJobIds.size > 0) {
+				sessionEntries = filterDeletedResearchJobs(
+					sessionEntries,
+					deletedResearchJobIds,
+				);
+			}
 			writeAiAskSession(sessionEntries);
 			renderHistory();
 			watchPendingResearchHistory();
@@ -7150,6 +7214,16 @@ export function attachAiMode(options: {
 	}
 
 	function openHistoryEntry(entry: AiAskSessionEntry): void {
+		if (entry.researchJobId && isResearchJobDeleted(entry.researchJobId)) {
+			sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [
+				entry.researchJobId,
+			]);
+			writeAiAskSession(sessionEntries);
+			syncAskSurfaceUrl({ jobId: null, open: null, sample: null });
+			renderHistory();
+			syncLayout();
+			return;
+		}
 		if (entry.researchJobId) {
 			syncAskSurfaceUrl({
 				jobId: entry.researchJobId,
@@ -7212,6 +7286,12 @@ export function attachAiMode(options: {
 	function persistSessionFromTurn(turn: AiAskTurn): void {
 		if (turn.fromSample) return;
 		if (turn.pending || turn.error || turn.offTopic) return;
+		if (
+			turn.research &&
+			turn.researchJobId &&
+			isResearchJobDeleted(turn.researchJobId)
+		)
+			return;
 		const keepEmptyResearch = Boolean(
 			turn.research && (turn.report || turn.researchJobId),
 		);
@@ -7616,9 +7696,12 @@ export function attachAiMode(options: {
 		questions: readonly string[],
 		options?: { clearOpenThread?: boolean; researchJobId?: string },
 	): Promise<void> {
-		const jobId = (options?.researchJobId || "").trim();
+		const jobId = normalizeDeletedResearchJobId(
+			options?.researchJobId || "",
+		);
 		const keys = questions.map((q) => q.replace(/\s+/g, " ").trim()).filter(Boolean);
 		if (!jobId && keys.length === 0) return;
+		if (jobId) markResearchJobDeleted(jobId);
 		const clearOpen =
 			options?.clearOpenThread === true ||
 			(jobId
@@ -7626,6 +7709,15 @@ export function attachAiMode(options: {
 				: openThreadMatchesQuestions(keys));
 		if (jobId) {
 			sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [jobId]);
+			// History delete now hard-deletes the job server-side, but also
+			// DELETE the job doc directly so a failed history write cannot
+			// leave a fetchable job that later rehydrates Recent.
+			void fetch(researchJobApiPath(jobId), {
+				method: "DELETE",
+				credentials: "same-origin",
+			}).catch(() => {
+				/* history delete already covers the job doc */
+			});
 			// Drop same-browser attachment bytes with the report; anything
 			// missed ages out via the store's entry/byte budget.
 			void deleteResearchAttachments(jobId).catch(() => {
@@ -7657,6 +7749,10 @@ export function attachAiMode(options: {
 						signedInForHistory = false;
 						return;
 					}
+					if (response.status === 403) {
+						setStatus("Submitted reports cannot be deleted.");
+						return;
+					}
 					const data = (await response.json()) as {
 						success?: boolean;
 						entries?: AiAskSessionEntry[];
@@ -7666,6 +7762,12 @@ export function attachAiMode(options: {
 							sessionEntries,
 							data.entries,
 						);
+						if (deletedResearchJobIds.size > 0) {
+							sessionEntries = filterDeletedResearchJobs(
+								sessionEntries,
+								deletedResearchJobIds,
+							);
+						}
 						if (jobId) {
 							sessionEntries = removeAskHistoryEntriesByJobIds(
 								sessionEntries,
@@ -7988,9 +8090,19 @@ export function attachAiMode(options: {
 					Array.isArray(data.entries) ? data.entries : [],
 				);
 			}
+			if (deletedResearchJobIds.size > 0) {
+				sessionEntries = filterDeletedResearchJobs(
+					sessionEntries,
+					deletedResearchJobIds,
+				);
+			}
 			writeAiAskSession(sessionEntries);
 			// Asks that finished during the first sync stay local-only unless we merge again.
-			const latestLocal = readAiAskSession();
+			const latestLocalRaw = readAiAskSession();
+			const latestLocal =
+				deletedResearchJobIds.size > 0
+					? filterDeletedResearchJobs(latestLocalRaw, deletedResearchJobIds)
+					: latestLocalRaw;
 			if (latestLocal.length !== sessionEntries.length) {
 				const catchUp = await fetch("/api/ai/history", {
 					method: "POST",
@@ -8010,12 +8122,24 @@ export function attachAiMode(options: {
 						latestLocal,
 						catchUpData.entries,
 					);
+					if (deletedResearchJobIds.size > 0) {
+						sessionEntries = filterDeletedResearchJobs(
+							sessionEntries,
+							deletedResearchJobIds,
+						);
+					}
 					writeAiAskSession(sessionEntries);
 				} else {
 					sessionEntries = mergeAskHistoryEntries(
 						latestLocal,
 						sessionEntries,
 					);
+					if (deletedResearchJobIds.size > 0) {
+						sessionEntries = filterDeletedResearchJobs(
+							sessionEntries,
+							deletedResearchJobIds,
+						);
+					}
 					writeAiAskSession(sessionEntries);
 				}
 			}
@@ -11030,11 +11154,31 @@ export function attachAiMode(options: {
 	): Promise<boolean> {
 		let keepRestoring = false;
 		try {
+			if (isResearchJobDeleted(jobId)) {
+				setStatus("That report was deleted.");
+				syncAskSurfaceUrl({ jobId: null, open: null, sample: null });
+				if (turns.length === 0) renderHistory();
+				else syncLayout();
+				return false;
+			}
 			const data = await fetchResearchJob(jobId);
 			if (data.status === 401) {
 				keepRestoring = true;
 				window.location.assign(askAuthPageHref("/signin", null, currentReturnTo()));
 				return true;
+			}
+			if (data.status === 404) {
+				// Hard-deleted job — remember it so hydrate/sync never re-add it.
+				markResearchJobDeleted(jobId);
+				sessionEntries = removeAskHistoryEntriesByJobIds(sessionEntries, [
+					jobId,
+				]);
+				writeAiAskSession(sessionEntries);
+				setStatus("That report was deleted.");
+				syncAskSurfaceUrl({ jobId: null, open: null, sample: null });
+				if (turns.length === 0) renderHistory();
+				else syncLayout();
+				return false;
 			}
 			if (!data.ok || !data.job) {
 				setStatus(
@@ -11048,6 +11192,13 @@ export function attachAiMode(options: {
 				return false;
 			}
 			const job = data.job;
+			if (isResearchJobDeleted(job.id)) {
+				setStatus("That report was deleted.");
+				syncAskSurfaceUrl({ jobId: null, open: null, sample: null });
+				if (turns.length === 0) renderHistory();
+				else syncLayout();
+				return false;
+			}
 			const turn: AiAskTurn = {
 				question: job.question,
 				originalQuestion: job.result?.originalQuestion || job.question,

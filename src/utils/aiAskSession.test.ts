@@ -32,6 +32,10 @@ import {
 	resolveAskHistoryTab,
 	removeAskHistoryEntriesByJobIds,
 	removeAskHistoryEntriesByQuestions,
+	filterDeletedResearchJobs,
+	normalizeDeletedResearchJobId,
+	readDeletedResearchJobIds,
+	rememberDeletedResearchJobIds,
 	isAskHistoryDocumentSizeError,
 	researchHistoryNeedsJobRestore,
 	researchHistoryNeedsVersionIndexRefresh,
@@ -1440,5 +1444,42 @@ describe("research attachment metadata in history", () => {
 		assert.equal(stripped[0]?.attachedImages?.length, 1);
 		assert.equal(stripped[1]?.attachedImages, undefined);
 		assert.equal(stripped[1]?.imageCount, 1);
+	});
+
+	it("keeps hard-deleted research jobs out of merged history", () => {
+		const deleted = entry("Deleted report?", 3, {
+			research: true,
+			researchJobId: "job-deleted",
+			report: "## Gone",
+		});
+		const kept = entry("Kept report?", 2, {
+			research: true,
+			researchJobId: "job-kept",
+			report: "## Here",
+		});
+		// Stale-tab sync resurrects the deleted row via merge…
+		const resurrected = mergeAskHistoryEntries([deleted], [kept]);
+		assert.equal(resurrected.length, 2);
+		// …but the tombstone filter drops it again.
+		const visible = filterDeletedResearchJobs(resurrected, ["job-deleted"]);
+		assert.equal(visible.length, 1);
+		assert.equal(visible[0]?.researchJobId, "job-kept");
+	});
+
+	it("round-trips deleted-job tombstones through storage", () => {
+		const store = new Map<string, string>();
+		const storage = {
+			getItem: (key: string) => store.get(key) ?? null,
+			setItem: (key: string, value: string) => {
+				store.set(key, value);
+			},
+			removeItem: (key: string) => {
+				store.delete(key);
+			},
+		} as unknown as Storage;
+		assert.deepEqual(readDeletedResearchJobIds(storage), []);
+		rememberDeletedResearchJobIds([" job-gone "], storage);
+		assert.deepEqual(readDeletedResearchJobIds(storage), ["job-gone"]);
+		assert.equal(normalizeDeletedResearchJobId(" a b "), "ab");
 	});
 });

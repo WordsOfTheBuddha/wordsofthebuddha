@@ -7,6 +7,7 @@ import {
 	getResearchJobForUser,
 	requestResearchJobCancel,
 	retryResearchJob,
+	deleteResearchJobForUser,
 } from "../../../../utils/aiAskResearchServer";
 import { loadResearchVersionForUser } from "../../../../utils/aiAskResearchReviseServer";
 import { getResearchQuotaView } from "../../../../utils/aiResearchQuotaServer";
@@ -127,6 +128,35 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 	}
 	const researchQuota = await getResearchQuotaView({ uid: user.uid });
 	return new Response(JSON.stringify({ success: true, job, researchQuota }), {
+		status: 200,
+		headers: { "Content-Type": "application/json" },
+	});
+};
+
+export const DELETE: APIRoute = async ({ params, cookies }) => {
+	const session = cookies.get("__session")?.value;
+	const user = await verifyUserForAskQuota(session, { cookies });
+	if (!user || !isAskQuotaSignedIn(user)) {
+		return new Response(
+			JSON.stringify({ success: false, error: "Sign in required." }),
+			{ status: 401, headers: { "Content-Type": "application/json" } },
+		);
+	}
+	const jobId = typeof params.id === "string" ? params.id : "";
+	const deleted = await deleteResearchJobForUser(user.uid, jobId);
+	if (!deleted.ok) {
+		const status =
+			deleted.code === "protected" ? 403 : 404;
+		return new Response(
+			JSON.stringify({
+				success: false,
+				code: deleted.code,
+				error: deleted.error,
+			}),
+			{ status, headers: { "Content-Type": "application/json" } },
+		);
+	}
+	return new Response(JSON.stringify({ success: true }), {
 		status: 200,
 		headers: { "Content-Type": "application/json" },
 	});
