@@ -1,9 +1,10 @@
 ---
-title: Anubuddha sutta - Understood
-description: The Buddha explains how misunderstanding and not penetrating four principles - 1) ethical conduct, 2) collectedness, 3) wisdom, and 4) liberation - has led to wandering on in cyclic existence for a long time.
-qualities: delusion, ethical conduct, collectedness, wisdom, liberation
-theme: wisdom
+title: Anubuddha sutta - Comprehended
+description: The Buddha explains how non-comprehension and non-penetration of four principles—1.) ethical conduct, 2.) collectedness, 3.) wisdom, and 4.) liberation—leads to wandering on in cyclic existence.
+qualities: ignorance, ethical conduct, collectedness, wisdom, liberation
+theme: wisdom, inspiration
 slug: an4.1
+priority: 1.1
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vajjīsu viharati bhaṇḍagāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

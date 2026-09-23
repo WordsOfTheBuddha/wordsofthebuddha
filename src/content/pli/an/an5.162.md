@@ -2,9 +2,11 @@
 title: Dutiya āghātapaṭivinaya sutta - Removing Resentment (Second)
 description: Five ways to remove arisen resentment toward a person based on their bodily conduct, verbal conduct, and mental clarity.
 qualities: resentment
+theme: wisdom, training guideline, inquisitiveness
 slug: an5.162
 simile: cow’s footprint
 character: Venerable Sāriputta
+priority: 1.1
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
