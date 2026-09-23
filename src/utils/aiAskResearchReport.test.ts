@@ -311,6 +311,32 @@ describe("renderAskBriefingHtml", () => {
 		assert.match(html, /<ul>/);
 		assert.match(html, /href="\/mn10"/);
 	});
+
+	it("renders **bold** emphasis answers as markdown, not literal asterisks", () => {
+		const html = renderAskBriefingHtml(
+			"**MN 39 — Mahāassapura Sutta, cliff notes.** Setting: the Buddha is in Assapura. Pāli: *ye dhammā samāditya*.",
+			[{ slug: "mn39", href: "/mn39" }],
+		);
+		assert.match(html, /<strong>/);
+		assert.doesNotMatch(html, /\*\*MN 39/);
+		assert.match(html, /<em>ye dhammā samāditya<\/em>/);
+	});
+
+	it("annotates structured answer links for the citation popover", () => {
+		const html = renderAskBriefingHtml(
+			"**MN 39** — the gradual training is framed here.",
+			[
+				{
+					slug: "mn39",
+					href: "/mn39",
+					title: "Mahāassapura sutta",
+					description: "Desc.",
+				},
+			],
+		);
+		assert.match(html, /ai-summary-ref/);
+		assert.match(html, /data-cite-title="MN 39 - Mahāassapura sutta"/);
+	});
 });
 
 describe("parseResearchReportMarkdown", () => {

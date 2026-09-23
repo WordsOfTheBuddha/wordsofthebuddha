@@ -12,6 +12,7 @@ import {
 	emptyAskQuotaState,
 	isAskQuotaSignedIn,
 	isValidAskUserReview,
+	refundAskQuotaState,
 	toAskQuotaView,
 } from "./aiAskQuota";
 
@@ -98,6 +99,47 @@ describe("consumeAskQuotaState", () => {
 		assert.equal(blocked.view.allowed, false);
 		assert.equal(blocked.view.used, ASK_SIGNED_IN_DAILY_LIMIT);
 		assert.equal(blocked.state.used, ASK_SIGNED_IN_DAILY_LIMIT - priorUsed);
+	});
+});
+
+describe("refundAskQuotaState", () => {
+	it("restores one Ask after a pre-answer error", () => {
+		const state = {
+			...emptyAskQuotaState({
+				day: "2026-09-03",
+				subjectKind: "user",
+				subjectKey: "user:u1",
+			}),
+			used: 3,
+		};
+		const refunded = refundAskQuotaState(state);
+		assert.equal(refunded.refunded, true);
+		assert.equal(refunded.state.used, 2);
+		assert.equal(refunded.view.used, 2);
+		assert.equal(refunded.view.remaining, ASK_SIGNED_IN_DAILY_LIMIT - 2);
+	});
+
+	it("is a no-op at zero usage", () => {
+		const state = emptyAskQuotaState({
+			day: "2026-09-03",
+			subjectKind: "anon",
+			subjectKey: "anon:1.1.1.1",
+		});
+		const refunded = refundAskQuotaState(state);
+		assert.equal(refunded.refunded, false);
+		assert.equal(refunded.state.used, 0);
+	});
+
+	it("round-trips consume then refund", () => {
+		let state = emptyAskQuotaState({
+			day: "2026-09-03",
+			subjectKind: "anon",
+			subjectKey: "anon:1.1.1.1",
+		});
+		state = consumeAskQuotaState(state).state;
+		assert.equal(state.used, 1);
+		state = refundAskQuotaState(state).state;
+		assert.equal(state.used, 0);
 	});
 });
 

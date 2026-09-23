@@ -9,6 +9,7 @@ import {
 	dismissAskFeedbackPrompt,
 	emptyAskQuotaState,
 	isAskQuotaSignedIn,
+	refundAskQuotaState,
 	toAskQuotaView,
 	utcAskDay,
 	type AskQuotaState,
@@ -235,6 +236,74 @@ export async function consumeAskQuota(options: {
 	memory.set(docId, consumed.state);
 	viewCache.deleteByPrefix(`${docId}|`);
 	return { allowed: true, view: consumed.view };
+}
+
+/**
+ * Restore one Ask after a stream error before any usable answer was sent
+ * (planner/search/rerank fatal). Own doc only — prior anonymous usage is
+ * untouched. Uses a transaction when Firestore is available.
+ */
+export async function refundAskQuota(options: {
+	request: Request;
+	user: UserRecord | null;
+	now?: number;
+}): Promise<{ refunded: boolean; view: AskQuotaView }> {
+	const now = options.now ?? Date.now();
+	const day = utcAskDay(now);
+	const subject = resolveAskQuotaSubject(options.request, options.user);
+	const seed = emptyAskQuotaState({
+		day,
+		subjectKind: subject.subjectKind,
+		subjectKey: subject.subjectKey,
+	});
+	const docId = askQuotaDocId(day, subject.subjectKey);
+	const priorUsed = await priorAnonUsedForSignedIn({
+		request: options.request,
+		signedIn: subject.signedIn,
+		day,
+	});
+	const viewOpts = {
+		priorUsed,
+		needsEmailVerification: subject.needsEmailVerification,
+	};
+
+	if (isFirebaseInitialized && db) {
+		const result = await db.runTransaction(async (tx) => {
+			const ref = db!.collection(COLLECTION).doc(docId);
+			const snap = await tx.get(ref);
+			const current = snap.exists
+				? fromDoc(snap.data() as Record<string, unknown>, seed)
+				: seed;
+			const normalized = current.day === day ? current : seed;
+			const refunded = refundAskQuotaState(normalized, viewOpts);
+			if (refunded.refunded) {
+				tx.set(
+					ref,
+					{
+						...refunded.state,
+						updatedAt: FieldValue.serverTimestamp(),
+					},
+					{ merge: true },
+				);
+			}
+			return refunded;
+		});
+		if (result.refunded) {
+			memory.set(docId, cloneState(result.state));
+			viewCache.deleteByPrefix(`${docId}|`);
+		}
+		return { refunded: result.refunded, view: result.view };
+	}
+
+	const current = memory.get(docId);
+	const normalized =
+		current && current.day === day ? cloneState(current) : cloneState(seed);
+	const refunded = refundAskQuotaState(normalized, viewOpts);
+	if (refunded.refunded) {
+		memory.set(docId, refunded.state);
+		viewCache.deleteByPrefix(`${docId}|`);
+	}
+	return { refunded: refunded.refunded, view: refunded.view };
 }
 
 export async function claimAskFeedbackBonus(options: {

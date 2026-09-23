@@ -145,7 +145,6 @@ import {
 	type ResearchReviseEditScope,
 } from "./aiAskResearchReviseComposer";
 import {
-	formatResearchHitTitle,
 	renderAskBriefingHtml,
 	renderResearchReportHtml,
 } from "./aiAskResearchReport";
@@ -171,7 +170,7 @@ import {
 	researchTableOfContentsOptions,
 } from "./tocClient";
 import {
-	formatDiscourseCitationTitle,
+	annotateResearchCitationLinks,
 	hideDiscourseCitationPopover,
 	installDiscourseCitationPopovers,
 } from "./discourseCitationPopover";
@@ -384,6 +383,7 @@ import {
 	askTurnsForExport,
 } from "./askExportTurns";
 import { buildAskFollowUpHistory } from "./aiAskHistory";
+import { aiSourceRowHtml, formatAskAnswerCopyMarkdown } from "./aiAskCards";
 
 export { buildAskFollowUpHistory };
 
@@ -911,33 +911,6 @@ export function researchSourcesBlockHtml(
 	const body = (hitsHtml || "").trim();
 	if (!label || !body) return body;
 	return `<details class="ai-sources"><summary>${label}</summary><ol class="ai-hits ai-sources-list">${body}</ol></details>`;
-}
-
-/**
- * Compact numbered source row (Ask + Research v1): title-only `ID Title`.
- * Description/snippet ride along as `data-cite-*` so the shared citation
- * popover shows them on hover/focus. PTS stays out for v1.
- */
-export function aiSourceRowHtml(hit: AiDiscourseHit, research = false): string {
-	const id = escapeHtml(transformId(hit.slug));
-	const displayTitle = research ? formatResearchHitTitle(hit.title) : hit.title;
-	const citeTitle = escapeHtml(
-		formatDiscourseCitationTitle(hit.slug, displayTitle),
-	);
-	const descText = stripHtml(hit.description || "")
-		.replace(/\s+/g, " ")
-		.trim();
-	const snippetText =
-		!research && hit.contentSnippet
-			? stripHtml(hit.contentSnippet).replace(/\s+/g, " ").trim()
-			: "";
-	const citeDesc = escapeHtml(
-		descText && snippetText && snippetText !== descText
-			? `${descText} ${snippetText}`
-			: descText || snippetText,
-	);
-	const descAttr = citeDesc ? ` data-cite-desc="${citeDesc}"` : "";
-	return `<li data-result-type="discourse"><a href="${escapeHtml(hit.href)}" class="search-discourse-card ai-source-ref block no-underline text-inherit" data-search-result data-cite-title="${citeTitle}"${descAttr}><span class="ai-source-id">${id}</span><span class="ai-source-sep" aria-hidden="true"> – </span><span class="ai-source-title">${escapeHtml(displayTitle)}</span></a></li>`;
 }
 
 /** Compact DEV line: which planner models were actually called and which answered. */
@@ -8543,7 +8516,13 @@ export function attachAiMode(options: {
 		const body =
 			kind === "report"
 				? displayedReportMarkdown(turn).trim()
-				: (turn.summary || "").trim();
+				: formatAskAnswerCopyMarkdown({
+						question: turn.question,
+						summary: turn.summary || "",
+						results: turn.results,
+						origin:
+							typeof window !== "undefined" ? window.location.origin : "",
+					});
 		if (!body) return;
 		const text =
 			kind === "report" ? `${body}${formatCopyAttachmentNote(turn)}` : body;
@@ -8915,7 +8894,10 @@ export function attachAiMode(options: {
 				? wrapAskAnswerHtml({
 						kind: "answer",
 						turnIndex,
-						bodyHtml: renderAskBriefingHtml(summaryText, turn.results),
+						bodyHtml: annotateResearchCitationLinks(
+							renderAskBriefingHtml(summaryText, turn.results),
+							turn.results,
+						),
 					}) +
 					(!quota?.signedIn &&
 					isAskResearchEnabled() &&
@@ -11874,6 +11856,9 @@ export function attachAiMode(options: {
 				} else if (event.type === "error") {
 					turn.pending = false;
 					turn.phase = "done";
+					// Server refunds quota on pre-answer errors; keep the
+					// meter in sync with the refunded view.
+					if (event.quota) applyQuota(event.quota);
 					if (!askShouldSurviveDisconnect(turn)) {
 						turn.error = event.error || "Ask could not complete.";
 					} else {

@@ -718,6 +718,8 @@ export async function writeAskAnswer(options: {
 	termQueries?: readonly string[];
 	guidance?: string;
 	history?: readonly AiRewriteHistoryTurn[];
+	/** Auto-attached current discourse text (EN + Pali) from a discourse page. */
+	pageEvidence?: string;
 	onReasoning?: (delta: string) => void;
 	signal?: AbortSignal;
 	/** Wall-clock budget from `resolveAskWriterBudgetMs`. 0 skips the writer. */
@@ -742,7 +744,11 @@ export async function writeAskAnswer(options: {
 			options.loadDoc,
 		);
 		if (watchdog.signal.aborted) return empty;
-		const evidence = formatAskAnswerEvidenceBlock(pack);
+		const hitEvidence = formatAskAnswerEvidenceBlock(pack);
+		const pageBlock = (options.pageEvidence || "").trim();
+		const evidence = pageBlock
+			? `${pageBlock}\n\n${hitEvidence}`
+			: hitEvidence;
 		if (!evidence.trim()) return empty;
 		const messages = [
 			{ role: "system" as const, content: ASK_ANSWER_SYSTEM },

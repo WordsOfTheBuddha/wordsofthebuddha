@@ -78,7 +78,10 @@ export function toAiDiscourseHit(hit: DiscourseHitLike): AiDiscourseHit {
 	return {
 		slug,
 		title: hit.title,
-		description: (hit.description || "").slice(0, 240),
+		// Full curated blurb (catalog max ~590 chars): popovers show it
+		// verbatim, so no mid-sentence cut. The reranker clips to 180 at
+		// its own use site — this length never reaches its prompt.
+		description: (hit.description || "").slice(0, 600),
 		contentSnippet: hit.contentSnippet
 			? clipSnippetAroundHighlight(hit.contentSnippet, DEFAULT_SNIPPET_CLIP)
 			: null,

@@ -1,9 +1,13 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUserForAskQuota } from "../../../middleware/auth";
-import { rewriteAskQuestion } from "../../../utils/aiAskRewrite";
+import {
+	ASK_PLANNER_SLOW_CODE,
+	rewriteAskQuestion,
+} from "../../../utils/aiAskRewrite";
 import { resolveAskShareSlug } from "../../../utils/aiAskShare";
-import { consumeAskQuota } from "../../../utils/aiAskQuotaServer";
+import { consumeAskQuota, refundAskQuota } from "../../../utils/aiAskQuotaServer";
+import type { AskQuotaView } from "../../../utils/aiAskQuota";
 import { resolveAskPersonHits } from "../../../utils/aiAskPersons";
 import {
 	AI_SEARCH_CANDIDATE_LIMIT,
@@ -29,6 +33,12 @@ import {
 	resolveRewriteExcludeSlugs,
 } from "../../../utils/aiQueryRewrite";
 import { maxAskQuestionChars } from "../../../utils/aiAskQuestionText";
+import {
+	formatAskPageContextBlock,
+	pageContextGuidance,
+	pageContextPlannerHint,
+	parseAskPageContext,
+} from "../../../utils/aiAskPageContext";
 import { collectAskHistoryShownSlugs } from "../../../utils/aiAskHistory";
 import {
 	buildAiAskTelemetryAskEvent,
@@ -62,6 +72,17 @@ function friendlyAskError(error: unknown): { status: number; message: string } {
 			: 502;
 	const message =
 		error instanceof Error ? error.message : "Ask could not complete.";
+	// Retry-exhausted slow errors carry their own reader-facing copy.
+	const code =
+		typeof error === "object" &&
+		error &&
+		"code" in error &&
+		typeof (error as { code?: unknown }).code === "string"
+			? (error as { code: string }).code
+			: "";
+	if (code === ASK_PLANNER_SLOW_CODE && message) {
+		return { status: 502, message };
+	}
 	const searchIndexFailed =
 		/Failed to load (?:search-|reference-search-)|got HTML instead of JSON/i.test(
 			message,
@@ -139,6 +160,27 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		typeof body.model === "string" ? body.model : undefined,
 	);
 	const history = parseAskHistory(body.history);
+	// Manual retries start at low effort for a fast answer instead of
+	// replaying the slow path. Anything else is ignored (never trust the
+	// client with model selection).
+	const effortOverride =
+		body.effort === "low" ? ("low" as const) : undefined;
+	// Discourse-page Ask: auto-attached current sutta EN + Pali (invisible).
+	// The planner only writes search queries, so it gets a short pointer —
+	// the full text travels with rerank guidance + writer evidence. A full
+	// block in the planner prompt doubled input tokens and pushed
+	// slow-provider calls past the fixed planner attempt budget.
+	const pageContext = parseAskPageContext(body.pageContext);
+	const pageContextBlock = formatAskPageContextBlock(pageContext);
+	const pagePlannerHint = pageContextPlannerHint(pageContext);
+	const pageGuidance = pageContextGuidance(pageContext);
+	if (pageContext) {
+		console.info(
+			`[ai/ask] pageContext slug=${pageContext.slug} ` +
+				`en=${(pageContext.english || "").length} ` +
+				`pali=${(pageContext.pali || "").length}`,
+		);
+	}
 	const requestId = newAiAskRequestId();
 	const startedAt = Date.now();
 	const encoder = new TextEncoder();
@@ -203,13 +245,17 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				send({ type: "quota", quota, requestId });
 				send({ type: "status", phase: "rewrite", requestId });
 				ping();
+				const rewriteStart = Date.now();
 				const rewrite = await rewriteAskQuestion({
 					question,
 					history,
 					model,
+					...(pagePlannerHint ? { attachedContext: pagePlannerHint } : {}),
+					...(effortOverride ? { effortOverride } : {}),
 					onReasoning: (delta) => send({ type: "reasoning", delta }),
 					onReasoningReset: () => send({ type: "reasoning", reset: true }),
 				});
+				const plannerMs = Date.now() - rewriteStart;
 				const plan = rewrite.plan;
 				let usedModel = rewrite.model;
 				// Accepted planner only — discarded OpenRouter thinking is reset
@@ -242,8 +288,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					shareSlug,
 					persons,
 					reasoning,
-					// DEV only — which planner models were tried / used.
-					...(import.meta.env.DEV ? { routing } : {}),
+					// DEV only — which planner models were tried / used, and
+					// how long planning took (browser-observable timing).
+					...(import.meta.env.DEV ? { routing, plannerMs } : {}),
 				});
 				await flushSse();
 				if (plan.offTopic || plan.queries.length === 0) {
@@ -316,7 +363,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 					openRouterModel: model,
 					// The planning model is the stronger one; hand its read of the
 					// question to the rescorer instead of making it start cold.
-					guidance: plan.rankingGuidance,
+					guidance: [plan.rankingGuidance, pageGuidance]
+						.filter(Boolean)
+						.join(" "),
 					planningNotes: reasoning,
 					primaryQueries: plan.queries,
 					termQueries: plan.termQueries,
@@ -456,8 +505,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 							hits: results,
 							model: rewrite.model,
 							termQueries: plan.termQueries,
-							guidance: plan.rankingGuidance,
+							guidance: [plan.rankingGuidance, pageGuidance]
+								.filter(Boolean)
+								.join(" "),
 							history,
+							...(pageContextBlock ? { pageEvidence: pageContextBlock } : {}),
 							timeoutMs: writerBudget,
 							signal: request.signal,
 							onReasoning: (delta) => {
@@ -503,7 +555,24 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			} catch (error) {
 				const { status, message } = friendlyAskError(error);
 				console.error("[ai/ask]", status, error);
-				send({ type: "error", error: message, requestId });
+				// Fatal before any usable answer (planner/search/rerank):
+				// restore the consumed Ask so errors don't burn quota.
+				let refundedView: AskQuotaView | null = null;
+				try {
+					const refund = await refundAskQuota({ request, user });
+					refundedView = refund.view;
+					if (refund.refunded) {
+						console.info(`[ai/ask] quota refunded for ${requestId}`);
+					}
+				} catch {
+					/* refund is best-effort; the error still reports */
+				}
+				send({
+					type: "error",
+					error: message,
+					requestId,
+					...(refundedView ? { quota: refundedView } : {}),
+				});
 			} finally {
 				clearInterval(heartbeat);
 				streamOpen = false;

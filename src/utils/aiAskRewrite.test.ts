@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+	ASK_PLANNER_SLOW_CODE,
 	MAX_PLANNER_OPENROUTER_ATTEMPTS,
+	PLANNER_ATTEMPT_MS,
+	PLANNER_TIMEOUT_RETRIES,
 	formatPlannerRoutingLine,
+	isPlannerTimeoutError,
 	nextUnusableRewriteAction,
 	plannerModelAttempts,
+	plannerSlowError,
 	shouldTryAnotherPlannerModel,
 } from "./aiAskRewrite";
 import {
@@ -207,5 +212,38 @@ describe("shouldTryAnotherPlannerModel", () => {
 	it("does not mask real failures", () => {
 		assert.equal(shouldTryAnotherPlannerModel(httpError(401)), false);
 		assert.equal(shouldTryAnotherPlannerModel(new Error("bad json")), false);
+	});
+});
+
+describe("planner timeout stepdown", () => {
+	it("caps single attempts at 60s with up to 2 low-effort retries", () => {
+		assert.equal(PLANNER_ATTEMPT_MS, 60_000);
+		assert.equal(PLANNER_TIMEOUT_RETRIES, 2);
+	});
+
+	it("detects only our attempt-timeout abort, not user disconnects", () => {
+		assert.equal(
+			isPlannerTimeoutError(new DOMException("Timed out", "TimeoutError")),
+			true,
+		);
+		assert.equal(
+			isPlannerTimeoutError(
+				new Error("The operation was aborted due to timeout"),
+			),
+			true,
+		);
+		assert.equal(
+			isPlannerTimeoutError(new DOMException("Aborted", "AbortError")),
+			false,
+		);
+		assert.equal(isPlannerTimeoutError(new Error("boom")), false);
+		assert.equal(isPlannerTimeoutError(httpError(429)), false);
+	});
+
+	it("exhausted timeouts report slow with try-another-prompt copy", () => {
+		const error = plannerSlowError();
+		assert.equal(error.status, 502);
+		assert.equal(error.code, ASK_PLANNER_SLOW_CODE);
+		assert.match(error.message, /shorter question/);
 	});
 });

@@ -4,6 +4,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 // Add content styling with CSS classes
 import "../styles/global.css";
 import "../styles/listen-button.css";
+import "../styles/discourse-ask.css";
 import Navbar from "../components/Navbar.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import LastUpdated from "../components/LastUpdated.astro";
@@ -20,7 +21,7 @@ import PlaylistChip from "../components/PlaylistChip.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
-import ReadButton from "../components/ReadButton.astro";
+import DiscourseAsk from "../components/DiscourseAsk.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ReferenceTranslationToggle from "../components/ReferenceTranslationToggle.astro";
@@ -642,10 +643,8 @@ const structuredData = buildStructuredData({
 					<Commentary commentary={commentary} />
 					{
 						offerRead && (
-							<div class="flex justify-end mt-6 mb-4">
-								<ReadButton
-									slug={actionSlug}
-								/>
+							<div class="mt-6 mb-4">
+								<DiscourseAsk slug={actionSlug} title={title} />
 							</div>
 						)
 					}

@@ -121,7 +121,8 @@ const MAX_ASK_RESULTS = 50;
 const MAX_RESEARCH_RESULTS = 160;
 const MAX_SNIPPET = 280;
 const MAX_TITLE = 160;
-const MAX_DESCRIPTION = 280;
+/** Full curated blurb (catalog max ~590 chars) so history popovers match live. */
+const MAX_DESCRIPTION = 600;
 /** Firestore per-document cap (1 MiB). Writes fail at this size. */
 export const ASK_HISTORY_FIRESTORE_LIMIT_BYTES = 1_048_576;
 /** Stay under the cap with encoding headroom (timestamps, field names). */
@@ -519,8 +520,9 @@ export function isAskHistoryDocumentSizeError(error: unknown): boolean {
 }
 
 /**
- * Server / Firestore copy. Hits keep slug + title + href only — description
- * and snippets ride the live response and are dropped here to stay under
+ * Server / Firestore copy. Hits keep slug + title + href plus the
+ * description (capped like local history) so restored popovers match live.
+ * Snippets ride the live response and are dropped here to stay under
  * 1 MiB. Answer summaries are always kept in full so restored threads read
  * exactly what was shown.
  */
@@ -529,7 +531,10 @@ function slimHistoryHit(hit: AiDiscourseHit): AiDiscourseHit {
 	return {
 		slug,
 		title: hit.title || slug,
-		description: "",
+		description: clip(
+			typeof hit.description === "string" ? hit.description : "",
+			MAX_DESCRIPTION,
+		),
 		contentSnippet: null,
 		referenceOnly: hit.referenceOnly === true,
 		...(typeof hit.volpage === "string" && hit.volpage

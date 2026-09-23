@@ -145,8 +145,24 @@ export function looksLikeAskMarkdown(value: string): boolean {
 		if (line.includes("|") && isMdTableSeparator(next)) return true;
 	}
 	if (lines.filter((line) => isMdListLine(line)).length >= 2) return true;
-	return lines.some((line) => isMdHeadingLine(line) || isMdRuleLine(line));
+	if (lines.some((line) => isMdHeadingLine(line) || isMdRuleLine(line))) {
+		return true;
+	}
+	// Emphasis-only structured answers (e.g. cliff notes with **bold**
+	// headings and *Pali* terms but no blocks): the writer never emits
+	// literal asterisks in prose, so paired runs mean markdown.
+	return (
+		ASK_MD_BOLD_RE.test(value) || ASK_MD_ITALIC_RE.test(value)
+	);
 }
+
+/**
+ * Paired `**bold**` runs. Single `*` needs word-boundary guards below —
+ * prose math like `a * b` must not match.
+ */
+const ASK_MD_BOLD_RE = /\*\*[^*\n]+\*\*/;
+/** `*italic*` with no surrounding spaces (excludes `a * b`, `2*3`). */
+const ASK_MD_ITALIC_RE = /(?:^|[\s(])\*[^*\n\s][^*]*\*(?=$|[\s).,;!?])/;
 
 function isStructuredMarkdownLine(line: string): boolean {
 	const trimmed = line.trim();

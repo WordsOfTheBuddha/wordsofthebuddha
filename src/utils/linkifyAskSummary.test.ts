@@ -111,6 +111,23 @@ describe("normalizeAskSummaryProse", () => {
 		assert.equal(looksLikeAskMarkdown("#### 1. Higher virtue"), true);
 	});
 
+	it("treats **bold** emphasis answers as markdown", () => {
+		assert.equal(
+			looksLikeAskMarkdown(
+				"**MN 39 — Mahāassapura Sutta, cliff notes.** Setting: the Buddha is in Assapura.",
+			),
+			true,
+		);
+	});
+
+	it("treats *Pali* italics as markdown but not spaced asterisks", () => {
+		assert.equal(
+			looksLikeAskMarkdown("Devotion to wakefulness — *jāgariyaṁ anuyutto*."),
+			true,
+		);
+		assert.equal(looksLikeAskMarkdown("a * b and 2*3 are not emphasis."), false);
+	});
+
 	it("does not break i.e. or discourse-ID decimals", () => {
 		const text = normalizeAskSummaryProse(
 			"Feelings arise known (viditā) — i.e., tracking ordinary mental events as in AN 4.41.",

@@ -22,8 +22,10 @@ import {
 	getOpenRouterApiKey,
 	isAskPlannerPaidFallbackModelId,
 	openRouterChatStream,
+	resolveReasoningEffort,
 	splitThinkTags,
 	type OpenRouterChatMessage,
+	type OpenRouterReasoningEffort,
 } from "./openrouter";
 
 /** Trace of which planner models were considered / used (DEV + logs). */
@@ -222,6 +224,8 @@ async function rewriteWithOpenRouter(options: {
 	history: readonly AiRewriteHistoryTurn[];
 	attachedContext?: string;
 	model: string;
+	/** Low-effort stepdown for timeout retries / manual retries. */
+	reasoningEffort?: OpenRouterReasoningEffort;
 	onReasoning?: (delta: string) => void;
 	onReasoningReset?: () => void;
 	signal?: AbortSignal;
@@ -233,6 +237,10 @@ async function rewriteWithOpenRouter(options: {
 		options.attachedContext,
 	);
 	const plannerChat = askPlannerChatOptions(options.model);
+	const effort =
+		options.reasoningEffort !== undefined
+			? resolveReasoningEffort(options.model, options.reasoningEffort)
+			: plannerChat.reasoningEffort;
 	let content = "";
 	let reasoning = "";
 	let usedModel = options.model;
@@ -249,7 +257,7 @@ async function rewriteWithOpenRouter(options: {
 			model: options.model,
 			messages,
 			maxTokens: ASK_PLANNER_MAX_TOKENS,
-			reasoningEffort: plannerChat.reasoningEffort,
+			reasoningEffort: effort,
 			jsonMode,
 			routeKind: "ask",
 			signal: options.signal,
@@ -336,10 +344,44 @@ function failureMessage(error: unknown): string {
 }
 
 /**
- * Per-attempt cap. 90s left the browser SSE dead before the next model
- * could answer; 45s is enough to bail on a hung planner.
+ * Per-attempt cap. Slow-but-working planner calls complete just past 45s
+ * (dashboard: 44–45s totals on slow cheapest-hosts), so 60s catches them
+ * with margin while still bailing on true hangs. The 10s SSE heartbeat
+ * keeps the browser connection alive; 60s + rerank + writer still fits
+ * the function budget with writer headroom intact.
  */
-export const PLANNER_ATTEMPT_MS = 45_000;
+export const PLANNER_ATTEMPT_MS = 60_000;
+
+/**
+ * Same-model low-effort retries after a planner timeout. A thinking model
+ * that stalls at high effort usually answers quickly at low effort; after
+ * this many timeout retries the Ask fails slow (try-another-prompt copy)
+ * instead of burning more wall time.
+ */
+export const PLANNER_TIMEOUT_RETRIES = 2;
+
+/** True only for our own attempt-timeout abort (not user disconnects). */
+export function isPlannerTimeoutError(error: unknown): boolean {
+	if (error instanceof DOMException && error.name === "TimeoutError") {
+		return true;
+	}
+	if (error instanceof Error && /operation was aborted due to timeout/i.test(error.message)) {
+		return true;
+	}
+	return false;
+}
+
+/** Slow-exhaustion marker: retries used up, tell the reader to rephrase. */
+export const ASK_PLANNER_SLOW_CODE = "ask_planner_slow";
+
+export function plannerSlowError(): Error & { status?: number; code?: string } {
+	const error = new Error(
+		"The model is taking too long right now. Try again in a bit, or try a shorter question.",
+	) as Error & { status?: number; code?: string };
+	error.status = 502;
+	error.code = ASK_PLANNER_SLOW_CODE;
+	return error;
+}
 
 /**
  * Plan the Ask. Prefer the requested OpenRouter model (it streams reasoning);
@@ -369,6 +411,11 @@ export async function rewriteAskQuestion(options: {
 	 */
 	models?: readonly string[];
 	attemptTimeoutMs?: number;
+	/**
+	 * Start this Ask at low reasoning effort (manual retries). Timeout
+	 * stepdowns use low effort automatically regardless of this flag.
+	 */
+	effortOverride?: OpenRouterReasoningEffort;
 }): Promise<AiAskRewriteResult> {
 	const history = options.history || [];
 	const requested = options.model;
@@ -420,6 +467,9 @@ export async function rewriteAskQuestion(options: {
 				);
 	const failed: AiAskPlannerRouting["failed"] = [];
 	const called: string[] = [];
+	/** Set when any model burns all timeout retries: ultimate timeout failures
+	 * then report slow (try-another-prompt) copy instead of generic timeout. */
+	let timeoutsExhausted = false;
 
 	const buildRouting = (
 		used: string,
@@ -447,14 +497,19 @@ export async function rewriteAskQuestion(options: {
 		for (const model of queue) {
 			if (parentSignal?.aborted) throw parentSignal.reason ?? lastError;
 			let retriedUnusable = false;
+			let timeoutRetries = 0;
+			let lowEffort = options.effortOverride === "low";
 			modelAttempt: while (true) {
 				called.push(model);
+				const attemptStart = Date.now();
+				const attachedChars = (options.attachedContext || "").length;
 				try {
 					const result = await rewriteWithOpenRouter({
 						question: options.question,
 						history,
 						attachedContext: options.attachedContext,
 						model,
+						...(lowEffort ? { reasoningEffort: "low" as const } : {}),
 						onReasoning: options.onReasoning,
 						onReasoningReset: options.onReasoningReset,
 						signal: attemptSignal(),
@@ -488,6 +543,11 @@ export async function rewriteAskQuestion(options: {
 						);
 					}
 					plannerModelHealth.recordSuccess(model);
+					if (attachedChars > 0) {
+						console.info(
+							`[ai/ask] planner ${model} ok in ${Date.now() - attemptStart}ms (context=${attachedChars} chars)`,
+						);
+					}
 					const routing = buildRouting(
 						result.model,
 						"openrouter",
@@ -528,10 +588,30 @@ export async function rewriteAskQuestion(options: {
 					if (parentSignal?.aborted || !shouldTryAnotherPlannerModel(error)) {
 						throw error;
 					}
+					// Hung thinking calls usually answer fast at low effort.
+					// Retry the same model stepped down before moving on, up
+					// to PLANNER_TIMEOUT_RETRIES times; then fail slow with
+					// try-another-prompt copy instead of burning more wall time.
+					if (isPlannerTimeoutError(error) && timeoutRetries < PLANNER_TIMEOUT_RETRIES) {
+						timeoutRetries += 1;
+						lowEffort = true;
+						options.onReasoningReset?.();
+						console.warn(
+							`[ai/ask] planner ${model} timed out; retrying at low effort (${timeoutRetries}/${PLANNER_TIMEOUT_RETRIES})`,
+							`(${Date.now() - attemptStart}ms, context=${attachedChars} chars)`,
+						);
+						continue modelAttempt;
+					}
+					if (isPlannerTimeoutError(error)) {
+						// Retries used up on this model — still give the next
+						// model a chance; the slow copy applies if timeouts
+						// are the ultimate failure (below).
+						timeoutsExhausted = true;
+					}
 					options.onReasoningReset?.();
 					console.warn(
 						`[ai/ask] planner ${model} unavailable (${errorStatus(error) || "error"}); trying next`,
-						error instanceof Error ? error.message : error,
+						`${error instanceof Error ? error.message : error} (${Date.now() - attemptStart}ms, context=${attachedChars} chars)`,
 					);
 					break modelAttempt;
 				}
@@ -544,7 +624,12 @@ export async function rewriteAskQuestion(options: {
 			error.status = 503;
 			throw error;
 		}
-		if (lastError) throw lastError;
+		if (lastError) {
+			if (timeoutsExhausted && isPlannerTimeoutError(lastError)) {
+				throw plannerSlowError();
+			}
+			throw lastError;
+		}
 		const error = new Error("Ask planners returned unusable rewrites.") as Error & {
 			status?: number;
 		};

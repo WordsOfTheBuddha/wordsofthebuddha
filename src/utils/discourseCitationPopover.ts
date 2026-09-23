@@ -118,8 +118,13 @@ function citationLinkFromEvent(target: EventTarget | null): HTMLAnchorElement | 
 	const link = target.closest("a[data-cite-title]");
 	if (!(link instanceof HTMLAnchorElement)) return null;
 	// Report citations live in `.ai-report`; compact source rows
-	// (`a.ai-source-ref`) live in `.ai-hits`. Same shared panel serves both.
-	if (link.matches("a.ai-summary-ref") && link.closest(".ai-report")) {
+	// (`a.ai-source-ref`) live in `.ai-hits`; answer-body citations
+	// (`a.ai-summary-ref`) live in `.ai-summary` answer cards. Same shared
+	// panel serves all three.
+	if (
+		link.matches("a.ai-summary-ref") &&
+		link.closest(".ai-report, .ai-summary")
+	) {
 		return link;
 	}
 	if (link.matches("a.ai-source-ref") && link.closest(".ai-hits")) {

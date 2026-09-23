@@ -1176,7 +1176,7 @@ describe("slim Ask history for Firestore", () => {
 		assert.equal(merged[0]?.researchJobId, "job-a");
 	});
 
-	it("keeps full Ask summaries and titles on the server payload", () => {
+	it("keeps full Ask summaries, titles, and descriptions on the server payload", () => {
 		const summary = `SN 47.10 itself does not attach any attainment prerequisite. ${"More detail. ".repeat(100)}`;
 		const root = entry("What is mindfulness?", 1, {
 			reasoning: "long ".repeat(200),
@@ -1210,10 +1210,14 @@ describe("slim Ask history for Firestore", () => {
 					!turn.report &&
 					(turn.results || []).every(
 						(hit) =>
-							hit.contentSnippet === null &&
-							hit.description === "" &&
-							hit.title !== hit.slug,
+							hit.contentSnippet === null && hit.title !== hit.slug,
 					),
+			),
+		);
+		// Descriptions ride the sync payload (no longer stripped).
+		assert.ok(
+			(slim.thread?.[0]?.results || []).every(
+				(hit) => hit.description === "d".repeat(80),
 			),
 		);
 		// Titles are kept (not replaced by slugs) on every turn.

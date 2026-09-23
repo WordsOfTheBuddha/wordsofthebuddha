@@ -139,6 +139,32 @@ export function consumeAskQuotaState(
 	};
 }
 
+/** Restore one Ask after an error before any usable answer (no-op at zero). */
+export function refundAskQuotaState(
+	state: AskQuotaState,
+	options?: { priorUsed?: number; needsEmailVerification?: boolean },
+): {
+	state: AskQuotaState;
+	view: AskQuotaView;
+	refunded: boolean;
+} {
+	const priorUsed = Math.max(0, Math.floor(options?.priorUsed ?? 0));
+	const needsEmailVerification = options?.needsEmailVerification === true;
+	if (state.used <= 0) {
+		return {
+			state,
+			view: toAskQuotaView(state, { priorUsed, needsEmailVerification }),
+			refunded: false,
+		};
+	}
+	const next: AskQuotaState = { ...state, used: state.used - 1 };
+	return {
+		state: next,
+		view: toAskQuotaView(next, { priorUsed, needsEmailVerification }),
+		refunded: true,
+	};
+}
+
 export function normalizeAskUserReview(text: string): string {
 	return text.replace(/\s+/g, " ").trim();
 }

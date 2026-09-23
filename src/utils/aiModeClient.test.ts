@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { JSDOM } from "jsdom";
+import { aiSourceRowHtml } from "./aiAskCards";
 import {
-	aiSourceRowHtml,
 	applyAskProcessStreamPatch,
 	applyAskThinkingStreamPatch,
 	askReasoningIsLong,
@@ -310,8 +310,9 @@ describe("aiSourceRowHtml", () => {
 		);
 		assert.match(
 			row,
-			/data-cite-desc="King Ajātasattu visits the Buddha on a moonlit night\. Content match around guarding the senses\."/,
+			/data-cite-desc="King Ajātasattu visits the Buddha on a moonlit night\."/,
 		);
+		assert.doesNotMatch(row, /Content match around/);
 		// v1: no inline description, snippet, PTS, or badges in the row.
 		assert.doesNotMatch(row, /ai-hit-desc/);
 		assert.doesNotMatch(row, /ai-hit-snippet/);
@@ -320,7 +321,7 @@ describe("aiSourceRowHtml", () => {
 		assert.doesNotMatch(row, /<h2/);
 	});
 
-	it("omits the snippet from research popover copy and research titles", () => {
+	it("omits the snippet from popover copy, including research rows", () => {
 		const row = aiSourceRowHtml(
 			{ ...baseHit, volpage: "PTS 1.47–1.86" },
 			true,
@@ -328,6 +329,25 @@ describe("aiSourceRowHtml", () => {
 		assert.match(row, /data-cite-desc="King Ajātasattu visits/);
 		assert.doesNotMatch(row, /Content match around/);
 		assert.doesNotMatch(row, /PTS 1\.47/);
+	});
+
+	it("never mixes a Pali snippet into the popover description", () => {
+		const row = aiSourceRowHtml({
+			slug: "mn125",
+			title: "Dantabhūmi sutta - Ground of Mastery",
+			description:
+				"After Prince Jayasena expresses disbelief about the possibility of attaining unification of mind, the Buddha explains why a life of sensual pleasure blinds one to spiritual truths using two vivid similes.",
+			contentSnippet:
+				"idammā vā assadammā vā godammā vā sudantā suvinītā, api nu te dantāva",
+			referenceOnly: false,
+			href: "/mn125",
+		});
+		assert.match(
+			row,
+			/data-cite-desc="After Prince Jayasena expresses disbelief[^"]*two vivid similes\."/,
+		);
+		assert.doesNotMatch(row, /idammā/);
+		assert.doesNotMatch(row, /dantāva/);
 	});
 
 	it("escapes quotes in popover copy", () => {

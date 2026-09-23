@@ -348,12 +348,12 @@ export function researchExportCoverTitle(
 /** Ask briefing: prose paragraphs, or the report renderer when they asked for structure. */
 export function renderAskBriefingHtml(
 	summary: string,
-	results: readonly { slug: string; href?: string }[] = [],
+	results: readonly CitationPopoverHit[] = [],
 ): string {
 	const text = normalizeAskSummaryProse(summary);
 	if (!text) return "";
 	if (looksLikeAskMarkdown(text)) {
-		return renderResearchReportHtml(text, results);
+		return renderResearchReportHtml(text, results, { citationPopovers: true });
 	}
 	return linkifyAskSummaryHtml(text, results);
 }
