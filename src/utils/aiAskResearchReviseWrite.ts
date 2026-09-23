@@ -213,6 +213,7 @@ export async function planResearchRevise(options: {
 			maxTokens: RESEARCH_REVISE_PLANNER_MAX_TOKENS,
 			reasoningEffort: writerOpts.reasoningEffort || ASK_WRITER_REASONING_EFFORT,
 			jsonMode: writerOpts.jsonMode,
+			routeKind: "ask",
 			signal: watchdog.signal,
 			messages: [
 				{ role: "system", content: RESEARCH_REVISE_PLAN_SYSTEM },
@@ -694,6 +695,7 @@ export async function writeResearchRevise(options: {
 			maxTokens: RESEARCH_REVISE_WRITER_MAX_TOKENS,
 			reasoningEffort: writerOpts.reasoningEffort || ASK_WRITER_REASONING_EFFORT,
 			jsonMode: writerOpts.jsonMode,
+			routeKind: "revise",
 			signal: watchdog.signal,
 			messages: [
 				{ role: "system", content: RESEARCH_REVISE_SYSTEM },

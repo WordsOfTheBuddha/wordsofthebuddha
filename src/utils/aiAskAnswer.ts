@@ -772,6 +772,7 @@ export async function writeAskAnswer(options: {
 				maxTokens: ASK_WRITER_MAX_TOKENS,
 				reasoningEffort: writerChat.reasoningEffort,
 				jsonMode,
+				routeKind: "ask",
 				signal: watchdog.signal,
 			})) {
 				watchdog.ping();

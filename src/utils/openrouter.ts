@@ -2,6 +2,21 @@
  * OpenRouter server helpers. The API key must never reach the browser.
  */
 
+import {
+	DEEPSEEK_V4_1_FLASH_MODEL,
+	GPT6_LUNA_PRO_MODEL,
+	PAID_ROUTE_GLM_MODEL,
+	estimatePaidRouteInputTokens,
+	formatPaidRouteLine,
+	isPaidRouteModelId,
+	loadPaidRouteCatalog,
+	paidModelRejectsMediumReasoning,
+	paidRouteAttempts,
+	type PaidRouteAttempt,
+	type PaidRouteEndpoint,
+	type PaidRouteKind,
+} from "./paidModelRoute";
+
 export interface OpenRouterFreeModel {
 	id: string;
 	name: string;
@@ -27,13 +42,17 @@ export const CURATED_ASK_MODELS: readonly OpenRouterFreeModel[] = [
 ] as const;
 
 /**
- * Paid OpenRouter model for Ask, Research, and revise.
- * Never shown in the free picker. OpenRouter fails over across its hosts.
+ * Paid GLM id. Ask, report, and revise calls that pass `routeKind` may be
+ * sent to DeepSeek V4.1 Flash or GPT-6 Luna Pro instead. This id is the
+ * price-sort fallback when that catalog is missing or the pins fail.
+ * Never shown in the free picker.
  */
-export const ASK_PLANNER_PAID_FALLBACK_MODEL = "z-ai/glm-5.3-flash";
+export const ASK_PLANNER_PAID_FALLBACK_MODEL = PAID_ROUTE_GLM_MODEL;
 
 const ASK_INTERNAL_MODEL_LABELS: Readonly<Record<string, string>> = {
 	[ASK_PLANNER_PAID_FALLBACK_MODEL]: "Z.ai: GLM 5.3 Flash",
+	[DEEPSEEK_V4_1_FLASH_MODEL]: "DeepSeek: DeepSeek V4.1 Flash",
+	[GPT6_LUNA_PRO_MODEL]: "OpenAI: GPT-6 Luna Pro",
 };
 
 export function isAskPlannerPaidFallbackModelId(id: string): boolean {
@@ -90,13 +109,14 @@ export const ASK_RESEARCH_VERIFY_REASONING_EFFORT: OpenRouterReasoningEffort =
 	"low";
 
 /**
- * Paid GLM rejects `medium`. Map it to `high`.
+ * GLM 5.3 Flash and DeepSeek V4.1 Flash reject `medium`. Map it to `high`.
+ * GPT-6 Luna Pro keeps the effort the caller sent.
  */
 export function resolveReasoningEffort(
 	model: string,
 	requested: OpenRouterReasoningEffort = DEFAULT_OPENROUTER_REASONING_EFFORT,
 ): OpenRouterReasoningEffort {
-	if (!isAskPlannerPaidFallbackModelId(model)) return requested;
+	if (!paidModelRejectsMediumReasoning(model)) return requested;
 	if (requested === "medium") return ASK_PLANNER_PAID_REASONING_EFFORT;
 	return requested;
 }
@@ -135,21 +155,22 @@ export function buildOpenRouterUserContent(
 export const ASK_WRITER_REASONING_EFFORT: OpenRouterReasoningEffort = "low";
 
 /**
- * Paid GLM often swallows the reasoning channel under `json_object`, and
- * rejects `reasoning.effort: medium`. Free Nemotron planners keep JSON mode
- * and medium effort.
+ * Paid GLM and DeepSeek swallow the reasoning channel under `json_object`,
+ * and reject `reasoning.effort: medium`. GPT-6 Luna Pro also skips
+ * `json_object` here and keeps medium effort. Free Nemotron planners keep
+ * JSON mode and medium effort.
  */
 export function askPlannerChatOptions(model: string): {
 	jsonMode: boolean;
 	reasoningEffort: OpenRouterReasoningEffort;
 } {
-	if (isAskPlannerPaidFallbackModelId(model)) {
+	if (isPaidRouteModelId(model)) {
+		const requested = paidModelRejectsMediumReasoning(model)
+			? ASK_PLANNER_PAID_REASONING_EFFORT
+			: ASK_PLANNER_REASONING_EFFORT;
 		return {
 			jsonMode: false,
-			reasoningEffort: resolveReasoningEffort(
-				model,
-				ASK_PLANNER_PAID_REASONING_EFFORT,
-			),
+			reasoningEffort: resolveReasoningEffort(model, requested),
 		};
 	}
 	return {
@@ -159,15 +180,16 @@ export function askPlannerChatOptions(model: string): {
 }
 
 /**
- * Thinking writer: low effort so it finishes the JSON briefing. Paid GLM
- * still skips `json_object` (it swallows the reasoning channel under that mode).
+ * Thinking writer: low effort so it finishes the JSON briefing. Paid models
+ * skip `json_object` (GLM and DeepSeek swallow the reasoning channel under
+ * that mode).
  */
 export function askWriterChatOptions(model: string): {
 	jsonMode: boolean;
 	reasoningEffort: OpenRouterReasoningEffort;
 } {
 	return {
-		jsonMode: !isAskPlannerPaidFallbackModelId(model),
+		jsonMode: !isPaidRouteModelId(model),
 		reasoningEffort: ASK_WRITER_REASONING_EFFORT,
 	};
 }
@@ -273,9 +295,9 @@ export function resolveOpenRouterChatModel(model: string): string {
 }
 
 /**
- * Paid GLM: OpenRouter’s native cheapest-first routing (`sort: "price"`).
- * No hardcoded provider list — uptime and promos change too often. Falls
- * through to the next-cheapest healthy host when the first is down.
+ * Unscored paid GLM calls: OpenRouter’s native cheapest-first routing
+ * (`sort: "price"`). Scored Ask, report, and revise calls pin a provider
+ * instead. No hardcoded provider list.
  */
 export function openRouterProviderPreferences(model: string):
 	| { sort: "price"; allow_fallbacks: true }
@@ -471,30 +493,122 @@ function messageText(content: unknown): string {
 	return "";
 }
 
-export async function openRouterChat(options: {
+interface OpenRouterChatRequest {
 	model: string;
 	messages: OpenRouterChatMessage[];
 	maxTokens?: number;
 	reasoningEffort?: OpenRouterReasoningEffort;
-	/** Provider-specific cap on hidden thinking tokens. */
 	reasoningMaxTokens?: number;
-	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
 	jsonMode?: boolean;
 	signal?: AbortSignal;
-}): Promise<OpenRouterChatResult> {
+	routeKind?: PaidRouteKind;
+}
+
+function isAbortError(error: unknown): boolean {
+	return (
+		typeof error === "object" &&
+		error != null &&
+		(error as { name?: string }).name === "AbortError"
+	);
+}
+
+function routeRetryExhausted(
+	error: unknown,
+	signal: AbortSignal | undefined,
+	index: number,
+	attemptCount: number,
+): boolean {
+	return isAbortError(error) || signal?.aborted === true || index >= attemptCount - 1;
+}
+
+function logPaidRouteAttempt(
+	announce: boolean,
+	index: number,
+	attempt: PaidRouteAttempt,
+): void {
+	if (index === 0) {
+		if (announce) console.log(formatPaidRouteLine(attempt));
+		return;
+	}
+	console.warn(formatPaidRouteLine(attempt).replace("route ", "route retry "));
+}
+
+async function resolveChatAttempts(options: OpenRouterChatRequest): Promise<{
+	attempts: PaidRouteAttempt[];
+	announce: boolean;
+}> {
 	const model = resolveOpenRouterChatModel(options.model);
-	const provider = openRouterProviderPreferences(model);
-	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
+	if (!options.routeKind || !isAskPlannerPaidFallbackModelId(model)) {
+		const provider = openRouterProviderPreferences(model);
+		return {
+			announce: false,
+			attempts: [
+				{
+					model,
+					...(provider ? { provider } : {}),
+					estimatedCost: null,
+					throughput: null,
+					pinned: false,
+					inputTokens: 0,
+					kind: options.routeKind ?? "ask",
+				},
+			],
+		};
+	}
+	const inputTokens = estimatePaidRouteInputTokens(options.messages);
+	let catalog: PaidRouteEndpoint[] | null = null;
+	try {
+		catalog = await loadPaidRouteCatalog({ headers: openRouterAuthHeaders() });
+	} catch {
+		catalog = null;
+	}
+	if (catalog == null) {
+		console.warn("[openrouter] route catalog unavailable; using GLM price sort");
+	}
+	return {
+		announce: true,
+		attempts: paidRouteAttempts(catalog, {
+			inputTokens,
+			kind: options.routeKind,
+		}),
+	};
+}
+
+async function openRouterFailure(
+	response: Response,
+): Promise<Error & { status?: number }> {
+	let message = `OpenRouter request failed (${response.status})`;
+	try {
+		const payload = (await response.json()) as {
+			error?: { message?: string };
+		};
+		if (payload.error?.message) message = payload.error.message;
+	} catch {
+		/* keep status message */
+	}
+	const error = new Error(message) as Error & { status?: number };
+	error.status = response.status;
+	return error;
+}
+
+function postOpenRouterChat(
+	options: OpenRouterChatRequest,
+	attempt: PaidRouteAttempt,
+	stream: boolean,
+): Promise<Response> {
+	const provider = attempt.provider;
+	return fetch(`${OPENROUTER_API}/chat/completions`, {
 		method: "POST",
 		headers: openRouterAuthHeaders(),
 		body: JSON.stringify({
-			model,
+			model: attempt.model,
 			messages: options.messages,
 			max_tokens: options.maxTokens ?? 1600,
 			temperature: 0.2,
+			...(stream ? { stream: true } : {}),
 			reasoning: openRouterReasoningBody(
 				resolveReasoningEffort(
-					model,
+					attempt.model,
 					options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
 				),
 				options.reasoningMaxTokens,
@@ -506,20 +620,36 @@ export async function openRouterChat(options: {
 		}),
 		signal: options.signal,
 	});
-	if (!response.ok) {
-		let message = `OpenRouter request failed (${response.status})`;
+}
+
+export async function openRouterChat(
+	options: OpenRouterChatRequest,
+): Promise<OpenRouterChatResult> {
+	const { attempts, announce } = await resolveChatAttempts(options);
+	let lastError: unknown;
+	for (let i = 0; i < attempts.length; i++) {
+		const attempt = attempts[i];
+		logPaidRouteAttempt(announce, i, attempt);
 		try {
-			const payload = (await response.json()) as {
-				error?: { message?: string };
-			};
-			if (payload.error?.message) message = payload.error.message;
-		} catch {
-			/* keep status message */
+			const response = await postOpenRouterChat(options, attempt, false);
+			if (!response.ok) throw await openRouterFailure(response);
+			return await readOpenRouterChat(response, attempt.model);
+		} catch (error) {
+			lastError = error;
+			if (routeRetryExhausted(error, options.signal, i, attempts.length)) {
+				throw error;
+			}
 		}
-		const error = new Error(message) as Error & { status?: number };
-		error.status = response.status;
-		throw error;
 	}
+	throw lastError instanceof Error
+		? lastError
+		: new Error("OpenRouter request failed");
+}
+
+async function readOpenRouterChat(
+	response: Response,
+	model: string,
+): Promise<OpenRouterChatResult> {
 	const payload = (await response.json()) as {
 		id?: string;
 		model?: string;
@@ -705,56 +835,45 @@ export function splitThinkTags(content: string): { content: string; reasoning: s
 	return { content: split.content.trim(), reasoning: split.reasoning.trim() };
 }
 
-export async function* openRouterChatStream(options: {
-	model: string;
-	messages: OpenRouterChatMessage[];
-	maxTokens?: number;
-	reasoningEffort?: OpenRouterReasoningEffort;
-	/** Provider-specific cap on hidden thinking tokens. */
-	reasoningMaxTokens?: number;
-	/** When true, ask the provider for JSON-only content (ignored if unsupported). */
-	jsonMode?: boolean;
-	signal?: AbortSignal;
-}): AsyncGenerator<OpenRouterStreamChunk> {
-	const model = resolveOpenRouterChatModel(options.model);
-	const provider = openRouterProviderPreferences(model);
-	const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
-		method: "POST",
-		headers: openRouterAuthHeaders(),
-		signal: options.signal,
-		body: JSON.stringify({
-			model,
-			messages: options.messages,
-			max_tokens: options.maxTokens ?? 1600,
-			temperature: 0.2,
-			stream: true,
-			reasoning: openRouterReasoningBody(
-				resolveReasoningEffort(
-					model,
-					options.reasoningEffort ?? DEFAULT_OPENROUTER_REASONING_EFFORT,
-				),
-				options.reasoningMaxTokens,
-			),
-			...(provider ? { provider } : {}),
-			...(options.jsonMode
-				? { response_format: { type: "json_object" } }
-				: {}),
-		}),
-	});
-	if (!response.ok) {
-		let message = `OpenRouter request failed (${response.status})`;
+export async function* openRouterChatStream(
+	options: OpenRouterChatRequest,
+): AsyncGenerator<OpenRouterStreamChunk> {
+	const { attempts, announce } = await resolveChatAttempts(options);
+	let lastError: unknown;
+	for (let i = 0; i < attempts.length; i++) {
+		const attempt = attempts[i];
+		logPaidRouteAttempt(announce, i, attempt);
+		let response: Response;
 		try {
-			const payload = (await response.json()) as {
-				error?: { message?: string };
-			};
-			if (payload.error?.message) message = payload.error.message;
-		} catch {
-			/* keep status message */
+			response = await postOpenRouterChat(options, attempt, true);
+		} catch (error) {
+			lastError = error;
+			if (routeRetryExhausted(error, options.signal, i, attempts.length)) {
+				throw error;
+			}
+			continue;
 		}
-		const error = new Error(message) as Error & { status?: number };
-		error.status = response.status;
-		throw error;
+		if (!response.ok || !response.body) {
+			lastError = response.ok
+				? new Error("OpenRouter stream had no body")
+				: await openRouterFailure(response);
+			if (routeRetryExhausted(lastError, options.signal, i, attempts.length)) {
+				throw lastError;
+			}
+			continue;
+		}
+		yield* readOpenRouterSse(response, attempt.model);
+		return;
 	}
+	throw lastError instanceof Error
+		? lastError
+		: new Error("OpenRouter request failed");
+}
+
+async function* readOpenRouterSse(
+	response: Response,
+	model: string,
+): AsyncGenerator<OpenRouterStreamChunk> {
 	if (!response.body) {
 		throw new Error("OpenRouter stream had no body");
 	}

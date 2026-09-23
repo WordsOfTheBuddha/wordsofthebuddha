@@ -190,6 +190,7 @@ Markdown report:`,
 			maxTokens: RESEARCH_WRITER_MAX_TOKENS,
 			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
 			jsonMode: false,
+			routeKind: "report",
 			signal: watchdog.signal,
 		})) {
 			watchdog.ping();

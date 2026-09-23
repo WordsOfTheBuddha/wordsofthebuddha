@@ -32,6 +32,12 @@ import {
 	streamDeltaContent,
 	streamDeltaReasoning,
 } from "./openrouter";
+import {
+	DEEPSEEK_V4_1_FLASH_MODEL,
+	GPT6_LUNA_PRO_MODEL,
+	paidRouteAttempts,
+	type PaidRouteEndpoint,
+} from "./paidModelRoute";
 
 describe("streamDeltaReasoning", () => {
 	it("reads the normalized field first and never doubles up", () => {
@@ -113,15 +119,20 @@ describe("createContentThinkSplitter", () => {
 });
 
 describe("resolveReasoningEffort", () => {
-	it("maps medium to high for paid GLM and leaves free models alone", () => {
+	it("maps medium to high for GLM and DeepSeek, and leaves GPT and free models alone", () => {
 		assert.equal(
 			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "medium"),
+			"high",
+		);
+		assert.equal(
+			resolveReasoningEffort(DEEPSEEK_V4_1_FLASH_MODEL, "medium"),
 			"high",
 		);
 		assert.equal(
 			resolveReasoningEffort(ASK_PLANNER_PAID_FALLBACK_MODEL, "low"),
 			"low",
 		);
+		assert.equal(resolveReasoningEffort(GPT6_LUNA_PRO_MODEL, "medium"), "medium");
 		assert.equal(
 			resolveReasoningEffort("nvidia/nemotron-3-ultra-550b-a55b:free", "medium"),
 			"medium",
@@ -131,10 +142,18 @@ describe("resolveReasoningEffort", () => {
 });
 
 describe("askPlannerChatOptions", () => {
-	it("drops json_object and uses high effort for paid GLM", () => {
+	it("drops json_object and uses high effort for paid GLM and DeepSeek", () => {
 		assert.deepEqual(askPlannerChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
+		});
+		assert.deepEqual(askPlannerChatOptions(DEEPSEEK_V4_1_FLASH_MODEL), {
+			jsonMode: false,
+			reasoningEffort: ASK_PLANNER_PAID_REASONING_EFFORT,
+		});
+		assert.deepEqual(askPlannerChatOptions(GPT6_LUNA_PRO_MODEL), {
+			jsonMode: false,
+			reasoningEffort: ASK_PLANNER_REASONING_EFFORT,
 		});
 		assert.equal(ASK_PLANNER_PAID_REASONING_EFFORT, "high");
 		assert.deepEqual(
@@ -148,11 +167,13 @@ describe("askPlannerChatOptions", () => {
 });
 
 describe("askWriterChatOptions", () => {
-	it("uses low effort and keeps paid GLM off json_object", () => {
+	it("uses low effort and keeps paid models off json_object", () => {
 		assert.deepEqual(askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL), {
 			jsonMode: false,
 			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
 		});
+		assert.equal(askWriterChatOptions(DEEPSEEK_V4_1_FLASH_MODEL).jsonMode, false);
+		assert.equal(askWriterChatOptions(GPT6_LUNA_PRO_MODEL).jsonMode, false);
 		assert.deepEqual(
 			askWriterChatOptions("nvidia/nemotron-3-ultra-550b-a55b:free"),
 			{
@@ -295,7 +316,7 @@ describe("resolveOpenRouterChatModel", () => {
 });
 
 describe("openRouterProviderPreferences", () => {
-	it("uses OpenRouter native price sort for paid GLM", () => {
+	it("uses OpenRouter native price sort for an unpinned paid call", () => {
 		assert.deepEqual(
 			openRouterProviderPreferences(ASK_PLANNER_PAID_FALLBACK_MODEL),
 			{ sort: "price", allow_fallbacks: true },
@@ -304,6 +325,30 @@ describe("openRouterProviderPreferences", () => {
 			openRouterProviderPreferences(DEFAULT_OPENROUTER_MODEL),
 			undefined,
 		);
+	});
+
+	it("pins a scored provider and keeps GLM price sort as the last attempt", () => {
+		const host: PaidRouteEndpoint = {
+			modelId: DEEPSEEK_V4_1_FLASH_MODEL,
+			providerTag: "relace",
+			promptPerToken: 0.00000006,
+			completionPerToken: 0.00000032,
+			throughput: 52,
+			uptime1d: 100,
+			status: 0,
+		};
+		const attempts = paidRouteAttempts([host], {
+			inputTokens: 12_000,
+			kind: "ask",
+		});
+		assert.deepEqual(attempts[0]?.provider, {
+			only: ["relace"],
+			allow_fallbacks: false,
+		});
+		assert.deepEqual(attempts[1]?.provider, {
+			sort: "price",
+			allow_fallbacks: true,
+		});
 	});
 });
 

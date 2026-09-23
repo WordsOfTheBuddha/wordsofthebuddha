@@ -251,6 +251,7 @@ async function rewriteWithOpenRouter(options: {
 			maxTokens: ASK_PLANNER_MAX_TOKENS,
 			reasoningEffort: plannerChat.reasoningEffort,
 			jsonMode,
+			routeKind: "ask",
 			signal: options.signal,
 		})) {
 			if (chunk.reasoning) {
