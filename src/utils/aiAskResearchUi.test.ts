@@ -1518,7 +1518,7 @@ describe("Research pane copy", () => {
 			ASK_HISTORY_HINT_RECENT,
 			"Older ones drop off · pin to keep",
 		);
-		assert.equal(ASK_HISTORY_HINT_PINNED, "Stay until you unpin");
+		assert.equal(ASK_HISTORY_HINT_PINNED, "Stay until you unpin (Max 10)");
 		assert.equal(
 			ASK_DELETE_CONFIRM,
 			"Delete this Ask from Recent Asks? This cannot be undone.",

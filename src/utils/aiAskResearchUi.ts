@@ -85,7 +85,7 @@ export const RESEARCH_HISTORY_ARIA = "Research history";
 export const ASK_OPTIONS_ARIA = "Ask options";
 export const RESEARCH_OPTIONS_ARIA = "Research options";
 export const ASK_HISTORY_HINT_RECENT = "Older ones drop off · pin to keep";
-export const ASK_HISTORY_HINT_PINNED = "Stay until you unpin";
+export const ASK_HISTORY_HINT_PINNED = "Stay until you unpin (Max 10)";
 export const ASK_DELETE_CONFIRM =
 	"Delete this Ask from Recent Asks? This cannot be undone.";
 export const RESEARCH_DELETE_CONFIRM =

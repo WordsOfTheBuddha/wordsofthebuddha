@@ -384,6 +384,8 @@ import {
 } from "./askExportTurns";
 import { buildAskFollowUpHistory } from "./aiAskHistory";
 import { aiSourceRowHtml, formatAskAnswerCopyMarkdown } from "./aiAskCards";
+import { readNavAuthCache } from "./navAuthClient";
+import { loadPageUserState } from "./pageUserStateClient";
 
 export { buildAskFollowUpHistory };
 
@@ -2943,7 +2945,10 @@ export function attachAiMode(options: {
 	}
 
 	function researchUiOn(): boolean {
-		if (researchPaneOn() && turns.length === 0) {
+		// Ask and Research are dedicated modes with distinct meters — the Ask
+		// composer always shows Asks remaining, never research reports.
+		if (!researchPaneOn()) return false;
+		if (turns.length === 0) {
 			return Boolean(quota?.signedIn && !quota.needsEmailVerification);
 		}
 		if (!researchChipAvailable()) return false;
@@ -3158,10 +3163,9 @@ export function attachAiMode(options: {
 	}
 
 	function followResearchChipOn(): boolean {
-		if (!researchChipAvailable()) return false;
-		if (lastFinishedReportTurn()) return false;
-		if (researchPaneOn()) return false;
-		return researchChipOn || researchFlowLocksChip();
+		// Research is a dedicated mode now — the follow-up composer has no
+		// Research pill, so follow-ups are never Research.
+		return false;
 	}
 
 	function reviseFollowActive(): boolean {
@@ -3187,7 +3191,7 @@ export function attachAiMode(options: {
 	}
 
 	function researchCompositionEnabled(): boolean {
-		return researchPaneOn() || researchChipOn || followResearchChipOn();
+		return researchPaneOn() || researchChipOn;
 	}
 
 	function compositionImagesEnabled(): boolean {
@@ -6362,30 +6366,36 @@ export function attachAiMode(options: {
 
 	function syncResearchChip(): void {
 		const pane = researchPaneOn();
-		const available = researchChipAvailable();
-		const finishedReport = Boolean(lastFinishedReportTurn());
+		// /api/ai/quota can lag 10-20s behind the navbar auth state. Seed the
+		// empty Research composer from the navbar cache so signed-in readers
+		// see the real placeholder immediately instead of "Sign in…".
+		let navSignedIn = false;
+		try {
+			navSignedIn = readNavAuthCache()?.signedIn === true;
+		} catch {
+			navSignedIn = false;
+		}
 		const gated = researchEmptyComposerGated({
 			researchPane: pane,
 			hasThread: turns.length > 0,
-			quotaReady: Boolean(quota),
-			signedIn: Boolean(quota?.signedIn),
+			quotaReady: Boolean(quota) || navSignedIn,
+			signedIn: Boolean(quota?.signedIn) || navSignedIn,
 		});
 		root.classList.toggle("is-research-gated", gated);
-		const pressed =
-			pane || (available && (researchChipOn || researchFlowLocksChip()));
+		// Ask and Research are dedicated modes with distinct composers — no
+		// Research pill anywhere. Hide any stale chip and never let a persisted
+		// chip preference flip the Ask composer into Research UI.
 		root.querySelectorAll<HTMLButtonElement>("[data-ai-research-chip]").forEach(
 			(chip) => {
-				const onFollow = Boolean(chip.closest("[data-ai-follow-form]"));
-				chip.hidden =
-					!available || pane || (onFollow && finishedReport);
+				chip.hidden = true;
 				chip.title = RESEARCH_CHIP_TITLE;
-				chip.setAttribute("aria-pressed", pressed && !pane ? "true" : "false");
-				chip.classList.toggle("is-on", pressed && !pane);
+				chip.setAttribute("aria-pressed", "false");
+				chip.classList.toggle("is-on", false);
 			},
 		);
 		const placeholder = gated
 			? RESEARCH_SIGNED_OUT_PLACEHOLDER
-			: pane || (pressed && !finishedReport)
+			: pane
 				? RESEARCH_PLACEHOLDER
 				: ASK_PLACEHOLDER;
 		if (input) {
@@ -11392,9 +11402,7 @@ export function attachAiMode(options: {
 		}
 
 		const useResearch = shouldUseResearchAsk({
-			chipOn:
-				(researchPaneOn() && turns.length === 0 && !replacing) ||
-				followResearchChipOn(),
+			chipOn: researchPaneOn() && turns.length === 0 && !replacing,
 			followUp: replacing || turns.length > 0,
 			lastTurnResearch:
 				lastTurnIsResearch() || Boolean(replacingTurn?.research),
@@ -12486,6 +12494,18 @@ export function attachAiMode(options: {
 			followComposerPinnedOpen = false;
 			followInput?.blur();
 			syncFollowComposerMode();
+			return;
+		}
+		// Defocus composers on Escape: main Ask composer, Research composer
+		// (same textarea, mode-dependent placeholder), and follow-up.
+		const active = document.activeElement as HTMLElement | null;
+		if (active && (active === input || active === followInput)) {
+			event.preventDefault();
+			active.blur();
+			if (active === followInput) {
+				followComposerPinnedOpen = false;
+				syncFollowComposerMode();
+			}
 		}
 	});
 
@@ -12502,6 +12522,17 @@ export function attachAiMode(options: {
 
 	loadResearchChipPreference();
 	restoreResearchCompositionDraft();
+
+	// Navbar auth (page-state + local cache) resolves faster than /api/ai/quota.
+	// Re-sync the Research composer as soon as it confirms sign-in so the
+	// empty state doesn't linger on "Sign in to start research".
+	void loadPageUserState()
+		.then((state) => {
+			if (state?.signedIn) syncResearchChip();
+		})
+		.catch(() => {
+			/* quota refresh still corrects the composer */
+		});
 
 	window.addEventListener("pagehide", () => {
 		persistResearchCompositionDraft();

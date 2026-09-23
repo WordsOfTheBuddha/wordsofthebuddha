@@ -10,7 +10,7 @@ import "../styles/ai-mode.css";
 const researchEnabled = isAskResearchEnabled();
 
 const starterChips = [
-	{ label: "MN 10", href: "/mn10" },
+	{ label: "gradual training", href: "/search?q=gradual training" },
 	{ label: "mettā", href: "/search?q=mettā" },
 	{ label: "radical attention", href: "/search?q=radical%20attention" },
 ] as const;
@@ -39,7 +39,7 @@ const starterChips = [
 				id="home-search-input"
 				name="q"
 				value=""
-				placeholder="MN 10, mettā, radical attention…"
+				placeholder="Search..."
 				autocomplete="off"
 				enterkeyhint="search"
 				data-search-focus
