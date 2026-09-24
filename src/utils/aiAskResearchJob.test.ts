@@ -13,6 +13,8 @@ import {
 	researchJobRetryReusesCredit,
 	researchProcessHopLabels,
 	researchRevisedLabel,
+	researchReviseCycleLanded,
+	localRevisionMissingOnServer,
 	splitResearchReviseHopLabels,
 	interleaveResearchRevisionStartedHops,
 	toResearchJobPublic,
@@ -475,5 +477,85 @@ describe("revise-clarifying: a revision paused on the planner's questions", () =
 		assert.equal(revisionCycleShippedNote("Revising the report…"), false);
 		assert.deepEqual(dropOpenResearchRevisionCycle(["Read MN 10"]), ["Read MN 10"]);
 		assert.deepEqual(dropOpenResearchRevisionCycle(undefined), []);
+	});
+});
+
+describe("researchReviseCycleLanded", () => {
+	it("treats an open job, a new version, or this cycle’s hops as accepted", () => {
+		assert.equal(
+			researchReviseCycleLanded({
+				pending: true,
+				versionCount: 1,
+				versionCountBefore: 1,
+				startedNote: "Started v2 revision…",
+			}),
+			true,
+		);
+		assert.equal(
+			researchReviseCycleLanded({
+				pending: false,
+				versionCount: 2,
+				versionCountBefore: 1,
+				startedNote: "Started v2 revision…",
+			}),
+			true,
+		);
+		assert.equal(
+			researchReviseCycleLanded({
+				pending: false,
+				processNotes: ["Started v2 revision…", "Revision failed: timed out"],
+				versionCount: 1,
+				versionCountBefore: 1,
+				startedNote: "Started v2 revision…",
+			}),
+			true,
+		);
+		assert.equal(
+			researchReviseCycleLanded({
+				pending: false,
+				processNotes: ["Revised the report · v2"],
+				versionCount: 1,
+				versionCountBefore: 1,
+				startedNote: "Started v2 revision…",
+			}),
+			true,
+		);
+		assert.equal(
+			researchReviseCycleLanded({
+				pending: false,
+				processNotes: ["Started v1 revision…"],
+				versionCount: 1,
+				versionCountBefore: 1,
+				startedNote: "Started v2 revision…",
+			}),
+			false,
+		);
+	});
+
+	it("flags an optimistic hop the server never stored", () => {
+		assert.equal(
+			localRevisionMissingOnServer({
+				localNotes: ["Started v2 revision…"],
+				serverPending: false,
+				serverNotes: ["Read MN 10"],
+			}),
+			true,
+		);
+		assert.equal(
+			localRevisionMissingOnServer({
+				localNotes: ["Started v2 revision…"],
+				serverPending: true,
+				serverNotes: [],
+			}),
+			false,
+		);
+		assert.equal(
+			localRevisionMissingOnServer({
+				localNotes: ["Started v2 revision…"],
+				serverPending: false,
+				serverNotes: ["Started v2 revision…", "Revised the report · v2"],
+			}),
+			false,
+		);
 	});
 });

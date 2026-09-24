@@ -308,6 +308,14 @@ export function isResearchReviseInProgress(input: {
 	return Boolean(input.research && input.pending && input.hasReport);
 }
 
+/**
+ * The right-hand contents track the report on screen. A revision in progress
+ * still shows the base report, so the contents stay up until there is no report.
+ */
+export function researchReportShowsToc(report: string | undefined): boolean {
+	return Boolean((report || "").trim());
+}
+
 /** Planner questions on a paused revision, plus the reader's draft answers. */
 export interface ResearchReviseClarifyDraft extends ResearchReviseClarify {
 	answers: Record<string, { choiceId: string; otherText?: string }>;

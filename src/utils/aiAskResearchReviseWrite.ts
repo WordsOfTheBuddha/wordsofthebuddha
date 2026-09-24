@@ -5,7 +5,6 @@ import {
 	ASK_WRITER_IDLE_MS,
 	ASK_WRITER_MIN_MS,
 	createWatchdogAbortSignal,
-	resolveAskWriterBudgetMs,
 } from "./aiAskAnswer";
 import { buildResearchReportEvidence } from "./aiAskResearchReportWrite";
 import {
@@ -159,7 +158,25 @@ Scope:
 - Write only from the report plus any supplied passages. If passages are empty, do not pad.`;
 
 export const RESEARCH_REVISE_PLANNER_MAX_TOKENS = 4_000;
-export const RESEARCH_REVISE_PLANNER_BUDGET_MS = 120_000;
+/** Planner cap. A typical revise plan finishes in well under a minute. */
+export const RESEARCH_REVISE_PLANNER_BUDGET_MS = 60_000;
+/** Vercel kills the revise function at 5 minutes. Planner, evidence, and writer share it. */
+export const RESEARCH_REVISE_FUNCTION_BUDGET_MS = 300_000;
+/** Leave this after the writer returns so the new version can be saved. */
+export const RESEARCH_REVISE_COMMIT_RESERVE_MS = 15_000;
+
+/**
+ * How long the writer may run given time already spent on the planner and
+ * evidence reads. Returns 0 when too little of the 5 minutes remains.
+ */
+export function resolveResearchReviseWriterBudgetMs(elapsedMs: number): number {
+	const remaining =
+		RESEARCH_REVISE_FUNCTION_BUDGET_MS -
+		Math.max(0, elapsedMs) -
+		RESEARCH_REVISE_COMMIT_RESERVE_MS;
+	if (remaining < ASK_WRITER_MIN_MS) return 0;
+	return remaining;
+}
 
 /**
  * Planner call. Returns null (the writer then works from heuristics) when the
@@ -676,7 +693,7 @@ export async function writeResearchRevise(options: {
 }> {
 	const empty = { patch: null, model: "" };
 	if (!getOpenRouterApiKey()) return empty;
-	const budget = options.timeoutMs ?? Math.max(resolveAskWriterBudgetMs(0), 240_000);
+	const budget = options.timeoutMs ?? resolveResearchReviseWriterBudgetMs(0);
 	if (budget < ASK_WRITER_MIN_MS) return empty;
 	const instruction = clipResearchReviseInstruction(options.instruction);
 	const report = options.report.replace(/\r\n/g, "\n").trim();

@@ -1,6 +1,5 @@
 import type { UserRecord } from "firebase-admin/auth";
 import type { ResearchContextImage } from "./aiAskComposition";
-import { resolveAskWriterBudgetMs } from "./aiAskAnswer";
 import type { AskQuotaView } from "./aiAskQuota";
 import { consumeAskQuota } from "./aiAskQuotaServer";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
@@ -67,6 +66,7 @@ import {
 	gatherReviseEvidence,
 	planResearchRevise,
 	planReviseEvidence,
+	resolveResearchReviseWriterBudgetMs,
 	writeResearchRevise,
 } from "./aiAskResearchReviseWrite";
 import {
@@ -677,7 +677,9 @@ export async function runResearchReviseJob(options: {
 			evidence: gathered.evidence,
 			plan,
 			attachedImages,
-			timeoutMs: resolveAskWriterBudgetMs(Date.now() - workerStarted),
+			timeoutMs: resolveResearchReviseWriterBudgetMs(
+				Date.now() - workerStarted,
+			),
 		});
 		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
 		if (!record) return;

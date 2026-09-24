@@ -8,6 +8,7 @@ import { clipAiQuestion, MAX_QUESTION_CHARS } from "./aiAskQuestionText";
 import { RESEARCH_REPORT_MAX_CHARS } from "./aiAskResearchReport";
 import {
 	clipResearchVersionIndex,
+	isResearchRevisionStartedLabel,
 	isResearchRevisePlanNote,
 	researchRevisionStartedLabel,
 	sanitizeResearchReviseClarify,
@@ -409,6 +410,73 @@ export function researchProcessHopLabels(
 export function researchRevisedLabel(n: number): string {
 	const version = Math.max(2, Math.floor(Number(n) || 2));
 	return `Revised the report · v${version}`;
+}
+
+function normalizeRevisionHop(note: string): string {
+	return note
+		.replace(/…|\.{3}$/u, "")
+		.replace(/\s+/g, " ")
+		.trim()
+		.toLowerCase();
+}
+
+/** Latest open “Started vN revision” hop on the client, if the strip has one. */
+export function latestRevisionStartedNote(
+	notes: readonly string[] | undefined,
+): string {
+	let latest = "";
+	for (const note of notes || []) {
+		if (isResearchRevisionStartedLabel(note)) latest = note;
+	}
+	return latest;
+}
+
+/**
+ * Whether a revise submit is on the server. Pending, a new version, the
+ * cycle’s “Started vN” hop, or the shipped “Revised the report · vN” hop
+ * all count. A lost HTTP response can still be a landed revision.
+ */
+export function researchReviseCycleLanded(input: {
+	pending: boolean;
+	processNotes?: readonly string[];
+	versionCount: number;
+	versionCountBefore: number;
+	startedNote: string;
+}): boolean {
+	if (input.pending) return true;
+	if (input.versionCount > Math.max(0, input.versionCountBefore)) return true;
+	const started = normalizeRevisionHop(input.startedNote);
+	if (!started) return false;
+	const versionMatch = started.match(/\bv(\d+)\b/);
+	const revised = versionMatch
+		? normalizeRevisionHop(researchRevisedLabel(Number(versionMatch[1])))
+		: "";
+	return (input.processNotes || []).some((note) => {
+		const normalized = normalizeRevisionHop(note);
+		return normalized === started || (revised !== "" && normalized === revised);
+	});
+}
+
+/**
+ * The client opened a revision cycle that the server job does not have.
+ * Used when a reload replays an optimistic “Started vN” hop after the
+ * submit never arrived.
+ */
+export function localRevisionMissingOnServer(input: {
+	localNotes?: readonly string[];
+	serverPending: boolean;
+	serverNotes?: readonly string[];
+}): boolean {
+	if (input.serverPending) return false;
+	const startedNote = latestRevisionStartedNote(input.localNotes);
+	if (!startedNote) return false;
+	return !researchReviseCycleLanded({
+		pending: false,
+		processNotes: input.serverNotes,
+		versionCount: 0,
+		versionCountBefore: 0,
+		startedNote,
+	});
 }
 
 function clip(value: string, max: number): string {

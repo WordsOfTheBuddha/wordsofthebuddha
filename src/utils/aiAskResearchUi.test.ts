@@ -89,6 +89,7 @@ import {
 	reportFollowDockRect,
 	researchEmptyComposerGated,
 	isResearchReviseInProgress,
+	researchReportShowsToc,
 	askSampleFollowDock,
 	researchReportFollowChrome,
 	RESEARCH_NEW_REPORT_ACTION,
@@ -248,6 +249,16 @@ describe("isResearchReviseInProgress", () => {
 			}),
 			false,
 		);
+	});
+});
+
+describe("researchReportShowsToc", () => {
+	it("keeps the contents while a revision is showing the base report", () => {
+		assert.equal(researchReportShowsToc("## Theme\n\nBody"), true);
+		assert.equal(researchReportShowsToc("  ## Theme  "), true);
+		assert.equal(researchReportShowsToc(""), false);
+		assert.equal(researchReportShowsToc("   "), false);
+		assert.equal(researchReportShowsToc(undefined), false);
 	});
 });
 

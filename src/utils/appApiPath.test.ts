@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	isAppApiCatchAllId,
+	isTransientResearchFetchFailure,
 	researchApiFailureMessage,
 	rewriteResearchApiPath,
 } from "./appApiPath";
@@ -63,5 +64,24 @@ describe("researchApiFailureMessage", () => {
 			researchApiFailureMessage({ status: 404, error: "Not found." }),
 			"Could not reach the research server. Refresh the page and try again.",
 		);
+	});
+});
+
+describe("isTransientResearchFetchFailure", () => {
+	it("retries dropped connections and brief server failures", () => {
+		assert.equal(isTransientResearchFetchFailure(0), true);
+		assert.equal(isTransientResearchFetchFailure(0, "timeout"), true);
+		assert.equal(isTransientResearchFetchFailure(200, "timeout"), true);
+		assert.equal(isTransientResearchFetchFailure(502), true);
+		assert.equal(isTransientResearchFetchFailure(503), true);
+		assert.equal(isTransientResearchFetchFailure(504), true);
+	});
+
+	it("does not retry a definitive job response", () => {
+		assert.equal(isTransientResearchFetchFailure(200), false);
+		assert.equal(isTransientResearchFetchFailure(400, "invalid"), false);
+		assert.equal(isTransientResearchFetchFailure(404, "not_found"), false);
+		assert.equal(isTransientResearchFetchFailure(401), false);
+		assert.equal(isTransientResearchFetchFailure(429), false);
 	});
 });

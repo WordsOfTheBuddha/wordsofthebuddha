@@ -49,3 +49,15 @@ export function researchApiFailureMessage(input: {
 	}
 	return input.error || input.fallback || "Could not revise the report.";
 }
+
+/**
+ * A job status read failed because the network or host was briefly unreachable.
+ * The job itself is unchanged; the caller should retry.
+ */
+export function isTransientResearchFetchFailure(
+	status: number,
+	code?: string,
+): boolean {
+	if (status === 0 || code === "timeout") return true;
+	return status === 502 || status === 503 || status === 504;
+}

@@ -120,7 +120,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 				},
 			);
 		}
-		void startResearchReviseWorker({
+		// Register the detached worker before the 202 goes out. The model run
+		// itself is not awaited — a dropped client connection must not cancel it.
+		await startResearchReviseWorker({
 			requestUrl: request.url,
 			uid: user.uid,
 			jobId: answered.job.id,
@@ -176,7 +178,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 		);
 	}
 
-	void startResearchReviseWorker({
+	// Register the detached worker before the 202 goes out. The model run
+	// itself is not awaited — a dropped client connection must not cancel it.
+	await startResearchReviseWorker({
 		requestUrl: request.url,
 		uid: user.uid,
 		jobId: started.job.id,

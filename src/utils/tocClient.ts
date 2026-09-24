@@ -14,7 +14,7 @@ export const DISCOURSE_TOC_MIN_HEADINGS = 2;
 export const DISCOURSE_TOC_HEADING_SELECTOR = "h1, h2, h3, h4, h5";
 /** Essay posts skip the layout `h1` title; nest `h3`–`h5` under `h2`. */
 export const POST_TOC_HEADING_SELECTOR = "h2, h3, h4, h5";
-/** Research reports: last finished report body; nest `h3` under `h2`. */
+/** Research reports: the visible report body, including while a revision runs. */
 export const RESEARCH_TOC_MIN_HEADINGS = 2;
 export const RESEARCH_TOC_CONTENT_SELECTOR =
 	".ai-turn:last-child .ai-report .ai-answer-body";
