@@ -552,6 +552,7 @@ export async function runResearchReviseJob(options: {
 		// writer needs (one search round, a few full reads). Runs under the
 		// “Considering the revision…” hop already recorded at start.
 		const attachedImages = record.reviseAttachedImages || [];
+		const plannerStarted = Date.now();
 		const planned = await planResearchRevise({
 			report: baseReport,
 			instruction,
@@ -563,6 +564,7 @@ export async function runResearchReviseJob(options: {
 			quote,
 			attachedImages,
 		});
+		const plannerElapsedMs = Date.now() - plannerStarted;
 		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
 		if (!record) return;
 		const plan = planned.plan;
@@ -660,8 +662,9 @@ export async function runResearchReviseJob(options: {
 			if (!next) return;
 			record = next;
 		}
+		const writerBudgetMs = resolveResearchReviseWriterBudgetMs(plannerElapsedMs);
 		console.warn(
-			`[ai/research/revise] job ${record.id} writing (evidenceChars=${gathered.evidence.length})`,
+			`[ai/research/revise] job ${record.id} writing (evidenceChars=${gathered.evidence.length} plannerMs=${plannerElapsedMs} writerBudgetMs=${writerBudgetMs})`,
 		);
 		// Pass 2 — the writer sees the block-numbered report, the plan, the
 		// target blocks and the passages, and returns block ops.
@@ -677,9 +680,7 @@ export async function runResearchReviseJob(options: {
 			evidence: gathered.evidence,
 			plan,
 			attachedImages,
-			timeoutMs: resolveResearchReviseWriterBudgetMs(
-				Date.now() - workerStarted,
-			),
+			timeoutMs: writerBudgetMs,
 		});
 		record = (await readActiveReviseWorkerRecord(record.uid, record.id, runToken)) ?? null;
 		if (!record) return;

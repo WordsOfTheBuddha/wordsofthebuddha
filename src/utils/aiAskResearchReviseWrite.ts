@@ -158,24 +158,22 @@ Scope:
 - Write only from the report plus any supplied passages. If passages are empty, do not pad.`;
 
 export const RESEARCH_REVISE_PLANNER_MAX_TOKENS = 4_000;
-/** Planner cap. A typical revise plan finishes in well under a minute. */
-export const RESEARCH_REVISE_PLANNER_BUDGET_MS = 60_000;
-/** Vercel kills the revise function at 5 minutes. Planner, evidence, and writer share it. */
-export const RESEARCH_REVISE_FUNCTION_BUDGET_MS = 300_000;
-/** Leave this after the writer returns so the new version can be saved. */
-export const RESEARCH_REVISE_COMMIT_RESERVE_MS = 15_000;
+/** Planner cap. Unused time is added to the writer. */
+export const RESEARCH_REVISE_PLANNER_BUDGET_MS = 120_000;
+/** Writer floor. A slow planner does not shrink this. */
+export const RESEARCH_REVISE_WRITER_BASE_MS = 150_000;
 
 /**
- * How long the writer may run given time already spent on the planner and
- * evidence reads. Returns 0 when too little of the 5 minutes remains.
+ * Writer wall clock: 150s plus whatever the planner did not use of its 120s.
+ * A plan that finishes in 20s gives the writer 250s. A plan that uses the
+ * full 120s leaves the writer at 150s.
  */
-export function resolveResearchReviseWriterBudgetMs(elapsedMs: number): number {
-	const remaining =
-		RESEARCH_REVISE_FUNCTION_BUDGET_MS -
-		Math.max(0, elapsedMs) -
-		RESEARCH_REVISE_COMMIT_RESERVE_MS;
-	if (remaining < ASK_WRITER_MIN_MS) return 0;
-	return remaining;
+export function resolveResearchReviseWriterBudgetMs(plannerElapsedMs: number): number {
+	const unusedPlannerMs = Math.max(
+		0,
+		RESEARCH_REVISE_PLANNER_BUDGET_MS - Math.max(0, plannerElapsedMs),
+	);
+	return RESEARCH_REVISE_WRITER_BASE_MS + unusedPlannerMs;
 }
 
 /**

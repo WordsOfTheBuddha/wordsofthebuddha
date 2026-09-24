@@ -75,9 +75,8 @@ import {
 	formatReviseEvidenceDebugLog,
 	hitMatchesDiscourseId,
 	RESEARCH_REVISE_PLAN_SYSTEM,
-	RESEARCH_REVISE_COMMIT_RESERVE_MS,
-	RESEARCH_REVISE_FUNCTION_BUDGET_MS,
 	RESEARCH_REVISE_PLANNER_BUDGET_MS,
+	RESEARCH_REVISE_WRITER_BASE_MS,
 	RESEARCH_REVISE_WRITER_MAX_TOKENS,
 	resolveResearchReviseWriterBudgetMs,
 } from "./aiAskResearchReviseWrite";
@@ -1144,14 +1143,12 @@ describe("version index", () => {
 describe("revise output budget", () => {
 	it("raises the writer completion cap without moving the 100k ingest cap", () => {
 		assert.equal(RESEARCH_REVISE_WRITER_MAX_TOKENS, 50_000);
-		assert.equal(RESEARCH_REVISE_FUNCTION_BUDGET_MS, 300_000);
-		assert.equal(RESEARCH_REVISE_PLANNER_BUDGET_MS, 60_000);
-		assert.equal(
-			resolveResearchReviseWriterBudgetMs(0),
-			RESEARCH_REVISE_FUNCTION_BUDGET_MS - RESEARCH_REVISE_COMMIT_RESERVE_MS,
-		);
-		assert.equal(resolveResearchReviseWriterBudgetMs(40_000), 245_000);
-		assert.equal(resolveResearchReviseWriterBudgetMs(290_000), 0);
+		assert.equal(RESEARCH_REVISE_PLANNER_BUDGET_MS, 120_000);
+		assert.equal(RESEARCH_REVISE_WRITER_BASE_MS, 150_000);
+		assert.equal(resolveResearchReviseWriterBudgetMs(0), 270_000);
+		assert.equal(resolveResearchReviseWriterBudgetMs(12_500), 257_500);
+		assert.equal(resolveResearchReviseWriterBudgetMs(120_000), 150_000);
+		assert.equal(resolveResearchReviseWriterBudgetMs(180_000), 150_000);
 		assert.ok(RESEARCH_REVISE_MAX_OUTPUT_WORDS >= 30_000);
 		assert.ok(RESEARCH_REVISE_CHANGELOG_MAX >= 2_000);
 		assert.equal(
