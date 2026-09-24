@@ -53,8 +53,12 @@ describe("researchWriterBudgetWithMargin", () => {
 		assert.equal(researchWriterBudgetWithMargin(270_000 - 60_000), 30_000);
 	});
 
-	it("caps a fresh pass at the writer max", () => {
-		assert.equal(researchWriterBudgetWithMargin(0), 150_000);
+	it("gives a fresh pass the function budget minus the handoff margin", () => {
+		assert.equal(researchWriterBudgetWithMargin(0), 240_000);
+	});
+
+	it("keeps time the planner did not use", () => {
+		assert.equal(researchWriterBudgetWithMargin(55_000), 185_000);
 	});
 });
 

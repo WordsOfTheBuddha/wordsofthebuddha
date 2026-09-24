@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import {
 	ASK_ANSWER_SYSTEM,
@@ -11,6 +12,8 @@ import {
 	composeFullDiscourseText,
 	createWatchdogAbortSignal,
 	formatAskAnswerEvidenceBlock,
+	labelDiscourseParagraphs,
+	listDiscourseParagraphs,
 	parseAskAnswerSummary,
 	pickMatchingParagraphs,
 	RESEARCH_FULL_TEXT_CHARS,
@@ -573,5 +576,34 @@ describe("buildAskAnswerUserPrompt", () => {
 		assert.match(prompt, /gloss for aggregate of collectedness/);
 		assert.match(prompt, /Compile \|term::/);
 		assert.match(prompt, /ariyo samādhikkhandho/);
+	});
+});
+
+describe("listDiscourseParagraphs", () => {
+	it("numbers MN 43 the way the discourse page does", () => {
+		const raw = readFileSync("src/content/en/mn/mn43.mdx", "utf8");
+		const body = raw.replace(/^---[\s\S]*?---\s*/, "");
+		const rows = listDiscourseParagraphs(body);
+		const hit = rows.find((row) =>
+			row.text.includes("It distinguishes, it distinguishes"),
+		);
+		assert.equal(hit?.number, 9);
+		const labeled = labelDiscourseParagraphs(body, hit?.text || "");
+		assert.match(labeled, /^¶ 9\n/);
+	});
+
+	it("keeps a short paragraph and does not number a heading", () => {
+		const body = [
+			"Thus have I heard—at one time the Blessed One was dwelling at Sāvatthi.",
+			"### Wisdom",
+			"Short.",
+			"One who is undiscerning, friend, it is said, and the question continues well past a short line.",
+		].join("\n\n");
+		const rows = listDiscourseParagraphs(body);
+		assert.deepEqual(
+			rows.map((row) => row.number),
+			[1, 2, 3],
+		);
+		assert.equal(rows[1]?.text, "Short.");
 	});
 });

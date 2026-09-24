@@ -10,6 +10,7 @@ import {
 	isEligiblePaidRoute,
 	loadPaidRouteCatalog,
 	paidRouteAttempts,
+	paidRouteTokensInBudget,
 	parseEndpointPayload,
 	rankPaidRoutes,
 	resetPaidRouteCatalogCacheForTests,
@@ -120,6 +121,53 @@ describe("rankPaidRoutes", () => {
 			rankPaidRoutes(catalog, { inputTokens: 20_000, kind: "revise" })[0]
 				?.providerTag,
 			"relace",
+		);
+	});
+
+	it("upgrades a revise host only when the usual pick cannot finish in time", () => {
+		const slow = endpoint({
+			modelId: PAID_ROUTE_GLM_MODEL,
+			providerTag: "slow",
+			promptPerToken: perMillion(0.05),
+			completionPerToken: perMillion(0.25),
+			throughput: 19,
+		});
+		const fast = endpoint({
+			modelId: DEEPSEEK_V4_1_FLASH_MODEL,
+			providerTag: "fast",
+			promptPerToken: perMillion(0.09),
+			completionPerToken: perMillion(0.45),
+			throughput: 60,
+		});
+		assert.ok(paidRouteTokensInBudget(150_000, 19) < 4_000);
+		assert.equal(
+			rankPaidRoutes([slow, fast], {
+				inputTokens: 6_000,
+				kind: "revise",
+				budgetMs: 150_000,
+			})[0]?.providerTag,
+			"fast",
+		);
+		assert.equal(
+			rankPaidRoutes([slow, fast], {
+				inputTokens: 6_000,
+				kind: "revise",
+			})[0]?.providerTag,
+			"slow",
+		);
+		const quickEnough = endpoint({
+			...slow,
+			providerTag: "quick-enough",
+			throughput: 52,
+		});
+		assert.ok(paidRouteTokensInBudget(150_000, 52) >= 4_000);
+		assert.equal(
+			rankPaidRoutes([quickEnough, fast], {
+				inputTokens: 6_000,
+				kind: "revise",
+				budgetMs: 150_000,
+			})[0]?.providerTag,
+			"quick-enough",
 		);
 	});
 

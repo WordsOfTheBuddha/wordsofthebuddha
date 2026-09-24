@@ -6272,13 +6272,19 @@ export function attachAiMode(options: {
 	}
 
 	function bindReportRevise(turn: AiAskTurn, turnIndex: number): void {
-		if (turnIndex !== turns.length - 1 || !lastFinishedReportTurn()) return;
+		if (turnIndex !== turns.length - 1 || !turn.research) return;
 		const report = lastReportElement();
-		if (report) {
+		// A revision in progress still shows the report. Keep ¶ numbers and the
+		// toggle alive; they used to wait until the turn was no longer pending.
+		if (
+			report &&
+			researchReportShowsToc(displayedReportMarkdown(turn) || turn.report)
+		) {
 			syncReportParagraphNumbers(report);
 			bindReportParagraphToggle(report);
-			stampReviseReportBlockIds(turn);
 		}
+		if (!lastFinishedReportTurn()) return;
+		if (report) stampReviseReportBlockIds(turn);
 		thread.querySelectorAll<HTMLElement>("[data-report-heading]").forEach(
 			(heading) => {
 				heading.addEventListener("click", (event) => {

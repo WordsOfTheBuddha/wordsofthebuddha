@@ -2,8 +2,10 @@ import type { ResearchContextImage } from "./aiAskComposition";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import { toPublicAskHit } from "./aiDiscourseHits";
 import {
+	ADAPTIVE_WRITER_FALLBACK_TPS,
 	ASK_WRITER_IDLE_MS,
 	ASK_WRITER_MIN_MS,
+	resolveAdaptiveWriterMaxTokens,
 	createWatchdogAbortSignal,
 } from "./aiAskAnswer";
 import { buildResearchReportEvidence } from "./aiAskResearchReportWrite";
@@ -84,12 +86,8 @@ function reviseModelUserContent(
 
 /** Completion ceiling, the same limit as the research report writer. */
 export const RESEARCH_REVISE_WRITER_MAX_TOKENS = RESEARCH_WRITER_MAX_TOKENS;
-/** Seconds kept back for sending the prompt and reading the reply. */
-export const RESEARCH_REVISE_WRITER_SETUP_MS = 20_000;
-/** Route throughput is optimistic. Write to three quarters of the quoted speed. */
-export const RESEARCH_REVISE_WRITER_TPS_FACTOR = 0.75;
 /** When the route has no measured speed (price-sort fallback). */
-export const RESEARCH_REVISE_WRITER_FALLBACK_TPS = 24;
+export const RESEARCH_REVISE_WRITER_FALLBACK_TPS = ADAPTIVE_WRITER_FALLBACK_TPS;
 export const RESEARCH_REVISE_NEW_HITS_MAX = 8;
 
 /**
@@ -161,7 +159,7 @@ Quotations:
 
 Citations:
 - Ordinary discourse IDs in prose (MN 10, SN 22.59). Do not invent IDs.
-- A discourse link is the site slug: [SN 12.67 ¶3](/sn12.67#3), [SN 1.20 ¶15](/sn1.20#15), [SNP 4.11](/snp4.11). Use a dot between the book and the sutta. A hyphen belongs only in a paragraph range in the hash, as [MN 10 ¶6–50](/mn10#6-50). Never write /sn12-67.
+- A discourse link is the site slug: [SN 12.67 ¶3](/sn12.67#3), [SN 1.20 ¶15](/sn1.20#15), [SNP 4.11](/snp4.11). Use a dot between the book and the sutta. A hyphen belongs only in a paragraph range in the hash, as [MN 10 ¶6–50](/mn10#6-50). Never write /sn12-67. When an English passage begins with a ¶ number, that is the discourse page's paragraph id: copy it into the citation. Do not invent a paragraph number.
 - When new passages are supplied, cite their discourse IDs in the edited markdown so they appear as citations. Do not drop citations that were in the original block.
 - No ## Sources section — the harness rebuilds it.
 
@@ -192,31 +190,38 @@ export function resolveResearchReviseWriterBudgetMs(plannerElapsedMs: number): n
 }
 
 /**
- * Completion tokens that can be decoded inside the writer's wall clock.
- * Discounts the route's quoted speed and keeps 20s for the request itself.
- * Never raises the cap above what that time can hold.
+ * Tokens the JSON reply should use, from the writer clock and the route speed.
+ * Passed in the prompt. The API completion cap stays at the writer ceiling so
+ * reasoning is not cut off before the reply starts.
  */
 export function resolveResearchReviseWriterMaxTokens(
 	budgetMs: number,
 	tokensPerSecond: number,
 ): number {
-	const usableSeconds = Math.max(0, budgetMs - RESEARCH_REVISE_WRITER_SETUP_MS) / 1000;
-	const assumedTps = Math.max(0, tokensPerSecond) * RESEARCH_REVISE_WRITER_TPS_FACTOR;
-	const raw = Math.floor(usableSeconds * assumedTps);
-	if (raw < 1) return 1;
-	return Math.min(RESEARCH_REVISE_WRITER_MAX_TOKENS, raw);
+	return resolveAdaptiveWriterMaxTokens(
+		budgetMs,
+		tokensPerSecond,
+		RESEARCH_REVISE_WRITER_MAX_TOKENS,
+	);
 }
 
-/** Told to the writer so it closes a partial patch instead of running out of tokens mid-JSON. */
-export function researchReviseWriterBudgetNote(maxTokens: number): string {
-	const cap = Math.max(1, Math.floor(maxTokens));
-	return `Completion budget: finish the entire JSON reply within ${cap} tokens. Cover as many targets as that allows, in the order the instruction depends on them. Finish each op you start. If some targets will not fit, leave them unchanged and name them in the changelog. Close the JSON. A finished partial patch is the result the reader needs.`;
+/** Told to the writer so the JSON stays inside the clock. Reasoning is separate. */
+export function researchReviseWriterBudgetNote(replyTokens: number): string {
+	const cap = Math.max(1, Math.floor(replyTokens));
+	return `Completion budget: the JSON reply itself must finish within ${cap} tokens. That count is the reply, not your reasoning. Cover as many targets as that allows, in the order the instruction depends on them. Finish each op you start. If some targets will not fit, leave them unchanged and name them in the changelog. Close the JSON. A finished partial patch is the result the reader needs.`;
 }
 
-async function researchReviseWriterTokensPerSecond(inputTokens: number): Promise<number> {
+async function researchReviseWriterTokensPerSecond(
+	inputTokens: number,
+	budgetMs: number,
+): Promise<number> {
 	try {
 		const catalog = await loadPaidRouteCatalog({ headers: openRouterAuthHeaders() });
-		const [first] = paidRouteAttempts(catalog, { inputTokens, kind: "revise" });
+		const [first] = paidRouteAttempts(catalog, {
+			inputTokens,
+			kind: "revise",
+			budgetMs,
+		});
 		if (first?.throughput != null && first.throughput > 0) return first.throughput;
 	} catch {
 		/* A missing catalog still gets a conservative speed. */
@@ -766,10 +771,13 @@ export async function writeResearchRevise(options: {
 		{ content: RESEARCH_REVISE_SYSTEM },
 		{ content: buildReviseWriterMessage(messageInput) },
 	]);
-	const tokensPerSecond = await researchReviseWriterTokensPerSecond(inputTokens);
-	const maxTokens = resolveResearchReviseWriterMaxTokens(budget, tokensPerSecond);
+	const tokensPerSecond = await researchReviseWriterTokensPerSecond(
+		inputTokens,
+		budget,
+	);
+	const replyTokens = resolveResearchReviseWriterMaxTokens(budget, tokensPerSecond);
 	console.warn(
-		`[ai/research/revise] writer cap maxTokens=${maxTokens} tps=${Math.round(tokensPerSecond)} budgetMs=${budget}`,
+		`[ai/research/revise] writer cap apiMaxTokens=${RESEARCH_REVISE_WRITER_MAX_TOKENS} replyTokens=${replyTokens} tps=${Math.round(tokensPerSecond)} budgetMs=${budget}`,
 	);
 	const watchdog = createWatchdogAbortSignal({
 		idleMs: ASK_WRITER_IDLE_MS,
@@ -780,17 +788,18 @@ export async function writeResearchRevise(options: {
 		const writerOpts = askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL);
 		const result = await openRouterChat({
 			model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-			maxTokens,
+			maxTokens: RESEARCH_REVISE_WRITER_MAX_TOKENS,
 			reasoningEffort: writerOpts.reasoningEffort || ASK_WRITER_REASONING_EFFORT,
 			jsonMode: writerOpts.jsonMode,
 			routeKind: "revise",
+			routeBudgetMs: budget,
 			signal: watchdog.signal,
 			messages: [
 				{ role: "system", content: RESEARCH_REVISE_SYSTEM },
 				{
 					role: "user",
 					content: reviseModelUserContent(
-						buildReviseWriterMessage({ ...messageInput, maxTokens }),
+						buildReviseWriterMessage({ ...messageInput, maxTokens: replyTokens }),
 						options.attachedImages,
 					),
 				},

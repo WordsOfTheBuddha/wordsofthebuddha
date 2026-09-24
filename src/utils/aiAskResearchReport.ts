@@ -39,7 +39,7 @@ Write GitHub-flavored markdown (no JSON). Use:
 - when a selected discourse is marked [illustrated] or includes Illustration (labels), this site has a diagram of that teaching. Use those labels for mermaid. Prefer reusing its structure, labels, and relationships over inventing a conflicting chart. You may simplify.
 - when a selected discourse includes an Illustration (SVG) block, that is the site SVG markup itself — reuse or adapt it; do not request it again
 - ordinary discourse IDs in prose (MN 10, SN 22.59) — prefer IDs whose excerpts or full text you were given; you may also name other selected titles as further sources without inventing their content
-- when a claim quotes a specific paragraph (or range) from the passages, cite it as [MN 21 ¶21](/mn21#21) or [MN 10 ¶6–50](/mn10#6-50), using those ¶ numbers. In any one paragraph, link a given discourse only once
+- when a claim quotes a specific paragraph (or range) from the passages, cite it as [MN 21 ¶21](/mn21#21) or [MN 10 ¶6–50](/mn10#6-50). Each English passage paragraph begins with its ¶ number; copy that number. Do not invent one. In any one paragraph, link a given discourse only once
 - no ## Sources section — the harness appends a bilingual source list
 - no scripts, forms, event handlers, or off-site URLs in SVG/HTML
 

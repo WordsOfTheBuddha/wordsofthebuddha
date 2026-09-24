@@ -33,6 +33,23 @@ export const PAID_ROUTE_MIN_TPS = 10;
 export const PAID_ROUTE_COST_BAND = 1.2;
 /** Within the cost band, speed wins only at this multiple of the cheapest host. */
 export const PAID_ROUTE_THROUGHPUT_GAIN = 2;
+/**
+ * Revision calls need room for reasoning and a reply. A faster host may win
+ * when the usual pick cannot emit this many tokens before the writer clock
+ * ends, and only if it costs at most twice that pick.
+ */
+export const PAID_ROUTE_REVISE_MIN_TOKENS = 4_000;
+export const PAID_ROUTE_REVISE_COST_BAND = 2;
+/** Matches the writer clock's setup holdback and throughput discount. */
+const PAID_ROUTE_REVISE_SETUP_MS = 20_000;
+const PAID_ROUTE_REVISE_TPS_FACTOR = 0.75;
+
+export interface PaidRouteRequest {
+	inputTokens: number;
+	kind: PaidRouteKind;
+	/** Writer wall clock. Set on revise calls so a slow pick can be replaced. */
+	budgetMs?: number;
+}
 
 const OPENROUTER_ENDPOINTS = "https://openrouter.ai/api/v1/models";
 const CATALOG_KEY = "catalog";
@@ -47,11 +64,6 @@ export interface PaidRouteEndpoint {
 	/** Last-day uptime percent. Null when the provider has no sample. */
 	uptime1d: number | null;
 	status: number;
-}
-
-export interface PaidRouteRequest {
-	inputTokens: number;
-	kind: PaidRouteKind;
 }
 
 export interface PaidRouteAttempt {
@@ -282,14 +294,49 @@ function pickPaidRoute(
 			row.endpoint.throughput >=
 			cheapest.endpoint.throughput * PAID_ROUTE_THROUGHPUT_GAIN,
 	);
-	if (faster.length === 0) return cheapest.endpoint;
-	faster.sort(
-		(a, b) =>
-			b.endpoint.throughput - a.endpoint.throughput ||
-			a.cost - b.cost ||
-			a.endpoint.providerTag.localeCompare(b.endpoint.providerTag),
-	);
-	return faster[0].endpoint;
+	let winner = cheapest;
+	if (faster.length > 0) {
+		faster.sort(
+			(a, b) =>
+				b.endpoint.throughput - a.endpoint.throughput ||
+				a.cost - b.cost ||
+				a.endpoint.providerTag.localeCompare(b.endpoint.providerTag),
+		);
+		winner = faster[0];
+	}
+	if (
+		request.kind === "revise" &&
+		request.budgetMs &&
+		request.budgetMs > 0 &&
+		paidRouteTokensInBudget(request.budgetMs, winner.endpoint.throughput) <
+			PAID_ROUTE_REVISE_MIN_TOKENS
+	) {
+		const upgraded = scored.filter(
+			(row) =>
+				row.cost <= winner.cost * PAID_ROUTE_REVISE_COST_BAND &&
+				row.endpoint.throughput > winner.endpoint.throughput,
+		);
+		if (upgraded.length > 0) {
+			upgraded.sort(
+				(a, b) =>
+					b.endpoint.throughput - a.endpoint.throughput ||
+					a.cost - b.cost ||
+					a.endpoint.providerTag.localeCompare(b.endpoint.providerTag),
+			);
+			return upgraded[0].endpoint;
+		}
+	}
+	return winner.endpoint;
+}
+
+/** Tokens a host can emit inside a revise writer clock, after the setup holdback. */
+export function paidRouteTokensInBudget(
+	budgetMs: number,
+	tokensPerSecond: number,
+): number {
+	const usableSeconds = Math.max(0, budgetMs - PAID_ROUTE_REVISE_SETUP_MS) / 1000;
+	const assumedTps = Math.max(0, tokensPerSecond) * PAID_ROUTE_REVISE_TPS_FACTOR;
+	return Math.floor(usableSeconds * assumedTps);
 }
 
 function endpointKey(endpoint: PaidRouteEndpoint): string {

@@ -1,6 +1,7 @@
 import type { SearchData } from "../service/search/search";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 import {
+	ADAPTIVE_WRITER_FALLBACK_TPS,
 	ASK_WRITER_IDLE_MS,
 	ASK_WRITER_MIN_MS,
 	RESEARCH_EXCERPT_CHARS,
@@ -9,6 +10,7 @@ import {
 	buildAskAnswerEvidence,
 	createWatchdogAbortSignal,
 	formatAskAnswerEvidenceBlock,
+	resolveAdaptiveWriterMaxTokens,
 	resolveAskWriterBudgetMs,
 } from "./aiAskAnswer";
 import { formatAttachedMaterialBlock } from "./aiAskComposition";
@@ -35,12 +37,40 @@ import {
 	ASK_WRITER_REASONING_EFFORT,
 	RESEARCH_WRITER_MAX_TOKENS,
 	getOpenRouterApiKey,
+	openRouterAuthHeaders,
 	openRouterChatStream,
 	splitThinkTags,
 } from "./openrouter";
+import {
+	estimatePaidRouteInputTokens,
+	loadPaidRouteCatalog,
+	paidRouteAttempts,
+} from "./paidModelRoute";
 
 /** Research writer reads more of the selected set than a short Ask briefing. */
 export const RESEARCH_ANSWER_MAX_EXPANDED = 28;
+
+/** Told to the writer so a long report stops as a finished piece inside the clock. */
+export function researchReportWriterBudgetNote(maxTokens: number): string {
+	const cap = Math.max(1, Math.floor(maxTokens));
+	return `Completion budget: finish the whole report within ${cap} tokens. If that is tighter than the word guidance, write a shorter finished report. Close the section you are in, and do not start a section you cannot finish.`;
+}
+
+async function reportWriterTokensPerSecond(inputTokens: number): Promise<number> {
+	try {
+		const catalog = await loadPaidRouteCatalog({
+			headers: openRouterAuthHeaders(),
+		});
+		const [first] = paidRouteAttempts(catalog, {
+			inputTokens,
+			kind: "report",
+		});
+		if (first?.throughput != null && first.throughput > 0) return first.throughput;
+	} catch {
+		/* A missing catalog still gets a conservative speed. */
+	}
+	return ADAPTIVE_WRITER_FALLBACK_TPS;
+}
 
 export async function buildResearchReportEvidence(options: {
 	question: string;
@@ -121,73 +151,89 @@ export async function writeResearchReport(options: {
 	) {
 		return empty;
 	}
+	const prepStarted = Date.now();
+	const maxExpanded = options.maxExpanded ?? RESEARCH_ANSWER_MAX_EXPANDED;
+	const evidence = await buildResearchReportEvidence({
+		question: options.question,
+		hits: options.hits,
+		termQueries: options.termQueries,
+		namedQueries: options.namedQueries,
+		readFullSlugs: options.readFullSlugs,
+		readPaliSlugs: options.readPaliSlugs,
+		readIllustrationSlugs: options.readIllustrationSlugs,
+		loadDoc: options.loadDoc,
+		maxExpanded,
+	});
+	if (options.signal?.aborted || !evidence.trim()) return empty;
+	const clarifyBrief = (options.brief || "").replace(/\s+/g, " ").trim();
+	const attachedBlock = formatAttachedMaterialBlock(
+		options.attachedContext || "",
+	);
+	const brief = [clarifyBrief, attachedBlock].filter(Boolean).join("\n\n");
+	const originalQuestion = (options.originalQuestion || "")
+		.replace(/\s+/g, " ")
+		.trim();
+	const lengthSources = {
+		question: options.question,
+		originalQuestion,
+		// Attached prior reports can quote old word-count asks; honor this turn only.
+		brief: clarifyBrief,
+	};
+	const guidance = [
+		options.guidance,
+		researchReportLengthGuidance(
+			lengthSources.question,
+			lengthSources.originalQuestion,
+			lengthSources.brief,
+		),
+	]
+		.map((part) => (part || "").replace(/\s+/g, " ").trim())
+		.filter(Boolean)
+		.join(" ");
+	const prior = stripResearchReportLengthNote(
+		(options.priorReport || "").replace(/\r\n/g, "\n"),
+	);
+	const userContent = `Question: ${clipAiQuestion(options.question)}
+${brief ? `Clarifying brief:\n${brief}\n` : ""}${guidance ? `Guidance: ${guidance}\n` : ""}${prior ? `Previous draft to improve (keep what still holds; revise from the new passages):\n${prior}\n` : ""}
+Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English). [core] / English is the site's core translation; [reference] / Sujato English is Bhikkhu Sujato's reference translation:
+${evidence}`;
+	const tokensPerSecond = await reportWriterTokensPerSecond(
+		estimatePaidRouteInputTokens(`${RESEARCH_REPORT_SYSTEM}\n${userContent}`),
+	);
+	const writeBudget = budget - (Date.now() - prepStarted);
+	if (writeBudget < ASK_WRITER_MIN_MS) return empty;
+	const maxTokens = resolveAdaptiveWriterMaxTokens(
+		writeBudget,
+		tokensPerSecond,
+		RESEARCH_WRITER_MAX_TOKENS,
+	);
+	console.info(
+		`[ai/research] writer cap maxTokens=${maxTokens} tps=${Math.round(tokensPerSecond)} budgetMs=${writeBudget}`,
+	);
+	const messages = [
+		{ role: "system" as const, content: RESEARCH_REPORT_SYSTEM },
+		{
+			role: "user" as const,
+			content: `${userContent}
+
+${researchReportWriterBudgetNote(maxTokens)}
+
+Markdown report:`,
+		},
+	];
 	const watchdog = createWatchdogAbortSignal({
 		idleMs: ASK_WRITER_IDLE_MS,
-		maxMs: budget,
+		maxMs: writeBudget,
 		parent: options.signal,
 	});
 	try {
-		const maxExpanded = options.maxExpanded ?? RESEARCH_ANSWER_MAX_EXPANDED;
-		const evidence = await buildResearchReportEvidence({
-			question: options.question,
-			hits: options.hits,
-			termQueries: options.termQueries,
-			namedQueries: options.namedQueries,
-			readFullSlugs: options.readFullSlugs,
-			readPaliSlugs: options.readPaliSlugs,
-			readIllustrationSlugs: options.readIllustrationSlugs,
-			loadDoc: options.loadDoc,
-			maxExpanded,
-		});
-		if (watchdog.signal.aborted) return empty;
-		if (!evidence.trim()) return empty;
-		const clarifyBrief = (options.brief || "").replace(/\s+/g, " ").trim();
-		const attachedBlock = formatAttachedMaterialBlock(
-			options.attachedContext || "",
-		);
-		const brief = [clarifyBrief, attachedBlock].filter(Boolean).join("\n\n");
-		const originalQuestion = (options.originalQuestion || "")
-			.replace(/\s+/g, " ")
-			.trim();
-		const lengthSources = {
-			question: options.question,
-			originalQuestion,
-			// Attached prior reports can quote old word-count asks; honor this turn only.
-			brief: clarifyBrief,
-		};
-		const guidance = [
-			options.guidance,
-			researchReportLengthGuidance(
-				lengthSources.question,
-				lengthSources.originalQuestion,
-				lengthSources.brief,
-			),
-		]
-			.map((part) => (part || "").replace(/\s+/g, " ").trim())
-			.filter(Boolean)
-			.join(" ");
-		const prior = stripResearchReportLengthNote(
-			(options.priorReport || "").replace(/\r\n/g, "\n"),
-		);
-		const messages = [
-			{ role: "system" as const, content: RESEARCH_REPORT_SYSTEM },
-			{
-				role: "user" as const,
-				content: `Question: ${clipAiQuestion(options.question)}
-${brief ? `Clarifying brief:\n${brief}\n` : ""}${guidance ? `Guidance: ${guidance}\n` : ""}${prior ? `Previous draft to improve (keep what still holds; revise from the new passages):\n${prior}\n` : ""}
-Passages from the selected discourses (at most ${maxExpanded} expanded; some may be full text, and some may include Pāli with the English). [core] / English is the site's core translation; [reference] / Sujato English is Bhikkhu Sujato's reference translation:
-${evidence}
-
-Markdown report:`,
-			},
-		];
 		let content = "";
 		let reasoning = "";
 		let usedModel = model;
 		for await (const chunk of openRouterChatStream({
 			model,
 			messages,
-			maxTokens: RESEARCH_WRITER_MAX_TOKENS,
+			maxTokens,
 			reasoningEffort: ASK_WRITER_REASONING_EFFORT,
 			jsonMode: false,
 			routeKind: "report",

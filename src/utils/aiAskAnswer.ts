@@ -130,6 +130,69 @@ function splitParagraphs(text: string): string[] {
 		.filter((part) => part.replace(/\s+/g, " ").trim().length >= MIN_PARA);
 }
 
+/**
+ * Plain paragraphs in discourse order. Headings, fences, imports, and HTML
+ * blocks are skipped and do not advance the counter, matching the ids the
+ * discourse page puts on `#N`. Short paragraphs are kept.
+ */
+export function listDiscourseParagraphs(
+	text: string,
+): { number: number; text: string }[] {
+	const blocks = (text || "")
+		.replace(/\r\n?/g, "\n")
+		.split(/\n\n+/)
+		.map((part) => part.trim())
+		.filter((part) => part.length > 0 && !part.startsWith("---"));
+	const out: { number: number; text: string }[] = [];
+	let number = 1;
+	for (const block of blocks) {
+		if (isUnnumberedDiscourseBlock(block)) continue;
+		out.push({ number, text: block });
+		number += 1;
+	}
+	return out;
+}
+
+function isUnnumberedDiscourseBlock(block: string): boolean {
+	if (block.startsWith("import ")) return true;
+	if (block.startsWith("#") || block.startsWith("```")) return true;
+	if (/^<[A-Z]/.test(block)) return true;
+	if (
+		/^<(?!collapse)[a-z][a-z0-9]*[\s/>]/i.test(block) &&
+		!block.startsWith("<collapse")
+	) {
+		return true;
+	}
+	return false;
+}
+
+function paragraphMatchKey(text: string): string {
+	return stripMarkup(text).replace(/\s+/g, " ").trim().slice(0, 80);
+}
+
+/** Prefix each packed English paragraph with the discourse page's ¶ number. */
+export function labelDiscourseParagraphs(source: string, packed: string): string {
+	const numbered = listDiscourseParagraphs(source);
+	if (numbered.length === 0) return packed;
+	const keys = numbered.map((row) => ({
+		number: row.number,
+		key: paragraphMatchKey(row.text),
+	}));
+	return packed
+		.split(/\n{2,}/)
+		.map((part) => {
+			const body = part.trim();
+			if (!body || /^¶\s*\d+/.test(body)) return part;
+			const key = paragraphMatchKey(body);
+			if (key.length < 24) return part;
+			const hit = keys.find(
+				(row) => row.key && (row.key.startsWith(key) || key.startsWith(row.key)),
+			);
+			return hit ? `¶ ${hit.number}\n${body}` : part;
+		})
+		.join("\n\n");
+}
+
 /** Collapse 1-based ¶ numbers into “¶ 1–3, ¶ 12”. */
 export function formatParagraphRangeLabel(
 	numbers: readonly number[],
@@ -157,15 +220,18 @@ export function discourseParagraphMeta(
 	english: string,
 	passages: readonly AskAnswerPassage[],
 ): { paraCount: number; paraNumbers: number[] } {
-	const paras = splitParagraphs(english || "");
-	if (paras.length === 0) return { paraCount: 0, paraNumbers: [] };
-	const hay = passages.map((passage) => passage.text).join("\n\n");
+	const numbered = listDiscourseParagraphs(english || "");
+	if (numbered.length === 0) return { paraCount: 0, paraNumbers: [] };
+	const hay = passages
+		.map((passage) => stripMarkup(passage.text))
+		.join("\n")
+		.replace(/\s+/g, " ");
 	const paraNumbers: number[] = [];
-	paras.forEach((para, index) => {
-		const needle = para.slice(0, Math.min(80, para.length));
-		if (needle && hay.includes(needle)) paraNumbers.push(index + 1);
-	});
-	return { paraCount: paras.length, paraNumbers };
+	for (const row of numbered) {
+		const needle = paragraphMatchKey(row.text);
+		if (needle && hay.includes(needle)) paraNumbers.push(row.number);
+	}
+	return { paraCount: numbered.length, paraNumbers };
 }
 
 function hintKeys(hint: string): string[] {
@@ -533,19 +599,32 @@ export async function buildAskAnswerEvidence(
 			}
 			if (!svgMarkup && !svgSummary) illustrated = true;
 		}
+		const labeledPassages = options?.labelParagraphs
+			? passages.map((passage) =>
+					/^English|^Sujato English/.test(passage.source)
+						? {
+								...passage,
+								text: labelDiscourseParagraphs(
+									doc?.content || "",
+									passage.text,
+								),
+							}
+						: passage,
+				)
+			: passages;
 		expanded.push({
 			slug: hit.slug,
 			...(span?.label ? { citationLabel: span.label } : {}),
 			title: hit.title || "",
 			referenceOnly: hit.referenceOnly === true || doc?.referenceOnly === true,
-			passages,
+			passages: labeledPassages,
 			...(wantFull ? { full: true } : {}),
 			...(wantFull &&
 			stripMarkup(doc?.content || "").length > fullChars
 				? { clipped: true }
 				: {}),
 			...(options?.labelParagraphs
-				? discourseParagraphMeta(doc?.content || "", passages)
+				? discourseParagraphMeta(doc?.content || "", labeledPassages)
 				: {}),
 			...(svgMarkup ? { svgMarkup } : {}),
 			...(svgSummary ? { svgSummary } : {}),
@@ -662,6 +741,32 @@ export function resolveAskWriterBudgetMs(elapsedMs: number): number {
 	const remaining = ASK_FUNCTION_BUDGET_MS - Math.max(0, elapsedMs);
 	if (remaining < ASK_WRITER_MIN_MS) return 0;
 	return Math.min(ASK_WRITER_MAX_MS, remaining);
+}
+
+/** Time reserved before counting tokens the model can still decode. */
+export const ADAPTIVE_WRITER_SETUP_MS = 20_000;
+/** Discount on a route's quoted tokens per second. Quoted speed runs hot. */
+export const ADAPTIVE_WRITER_TPS_FACTOR = 0.75;
+/** Used when the route catalog has no measured throughput. */
+export const ADAPTIVE_WRITER_FALLBACK_TPS = 24;
+
+/**
+ * Completion tokens that can be decoded inside a writer's wall clock.
+ * Discounts the route's quoted speed and keeps setup time off the count.
+ * Never raises the cap above `ceiling`.
+ */
+export function resolveAdaptiveWriterMaxTokens(
+	budgetMs: number,
+	tokensPerSecond: number,
+	ceiling: number,
+): number {
+	const usableSeconds =
+		Math.max(0, budgetMs - ADAPTIVE_WRITER_SETUP_MS) / 1000;
+	const assumedTps = Math.max(0, tokensPerSecond) * ADAPTIVE_WRITER_TPS_FACTOR;
+	const raw = Math.floor(usableSeconds * assumedTps);
+	const limit = Math.max(1, Math.floor(ceiling));
+	if (raw < 1) return 1;
+	return Math.min(limit, raw);
 }
 
 export function createWatchdogAbortSignal(options: {

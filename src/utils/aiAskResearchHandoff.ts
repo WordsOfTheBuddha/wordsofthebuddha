@@ -1,8 +1,4 @@
-import {
-	ASK_FUNCTION_BUDGET_MS,
-	ASK_WRITER_MIN_MS,
-	resolveAskWriterBudgetMs,
-} from "./aiAskAnswer";
+import { ASK_FUNCTION_BUDGET_MS, ASK_WRITER_MIN_MS } from "./aiAskAnswer";
 
 /**
  * Headroom reserved at the end of a pass for the chained-state Firestore
@@ -71,13 +67,12 @@ export function shouldChainResearchPass(
 
 /**
  * Writer budget that always leaves the handoff margin on the table.
- * Returns 0 when the remaining time cannot cover a minimal writer run.
+ * A fast planner keeps its unused time for the report; there is no flat
+ * 150s cap. Returns 0 when the remaining time cannot cover a minimal write.
  */
 export function researchWriterBudgetWithMargin(elapsedMs: number): number {
 	const remaining = ASK_FUNCTION_BUDGET_MS - Math.max(0, elapsedMs);
-	if (remaining <= RESEARCH_HANDOFF_MARGIN_MS + ASK_WRITER_MIN_MS) return 0;
-	return Math.min(
-		resolveAskWriterBudgetMs(elapsedMs),
-		remaining - RESEARCH_HANDOFF_MARGIN_MS,
-	);
+	const usable = remaining - RESEARCH_HANDOFF_MARGIN_MS;
+	if (usable <= ASK_WRITER_MIN_MS) return 0;
+	return usable;
 }

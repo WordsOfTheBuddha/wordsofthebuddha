@@ -502,6 +502,8 @@ interface OpenRouterChatRequest {
 	jsonMode?: boolean;
 	signal?: AbortSignal;
 	routeKind?: PaidRouteKind;
+	/** Revise writer clock. A slow default host can be replaced when this is set. */
+	routeBudgetMs?: number;
 }
 
 function isAbortError(error: unknown): boolean {
@@ -570,6 +572,7 @@ async function resolveChatAttempts(options: OpenRouterChatRequest): Promise<{
 		attempts: paidRouteAttempts(catalog, {
 			inputTokens,
 			kind: options.routeKind,
+			budgetMs: options.routeBudgetMs,
 		}),
 	};
 }

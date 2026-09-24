@@ -1647,7 +1647,9 @@ async function runResearchChainPass(
 						termQueries: plan.termQueries,
 						guidance: current.continueGuidance || plan.rankingGuidance,
 						history,
-						timeoutMs: writerBudget,
+						timeoutMs: researchWriterBudgetWithMargin(
+							Date.now() - startedAt,
+						),
 						priorReport: draft.report,
 						namedQueries: [
 							...collectDirectDiscourseIds({ question }),
@@ -2551,7 +2553,9 @@ export async function runResearchJob(options: {
 						termQueries: plan.termQueries,
 						guidance: writerGuidance,
 						history,
-						timeoutMs: writerBudget,
+						timeoutMs: researchWriterBudgetWithMargin(
+							Date.now() - startedAt,
+						),
 						namedQueries: writerNamedQueries,
 							readFullSlugs: openingFull,
 							readPaliSlugs: scoutReadPali,

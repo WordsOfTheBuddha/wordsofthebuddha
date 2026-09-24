@@ -1184,6 +1184,7 @@ describe("revise output budget", () => {
 			maxTokens: 9_181,
 		});
 		assert.match(message, /within 9181 tokens/);
+		assert.match(message, /That count is the reply/);
 		assert.match(message, /finished partial patch/);
 		assert.ok(RESEARCH_REVISE_MAX_OUTPUT_WORDS >= 30_000);
 		assert.ok(RESEARCH_REVISE_CHANGELOG_MAX >= 2_000);
