@@ -115,11 +115,19 @@ function stripMarkup(value: string): string {
 }
 
 function splitParagraphs(text: string): string[] {
-	const cleaned = stripAnnotations(text).replace(/<[^>]*>/g, " ");
+	const cleaned = stripAnnotations(text)
+		.replace(/<br\s*\/?>/gi, "\n")
+		.replace(/<[^>]*>/g, " ");
 	return cleaned
-		.split(/\n{2,}|\n(?=\S)/)
-		.map((part) => part.replace(/\s+/g, " ").trim())
-		.filter((part) => part.length >= MIN_PARA);
+		.split(/\n{2,}/)
+		.map((part) =>
+			part
+				.split("\n")
+				.map((line) => line.replace(/[ \t]+/g, " ").trim())
+				.filter(Boolean)
+				.join("\n"),
+		)
+		.filter((part) => part.replace(/\s+/g, " ").trim().length >= MIN_PARA);
 }
 
 /** Collapse 1-based ¶ numbers into “¶ 1–3, ¶ 12”. */

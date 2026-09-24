@@ -834,6 +834,22 @@ export function clipOpsToWordBudget(
 	return out;
 }
 
+const DOTTED_DISCOURSE_LINK =
+	/\]\(\/((?:sn|an|snp|ud))(\d+)-(\d+)(#[^)\s]*)?\)/gi;
+
+/**
+ * A writer sometimes puts a hyphen where the site slug uses a dot:
+ * `/sn12-67#3` is `/sn12.67#3`. Range files (`dhp1-20`, `sn17.13-20`) and
+ * paragraph hashes (`#6-50`) are left as written.
+ */
+export function normalizeResearchDiscourseLinks(markdown: string): string {
+	return markdown.replace(
+		DOTTED_DISCOURSE_LINK,
+		(_match, book: string, major: string, minor: string, hash?: string) =>
+			`](/${book.toLowerCase()}${major}.${minor}${hash || ""})`,
+	);
+}
+
 /** Apply block ops; unknown ids are dropped rather than appended blindly. */
 export function applyResearchReviseOps(
 	markdown: string,
@@ -848,7 +864,7 @@ export function applyResearchReviseOps(
 	for (const op of clipOpsToWordBudget(ops)) {
 		const i = index.get(op.id);
 		if (i === undefined) continue;
-		const body = stripReportBlockTags(op.markdown);
+		const body = normalizeResearchDiscourseLinks(stripReportBlockTags(op.markdown));
 		if (op.op === "delete") {
 			replaced.set(i, null);
 		} else if (op.op === "update") {

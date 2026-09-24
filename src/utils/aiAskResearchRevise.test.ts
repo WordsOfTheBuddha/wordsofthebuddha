@@ -25,6 +25,7 @@ import {
 	nextResearchRevisionN,
 	nextResearchVersionN,
 	normalizeReportHeading,
+	normalizeResearchDiscourseLinks,
 	openingResearchVersionMeta,
 	parseResearchRevisePatch,
 	researchRevisionStartedNote,
@@ -202,6 +203,29 @@ The discourse then declares the faculties easy to grasp.
 			"New text.",
 		]);
 		assert.doesNotMatch(next, /should vanish/);
+	});
+
+	it("rewrites a hyphenated discourse link to the dotted site slug", () => {
+		const report = "Opening.\n\nSee the chain.";
+		const next = applyResearchRevisePatch(report, {
+			changelog: "",
+			edits: [],
+			ops: [
+				{
+					op: "update",
+					id: "p2",
+					markdown:
+						'The chain is [SN 12.67 ¶3](/sn12-67#3), beside [Dhp 1–20](/dhp1-20) and [SN 17.13–20](/sn17.13-20#1).',
+				},
+			],
+		});
+		assert.match(next, /\/sn12\.67#3/);
+		assert.match(next, /\/dhp1-20/);
+		assert.match(next, /\/sn17\.13-20#1/);
+		assert.equal(
+			normalizeResearchDiscourseLinks("[SNP 4.11](/SNP4-11)"),
+			"[SNP 4.11](/snp4.11)",
+		);
 	});
 
 	it("strips echoed [[pN]] / [[hN]] tags from new markdown", () => {

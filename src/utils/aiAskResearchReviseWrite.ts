@@ -156,10 +156,12 @@ Quotations:
 - When the instruction asks for quotes, quotations, or the Buddha's words, include direct quotations in double quotation marks, copied word-for-word from the passages supplied (or from wording already quoted in the report), each followed by its discourse ID exactly as the passage labels it. Do not paraphrase inside quotation marks and do not quote from memory.
 - When the instruction asks for Pāli, copy the Pāli from the supplied passages alongside the English. Do not invent Pāli that is not in those passages.
 - Set-off quotations use the report's existing form: a "> " blockquote with the quoted words in quotation marks followed by the discourse ID.
+- A verse in the passages keeps its line breaks. In the blockquote, put each source line on its own line, and start each of those lines with "> ". Do not join a verse into one prose sentence.
 - If the supplied passages do not contain a fitting line, say so in the changelog instead of inventing one.
 
 Citations:
 - Ordinary discourse IDs in prose (MN 10, SN 22.59). Do not invent IDs.
+- A discourse link is the site slug: [SN 12.67 ¶3](/sn12.67#3), [SN 1.20 ¶15](/sn1.20#15), [SNP 4.11](/snp4.11). Use a dot between the book and the sutta. A hyphen belongs only in a paragraph range in the hash, as [MN 10 ¶6–50](/mn10#6-50). Never write /sn12-67.
 - When new passages are supplied, cite their discourse IDs in the edited markdown so they appear as citations. Do not drop citations that were in the original block.
 - No ## Sources section — the harness rebuilds it.
 

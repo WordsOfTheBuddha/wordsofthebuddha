@@ -161,6 +161,23 @@ describe("selectFullDiscoursePassages", () => {
 		assert.match(passages[1]?.text || "", /Saddhānusārī/);
 	});
 
+	it("keeps a gāthā as separate lines instead of dropping the short ones", () => {
+		const pali = [
+			"Atha kho bhagavā taṁ devataṁ gāthāhi ajjhabhāsi, and the prose frame continues.",
+			"",
+			"“Akkheyyasaññino sattā,",
+			"akkheyyasmiṁ patiṭṭhitā;",
+			"Akkheyyaṁ apariññāya,",
+			"yogamāyanti maccuno.",
+			"",
+			"Na khvāhaṁ, bhante, imassa bhagavatā saṅkhittena bhāsitassa vitthārena atthaṁ ājānāmi.",
+		].join("\n");
+		const passages = selectFullDiscoursePassages({ pali, includePali: true });
+		const text = passages.find((passage) => passage.source === "Pali (full text)")?.text || "";
+		assert.match(text, /Akkheyyasaññino sattā,\nakkheyyasmiṁ patiṭṭhitā;/);
+		assert.match(text, /yogamāyanti maccuno\./);
+	});
+
 	it("keeps English only when Pali is not requested", () => {
 		const passages = selectFullDiscoursePassages({
 			english: "The faith-follower is defined here.",
