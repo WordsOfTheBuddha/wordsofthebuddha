@@ -2081,7 +2081,6 @@ body.ai-diagram-fullscreen-open {
 	position: sticky;
 	bottom: 0;
 	z-index: 6;
-	padding: 1.1rem 0 0.75rem;
 	/*
 	 * Stay transparent. A solid --background-color fill sits on top of the
 	 * page wash (body::before) and reads as a separate footer slab.
@@ -2117,6 +2116,26 @@ body.ai-diagram-fullscreen-open {
 	backdrop-filter: saturate(180%) blur(20px);
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	border-radius: var(--ai-follow-radius);
+}
+
+/*
+ * In-flow Ask follow-up: frost hugs the form like the report dock instead
+ * of using the tall slab above. Compact has no band floating over the
+ * thread; expanded ends flush under the meta row. (Dock keeps its own
+ * offsets below — equal specificity, later rules win there.)
+ */
+.ai-follow.is-follow-compact.is-over-thread::before {
+	top: 1.1rem;
+	bottom: 0;
+	height: auto;
+	border-radius: var(--ai-follow-radius) var(--ai-follow-radius) 0 0;
+}
+
+.ai-follow.is-follow-expanded.is-over-thread::before {
+	top: 1.1rem;
+	bottom: 0;
+	height: auto;
+	border-radius: var(--ai-follow-radius) var(--ai-follow-radius) 0 0;
 }
 
 .ai-follow.is-dock {
@@ -2160,7 +2179,7 @@ body.ai-diagram-fullscreen-open {
 	display: none !important;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box,
+.ai-follow.is-follow-compact .ai-box,
 .ai-mode.is-research-gated .ai-composer .ai-box {
 	flex-direction: row;
 	align-items: center;
@@ -2168,19 +2187,19 @@ body.ai-diagram-fullscreen-open {
 	padding: 0.22rem 0.32rem 0.22rem 0.9rem;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body {
+.ai-follow.is-follow-compact .ai-composer-body {
 	flex: 1;
 	min-width: 0;
 	display: block;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-text-wrap {
+.ai-follow.is-follow-compact .ai-composer-text-wrap {
 	width: 100%;
 	min-width: 0;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box textarea,
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body textarea,
+.ai-follow.is-follow-compact .ai-box textarea,
+.ai-follow.is-follow-compact .ai-composer-body textarea,
 .ai-mode.is-research-gated .ai-composer .ai-box textarea {
 	flex: 1;
 	min-width: 0;
@@ -2196,40 +2215,40 @@ body.ai-diagram-fullscreen-open {
 	resize: none;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box textarea::placeholder,
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-body textarea::placeholder,
+.ai-follow.is-follow-compact .ai-box textarea::placeholder,
+.ai-follow.is-follow-compact .ai-composer-body textarea::placeholder,
 .ai-mode.is-research-gated .ai-composer .ai-box textarea::placeholder {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composition-attachments {
+.ai-follow.is-follow-compact .ai-composition-attachments {
 	display: none !important;
 }
 
 /* Inline clipboard chips only belong in the expanded composer. */
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composition-inline-layer {
+.ai-follow.is-follow-compact .ai-composition-inline-layer {
 	display: none !important;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box-bar,
+.ai-follow.is-follow-compact .ai-box-bar,
 .ai-mode.is-research-gated .ai-composer .ai-box-bar {
 	min-height: 0;
 	width: auto;
 	flex-shrink: 0;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-revise-stack,
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-revise-scope,
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-revise-cap-note {
+.ai-follow.is-follow-compact .ai-revise-stack,
+.ai-follow.is-follow-compact .ai-revise-scope,
+.ai-follow.is-follow-compact .ai-revise-cap-note {
 	display: none !important;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box-tools,
-.ai-follow.is-dock:not(.is-follow-expanded) [data-ai-mic],
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-meta-row,
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-composer-notice,
+.ai-follow.is-follow-compact .ai-box-tools,
+.ai-follow.is-follow-compact [data-ai-mic],
+.ai-follow.is-follow-compact .ai-meta-row,
+.ai-follow.is-follow-compact .ai-composer-notice,
 .ai-mode.is-research-gated .ai-composer .ai-box-tools,
 .ai-mode.is-research-gated .ai-composer [data-ai-mic],
 .ai-mode.is-research-gated .ai-composer .ai-meta-row,
@@ -2251,7 +2270,7 @@ body.ai-diagram-fullscreen-open {
 	display: block;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-send {
+.ai-follow.is-follow-compact .ai-send {
 	background: color-mix(in srgb, var(--primary-color) 28%, var(--text-muted));
 	color: var(--background-color);
 	transform: scale(1);
@@ -2260,7 +2279,7 @@ body.ai-diagram-fullscreen-open {
 		transform 0.15s ease;
 }
 
-.ai-follow.is-dock:not(.is-follow-expanded) .ai-box:focus-within .ai-send {
+.ai-follow.is-follow-compact .ai-box:focus-within .ai-send {
 	background: var(--primary-color);
 	transform: scale(1.08);
 }
