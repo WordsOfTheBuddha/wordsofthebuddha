@@ -1,7 +1,7 @@
 ---
 title: Aparihāniya sutta - Non-decline
 description: "The Buddha shares the four training guidelines of: 1) accomplishment in virtue, 2) guarding the doors of the sense faculties, 3) observing moderation in eating, and 4) practicing wakefulness, that when undertaken with diligence and cultivated as qualities, lead to non-decline and brings one near to Nibbāna."
-qualities: wakefulness, sense restraint, ethical conduct, quenching, continuous effort, rousing of energy, gradual training guidelines
+qualities: wakefulness, sense restraint, ethical conduct, quenching, continuous effort, rousing of energy, gradual training
 theme: inspiration, training guideline
 slug: an4.37
 priority: 1.5
