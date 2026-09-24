@@ -57,8 +57,15 @@ import {
 	askWriterChatOptions,
 	buildOpenRouterUserContent,
 	getOpenRouterApiKey,
+	openRouterAuthHeaders,
 	openRouterChat,
+	RESEARCH_WRITER_MAX_TOKENS,
 } from "./openrouter";
+import {
+	estimatePaidRouteInputTokens,
+	loadPaidRouteCatalog,
+	paidRouteAttempts,
+} from "./paidModelRoute";
 
 function reviseReferenceImagesLead(count: number): string {
 	if (count <= 0) return "";
@@ -75,8 +82,14 @@ function reviseModelUserContent(
 	);
 }
 
-/** Paid GLM allows 131k completions; 50k covers a full cited report. */
-export const RESEARCH_REVISE_WRITER_MAX_TOKENS = 50_000;
+/** Completion ceiling, the same limit as the research report writer. */
+export const RESEARCH_REVISE_WRITER_MAX_TOKENS = RESEARCH_WRITER_MAX_TOKENS;
+/** Seconds kept back for sending the prompt and reading the reply. */
+export const RESEARCH_REVISE_WRITER_SETUP_MS = 20_000;
+/** Route throughput is optimistic. Write to three quarters of the quoted speed. */
+export const RESEARCH_REVISE_WRITER_TPS_FACTOR = 0.75;
+/** When the route has no measured speed (price-sort fallback). */
+export const RESEARCH_REVISE_WRITER_FALLBACK_TPS = 24;
 export const RESEARCH_REVISE_NEW_HITS_MAX = 8;
 
 /**
@@ -127,7 +140,7 @@ Choosing ops:
 - Removing text → "delete" the block, or "update" it without the removed sentences.
 - Moving blocks → one "insert-after" on the anchor block whose "markdown" carries the moved blocks verbatim (in order, blank-line separated, adjusting only a lead-in sentence if the new position needs it), plus a "delete" for each block at the old position. Never leave a moved block in both places, and never paraphrase text you are only relocating.
 - Renaming a heading → "update" the heading block.
-- Carry out every part of the instruction that the allowed target blocks make possible. If the instruction is report-wide (every quote, every heading, a restyle), update every allowed target it applies to — do not shrink it to one or two sample blocks. If one part truly cannot be done, do the rest and name the omission in "changelog"; never skip the whole request. Prefer finishing every requested kind of change over polishing a single section.
+- Carry out every part of the instruction the completion budget can hold. When every allowed target fits, update each one the instruction applies to. When it does not, update the targets the instruction most depends on, finish those ops, and name the rest in "changelog". Never skip the whole request, and never leave the JSON unfinished.
 - Only the target blocks may be used as op ids. Every other block must remain byte-for-byte unchanged. Do not reprint unchanged blocks or copy the remainder of the report into an op. Never include [[pN]] labels inside "markdown".
 - Separate every block in "markdown" with a blank line: a heading line, then a blank line, then its paragraph. Never glue a heading to the text under it.
 - ${RESEARCH_REVISE_STYLE_NOTE}
@@ -151,7 +164,7 @@ Citations:
 - No ## Sources section — the harness rebuilds it.
 
 Scope:
-- Ops may touch any number of blocks; finish every op you start. A wide instruction (Pāli beside every quote, subsection titles throughout, a house style) is one job: emit an op for each target it applies to. Search and full-read limits stay with the planner; write only from the report plus supplied passages, and say in the changelog what you could not source.
+- Finish every op you start. A wide instruction is still one job: emit an op for each target that fits in the completion budget, and name the rest in the changelog. Search and full-read limits stay with the planner; write only from the report plus supplied passages, and say in the changelog what you could not source.
 - If a heading was pinned, edit within that section unless the instruction names others.
 - The current revision instruction controls what changes now. The original research request and preference brief are background constraints for scope, style, terminology, and emphasis; preserve them unless the current instruction explicitly overrides them.
 - If the message carries the reader's answers to the planner's questions, they are part of the current instruction: where an answer names a block, edit that block and not the one the instruction's number pointed at.
@@ -174,6 +187,39 @@ export function resolveResearchReviseWriterBudgetMs(plannerElapsedMs: number): n
 		RESEARCH_REVISE_PLANNER_BUDGET_MS - Math.max(0, plannerElapsedMs),
 	);
 	return RESEARCH_REVISE_WRITER_BASE_MS + unusedPlannerMs;
+}
+
+/**
+ * Completion tokens that can be decoded inside the writer's wall clock.
+ * Discounts the route's quoted speed and keeps 20s for the request itself.
+ * Never raises the cap above what that time can hold.
+ */
+export function resolveResearchReviseWriterMaxTokens(
+	budgetMs: number,
+	tokensPerSecond: number,
+): number {
+	const usableSeconds = Math.max(0, budgetMs - RESEARCH_REVISE_WRITER_SETUP_MS) / 1000;
+	const assumedTps = Math.max(0, tokensPerSecond) * RESEARCH_REVISE_WRITER_TPS_FACTOR;
+	const raw = Math.floor(usableSeconds * assumedTps);
+	if (raw < 1) return 1;
+	return Math.min(RESEARCH_REVISE_WRITER_MAX_TOKENS, raw);
+}
+
+/** Told to the writer so it closes a partial patch instead of running out of tokens mid-JSON. */
+export function researchReviseWriterBudgetNote(maxTokens: number): string {
+	const cap = Math.max(1, Math.floor(maxTokens));
+	return `Completion budget: finish the entire JSON reply within ${cap} tokens. Cover as many targets as that allows, in the order the instruction depends on them. Finish each op you start. If some targets will not fit, leave them unchanged and name them in the changelog. Close the JSON. A finished partial patch is the result the reader needs.`;
+}
+
+async function researchReviseWriterTokensPerSecond(inputTokens: number): Promise<number> {
+	try {
+		const catalog = await loadPaidRouteCatalog({ headers: openRouterAuthHeaders() });
+		const [first] = paidRouteAttempts(catalog, { inputTokens, kind: "revise" });
+		if (first?.throughput != null && first.throughput > 0) return first.throughput;
+	} catch {
+		/* A missing catalog still gets a conservative speed. */
+	}
+	return RESEARCH_REVISE_WRITER_FALLBACK_TPS;
 }
 
 /**
@@ -606,6 +652,7 @@ export function buildReviseWriterMessage(options: {
 	edits?: readonly ResearchReviseEdit[];
 	evidence?: string;
 	plan?: ResearchRevisePlan | null;
+	maxTokens?: number;
 }): string {
 	const heading = clipResearchReviseHeading(options.heading || "");
 	const quote = clipResearchReviseQuote(options.quote || "");
@@ -660,6 +707,9 @@ export function buildReviseWriterMessage(options: {
 			? `Passages (verbatim discourse text; quote from these word-for-word, cite their IDs):\n${evidence}\n`
 			: "No passages supplied — do not add quotations you cannot copy from the report itself.\n",
 	);
+	if (options.maxTokens && options.maxTokens > 0) {
+		lines.push(researchReviseWriterBudgetNote(options.maxTokens), "");
+	}
 	lines.push("JSON:");
 	return lines.join("\n");
 }
@@ -698,6 +748,27 @@ export async function writeResearchRevise(options: {
 	if (!instruction || !report) return empty;
 	const blocks = splitReportBlocks(report);
 	if (blocks.length === 0) return empty;
+	const messageInput = {
+		blocks,
+		instruction,
+		originalQuestion: options.originalQuestion,
+		clarifyBrief: options.clarifyBrief,
+		clarifications: options.clarifications,
+		heading: options.heading,
+		quote: options.quote,
+		edits: options.edits,
+		evidence: options.evidence,
+		plan: options.plan,
+	};
+	const inputTokens = estimatePaidRouteInputTokens([
+		{ content: RESEARCH_REVISE_SYSTEM },
+		{ content: buildReviseWriterMessage(messageInput) },
+	]);
+	const tokensPerSecond = await researchReviseWriterTokensPerSecond(inputTokens);
+	const maxTokens = resolveResearchReviseWriterMaxTokens(budget, tokensPerSecond);
+	console.warn(
+		`[ai/research/revise] writer cap maxTokens=${maxTokens} tps=${Math.round(tokensPerSecond)} budgetMs=${budget}`,
+	);
 	const watchdog = createWatchdogAbortSignal({
 		idleMs: ASK_WRITER_IDLE_MS,
 		maxMs: budget,
@@ -707,7 +778,7 @@ export async function writeResearchRevise(options: {
 		const writerOpts = askWriterChatOptions(ASK_PLANNER_PAID_FALLBACK_MODEL);
 		const result = await openRouterChat({
 			model: ASK_PLANNER_PAID_FALLBACK_MODEL,
-			maxTokens: RESEARCH_REVISE_WRITER_MAX_TOKENS,
+			maxTokens,
 			reasoningEffort: writerOpts.reasoningEffort || ASK_WRITER_REASONING_EFFORT,
 			jsonMode: writerOpts.jsonMode,
 			routeKind: "revise",
@@ -717,18 +788,7 @@ export async function writeResearchRevise(options: {
 				{
 					role: "user",
 					content: reviseModelUserContent(
-						buildReviseWriterMessage({
-							blocks,
-							instruction,
-							originalQuestion: options.originalQuestion,
-							clarifyBrief: options.clarifyBrief,
-							clarifications: options.clarifications,
-							heading: options.heading,
-							quote: options.quote,
-							edits: options.edits,
-							evidence: options.evidence,
-							plan: options.plan,
-						}),
+						buildReviseWriterMessage({ ...messageInput, maxTokens }),
 						options.attachedImages,
 					),
 				},

@@ -79,6 +79,7 @@ import {
 	RESEARCH_REVISE_WRITER_BASE_MS,
 	RESEARCH_REVISE_WRITER_MAX_TOKENS,
 	resolveResearchReviseWriterBudgetMs,
+	resolveResearchReviseWriterMaxTokens,
 } from "./aiAskResearchReviseWrite";
 import type { AiDiscourseHit } from "./aiDiscourseHits";
 
@@ -1141,14 +1142,25 @@ describe("version index", () => {
 });
 
 describe("revise output budget", () => {
-	it("raises the writer completion cap without moving the 100k ingest cap", () => {
-		assert.equal(RESEARCH_REVISE_WRITER_MAX_TOKENS, 50_000);
+	it("sizes the writer completion to the time and speed it has", () => {
+		assert.equal(RESEARCH_REVISE_WRITER_MAX_TOKENS, 16_384);
 		assert.equal(RESEARCH_REVISE_PLANNER_BUDGET_MS, 120_000);
 		assert.equal(RESEARCH_REVISE_WRITER_BASE_MS, 150_000);
 		assert.equal(resolveResearchReviseWriterBudgetMs(0), 270_000);
 		assert.equal(resolveResearchReviseWriterBudgetMs(12_500), 257_500);
 		assert.equal(resolveResearchReviseWriterBudgetMs(120_000), 150_000);
 		assert.equal(resolveResearchReviseWriterBudgetMs(180_000), 150_000);
+		assert.equal(resolveResearchReviseWriterMaxTokens(227_495, 59), 9_181);
+		assert.equal(resolveResearchReviseWriterMaxTokens(150_000, 59), 5_752);
+		assert.equal(resolveResearchReviseWriterMaxTokens(270_000, 200), 16_384);
+		assert.equal(resolveResearchReviseWriterMaxTokens(150_000, 24), 2_340);
+		const message = buildReviseWriterMessage({
+			blocks: splitReportBlocks("Alpha."),
+			instruction: "Tighten the opening.",
+			maxTokens: 9_181,
+		});
+		assert.match(message, /within 9181 tokens/);
+		assert.match(message, /finished partial patch/);
 		assert.ok(RESEARCH_REVISE_MAX_OUTPUT_WORDS >= 30_000);
 		assert.ok(RESEARCH_REVISE_CHANGELOG_MAX >= 2_000);
 		assert.equal(
