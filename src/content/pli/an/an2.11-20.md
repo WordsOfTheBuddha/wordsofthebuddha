@@ -1,34 +1,41 @@
 ---
+title: Adhikaraṇa vagga - The Chapter on Disciplinary Issue
+description: The Buddha teaches the powers of reflection and cultivation, careful self-examination in disciplinary issues, giving up the unskillful and cultivating the skillful, and factors leading to the decline or endurance of the good Dhamma.
+qualities: examination, ethical conduct, wholesome, unwholesome, cultivation, wisdom
+theme: training guideline, cultivating discernment
 slug: an2.11-20
-source: suttacentral/bilara-data
-title: 2. Adhikaraṇavagga
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
-11
+#### 2.11
 
-“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca. Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
+“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca.
+
+Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
 
 Katamañca, bhikkhave, bhāvanābalaṁ. Tatra, bhikkhave, yamidaṁ bhāvanābalaṁ sekhānametaṁ balaṁ. Sekhañhi so, bhikkhave, balaṁ āgamma rāgaṁ pajahati, dosaṁ pajahati, mohaṁ pajahati. Rāgaṁ pahāya, dosaṁ pahāya, mohaṁ pahāya yaṁ akusalaṁ na taṁ karoti, yaṁ pāpaṁ na taṁ sevati. Idaṁ vuccati, bhikkhave, bhāvanābalaṁ. Imāni kho, bhikkhave, dve balānī”ti.
 
-12
+#### 2.12
 
-“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca. Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
+“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca.
+
+Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
 
 Katamañca, bhikkhave, bhāvanābalaṁ? Idha, bhikkhave, bhikkhu satisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vosaggapariṇāmiṁ, dhammavicayasambojjhaṅgaṁ bhāveti … vīriyasambojjhaṅgaṁ bhāveti … pītisambojjhaṅgaṁ bhāveti … passaddhisambojjhaṅgaṁ bhāveti … samādhisambojjhaṅgaṁ bhāveti … upekkhāsambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vosaggapariṇāmiṁ. Idaṁ vuccati, bhikkhave, bhāvanābalaṁ. Imāni kho, bhikkhave, dve balānī”ti.
 
-13
+#### 2.13
 
-“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca. Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
+“Dvemāni, bhikkhave, balāni. Katamāni dve? Paṭisaṅkhānabalañca bhāvanābalañca.
+
+Katamañca, bhikkhave, paṭisaṅkhānabalaṁ? Idha, bhikkhave, ekacco iti paṭisañcikkhati: ‘kāyaduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, vacīduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañca, manoduccaritassa kho pāpako vipāko diṭṭhe ceva dhamme abhisamparāyañcā’ti. So iti paṭisaṅkhāya kāyaduccaritaṁ pahāya kāyasucaritaṁ bhāveti, vacīduccaritaṁ pahāya vacīsucaritaṁ bhāveti, manoduccaritaṁ pahāya manosucaritaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, paṭisaṅkhānabalaṁ.
 
 Katamañca, bhikkhave, bhāvanābalaṁ? Idha, bhikkhave, bhikkhu vivicceva kāmehi, vivicca akusalehi dhammehi savitakkaṁ savicāraṁ vivekajaṁ pītisukhaṁ paṭhamaṁ jhānaṁ upasampajja viharati. Vitakkavicārānaṁ vūpasamā ajjhattaṁ sampasādanaṁ cetaso ekodibhāvaṁ avitakkaṁ avicāraṁ samādhijaṁ pītisukhaṁ dutiyaṁ jhānaṁ upasampajja viharati. Pītiyā ca virāgā upekkhako ca viharati sato ca sampajāno, sukhañca kāyena paṭisaṁvedeti, yaṁ taṁ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti tatiyaṁ jhānaṁ upasampajja viharati. Sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṁ atthaṅgamā adukkhamasukhaṁ upekkhāsatipārisuddhiṁ catutthaṁ jhānaṁ upasampajja viharati. Idaṁ vuccati, bhikkhave, bhāvanābalaṁ. Imāni kho, bhikkhave, dve balānī”ti.
 
-14
+#### 2.14
 
 “Dvemā, bhikkhave, tathāgatassa dhammadesanā. Katamā dve? saṅkhittena ca vitthārena ca. Imā kho, bhikkhave, dve tathāgatassa dhammadesanā”ti.
 
-15
+#### 2.15
 
 “Yasmiṁ, bhikkhave, adhikaraṇe āpanno ca bhikkhu codako ca bhikkhu na sādhukaṁ attanāva attānaṁ paccavekkhati tasmetaṁ, bhikkhave, adhikaraṇe pāṭikaṅkhaṁ: ‘dīghattāya kharattāya vāḷattāya saṁvattissati, bhikkhū ca na phāsuṁ viharissantī’ti. Yasmiñca kho, bhikkhave, adhikaraṇe āpanno ca bhikkhu codako ca bhikkhu sādhukaṁ attanāva attānaṁ paccavekkhati tasmetaṁ, bhikkhave, adhikaraṇe pāṭikaṅkhaṁ: ‘na dīghattāya kharattāya vāḷattāya saṁvattissati, bhikkhū ca phāsuṁ viharissantī’ti.
 
@@ -38,7 +45,7 @@ Kathañca, bhikkhave, codako bhikkhu sādhukaṁ attanāva attānaṁ paccavekkh
 
 Yasmiṁ, bhikkhave, adhikaraṇe āpanno ca bhikkhu codako ca bhikkhu na sādhukaṁ attanāva attānaṁ paccavekkhati tasmetaṁ, bhikkhave, adhikaraṇe pāṭikaṅkhaṁ dīghattāya kharattāya vāḷattāya saṁvattissati, bhikkhū ca na phāsuṁ viharissantīti. Yasmiñca kho, bhikkhave, adhikaraṇe āpanno ca bhikkhu codako ca bhikkhu sādhukaṁ attanāva attānaṁ paccavekkhati tasmetaṁ, bhikkhave, adhikaraṇe pāṭikaṅkhaṁ na dīghattāya kharattāya vāḷattāya saṁvattissati, bhikkhū ca phāsuṁ viharissantī”ti.
 
-16
+#### 2.16
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:
 
@@ -52,7 +59,7 @@ Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā 
 
 “Abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama. Seyyathāpi, bho gotama, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya, andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhotā gotamena anekapariyāyena dhammo pakāsito. Esāhaṁ bhavantaṁ gotamaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-17
+#### 2.17
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca:
 
@@ -74,7 +81,7 @@ Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamit
 
 “Abhikkantaṁ, bho gotama …pe… upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-18
+#### 2.18
 
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca: “ekaṁsenāhaṁ, ānanda, akaraṇīyaṁ vadāmi kāyaduccaritaṁ vacīduccaritaṁ manoduccaritan”ti.
 
@@ -88,16 +95,14 @@ Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagav
 
 “Yamidaṁ, ānanda, mayā ekaṁsena karaṇīyaṁ akkhātaṁ kāyasucaritaṁ vacīsucaritaṁ manosucaritaṁ tasmiṁ karaṇīye kayiramāne ayaṁ ānisaṁso pāṭikaṅkho— attāpi attānaṁ na upavadati, anuvicca viññū pasaṁsanti, kalyāṇo kittisaddo abbhuggacchati, asammūḷho kālaṁ karoti, kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjati. Yamidaṁ, ānanda, mayā ekaṁsena karaṇīyaṁ akkhātaṁ kāyasucaritaṁ vacīsucaritaṁ manosucaritaṁ tasmiṁ karaṇīye kayiramāne ayaṁ ānisaṁso pāṭikaṅkho”ti.
 
-19
+#### 2.19
 
 “Akusalaṁ, bhikkhave, pajahatha. Sakkā, bhikkhave, akusalaṁ pajahituṁ. No cedaṁ, bhikkhave, sakkā abhavissa akusalaṁ pajahituṁ, nāhaṁ evaṁ vadeyyaṁ: ‘akusalaṁ, bhikkhave, pajahathā’ti. Yasmā ca kho, bhikkhave, sakkā akusalaṁ pajahituṁ tasmāhaṁ evaṁ vadāmi: ‘akusalaṁ, bhikkhave, pajahathā’ti. Akusalañca hidaṁ, bhikkhave, pahīnaṁ ahitāya dukkhāya saṁvatteyya nāhaṁ evaṁ vadeyyaṁ: ‘akusalaṁ, bhikkhave, pajahathā’ti. Yasmā ca kho, bhikkhave, akusalaṁ pahīnaṁ hitāya sukhāya saṁvattati tasmāhaṁ evaṁ vadāmi: ‘akusalaṁ, bhikkhave, pajahathā’”ti.
 
 “Kusalaṁ, bhikkhave, bhāvetha. Sakkā, bhikkhave, kusalaṁ bhāvetuṁ. No cedaṁ, bhikkhave, sakkā abhavissa kusalaṁ bhāvetuṁ, nāhaṁ evaṁ vadeyyaṁ: ‘kusalaṁ, bhikkhave, bhāvethā’ti. Yasmā ca kho, bhikkhave, sakkā kusalaṁ bhāvetuṁ tasmāhaṁ evaṁ vadāmi: ‘kusalaṁ, bhikkhave, bhāvethā’ti. Kusalañca hidaṁ, bhikkhave, bhāvitaṁ ahitāya dukkhāya saṁvatteyya, nāhaṁ evaṁ vadeyyaṁ: ‘kusalaṁ, bhikkhave, bhāvethā’ti. Yasmā ca kho, bhikkhave, kusalaṁ bhāvitaṁ hitāya sukhāya saṁvattati tasmāhaṁ evaṁ vadāmi: ‘kusalaṁ, bhikkhave, bhāvethā’”ti.
 
-20
+#### 2.20
 
 “Dveme, bhikkhave, dhammā saddhammassa sammosāya antaradhānāya saṁvattanti. Katame dve? Dunnikkhittañca padabyañjanaṁ attho ca dunnīto. Dunnikkhittassa, bhikkhave, padabyañjanassa atthopi dunnayo hoti. Ime kho, bhikkhave, dve dhammā saddhammassa sammosāya antaradhānāya saṁvattantī”ti.
 
 “Dveme, bhikkhave, dhammā saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattanti. Katame dve? Sunikkhittañca padabyañjanaṁ attho ca sunīto. Sunikkhittassa, bhikkhave, padabyañjanassa atthopi sunayo hoti. Ime kho, bhikkhave, dve dhammā saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattantī”ti.
-
-Adhikaraṇavaggo dutiyo.

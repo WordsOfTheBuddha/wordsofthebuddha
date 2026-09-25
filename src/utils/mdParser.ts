@@ -1,7 +1,18 @@
 import { marked } from "marked";
 import type { Tokens } from "marked";
-import { headingLabel } from "./tocClient";
+import { parseSectionHeadingSource } from "./sectionHeading";
 import { allocateUniqueSlug, slugify } from "./slugify";
+
+function escapeHtml(text: string): string {
+	return text
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;");
+}
+
+function escapeAttr(text: string): string {
+	return escapeHtml(text).replace(/"/g, "&quot;");
+}
 
 // Configure marked options
 marked.setOptions({
@@ -21,9 +32,17 @@ renderer.heading = function (this: any, token: Tokens.Heading) {
 		? this.parser.parseInline(token.tokens)
 		: token.text ?? "";
 	const raw = (token.text ?? html).replace(/<[^>]*>/g, "");
+	const { display, tocTitle, sectionId } = parseSectionHeadingSource(raw);
 	const used = headingSlugIds ?? new Set<string>();
-	const id = allocateUniqueSlug(headingLabel(raw), used, slugify);
-	return `<h${token.depth} id="${id}">${html}</h${token.depth}>`;
+	const id = allocateUniqueSlug(display, used, slugify);
+	let attrs = `id="${id}"`;
+	if (sectionId) attrs += ` data-section="${escapeAttr(sectionId)}"`;
+	if (tocTitle) attrs += ` data-toc-title="${escapeAttr(tocTitle)}"`;
+	const bodyHtml =
+		tocTitle && display
+			? escapeHtml(display)
+			: html;
+	return `<h${token.depth} ${attrs}>${bodyHtml}</h${token.depth}>`;
 };
 
 // Customize paragraph rendering without heading logic

@@ -1,4 +1,5 @@
 import { paragraphNumberMarkerHtml } from "./paragraphNumbers";
+import { stripSectionTocTitleSuffix } from "./sectionHeading";
 import { transformId } from "./transformId";
 
 // Debug helper for development-only console output
@@ -105,7 +106,7 @@ export function headingMatchesSectionNumber(
 	heading: string,
 	targetSection: string | number,
 ): boolean {
-	const headingContent = heading.replace(/^#+\s+/, "");
+	const headingContent = stripSectionTocTitleSuffix(heading);
 	const rangeMatch = headingContent.match(
 		/^(\d+(?:\.\d+)?)(?:[–-])(\d+(?:\.\d+)?)(?:\s|$)/,
 	);
@@ -130,7 +131,7 @@ export function headingMatchesSectionNumber(
 }
 
 function extractHeadingNumber(heading: string): string | undefined {
-	const headingContent = heading.replace(/^#+\s+/, "");
+	const headingContent = stripSectionTocTitleSuffix(heading);
 	return headingContent.match(/^(\d+(?:\.\d+)?)/)?.[1];
 }
 

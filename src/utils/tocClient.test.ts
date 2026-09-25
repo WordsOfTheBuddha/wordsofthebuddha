@@ -575,4 +575,74 @@ describe("attachTableOfContents scroll spy", () => {
 			globalThis.HTMLElement = previous.HTMLElement;
 		}
 	});
+
+	it("uses subsection URLs and ToC titles for range discourses", () => {
+		const dom = new JSDOM(
+			`<!doctype html><html><body>
+				<nav id="post-toc"></nav>
+				<article class="interleaved-article" data-discourse-slug="an2.11-20">
+					<h4 id="2-11" data-section="2.11" data-toc-title="Two powers">2.11</h4>
+					<p>One</p>
+					<h4 id="2-12" data-section="2.12">2.12</h4>
+					<p>Two</p>
+				</article>
+			</body></html>`,
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+			requestAnimationFrame: globalThis.requestAnimationFrame,
+			HTMLElement: globalThis.HTMLElement,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.AbortController = window.AbortController;
+		globalThis.HTMLElement = window.HTMLElement;
+		window.HTMLElement.prototype.checkVisibility = () => true;
+		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+			cb(0);
+			return 1;
+		};
+		try {
+			assert.equal(attachTableOfContents(discourseTableOfContentsOptions()), true);
+			const nav = window.document.getElementById("post-toc");
+			assert.ok(nav);
+			const titled = nav.querySelector('a[href="#2-11"]');
+			assert.equal(titled?.textContent, "Two powers");
+			assert.equal(titled?.dataset.subsectionHref, "/an2.11");
+			const numeric = nav.querySelector('a[href="#2-12"]');
+			assert.equal(numeric?.textContent, "2.12");
+			assert.equal(numeric?.dataset.subsectionHref, "/an2.12");
+
+			const first = window.document.getElementById("2-11");
+			const second = window.document.getElementById("2-12");
+			assert.ok(first && second);
+			first.getBoundingClientRect = () => stubRect(-200);
+			second.getBoundingClientRect = () => stubRect(40);
+			window.dispatchEvent(new window.Event("scroll"));
+			assert.equal(
+				nav.querySelector('a[href="#2-12"]')?.classList.contains("active"),
+				true,
+			);
+			assert.equal(nav.querySelectorAll("a.active").length, 1);
+
+			const subsectionLink = nav.querySelector(
+				'a[href="#2-12"]',
+			) as HTMLAnchorElement;
+			assert.ok(subsectionLink);
+			const clickEvent = new window.MouseEvent("click", {
+				bubbles: true,
+				cancelable: true,
+			});
+			subsectionLink.dispatchEvent(clickEvent);
+			assert.equal(clickEvent.defaultPrevented, true);
+		} finally {
+			detachTableOfContents("post-toc");
+			globalThis.window = previous.window;
+			globalThis.document = previous.document;
+			globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+			globalThis.HTMLElement = previous.HTMLElement;
+		}
+	});
 });

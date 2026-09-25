@@ -111,7 +111,11 @@ const suttaProps = {
 ---
 
 <Layout {...suttaProps}>
-	<MDContent content={mainContent} splitAvailable={splitAvailable} />
+	<MDContent
+		content={mainContent}
+		splitAvailable={splitAvailable}
+		discourseSlug={id}
+	/>
 
 	<!-- Paragraph ranges (e.g. /sn1.1.1-2) are SSR at src/pages/[...id].astro. -->
 </Layout>

@@ -4,6 +4,8 @@ import { isViewFullTextFallbackOnly } from "../utils/contentParser";
 
 interface Props {
 	content: string;
+	/** Parent discourse slug for subsection ToC links (e.g. `an2.11-20`). */
+	discourseSlug?: string;
 	/**
 	 * Whether the discourse has Pāli to show in a second column. The panels
 	 * themselves are cloned from the interleaved article in the browser.
@@ -16,6 +18,7 @@ interface Props {
 
 const {
 	content,
+	discourseSlug,
 	splitAvailable = false,
 	refPaliOnlyContent,
 	referenceFallback = false,
@@ -48,6 +51,7 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 				: "content-fade",
 		]}
 		aria-hidden="false"
+		data-discourse-slug={discourseSlug}
 		set:html={parsedInterleaved}
 	/>
 

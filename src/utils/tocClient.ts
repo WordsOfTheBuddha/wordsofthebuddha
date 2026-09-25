@@ -7,6 +7,7 @@
  */
 
 import { decodeHtmlEntities } from "./htmlEntities";
+import { subsectionDiscourseHref } from "./sectionHeading";
 import { slugify } from "./slugify";
 
 export const DISCOURSE_TOC_MIN_HEADINGS = 2;
@@ -329,15 +330,39 @@ function collectHeadings(
 }
 
 function tocHeadingLabel(heading: HTMLElement): string {
+	const tocTitle = heading.getAttribute("data-toc-title");
+	if (tocTitle) return headingLabel(decodeHtmlEntities(tocTitle));
 	const attr = heading.getAttribute("data-report-heading");
 	if (attr) return headingLabel(decodeHtmlEntities(attr));
 	return headingLabel(heading.textContent || "");
 }
 
-function createTocLink(heading: HTMLElement, className: string): HTMLAnchorElement {
+function discourseSlugForToc(contentRoot: HTMLElement): string | null {
+	const fromRoot = contentRoot.dataset.discourseSlug?.trim();
+	if (fromRoot) return fromRoot;
+	const article = contentRoot.closest<HTMLElement>(
+		".interleaved-article[data-discourse-slug]",
+	);
+	return article?.dataset.discourseSlug?.trim() || null;
+}
+
+function createTocLink(
+	heading: HTMLElement,
+	className: string,
+	parentDiscourseSlug: string | null,
+): HTMLAnchorElement {
 	const id = ensureHeadingId(heading);
 	const link = document.createElement("a");
+	const section = heading.getAttribute("data-section");
+	const subsection =
+		parentDiscourseSlug && section
+			? subsectionDiscourseHref(parentDiscourseSlug, section)
+			: null;
+	// Hash keeps primary clicks on the current compilation/range view; subsection
+	// URL is for ⌘/Ctrl+click and “copy link” semantics.
 	link.href = `#${id}`;
+	if (subsection) link.dataset.subsectionHref = subsection;
+	link.dataset.tocHeadingId = id;
 	link.textContent = tocHeadingLabel(heading);
 	if (className) link.className = className;
 	return link;
@@ -384,6 +409,7 @@ export function attachTableOfContents(
 	const minDepth = Math.min(
 		...headings.map((heading) => tocDepth(heading.tagName, baseLevel)),
 	);
+	const parentDiscourseSlug = discourseSlugForToc(contentRoot);
 
 	nav.replaceChildren();
 	for (const heading of headings) {
@@ -391,6 +417,7 @@ export function attachTableOfContents(
 			createTocLink(
 				heading,
 				tocLinkClass(heading.tagName, baseLevel, minDepth),
+				parentDiscourseSlug,
 			),
 		);
 	}
@@ -407,6 +434,7 @@ export function attachTableOfContents(
 				createTocLink(
 					heading,
 					tocLinkClass(heading.tagName, baseLevel, minDepth),
+					parentDiscourseSlug,
 				),
 			);
 		}
@@ -431,13 +459,13 @@ export function attachTableOfContents(
 	}
 
 	function setActiveTocLink(headingId: string | null) {
-		const href = headingId ? `#${headingId}` : null;
 		for (const toc of navs) {
 			if (!toc) continue;
 			for (const link of toc.querySelectorAll("a")) {
+				const linkHeadingId = link.dataset.tocHeadingId;
 				link.classList.toggle(
 					"active",
-					href !== null && link.getAttribute("href") === href,
+					headingId !== null && linkHeadingId === headingId,
 				);
 			}
 		}
@@ -473,18 +501,7 @@ export function attachTableOfContents(
 		return scrollToVisibleId(id);
 	}
 
-	function scrollToHeading(event: Event) {
-		const link = (event.target as HTMLElement | null)?.closest("a");
-		if (!link) return;
-		const href = link.getAttribute("href") || "";
-		if (!href.startsWith("#") || href.length < 2) return;
-		let id = href.slice(1);
-		try {
-			id = decodeURIComponent(id);
-		} catch {
-			/* keep raw id */
-		}
-		event.preventDefault();
+	function beginScrollToHeadingId(id: string) {
 		pinnedHeadingId = id;
 		setActiveTocLink(id);
 		window.setTimeout(() => {
@@ -497,6 +514,41 @@ export function attachTableOfContents(
 			setTimeout(() => tryScroll(attempt + 1), 50);
 		};
 		tryScroll();
+	}
+
+	function scrollToHeading(event: Event) {
+		const link = (event.target as HTMLElement | null)?.closest("a");
+		if (!link) return;
+
+		if ("button" in event) {
+			const mouse = event as MouseEvent;
+			if (mouse.button !== 0) return;
+			const subsection = link.dataset.subsectionHref;
+			if (
+				subsection &&
+				(mouse.metaKey || mouse.ctrlKey || mouse.shiftKey || mouse.altKey)
+			) {
+				event.preventDefault();
+				if (mouse.metaKey || mouse.ctrlKey || mouse.shiftKey) {
+					window.open(subsection, "_blank", "noopener");
+				} else {
+					window.location.assign(subsection);
+				}
+				return;
+			}
+		}
+
+		const href = link.getAttribute("href") || "";
+		if (!href.startsWith("#") || href.length < 2) return;
+		let id = link.dataset.tocHeadingId || href.slice(1);
+		try {
+			id = decodeURIComponent(id);
+		} catch {
+			/* keep raw id */
+		}
+		if (!headings.some((heading) => heading.id === id)) return;
+		event.preventDefault();
+		beginScrollToHeadingId(id);
 	}
 
 	const controller = new AbortController();
