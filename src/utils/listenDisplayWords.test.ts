@@ -74,6 +74,26 @@ describe("listenDisplayWords", () => {
 		]);
 	});
 
+	it("capitalizes after an opening quote mid-sentence when a vocative was omitted (an2.19)", () => {
+		assert.deepEqual(
+			listenDisplayWords(
+				words("I", "would", "not", "say", "to", "you:", "'", "abandon", "the", "unwholesome."),
+			),
+			[
+				"I",
+				"would",
+				"not",
+				"say",
+				"to",
+				"you:",
+				"'",
+				"Abandon",
+				"the",
+				"unwholesome.",
+			],
+		);
+	});
+
 	it("does not capitalize said when it follows a comma inside a parenthetical", () => {
 		assert.deepEqual(
 			listenDisplayWords(words("(Metteyya,”", "said", "the", "Buddha)")),

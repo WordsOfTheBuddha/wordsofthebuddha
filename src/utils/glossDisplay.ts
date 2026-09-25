@@ -42,12 +42,16 @@ export function isParagraphStartPrefix(prefix: string): boolean {
 	return PARAGRAPH_START_LEAD.test(lineStart);
 }
 
+/** Prefix ends with an opening quote that starts quoted speech (not comma/space only). */
+const ENDS_WITH_OPENING_QUOTE = /[“"‘']\s*$/;
+
 /**
  * True when the next content after `prefix` starts a paragraph or sentence —
  * the listen-mode rule for capitalizing the following word.
  */
 export function isSentenceStartPrefix(prefix: string): boolean {
 	if (isParagraphStartPrefix(prefix)) return true;
+	if (ENDS_WITH_OPENING_QUOTE.test(prefix)) return true;
 	const stripped = prefix.replace(TRAILING_OPENERS, "");
 	if (!stripped) return true;
 	return endsSentence(stripped);

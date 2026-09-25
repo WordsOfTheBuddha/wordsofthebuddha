@@ -47,6 +47,11 @@ describe("isSentenceStartPrefix", () => {
 	it("rejects a vocative after a comma", () => {
 		assert.equal(isSentenceStartPrefix("Being asked thus, "), false);
 	});
+
+	it("treats a vocative after an opening quote in quoted speech as a sentence start", () => {
+		assert.equal(isSentenceStartPrefix("I would not say to you: '"), true);
+		assert.equal(isSentenceStartPrefix("‘"), true);
+	});
 });
 
 describe("capitalizeAfterOmittedVocative", () => {
@@ -203,6 +208,15 @@ describe("replaceGlossMarkup (an3.68 / an3.36)", () => {
 		assert.equal(
 			visible("‘|Bhikkhus,::::| there are these five kinds of gifts"),
 			"‘There are these five kinds of gifts",
+		);
+	});
+
+	it("capitalizes after a vocative inside nested quoted speech (an2.19)", () => {
+		assert.equal(
+			visible(
+				"I would not say to you: '|Bhikkhus, ::::|abandon the unwholesome.'",
+			),
+			"I would not say to you: 'Abandon the unwholesome.'",
 		);
 	});
 

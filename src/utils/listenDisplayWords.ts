@@ -39,6 +39,11 @@ export function isOpeningPunctOnly(s: string): boolean {
 	return /^[([{“‘]+$/.test(s.trim());
 }
 
+/** Lone opening-quote token — starts quoted speech (not brackets). */
+export function isOpeningQuoteOnly(s: string): boolean {
+	return /^[“"‘']+$/.test(s.trim());
+}
+
 /** Lone open bracket token — defers sentence-start capitalization (not quotes). */
 export function isOpenBracketOnly(s: string): boolean {
 	return /^[([{]+$/.test(s.trim());
@@ -95,6 +100,8 @@ export function listenDisplayWords(words: ListenWordToken[]): string[] {
 				shouldCapitalizeNext = true;
 			}
 		} else if (endsSentence(displayWord)) {
+			shouldCapitalizeNext = true;
+		} else if (isOpeningQuoteOnly(trimmedDisplay)) {
 			shouldCapitalizeNext = true;
 		} else if (hasLetter(displayWord)) {
 			shouldCapitalizeNext = false;
