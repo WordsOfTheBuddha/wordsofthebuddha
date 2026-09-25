@@ -1,6 +1,7 @@
 import { marked } from "marked";
 import type { Tokens } from "marked";
-import { slugify } from "./slugify";
+import { headingLabel } from "./tocClient";
+import { allocateUniqueSlug, slugify } from "./slugify";
 
 // Configure marked options
 marked.setOptions({
@@ -12,13 +13,16 @@ marked.setOptions({
 // Custom renderer
 const renderer = new marked.Renderer();
 
+let headingSlugIds: Set<string> | null = null;
+
 // Heading renderer using token-based API; render inline tokens to support links/emphasis
 renderer.heading = function (this: any, token: Tokens.Heading) {
 	const html = this.parser?.parseInline
 		? this.parser.parseInline(token.tokens)
 		: token.text ?? "";
 	const raw = (token.text ?? html).replace(/<[^>]*>/g, "");
-	const id = slugify(raw);
+	const used = headingSlugIds ?? new Set<string>();
+	const id = allocateUniqueSlug(headingLabel(raw), used, slugify);
 	return `<h${token.depth} id="${id}">${html}</h${token.depth}>`;
 };
 
@@ -242,7 +246,12 @@ function parseTableRow(rowText: string): string[] {
 }
 
 export async function parseMarkdown(content: string): Promise<string> {
-	return marked.parse(content);
+	headingSlugIds = new Set<string>();
+	try {
+		return await marked.parse(content);
+	} finally {
+		headingSlugIds = null;
+	}
 }
 
 /** Link numbered note markers at paragraph start back to discourse commentary-ref anchors. */

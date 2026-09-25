@@ -2,9 +2,8 @@
  * Shared table-of-contents helpers for long posts and sectioned discourses.
  *
  * Discourses use ### / #### / ##### headings. Unexpected # / ## are shown
- * as top-level, same as ###. Verse numbers (Dhp “179”) and AN range ids
- * (“1.268”) are omitted so a ToC only appears when there are named
- * sections to navigate — typically MN and DN, and some longer SN/AN suttas.
+ * as top-level, same as ###. Lone verse numbers (Dhp “179”) are omitted;
+ * dotted sutta ids (“2.11”, “1.268”) are included in the ToC.
  */
 
 import { decodeHtmlEntities } from "./htmlEntities";
@@ -23,14 +22,23 @@ export const RESEARCH_TOC_HEADING_SELECTOR =
 
 const LETTER_RE = /\p{L}/u;
 const GLOSS_RE = /\|([^:|]+)::[^|]*\|/g;
+/** Dotted sutta ids and compressed ranges (1.351–353), not lone verse numbers. */
+const NUMERIC_SECTION_HEADING_RE =
+	/^\d+\.\d+(?:\.\d+)*(?:[–-]\d+(?:\.\d+)*)?$/u;
 
 export function headingLabel(text: string): string {
 	return text.replace(GLOSS_RE, "$1").replace(/\s+/g, " ").trim();
 }
 
-/** True when a heading is a named section, not a verse number or sutta id. */
+export function isNumericSectionHeading(text: string): boolean {
+	return NUMERIC_SECTION_HEADING_RE.test(headingLabel(text));
+}
+
+/** True when a heading should appear in a discourse ToC. */
 export function isNamedSectionHeading(text: string): boolean {
-	return LETTER_RE.test(headingLabel(text));
+	const label = headingLabel(text);
+	if (LETTER_RE.test(label)) return true;
+	return isNumericSectionHeading(label);
 }
 
 export function slugifyHeading(text: string): string {
@@ -252,9 +260,25 @@ export function scrollToVisibleId(id: string): boolean {
 }
 
 function ensureHeadingId(heading: HTMLElement): string {
-	if (heading.id) return heading.id;
-	heading.id = slugifyHeading(heading.textContent || "");
 	return heading.id;
+}
+
+/** Repair duplicate ids from older renders so scroll-spy and hash links stay unique. */
+export function assignUniqueHeadingIds(headings: HTMLElement[]): void {
+	const used = new Set<string>();
+	for (const heading of headings) {
+		const base = slugifyHeading(heading.textContent || "");
+		let id = heading.id || base;
+		if (used.has(id)) {
+			let n = 2;
+			while (used.has(`${base}-${n}`)) n++;
+			id = `${base}-${n}`;
+			heading.id = id;
+		} else if (!heading.id) {
+			heading.id = id;
+		}
+		used.add(id);
+	}
 }
 
 function headingLevel(tagName: string): number {
@@ -338,6 +362,7 @@ export function attachTableOfContents(
 		options.headingSelector,
 		options.requireNamed,
 	);
+	assignUniqueHeadingIds(headings);
 	const hasEnoughHeadings = headings.length >= options.minHeadings;
 	// Essay posts reserve the two-column shell even with an empty ToC.
 	// Discourses (fixed rail) stay hidden until there are real sections.

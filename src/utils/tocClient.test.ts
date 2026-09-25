@@ -47,10 +47,16 @@ describe("isNamedSectionHeading", () => {
 		assert.equal(isNamedSectionHeading("Paṭhama vagga - First Chapter"), true);
 	});
 
-	it("rejects verse numbers and AN range ids", () => {
+	it("accepts dotted sutta numbers and compressed ranges", () => {
+		assert.equal(isNamedSectionHeading("2.11"), true);
+		assert.equal(isNamedSectionHeading("1.268"), true);
+		assert.equal(isNamedSectionHeading("1.351–353"), true);
+		assert.equal(isNamedSectionHeading("2.180–184"), true);
+	});
+
+	it("rejects lone verse numbers", () => {
 		assert.equal(isNamedSectionHeading("179"), false);
-		assert.equal(isNamedSectionHeading("1.268"), false);
-		assert.equal(isNamedSectionHeading("2.180–184"), false);
+		assert.equal(isNamedSectionHeading("1"), false);
 	});
 });
 
@@ -135,6 +141,16 @@ verse
 verse
 `;
 		assert.equal(shouldShowDiscourseToc(markdown), false);
+	});
+
+	it("shows a ToC for dotted AN sutta headings", () => {
+		const markdown = `
+#### 2.11
+text
+#### 2.12
+text
+`;
+		assert.equal(shouldShowDiscourseToc(markdown), true);
 	});
 
 	it("hides a ToC when there are fewer named sections than the minimum", () => {
@@ -484,6 +500,79 @@ describe("attachTableOfContents scroll spy", () => {
 			);
 		} finally {
 			ctx.restore();
+		}
+	});
+
+	it("highlights only one ToC link when section titles repeat", () => {
+		const dom = new JSDOM(
+			`<!doctype html><html><body>
+				<nav id="post-toc"></nav>
+				<article class="interleaved-article">
+					<h4 id="bodily-action">Bodily Action</h4>
+					<h5 id="before-acting">Before Acting</h5>
+					<p>First</p>
+					<h4 id="verbal-action">Verbal Action</h4>
+					<h5 id="before-acting-2">Before Acting</h5>
+					<p>Second</p>
+					<h4 id="mental-action">Mental Action</h4>
+					<h5 id="before-acting-3">Before Acting</h5>
+					<p>Third</p>
+				</article>
+			</body></html>`,
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+			requestAnimationFrame: globalThis.requestAnimationFrame,
+			HTMLElement: globalThis.HTMLElement,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.AbortController = window.AbortController;
+		globalThis.HTMLElement = window.HTMLElement;
+		window.HTMLElement.prototype.checkVisibility = () => true;
+		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+			cb(0);
+			return 1;
+		};
+		Object.defineProperty(window, "scrollY", { value: 0, writable: true, configurable: true });
+		window.scrollTo = () => {};
+		try {
+			assert.equal(attachTableOfContents(discourseTableOfContentsOptions()), true);
+			const nav = window.document.getElementById("post-toc");
+			assert.ok(nav);
+			const beforeLinks = [
+				...nav.querySelectorAll('a[href="#before-acting"]'),
+				...nav.querySelectorAll('a[href="#before-acting-2"]'),
+				...nav.querySelectorAll('a[href="#before-acting-3"]'),
+			];
+			assert.equal(beforeLinks.length, 3);
+
+			for (const heading of window.document.querySelectorAll<HTMLElement>(
+				".interleaved-article h4, .interleaved-article h5",
+			)) {
+				heading.getBoundingClientRect = () => stubRect(2000);
+			}
+			const second = window.document.getElementById("before-acting-2");
+			assert.ok(second);
+			second.getBoundingClientRect = () => stubRect(40);
+
+			window.dispatchEvent(new window.Event("scroll"));
+			assert.equal(
+				nav.querySelector('a[href="#before-acting-2"]')?.classList.contains("active"),
+				true,
+			);
+			assert.equal(
+				nav.querySelectorAll("a.active").length,
+				1,
+			);
+		} finally {
+			detachTableOfContents("post-toc");
+			globalThis.window = previous.window;
+			globalThis.document = previous.document;
+			globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+			globalThis.HTMLElement = previous.HTMLElement;
 		}
 	});
 });

@@ -16,3 +16,20 @@ export function slugify(text: string): string {
 		.replace(/-+/g, "-")
 		.replace(/(^-|-$)/g, "");
 }
+
+/** GitHub-style suffixes (`-2`, `-3`) when the same heading label appears twice. */
+export function allocateUniqueSlug(
+	raw: string,
+	used: Set<string>,
+	slugFn: (text: string) => string = slugify,
+): string {
+	const base = slugFn(raw);
+	let id = base;
+	if (used.has(id)) {
+		let n = 2;
+		while (used.has(`${base}-${n}`)) n++;
+		id = `${base}-${n}`;
+	}
+	used.add(id);
+	return id;
+}
