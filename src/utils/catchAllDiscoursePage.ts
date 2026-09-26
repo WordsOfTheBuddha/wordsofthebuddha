@@ -187,6 +187,7 @@ export async function resolveCatchAllDiscoursePage(
 
 			return {
 				mainContent: refPage.mainContent,
+				sectionToc: refPage.sectionToc,
 				splitAvailable: refPage.splitAvailable,
 				refPaliOnlyContent: refPage.refPaliOnlyContent,
 				referenceFallbackPage: refPage.referenceFallbackPage,
@@ -214,7 +215,7 @@ export async function resolveCatchAllDiscoursePage(
 	const paliEntry = await getPaliEntry(id);
 	if (paliEntry) paliContent = paliEntry;
 
-	const pairs = await parseContent(
+	const { pairs, sectionToc } = await parseContent(
 		paliContent,
 		contentItem,
 		!paragraphRequest && !discourseRange ? sectionNumber : undefined,
@@ -356,6 +357,7 @@ export async function resolveCatchAllDiscoursePage(
 	return {
 		suttaProps,
 		mainContent,
+		sectionToc,
 		splitAvailable,
 		refPaliOnlyContent,
 		referenceFallbackPage,

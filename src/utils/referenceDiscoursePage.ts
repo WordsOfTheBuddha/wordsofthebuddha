@@ -98,26 +98,31 @@ export async function buildReferenceDiscoursePage(
 			: undefined;
 
 	let pairs;
+	let sectionToc: Record<string, string> = {};
 	if (referenceEntry) {
 		const paliForReference = paliSegmentEntry ?? paliParagraphEntry;
 		const useSegmentKeys =
 			paliSegmentEntry &&
 			hasSegmentMarkers(paliSegmentEntry.body) &&
 			hasSegmentMarkers(referenceEntry.body);
-		pairs = useSegmentKeys
-			? parseReferenceSegmentContent(
-					paliForReference,
-					referenceEntry,
-					toSmartQuotes,
-				)
-			: await parseContent(
-					paliForReference,
-					referenceEntry,
-					undefined,
-					undefined,
-					null,
-					null,
-				);
+		if (useSegmentKeys) {
+			pairs = parseReferenceSegmentContent(
+				paliForReference,
+				referenceEntry,
+				toSmartQuotes,
+			);
+		} else {
+			const parsed = await parseContent(
+				paliForReference,
+				referenceEntry,
+				undefined,
+				undefined,
+				null,
+				null,
+			);
+			pairs = parsed.pairs;
+			sectionToc = parsed.sectionToc;
+		}
 	} else {
 		pairs = paliOnlyPairs;
 	}
@@ -184,6 +189,7 @@ export async function buildReferenceDiscoursePage(
 
 	return {
 		mainContent,
+		sectionToc,
 		splitAvailable,
 		refPaliOnlyContent,
 		referenceFallbackPage: useReferenceEnglish,

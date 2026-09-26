@@ -580,8 +580,8 @@ describe("attachTableOfContents scroll spy", () => {
 		const dom = new JSDOM(
 			`<!doctype html><html><body>
 				<nav id="post-toc"></nav>
-				<article class="interleaved-article" data-discourse-slug="an2.11-20">
-					<h4 id="2-11" data-section="2.11" data-toc-title="Two powers">2.11</h4>
+				<article class="interleaved-article" data-discourse-slug="an2.11-20" data-section-toc='{"2.11":"Two powers"}'>
+					<h4 id="2-11" data-section="2.11">2.11</h4>
 					<p>One</p>
 					<h4 id="2-12" data-section="2.12">2.12</h4>
 					<p>Two</p>

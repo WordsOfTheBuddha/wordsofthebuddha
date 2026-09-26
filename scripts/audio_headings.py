@@ -6,6 +6,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+from mdx_section_toc import clean_heading_text_for_listen, extract_mdx_section_toc
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_DIR = ROOT / "src" / "content" / "en"
@@ -34,7 +36,7 @@ def has_spoken_text(chunk: str) -> bool:
 
 
 def extract_headings(raw_mdx: str) -> list[dict[str, Any]]:
-    body = strip_frontmatter(raw_mdx)
+    body, section_toc = extract_mdx_section_toc(strip_frontmatter(raw_mdx))
     chunks = re.split(r"\n\s*\n+", body.strip())
     pending: list[tuple[int, str]] = []
     headings: list[dict[str, Any]] = []
@@ -43,7 +45,10 @@ def extract_headings(raw_mdx: str) -> list[dict[str, Any]]:
     for chunk in chunks:
         for match in HEADING_RE.finditer(chunk):
             level = len(match.group(1))
-            text = match.group(2).strip()
+            text = clean_heading_text_for_listen(
+                match.group(2).strip(),
+                section_toc,
+            )
             if text:
                 pending.append((level, text))
         if has_spoken_text(chunk):

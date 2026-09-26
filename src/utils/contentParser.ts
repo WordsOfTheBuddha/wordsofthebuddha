@@ -1,3 +1,4 @@
+import { extractMdxSectionToc, isMdxSectionTocLine } from "./mdxSectionToc";
 import { paragraphNumberMarkerHtml } from "./paragraphNumbers";
 import { stripSectionTocTitleSuffix } from "./sectionHeading";
 import { transformId } from "./transformId";
@@ -20,6 +21,11 @@ export type ContentPair = {
 	english: string;
 	pali?: string;
 	actualParagraphNumber?: number;
+};
+
+export type ParseContentResult = {
+	pairs: ContentPair[];
+	sectionToc: Record<string, string>;
 };
 
 type ContentEntry = {
@@ -202,11 +208,16 @@ export function parseContent(
 	discourseRange?: { start: string; end: string } | null,
 	/** Current URL slug (HRF): shown in subset fallback copy; link uses fullReference. */
 	hrf?: string,
-) {
-	const pairs: ContentPair[] = [];
+): ParseContentResult {
 	const paliText = paliContent?.body?.trim?.() ? paliContent.body : "";
-	const englishText = toSmartQuotes(englishContent?.body || "");
+	const { body: englishText, sectionToc } = extractMdxSectionToc(
+		toSmartQuotes(englishContent?.body || ""),
+	);
 	const displaySlug = hrf ?? (fullReference ? formatDiscourseHref(fullReference) : "");
+	const finish = (pairs: ContentPair[]): ParseContentResult => ({
+		pairs,
+		sectionToc,
+	});
 
 	// Handle paragraph requests
 	if (paragraphRequest) {
@@ -287,7 +298,7 @@ export function parseContent(
 			}
 		}
 
-		return filteredPairs;
+		return finish(filteredPairs);
 	}
 
 	// Handle discourse range requests (e.g., an1.306-308)
@@ -445,7 +456,7 @@ export function parseContent(
 			targetPali.join("\n\n"),
 			{ type: "discourse", originalContent: englishText }, // Pass original content for paragraph numbering
 		);
-		return result;
+		return finish(result);
 	}
 
 	// Handle existing section logic (for discourse ranges like an1.308 -> an1.306-315)
@@ -512,11 +523,11 @@ export function parseContent(
 			targetPali.join("\n\n"),
 			{ type: "discourse", originalContent: englishText }, // Use discourse logic for proper paragraph numbering
 		);
-		return result;
+		return finish(result);
 	}
 
 	const result = processBlocks(englishText, paliText, null);
-	return result;
+	return finish(result);
 }
 
 /** Collection ordinal closers, e.g. `Dutiyaṁ.` / `Paṭhamaṁ.` */
@@ -598,6 +609,10 @@ function processBlocks(
 		// Skip MDX import statements entirely (they have no visual output)
 		if (block.startsWith("import ")) {
 			return; // Don't advance paliIndex or paragraph numbering
+		}
+
+		if (isMdxSectionTocLine(block)) {
+			return;
 		}
 
 		// Convert MDX <Image> components to plain <img> tags

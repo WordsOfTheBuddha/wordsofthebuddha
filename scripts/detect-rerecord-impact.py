@@ -16,10 +16,10 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+from generate_voice import mdx_body_for_voice
 from voice_text_normalizer import (
     extract_paragraph_chunks_heading_style,
     extract_paragraphs_auto,
-    strip_frontmatter,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -91,7 +91,7 @@ def file_at_revision(rev: str, path: str) -> str:
 
 
 def paragraph_texts(raw_mdx: str, mode: str) -> dict[int, str]:
-    body = strip_frontmatter(raw_mdx)
+    body, _section_toc = mdx_body_for_voice(raw_mdx)
     if mode == "manifest":
         pairs = extract_paragraphs_auto(body, for_manifest=True)
     elif mode == "tts":
@@ -539,8 +539,8 @@ Examples:
 
 
 def has_heading_structure_drift(old_raw: str, new_raw: str) -> bool:
-    old_body = strip_frontmatter(old_raw)
-    new_body = strip_frontmatter(new_raw)
+    old_body, _ = mdx_body_for_voice(old_raw)
+    new_body, _ = mdx_body_for_voice(new_raw)
     old_h = extract_paragraph_chunks_heading_style(old_body)
     new_h = extract_paragraph_chunks_heading_style(new_body)
     old_mode = bool(old_h)

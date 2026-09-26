@@ -58,7 +58,7 @@ let paliContent: { body: string } = { body: "" };
 const paliEntry = await getPaliEntry(id);
 if (paliEntry) paliContent = paliEntry;
 
-const pairs = await parseContent(paliContent, contentItem);
+const { pairs, sectionToc } = await parseContent(paliContent, contentItem);
 const interleavedContent = createCombinedMarkdown(pairs, true, "interleaved");
 
 const mainContent =
@@ -113,6 +113,7 @@ const suttaProps = {
 <Layout {...suttaProps}>
 	<MDContent
 		content={mainContent}
+		sectionToc={sectionToc}
 		splitAvailable={splitAvailable}
 		discourseSlug={id}
 	/>

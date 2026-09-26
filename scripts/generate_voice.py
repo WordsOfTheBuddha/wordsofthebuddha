@@ -51,6 +51,7 @@ import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 
 from audio_headings import apply_heading_metadata
+from mdx_section_toc import extract_mdx_section_toc
 
 # Repo root = parent of scripts/
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -167,6 +168,13 @@ def strip_frontmatter(raw: str) -> str:
         if end != -1:
             return raw[end + 4 :].lstrip("\n")
     return raw
+
+
+def mdx_body_for_voice(raw: str) -> tuple[str, dict[str, str]]:
+    """Strip frontmatter and MDX/HTML section ToC metadata before paragraph extraction."""
+    body = strip_frontmatter(raw)
+    cleaned, section_toc = extract_mdx_section_toc(body)
+    return cleaned, section_toc
 
 
 def strip_glosses_display(text: str) -> str:
@@ -2946,7 +2954,7 @@ def enrich_manifest_v2(manifest: dict, slug: str) -> None:
 
     raw = mdx_path.read_text(encoding="utf-8")
     fm = _parse_frontmatter(raw)
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
     raw_chunks = extract_paragraph_chunks_auto(body)
     by_id: dict[int, tuple[str, bool]] = {pid: (rc, isv) for pid, rc, isv in raw_chunks}
 
@@ -3006,7 +3014,7 @@ def process_one_discourse(
 ) -> int:
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
     raw_chunks = extract_paragraph_chunks_auto(body)
     # Display text: canonical page text (used for text hash and diagnostics).
     paragraph_specs = extract_paragraphs_auto(body)

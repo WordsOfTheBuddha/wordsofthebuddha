@@ -7,6 +7,7 @@
  */
 
 import { decodeHtmlEntities } from "./htmlEntities";
+import { parseSectionTocMap } from "./mdxSectionToc";
 import { subsectionDiscourseHref } from "./sectionHeading";
 import { slugify } from "./slugify";
 
@@ -329,7 +330,20 @@ function collectHeadings(
 	);
 }
 
-function tocHeadingLabel(heading: HTMLElement): string {
+function sectionTocMapForRoot(contentRoot: HTMLElement): Record<string, string> | null {
+	const article =
+		contentRoot.closest<HTMLElement>(".interleaved-article") ?? contentRoot;
+	return parseSectionTocMap(article.getAttribute("data-section-toc"));
+}
+
+function tocHeadingLabel(
+	heading: HTMLElement,
+	sectionToc: Record<string, string> | null,
+): string {
+	const section = heading.getAttribute("data-section");
+	if (section && sectionToc?.[section]) {
+		return headingLabel(sectionToc[section]);
+	}
 	const tocTitle = heading.getAttribute("data-toc-title");
 	if (tocTitle) return headingLabel(decodeHtmlEntities(tocTitle));
 	const attr = heading.getAttribute("data-report-heading");
@@ -350,6 +364,7 @@ function createTocLink(
 	heading: HTMLElement,
 	className: string,
 	parentDiscourseSlug: string | null,
+	sectionToc: Record<string, string> | null,
 ): HTMLAnchorElement {
 	const id = ensureHeadingId(heading);
 	const link = document.createElement("a");
@@ -363,7 +378,7 @@ function createTocLink(
 	link.href = `#${id}`;
 	if (subsection) link.dataset.subsectionHref = subsection;
 	link.dataset.tocHeadingId = id;
-	link.textContent = tocHeadingLabel(heading);
+	link.textContent = tocHeadingLabel(heading, sectionToc);
 	if (className) link.className = className;
 	return link;
 }
@@ -410,6 +425,7 @@ export function attachTableOfContents(
 		...headings.map((heading) => tocDepth(heading.tagName, baseLevel)),
 	);
 	const parentDiscourseSlug = discourseSlugForToc(contentRoot);
+	const sectionToc = sectionTocMapForRoot(contentRoot);
 
 	nav.replaceChildren();
 	for (const heading of headings) {
@@ -418,6 +434,7 @@ export function attachTableOfContents(
 				heading,
 				tocLinkClass(heading.tagName, baseLevel, minDepth),
 				parentDiscourseSlug,
+				sectionToc,
 			),
 		);
 	}
@@ -435,6 +452,7 @@ export function attachTableOfContents(
 					heading,
 					tocLinkClass(heading.tagName, baseLevel, minDepth),
 					parentDiscourseSlug,
+					sectionToc,
 				),
 			);
 		}

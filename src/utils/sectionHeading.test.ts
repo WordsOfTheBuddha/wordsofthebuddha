@@ -8,26 +8,28 @@ import {
 } from "./sectionHeading";
 
 describe("parseSectionHeadingSource", () => {
-	it("parses numeric id with optional ToC title", () => {
+	it("parses numeric section ids", () => {
+		assert.deepEqual(parseSectionHeadingSource("2.11"), {
+			display: "2.11",
+			sectionId: "2.11",
+		});
+	});
+
+	it("strips inline MDX toc comments from the display id", () => {
 		assert.deepEqual(
-			parseSectionHeadingSource("2.11 <!-- toc: Two powers -->"),
+			parseSectionHeadingSource("2.11 {/* toc: Two powers */}"),
 			{
 				display: "2.11",
-				tocTitle: "Two powers",
 				sectionId: "2.11",
 			},
 		);
 	});
 
 	it("leaves named headings unchanged", () => {
-		assert.deepEqual(
-			parseSectionHeadingSource("Before Acting"),
-			{
-				display: "Before Acting",
-				tocTitle: null,
-				sectionId: null,
-			},
-		);
+		assert.deepEqual(parseSectionHeadingSource("Before Acting"), {
+			display: "Before Acting",
+			sectionId: null,
+		});
 	});
 });
 
@@ -43,9 +45,9 @@ describe("subsectionDiscourseHref", () => {
 });
 
 describe("stripSectionTocTitleSuffix", () => {
-	it("strips markdown heading markers and brace titles", () => {
+	it("strips markdown heading markers and inline toc comments", () => {
 		assert.equal(
-			stripSectionTocTitleSuffix("#### 2.16 <!-- toc: After Death -->"),
+			stripSectionTocTitleSuffix("#### 2.16 {/* toc: After Death */}"),
 			"2.16",
 		);
 	});

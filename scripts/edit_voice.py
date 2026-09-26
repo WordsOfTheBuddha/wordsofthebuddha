@@ -77,10 +77,10 @@ from generate_voice import (
     file_hash,
     load_dotenv,
     optional_ssml_prosody,
+    mdx_body_for_voice,
     resolve_mdx_path,
     restore_manifest_display_words,
     print_verbose_manifest_metadata,
-    strip_frontmatter,
     text_hash,
     load_routes,
     expand_all_args,
@@ -630,7 +630,7 @@ def align_only(slug: str, voice_name: str, *, verbose: bool = False) -> int:
 
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
     paragraph_specs = extract_paragraphs_auto(body)
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
     paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
@@ -759,7 +759,7 @@ def retake_groups(
 
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
 
     paragraph_specs = extract_paragraphs_auto(body)
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
@@ -1031,7 +1031,7 @@ def retake_paragraphs_exact(
 
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
 
     paragraph_specs = extract_paragraphs_auto(body)
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
@@ -1257,12 +1257,12 @@ def copy_paragraphs(
 
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
     paragraph_specs = extract_paragraphs_auto(body)
     target_paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
     source_mdx_path = resolve_mdx_path(source_slug)
     source_raw = source_mdx_path.read_text(encoding="utf-8")
-    source_body = strip_frontmatter(source_raw)
+    source_body, _source_section_toc = mdx_body_for_voice(source_raw)
     source_paragraph_specs_manifest = extract_paragraphs_auto(source_body, for_manifest=True)
     if len(paragraph_specs) != len(target_paras):
         print(
@@ -1524,7 +1524,7 @@ def refresh_manifest_text(
 
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
-    body = strip_frontmatter(raw)
+    body, _section_toc = mdx_body_for_voice(raw)
 
     paragraph_specs_display = extract_paragraphs_auto(body)
     paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)

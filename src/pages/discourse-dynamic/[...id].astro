@@ -13,6 +13,7 @@ if (result instanceof Response) return result;
 const {
 	suttaProps,
 	mainContent,
+	sectionToc,
 	splitAvailable,
 	refPaliOnlyContent,
 	referenceFallbackPage,
@@ -27,6 +28,7 @@ const {
 >
 	<MDContent
 		content={mainContent}
+		sectionToc={sectionToc}
 		splitAvailable={splitAvailable}
 		refPaliOnlyContent={refPaliOnlyContent}
 		referenceFallback={referenceFallbackPage}

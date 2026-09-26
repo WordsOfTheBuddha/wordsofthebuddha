@@ -1,9 +1,12 @@
 ---
 import { parseMarkdown } from "../utils/mdParser";
 import { isViewFullTextFallbackOnly } from "../utils/contentParser";
+import { extractMdxSectionToc } from "../utils/mdxSectionToc";
 
 interface Props {
 	content: string;
+	/** ToC labels from MDX section comments (from `parseContent`). */
+	sectionToc?: Record<string, string>;
 	/** Parent discourse slug for subsection ToC links (e.g. `an2.11-20`). */
 	discourseSlug?: string;
 	/**
@@ -18,12 +21,18 @@ interface Props {
 
 const {
 	content,
+	sectionToc: sectionTocProp,
 	discourseSlug,
 	splitAvailable = false,
 	refPaliOnlyContent,
 	referenceFallback = false,
 } = Astro.props;
-const parsedInterleaved = await parseMarkdown(content);
+const { body: interleavedBody, sectionToc: sectionTocFromBody } =
+	extractMdxSectionToc(content);
+const sectionToc = { ...sectionTocFromBody, ...(sectionTocProp ?? {}) };
+const sectionTocJson =
+	Object.keys(sectionToc).length > 0 ? JSON.stringify(sectionToc) : undefined;
+const parsedInterleaved = await parseMarkdown(interleavedBody);
 const parsedRefPaliOnly = refPaliOnlyContent
 	? await parseMarkdown(refPaliOnlyContent)
 	: null;
@@ -52,6 +61,7 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		]}
 		aria-hidden="false"
 		data-discourse-slug={discourseSlug}
+		data-section-toc={sectionTocJson}
 		set:html={parsedInterleaved}
 	/>
 

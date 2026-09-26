@@ -31,19 +31,13 @@ renderer.heading = function (this: any, token: Tokens.Heading) {
 	const html = this.parser?.parseInline
 		? this.parser.parseInline(token.tokens)
 		: token.text ?? "";
-	// Keep `<!-- toc: … -->` (strip other HTML tags from inline-rendered headings).
-	const raw = (token.text ?? html).replace(/<(?!!--)[^>]*>/g, "");
-	const { display, tocTitle, sectionId } = parseSectionHeadingSource(raw);
+	const raw = (token.text ?? html).replace(/<[^>]*>/g, "");
+	const { display, sectionId } = parseSectionHeadingSource(raw);
 	const used = headingSlugIds ?? new Set<string>();
 	const id = allocateUniqueSlug(display, used, slugify);
 	let attrs = `id="${id}"`;
 	if (sectionId) attrs += ` data-section="${escapeAttr(sectionId)}"`;
-	if (tocTitle) attrs += ` data-toc-title="${escapeAttr(tocTitle)}"`;
-	const bodyHtml =
-		tocTitle && display
-			? escapeHtml(display)
-			: html;
-	return `<h${token.depth} ${attrs}>${bodyHtml}</h${token.depth}>`;
+	return `<h${token.depth} ${attrs}>${html}</h${token.depth}>`;
 };
 
 // Customize paragraph rendering without heading logic

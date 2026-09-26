@@ -573,7 +573,7 @@ async function fetchDiscourseHtml(
 	let html: string;
 	if (paliOptions?.enabled) {
 		const paliEntry = await findEntry("pli", { slug });
-		const pairs = parseContent(
+		const { pairs } = parseContent(
 			{ body: paliEntry?.body ?? "" },
 			entry,
 			undefined,
