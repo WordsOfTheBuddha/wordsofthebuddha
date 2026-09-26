@@ -1,19 +1,17 @@
 ---
+title: Sikkhāpada sutta - Training Rules
+description: The Buddha explains the four kinds of persons found existing in the world according to whether they observe the training rules themselves and encourage others to do so.
+qualities: ethical conduct, spiritual life, slaughtering, stealing, sexual misconduct, wrong speech, consuming intoxicants
+theme: training guideline, inspiration
 slug: an4.99
-source: suttacentral/bilara-data
-title: Sikkhāpadasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 
 attahitāya paṭipanno no parahitāya,
-
 parahitāya paṭipanno no attahitāya,
-
 nevattahitāya paṭipanno no parahitāya,
-
 attahitāya ceva paṭipanno parahitāya ca.
 
 Kathañca, bhikkhave, puggalo attahitāya paṭipanno hoti, no parahitāya? Idha, bhikkhave, ekacco puggalo attanā pāṇātipātā paṭivirato hoti, no paraṁ pāṇātipātā veramaṇiyā samādapeti; attanā adinnādānā paṭivirato hoti, no paraṁ adinnādānā veramaṇiyā samādapeti; attanā kāmesumicchācārā paṭivirato hoti, no paraṁ kāmesumicchācārā veramaṇiyā samādapeti; attanā musāvādā paṭivirato hoti, no paraṁ musāvādā veramaṇiyā samādapeti; attanā surāmerayamajjapamādaṭṭhānā paṭivirato hoti, no paraṁ surāmerayamajjapamādaṭṭhānā veramaṇiyā samādapeti. Evaṁ kho, bhikkhave, puggalo attahitāya paṭipanno hoti, no parahitāya.
