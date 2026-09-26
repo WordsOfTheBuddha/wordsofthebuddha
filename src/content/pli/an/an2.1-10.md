@@ -25,8 +25,6 @@ Imāni kho, bhikkhave, dve vajjāni.
 
 Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘diṭṭhadhammikassa vajjassa bhāyissāma, samparāyikassa vajjassa bhāyissāma, vajjabhīruno bhavissāma vajjabhayadassāvino’ti. Evañhi vo, bhikkhave, sikkhitabbaṁ. Vajjabhīruno, bhikkhave, vajjabhayadassāvino etaṁ pāṭikaṅkhaṁ yaṁ parimuccissati sabbavajjehī”ti.
 
-Paṭhamaṁ.
-
 #### 2.2 Padhānasutta
 
 “Dvemāni, bhikkhave, padhānāni durabhisambhavāni lokasmiṁ. Katamāni dve? Yañca gihīnaṁ agāraṁ ajjhāvasataṁ cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānuppadānatthaṁ padhānaṁ, yañca agārasmā anagāriyaṁ pabbajitānaṁ sabbūpadhipaṭinissaggatthaṁ padhānaṁ. Imāni kho, bhikkhave, dve padhānāni durabhisambhavāni lokasmiṁ.
@@ -35,19 +33,13 @@ Etadaggaṁ, bhikkhave, imesaṁ dvinnaṁ padhānānaṁ yadidaṁ sabbūpadhip
 
 Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘sabbūpadhipaṭinissaggatthaṁ padhānaṁ padahissāmā’ti. Evañhi vo, bhikkhave, sikkhitabban”ti.
 
-Dutiyaṁ.
-
 #### 2.3 Tapanīyasutta
 
 “Dveme, bhikkhave, dhammā tapanīyā. Katame dve? Idha, bhikkhave, ekaccassa kāyaduccaritaṁ kataṁ hoti, akataṁ hoti kāyasucaritaṁ; vacīduccaritaṁ kataṁ hoti, akataṁ hoti vacīsucaritaṁ; manoduccaritaṁ kataṁ hoti, akataṁ hoti manosucaritaṁ. So ‘kāyaduccaritaṁ me katan’ti tappati, ‘akataṁ me kāyasucaritan’ti tappati; ‘vacīduccaritaṁ me katan’ti tappati, ‘akataṁ me vacīsucaritan’ti tappati; ‘manoduccaritaṁ me katan’ti tappati, ‘akataṁ me manosucaritan’ti tappati. Ime kho, bhikkhave, dve dhammā tapanīyā”ti.
 
-Tatiyaṁ.
-
 #### 2.4 Atapanīyasutta
 
 “Dveme, bhikkhave, dhammā atapanīyā. Katame dve? Idha, bhikkhave, ekaccassa kāyasucaritaṁ kataṁ hoti, akataṁ hoti kāyaduccaritaṁ; vacīsucaritaṁ kataṁ hoti, akataṁ hoti vacīduccaritaṁ; manosucaritaṁ kataṁ hoti, akataṁ hoti manoduccaritaṁ. So ‘kāyasucaritaṁ me katan’ti na tappati, ‘akataṁ me kāyaduccaritan’ti na tappati; ‘vacīsucaritaṁ me katan’ti na tappati, ‘akataṁ me vacīduccaritan’ti na tappati; ‘manosucaritaṁ me katan’ti na tappati, ‘akataṁ me manoduccaritan’ti na tappati. Ime kho, bhikkhave, dve dhammā atapanīyā”ti.
-
-Catutthaṁ.
 
 #### 2.5 Upaññātasutta
 
@@ -61,36 +53,24 @@ Tumhe cepi, bhikkhave, appaṭivānaṁ padaheyyātha: ‘kāmaṁ taco ca nhār
 
 Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘appaṭivānaṁ padahissāma. Kāmaṁ taco ca nhāru ca aṭṭhi ca avasissatu, sarīre upassussatu maṁsalohitaṁ, yaṁ taṁ purisathāmena purisavīriyena purisaparakkamena pattabbaṁ na taṁ apāpuṇitvā vīriyassa saṇṭhānaṁ bhavissatī’ti. Evañhi vo, bhikkhave, sikkhitabban”ti.
 
-Pañcamaṁ.
-
 #### 2.6 Saṁyojanasutta
 
 “Dveme, bhikkhave, dhammā. Katame dve? Yā ca saṁyojaniyesu dhammesu assādānupassitā, yā ca saṁyojaniyesu dhammesu nibbidānupassitā. Saṁyojaniyesu, bhikkhave, dhammesu assādānupassī viharanto rāgaṁ na pajahati, dosaṁ na pajahati, mohaṁ na pajahati. Rāgaṁ appahāya, dosaṁ appahāya, mohaṁ appahāya na parimuccati jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi. Na parimuccati dukkhasmāti vadāmi.
 
 Saṁyojaniyesu, bhikkhave, dhammesu nibbidānupassī viharanto rāgaṁ pajahati, dosaṁ pajahati, mohaṁ pajahati. Rāgaṁ pahāya, dosaṁ pahāya, mohaṁ pahāya, parimuccati jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi. Parimuccati dukkhasmāti vadāmi. Ime kho, bhikkhave, dve dhammā”ti.
 
-Chaṭṭhaṁ.
-
 #### 2.7 Kaṇhasutta
 
 “Dveme, bhikkhave, dhammā kaṇhā. Katame dve? Ahirikañca anottappañca. Ime kho, bhikkhave, dve dhammā kaṇhā”ti.
-
-Sattamaṁ.
 
 #### 2.8 Sukkasutta
 
 “Dveme, bhikkhave, dhammā sukkā. Katame dve? Hirī ca ottappañca. Ime kho, bhikkhave, dve dhammā sukkā”ti.
 
-Aṭṭhamaṁ.
-
 #### 2.9 Cariyasutta
 
 “Dveme, bhikkhave, dhammā sukkā lokaṁ pālenti. Katame dve? Hirī ca ottappañca. Ime kho, bhikkhave, dve sukkā dhammā lokaṁ na pāleyyuṁ, nayidha paññāyetha mātāti vā mātucchāti vā mātulānīti vā ācariyabhariyāti vā garūnaṁ dārāti vā. Sambhedaṁ loko agamissa, yathā ajeḷakā kukkuṭasūkarā soṇasiṅgālā. Yasmā ca kho, bhikkhave, ime dve sukkā dhammā lokaṁ pālenti tasmā paññāyati mātāti vā mātucchāti vā mātulānīti vā ācariyabhariyāti vā garūnaṁ dārāti vā”ti.
 
-Navamaṁ.
-
 #### 2.10 Vassūpanāyikasutta
 
 “Dvemā, bhikkhave, vassūpanāyikā. Katamā dve? Purimikā ca pacchimikā ca. Imā kho, bhikkhave, dve vassūpanāyikā”ti.
-
-Dasamaṁ.
