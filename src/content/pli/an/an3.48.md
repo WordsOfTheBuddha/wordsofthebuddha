@@ -1,9 +1,11 @@
 ---
+title: Pabbatarāja sutta - The King of Mountains
+description: Just as mighty trees flourish supported by the Himalayas, a household grows in faith, virtue, and wisdom when supported by a faithful and virtuous head of the family.
+qualities: faith, ethical conduct, wisdom, generosity, happiness
+theme: inquisitiveness, wisdom, inspiration
 slug: an3.48
-source: suttacentral/bilara-data
-title: Pabbatarājasutta
-edition: ms
-granularity: paragraph
+simile: Himalayas
+priority: 1.2
 ---
 
 “Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā tīhi vaḍḍhīhi vaḍḍhanti. Katamāhi tīhi? Sākhāpattapalāsena vaḍḍhanti, tacapapaṭikāya vaḍḍhanti, pheggusārena vaḍḍhanti. Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā imāhi tīhi vaḍḍhīhi vaḍḍhanti.
@@ -31,5 +33,3 @@ Idha dhammaṁ caritvāna,
 maggaṁ sugatigāminaṁ;
 Nandino devalokasmiṁ,
 modanti kāmakāmino”ti.
-
-Navamaṁ.
