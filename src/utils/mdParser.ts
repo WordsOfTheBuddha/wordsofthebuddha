@@ -31,7 +31,8 @@ renderer.heading = function (this: any, token: Tokens.Heading) {
 	const html = this.parser?.parseInline
 		? this.parser.parseInline(token.tokens)
 		: token.text ?? "";
-	const raw = (token.text ?? html).replace(/<[^>]*>/g, "");
+	// Keep `<!-- toc: … -->` (strip other HTML tags from inline-rendered headings).
+	const raw = (token.text ?? html).replace(/<(?!!--)[^>]*>/g, "");
 	const { display, tocTitle, sectionId } = parseSectionHeadingSource(raw);
 	const used = headingSlugIds ?? new Set<string>();
 	const id = allocateUniqueSlug(display, used, slugify);

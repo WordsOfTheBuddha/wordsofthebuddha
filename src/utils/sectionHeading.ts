@@ -1,11 +1,11 @@
 /**
  * Numeric section headings in range discourses (e.g. `an2.11-20`).
  *
- * Authoring — optional ToC-only title after the section id:
+ * Authoring — optional ToC-only title (MDX-safe HTML comment on the heading line):
  *
- *   #### 2.11 {Powers of reflection and cultivation}
+ *   #### 2.11 <!-- toc: Powers of reflection and cultivation -->
  *
- * The visible heading stays `2.11`; the brace text is used in the table of
+ * The visible heading stays `2.11`; the comment text is used in the table of
  * contents. Primary ToC clicks scroll in-page (`#…`); `data-subsection-href`
  * holds `/an2.11` for ⌘/Ctrl+click (subsection pages from the parent file).
  */
@@ -16,8 +16,8 @@ function stripGlossMarkup(text: string): string {
 	return text.replace(GLOSS_RE, "$1").replace(/\s+/g, " ").trim();
 }
 
-/** Brace suffix on a markdown heading line (title must not contain `}`). */
-const SECTION_TOC_TITLE_SUFFIX_RE = /^(.+?)\s+\{([^}]+)\}\s*$/;
+/** `<!-- toc: Title -->` or `<!-- toc-title: Title -->` on the same line as the id. */
+const SECTION_TOC_COMMENT_RE = /<!--\s*toc(?:-title)?\s*:\s*([\s\S]*?)\s*-->/i;
 
 const NUMERIC_SECTION_ID_RE =
 	/^(\d+\.\d+(?:\.\d+)*(?:[–-]\d+(?:\.\d+)*)?)/u;
@@ -28,19 +28,19 @@ const RANGE_DISCOURSE_SLUG_RE = /^[a-z]+\d[\d.]*-\d/i;
 export function parseSectionHeadingSource(raw: string): {
 	/** Heading text shown in the article (section id, optional gloss). */
 	display: string;
-	/** ToC label when `{…}` is present. */
+	/** ToC label when a `<!-- toc: … -->` comment is present. */
 	tocTitle: string | null;
 	/** Leading sutta id (`2.11`) when the display line is numeric. */
 	sectionId: string | null;
 } {
-	const labeled = stripGlossMarkup(raw.trim());
-	let display = labeled;
+	let labeled = stripGlossMarkup(raw.trim());
 	let tocTitle: string | null = null;
-	const brace = SECTION_TOC_TITLE_SUFFIX_RE.exec(labeled);
-	if (brace) {
-		display = brace[1].trim();
-		tocTitle = brace[2].trim();
+	const comment = SECTION_TOC_COMMENT_RE.exec(labeled);
+	if (comment) {
+		tocTitle = comment[1].trim();
+		labeled = labeled.replace(SECTION_TOC_COMMENT_RE, "").replace(/\s+/g, " ").trim();
 	}
+	const display = labeled;
 	const sectionId = display.match(NUMERIC_SECTION_ID_RE)?.[1] ?? null;
 	return { display, tocTitle, sectionId };
 }
@@ -61,7 +61,7 @@ export function subsectionDiscourseHref(
 	return `/${prefix}${sectionId}`;
 }
 
-/** Strip an optional `{ToC title}` suffix before matching section numbers in markdown. */
+/** Strip an optional `<!-- toc: … -->` suffix before matching section numbers in markdown. */
 export function stripSectionTocTitleSuffix(headingLine: string): string {
 	const content = headingLine.replace(/^#+\s+/, "");
 	return parseSectionHeadingSource(content).display;

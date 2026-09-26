@@ -9,11 +9,14 @@ import {
 
 describe("parseSectionHeadingSource", () => {
 	it("parses numeric id with optional ToC title", () => {
-		assert.deepEqual(parseSectionHeadingSource("2.11 {Two powers}"), {
-			display: "2.11",
-			tocTitle: "Two powers",
-			sectionId: "2.11",
-		});
+		assert.deepEqual(
+			parseSectionHeadingSource("2.11 <!-- toc: Two powers -->"),
+			{
+				display: "2.11",
+				tocTitle: "Two powers",
+				sectionId: "2.11",
+			},
+		);
 	});
 
 	it("leaves named headings unchanged", () => {
@@ -42,7 +45,7 @@ describe("subsectionDiscourseHref", () => {
 describe("stripSectionTocTitleSuffix", () => {
 	it("strips markdown heading markers and brace titles", () => {
 		assert.equal(
-			stripSectionTocTitleSuffix("#### 2.16 {A brahmin on rebirth}"),
+			stripSectionTocTitleSuffix("#### 2.16 <!-- toc: After Death -->"),
 			"2.16",
 		);
 	});
