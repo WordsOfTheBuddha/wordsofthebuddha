@@ -1,7 +1,7 @@
 ---
 title: Appamāda sutta - Diligence
 description: Diligence should be practiced in four areas - in abandoning bodily, verbal, and mental misconduct, and wrong view.
-qualities: diligence, right view, right intention, right speech, right action
+qualities: diligence, right view, right intention, right speech, ethical conduct
 theme: urgency, principle
 slug: an4.116
 priority: 1.1

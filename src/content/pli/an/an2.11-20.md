@@ -1,8 +1,8 @@
 ---
-title: Adhikaraṇa vagga - The Chapter on Disciplinary Issue
-description: The Buddha teaches the powers of reflection and cultivation, careful self-examination in disciplinary issues, giving up the unskillful and cultivating the skillful, and factors leading to the decline or endurance of the good Dhamma.
+title: Adhikaraṇa vagga - The Chapter with Disciplinary Issue
+description: The Buddha teaches the powers of reflection and cultivation, careful self-examination in disciplinary issues, abandoning the unwholesome, and factors leading to the decline or endurance of the good Dhamma.
 qualities: examination, ethical conduct, wholesome, unwholesome, cultivation, wisdom
-theme: training guideline, cultivating discernment
+theme: training guideline, cultivating discernment, wisdom
 slug: an2.11-20
 priority: 1.2
 ---
