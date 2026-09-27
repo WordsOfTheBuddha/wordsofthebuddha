@@ -43,6 +43,14 @@ function hasPendingCookies(cookies: PendingCookies | undefined): boolean {
 	return false;
 }
 
+function hasHeaderCaseInsensitive(headers: Headers, name: string): boolean {
+	const lowerName = name.toLowerCase();
+	for (const headerName of headers.keys()) {
+		if (headerName.toLowerCase() === lowerName) return true;
+	}
+	return false;
+}
+
 export interface PublicEdgeCacheInput {
 	request: Request;
 	url: URL;
@@ -63,10 +71,10 @@ export function withPublicEdgeCache(
 	const method = request.method.toUpperCase();
 	if (method !== "GET" && method !== "HEAD") return response;
 	if (url.pathname.startsWith("/api/")) return response;
-	if (request.headers.has("authorization")) return response;
+	if (hasHeaderCaseInsensitive(request.headers, "authorization")) return response;
 	if (!CACHEABLE_STATUS.has(response.status)) return response;
-	if (response.headers.has("cache-control")) return response;
-	if (response.headers.has("set-cookie")) return response;
+	if (hasHeaderCaseInsensitive(response.headers, "cache-control")) return response;
+	if (hasHeaderCaseInsensitive(response.headers, "set-cookie")) return response;
 	if (hasPendingCookies(cookies)) return response;
 	if (
 		hasPendingCookies(

@@ -9,10 +9,22 @@ import {
 } from "../../service/search/search";
 import { loadNativeSearchIndex } from "../../utils/loadSearchIndexData";
 import type { SearchIndexDoc } from "../../utils/loadSearchIndexData";
-import { buildUnifiedContent } from "../../utils/discover-data";
+import {
+	decodeCategorySearchIndex,
+	type CategorySearchIndexFile,
+} from "../../utils/categorySearchIndex";
+import type { UnifiedContentItem } from "../../types/discover";
 
 let searchIndexBySlug: Map<string, SearchIndexDoc> | null = null;
 let mergedDocBySlug: Map<string, SearchIndexDoc> | null = null;
+
+// Results depend only on the indexes baked into the deployment, and Vercel's
+// CDN cache is per deployment, so identical queries can be served from the edge.
+const CACHEABLE_RESULT_HEADERS = {
+	"Content-Type": "application/json",
+	"Cache-Control":
+		"public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
+};
 
 async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
 	if (!searchIndexBySlug) {
@@ -22,16 +34,44 @@ async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
 	return searchIndexBySlug;
 }
 
-// Cache category data and Fuse index at module level (data is static JSON)
-let cachedAllCategories: ReturnType<typeof buildUnifiedContent> | null = null;
-let cachedCategoryFuse: Fuse<ReturnType<typeof buildUnifiedContent>[number]> | null = null;
+/**
+ * Category search reads only item-level fields, so production uses the
+ * prebuilt index (no discourse descriptions needed) instead of parsing the
+ * ~3.5 MB mapping modules. Dev uses the live mappings the watcher rewrites.
+ */
+async function loadCategoryItems(): Promise<UnifiedContentItem[]> {
+	if (!import.meta.env.DEV) {
+		const { readJsonFromDisk } = await import(
+			"../../utils/loadSearchIndexData.server"
+		);
+		const file = await readJsonFromDisk<CategorySearchIndexFile>(
+			"category-search-index.json",
+		);
+		if (file) return decodeCategorySearchIndex(file).items;
+	}
+	const { buildUnifiedContent } = await import("../../utils/discover-data");
+	return buildUnifiedContent({
+		include: ["topics", "qualities", "similes", "persons"],
+	});
+}
 
-function getCategoryFuse() {
-	if (!cachedCategoryFuse) {
-		cachedAllCategories = buildUnifiedContent({
-			include: ["topics", "qualities", "similes", "persons"],
+// Cache category data and Fuse index at module level (data is static JSON)
+let cachedAllCategories: UnifiedContentItem[] | null = null;
+let cachedCategoryFuse: Fuse<UnifiedContentItem> | null = null;
+let categoryLoad: Promise<void> | null = null;
+
+async function getCategoryFuse() {
+	categoryLoad ??= loadCategoryItems()
+		.then((items) => {
+			cachedAllCategories = items;
+		})
+		.catch((error) => {
+			categoryLoad = null;
+			throw error;
 		});
-		cachedCategoryFuse = new Fuse(cachedAllCategories, {
+	await categoryLoad;
+	if (!cachedCategoryFuse) {
+		cachedCategoryFuse = new Fuse(cachedAllCategories!, {
 			keys: [
 				{ name: "title", weight: 2 },
 				{ name: "slug", weight: 1.5 },
@@ -182,7 +222,7 @@ export const GET: APIRoute = async ({ url }) => {
 				}),
 				{
 					status: 200,
-					headers: { "Content-Type": "application/json" },
+					headers: CACHEABLE_RESULT_HEADERS,
 				},
 			);
 		}
@@ -240,7 +280,7 @@ export const GET: APIRoute = async ({ url }) => {
 
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
 		if (includeCategories && !hasSlugFilter && effectiveQuery.trim()) {
-			const { allCategories, categoryFuse } = getCategoryFuse();
+			const { allCategories, categoryFuse } = await getCategoryFuse();
 
 			// For category search, use only non-stopword terms if there are stopwords in the query
 			// This ensures "craving that" still finds "Craving" (since "that" is a stopword)
@@ -1255,7 +1295,7 @@ export const GET: APIRoute = async ({ url }) => {
 			{
 				status: 200,
 				headers: {
-					"Content-Type": "application/json",
+					...CACHEABLE_RESULT_HEADERS,
 					"Server-Timing": serverTiming,
 				},
 			},

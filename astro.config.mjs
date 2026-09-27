@@ -51,7 +51,7 @@ const vercelPdfIncludeContentImages = globSync("public/content-images/**/*", {
  * are ~5 MB. `prebuild` writes the `.gz` files before `astro build`.
  */
 const vercelSearchIndexFiles = globSync(
-	"generated/{search-index,search-meta,reference-search-index}.json.gz",
+	"generated/{search-index,search-meta,reference-search-index,category-search-index}.json.gz",
 	{
 		cwd: __dirname,
 		nodir: true,

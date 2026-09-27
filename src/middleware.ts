@@ -44,6 +44,14 @@ const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 /** /on/:slug is prerendered with hyphenated slugs only; normalize spaced URLs. */
 const ON_ROUTE = /^\/on\/([^/]+)$/;
 
+const PUBLIC_SSR_PATH_PREFIXES = [...PUBLIC_SSR_ROUTE_PATTERNS]
+	.filter((pattern) => pattern !== "/[...id]")
+	.map((pattern) =>
+		pattern
+			.replace(/\[\.\.\.[^\]]+\]|\[[^\]]+\]/g, "")
+			.replace(/\/+$/, "/"),
+	);
+
 /**
  * Literal garbage paths from client bugs/scanners (prod logs: `/ip` ~4.7k
  * 302 MISS, `/null` + `/on/null` ~4k). Exact-match only — never prefix — and
@@ -172,7 +180,16 @@ async function nextMaybePublic(
 	next: MiddlewareNext,
 ): Promise<Response> {
 	const response = await next();
-	return PUBLIC_SSR_ROUTE_PATTERNS.has(context.routePattern)
+	const routePattern = context.routePattern;
+	const isAllowlistedPattern =
+		typeof routePattern === "string" &&
+		PUBLIC_SSR_ROUTE_PATTERNS.has(routePattern);
+	const isAllowlistedPathFallback =
+		typeof routePattern !== "string" &&
+		PUBLIC_SSR_PATH_PREFIXES.some((prefix) =>
+			context.url.pathname.startsWith(prefix),
+		);
+	return isAllowlistedPattern || isAllowlistedPathFallback
 		? withPublicEdgeCache(context, response)
 		: response;
 }
