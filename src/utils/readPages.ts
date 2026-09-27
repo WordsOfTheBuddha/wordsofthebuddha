@@ -1,4 +1,4 @@
-import { normalizeDiscourseSlug } from "./reviewRoomStats";
+import { normalizeDiscourseSlug } from "./discourseSlug";
 import { expandSlugToDiscourseIds } from "./slugDiscourseCount";
 
 function isPositiveMinute(raw: unknown): raw is number {

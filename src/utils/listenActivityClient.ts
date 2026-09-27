@@ -16,7 +16,7 @@ import {
 	flushLearningActivity,
 	noteLearningEngagement,
 } from "./learningActivityClient";
-import { normalizeDiscourseSlug } from "./reviewRoomStats";
+import { normalizeDiscourseSlug } from "./discourseSlug";
 import { isSlugFullyRead, markReadPages } from "./readPages";
 
 const READ_ITEMS_KEY = "offlineReadItems";

@@ -3,11 +3,9 @@ import { routes } from "./routes";
 import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { expandSlugToDiscourseIds } from "./slugDiscourseCount";
 import type { DirectoryStructure } from "../types/directory";
+import { isDiscourseSlug } from "./discourseSlug";
 
-/** Routable discourse slugs only (excludes home, anthologies, etc.). */
-export function isDiscourseSlug(slug: string): boolean {
-	return /^[a-z]+\d/.test(slug);
-}
+export { isDiscourseSlug };
 
 const discourseRoutes = routes.filter(isDiscourseSlug);
 const discourseRouteSet = new Set(discourseRoutes);
