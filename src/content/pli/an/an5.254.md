@@ -1,8 +1,8 @@
 ---
 title: Pañcamacchariya sutta - Five Kinds of Stinginess
-description: The five kinds of stinginess are selfishness regarding dwelling place, supporting families, acquisitions, praise, and the Dhamma. The worst of these is stinginess regarding the Dhamma.
+description: Stinginess regarding the Dhamma is the worst of the five kinds of stinginess.
 qualities: stinginess
-theme: wisdom, principle
+theme: wisdom
 slug: an5.254
 ---
 
