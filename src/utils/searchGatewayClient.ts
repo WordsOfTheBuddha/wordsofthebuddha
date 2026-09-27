@@ -131,6 +131,8 @@ export function attachSearchGateway(options: SearchGatewayOptions): void {
 					goToHref(hit.href);
 				},
 			});
+			// Indexes load on focus, so the user may already be in the box.
+			if (document.activeElement === input) autocomplete.refresh();
 		})();
 
 		await loadPromise;
@@ -144,20 +146,14 @@ export function attachSearchGateway(options: SearchGatewayOptions): void {
 		})();
 	});
 
-	input.addEventListener(
-		"focus",
-		() => {
-			void ensureAutocomplete();
-		},
-		{ once: true },
-	);
-
-	const prefetch = () => {
+	// The indexes (~214 KB compressed) load on the first sign of intent rather
+	// than at idle on every page: hover/touch land just before focus, so
+	// suggestions are usually ready by the first keystroke.
+	const load = () => {
 		void ensureAutocomplete();
 	};
-	if (typeof requestIdleCallback === "function") {
-		requestIdleCallback(prefetch, { timeout: 2500 });
-	} else {
-		setTimeout(prefetch, 1500);
-	}
+	form.addEventListener("pointerenter", load, { once: true });
+	input.addEventListener("pointerdown", load, { once: true });
+	input.addEventListener("focus", load, { once: true });
+	if (document.activeElement === input) load();
 }
