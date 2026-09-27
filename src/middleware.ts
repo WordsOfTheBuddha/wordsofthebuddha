@@ -1,3 +1,4 @@
+import type { APIContext, MiddlewareNext } from "astro";
 import { defineMiddleware } from "astro:middleware";
 import { getEnglishEntry } from "./utils/getContentEntry";
 import { referenceOnlyRouteSet } from "./utils/referenceOnlyRoutes";
@@ -8,6 +9,10 @@ import {
 	parsePostSlugFromGlobPath,
 } from "./utils/rootPostSlugs";
 import { dispatchResearchApi } from "./utils/researchApiDispatch";
+import {
+	PUBLIC_SSR_ROUTE_PATTERNS,
+	withPublicEdgeCache,
+} from "./utils/edgeCache";
 
 const englishRouteSet = new Set<string>(routes);
 
@@ -143,6 +148,35 @@ function rewriteURL(path: string, from: URL): URL {
 	return target;
 }
 
+/**
+ * Rewrite to an on-demand renderer listed in PUBLIC_SSR_ROUTE_PATTERNS
+ * (reference discourses, slices, Sujato, listen excerpts, editorial posts).
+ * The CDN keys on the public URL, so the rewrite target stays hidden.
+ */
+async function rewritePublic(
+	context: APIContext,
+	path: string,
+): Promise<Response> {
+	return withNoindexIfNeeded(
+		context.url,
+		withPublicEdgeCache(
+			context,
+			await context.rewrite(rewriteURL(path, context.url)),
+		),
+	);
+}
+
+/** Pass-through that CDN-caches only allowlisted public on-demand routes. */
+async function nextMaybePublic(
+	context: APIContext,
+	next: MiddlewareNext,
+): Promise<Response> {
+	const response = await next();
+	return PUBLIC_SSR_ROUTE_PATTERNS.has(context.routePattern)
+		? withPublicEdgeCache(context, response)
+		: response;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
 	// Exact-match garbage paths → cheap cacheable 410 before any other work.
@@ -186,7 +220,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		pathname.startsWith("/listen-dynamic/") ||
 		pathname.startsWith("/shared-ask/")
 	) {
-		return withNoindexIfNeeded(context.url, await next());
+		return withNoindexIfNeeded(
+			context.url,
+			await nextMaybePublic(context, next),
+		);
 	}
 
 	// Bare /ask → Ask mode (same as /ai). Bare /research → Research.
@@ -234,27 +271,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	if (pathname.startsWith("/listen/")) {
 		const slug = pathname.slice("/listen/".length).replace(/\/+$/, "");
 		if (slug && !slug.includes("/") && !englishRouteSet.has(slug)) {
-			return withNoindexIfNeeded(
-				context.url,
-				await context.rewrite(
-					rewriteURL(`/listen-dynamic/${slug}`, context.url),
-				),
-			);
+			return rewritePublic(context, `/listen-dynamic/${slug}`);
 		}
 	}
 
 	const sujatoMatch = pathname.match(SUJATO_REFERENCE_ROUTE);
 	if (sujatoMatch) {
-		return withNoindexIfNeeded(
-			context.url,
-			await context.rewrite(
-				rewriteURL(`/discourse-sujato/${sujatoMatch[1]}`, context.url),
-			),
-		);
+		return rewritePublic(context, `/discourse-sujato/${sujatoMatch[1]}`);
 	}
 
 	if (!TOP_LEVEL_SLUG.test(pathname)) {
-		const response = await next();
+		const response = await nextMaybePublic(context, next);
 		return withNoindexIfNeeded(
 			context.url,
 			jsonIfApiFellThroughToSearch(pathname, response),
@@ -264,7 +291,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	const slug = pathname.slice(1);
 
 	if (englishRouteSet.has(slug)) {
-		return withNoindexIfNeeded(context.url, await next());
+		return withNoindexIfNeeded(
+			context.url,
+			await nextMaybePublic(context, next),
+		);
 	}
 
 	// Bare quality/topic slugs 301/302 to /on/:slug in the catch-all. If an
@@ -273,12 +303,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	if (rootPostSlugSet.has(slug)) {
 		const onPage = resolveOnSlugFallback(slug);
 		if (onPage.kind === "on") {
-			return withNoindexIfNeeded(
-				context.url,
-				await context.rewrite(
-					rewriteURL(`/editorial/${slug}`, context.url),
-				),
-			);
+			return rewritePublic(context, `/editorial/${slug}`);
 		}
 	}
 
@@ -287,25 +312,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		// imports until restart; confirm on disk / content store before SSR fallback.
 		const english = await getEnglishEntry(slug);
 		if (english) {
-			return withNoindexIfNeeded(context.url, await next());
+			return withNoindexIfNeeded(
+				context.url,
+				await nextMaybePublic(context, next),
+			);
 		}
 
-		return withNoindexIfNeeded(
-			context.url,
-			await context.rewrite(rewriteURL(`/discourse-ssr/${slug}`, context.url)),
-		);
+		return rewritePublic(context, `/discourse-ssr/${slug}`);
 	}
 
 	if (DISCOURSE_SLICE.test(slug)) {
 		// Prerendered [discourse].astro outranks SSR [...id].astro in production;
 		// rewrite to a dedicated SSR segment so partial routes resolve.
-		return withNoindexIfNeeded(
-			context.url,
-			await context.rewrite(
-				rewriteURL(`/discourse-dynamic/${slug}`, context.url),
-			),
-		);
+		return rewritePublic(context, `/discourse-dynamic/${slug}`);
 	}
 
-	return withNoindexIfNeeded(context.url, await next());
+	return withNoindexIfNeeded(
+		context.url,
+		await nextMaybePublic(context, next),
+	);
 });
