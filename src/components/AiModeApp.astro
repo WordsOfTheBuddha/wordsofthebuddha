@@ -527,7 +527,11 @@ const defaultModel = showModelPicker
 	// navigations, so the Ask client is only fetched where it can be shown.
 	const onSearchPage = window.location.pathname.replace(/\/$/, "") === "/search";
 	if (root && (!onSearchPage || isAskSurfaceMode(window.location.search))) {
-		void import("../utils/aiModeClient").then(({ attachAiMode }) => {
+		void Promise.all([
+			import("../utils/askExportModalClient"),
+			import("../utils/aiModeClient"),
+		]).then(([{ initAskExportModal }, { attachAiMode }]) => {
+			initAskExportModal();
 			attachAiMode({
 				root,
 				showModelPicker: root.dataset.showPicker === "1",
