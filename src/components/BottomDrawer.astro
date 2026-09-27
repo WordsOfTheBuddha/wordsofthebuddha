@@ -311,7 +311,8 @@ import "../styles/bottomDrawer.css";
 				}
 			} else if (
 				node.nodeType === Node.ELEMENT_NODE &&
-				node instanceof HTMLElement
+				node instanceof HTMLElement &&
+				!node.hasAttribute("data-glosses-rendered")
 			) {
 				replaceTooltips(node);
 			}

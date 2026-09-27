@@ -2,7 +2,7 @@
 import SaveOutline from "../assets/save-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
-import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+import { normalizeDiscourseSlug } from "../utils/discourseSlug";
 
 interface Props {
 	slug?: string;
@@ -43,7 +43,7 @@ const userId = null;
 <script>
 	import { readNavAuthCache } from "../utils/navAuthClient";
 	import { loadPageUserState } from "../utils/pageUserStateClient";
-	import { normalizeDiscourseSlug } from "../utils/reviewRoomStats";
+	import { normalizeDiscourseSlug } from "../utils/discourseSlug";
 	import { showSignInPrompt } from "../utils/signInPrompt";
 
 	const btn = document.getElementById("saveButton");

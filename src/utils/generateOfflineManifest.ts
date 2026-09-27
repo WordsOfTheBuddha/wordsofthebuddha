@@ -60,11 +60,11 @@ function buildCoreAssets(): string[] {
 		"/android-chrome-512x512.png",
 		"/robots.txt",
 		// Fonts (local)
-		"/assets/fonts/Spectral-Regular.woff2",
-		"/assets/fonts/Spectral-Italic.woff2",
+		"/assets/fonts/Spectral-Regular-core.woff2",
+		"/assets/fonts/Spectral-Italic-core.woff2",
 		"/assets/fonts/GentiumPlus-Regular-mdot.woff2",
 		"/assets/fonts/GentiumPlus-Italic-mdot.woff2",
-		"/assets/fonts/GentiumPlus-Regular.ttf",
+		"/assets/fonts/GentiumPlus-Regular-core.woff2",
 	];
 }
 

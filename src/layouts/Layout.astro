@@ -320,7 +320,7 @@ const structuredData = buildStructuredData({
 		<!-- Preload the above-the-fold body font. Italic and ṁ fallback load on demand. -->
 		<link
 			rel="preload"
-			href="/assets/fonts/Spectral-Regular.woff2"
+			href="/assets/fonts/Spectral-Regular-core.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -482,6 +482,27 @@ const structuredData = buildStructuredData({
 			}
 		</script>
 		{referenceFallback && <script is:inline set:html={refInitScript} />}
+		{
+			showPali && (
+				<script is:inline>
+					/* Same rule as PaliLayoutToggle's initializeLayout. Applied before
+					   paint because the interleaved article now shows without JS. */
+					(function () {
+						try {
+							if (window.innerWidth < 768) return;
+							var layout =
+								new URLSearchParams(location.search).get("layout") ||
+								localStorage.getItem("layout") ||
+								"interleaved";
+							document.documentElement.classList.toggle(
+								"split",
+								layout === "split",
+							);
+						} catch (e) {}
+					})();
+				</script>
+			)
+		}
 		<!-- When navigating to a ?viz= URL, hide page content to prevent flash behind the modal -->
 		<style>
 			:root[style*="--viz-preload"] {
