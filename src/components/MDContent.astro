@@ -2,6 +2,7 @@
 import { parseMarkdown } from "../utils/mdParser";
 import { isViewFullTextFallbackOnly } from "../utils/contentParser";
 import { extractMdxSectionToc } from "../utils/mdxSectionToc";
+import { prerenderReadingMarkup } from "../utils/prerenderReadingMarkup";
 
 interface Props {
 	content: string;
@@ -32,12 +33,20 @@ const { body: interleavedBody, sectionToc: sectionTocFromBody } =
 const sectionToc = { ...sectionTocFromBody, ...(sectionTocProp ?? {}) };
 const sectionTocJson =
 	Object.keys(sectionToc).length > 0 ? JSON.stringify(sectionToc) : undefined;
-const parsedInterleaved = await parseMarkdown(interleavedBody);
+const { html: parsedInterleaved, ok: markupPrerendered } =
+	prerenderReadingMarkup(await parseMarkdown(interleavedBody));
 const parsedRefPaliOnly = refPaliOnlyContent
 	? await parseMarkdown(refPaliOnlyContent)
 	: null;
 /** Subset URLs with no matched section/paragraphs: skip content-fade (nothing to align). */
 const showFallbackImmediately = isViewFullTextFallbackOnly(content);
+/**
+ * Glosses and collapses are already in their final form, so the interleaved
+ * article can paint before any page JS runs. Only split view (built and
+ * aligned in the browser) still waits behind the fade.
+ */
+const paintInterleavedImmediately =
+	showFallbackImmediately || markupPrerendered;
 ---
 
 {
@@ -55,15 +64,28 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 	<article
 		class:list={[
 			"md-content prose prose-lg dark:prose-invert interleaved-article",
-			showFallbackImmediately
-				? "subset-fallback"
-				: "content-fade",
+			showFallbackImmediately && "subset-fallback",
+			!paintInterleavedImmediately && "content-fade",
 		]}
 		aria-hidden="false"
 		data-discourse-slug={discourseSlug}
 		data-section-toc={sectionTocJson}
+		data-glosses-rendered={markupPrerendered ? "" : undefined}
 		set:html={parsedInterleaved}
 	/>
+	{
+		paintInterleavedImmediately && (
+			<script is:inline>
+				(function () {
+					try {
+						if (localStorage.getItem("fontSize") !== "larger") return;
+						var article = document.querySelector("article.interleaved-article");
+						if (article) article.classList.replace("prose-lg", "prose-xl");
+					} catch (e) {}
+				})();
+			</script>
+		)
+	}
 
 	<!-- Split wrapper: filled by splitViewClient.ts from the article above -->
 	{splitAvailable && !showFallbackImmediately && (
