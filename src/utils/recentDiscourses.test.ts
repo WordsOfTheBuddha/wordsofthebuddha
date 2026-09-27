@@ -205,7 +205,7 @@ describe("filterRecentDiscourses", () => {
 		},
 	);
 
-	it("defaults to a top-20 feed", () => {
+	it("defaults to a 20-day window", () => {
 		const items = filterRecentDiscourses(
 			feed,
 			{ range: "20", collection: "all" },
@@ -213,8 +213,17 @@ describe("filterRecentDiscourses", () => {
 		);
 		assert.deepEqual(
 			items.map((item) => item.slug),
-			["sn47.42", "an4.189", "mn10", "dn22"],
+			["sn47.42", "an4.189"],
 		);
+	});
+
+	it("applies the day window after collection filter", () => {
+		const items = filterRecentDiscourses(
+			feed,
+			{ range: "20", collection: "dn" },
+			now,
+		);
+		assert.deepEqual(items.map((item) => item.slug), []);
 	});
 
 	it("filters by collection and 30-day window", () => {

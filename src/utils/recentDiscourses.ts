@@ -209,8 +209,8 @@ export function filterRecentDiscourses(
 		const byDate = Date.parse(b.added) - Date.parse(a.added);
 		return byDate !== 0 ? byDate : a.slug.localeCompare(b.slug);
 	});
-	if (filters.range === "20") return list.slice(0, 20);
-	const days = filters.range === "30d" ? 30 : 90;
+	const days =
+		filters.range === "20" ? 20 : filters.range === "30d" ? 30 : 90;
 	const cutoff = now.getTime() - days * 24 * 60 * 60 * 1000;
 	return list.filter((item) => Date.parse(item.added) >= cutoff);
 }
