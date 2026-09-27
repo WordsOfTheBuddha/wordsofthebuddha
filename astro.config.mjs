@@ -18,6 +18,7 @@ import {
 } from "./src/integrations/silentDevReload.mjs";
 import { mermaidVendorVitePlugin } from "./scripts/copy-mermaid-vendor.mjs";
 import { contentImagesVitePlugin } from "./src/utils/copyContentImages.mjs";
+import { externalDataStoreVitePlugin } from "./src/integrations/externalDataStore.mjs";
 import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
 
 const mnVaggaRedirects = Object.fromEntries(
@@ -50,7 +51,7 @@ const vercelPdfIncludeContentImages = globSync("public/content-images/**/*", {
  * are ~5 MB. `prebuild` writes the `.gz` files before `astro build`.
  */
 const vercelSearchIndexFiles = globSync(
-	"generated/{search-index,search-meta,reference-search-index}.json.gz",
+	"generated/{search-index,search-meta,reference-search-index,category-search-index}.json.gz",
 	{
 		cwd: __dirname,
 		nodir: true,
@@ -100,7 +101,11 @@ export default defineConfig({
 
 	vite: {
 		...silentDevReloadViteConfig(),
-		plugins: [mermaidVendorVitePlugin(), contentImagesVitePlugin()],
+		plugins: [
+			mermaidVendorVitePlugin(),
+			contentImagesVitePlugin(),
+			externalDataStoreVitePlugin(),
+		],
 		optimizeDeps: {
 			include: ["rangy"],
 		},

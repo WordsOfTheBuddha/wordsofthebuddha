@@ -7,6 +7,7 @@ import Layout from "../layouts/Layout.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
 import AiModeApp from "../components/AiModeApp.astro";
 import { isAskResearchEnabled } from "../utils/aiAskResearchUi";
+import { categorySearchIndexUrl } from "virtual:category-search-index-url";
 import "../styles/ai-mode.css";
 
 Astro.response.headers.set(
@@ -28,6 +29,7 @@ const researchEnabled = isAskResearchEnabled();
 		class="container mx-auto px-3 sm:px-4 pt-2"
 		data-search-ask
 		data-research-enabled={researchEnabled ? "1" : "0"}
+		data-category-index-url={categorySearchIndexUrl ?? undefined}
 	>
 		<header class="search-ask-top">
 			<h1 class="ai-title text-gradient-accent" data-search-ask-title>Search</h1>
@@ -129,6 +131,20 @@ const researchEnabled = isAskResearchEnabled();
 					if (active) link.setAttribute("aria-current", "page");
 					else link.removeAttribute("aria-current");
 				});
+				// ?q= renders results straight away; start their data now rather
+				// than after every module script ahead of ExploreWidget has run.
+				if (!ask && (params.get("q") || "").trim()) {
+					var categoryIndex = root && root.getAttribute("data-category-index-url");
+					["/search-meta.json", categoryIndex].forEach(function (href) {
+						if (!href) return;
+						var preload = document.createElement("link");
+						preload.rel = "preload";
+						preload.as = "fetch";
+						preload.href = href;
+						preload.crossOrigin = "anonymous";
+						document.head.appendChild(preload);
+					});
+				}
 			})();
 		</script>
 	</main>

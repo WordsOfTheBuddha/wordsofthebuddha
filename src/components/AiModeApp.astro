@@ -520,18 +520,27 @@ const defaultModel = showModelPicker
 </style>
 
 <script>
-	import { attachAiMode } from "../utils/aiModeClient";
+	import { isAskSurfaceMode } from "../utils/aiAskHref";
 
 	const root = document.querySelector("[data-ai-mode]") as HTMLElement | null;
-	if (root) {
-		attachAiMode({
-			root,
-			showModelPicker: root.dataset.showPicker === "1",
-			defaultModel:
-				root.dataset.defaultModel ||
-					"nvidia/nemotron-3-ultra-550b-a55b:free",
-			shareMode: root.dataset.shareMode === "1",
-			shareSnapshot: root.dataset.shareSnapshot || "",
+	// /search in Search mode keeps this pane hidden and its mode links do full
+	// navigations, so the Ask client is only fetched where it can be shown.
+	const onSearchPage = window.location.pathname.replace(/\/$/, "") === "/search";
+	if (root && (!onSearchPage || isAskSurfaceMode(window.location.search))) {
+		void Promise.all([
+			import("../utils/askExportModalClient"),
+			import("../utils/aiModeClient"),
+		]).then(([{ initAskExportModal }, { attachAiMode }]) => {
+			initAskExportModal();
+			attachAiMode({
+				root,
+				showModelPicker: root.dataset.showPicker === "1",
+				defaultModel:
+					root.dataset.defaultModel ||
+						"nvidia/nemotron-3-ultra-550b-a55b:free",
+				shareMode: root.dataset.shareMode === "1",
+				shareSnapshot: root.dataset.shareSnapshot || "",
+			});
 		});
 	}
 </script>
