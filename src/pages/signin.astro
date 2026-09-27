@@ -120,30 +120,38 @@ if (Astro.cookies.has("__session")) {
 	</div>
 </Layout>
 <script>
-	import {
-		getAuth,
-		inMemoryPersistence,
-		sendEmailVerification,
-		signInWithEmailAndPassword,
-	} from "firebase/auth";
-	import { app } from "../service/firebase/client";
-	import {
-		noteLearningEngagement,
-		flushLearningActivity,
-	} from "../utils/learningActivityClient";
-	import {
-		flushListenActivity,
-		flushOfflineReadPages,
-	} from "../utils/listenActivityClient";
 	import { writeNavAuthCache } from "../utils/navAuthClient";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") ||
 		"/review-room";
 
-	const auth = getAuth(app);
-	// This will prevent the browser from storing session data
-	auth.setPersistence(inMemoryPersistence);
+	// Firebase Auth is ~30 KB gzipped; fetch it once the reader engages with
+	// the form (or the page goes idle) rather than on first paint.
+	let firebaseAuth: Promise<{
+		auth: import("firebase/auth").Auth;
+		sendEmailVerification: typeof import("firebase/auth").sendEmailVerification;
+		signInWithEmailAndPassword: typeof import("firebase/auth").signInWithEmailAndPassword;
+	}> | null = null;
+	function loadFirebaseAuth() {
+		firebaseAuth ??= Promise.all([
+			import("firebase/auth"),
+			import("../service/firebase/client"),
+		]).then(([mod, { app }]) => {
+			const auth = mod.getAuth(app);
+			// This will prevent the browser from storing session data
+			auth.setPersistence(mod.inMemoryPersistence);
+			return {
+				auth,
+				sendEmailVerification: mod.sendEmailVerification,
+				signInWithEmailAndPassword: mod.signInWithEmailAndPassword,
+			};
+		}).catch((error) => {
+			firebaseAuth = null;
+			throw error;
+		});
+		return firebaseAuth;
+	}
 
 	const form = document.getElementById("signin-form") as HTMLFormElement;
 	const emailInput = document.getElementById("email") as HTMLInputElement;
@@ -217,6 +225,12 @@ if (Astro.cookies.has("__session")) {
 			const firebaseTimeoutMs = 10000;
 			// Increase backend timeout to 20s
 			const backendTimeoutMs = 20000;
+
+			const {
+				auth,
+				sendEmailVerification,
+				signInWithEmailAndPassword,
+			} = await loadFirebaseAuth();
 
 			console.log("[Auth-Client] Attempting Firebase signin");
 
@@ -317,6 +331,13 @@ if (Astro.cookies.has("__session")) {
 				);
 				// First signed-in day counts; merge any anonymous / offline days.
 				try {
+					const [
+						{ noteLearningEngagement, flushLearningActivity },
+						{ flushListenActivity, flushOfflineReadPages },
+					] = await Promise.all([
+						import("../utils/learningActivityClient"),
+						import("../utils/listenActivityClient"),
+					]);
 					noteLearningEngagement();
 					await Promise.all([
 						flushLearningActivity(),
@@ -395,4 +416,13 @@ if (Astro.cookies.has("__session")) {
 			hideError(passwordError);
 		}
 	});
+
+	const warmFirebaseAuth = () => void loadFirebaseAuth().catch(() => {});
+	form.addEventListener("focusin", warmFirebaseAuth, { once: true });
+	form.addEventListener("pointerdown", warmFirebaseAuth, { once: true });
+	if ("requestIdleCallback" in window) {
+		requestIdleCallback(warmFirebaseAuth, { timeout: 4000 });
+	} else {
+		setTimeout(warmFirebaseAuth, 2000);
+	}
 </script>
