@@ -459,10 +459,12 @@ const hasSvg = images.some((img) => img.isSvg);
 				class="box-border flex min-h-full min-w-full w-full flex-col px-0 pt-0 pb-[calc(5.25rem+env(safe-area-inset-bottom,0px))]"
 			>
 				<div class="flex w-full flex-1 items-center justify-center">
+					{/* Closed-modal sources stay unloaded; updateModalSlide sets them on open. */}
 					<img
 						id="fullImage"
 						src={initialImage.publicUrl ?? initialImage.image.src}
 						alt={initialImage.alt}
+						loading={initialVizOpen ? undefined : "lazy"}
 						width={initialImage.isSvg ? undefined : IMAGE_WIDTH}
 						class:list={[
 							"w-full h-auto object-contain rounded-lg",
@@ -471,7 +473,9 @@ const hasSvg = images.some((img) => img.isSvg);
 					/>
 					<object
 						id="fullSvgObject"
-						data={initialImage.publicUrl ?? initialImage.image.src}
+						data={initialVizOpen
+							? (initialImage.publicUrl ?? initialImage.image.src)
+							: undefined}
 						type="image/svg+xml"
 						role="img"
 						aria-label={initialImage.alt}
