@@ -15,9 +15,46 @@ const INDEX_FILES = [
 	"discourse-suggest-index.json",
 ];
 const GENERATED_DIR = "generated";
+const CATEGORY_INDEX_FILE = "category-search-index.json";
+const CATEGORY_INDEX_MODULE = "virtual:category-search-index-url";
+const RESOLVED_CATEGORY_INDEX_MODULE = `\0${CATEGORY_INDEX_MODULE}`;
 
 function generatedPath(root, file) {
 	return join(root, GENERATED_DIR, file);
+}
+
+/**
+ * Production builds emit the prebuilt category index as a hashed `/_astro/`
+ * asset (immutable caching, service-worker cache-first). Dev exports null so
+ * the client builds categories from the live mapping modules, which the
+ * content watcher keeps current.
+ */
+function categorySearchIndexUrlPlugin() {
+	let isBuild = false;
+	let root = process.cwd();
+	return {
+		name: "category-search-index-url",
+		configResolved(config) {
+			isBuild = config.command === "build";
+			root = config.root;
+		},
+		resolveId(id) {
+			return id === CATEGORY_INDEX_MODULE
+				? RESOLVED_CATEGORY_INDEX_MODULE
+				: undefined;
+		},
+		load(id) {
+			if (id !== RESOLVED_CATEGORY_INDEX_MODULE) return undefined;
+			if (!isBuild) return "export default null;";
+			if (!existsSync(generatedPath(root, CATEGORY_INDEX_FILE))) {
+				this.warn(
+					`Missing ${GENERATED_DIR}/${CATEGORY_INDEX_FILE}; /search will build categories from mapping modules`,
+				);
+				return "export default null;";
+			}
+			return `export { default } from "/${GENERATED_DIR}/${CATEGORY_INDEX_FILE}?url";`;
+		},
+	};
 }
 
 /** Copy generated search indexes to client static output; serve them in dev. */
@@ -29,6 +66,7 @@ export function searchIndexStatic() {
 				updateConfig({
 					vite: {
 						plugins: [
+							categorySearchIndexUrlPlugin(),
 							{
 								name: "search-index-static-serve",
 								configureServer(server) {

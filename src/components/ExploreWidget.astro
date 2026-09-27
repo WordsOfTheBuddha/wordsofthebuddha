@@ -681,7 +681,12 @@ const isSearchOnly = mode === "search-only";
 </style>
 
 <script>
-	import { DiscoverRenderer } from "../utils/discover-renderer";
+	import type { DiscoverRenderer } from "../utils/discover-renderer";
+	import categorySearchIndexUrl from "virtual:category-search-index-url";
+	import {
+		decodeCategorySearchIndex,
+		type CategorySearchIndexFile,
+	} from "../utils/categorySearchIndex";
 	import { isAskSurfaceMode } from "../utils/aiAskHref";
 	import type { UnifiedContentItem } from "../types/discover";
 	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
@@ -743,9 +748,13 @@ const isSearchOnly = mode === "search-only";
 	/** Browse + search filter prefs; matches Layout.astro pattern (localStorage for durable UI state). */
 	const DISCOVER_FILTERS_KEY = "discoverExploreFilters";
 
-	// Fuse.js index for categories (built after a dynamic import of ~3MB mapping JSON)
+	// Fuse.js index for categories. /search fetches the prebuilt category index;
+	// /discover (and dev) build it from the ~3MB mapping modules.
 	let categoryFuse: Fuse<UnifiedContentItem> | null = null;
 	let categoryIndexPromise: Promise<void> | null = null;
+	let DiscoverRendererCtor: typeof DiscoverRenderer | null = null;
+	let rendererPromise: Promise<void> | null = null;
+	let searchWarmupStarted = false;
 
 	// Result counts for display
 	let resultCounts = {
@@ -826,12 +835,16 @@ const isSearchOnly = mode === "search-only";
 			syncSearchInsideControls();
 		}
 
-		// Autocomplete JSON is independent of the category Fuse index.
-		void loadSuggestionsIndex().then(() => setupSearchAutocomplete());
-
 		const urlParams = new URLSearchParams(window.location.search);
 		const queryFromUrl = urlParams.get("q");
 		const askMode = isAskSurfaceMode(urlParams);
+
+		// Autocomplete JSON is independent of the category Fuse index. On
+		// /search it waits until the page has loaded (or the first search ran)
+		// so it doesn't compete with first paint and first results.
+		if (!isSearchOnly) {
+			void loadSuggestionsIndex().then(() => setupSearchAutocomplete());
+		}
 
 		if (askMode) {
 			if (loadingEl) loadingEl.classList.add("hidden");
@@ -842,11 +855,12 @@ const isSearchOnly = mode === "search-only";
 			if (!isSearchOnly) switchToSearchMode();
 			if (searchInput) searchInput.value = queryFromUrl;
 			await performSearch(queryFromUrl, { trackCandidate: false });
+			if (isSearchOnly) startSearchWarmup();
 		} else if (isSearchOnly) {
 			if (loadingEl) loadingEl.classList.add("hidden");
 			if (resultsContainer) resultsContainer.classList.remove("hidden");
 			if (searchInput) searchInput.focus();
-			void ensureCategoryIndex();
+			scheduleSearchWarmup();
 		} else {
 			await ensureCategoryIndex();
 			renderBrowseResults();
@@ -855,28 +869,97 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	async function ensureCategoryIndex() {
-		if (categoryFuse) return;
+		if (categoryFuse && DiscoverRendererCtor) return;
 		if (!categoryIndexPromise) {
 			categoryIndexPromise = loadCategoryIndex();
 		}
 		await categoryIndexPromise;
 	}
 
+	function ensureRenderer(): Promise<void> {
+		if (!rendererPromise) {
+			rendererPromise = import("../utils/discover-renderer")
+				.then((mod) => {
+					DiscoverRendererCtor = mod.DiscoverRenderer;
+				})
+				.catch((error) => {
+					rendererPromise = null;
+					throw error;
+				});
+		}
+		return rendererPromise;
+	}
+
+	async function fetchCategorySearchIndex(url: string): Promise<UnifiedContentItem[]> {
+		const res = await fetch(url);
+		if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+		return decodeCategorySearchIndex((await res.json()) as CategorySearchIndexFile);
+	}
+
 	async function loadCategoryIndex() {
 		try {
-			const [{ buildUnifiedContent, buildAllContent }, fuseMod] =
-				await Promise.all([
-					import("../utils/discover-data"),
-					import("fuse.js"),
-				]);
-			if (!isSearchOnly && browseData.length === 0) {
-				browseData = buildUnifiedContent();
+			const rendererReady = ensureRenderer();
+			if (!categoryFuse) {
+				if (isSearchOnly && categorySearchIndexUrl) {
+					const [fuseMod, items] = await Promise.all([
+						import("fuse.js"),
+						fetchCategorySearchIndex(categorySearchIndexUrl),
+					]);
+					initCategoryFuse(fuseMod.default, items);
+				} else {
+					const [{ buildUnifiedContent, buildAllContent }, fuseMod] =
+						await Promise.all([
+							import("../utils/discover-data"),
+							import("fuse.js"),
+						]);
+					if (!isSearchOnly && browseData.length === 0) {
+						browseData = buildUnifiedContent();
+					}
+					initCategoryFuse(
+						fuseMod.default,
+						buildAllContent(["topics", "qualities", "similes", "persons"]),
+					);
+				}
 			}
-			initCategoryFuse(fuseMod.default, buildAllContent);
+			await rendererReady;
 		} catch (error) {
 			categoryIndexPromise = null;
 			console.error("Failed to load category index:", error);
 		}
+	}
+
+	function warmDiscourseSearch() {
+		void import("../service/search/search")
+			.then((mod) => mod.warmSearchIndex())
+			.catch((error) => {
+				console.warn("Failed to warm discourse search:", error);
+			});
+	}
+
+	/** /search: fetch search data once the page has loaded, or on first input. */
+	function startSearchWarmup() {
+		if (searchWarmupStarted) return;
+		searchWarmupStarted = true;
+		warmDiscourseSearch();
+		// Results data first; autocomplete JSON after, so it doesn't slow them.
+		void ensureCategoryIndex()
+			.then(() => loadSuggestionsIndex())
+			.then(() => setupSearchAutocomplete());
+	}
+
+	function scheduleSearchWarmup() {
+		const kick = () => startSearchWarmup();
+		searchInput?.addEventListener("input", kick, { once: true });
+		searchInput?.addEventListener("pointerdown", kick, { once: true });
+		const whenIdle = () => {
+			if ("requestIdleCallback" in window) {
+				window.requestIdleCallback(kick, { timeout: 1500 });
+			} else {
+				setTimeout(kick, 200);
+			}
+		};
+		if (document.readyState === "complete") whenIdle();
+		else window.addEventListener("load", whenIdle, { once: true });
 	}
 
 	async function loadSuggestionsIndex() {
@@ -973,15 +1056,10 @@ const isSearchOnly = mode === "search-only";
 
 	function initCategoryFuse(
 		FuseCtor: typeof import("fuse.js").default,
-		buildAllContent: typeof import("../utils/discover-data").buildAllContent,
+		items: UnifiedContentItem[],
 	) {
-		// Load all topics, qualities, and similes for Fuse.js search
-		allCategoryData = buildAllContent([
-			"topics",
-			"qualities",
-			"similes",
-			"persons",
-		]);
+		// All topics, qualities, similes, and persons for Fuse.js search
+		allCategoryData = items;
 
 		// Helper to normalize Pali terms (remove diacritics for comparison)
 		const normalizePali = (term: string) =>
@@ -1145,7 +1223,7 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	function renderBrowseResults() {
-		if (!browseResults || isSearchOnly) return;
+		if (!browseResults || isSearchOnly || !DiscoverRendererCtor) return;
 
 		// Filter data based on checkboxes
 		const filtered = browseData.filter(item => {
@@ -1166,7 +1244,7 @@ const isSearchOnly = mode === "search-only";
 		const sortedGroups = Array.from(grouped.entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
 		// Render
-		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded);
+		const renderer = new DiscoverRendererCtor(expandedItems, toggleExpanded);
 		let html = "";
 
 		sortedGroups.forEach(([letter, items]) => {
@@ -1353,6 +1431,8 @@ const isSearchOnly = mode === "search-only";
 			enableSearchInsidePreference();
 		}
 
+		// Fetch the discourse index alongside the category index, not after it.
+		if (!categoryFuse) warmDiscourseSearch();
 		await ensureCategoryIndex();
 		if (generation !== searchGeneration) return;
 
@@ -2521,7 +2601,8 @@ const isSearchOnly = mode === "search-only";
 
 		// Create renderer with highlighting function for search results
 		const highlightFn = (text: string) => highlightText(text, query);
-		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded, highlightFn);
+		if (!DiscoverRendererCtor) throw new Error("Search result renderer not loaded");
+		const renderer = new DiscoverRendererCtor(expandedItems, toggleExpanded, highlightFn);
 		const PAGE_SIZE = getPageSize(isMobileViewport());
 
 		// Dev mode flag for debug info

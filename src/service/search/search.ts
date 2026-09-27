@@ -268,6 +268,11 @@ async function getSearchIndex(
 	return new Fuse(dataToIndex, FUSE_OPTIONS);
 }
 
+/** Load the native index and build its Fuse index ahead of the first query. */
+export async function warmSearchIndex(): Promise<void> {
+	await getSearchIndex();
+}
+
 export interface SearchOptions {
 	fields?: Array<keyof SearchData>;
 	highlight?: boolean;
