@@ -172,7 +172,24 @@ async function nextMaybePublic(
 	next: MiddlewareNext,
 ): Promise<Response> {
 	const response = await next();
-	return PUBLIC_SSR_ROUTE_PATTERNS.has(context.routePattern)
+	const routePattern = context.routePattern;
+	const isAllowlistedPattern =
+		typeof routePattern === "string" &&
+		PUBLIC_SSR_ROUTE_PATTERNS.has(routePattern);
+	const isAllowlistedPathFallback =
+		typeof routePattern !== "string" &&
+		(context.url.pathname.startsWith("/discourse-ssr/") ||
+			context.url.pathname.startsWith("/discourse-dynamic/") ||
+			context.url.pathname.startsWith("/discourse-sujato/") ||
+			context.url.pathname.startsWith("/listen-dynamic/") ||
+			context.url.pathname.startsWith("/editorial/") ||
+			context.url.pathname.startsWith("/anthologies/") ||
+			context.url.pathname === "/topic" ||
+			context.url.pathname.startsWith("/topic/") ||
+			context.url.pathname.startsWith("/qualities/") ||
+			context.url.pathname.startsWith("/person/") ||
+			context.url.pathname.startsWith("/simile/"));
+	return isAllowlistedPattern || isAllowlistedPathFallback
 		? withPublicEdgeCache(context, response)
 		: response;
 }
