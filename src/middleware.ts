@@ -44,6 +44,14 @@ const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 /** /on/:slug is prerendered with hyphenated slugs only; normalize spaced URLs. */
 const ON_ROUTE = /^\/on\/([^/]+)$/;
 
+const PUBLIC_SSR_PATH_PREFIXES = [...PUBLIC_SSR_ROUTE_PATTERNS]
+	.filter((pattern) => pattern !== "/[...id]")
+	.map((pattern) =>
+		pattern
+			.replace(/\[\.\.\.[^\]]+\]|\[[^\]]+\]/g, "")
+			.replace(/\/+$/, "/"),
+	);
+
 /**
  * Literal garbage paths from client bugs/scanners (prod logs: `/ip` ~4.7k
  * 302 MISS, `/null` + `/on/null` ~4k). Exact-match only — never prefix — and
@@ -178,17 +186,9 @@ async function nextMaybePublic(
 		PUBLIC_SSR_ROUTE_PATTERNS.has(routePattern);
 	const isAllowlistedPathFallback =
 		typeof routePattern !== "string" &&
-		(context.url.pathname.startsWith("/discourse-ssr/") ||
-			context.url.pathname.startsWith("/discourse-dynamic/") ||
-			context.url.pathname.startsWith("/discourse-sujato/") ||
-			context.url.pathname.startsWith("/listen-dynamic/") ||
-			context.url.pathname.startsWith("/editorial/") ||
-			context.url.pathname.startsWith("/anthologies/") ||
-			context.url.pathname === "/topic" ||
-			context.url.pathname.startsWith("/topic/") ||
-			context.url.pathname.startsWith("/qualities/") ||
-			context.url.pathname.startsWith("/person/") ||
-			context.url.pathname.startsWith("/simile/"));
+		PUBLIC_SSR_PATH_PREFIXES.some((prefix) =>
+			context.url.pathname.startsWith(prefix),
+		);
 	return isAllowlistedPattern || isAllowlistedPathFallback
 		? withPublicEdgeCache(context, response)
 		: response;
