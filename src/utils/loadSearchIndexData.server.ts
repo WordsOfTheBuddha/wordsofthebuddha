@@ -36,14 +36,19 @@ export async function getIndexMtimeFromDisk(
 	return fileStat.mtimeMs;
 }
 
+/** Read a generated JSON file (or its .gz companion) from disk (SSR / build only). */
+export async function readJsonFromDisk<T>(filename: string): Promise<T | null> {
+	for (const filePath of publicJsonCandidates(filename)) {
+		if (!existsSync(filePath)) continue;
+		const raw = await readFile(filePath);
+		return JSON.parse(decodeMaybeGzip(filePath, raw)) as T;
+	}
+	return null;
+}
+
 /** Read search index JSON from disk (SSR / build only — not for client bundles). */
 export async function readIndexFromDisk(
 	filename: string,
 ): Promise<SearchIndexDoc[] | null> {
-	for (const filePath of publicJsonCandidates(filename)) {
-		if (!existsSync(filePath)) continue;
-		const raw = await readFile(filePath);
-		return JSON.parse(decodeMaybeGzip(filePath, raw)) as SearchIndexDoc[];
-	}
-	return null;
+	return readJsonFromDisk<SearchIndexDoc[]>(filename);
 }

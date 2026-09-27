@@ -9,7 +9,11 @@ import {
 } from "../../service/search/search";
 import { loadNativeSearchIndex } from "../../utils/loadSearchIndexData";
 import type { SearchIndexDoc } from "../../utils/loadSearchIndexData";
-import { buildUnifiedContent } from "../../utils/discover-data";
+import {
+	decodeCategorySearchIndex,
+	type CategorySearchIndexFile,
+} from "../../utils/categorySearchIndex";
+import type { UnifiedContentItem } from "../../types/discover";
 
 let searchIndexBySlug: Map<string, SearchIndexDoc> | null = null;
 let mergedDocBySlug: Map<string, SearchIndexDoc> | null = null;
@@ -30,31 +34,44 @@ async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
 	return searchIndexBySlug;
 }
 
-// Cache merged native+reference map — rebuilding ~3700 entries per request is wasted work
-async function getMergedDocBySlug(): Promise<Map<string, SearchIndexDoc>> {
-	if (!mergedDocBySlug) {
-		const [nativeBySlug, refData] = await Promise.all([
-			getSearchIndexBySlug(),
-			ensureReferenceSearchIndexLoaded(),
-		]);
-		mergedDocBySlug ??= new Map([
-			...nativeBySlug,
-			...refData.map((doc) => [doc.slug, doc] as const),
-		]);
+/**
+ * Category search reads only item-level fields, so production uses the
+ * prebuilt index (no discourse descriptions needed) instead of parsing the
+ * ~3.5 MB mapping modules. Dev uses the live mappings the watcher rewrites.
+ */
+async function loadCategoryItems(): Promise<UnifiedContentItem[]> {
+	if (!import.meta.env.DEV) {
+		const { readJsonFromDisk } = await import(
+			"../../utils/loadSearchIndexData.server"
+		);
+		const file = await readJsonFromDisk<CategorySearchIndexFile>(
+			"category-search-index.json",
+		);
+		if (file) return decodeCategorySearchIndex(file).items;
 	}
-	return mergedDocBySlug;
+	const { buildUnifiedContent } = await import("../../utils/discover-data");
+	return buildUnifiedContent({
+		include: ["topics", "qualities", "similes", "persons"],
+	});
 }
 
 // Cache category data and Fuse index at module level (data is static JSON)
-let cachedAllCategories: ReturnType<typeof buildUnifiedContent> | null = null;
-let cachedCategoryFuse: Fuse<ReturnType<typeof buildUnifiedContent>[number]> | null = null;
+let cachedAllCategories: UnifiedContentItem[] | null = null;
+let cachedCategoryFuse: Fuse<UnifiedContentItem> | null = null;
+let categoryLoad: Promise<void> | null = null;
 
-function getCategoryFuse() {
-	if (!cachedCategoryFuse) {
-		cachedAllCategories = buildUnifiedContent({
-			include: ["topics", "qualities", "similes", "persons"],
+async function getCategoryFuse() {
+	categoryLoad ??= loadCategoryItems()
+		.then((items) => {
+			cachedAllCategories = items;
+		})
+		.catch((error) => {
+			categoryLoad = null;
+			throw error;
 		});
-		cachedCategoryFuse = new Fuse(cachedAllCategories, {
+	await categoryLoad;
+	if (!cachedCategoryFuse) {
+		cachedCategoryFuse = new Fuse(cachedAllCategories!, {
 			keys: [
 				{ name: "title", weight: 2 },
 				{ name: "slug", weight: 1.5 },
@@ -247,16 +264,23 @@ export const GET: APIRoute = async ({ url }) => {
 
 		const tParse = performance.now();
 
-		// Start reading/inflating the indexes (threadpool) before the CPU-bound
-		// category pass so a cold instance overlaps the two.
-		const docBySlugReady = includeReferences
-			? getMergedDocBySlug()
-			: getSearchIndexBySlug();
-		docBySlugReady.catch(() => {});
+		const nativeBySlug = await getSearchIndexBySlug();
+		let docBySlug: Map<string, SearchIndexDoc> = nativeBySlug;
+		if (includeReferences) {
+			// Cache merged native+reference map — rebuilding ~3700 entries per request is wasted work
+			if (!mergedDocBySlug) {
+				const refData = await ensureReferenceSearchIndexLoaded();
+				mergedDocBySlug = new Map([
+					...nativeBySlug,
+					...refData.map((doc) => [doc.slug, doc] as const),
+				]);
+			}
+			docBySlug = mergedDocBySlug;
+		}
 
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
 		if (includeCategories && !hasSlugFilter && effectiveQuery.trim()) {
-			const { allCategories, categoryFuse } = getCategoryFuse();
+			const { allCategories, categoryFuse } = await getCategoryFuse();
 
 			// For category search, use only non-stopword terms if there are stopwords in the query
 			// This ensures "craving that" still finds "Craving" (since "that" is a stopword)
@@ -728,7 +752,6 @@ export const GET: APIRoute = async ({ url }) => {
 			});
 		}
 
-		const docBySlug = await docBySlugReady;
 		const tCategories = performance.now();
 
 		// Search discourses
@@ -1272,7 +1295,7 @@ export const GET: APIRoute = async ({ url }) => {
 			{
 				status: 200,
 				headers: {
-					"Content-Type": "application/json",
+					...CACHEABLE_RESULT_HEADERS,
 					"Server-Timing": serverTiming,
 				},
 			},
