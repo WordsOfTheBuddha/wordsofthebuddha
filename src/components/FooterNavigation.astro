@@ -98,15 +98,8 @@ const { prev, next } = Astro.props;
 </style>
 
 <script>
-	import { playlists } from "../data/playlists.generated";
-	import {
-		findDiscourseNeighbors,
-		getRoutableDiscourseSlugs,
-	} from "../utils/discourseNeighbors";
-	import {
-		getDiscourseNeighborTitle,
-		seedDiscourseNeighborTitles,
-	} from "../utils/discourseNeighborTitles";
+	// Playlist and neighbor-title data are ~40 KB gzipped and only matter
+	// with `?pl=` or reference mode, so they load on demand.
 	import { resolveRefMode } from "../utils/refModeClient";
 	import { transformId } from "../utils/transformId";
 
@@ -152,7 +145,9 @@ const { prev, next } = Astro.props;
 	 * The full slug list is used (not audio-filtered) — read mode is not
 	 * gated on audio availability, only listen mode is.
 	 */
-	function seedNeighborTitlesFromNav() {
+	function seedNeighborTitlesFromNav(
+		seedDiscourseNeighborTitles: (seeds: [string, string][]) => void,
+	) {
 		const root = discourseFooterNavRoot();
 		if (!root) return;
 		const seeds: [string, string][] = [];
@@ -165,7 +160,7 @@ const { prev, next } = Astro.props;
 	}
 
 	/** When `?ref=true` or on /en/sujato, walk EN + reference-only neighbors. */
-	function applyRefNeighborOverrides() {
+	async function applyRefNeighborOverrides() {
 		const search = new URLSearchParams(location.search);
 		if ((!resolveRefMode(search) && !isSujatoReferencePath()) || search.get("pl"))
 			return;
@@ -173,7 +168,14 @@ const { prev, next } = Astro.props;
 		const cur = currentSlugFromPath();
 		if (!cur) return;
 
-		seedNeighborTitlesFromNav();
+		const [
+			{ findDiscourseNeighbors, getRoutableDiscourseSlugs },
+			{ getDiscourseNeighborTitle, seedDiscourseNeighborTitles },
+		] = await Promise.all([
+			import("../utils/discourseNeighbors"),
+			import("../utils/discourseNeighborTitles"),
+		]);
+		seedNeighborTitlesFromNav(seedDiscourseNeighborTitles);
 		const titleFor = (slug: string) => getDiscourseNeighborTitle(slug);
 		const slugs = getRoutableDiscourseSlugs();
 		const { prevId, nextId } = findDiscourseNeighbors(cur, slugs);
@@ -181,10 +183,11 @@ const { prev, next } = Astro.props;
 		patchChip("next", nextId, titleFor);
 	}
 
-	function applyPlaylistOverrides() {
+	async function applyPlaylistOverrides() {
 		if (!discourseFooterNavRoot()) return;
 		const pl = new URLSearchParams(location.search).get("pl");
 		if (!pl) return;
+		const { playlists } = await import("../data/playlists.generated");
 		const playlist = playlists[pl];
 		if (!playlist) return;
 		const cur = currentSlugFromPath();
@@ -234,11 +237,11 @@ const { prev, next } = Astro.props;
 				: `${display}${label ? " " + label : ""} →`;
 	}
 
-	function updateLinks() {
+	async function updateLinks() {
 		// Apply neighbor overrides BEFORE rewriting query params so our new
 		// data-base-href is the source of truth for the next step.
-		applyPlaylistOverrides();
-		applyRefNeighborOverrides();
+		await applyPlaylistOverrides();
+		await applyRefNeighborOverrides();
 
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
