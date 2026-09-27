@@ -14,12 +14,35 @@ import { buildUnifiedContent } from "../../utils/discover-data";
 let searchIndexBySlug: Map<string, SearchIndexDoc> | null = null;
 let mergedDocBySlug: Map<string, SearchIndexDoc> | null = null;
 
+// Results depend only on the indexes baked into the deployment, and Vercel's
+// CDN cache is per deployment, so identical queries can be served from the edge.
+const CACHEABLE_RESULT_HEADERS = {
+	"Content-Type": "application/json",
+	"Cache-Control":
+		"public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
+};
+
 async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
 	if (!searchIndexBySlug) {
 		const docs = await loadNativeSearchIndex();
 		searchIndexBySlug = new Map(docs.map((doc) => [doc.slug, doc]));
 	}
 	return searchIndexBySlug;
+}
+
+// Cache merged native+reference map — rebuilding ~3700 entries per request is wasted work
+async function getMergedDocBySlug(): Promise<Map<string, SearchIndexDoc>> {
+	if (!mergedDocBySlug) {
+		const [nativeBySlug, refData] = await Promise.all([
+			getSearchIndexBySlug(),
+			ensureReferenceSearchIndexLoaded(),
+		]);
+		mergedDocBySlug ??= new Map([
+			...nativeBySlug,
+			...refData.map((doc) => [doc.slug, doc] as const),
+		]);
+	}
+	return mergedDocBySlug;
 }
 
 // Cache category data and Fuse index at module level (data is static JSON)
@@ -182,7 +205,7 @@ export const GET: APIRoute = async ({ url }) => {
 				}),
 				{
 					status: 200,
-					headers: { "Content-Type": "application/json" },
+					headers: CACHEABLE_RESULT_HEADERS,
 				},
 			);
 		}
@@ -224,19 +247,12 @@ export const GET: APIRoute = async ({ url }) => {
 
 		const tParse = performance.now();
 
-		const nativeBySlug = await getSearchIndexBySlug();
-		let docBySlug: Map<string, SearchIndexDoc> = nativeBySlug;
-		if (includeReferences) {
-			// Cache merged native+reference map — rebuilding ~3700 entries per request is wasted work
-			if (!mergedDocBySlug) {
-				const refData = await ensureReferenceSearchIndexLoaded();
-				mergedDocBySlug = new Map([
-					...nativeBySlug,
-					...refData.map((doc) => [doc.slug, doc] as const),
-				]);
-			}
-			docBySlug = mergedDocBySlug;
-		}
+		// Start reading/inflating the indexes (threadpool) before the CPU-bound
+		// category pass so a cold instance overlaps the two.
+		const docBySlugReady = includeReferences
+			? getMergedDocBySlug()
+			: getSearchIndexBySlug();
+		docBySlugReady.catch(() => {});
 
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
 		if (includeCategories && !hasSlugFilter && effectiveQuery.trim()) {
@@ -712,6 +728,7 @@ export const GET: APIRoute = async ({ url }) => {
 			});
 		}
 
+		const docBySlug = await docBySlugReady;
 		const tCategories = performance.now();
 
 		// Search discourses
