@@ -71,6 +71,9 @@ const hasReferenceDiscourses = exportTreeReferenceCount > 0;
 const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCount;
 ---
 
+<!-- The selection tree can be thousands of nodes on large /on pages; keep it
+     inert until the dialog is first opened. -->
+<template id="collection-pdf-export-template">
 <dialog
 	id="collection-pdf-export-dialog"
 	class="collection-pdf-dialog"
@@ -394,6 +397,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		</footer>
 	</div>
 </dialog>
+</template>
 
 <div class="collection-pdf-toast export-toast" role="alert" aria-live="assertive">
 	<span class="toast-msg"></span>
@@ -454,6 +458,14 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				"#collection-pdf-export-dialog",
 			),
 		);
+	}
+
+	function materializeCollectionPdfDialog(): void {
+		if (getCollectionPdfDialogs().length) return;
+		const template = document.getElementById(
+			"collection-pdf-export-template",
+		) as HTMLTemplateElement | null;
+		template?.replaceWith(template.content.cloneNode(true));
 	}
 
 	function getTargetCollectionPdfDialog(): HTMLDialogElement | null {
@@ -932,13 +944,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		}
 	}
 
-	/** Rebind listeners directly on the live nodes after each navigation. */
-	function wirePdfModalUi() {
-		const dlg = dedupeCollectionPdfDialogs();
-		if (!dlg) {
-			return;
-		}
-
+	function wireDialogUi(dlg: HTMLDialogElement) {
 		dlg.querySelectorAll("[data-collection-pdf-close]").forEach((btn) => {
 			(btn as HTMLElement).onclick = (e) => {
 				e.preventDefault();
@@ -1022,6 +1028,12 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				}
 			}
 		};
+	}
+
+	/** Rebind listeners directly on the live nodes after each navigation. */
+	function wirePdfModalUi() {
+		const dlg = dedupeCollectionPdfDialogs();
+		if (dlg) wireDialogUi(dlg);
 
 		const openTriggers = document.querySelectorAll(
 			"[data-open-collection-pdf-modal]",
@@ -1029,8 +1041,10 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		openTriggers.forEach((btn) => {
 			(btn as HTMLElement).onclick = (e) => {
 				e.preventDefault();
+				materializeCollectionPdfDialog();
 				const d = dedupeCollectionPdfDialogs();
 				if (!d) return;
+				wireDialogUi(d);
 				applyDefaultsFromPage(d);
 				d.showModal();
 			};
