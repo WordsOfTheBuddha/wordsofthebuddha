@@ -2,46 +2,54 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { buildAllContent } from "./discover-data";
 import {
+	applyCategoryDescriptions,
 	decodeCategorySearchIndex,
 	encodeCategorySearchIndex,
 } from "./categorySearchIndex";
 
+const allItems = () =>
+	buildAllContent(["topics", "qualities", "similes", "persons"]);
+const jsonRoundTrip = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+
 describe("category search index", () => {
 	it("decodes to the same items buildAllContent produces", () => {
-		const items = buildAllContent(["topics", "qualities", "similes", "persons"]);
-		const encoded = JSON.parse(
-			JSON.stringify(encodeCategorySearchIndex(items)),
+		const items = allItems();
+		const { index, descriptions } = jsonRoundTrip(
+			encodeCategorySearchIndex(items),
 		);
+		const decoded = decodeCategorySearchIndex(index);
+		applyCategoryDescriptions(decoded.discourses, descriptions);
+		assert.deepEqual(jsonRoundTrip(decoded.items), jsonRoundTrip(items));
+	});
+
+	it("matches everything but discourse descriptions before they load", () => {
+		const items = allItems();
+		const { index } = jsonRoundTrip(encodeCategorySearchIndex(items));
+		const withoutDescriptions = jsonRoundTrip(items).map((item) => ({
+			...item,
+			discourses: item.discourses.map(({ description: _, ...rest }) => rest),
+		}));
 		assert.deepEqual(
-			decodeCategorySearchIndex(encoded),
-			JSON.parse(JSON.stringify(items)),
+			jsonRoundTrip(decodeCategorySearchIndex(index).items),
+			withoutDescriptions,
 		);
 	});
 
 	it("stores shared discourse rows once", () => {
-		const items = buildAllContent(["topics", "qualities", "similes", "persons"]);
+		const items = allItems();
 		const refs = items.reduce((n, item) => n + item.discourses.length, 0);
-		const encoded = encodeCategorySearchIndex(items);
-		assert.ok(encoded.discourses.length < refs);
+		const { index, descriptions } = encodeCategorySearchIndex(items);
+		assert.ok(index.discourses.length < refs);
+		assert.equal(descriptions.length, index.discourses.length);
 	});
 
-	it("gives each item its own discourse objects", () => {
-		const [a, b] = decodeCategorySearchIndex({
+	it("rejects mismatched descriptions and unknown versions", () => {
+		const { discourses } = decodeCategorySearchIndex({
 			version: 1,
-			discourses: [
-				{ id: "mn1", title: "T", description: "D", collection: "mn" },
-			],
-			items: [
-				{ id: "x", slug: "x", type: "topic", title: "X", discourses: [0] },
-				{ id: "y", slug: "y", type: "topic", title: "Y", discourses: [0] },
-			],
+			discourses: [{ id: "mn1", title: "T", collection: "mn" }],
+			items: [],
 		});
-		assert.notEqual(a.discourses[0], b.discourses[0]);
-	});
-
-	it("rejects unknown versions", () => {
-		assert.throws(() =>
-			decodeCategorySearchIndex({ version: 2 } as never),
-		);
+		assert.throws(() => applyCategoryDescriptions(discourses, []));
+		assert.throws(() => decodeCategorySearchIndex({ version: 2 } as never));
 	});
 });

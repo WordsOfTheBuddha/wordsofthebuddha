@@ -1,8 +1,5 @@
 import { writeFile } from "node:fs/promises";
-import { promisify } from "node:util";
-import { gunzip, gunzipSync, gzipSync } from "node:zlib";
-
-const gunzipAsync = promisify(gunzip);
+import { gunzipSync, gzipSync } from "node:zlib";
 
 /** Write `path.json.gz` next to a generated JSON index for the serverless bundle. */
 export async function writeGzipCompanion(
@@ -15,15 +12,5 @@ export async function writeGzipCompanion(
 export function decodeMaybeGzip(filePath: string, raw: Buffer): string {
 	return filePath.endsWith(".gz")
 		? gunzipSync(raw).toString("utf8")
-		: raw.toString("utf8");
-}
-
-/** Like decodeMaybeGzip, but inflates on the libuv threadpool. */
-export async function decodeMaybeGzipAsync(
-	filePath: string,
-	raw: Buffer,
-): Promise<string> {
-	return filePath.endsWith(".gz")
-		? (await gunzipAsync(raw)).toString("utf8")
 		: raw.toString("utf8");
 }

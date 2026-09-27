@@ -682,9 +682,14 @@ const isSearchOnly = mode === "search-only";
 
 <script>
 	import type { DiscoverRenderer } from "../utils/discover-renderer";
-	import categorySearchIndexUrl from "virtual:category-search-index-url";
 	import {
+		categoryDescriptionsUrl,
+		categorySearchIndexUrl,
+	} from "virtual:category-search-index-url";
+	import {
+		applyCategoryDescriptions,
 		decodeCategorySearchIndex,
+		type CategoryDescriptionsFile,
 		type CategorySearchIndexFile,
 	} from "../utils/categorySearchIndex";
 	import { isAskSurfaceMode } from "../utils/aiAskHref";
@@ -755,6 +760,11 @@ const isSearchOnly = mode === "search-only";
 	let DiscoverRendererCtor: typeof DiscoverRenderer | null = null;
 	let rendererPromise: Promise<void> | null = null;
 	let searchWarmupStarted = false;
+	// Discourse rows from the prebuilt index still waiting for their descriptions.
+	let categoryRowsAwaitingDescriptions: ReturnType<
+		typeof decodeCategorySearchIndex
+	>["discourses"] | null = null;
+	let categoryDescriptionsPromise: Promise<void> | null = null;
 
 	// Result counts for display
 	let resultCounts = {
@@ -890,10 +900,38 @@ const isSearchOnly = mode === "search-only";
 		return rendererPromise;
 	}
 
-	async function fetchCategorySearchIndex(url: string): Promise<UnifiedContentItem[]> {
+	async function fetchJson<T>(url: string): Promise<T> {
 		const res = await fetch(url);
 		if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
-		return decodeCategorySearchIndex((await res.json()) as CategorySearchIndexFile);
+		return (await res.json()) as T;
+	}
+
+	async function fetchCategorySearchIndex(url: string): Promise<UnifiedContentItem[]> {
+		const decoded = decodeCategorySearchIndex(
+			await fetchJson<CategorySearchIndexFile>(url),
+		);
+		categoryRowsAwaitingDescriptions = decoded.discourses;
+		return decoded.items;
+	}
+
+	/** Descriptions only appear on expanded category cards. */
+	function ensureCategoryDescriptions(): Promise<void> {
+		const rows = categoryRowsAwaitingDescriptions;
+		if (!rows || !categoryDescriptionsUrl) return Promise.resolve();
+		if (!categoryDescriptionsPromise) {
+			categoryDescriptionsPromise = fetchJson<CategoryDescriptionsFile>(
+				categoryDescriptionsUrl,
+			)
+				.then((descriptions) => {
+					applyCategoryDescriptions(rows, descriptions);
+					categoryRowsAwaitingDescriptions = null;
+				})
+				.catch((error) => {
+					categoryDescriptionsPromise = null;
+					console.warn("Failed to load category descriptions:", error);
+				});
+		}
+		return categoryDescriptionsPromise;
 	}
 
 	async function loadCategoryIndex() {
@@ -944,7 +982,8 @@ const isSearchOnly = mode === "search-only";
 		// Results data first; autocomplete JSON after, so it doesn't slow them.
 		void ensureCategoryIndex()
 			.then(() => loadSuggestionsIndex())
-			.then(() => setupSearchAutocomplete());
+			.then(() => setupSearchAutocomplete())
+			.then(() => ensureCategoryDescriptions());
 	}
 
 	function scheduleSearchWarmup() {
@@ -1292,10 +1331,18 @@ const isSearchOnly = mode === "search-only";
 			expandedItems.add(slug);
 		}
 
-		if (currentMode === "browse") {
-			renderBrowseResults();
-		} else if (currentMode === "search" && searchQuery) {
-			void performSearch(searchQuery, { trackCandidate: false });
+		const rerender = () => {
+			if (currentMode === "browse") {
+				renderBrowseResults();
+			} else if (currentMode === "search" && searchQuery) {
+				void performSearch(searchQuery, { trackCandidate: false });
+			}
+		};
+		rerender();
+		if (expandedItems.has(slug) && categoryRowsAwaitingDescriptions) {
+			void ensureCategoryDescriptions().then(() => {
+				if (expandedItems.has(slug) && !categoryRowsAwaitingDescriptions) rerender();
+			});
 		}
 	}
 

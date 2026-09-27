@@ -16,6 +16,7 @@ const INDEX_FILES = [
 ];
 const GENERATED_DIR = "generated";
 const CATEGORY_INDEX_FILE = "category-search-index.json";
+const CATEGORY_DESCRIPTIONS_FILE = "category-discourse-descriptions.json";
 const CATEGORY_INDEX_MODULE = "virtual:category-search-index-url";
 const RESOLVED_CATEGORY_INDEX_MODULE = `\0${CATEGORY_INDEX_MODULE}`;
 
@@ -45,14 +46,22 @@ function categorySearchIndexUrlPlugin() {
 		},
 		load(id) {
 			if (id !== RESOLVED_CATEGORY_INDEX_MODULE) return undefined;
-			if (!isBuild) return "export default null;";
-			if (!existsSync(generatedPath(root, CATEGORY_INDEX_FILE))) {
+			const unavailable =
+				"export const categorySearchIndexUrl = null;\nexport const categoryDescriptionsUrl = null;";
+			if (!isBuild) return unavailable;
+			const missing = [CATEGORY_INDEX_FILE, CATEGORY_DESCRIPTIONS_FILE].filter(
+				(file) => !existsSync(generatedPath(root, file)),
+			);
+			if (missing.length > 0) {
 				this.warn(
-					`Missing ${GENERATED_DIR}/${CATEGORY_INDEX_FILE}; /search will build categories from mapping modules`,
+					`Missing ${missing.map((f) => `${GENERATED_DIR}/${f}`).join(", ")}; /search will build categories from mapping modules`,
 				);
-				return "export default null;";
+				return unavailable;
 			}
-			return `export { default } from "/${GENERATED_DIR}/${CATEGORY_INDEX_FILE}?url";`;
+			return [
+				`export { default as categorySearchIndexUrl } from "/${GENERATED_DIR}/${CATEGORY_INDEX_FILE}?url";`,
+				`export { default as categoryDescriptionsUrl } from "/${GENERATED_DIR}/${CATEGORY_DESCRIPTIONS_FILE}?url";`,
+			].join("\n");
 		},
 	};
 }

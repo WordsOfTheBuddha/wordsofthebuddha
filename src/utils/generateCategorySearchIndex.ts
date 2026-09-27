@@ -5,27 +5,36 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildAllContent } from "./discover-data";
 import { encodeCategorySearchIndex } from "./categorySearchIndex";
+import { writeGzipCompanion } from "./gzipJsonFile";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "../..");
-const jsonOutFile = path.join(
-	repoRoot,
-	"generated",
-	"category-search-index.json",
+const generatedDir = path.join(repoRoot, "generated");
+const indexOutFile = path.join(generatedDir, "category-search-index.json");
+const descriptionsOutFile = path.join(
+	generatedDir,
+	"category-discourse-descriptions.json",
 );
 
 async function main() {
 	const start = Date.now();
 	const items = buildAllContent(["topics", "qualities", "similes", "persons"]);
-	const payload = encodeCategorySearchIndex(items);
+	const { index, descriptions } = encodeCategorySearchIndex(items);
 
-	await mkdir(path.dirname(jsonOutFile), { recursive: true });
-	const json = JSON.stringify(payload);
-	await writeFile(jsonOutFile, json, "utf8");
+	await mkdir(generatedDir, { recursive: true });
+	const indexJson = JSON.stringify(index);
+	const descriptionsJson = JSON.stringify(descriptions);
+	await Promise.all([
+		writeFile(indexOutFile, indexJson, "utf8"),
+		// /api/search reads the gzip companion inside the Vercel function.
+		writeGzipCompanion(indexOutFile, indexJson),
+		writeFile(descriptionsOutFile, descriptionsJson, "utf8"),
+	]);
 
-	const kb = Buffer.byteLength(json, "utf8") / 1024;
+	const kb = (json: string) =>
+		(Buffer.byteLength(json, "utf8") / 1024).toFixed(1);
 	console.log(
-		`category-search-index: wrote ${payload.items.length} categories, ${payload.discourses.length} unique discourse rows to generated/category-search-index.json (${kb.toFixed(1)} KB) in ${Date.now() - start}ms`,
+		`category-search-index: wrote ${index.items.length} categories, ${index.discourses.length} unique discourse rows (${kb(indexJson)} KB) and descriptions (${kb(descriptionsJson)} KB) in ${Date.now() - start}ms`,
 	);
 }
 

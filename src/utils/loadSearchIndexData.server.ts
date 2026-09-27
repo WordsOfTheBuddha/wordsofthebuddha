@@ -2,7 +2,7 @@ import { readFile, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { SearchIndexDoc } from "./loadSearchIndexData";
-import { decodeMaybeGzipAsync } from "./gzipJsonFile";
+import { decodeMaybeGzip } from "./gzipJsonFile";
 
 export function publicJsonCandidates(filename: string): string[] {
 	const cwd = process.cwd();
@@ -43,9 +43,7 @@ export async function readIndexFromDisk(
 	for (const filePath of publicJsonCandidates(filename)) {
 		if (!existsSync(filePath)) continue;
 		const raw = await readFile(filePath);
-		return JSON.parse(
-			await decodeMaybeGzipAsync(filePath, raw),
-		) as SearchIndexDoc[];
+		return JSON.parse(decodeMaybeGzip(filePath, raw)) as SearchIndexDoc[];
 	}
 	return null;
 }
