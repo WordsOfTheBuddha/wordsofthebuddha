@@ -3,8 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import simileMappings from "../../data/simileMappings.json";
 import { transformId } from "../../utils/transformId";
 
-// Ensure this page is server-rendered
-export const prerender = false;
+// Built from generated mappings only; nothing varies per request.
+export const prerender = true;
 
 // Define types for simileMappings
 interface Discourse {

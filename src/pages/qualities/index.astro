@@ -6,8 +6,8 @@ import qualities from "../../data/qualities.json";
 import { qualityListIncludes } from "../../utils/ContentTagUtils";
 import { canonicalOnSlug } from "../../utils/discover-data";
 
-// Ensure this page is server-rendered
-export const prerender = false;
+// Built from generated mappings only; nothing varies per request.
+export const prerender = true;
 
 interface IndexCard {
 	href: string;
