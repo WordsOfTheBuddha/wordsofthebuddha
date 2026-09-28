@@ -1,0 +1,30 @@
+---
+// Gujarati sample review (rewritten from /:slug/gu by middleware).
+// Only discourses whose paragraphs line up with src/content/pli are published.
+export const prerender = false;
+import "../../styles/gujarati-review.css";
+import { buildGuDiscoursePage } from "../../utils/guDiscoursePage";
+import Layout from "../../layouts/Layout.astro";
+import MDContent from "../../components/MDContent.astro";
+
+const { id } = Astro.params as { id?: string };
+
+if (!id) {
+	return new Response(null, { status: 404 });
+}
+
+const page = await buildGuDiscoursePage(id);
+if (!page) {
+	return new Response(null, { status: 404 });
+}
+
+const { mainContent, splitAvailable, suttaProps } = page;
+---
+
+<Layout
+	{...suttaProps}
+	canonicalPath={`/${id}/gu`}
+	robots="noindex, follow"
+>
+	<MDContent content={mainContent} splitAvailable={splitAvailable} />
+</Layout>

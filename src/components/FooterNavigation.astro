@@ -6,9 +6,12 @@ import { transformId } from "../utils/transformId";
 interface Props {
 	prev?: CollectionEntry<"all">;
 	next?: CollectionEntry<"all">;
+	/** Appended to discourse ids so review routes stay on /gu. */
+	pathSuffix?: string;
 }
 
-const { prev, next } = Astro.props;
+const { prev, next, pathSuffix = "" } = Astro.props;
+const neighborHref = (id: string) => `/${id}${pathSuffix}`;
 ---
 
 <nav
@@ -19,10 +22,10 @@ const { prev, next } = Astro.props;
 		{
 			prev && (
 				<a
-					href={`/${prev.id}`}
+					href={neighborHref(prev.id)}
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
 					style="color: var(--link-color)"
-					data-base-href={`/${prev.id}`}
+					data-base-href={neighborHref(prev.id)}
 					data-neighbor-slug={prev.id}
 					data-neighbor-title={prev.data.title}
 					data-footer-nav="prev"
@@ -38,10 +41,10 @@ const { prev, next } = Astro.props;
 		{
 			next && (
 				<a
-					href={`/${next.id}`}
+					href={neighborHref(next.id)}
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
 					style="color: var(--link-color)"
-					data-base-href={`/${next.id}`}
+					data-base-href={neighborHref(next.id)}
 					data-neighbor-slug={next.id}
 					data-neighbor-title={next.data.title}
 					data-footer-nav="next"
@@ -121,6 +124,8 @@ const { prev, next } = Astro.props;
 		if (!path) return null;
 		const sujatoMatch = path.match(/^([^/]+)\/en\/sujato$/);
 		if (sujatoMatch) return sujatoMatch[1];
+		const guMatch = path.match(/^([^/]+)\/gu$/);
+		if (guMatch) return guMatch[1];
 		return path && !path.includes("/") ? path : null;
 	}
 
@@ -128,8 +133,14 @@ const { prev, next } = Astro.props;
 		return /\/en\/sujato\/?$/.test(location.pathname);
 	}
 
+	function isGuReviewPath(): boolean {
+		return /\/gu\/?$/.test(location.pathname);
+	}
+
 	function discourseHref(slug: string): string {
-		return isSujatoReferencePath() ? `/${slug}/en/sujato` : `/${slug}`;
+		if (isSujatoReferencePath()) return `/${slug}/en/sujato`;
+		if (isGuReviewPath()) return `/${slug}/gu`;
+		return `/${slug}`;
 	}
 
 	function discourseFooterNavRoot(): HTMLElement | null {
@@ -162,7 +173,11 @@ const { prev, next } = Astro.props;
 	/** When `?ref=true` or on /en/sujato, walk EN + reference-only neighbors. */
 	async function applyRefNeighborOverrides() {
 		const search = new URLSearchParams(location.search);
-		if ((!resolveRefMode(search) && !isSujatoReferencePath()) || search.get("pl"))
+		if (
+			(!resolveRefMode(search) && !isSujatoReferencePath()) ||
+			search.get("pl") ||
+			isGuReviewPath()
+		)
 			return;
 		if (!discourseFooterNavRoot()) return;
 		const cur = currentSlugFromPath();
@@ -237,11 +252,24 @@ const { prev, next } = Astro.props;
 				: `${display}${label ? " " + label : ""} →`;
 	}
 
+	/** Keep the sample's prev/next on /gu when client code rewrites hrefs. */
+	function applyGuReviewHrefs() {
+		if (!isGuReviewPath()) return;
+		const root = discourseFooterNavRoot();
+		if (!root) return;
+		root.querySelectorAll("a.nav-link[data-footer-nav]").forEach((link) => {
+			const slug = link.getAttribute("data-neighbor-slug");
+			if (!slug) return;
+			link.setAttribute("data-base-href", discourseHref(slug));
+		});
+	}
+
 	async function updateLinks() {
 		// Apply neighbor overrides BEFORE rewriting query params so our new
 		// data-base-href is the source of truth for the next step.
 		await applyPlaylistOverrides();
 		await applyRefNeighborOverrides();
+		applyGuReviewHrefs();
 
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";

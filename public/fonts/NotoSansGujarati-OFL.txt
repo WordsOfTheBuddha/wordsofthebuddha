@@ -1,0 +1,5 @@
+Noto Sans Gujarati
+Copyright 2020 The Noto Project Authors (https://github.com/notofonts/gujarati)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The license text is at https://scripts.sil.org/OFL

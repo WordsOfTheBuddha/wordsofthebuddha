@@ -38,6 +38,9 @@ const TOP_LEVEL_SLUG = /^\/[^/]+$/;
 /** Canonical Sujato reference URLs, e.g. /mn65/en/sujato. */
 const SUJATO_REFERENCE_ROUTE = /^\/([^/]+)\/en\/sujato$/;
 
+/** Sample Gujarati review URLs, e.g. /sn56.11/gu. */
+const GU_REVIEW_ROUTE = /^\/([^/]+)\/gu$/;
+
 /** Subset/paragraph slugs like sn49.1 or sn1.1.1-2 (not collection indexes like sn12). */
 const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 
@@ -234,6 +237,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		pathname.startsWith("/discourse-ssr/") ||
 		pathname.startsWith("/discourse-dynamic/") ||
 		pathname.startsWith("/discourse-sujato/") ||
+		pathname.startsWith("/discourse-gu/") ||
 		pathname.startsWith("/listen-dynamic/") ||
 		pathname.startsWith("/shared-ask/")
 	) {
@@ -295,6 +299,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	const sujatoMatch = pathname.match(SUJATO_REFERENCE_ROUTE);
 	if (sujatoMatch) {
 		return rewritePublic(context, `/discourse-sujato/${sujatoMatch[1]}`);
+	}
+
+	const guMatch = pathname.match(GU_REVIEW_ROUTE);
+	if (guMatch) {
+		return rewritePublic(context, `/discourse-gu/${guMatch[1]}`);
 	}
 
 	if (!TOP_LEVEL_SLUG.test(pathname)) {

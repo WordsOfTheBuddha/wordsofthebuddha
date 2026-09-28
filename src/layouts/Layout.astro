@@ -116,14 +116,14 @@ const {
 	vizNext?: { slug: string; title: string } | null;
 	/** Skip prose + max-w-4xl so pages can use full-width layouts (e.g. design system). */
 	fullWidthSlot?: boolean;
-	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms";
+	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms" | "gu";
 	/** Page shows a B. Sujato reference translation fallback; defaults to Pali-only with a translation toggle. */
 	referenceFallback?: boolean;
 	/** Dev-only: full Pāli paragraph list for Discourse Translation Memory. */
 	tmFullPaliParagraphs?: TmPaliParagraph[] | null;
 	/**
 	 * Canonical path, e.g. `/mn1`. Required on middleware-rewritten routes
-	 * (`/discourse-ssr/*`, `/discourse-sujato/*`, `/discourse-dynamic/*`) where
+	 * (`/discourse-ssr/*`, `/discourse-sujato/*`, `/discourse-gu/*`, `/discourse-dynamic/*`) where
 	 * `Astro.url.pathname` is the internal target rather than the public URL.
 	 * `/:slug/en/sujato` passes `/:slug` so the two translations of one discourse
 	 * consolidate onto the primary page instead of competing.
@@ -295,7 +295,7 @@ const structuredData = buildStructuredData({
 ---
 
 <html
-	lang="en"
+	lang={viewSource === "gu" ? "gu" : "en"}
 	class:list={[
 		serverTheme,
 		defaultRefPaliOnly && "ref-pali-only",
@@ -303,6 +303,7 @@ const structuredData = buildStructuredData({
 	]}
 	dir="ltr"
 	data-has-viz={contentImage ? "true" : "false"}
+	data-force-pali={viewSource === "gu" ? "true" : undefined}
 >
 	<head>
 		<meta charset="UTF-8" />
@@ -406,10 +407,17 @@ const structuredData = buildStructuredData({
 				const storedTheme = localStorage.getItem("theme");
 				const urlParams = new URLSearchParams(window.location.search);
 				const pliParam = urlParams.get("pli");
+				const forcePali =
+					document.documentElement.dataset.forcePali === "true" &&
+					pliParam === null;
 				let paliMode = localStorage.getItem("paliMode") === "true";
 				if (pliParam !== null) {
 					paliMode = pliParam === "true";
-					localStorage.setItem("paliMode", paliMode.toString());
+					if (document.documentElement.dataset.forcePali !== "true") {
+						localStorage.setItem("paliMode", paliMode.toString());
+					}
+				} else if (forcePali) {
+					paliMode = true;
 				}
 				document.documentElement.classList.toggle("pali-on", paliMode);
 				const paliLookup = urlParams.get("enablePaliLookup");
@@ -683,7 +691,11 @@ const structuredData = buildStructuredData({
 							/>
 						)
 					}
-					<FooterNavigation prev={prev} next={next} />
+					<FooterNavigation
+						prev={prev}
+						next={next}
+						pathSuffix={viewSource === "gu" ? "/gu" : ""}
+					/>
 					<Footer />
 				</HighlightLayout>
 			</div>
@@ -809,10 +821,16 @@ const structuredData = buildStructuredData({
 			initRefModeFromUrl();
 			const urlParams = new URLSearchParams(window.location.search);
 			const pliParam = urlParams.get("pli");
+			const forcePali =
+				document.documentElement.dataset.forcePali === "true" &&
+				pliParam === null;
+			const storedPali = localStorage.getItem("paliMode");
 			const resolvedShowPali =
 				pliParam !== null
 					? pliParam === "true"
-					: localStorage.getItem("paliMode") === "true";
+					: forcePali
+						? true
+						: storedPali === "true";
 			// Client-side safety net: if width < 768 and layout=split is present, drop it and clean the URL
 			if (
 				window.innerWidth < 768 &&
@@ -842,6 +860,11 @@ const structuredData = buildStructuredData({
 						"interleaved")
 				: undefined;
 			synchronizePreferences(preferences);
+			if (forcePali) {
+				if (storedPali === null) localStorage.removeItem("paliMode");
+				else localStorage.setItem("paliMode", storedPali);
+				document.documentElement.classList.add("pali-on");
+			}
 			// Defensive: strip stray ?layout/pli parameters that may have been appended to the hash fragment by copy/paste
 			if (window.location.hash.includes("?")) {
 				const cleanHash = window.location.hash
