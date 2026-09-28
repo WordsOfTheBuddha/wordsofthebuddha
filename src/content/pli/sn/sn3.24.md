@@ -1,10 +1,12 @@
 ---
+title: Issatta sutta - Skill in Archery
+description: Comparing renunciates to archers chosen for skill rather than birth, the Buddha explains to King Pasenadi that gifts bear greatest fruit when given to ethical, fully liberated disciples.
+qualities: giving, ethical conduct, wisdom, patience, liberation
+theme: wisdom, cultivating discernment, inspiration
 slug: sn3.24
 character: King Pasenadi of Kosala
-source: suttacentral/bilara-data
-title: Issattasutta
-edition: ms
-granularity: paragraph
+simile: archer, cloud that rains everywhere
+priority: 1.2
 ---
 
 Sāvatthinidānaṁ.
