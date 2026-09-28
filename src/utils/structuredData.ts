@@ -20,7 +20,7 @@ export type StructuredDataInput = {
 	imageURL?: string | null;
 	lastUpdated?: string | Date | null;
 	/** Reference views credit B. Sujato rather than the site's own translation. */
-	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms";
+	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms" | "gu";
 	isHome?: boolean;
 };
 
@@ -108,7 +108,7 @@ function articleNode(
 		"@id": `${input.canonicalURL}#article`,
 		headline: clampHeadline(headline),
 		...(input.description ? { description: input.description } : {}),
-		inLanguage: "en",
+		inLanguage: input.viewSource === "gu" ? "gu" : "en",
 		url: input.canonicalURL,
 		mainEntityOfPage: { "@type": "WebPage", "@id": input.canonicalURL },
 		...(input.imageURL ? { image: input.imageURL } : {}),

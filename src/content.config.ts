@@ -82,6 +82,7 @@ const referencePliMs = createCollection(
 	"**/*.md",
 	referenceSchema,
 );
+const gu = createCollection("src/content/gu/", "**/*.md");
 
 export const collections = {
 	dn,
@@ -98,4 +99,5 @@ export const collections = {
 	pliAll,
 	referenceSujato,
 	referencePliMs,
+	gu,
 };

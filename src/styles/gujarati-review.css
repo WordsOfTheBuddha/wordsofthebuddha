@@ -1,0 +1,13 @@
+@font-face {
+	font-family: "Noto Sans Gujarati";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/fonts/NotoSansGujarati-Regular.ttf") format("truetype");
+	unicode-range: U+0964-0965, U+0A80-0AFF, U+200C-200D, U+25CC;
+}
+
+/* Spectral has no Gujarati glyphs. The face above covers only that block. */
+html[lang="gu"] .md-content :is(p.english-paragraph, h2, h3, h4, h5, h6) {
+	font-family: "Noto Sans Gujarati", Spectral, serif;
+}

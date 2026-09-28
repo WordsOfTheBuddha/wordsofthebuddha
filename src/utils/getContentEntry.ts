@@ -36,6 +36,7 @@ const PLI_MS_ROOT = path.join(
 	process.cwd(),
 	"src/content/references/pli-ms",
 );
+const GU_ROOT = path.join(process.cwd(), "src/content/gu");
 
 function resolveEnglishPath(slug: string, hintPath?: string): string | null {
 	const cwd = process.cwd();
@@ -172,7 +173,7 @@ async function findStoredPaliEntry(slug: string) {
 }
 
 async function findStoredReferenceEntry(
-	collection: "referenceSujato" | "referencePliMs",
+	collection: "referenceSujato" | "referencePliMs" | "gu",
 	slug: string,
 ) {
 	try {
@@ -215,7 +216,7 @@ function storedToLike(entry: {
 // log-only: adds no new static src/content path strings, so bundle tracing
 // is unchanged by this probe.
 function probeContentFallback(
-	kind: "en" | "pli" | "sujato" | "plims",
+	kind: "en" | "pli" | "sujato" | "plims" | "gu",
 	slug: string,
 	stored: unknown,
 	diskPath: string | null,
@@ -305,6 +306,27 @@ export async function getReferencePliMsEntry(
 	if (stored) return storedToLike(stored);
 
 	probeContentFallback("plims", slug, stored, diskPath);
+	if (diskPath) return readMarkdownEntry(diskPath, slug);
+	return null;
+}
+
+/**
+ * Resolve a sample Gujarati entry (glob ids may be `sn/sn56.11`).
+ * Missing or unaligned discourses are not in this collection.
+ */
+export async function getGuEntry(
+	slug: string,
+): Promise<ContentEntryLike | null> {
+	const stored = await findStoredReferenceEntry("gu", slug);
+	const diskPath = resolveReferencePath(GU_ROOT, slug, stored?.filePath);
+
+	if (import.meta.env.DEV && diskPath) {
+		return readMarkdownEntry(diskPath, stored?.id ?? slug);
+	}
+
+	if (stored) return storedToLike(stored);
+
+	probeContentFallback("gu", slug, stored, diskPath);
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
 	return null;
 }
