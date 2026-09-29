@@ -1,10 +1,12 @@
 ---
+title: Vacchagotta sutta - With Vacchagotta
+description: Refuting rumors that he restricts charity, the Buddha teaches that even feeding tiny creatures generates merit, but gifts given to virtuous, fully liberated disciples yield the greatest spiritual fruit.
+qualities: giving, ethical conduct, wisdom, liberation
+theme: wisdom, inspiration
 slug: an3.57
 character: Wanderer Vacchagotta
-source: suttacentral/bilara-data
-title: Vacchagottasutta
-edition: ms
-granularity: paragraph
+simile: cows and the tamed bull, dish-washing water in a cesspool
+priority: 1.2
 ---
 
 Atha kho vacchagotto paribbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vacchagotto paribbājako bhagavantaṁ etadavoca:
