@@ -1,9 +1,11 @@
 ---
+title: Āditta sutta - On Fire
+description: Just as one rescues valuables from a burning house, what is given away in a world ablaze with aging and death is truly saved.
+qualities: giving, wisdom
+theme: wisdom, inspiration
+simile: fire
 slug: sn1.41
-source: suttacentral/bilara-data
-title: Ādittasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
