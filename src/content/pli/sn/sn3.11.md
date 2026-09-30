@@ -2,7 +2,6 @@
 slug: sn3.11
 character:
   - King Pasenadi of Kosala
-  - Rājā Pasenadi Kosala
 source: suttacentral/bilara-data
 title: Sattajaṭilasutta
 edition: ms

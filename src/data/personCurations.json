@@ -96,5 +96,35 @@
 	"bharadvaja": {
 		"sortLetter": "B",
 		"title": "Young Brahmin Bhāradvāja"
+	},
+	"anathapindika": {
+		"sortLetter": "A",
+		"title": "Householder Anāthapiṇḍika",
+		"description": "Householder Anāthapiṇḍika, the donor of Jeta's Grove, first journeys through the night to meet the Buddha ([SN 10.8](/sn10.8)). As a patron he receives practical guidance on wealth, giving, and stream-entry ([AN 5.41](/an5.41), [AN 9.20](/an9.20), [SN 55.26–28](/sn55.26)). Gravely ill, he is taught non-clinging by Sāriputta — weeping that he never heard such a teaching as a layman, and asking that laypeople also receive it ([MN 143](/mn143)). Soon after he passes away and returns as a young deity, praising examination of the Dhamma and Sāriputta's wisdom ([SN 2.20](/sn2.20))."
+	},
+	"vacchagotta": {
+		"sortLetter": "V",
+		"title": "Wanderer Vacchagotta",
+		"description": "The wanderer Vacchagotta begins as a long-term debate partner, pressing the Buddha on omniscience ([MN 71](/mn71)) and the eternity of the world and the Tathāgata after death — met each time with refusal and the simile of an extinguished fire ([MN 72](/mn72), [SN 44.8–10](/sn44.8)). Trained on the aggregates ([SN 33](/sn33)), he then asks simply what is wholesome, is awed by the success of the fourfold assembly, takes refuge, and ordains ([MN 73](/mn73)). Half a month later he asks for further training, develops tranquility and insight, and attains arahantship with the three true knowledges: \"The Blessed One has been served by me.\""
+	},
+	"devadatta": {
+		"sortLetter": "D",
+		"title": "Devadatta",
+		"description": "Devadatta, a bhikkhu of the Buddha's own circle, is the canon's great warning about ambition. The Buddha traces his fall to a mind obsessed with acquisitions, respect, and popularity, which cuts off his wholesome root ([SN 17.31–34](/sn17.31)). Not long after his departure, possessions, honor, and popularity are shown to have come to him for his own ruin — like the banana plant that bears fruit to its destruction ([SN 17.35–36](/sn17.35)). The arc ends when he tells Ānanda he will observe the Uposatha separately from the Buddha and the Saṅgha, and the Buddha responds: evil is easily done by the bad, hard for the noble ones ([UD 5.8](/ud5.8))."
+	},
+	"citta": {
+		"sortLetter": "C",
+		"title": "Citta the Householder",
+		"description": "Citta the householder of Macchikāsaṇḍa is the layman monks came to question. When elders debate the meaning of 'fetter,' his simile of two yoked oxen settles it: the fetter is the desire that arises in dependence on the senses ([SN 41.1](/sn41.1)). Monks debate him and rival ascetics question him in turn, and his answers show the wisdom and direct knowledge of an exemplary lay follower ([SN 41.2–9](/sn41.2)). Gravely ill, he refuses when deities urge him to wish for a wheel-turning monarchy — 'that too is impermanent' — establishes his family in the Buddha, Dhamma, Saṅgha, and generosity, and passes away ([SN 41.10](/sn41.10))."
+	},
+	"pasenadi-of-kosala": {
+		"sortLetter": "P",
+		"title": "King Pasenadi of Kosala",
+		"description": "Pasenadi, king of Kosala, meets the Buddha first as a young skeptic asking whether he too claims full awakening ([SN 3.1](/sn3.1)). Across many visits he brings war with his nephew Ajātasattu — victory breeds hatred, while the peaceful sleep at ease ([SN 3.14–15](/sn3.14)) — grief at his queen's death ([AN 5.49](/an5.49)), and blunt questions on conduct, caste, and omniscience put to Ānanda and the Buddha ([MN 88](/mn88), [MN 90](/mn90)). The teaching he returns to: good friendship is the entire spiritual life ([SN 3.18](/sn3.18))."
+	},
+	"vangisa": {
+		"sortLetter": "V",
+		"title": "Venerable Vaṅgīsa",
+		"description": "Vaṅgīsa wandered village to village, 'drunk on poetry,' until he saw the Buddha and faith arose; hearing the teaching on aggregates, sense fields, and elements, he went forth ([SN 8.12](/sn8.12)). His gift becomes his training: seized by lust at the sight of finely dressed women, he answers himself in verse, defying Māra ([SN 8.1–2](/sn8.1)); moved by Dhamma talks, he extols Sāriputta, Moggallāna, Koṇḍañña, and the assembly the same way ([SN 8.5–11](/sn8.5)). The chapter closes with him 'recently attained perfection' — master of the three knowledges, fulfilled in the Buddha's instructions."
 	}
 }

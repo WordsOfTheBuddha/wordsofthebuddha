@@ -31,6 +31,7 @@ import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClien
 import { shouldShowOnPageChrome } from "../../utils/discourseListPreview";
 import { urlHasRefParam } from "../../utils/urlRefParam";
 import { getPtsDisplay } from "../../utils/ptsReferences";
+import { renderInlineDescription } from "../../utils/renderInlineDescription";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
 export async function getStaticPaths() {
@@ -324,7 +325,10 @@ const showDiscourseSectionHeading =
 						<div class="mt-2 ml-2 space-y-2 text-sm">
 					{
 						content.description && (
-							<div class="text-text">{content.description}</div>
+							<div
+								class="text-text"
+								set:html={renderInlineDescription(content.description)}
+							/>
 						)
 					}
 

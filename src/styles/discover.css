@@ -172,6 +172,7 @@ html.dark #filter-collapsed {
 	font-size: 0.68rem;
 	font-weight: 700;
 	letter-spacing: 0.02em;
+	line-height: 1.25;
 	text-transform: none !important;
 	color: var(--primary-color);
 	border: 1px solid
