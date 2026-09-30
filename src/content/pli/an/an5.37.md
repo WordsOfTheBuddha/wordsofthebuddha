@@ -4,6 +4,7 @@ description: The giver of food gives five things to the recipients - life, beaut
 qualities: giving, wisdom, contentment
 theme: wisdom, principle
 slug: an5.37
+priority: 1.1
 ---
 
 “Bhojanaṁ, bhikkhave, dadamāno dāyako paṭiggāhakānaṁ pañca ṭhānāni deti. Katamāni pañca? Āyuṁ deti, vaṇṇaṁ deti, sukhaṁ deti, balaṁ deti, paṭibhānaṁ deti.
