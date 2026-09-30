@@ -1,10 +1,11 @@
 ---
+title: Dutiya aputtaka sutta - Childless (Second)
+description: King Pasenadi recounts an heirless miser who hoarded millions yet lived on scraps. The Buddha then explains the past deeds that dictated both his vast fortune and his inability to enjoy it.
+qualities: stinginess, giving, regret
+theme: inspiration, wisdom
 slug: sn3.20
 character: King Pasenadi of Kosala
-source: suttacentral/bilara-data
-title: Dutiyaaputtakasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 Atha kho rājā pasenadi kosalo divā divassa yena bhagavā tenupasaṅkami; upasaṅkamitvā ekamantaṁ nisinnaṁ kho rājānaṁ pasenadiṁ kosalaṁ bhagavā etadavoca: “handa kuto nu tvaṁ, mahārāja, āgacchasi divā divassā”ti?
@@ -40,14 +41,3 @@ Tasmā kareyya kalyāṇaṁ,
 nicayaṁ samparāyikaṁ;
 Puññāni paralokasmiṁ,
 patiṭṭhā honti pāṇinan”ti.
-
-Dutiyo vaggo.
-
-Tassuddānaṁ
-
-Jaṭilā pañca rājāno,
-Doṇapākakurena ca;
-Saṅgāmena dve vuttāni,
-Mallikā dve appamādena ca;
-Aputtakena dve vuttā,
-Vaggo tena pavuccatīti.
