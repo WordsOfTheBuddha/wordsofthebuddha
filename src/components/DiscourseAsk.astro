@@ -59,7 +59,7 @@ const title = props.title || "";
 			</div>
 			<div class="dask-meta">
 				<button type="button" class="dask-new" data-ask-new hidden>+ New Ask</button>
-				<a class="dask-history" href="/search?mode=ask">Asks tab →</a>
+				<a class="dask-history" href="/search?mode=ask" target="_blank" rel="noopener noreferrer">Asks tab →</a>
 				<span class="dask-meta-spacer" aria-hidden="true"></span>
 				<p class="dask-meter" data-ask-meter aria-live="polite" hidden></p>
 			</div>
@@ -72,8 +72,8 @@ const title = props.title || "";
 					<h2 id="dask-quota-title" class="dask-title">You’ve used today’s free Asks</h2>
 					<p class="dask-body">Create a free account for more Asks today. You’ll also keep recent questions across devices.</p>
 					<div class="dask-actions">
-						<a class="dask-primary" href="/register">Create an account</a>
-						<a class="dask-secondary" href="/signin">Sign in</a>
+						<a class="dask-primary" href="/register" target="_blank" rel="noopener noreferrer">Create an account</a>
+						<a class="dask-secondary" href="/signin" target="_blank" rel="noopener noreferrer">Sign in</a>
 						<button type="button" class="dask-tertiary" data-close>Not now</button>
 					</div>
 				</div>
@@ -97,10 +97,12 @@ const title = props.title || "";
 </div>
 
 <script>
-	// Zero-cost until first use: the full Ask client (session, history,
-	// SSE handling) is code-split and fetched only when the reader opens
-	// the composer, so discourse first paint pays nothing for it. The
-	// dynamic import resolves in a microtask — strictly after the opening
+	import { discourseAskPageHasThread } from "../utils/discourseAskPageThread";
+
+	// The full Ask client (session, history, SSE) stays code-split. First
+	// paint loads it only when this discourse already has a thread in
+	// sessionStorage; otherwise it waits for the reader to open Ask.
+	// The dynamic import resolves in a microtask — strictly after the opening
 	// click's dispatch finishes — so the handoff below is a fresh dispatch
 	// with no double-toggle risk.
 	document.querySelectorAll<HTMLElement>("[data-discourse-ask]").forEach((root) => {
@@ -109,7 +111,7 @@ const title = props.title || "";
 		const toggle = root.querySelector<HTMLButtonElement>("[data-ask-toggle]");
 		if (!toggle) return;
 		let loading = false;
-		toggle.addEventListener("click", async () => {
+		const attach = async (opts?: { focus?: boolean }) => {
 			// Once attached, the full client owns this toggle.
 			if (root.dataset.attached || loading) return;
 			loading = true;
@@ -117,12 +119,17 @@ const title = props.title || "";
 				const mod = await import("../utils/discourseAskClient");
 				if (!root.dataset.attached) {
 					root.dataset.attached = "1";
-					mod.attachDiscourseAsk(root).open();
+					mod.attachDiscourseAsk(root).open(opts);
 				}
 			} finally {
 				loading = false;
 			}
+		};
+		toggle.addEventListener("click", () => {
+			void attach();
 		});
+		const slug = root.dataset.slug || window.location.pathname;
+		if (discourseAskPageHasThread(slug)) void attach({ focus: false });
 	});
 </script>
 

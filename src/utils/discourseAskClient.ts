@@ -20,6 +20,11 @@ import {
 } from "./aiAskResearchUi";
 import { installDiscourseCitationPopovers } from "./discourseCitationPopover";
 import {
+	readDiscourseAskPageThread,
+	writeDiscourseAskPageThread,
+	type DiscourseAskPageTurn,
+} from "./discourseAskPageThread";
+import {
 	readAiAskSession,
 	normalizeAskQuestionKey,
 	slimAskHistoryEntryForSync,
@@ -64,6 +69,24 @@ interface DiscourseTurn {
 
 const PAGE_EN_MAX = 6000;
 const PAGE_PALI_MAX = 4000;
+
+/**
+ * Same-tab navigation leaves this page, so links out of the panel open in
+ * a new tab. Fragment-only hrefs stay in place. The thread is also kept in
+ * sessionStorage and shown again when this discourse loads in the same tab.
+ */
+export function openDiscourseAskLinksInNewTab(html: string): string {
+	return html.replace(/<a\b([^>]*)>/gi, (open, attrs: string) => {
+		if (/\btarget\s*=/i.test(attrs)) return open;
+		const href = (attrs.match(/\bhref\s*=\s*"([^"]*)"/i)?.[1] || "").replace(
+			/&amp;/g,
+			"&",
+		);
+		if (!href || href.startsWith("#")) return open;
+		const rel = /\brel\s*=/i.test(attrs) ? "" : ' rel="noopener noreferrer"';
+		return `<a${attrs} target="_blank"${rel}>`;
+	});
+}
 
 function escapeHtml(value: string): string {
 	return value
@@ -164,7 +187,30 @@ function turnHtml(
 	</div>`;
 }
 
-export function attachDiscourseAsk(root: HTMLElement): { open: () => void } {
+function turnFromStored(turn: DiscourseAskPageTurn): DiscourseTurn {
+	return {
+		question: turn.question,
+		originalQuestion: turn.originalQuestion || turn.question,
+		lookingFor: turn.lookingFor,
+		queries: turn.queries,
+		fallbackQueries: turn.fallbackQueries,
+		offTopic: turn.offTopic,
+		results: turn.results,
+		model: turn.model,
+		reasoning: "",
+		summary: turn.summary,
+		...(turn.requestId ? { requestId: turn.requestId } : {}),
+		...(turn.candidateCount != null ? { candidateCount: turn.candidateCount } : {}),
+		...(turn.showCount != null ? { showCount: turn.showCount } : {}),
+		pending: false,
+		phase: turn.phase,
+		...(turn.error ? { error: turn.error } : {}),
+	};
+}
+
+export function attachDiscourseAsk(root: HTMLElement): {
+	open: (opts?: { focus?: boolean }) => void;
+} {
 	const slug = (root.dataset.slug || window.location.pathname.replace(/^\/+/, "").split("?")[0] || "").toLowerCase();
 	const title = root.dataset.title || "";
 	const toggle = root.querySelector<HTMLButtonElement>("[data-ask-toggle]");
@@ -180,6 +226,8 @@ export function attachDiscourseAsk(root: HTMLElement): { open: () => void } {
 	let quota: DiscourseAskQuotaView | null = null;
 	let busy = false;
 	let aborter: AbortController | null = null;
+	/** Restored threads stay where the page landed; don't jump to the card. */
+	let skipNextScroll = false;
 
 	function renderMeter(): void {
 		if (!meterEl) return;
@@ -195,13 +243,23 @@ export function attachDiscourseAsk(root: HTMLElement): { open: () => void } {
 
 	function renderThread(): void {
 		if (!thread) return;
-		thread.innerHTML = turns.map((t, i) => turnHtml(t, i, turns)).join("");
+		thread.innerHTML = turns
+			.map((t, i) => openDiscourseAskLinksInNewTab(turnHtml(t, i, turns)))
+			.join("");
 		const last = thread.lastElementChild;
-		if (last && turns.length > 0) {
+		const skipScroll = skipNextScroll;
+		skipNextScroll = false;
+		if (!skipScroll && last && turns.length > 0) {
 			last.scrollIntoView({ block: "nearest" });
 		}
-		if (input && turns.length > 0) {
-			input.placeholder = "Ask a follow-up…";
+		// Skip while a turn is in flight so status ticks don't rewrite storage.
+		if (!turns.some((turn) => turn.pending)) {
+			writeDiscourseAskPageThread(slug, turns);
+		}
+		if (input) {
+			input.placeholder = turns.length > 0
+				? "Ask a follow-up…"
+				: "Ask about this discourse…";
 		}
 		if (newAskBtn) newAskBtn.hidden = turns.length === 0;
 	}
@@ -518,9 +576,17 @@ export function attachDiscourseAsk(root: HTMLElement): { open: () => void } {
 			aborter?.abort();
 		}
 	});
-	function open(): void {
-		if (panel?.hidden) toggle?.click();
-		else input?.focus();
+	function open(opts?: { focus?: boolean }): void {
+		if (!panel) return;
+		const focus = opts?.focus !== false;
+		if (panel.hidden) {
+			panel.hidden = false;
+			toggle?.setAttribute("aria-expanded", "true");
+			void refreshQuota();
+			if (focus) window.setTimeout(() => input?.focus(), 30);
+		} else if (focus) {
+			input?.focus();
+		}
 	}
 	form?.addEventListener("submit", (e) => {
 		e.preventDefault();
@@ -574,6 +640,11 @@ export function attachDiscourseAsk(root: HTMLElement): { open: () => void } {
 	// survives thread re-renders, one install per thread root).
 	if (thread) installDiscourseCitationPopovers(thread);
 	syncMaxLength();
+	const stored = readDiscourseAskPageThread(slug);
+	if (stored.length > 0) {
+		skipNextScroll = true;
+		turns = stored.map(turnFromStored);
+	}
 	renderThread();
 	return { open };
 }
