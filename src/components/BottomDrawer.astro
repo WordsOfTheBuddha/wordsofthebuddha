@@ -1398,6 +1398,8 @@ import "../styles/bottomDrawer.css";
 
 		// Handle |text::tooltip| clicks
 		document.addEventListener("click", (e) => {
+			if ((e.target as HTMLElement).closest?.(".note-cue")) return;
+
 			const tooltipElement = (e.target as HTMLElement).closest(
 				".tooltip-text",
 			);

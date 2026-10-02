@@ -74,6 +74,13 @@ const { title, description } = Astro.props;
 			<div id="highlight-menu" class="highlight-menu" style="display: none;">
 				<div class="menu-items">
 					<CopyButton />
+					<button
+						id="highlight-eraser"
+						class="eraser-btn"
+						style="display: none;"
+					>
+						<Fragment set:html={Eraser} />
+					</button>
 					{Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
 						<button
 							data-color={colorName}
@@ -100,13 +107,6 @@ const { title, description } = Astro.props;
 							<path d="M4.5 3.75h15A2.25 2.25 0 0 1 21.75 6v9a2.25 2.25 0 0 1-2.25 2.25H10.3l-4.4 3.52a.75.75 0 0 1-1.22-.59v-2.93h-.18A2.25 2.25 0 0 1 2.25 15V6A2.25 2.25 0 0 1 4.5 3.75z" />
 						</svg>
 					</button>
-					<button
-						id="highlight-eraser"
-						class="eraser-btn"
-						style="display: none;"
-					>
-						<Fragment set:html={Eraser} />
-					</button>
 				</div>
 			</div>
 			<div id="note-card" class="note-card" hidden>
@@ -119,9 +119,12 @@ const { title, description } = Astro.props;
 					aria-label="Note"
 				></textarea>
 				<div class="note-card-actions">
-					<button type="button" data-note-action="save">Save</button>
+					<button type="button" data-note-action="save">
+						Save
+						<span class="note-save-hint" data-note-save-hint></span>
+					</button>
 					<button type="button" data-note-action="edit">Edit</button>
-					<button type="button" data-note-action="delete">Delete</button>
+					<button type="button" data-note-action="delete">Del</button>
 					<button type="button" data-note-action="cancel">Cancel</button>
 				</div>
 			</div>
@@ -444,28 +447,98 @@ const { title, description } = Astro.props;
 		);
 	}
 
-	/** Below the anchor's line, lined up with the paragraph's left edge. */
+	const NOTE_SIDE_GAP = 10;
+	const NOTE_SIDE_MIN = 168;
+
+	/** Left edge of the reading column, including a visible paragraph number. */
+	function contentLeftEdge(startEl: Element | null): {
+		edge: number;
+		column: Element | null;
+	} {
+		const column = startEl?.closest(".md-content, article") ?? null;
+		const block = startEl?.closest(
+			"[data-hl-block], p, li, td, th, blockquote, pre",
+		);
+		const base = (column ?? block)?.getBoundingClientRect().left ?? 0;
+		const num = block?.querySelector(".paragraph-num");
+		const numRect = num?.getClientRects()[0];
+		const edge = numRect ? Math.min(base, numRect.left) : base;
+		return { edge, column };
+	}
+
+	/** Another reading column already occupies the left margin (split view). */
+	function sideIsTaken(
+		column: Element | null,
+		left: number,
+		right: number,
+	): boolean {
+		if (!rootElement) return false;
+		for (const el of rootElement.querySelectorAll(".md-content")) {
+			if (column && (el === column || column.contains(el))) continue;
+			const rect = el.getBoundingClientRect();
+			if (rect.width < 2 || rect.height < 2) continue;
+			if (rect.right > left + 4 && rect.left < right - 4) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Beside the reading column when the margin can hold the card.
+	 * Otherwise above the selection, so the noted text stays visible.
+	 */
 	function placeNoteCard(target: Range | Element): void {
 		const card = noteCard();
 		if (!card || !rootElement) return;
 		card.hidden = false;
 		const lineRect =
-			target instanceof Range
-				? target.getClientRects()[0] ?? target.getBoundingClientRect()
-				: target.getClientRects()[0] ?? target.getBoundingClientRect();
+			(target instanceof Range
+				? target.getClientRects()[0]
+				: target.getClientRects()[0]) ?? target.getBoundingClientRect();
+		if (lineRect.width === 0 && lineRect.height === 0) return;
 		const startNode =
 			target instanceof Range ? target.startContainer : (target as Node);
 		const startEl =
 			startNode.nodeType === Node.ELEMENT_NODE
 				? (startNode as Element)
 				: startNode.parentElement;
-		const block = startEl?.closest("[data-hl-block], p, li, td, th, blockquote, pre");
-		const blockRect = block?.getBoundingClientRect() ?? lineRect;
 		const rootRect = rootElement.getBoundingClientRect();
-		const maxLeft = Math.max(0, rootRect.width - card.offsetWidth);
-		const left = Math.min(Math.max(0, blockRect.left - rootRect.left), maxLeft);
+		const { edge, column } = contentLeftEdge(startEl);
+		const maxWidth = Math.min(20 * 16, window.innerWidth - 32);
+		const available = edge - 8 - NOTE_SIDE_GAP;
+
+		if (available >= NOTE_SIDE_MIN) {
+			const width = Math.min(maxWidth, available);
+			const viewLeft = edge - NOTE_SIDE_GAP - width;
+			if (!sideIsTaken(column, viewLeft, edge - NOTE_SIDE_GAP)) {
+				card.style.width = `${width}px`;
+				const height = card.offsetHeight;
+				const minTop = 8 - rootRect.top;
+				const maxTop = window.innerHeight - 8 - height - rootRect.top;
+				const top = Math.min(
+					Math.max(lineRect.top - rootRect.top, minTop),
+					Math.max(minTop, maxTop),
+				);
+				card.style.left = `${viewLeft - rootRect.left}px`;
+				card.style.top = `${top}px`;
+				return;
+			}
+		}
+
+		card.style.width = "";
+		const width = card.offsetWidth;
+		const minLeft = 8 - rootRect.left;
+		const maxLeft = window.innerWidth - 8 - width - rootRect.left;
+		const left = Math.min(
+			Math.max(edge - rootRect.left, minLeft),
+			Math.max(minLeft, maxLeft),
+		);
+		const minTop = 8 - rootRect.top;
+		const top = Math.max(
+			lineRect.top - rootRect.top - card.offsetHeight - NOTE_SIDE_GAP,
+			minTop,
+		);
 		card.style.left = `${left}px`;
-		card.style.top = `${lineRect.bottom - rootRect.top + 8}px`;
+		card.style.top = `${top}px`;
 	}
 
 	function renderNoteCard(): void {
@@ -477,6 +550,8 @@ const { title, description } = Astro.props;
 			? highlightService?.getDiscourseNotes().find((item) => item.id === openNoteId)
 			: null;
 		const writing = noteCardMode === "edit";
+		card.classList.toggle("is-writing", writing);
+		card.classList.remove("is-actions-open");
 		if (textEl) {
 			textEl.hidden = writing;
 			textEl.textContent = note?.text ?? "";
@@ -496,6 +571,12 @@ const { title, description } = Astro.props;
 		};
 		const writable = canWriteNotes();
 		show("save", writing && writable);
+		const hint = card.querySelector<HTMLElement>("[data-note-save-hint]");
+		if (hint) {
+			hint.textContent = /Mac|iPhone|iPad|iPod/.test(navigator.platform)
+				? "⌘↵"
+				: "Ctrl+↵";
+		}
 		show("edit", !writing && writable && Boolean(note));
 		show("delete", !writing && writable && Boolean(note));
 		show("cancel", writing);
@@ -614,7 +695,15 @@ const { title, description } = Astro.props;
 			const action = (e.target as HTMLElement).closest<HTMLButtonElement>(
 				"[data-note-action]",
 			)?.dataset.noteAction;
-			if (action) handleNoteCardAction(action);
+			if (action) {
+				handleNoteCardAction(action);
+				return;
+			}
+			const card = noteCard();
+			if (!card || card.classList.contains("is-writing")) return;
+			const hoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+			if (hoverable) return;
+			card.classList.toggle("is-actions-open");
 		});
 
 		function setHoveredNote(id: string | null): void {
@@ -645,7 +734,13 @@ const { title, description } = Astro.props;
 		});
 
 		rootElement?.addEventListener("click", (e) => {
-			const host = (e.target as HTMLElement).closest<HTMLElement>("[data-note]");
+			const target = e.target as HTMLElement;
+			const cue = target.closest?.(".note-cue");
+			if (cue) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+			const host = (cue ?? target).closest?.("[data-note]");
 			if (!host || host.closest("#note-card, #highlight-menu")) return;
 			const id = host.getAttribute("data-note");
 			if (!id) return;
@@ -669,6 +764,26 @@ const { title, description } = Astro.props;
 
 		document.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") closeNoteCard();
+			if (e.key !== "Enter" || !(e.metaKey || e.ctrlKey)) return;
+			const card = noteCard();
+			const save = card?.querySelector<HTMLButtonElement>(
+				'[data-note-action="save"]',
+			);
+			if (!card || card.hidden || !save || save.hidden) return;
+			e.preventDefault();
+			handleNoteCardAction("save");
+		});
+
+		window.addEventListener("resize", () => {
+			const card = noteCard();
+			if (!card || card.hidden) return;
+			if (noteDraftRange) {
+				placeNoteCard(noteDraftRange);
+				return;
+			}
+			if (!openNoteId) return;
+			const anchor = noteAnchor(openNoteId);
+			if (anchor) placeNoteCard(anchor);
 		});
 	}
 

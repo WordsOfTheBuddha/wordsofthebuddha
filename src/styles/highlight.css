@@ -163,10 +163,16 @@
 }
 
 .note-card-text {
-	margin: 0 0 0.6rem;
+	margin: 0;
 	white-space: pre-wrap;
 	font-size: 0.95rem;
 	line-height: 1.45;
+}
+
+.note-card.is-writing .note-card-text,
+.note-card:not(.is-writing):hover .note-card-text,
+.note-card:not(.is-writing).is-actions-open .note-card-text {
+	margin-bottom: 0.6rem;
 }
 
 .note-card-input {
@@ -194,6 +200,15 @@
 	justify-content: flex-end;
 }
 
+.note-card:not(.is-writing) .note-card-actions {
+	display: none;
+}
+
+.note-card:not(.is-writing):hover .note-card-actions,
+.note-card:not(.is-writing).is-actions-open .note-card-actions {
+	display: flex;
+}
+
 .note-card-actions button {
 	border: none;
 	border-radius: 6px;
@@ -209,6 +224,15 @@
 .note-card-actions button[data-note-action="delete"] {
 	background: transparent;
 	color: inherit;
+}
+
+.note-save-hint {
+	margin-left: 0.35em;
+	font-size: 0.72em;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	opacity: 0.85;
+	line-height: 1;
 }
 
 .highlight-yellow {
