@@ -1,9 +1,11 @@
 ---
 title: Piya sutta - Dear
-description: One who engages in good conduct by body, speech, and mind is dear to themselves.
-fetter: ignorance
-tags: merit,good conduct,bad conduct,dear,sn,sn1-11,sn3
+description: Who is dear to themselves and who is not?
+qualities: ethical conduct, right speech, sense restraint, self-control
+theme: cultivating discernment, wisdom
 slug: sn3.4
+priority: 1.1
+character: King Pasenadi of Kosala
 ---
 
 Sāvatthinidānaṁ.

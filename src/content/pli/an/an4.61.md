@@ -41,6 +41,8 @@ Sa kho so, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhāba
 
 Yassa kassaci, gahapati, aññatra imehi catūhi pattakammehi bhogā parikkhayaṁ gacchanti, ime vuccanti, gahapati, bhogā aṭṭhānagatā apattagatā anāyatanaso paribhuttā. Yassa kassaci, gahapati, imehi catūhi pattakammehi bhogā parikkhayaṁ gacchanti, ime vuccanti, gahapati, bhogā ṭhānagatā pattagatā āyatanaso paribhuttāti.
 
+#### Verse
+
 Bhuttā bhogā bhatā bhaccā,
 Vitiṇṇā āpadāsu me;
 Uddhaggā dakkhiṇā dinnā,
