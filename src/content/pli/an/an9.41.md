@@ -1,12 +1,9 @@
 ---
+title: Tapussa sutta
 slug: an9.41
 character:
   - Venerable Ānanda
   - Householder Tapussa
-source: suttacentral/bilara-data
-title: Tapussasutta
-edition: ms
-granularity: paragraph
 ---
 
 Ekaṁ samayaṁ bhagavā mallesu viharati uruvelakappaṁ nāma mallānaṁ nigamo.
@@ -48,14 +45,3 @@ Yāvakīvañcāhaṁ, ānanda, imā nava anupubbavihārasamāpattiyo na evaṁ a
 Yato ca kho ahaṁ, ānanda, imā nava anupubbavihārasamāpattiyo evaṁ anulomapaṭilomaṁ samāpajjimpi vuṭṭhahimpi, athāhaṁ, ānanda, sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya ‘anuttaraṁ sammāsambodhiṁ abhisambuddho’ti paccaññāsiṁ.
 
 Ñāṇañca pana me dassanaṁ udapādi: ‘akuppā me cetovimutti, ayamantimā jāti, natthi dāni punabbhavo’”ti.
-
-Dasamaṁ.
-
-Mahāvaggo catuttho.
-
-Tassuddānaṁ
-
-Dve vihārā ca nibbānaṁ,
-gāvī jhānena pañcamaṁ;
-Ānando brāhmaṇā devo,
-nāgena tapussena cāti.
