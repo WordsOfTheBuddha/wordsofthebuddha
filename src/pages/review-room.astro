@@ -60,6 +60,8 @@ import {
 	groupLearningDayStrip,
 	learningDayDetailLabel,
 	learningDayDotClassName,
+	learningDayStripRangeLabel,
+	learningDayStripSections,
 	learningDaysFromReadMinutes,
 	learningDaysStatKind,
 	learningDaysStatUnit,
@@ -108,6 +110,9 @@ let showAskLanes = false;
 let coverage: CanonCoverage = { rows: [], totalRead: 0, totalAvailable: 0 };
 let learningDays = 0;
 let learningDayStrip: LearningDayDot[] = [];
+let learningDayRange = "";
+let learningDaySections = learningDayStripSections(learningDayStrip);
+let learningDaySectionIndex = 0;
 let listenTotalSeconds = 0;
 let listenSecondsByDay: Record<string, number> = {};
 let listenStat: ListenStatDisplay | null = null;
@@ -221,6 +226,11 @@ try {
 		),
 		listenSecondsByDay,
 	);
+	learningDayRange = learningDayStripRangeLabel(learningDayStrip);
+	learningDaySections = learningDayStripSections(learningDayStrip);
+	learningDaySectionIndex = Math.max(0, learningDaySections.length - 1);
+	learningDayRange =
+		learningDaySections[learningDaySectionIndex]?.label || learningDayRange;
 
 	// Process readLater entries from the 'pages' document
 	if (readLaterDoc.exists && readLaterDoc.data()?.pages) {
@@ -606,38 +616,116 @@ try {
 							<div
 								id="learning-day-strip"
 								class="learning-day-strip"
-								aria-label="Days of learning"
+								aria-label={learningDayRange
+									? `Days of learning, ${learningDayRange}`
+									: "Days of learning"}
 							>
-								<div class="learning-day-rows">
-									{groupLearningDayStrip(learningDayStrip).map(
-										(row) => (
-											<div class="learning-day-row">
-												{row.map((dot) => {
-													const label =
-														learningDayDetailLabel(
-															dot,
-														);
-													const className =
-														learningDayDotClassName(
-															dot,
-														);
-													return label ? (
-														<button
-															type="button"
-															class={className}
-															data-day={dot.key}
-															aria-label={label}
-														/>
-													) : (
-														<span
-															class={className}
-															aria-hidden="true"
-														/>
-													);
-												})}
-											</div>
-										),
-									)}
+								<div class="learning-day-view">
+									<p
+										class="learning-day-range"
+										hidden={!learningDayRange}
+									>
+										{learningDayRange}
+									</p>
+									<div
+										class={`learning-day-frame${learningDaySections.length > 1 ? " has-nav" : ""}`}
+									>
+										{
+											learningDaySections.length > 1 && (
+												<button
+													type="button"
+													class="learning-day-nav-btn is-prev"
+													aria-label="Earlier days"
+													hidden={
+														learningDaySectionIndex <=
+														0
+													}
+												>
+													<span aria-hidden="true">
+														‹
+													</span>
+												</button>
+											)
+										}
+										<div class="learning-day-panels">
+											{learningDaySections.map(
+												(section, index) => (
+													<div
+														class="learning-day-panel"
+														data-label={
+															section.label
+														}
+														hidden={
+															index !==
+															learningDaySectionIndex
+														}
+													>
+														<div class="learning-day-rows">
+															{groupLearningDayStrip(
+																section.dots,
+															).map((row) => (
+																<div class="learning-day-row">
+																	{row.map(
+																		(
+																			dot,
+																		) => {
+																			const label =
+																				learningDayDetailLabel(
+																					dot,
+																				);
+																			const className =
+																				learningDayDotClassName(
+																					dot,
+																				);
+																			return label ? (
+																				<button
+																					type="button"
+																					class={
+																						className
+																					}
+																					data-day={
+																						dot.key
+																					}
+																					aria-label={
+																						label
+																					}
+																				/>
+																			) : (
+																				<span
+																					class={
+																						className
+																					}
+																					aria-hidden="true"
+																				/>
+																			);
+																		},
+																	)}
+																</div>
+															))}
+														</div>
+													</div>
+												),
+											)}
+										</div>
+										{
+											learningDaySections.length > 1 && (
+												<button
+													type="button"
+													class="learning-day-nav-btn is-next"
+													aria-label="Later days"
+													hidden={
+														learningDaySectionIndex >=
+														learningDaySections.length -
+															1
+													}
+												>
+													<span aria-hidden="true">
+														›
+													</span>
+												</button>
+											)
+										}
+									</div>
 								</div>
 								<div
 									class="learning-day-tip"
@@ -1332,6 +1420,7 @@ try {
 		groupLearningDayStrip,
 		learningDayDetailLabel,
 		learningDayDotClassName,
+		learningDayStripSections,
 		learningDaysStatKind,
 		learningDaysStatUnit,
 		overviewLearningDayStrip,
@@ -1386,6 +1475,38 @@ try {
 	};
 	const ASK_SYNC_FLAG = "review-room-ask-history-synced";
 	let latestLearningDays: Record<string, true> | null = null;
+	/** -1 until the reader moves; then kept across refreshes of the strip. */
+	let learningSectionIndex = -1;
+
+	function syncLearningDayPanel(container: HTMLElement, index: number): void {
+		const panels = [
+			...container.querySelectorAll<HTMLElement>(".learning-day-panel"),
+		];
+		if (panels.length === 0) return;
+		const next = Math.max(0, Math.min(panels.length - 1, index));
+		learningSectionIndex = next;
+		panels.forEach((panel, panelIndex) => {
+			panel.hidden = panelIndex !== next;
+		});
+		const label = panels[next]?.dataset.label || "";
+		const range = container.querySelector<HTMLElement>(".learning-day-range");
+		if (range) {
+			range.textContent = label;
+			range.hidden = !label;
+		}
+		const prev = container.querySelector<HTMLButtonElement>(
+			".learning-day-nav-btn.is-prev",
+		);
+		const nextBtn = container.querySelector<HTMLButtonElement>(
+			".learning-day-nav-btn.is-next",
+		);
+		if (prev) prev.hidden = next <= 0;
+		if (nextBtn) nextBtn.hidden = next >= panels.length - 1;
+		container.setAttribute(
+			"aria-label",
+			label ? `Days of learning, ${label}` : "Days of learning",
+		);
+	}
 
 	function escapeAttr(value: string): string {
 		return value
@@ -1490,6 +1611,21 @@ try {
 			hideTip();
 		});
 		container.addEventListener("click", (event) => {
+			const navBtn = (event.target as HTMLElement | null)?.closest?.(
+				".learning-day-nav-btn",
+			);
+			if (navBtn instanceof HTMLElement && container.contains(navBtn)) {
+				const panels = container.querySelectorAll(".learning-day-panel");
+				const current = [...panels].findIndex(
+					(panel) => !(panel as HTMLElement).hidden,
+				);
+				const start = current >= 0 ? current : panels.length - 1;
+				const delta = navBtn.classList.contains("is-prev") ? -1 : 1;
+				hideTip();
+				sticky = false;
+				syncLearningDayPanel(container, start + delta);
+				return;
+			}
 			const cell = (event.target as HTMLElement | null)?.closest?.(
 				"button.learning-day-dot",
 			);
@@ -1541,7 +1677,7 @@ try {
 		wrap.id = "learning-day-strip";
 		wrap.className = "learning-day-strip";
 		wrap.setAttribute("aria-label", "Days of learning");
-		wrap.innerHTML = `<div class="learning-day-rows"></div><div class="learning-day-tip" role="tooltip" hidden></div>`;
+		wrap.innerHTML = `<div class="learning-day-view"></div><div class="learning-day-tip" role="tooltip" hidden></div>`;
 		placeOverviewNode(section, wrap, "strip");
 		bindLearningDayStrip(wrap);
 		return wrap;
@@ -1555,21 +1691,43 @@ try {
 		if (!useDays) return;
 		const container = ensureLearningDayStrip();
 		if (!container) return;
-		const rows = container.querySelector(".learning-day-rows");
-		if (!rows) return;
+		const view = container.querySelector(".learning-day-view");
+		if (!view) return;
 		const strip = overviewLearningDayStrip(
 			useDays,
 			currentReadsByDay(),
 			currentListenSecondsByDay(),
 		);
-		rows.innerHTML = groupLearningDayStrip(strip)
-			.map(
-				(row) =>
-					`<div class="learning-day-row">${row
-						.map((dot) => learningDotMarkup(dot))
-						.join("")}</div>`,
-			)
+		const daySections = learningDayStripSections(strip);
+		const index =
+			learningSectionIndex < 0
+				? daySections.length - 1
+				: Math.min(learningSectionIndex, daySections.length - 1);
+		learningSectionIndex = index;
+		const hasNav = daySections.length > 1;
+		const navButton = (kind: "prev" | "next", hidden: boolean) =>
+			`<button type="button" class="learning-day-nav-btn is-${kind}" aria-label="${kind === "prev" ? "Earlier days" : "Later days"}"${hidden ? " hidden" : ""}><span aria-hidden="true">${kind === "prev" ? "‹" : "›"}</span></button>`;
+		const visibleLabel = daySections[index]?.label || "";
+		const panels = daySections
+			.map((section, panelIndex) => {
+				const rows = groupLearningDayStrip(section.dots)
+					.map(
+						(row) =>
+							`<div class="learning-day-row">${row
+								.map((dot) => learningDotMarkup(dot))
+								.join("")}</div>`,
+					)
+					.join("");
+				return `<div class="learning-day-panel" data-label="${escapeAttr(section.label)}"${panelIndex === index ? "" : " hidden"}><div class="learning-day-rows">${rows}</div></div>`;
+			})
 			.join("");
+		view.innerHTML = `<p class="learning-day-range"${visibleLabel ? "" : " hidden"}>${escapeAttr(visibleLabel)}</p><div class="learning-day-frame${hasNav ? " has-nav" : ""}">${hasNav ? navButton("prev", index <= 0) : ""}<div class="learning-day-panels">${panels}</div>${hasNav ? navButton("next", index >= daySections.length - 1) : ""}</div>`;
+		container.setAttribute(
+			"aria-label",
+			visibleLabel
+				? `Days of learning, ${visibleLabel}`
+				: "Days of learning",
+		);
 	}
 
 	const rawData = document.getElementById("review-room-data")?.textContent;

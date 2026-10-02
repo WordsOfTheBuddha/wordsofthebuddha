@@ -245,6 +245,97 @@
 	box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+#dashboard-container .learning-day-range {
+	margin: 0 0 0.7rem;
+	text-align: center;
+	font-size: 0.75rem;
+	line-height: 1.25;
+	font-variant-numeric: tabular-nums;
+	color: #6b7280;
+}
+
+.dark #dashboard-container .learning-day-range {
+	color: #9ca3af;
+}
+
+#dashboard-container .learning-day-range[hidden] {
+	display: none;
+}
+
+#dashboard-container .learning-day-frame {
+	display: grid;
+	grid-template-columns: minmax(0, 26rem);
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+#dashboard-container .learning-day-frame.has-nav {
+	grid-template-columns: 2.25rem minmax(0, 26rem) 2.25rem;
+	column-gap: 0.35rem;
+}
+
+#dashboard-container .learning-day-frame.has-nav .learning-day-nav-btn.is-prev {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+#dashboard-container .learning-day-frame.has-nav .learning-day-panels {
+	grid-column: 2;
+	grid-row: 1;
+	min-width: 0;
+}
+
+#dashboard-container .learning-day-frame.has-nav .learning-day-nav-btn.is-next {
+	grid-column: 3;
+	grid-row: 1;
+}
+
+#dashboard-container .learning-day-panels,
+#dashboard-container .learning-day-panel {
+	width: 100%;
+	min-width: 0;
+}
+
+#dashboard-container .learning-day-panel[hidden] {
+	display: none;
+}
+
+#dashboard-container .learning-day-nav-btn {
+	appearance: none;
+	display: grid;
+	place-items: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	color: #6b7280;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.dark #dashboard-container .learning-day-nav-btn {
+	color: #9ca3af;
+}
+
+#dashboard-container .learning-day-nav-btn:hover {
+	color: var(--text-color);
+	background: rgba(128, 128, 128, 0.16);
+}
+
+#dashboard-container .learning-day-nav-btn:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 2px;
+}
+
+#dashboard-container .learning-day-nav-btn[hidden] {
+	display: none;
+}
+
 #dashboard-container .learning-day-rows {
 	display: flex;
 	flex-direction: column;

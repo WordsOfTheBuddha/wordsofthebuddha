@@ -210,9 +210,54 @@ export function shiftLocalDayKey(dayKey: string, delta: number): string | null {
 	return localDayKey(date);
 }
 
-/** Dashboard activity grid: 30 days in even rows of 10. */
+/** Dashboard activity grid: 30 days in even rows of 10, up to 90 when older days exist. */
 export const LEARNING_DAY_STRIP_LENGTH = 30;
+export const LEARNING_DAY_STRIP_MAX = 90;
 export const LEARNING_DAY_STRIP_ROW = 10;
+
+const LEARNING_DAY_MONTHS = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+] as const;
+
+/**
+ * Days the dashboard grid should cover, ending on `endDay`.
+ * Stays at 30 when every engaged day is inside that window.
+ * Opens the previous 30 (60 total) when a day falls 31–60 back,
+ * and the one before that (90 total) when a day falls 61–90 back.
+ * Anything older than 90 days does not extend it.
+ */
+export function learningDayStripLength(
+	days: Record<string, true> | null | undefined,
+	endDay: string = localDayKey(),
+): number {
+	const end = sanitizeDayKey(endDay) || localDayKey();
+	const map = days || {};
+	const oldestInWindow = -(LEARNING_DAY_STRIP_MAX - 1);
+	const justOutsideRecent = -LEARNING_DAY_STRIP_LENGTH;
+	let oldestOffset: number | null = null;
+	for (let offset = oldestInWindow; offset <= justOutsideRecent; offset++) {
+		const key = shiftLocalDayKey(end, offset);
+		if (key && map[key]) {
+			oldestOffset = offset;
+			break;
+		}
+	}
+	if (oldestOffset == null) return LEARNING_DAY_STRIP_LENGTH;
+	const daysAgo = -oldestOffset;
+	if (daysAgo >= LEARNING_DAY_STRIP_LENGTH * 2) return LEARNING_DAY_STRIP_MAX;
+	return LEARNING_DAY_STRIP_LENGTH * 2;
+}
 
 /**
  * Oldest → newest strip of the last `length` local calendar days.
@@ -329,11 +374,87 @@ export function overviewLearningDayStrip(
 	listenSecondsByDay: Record<string, number> | null | undefined,
 	endDay?: string,
 ): LearningDayDot[] {
-	return withLearningDayActivity(
-		learningDayStripForDisplay(recentLearningDayStrip(days, undefined, endDay)),
-		readsByDay,
-		listenSecondsByDay,
-	);
+	const length = learningDayStripLength(days, endDay);
+	const chronological = recentLearningDayStrip(days, length, endDay);
+	// A longer grid is a calendar. Left-aligning a trailing streak would
+	// move older days out from under the date range.
+	const ordered =
+		length > LEARNING_DAY_STRIP_LENGTH
+			? chronological
+			: learningDayStripForDisplay(chronological);
+	return withLearningDayActivity(ordered, readsByDay, listenSecondsByDay);
+}
+
+function formatLearningDayShort(dayKey: string, withYear: boolean): string {
+	const key = sanitizeDayKey(dayKey);
+	if (!key) return "";
+	const [year, month, day] = key.split("-").map(Number);
+	const monthName = LEARNING_DAY_MONTHS[month - 1] || "";
+	const date = `${monthName} ${day}`;
+	return withYear ? `${date}, ${year}` : date;
+}
+
+/** "Sep 3 – Oct 2". Year is included when the two days fall in different years. */
+export function formatLearningDayRange(startKey: string, endKey: string): string {
+	const start = sanitizeDayKey(startKey);
+	const end = sanitizeDayKey(endKey);
+	if (!start || !end) return "";
+	const withYear = start.slice(0, 4) !== end.slice(0, 4);
+	const startLabel = formatLearningDayShort(start, withYear);
+	const endLabel = formatLearningDayShort(end, withYear);
+	if (!startLabel || !endLabel) return "";
+	return `${startLabel} – ${endLabel}`;
+}
+
+/**
+ * "Aug 24 – Oct 2" for an extended grid as a whole. Empty for the default 30-day strip.
+ */
+export function learningDayStripRangeLabel(
+	dots: readonly LearningDayDot[],
+): string {
+	if (dots.length <= LEARNING_DAY_STRIP_LENGTH) return "";
+	const start = dots[0]?.key;
+	const end = dots[dots.length - 1]?.key;
+	if (!start || !end) return "";
+	return formatLearningDayRange(start, end);
+}
+
+export type LearningDayStripSection = {
+	label: string;
+	dots: LearningDayDot[];
+};
+
+/**
+ * Split an extended grid into labeled blocks aligned to the current 30 days.
+ * The last block is always those 30 days. Earlier blocks are 30 days too,
+ * except a short first block when the span is not a multiple of 30.
+ * A plain 30-day strip is one unlabeled block.
+ */
+export function learningDayStripSections(
+	dots: readonly LearningDayDot[],
+): LearningDayStripSection[] {
+	if (dots.length <= LEARNING_DAY_STRIP_LENGTH) {
+		return [{ label: "", dots: [...dots] }];
+	}
+	const olderCount = dots.length - LEARNING_DAY_STRIP_LENGTH;
+	const remainder = olderCount % LEARNING_DAY_STRIP_LENGTH;
+	const firstSize = remainder === 0 ? LEARNING_DAY_STRIP_LENGTH : remainder;
+	const sections: LearningDayStripSection[] = [];
+	let index = 0;
+	while (index < dots.length) {
+		const size =
+			sections.length === 0 ? firstSize : LEARNING_DAY_STRIP_LENGTH;
+		const chunk = dots.slice(index, index + size);
+		if (chunk.length === 0) break;
+		const start = chunk[0]?.key;
+		const end = chunk[chunk.length - 1]?.key;
+		sections.push({
+			label: start && end ? formatLearningDayRange(start, end) : "",
+			dots: chunk,
+		});
+		index += chunk.length;
+	}
+	return sections;
 }
 
 export function learningDayEmphasis(

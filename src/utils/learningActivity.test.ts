@@ -11,7 +11,11 @@ import {
 	learningDayDetailLabel,
 	learningDayEmphasis,
 	learningDayStripForDisplay,
+	learningDayStripLength,
+	learningDayStripRangeLabel,
+	learningDayStripSections,
 	LEARNING_DAY_STRIP_LENGTH,
+	LEARNING_DAY_STRIP_MAX,
 	learningDaysFromReadMinutes,
 	learningDaysLabel,
 	learningDaysStatKind,
@@ -274,6 +278,111 @@ describe("readsByDayFromReadMinutes + emphasis", () => {
 				listenSeconds: 40,
 			}),
 			/Engaged with the teachings/,
+		);
+	});
+
+	it("stays at 30 days unless activity falls between 31 and 90 days ago", () => {
+		assert.equal(
+			learningDayStripLength({ "2026-09-20": true }, "2026-10-02"),
+			LEARNING_DAY_STRIP_LENGTH,
+		);
+		assert.equal(
+			learningDayStripLength({ "2025-10-02": true }, "2026-10-02"),
+			LEARNING_DAY_STRIP_LENGTH,
+		);
+		assert.equal(
+			learningDayStripLength(
+				{ "2025-10-02": true, "2026-09-20": true },
+				"2026-10-02",
+			),
+			LEARNING_DAY_STRIP_LENGTH,
+		);
+		// Day 31 and day 36 sit in the previous block, so the grid opens to 60.
+		assert.equal(
+			learningDayStripLength({ "2026-09-02": true }, "2026-10-02"),
+			60,
+		);
+		assert.equal(
+			learningDayStripLength({ "2026-08-28": true }, "2026-10-02"),
+			60,
+		);
+		// Day 60 still fits in that block; day 61 opens the full 90.
+		assert.equal(
+			learningDayStripLength({ "2026-08-04": true }, "2026-10-02"),
+			60,
+		);
+		assert.equal(
+			learningDayStripLength({ "2026-08-03": true }, "2026-10-02"),
+			LEARNING_DAY_STRIP_MAX,
+		);
+		assert.equal(
+			learningDayStripLength({ "2026-07-05": true }, "2026-10-02"),
+			LEARNING_DAY_STRIP_MAX,
+		);
+		// The day before the 90-day window does not extend the grid.
+		assert.equal(
+			learningDayStripLength({ "2026-07-04": true }, "2026-10-02"),
+			LEARNING_DAY_STRIP_LENGTH,
+		);
+	});
+
+	it("labels an extended grid with its calendar range and keeps day order", () => {
+		const strip = overviewLearningDayStrip(
+			{ "2026-09-02": true, "2026-10-02": true },
+			{},
+			{},
+			"2026-10-02",
+		);
+		assert.equal(strip.length, 60);
+		assert.equal(strip[0]?.key, "2026-08-04");
+		assert.equal(strip[0]?.active, false);
+		assert.equal(strip[strip.length - 1]?.key, "2026-10-02");
+		assert.equal(learningDayStripRangeLabel(strip), "Aug 4 – Oct 2");
+		assert.deepEqual(
+			learningDayStripSections(strip).map((section) => [
+				section.label,
+				section.dots.length,
+			]),
+			[
+				["Aug 4 – Sep 2", 30],
+				["Sep 3 – Oct 2", 30],
+			],
+		);
+
+		const full = overviewLearningDayStrip(
+			{ "2026-07-05": true },
+			{},
+			{},
+			"2026-10-02",
+		);
+		assert.deepEqual(
+			learningDayStripSections(full).map((section) => section.label),
+			["Jul 5 – Aug 3", "Aug 4 – Sep 2", "Sep 3 – Oct 2"],
+		);
+
+		const recentOnly = overviewLearningDayStrip(
+			{ "2025-10-02": true, "2026-10-01": true, "2026-10-02": true },
+			{},
+			{},
+			"2026-10-02",
+		);
+		assert.equal(recentOnly.length, LEARNING_DAY_STRIP_LENGTH);
+		assert.equal(learningDayStripRangeLabel(recentOnly), "");
+		assert.equal(recentOnly[0]?.active, true);
+
+		const acrossYears = overviewLearningDayStrip(
+			{ "2025-12-05": true },
+			{},
+			{},
+			"2026-01-15",
+		);
+		assert.equal(
+			learningDayStripRangeLabel(acrossYears),
+			"Nov 17, 2025 – Jan 15, 2026",
+		);
+		assert.deepEqual(
+			learningDayStripSections(acrossYears).map((section) => section.label),
+			["Nov 17 – Dec 16", "Dec 17, 2025 – Jan 15, 2026"],
 		);
 	});
 
