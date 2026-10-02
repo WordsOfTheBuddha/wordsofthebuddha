@@ -95,47 +95,29 @@ const { title, description } = Astro.props;
 </div>
 
 <script>
-	import { withoutParagraphNumberMarkers } from "../utils/paragraphNumbers";
 	import { loadPageUserState } from "../utils/pageUserStateClient";
+	import type { HighlightColor } from "../utils/stableHighlight";
 
-	// Remove duplicate interface definitions since they're now in rangy.d.ts
 	declare global {
 		interface Window {
-			rangy: RangyStatic;
 			selectionHandler: any;
 			highlightService: any;
 		}
 	}
 
-	// Import rangy dynamically to ensure proper typing
-	const importRangy = async () => {
-		const rangy = (await import("rangy")).default;
-		await import("rangy/lib/rangy-classapplier");
-		await import("rangy/lib/rangy-highlighter");
-		await import("rangy/lib/rangy-selectionsaverestore");
-		return rangy;
-	};
-
-	let highlighter: Highlighter | null = null;
-	let currentRange: Range | null = null;
 	let menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
 	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
-	let restoreScheduled = false; // prevent duplicate restore scheduling
+	let restoreStarted = false;
+	let repaintTimer: ReturnType<typeof setTimeout> | null = null;
 
-	// Mobile detection and range preservation
-	let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+	// Tapping a swatch can collapse the selection (mobile), so keep a copy.
 	let savedRange: Range | null = null;
-	let isMouseDown = false;
 
-	const COLOR_MAP = {
-		yellow: "#FEF08A",
-		pink: "#FBCFE8",
-		green: "#BBF7D0",
-		blue: "#BFDBFE",
-	} as const;
-
-	type ColorName = keyof typeof COLOR_MAP;
+	let selectionHandler: typeof import("../service/selectionHandler") | null =
+		null;
+	let highlightService: typeof import("../service/highlightService") | null =
+		null;
 
 	// Theme handling
 	function updateDarkMode(): void {
@@ -144,11 +126,7 @@ const { title, description } = Astro.props;
 		if (!rootElement) return;
 
 		const isDark = document.documentElement.classList.contains("dark");
-		if (isDark) {
-			rootElement.classList.add("dark-mode");
-		} else {
-			rootElement.classList.remove("dark-mode");
-		}
+		rootElement.classList.toggle("dark-mode", isDark);
 	}
 
 	function updateTheme(): void {
@@ -163,84 +141,17 @@ const { title, description } = Astro.props;
 		updateDarkMode();
 	}
 
-	// Initialize everything after Rangy is loaded
-	async function initializeHighlighter(): Promise<void> {
-		try {
-			// Check if highlighting is disabled for this page
-			if (rootElement?.dataset.highlightDisabled === "true") {
-				return;
-			}
-			const rangy = await importRangy();
-			window.rangy = rangy;
-			rangy.init();
-			highlighter = rangy.createHighlighter();
-			const origSerialize = highlighter.serialize.bind(highlighter);
-			const origDeserialize = highlighter.deserialize.bind(highlighter);
-			highlighter.serialize = ((...args: unknown[]) =>
-				withoutParagraphNumberMarkers(() =>
-					origSerialize.apply(highlighter, args),
-				)) as typeof origSerialize;
-			highlighter.deserialize = ((...args: unknown[]) =>
-				withoutParagraphNumberMarkers(() =>
-					origDeserialize.apply(highlighter, args),
-				)) as typeof origDeserialize;
-
-			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
-				const applier = rangy.createClassApplier(
-					`highlight-${colorName}`,
-					{
-						elementTagName: "mark",
-						splitExisting: true,
-						normalize: true,
-					}
-				);
-				if (highlighter) {
-					highlighter.addClassApplier(applier);
-				}
-			});
-
-			// Set up event listeners first
-			setupEventListeners();
-
-			// Schedule restore (will no-op if unauthenticated yet)
-			scheduleRestore();
-		} catch (error) {
-			console.error("[highlight] Failed to initialize:", error);
-		}
-	}
-
-	let selectionHandler: typeof import("../service/selectionHandler") | null =
-		null;
-	let highlightService: typeof import("../service/highlightService") | null =
-		null;
-
-	function scheduleRestore(attempt: number = 0) {
-		if (!rootElement)
-			rootElement = document.getElementById("highlight-root");
-		if (!rootElement) return;
-		if (rootElement.dataset.highlightsLoaded === "true") return;
-		if (restoreScheduled && attempt === 0) return; // skip duplicate first call
-		if (!highlighter) {
-			// Highlighter not ready yet; retry a few times (max ~1s)
-			if (attempt < 10) {
-				setTimeout(() => scheduleRestore(attempt + 1), 100);
-			}
-			return;
-		}
+	function scheduleRestore() {
+		if (!rootElement || !highlightService || restoreStarted) return;
 		if (rootElement.dataset.authenticated !== "true") return; // only restore for authed users
-		restoreScheduled = true;
+		restoreStarted = true;
 		const run = async () => {
-			if (!highlighter) return;
-			if (rootElement!.dataset.highlightsLoaded === "true") return;
 			try {
 				const state = await loadPageUserState();
 				if (state) {
-					highlightService!.applyFetchedHighlights(
-						highlighter,
-						state.highlights,
-					);
+					highlightService!.restoreHighlights(state);
 				} else {
-					await highlightService!.fetchHighlights(highlighter);
+					await highlightService!.fetchAndRestoreHighlights();
 				}
 				rootElement!.dataset.highlightsLoaded = "true";
 			} catch (e) {
@@ -254,209 +165,134 @@ const { title, description } = Astro.props;
 		}
 	}
 
+	/** Every copy is painted already; this catches views rebuilt from scratch. */
+	function scheduleRepaint() {
+		if (rootElement?.dataset.highlightsLoaded !== "true") return;
+		if (repaintTimer) clearTimeout(repaintTimer);
+		repaintTimer = setTimeout(() => {
+			highlightService?.repaintHighlights();
+		}, 50);
+	}
+
 	// Hydrate auth state on client (mirrors navbar logic) so prerendered pages can enable highlights
 	async function hydrateAuth() {
 		try {
-			if (!rootElement)
-				rootElement = document.getElementById("highlight-root");
 			if (!rootElement) return;
-			// Already authenticated or tried
-			if (rootElement.dataset.authenticated === "true") return;
-			const data = await loadPageUserState();
-			if (data?.signedIn) {
+			if (rootElement.dataset.authenticated !== "true") {
+				const data = await loadPageUserState();
+				if (!data?.signedIn) return;
 				rootElement.dataset.authenticated = "true";
-				scheduleRestore();
 			}
+			scheduleRestore();
 		} catch (e) {
 			/* ignore */
 		}
 	}
 
-	function handleSelection(e: MouseEvent | TouchEvent) {
-		if (!window.rangy || !highlighter) {
-			return;
+	function liveRange(): Range | null {
+		const selection = window.getSelection();
+		if (!selection || selection.isCollapsed || !selection.rangeCount) {
+			return null;
 		}
+		return selection.getRangeAt(0);
+	}
+
+	/** The range a menu action applies to. */
+	function actionRange(): Range | null {
+		const live = liveRange();
+		if (live && live.toString().trim()) return live;
+		return savedRange;
+	}
+
+	function elementOf(node: Node): Element | null {
+		return node.nodeType === Node.ELEMENT_NODE
+			? (node as Element)
+			: node.parentElement;
+	}
+
+	function handleSelection(e: MouseEvent | TouchEvent) {
+		if (!menu || !selectionHandler || !rootElement) return;
+		const target = e.target as HTMLElement;
+		if (menu.contains(target)) return;
 
 		menu.style.display = "none";
 
-		const target = e.target as HTMLElement;
-
-		// Skip if selection is inside Translation Memory popover or Bottom Drawer
 		// SEARCH & FIND: Skip highlighting on components like Translation Memory popover
-		if (target.closest(".tm-popover-overlay") || target.closest(".bottom-popover")) {
+		if (target.closest?.(".tm-popover-overlay, .bottom-popover")) {
 			return;
 		}
 
-		const selection = window.rangy.getSelection();
+		const selection = window.getSelection();
+		if (!selectionHandler.isSelectionValid(selection)) return;
+		const range = selection!.getRangeAt(0);
 
-		// Also check if the selection range itself is inside the TM popover or Bottom Drawer
-		if (selection.rangeCount) {
-			const rangeContainer = selection.getRangeAt(0).commonAncestorContainer;
-			const containerEl = rangeContainer.nodeType === Node.ELEMENT_NODE
-				? (rangeContainer as Element)
-				: rangeContainer.parentElement;
-			if (containerEl?.closest(".tm-popover-overlay") || containerEl?.closest(".bottom-popover")) {
-				return;
-			}
-		}
-
-		// Early validations
-		if (
-			selection.isCollapsed ||
-			!selection.rangeCount ||
-			!selectionHandler?.isSelectionValid(selection)
-		) {
+		const containerEl = elementOf(range.commonAncestorContainer);
+		if (containerEl?.closest(".tm-popover-overlay, .bottom-popover")) {
 			return;
 		}
+		if (!rootElement.contains(range.commonAncestorContainer)) return;
 
-		// Guard against invisible/programmatic selections that have text content
-		// but no visible highlight on screen (e.g. extension activity, stale ranges)
-		const nativeSel = window.getSelection();
-		if (!nativeSel || nativeSel.isCollapsed || !nativeSel.toString().trim()) {
-			return;
-		}
+		if (checkPaliContext(target, selection!)) return;
 
-		// Handle tooltip and Pali cases
-		const isPaliContext = checkPaliContext(target, selection);
-		if (isPaliContext) {
-			return;
-		}
+		const intersectsCollapse = checkCollapseIntersection(range);
 
-		// Check if selection intersects with collapse elements
-		const intersectsCollapse = checkCollapseIntersection(selection);
-
-		// Show appropriate menu based on auth status
-		const isAuthenticated = rootElement?.dataset.authenticated === "true";
-
-		if (!selectionHandler || !menu) return;
-
-		// Show menu and configure based on collapse intersection
+		// Visible before positioning: placement reads the menu's width.
 		menu.style.display = "block";
-		const { savedRange: newSavedRange } =
-			selectionHandler.updateMenuPosition(
-				selection,
-				menu,
-				rootElement,
-				currentRange,
-				menu,
-				highlighter
-			);
-		savedRange = newSavedRange;
+		if (!selectionHandler.updateMenuPosition(range, menu, rootElement)) {
+			menu.style.display = "none";
+			return;
+		}
+		savedRange = range.cloneRange();
 
+		const isAuthenticated = rootElement.dataset.authenticated === "true";
 		if (!isAuthenticated) {
 			// Non-authenticated users can only copy
-			document.querySelectorAll(".color-swatch").forEach((swatch) => {
-				(swatch as HTMLElement).style.display = "none";
+			document.querySelectorAll<HTMLElement>(".color-swatch").forEach((swatch) => {
+				swatch.style.display = "none";
 			});
 			const eraserBtn = document.getElementById("highlight-eraser");
 			if (eraserBtn) eraserBtn.style.display = "none";
 		} else {
-			// Show/hide highlight colors based on collapse intersection
-			updateHighlightingAvailability(intersectsCollapse);
+			updateHighlightingAvailability(intersectsCollapse, range);
 		}
 
-		// Add outside click listener
 		setupOutsideClickListener();
 	}
 
-	function checkCollapseIntersection(selection: RangySelection): boolean {
-		if (!selection.rangeCount) return false;
+	function isWithinCollapseElement(element: Element | null): boolean {
+		return Boolean(element?.closest(".collapse-toggle"));
+	}
 
-		for (let i = 0; i < selection.rangeCount; i++) {
-			const range = selection.getRangeAt(i).nativeRange;
-			if (!range) continue;
-
-			// Check if selection starts or ends within a collapse element
-			const startElement =
-				range.startContainer.nodeType === Node.ELEMENT_NODE
-					? (range.startContainer as Element)
-					: range.startContainer.parentElement;
-			const endElement =
-				range.endContainer.nodeType === Node.ELEMENT_NODE
-					? (range.endContainer as Element)
-					: range.endContainer.parentElement;
-
-			// Check if start or end is within a collapse element
-			if (startElement && isWithinCollapseElement(startElement)) {
-				return true;
-			}
-			if (endElement && isWithinCollapseElement(endElement)) {
-				return true;
-			}
-
-			// Check if any collapse elements are contained within the range
-			const commonAncestor = range.commonAncestorContainer;
-			if (commonAncestor.nodeType === Node.ELEMENT_NODE) {
-				const collapseElements = (
-					commonAncestor as Element
-				).querySelectorAll(".collapse-toggle");
-
-				for (const collapseEl of collapseElements) {
-					if (range.intersectsNode(collapseEl)) {
-						return true;
-					}
-				}
-			} else if (commonAncestor.parentElement) {
-				// If common ancestor is a text node, check its parent
-				const collapseElements =
-					commonAncestor.parentElement.querySelectorAll(
-						".collapse-toggle"
-					);
-
-				for (const collapseEl of collapseElements) {
-					if (range.intersectsNode(collapseEl)) {
-						return true;
-					}
-				}
-			}
+	function checkCollapseIntersection(range: Range): boolean {
+		if (isWithinCollapseElement(elementOf(range.startContainer))) return true;
+		if (isWithinCollapseElement(elementOf(range.endContainer))) return true;
+		const ancestor = elementOf(range.commonAncestorContainer);
+		if (!ancestor) return false;
+		for (const collapseEl of ancestor.querySelectorAll(".collapse-toggle")) {
+			if (range.intersectsNode(collapseEl)) return true;
 		}
-
 		return false;
 	}
 
-	function updateHighlightingAvailability(intersectsCollapse: boolean): void {
-		// Show/hide color swatches based on collapse intersection
-		const colorSwatches = document.querySelectorAll(".color-swatch");
-		const eraserBtn = document.getElementById("highlight-eraser");
-
-		colorSwatches.forEach((swatch) => {
-			const display = intersectsCollapse ? "none" : "block";
-			(swatch as HTMLElement).style.display = display;
+	function updateHighlightingAvailability(
+		intersectsCollapse: boolean,
+		range: Range,
+	): void {
+		document.querySelectorAll<HTMLElement>(".color-swatch").forEach((swatch) => {
+			swatch.style.display = intersectsCollapse ? "none" : "block";
 		});
 
-		// Also hide eraser if highlighting is disabled
+		const eraserBtn = document.getElementById("highlight-eraser");
 		if (eraserBtn) {
-			if (intersectsCollapse) {
-				eraserBtn.style.display = "none";
-			} else {
-				// Keep existing eraser visibility logic (show only if there are existing highlights)
-				if (highlighter && window.rangy) {
-					const selection = window.rangy.getSelection();
-					const existing =
-						highlighter.getHighlightsInSelection(selection);
-					const display = existing.length > 0 ? "flex" : "none";
-					eraserBtn.style.display = display;
-				}
-			}
+			const canErase =
+				!intersectsCollapse &&
+				Boolean(highlightService?.rangeHasHighlight(range));
+			eraserBtn.style.display = canErase ? "flex" : "none";
 		}
 	}
 
-	function isWithinCollapseElement(element: Element): boolean {
-		let current = element;
-		while (current && current !== rootElement) {
-			if (current.classList?.contains("collapse-toggle")) {
-				return true;
-			}
-			current = current.parentElement!;
-		}
-		return false;
-	}
-
-	function checkPaliContext(
-		target: HTMLElement,
-		selection: RangySelection
-	): boolean {
-		const isPaliParagraph = target.closest(".pali-paragraph");
+	function checkPaliContext(target: HTMLElement, selection: Selection): boolean {
+		const isPaliParagraph = target.closest?.(".pali-paragraph");
 		const isPaliLookupEnabled =
 			localStorage.getItem("paliLookup") === "true";
 		const selectedText = selection.toString().trim();
@@ -465,170 +301,84 @@ const { title, description } = Astro.props;
 	}
 
 	function setupOutsideClickListener() {
+		if (outsideClickListener) {
+			document.removeEventListener("mousedown", outsideClickListener);
+		}
 		outsideClickListener = (e: MouseEvent) => {
 			const target = e.target as Node;
 			if (!menu.contains(target)) {
 				menu.style.display = "none";
+				savedRange = null;
 				window.getSelection()?.removeAllRanges();
-				document.removeEventListener(
-					"mousedown",
-					outsideClickListener!
-				);
+				document.removeEventListener("mousedown", outsideClickListener!);
+				outsideClickListener = null;
 			}
 		};
 		document.addEventListener("mousedown", outsideClickListener);
 	}
 
-	// Keep core highlight application
-	function applyHighlight(colorName: ColorName): void {
-		if (!highlighter || !window.rangy) return;
+	function finishMenuAction(): void {
+		menu.style.display = "none";
+		savedRange = null;
+		window.getSelection()?.removeAllRanges();
+	}
 
-		// Double check that we're not trying to highlight collapse intersections
-		const selection = window.rangy.getSelection();
-		const intersectsCollapse = checkCollapseIntersection(selection);
-		if (intersectsCollapse) {
+	function applyHighlight(color: HighlightColor): void {
+		const range = actionRange();
+		if (!range || !highlightService) return;
+		if (checkCollapseIntersection(range)) {
 			console.warn(
 				"Attempted to highlight selection that intersects with collapse elements"
 			);
 			return;
 		}
-
-		if (isMobile && savedRange) {
-			setTimeout(() => {
-				try {
-					selection.removeAllRanges();
-					selection.addRange(savedRange!);
-					selection.refresh();
-					applyHighlightToSelection(colorName, selection);
-				} catch (e) {
-					console.log("Range restoration error:", e);
-				}
-			}, 100);
-		} else {
-			applyHighlightToSelection(colorName, selection);
-		}
-	}
-
-	function applyHighlightToSelection(
-		colorName: ColorName,
-		selection: RangySelection
-	) {
-		if (!selection.rangeCount) return;
-
-		highlighter!.highlightSelection(`highlight-${colorName}`, {
-			selection: selection,
-			containerElementId: "highlight-root",
-			exclusive: true, // Remove existing highlights in selection
-		});
-
-		persist();
-		menu.style.display = "none";
-
-		if (!isMobile) {
-			window.getSelection()?.removeAllRanges();
-		}
+		highlightService.highlightRange(range, color);
+		finishMenuAction();
 	}
 
 	function handleClear(): void {
-		if (!highlighter || !window.rangy) return;
-
-		const selection = window.rangy.getSelection();
-
-		// Double check that we're not trying to clear highlights in collapse intersections
-		const intersectsCollapse = checkCollapseIntersection(selection);
-		if (intersectsCollapse) {
-			console.warn(
-				"Attempted to clear highlights in selection that intersects with collapse elements"
-			);
-			return;
-		}
-
-		if (isMobile && savedRange) {
-			try {
-				selection.removeAllRanges();
-				selection.addRange(savedRange);
-				selection.refresh();
-			} catch (e) {
-				console.log("Clear range error:", e);
-				return;
-			}
-		}
-
-		const existing = highlighter.getHighlightsInSelection(selection);
-		if (existing.length > 0) {
-			highlighter.removeHighlights(existing);
-
-			// Get the updated state after removal
-			const updatedRangyHash = highlighter.serialize();
-			persist(updatedRangyHash, "delete");
-		}
-
-		if (!isMobile) {
-			window.getSelection()?.removeAllRanges();
-		}
-
-		menu.style.display = "none";
+		const range = actionRange();
+		if (!range || !highlightService) return;
+		if (checkCollapseIntersection(range)) return;
+		highlightService.eraseRange(range);
+		finishMenuAction();
 	}
 
-	function persist(
-		rangyHash?: string,
-		operation: "add" | "delete" = "add"
-	): void {
-		if (!highlighter || !highlightService) return;
-		const serialized = rangyHash || highlighter.serialize();
-		highlightService.persistToFirestore(serialized, highlighter);
-	}
-
-	// Keep event setup and initialization
 	function setupEventListeners(): void {
-		document.addEventListener("mousedown", () => {
-			isMouseDown = true;
-		});
-		document.addEventListener("mouseup", handleMouseUp);
+		document.addEventListener("mouseup", handleSelection);
 		document.addEventListener("touchend", handleSelection);
-		document.addEventListener("selectionchange", handleSelectionChange);
-		setupSwatchListeners();
-		const eraserBtn = document.getElementById("highlight-eraser");
-		if (eraserBtn) {
-			eraserBtn.addEventListener("click", handleClear);
-			eraserBtn.addEventListener("touchend", handleClear);
-		}
-	}
+		document.addEventListener("selectionchange", () => {
+			if (!liveRange()) menu.style.display = "none";
+		});
 
-	function handleMouseUp(e: MouseEvent) {
-		isMouseDown = false;
-		handleSelection(e);
-	}
-
-	// Add handleSelectionChange function that was missing
-	function handleSelectionChange() {
-		if (!window.rangy || !highlighter) return;
-		menu.style.display = "none";
-		const selection = window.rangy.getSelection();
-		if (selection.isCollapsed || selection.rangeCount === 0) return;
-	}
-
-	// Add setupSwatchListeners function that was missing
-	function setupSwatchListeners() {
 		document
 			.querySelectorAll<HTMLButtonElement>(".color-swatch")
 			.forEach((swatch) => {
+				const apply = () => {
+					const color = swatch.dataset.color as HighlightColor;
+					if (color) applyHighlight(color);
+				};
 				swatch.addEventListener("touchend", (e) => {
 					e.preventDefault();
-					const colorName = swatch.dataset.color as ColorName;
-					if (colorName) applyHighlight(colorName);
+					apply();
 				});
-				swatch.addEventListener("click", () => {
-					const colorName = swatch.dataset.color as ColorName;
-					if (colorName) applyHighlight(colorName);
-				});
+				swatch.addEventListener("click", apply);
 			});
+
+		const eraserBtn = document.getElementById("highlight-eraser");
+		if (eraserBtn) {
+			eraserBtn.addEventListener("touchend", (e) => {
+				e.preventDefault();
+				handleClear();
+			});
+			eraserBtn.addEventListener("click", handleClear);
+		}
 	}
 
 	async function init() {
 		rootElement = document.getElementById("highlight-root");
 		menu = document.getElementById("highlight-menu") as HTMLDivElement;
-		if (rootElement?.dataset.highlightDisabled === "true") return;
+		if (!rootElement || rootElement.dataset.highlightDisabled === "true") return;
 		void loadPageUserState();
 
 		try {
@@ -647,17 +397,16 @@ const { title, description } = Astro.props;
 			updateTheme();
 			window.addEventListener("themeToggled", updateDarkMode);
 			document.addEventListener("themeChanged", updateTheme);
-			// Fire off auth hydration & highlighter init without blocking interactivity
+			document.addEventListener("layoutChanged", scheduleRepaint);
+			document.addEventListener("paliModeChanged", scheduleRepaint);
+			setupEventListeners();
+			// Auth hydration schedules the restore without blocking interactivity
 			hydrateAuth();
-			initializeHighlighter().catch((e) =>
-				console.error("[highlight] init fail", e)
-			);
 		} catch (error) {
 			console.error("[highlight] Init error:", error);
 		}
 	}
 
-	// Replace DOMContentLoaded with immediate init if document is already loaded
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", init);
 	} else {

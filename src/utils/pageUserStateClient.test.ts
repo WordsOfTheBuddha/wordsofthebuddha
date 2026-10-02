@@ -26,15 +26,15 @@ describe("pageUserStateClient", () => {
 		assert.equal(discourseSlugFromPath("/"), "");
 	});
 
-	it("builds highlight slugs the same way as highlight restore", () => {
+	it("builds highlight slugs from pathname only", () => {
 		assert.equal(highlightSlugFromUrl("https://x.test/mn1"), "/mn1");
 		assert.equal(
 			highlightSlugFromUrl("https://x.test/mn1?pli=true"),
-			"/mn1?pli=true&layout=interleaved",
+			"/mn1",
 		);
 		assert.equal(
 			highlightSlugFromUrl("https://x.test/mn1?pli=true&layout=split"),
-			"/mn1?pli=true&layout=split",
+			"/mn1",
 		);
 	});
 
@@ -44,10 +44,7 @@ describe("pageUserStateClient", () => {
 			pathname: "/mn1",
 		});
 		assert.equal(discourse.get("slug"), "mn1");
-		assert.equal(
-			discourse.get("highlightSlug"),
-			"/mn1?pli=true&layout=interleaved",
-		);
+		assert.equal(discourse.get("highlightSlug"), "/mn1");
 
 		const collection = pageStateQueryFromLocation({
 			href: "https://x.test/sn",
@@ -71,6 +68,7 @@ describe("pageUserStateClient", () => {
 				isSaved: false,
 				isInReadLater: true,
 				highlights: { rangyHash: "abc" },
+				legacyHighlights: [{ slug: "/mn1?pli=true&layout=split" }],
 			}),
 			{
 				signedIn: true,
@@ -83,6 +81,7 @@ describe("pageUserStateClient", () => {
 				isSaved: false,
 				isInReadLater: true,
 				highlights: { rangyHash: "abc" },
+				legacyHighlights: [{ slug: "/mn1?pli=true&layout=split" }],
 			},
 		);
 	});

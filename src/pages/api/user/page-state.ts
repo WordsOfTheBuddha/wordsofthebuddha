@@ -2,7 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { verifyUser } from "../../../middleware/auth";
 import { db } from "../../../service/firebase/server";
-import { normalizeHighlightSlug } from "../../../utils/highlightSlug";
+import { loadHighlightDocs } from "../../../service/highlightStore";
 import { isSlugFullyRead } from "../../../utils/readPages";
 import { normalizeDiscourseSlug } from "../../../utils/reviewRoomStats";
 
@@ -30,6 +30,7 @@ const signedOut = {
 	isSaved: false,
 	isInReadLater: false,
 	highlights: null,
+	legacyHighlights: [],
 };
 
 export const GET: APIRoute = async ({ cookies, url }) => {
@@ -44,16 +45,16 @@ export const GET: APIRoute = async ({ cookies, url }) => {
 	}
 
 	const slug = normalizeDiscourseSlug(url.searchParams.get("slug") || "");
-	const highlightSlugRaw = url.searchParams.get("highlightSlug") || "";
-	const highlightSlug = highlightSlugRaw
-		? normalizeHighlightSlug(highlightSlugRaw)
-		: "";
+	const highlightSlug = (url.searchParams.get("highlightSlug") || "").split(
+		"?",
+	)[0];
 
 	const extras = {
 		hasRead: false,
 		isSaved: false,
 		isInReadLater: false,
 		highlights: null as Record<string, unknown> | null,
+		legacyHighlights: [] as Record<string, unknown>[],
 	};
 
 	if (db) {
@@ -105,19 +106,13 @@ export const GET: APIRoute = async ({ cookies, url }) => {
 					.then(async (userDoc) => {
 						const noteId = userDoc.data()?.defaultNoteId;
 						if (!noteId || !db) return;
-						const highlightDoc = await db
-							.collection("notes")
-							.doc(noteId)
-							.collection("highlights")
-							.doc(highlightSlug)
-							.get();
-						if (highlightDoc.exists) {
-							extras.highlights =
-								(highlightDoc.data() as Record<
-									string,
-									unknown
-								>) ?? null;
-						}
+						const lookup = await loadHighlightDocs(
+							db,
+							noteId,
+							highlightSlug,
+						);
+						extras.highlights = lookup.highlights;
+						extras.legacyHighlights = lookup.legacyHighlights;
 					})
 					.catch(() => {}),
 			);

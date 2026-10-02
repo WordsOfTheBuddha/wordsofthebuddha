@@ -10,7 +10,14 @@ export type PageUserState = {
 	hasRead: boolean;
 	isSaved: boolean;
 	isInReadLater: boolean;
-	highlights: { rangyHash?: string } | null;
+	highlights: StoredHighlightDoc | null;
+	/** Old per-view docs, only sent when the page has no current highlight doc. */
+	legacyHighlights: StoredHighlightDoc[];
+};
+
+export type StoredHighlightDoc = Record<string, unknown> & {
+	highlightDocument?: unknown;
+	highlightSegments?: Record<string, { containerHTML?: string }>;
 };
 
 const DISCOURSE_SLUG = /^[a-z]+\d/i;
@@ -22,6 +29,7 @@ export function emptyPageUserState(): PageUserState {
 		isSaved: false,
 		isInReadLater: false,
 		highlights: null,
+		legacyHighlights: [],
 	};
 }
 
@@ -54,8 +62,13 @@ function parsePageUserState(data: unknown): PageUserState {
 			: null;
 	const highlights =
 		raw.highlights && typeof raw.highlights === "object"
-			? (raw.highlights as { rangyHash?: string })
+			? (raw.highlights as StoredHighlightDoc)
 			: null;
+	const legacyHighlights = Array.isArray(raw.legacyHighlights)
+		? (raw.legacyHighlights.filter(
+				(d) => d && typeof d === "object",
+			) as StoredHighlightDoc[])
+		: [];
 	return {
 		signedIn,
 		user:
@@ -73,6 +86,7 @@ function parsePageUserState(data: unknown): PageUserState {
 		isSaved: raw.isSaved === true,
 		isInReadLater: raw.isInReadLater === true,
 		highlights,
+		legacyHighlights,
 	};
 }
 

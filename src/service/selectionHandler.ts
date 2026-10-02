@@ -1,35 +1,18 @@
 import { calculateMenuPosition } from '../utils/dom';
 
-export function isSelectionValid(selection: RangySelection): boolean {
-    if (!selection.rangeCount) return false;
-    const range = selection.getRangeAt(0).nativeRange;
-    if (!range) return false;
-    const textContent = range.toString().trim();
-    return textContent.length > 0;
+export function isSelectionValid(selection: Selection | null): boolean {
+    if (!selection || selection.isCollapsed || !selection.rangeCount) return false;
+    return selection.getRangeAt(0).toString().trim().length > 0;
 }
 
+/** Place the menu at the selection's end point. Returns false when there is nowhere to put it. */
 export function updateMenuPosition(
-    selection: RangySelection,
+    range: Range,
     element: HTMLElement,
     rootElement: HTMLElement | null,
-    currentRange: Range | null,
-    menu: HTMLElement,
-    highlighter: Highlighter | null
-): { savedRange: Range | null } {
-    let savedRange: Range | null = null;
+): boolean {
+    if (!rootElement) return false;
 
-    if (!selection?.rangeCount || !rootElement) {
-        element.style.display = "none";
-        return { savedRange };
-    }
-
-    const range = selection.getRangeAt(0).nativeRange;
-    if (!range) {
-        element.style.display = "none";
-        return { savedRange };
-    }
-
-    savedRange = range.cloneRange();
     const endRange = document.createRange();
     endRange.setStart(range.endContainer, range.endOffset);
     endRange.collapse(true);
@@ -51,24 +34,7 @@ export function updateMenuPosition(
         }
     }
 
-    if (!finalRect && currentRange) {
-        const rects = currentRange.getClientRects();
-        finalRect = rects.length > 0
-            ? rects[rects.length - 1]
-            : null;
-    }
-
-    if (finalRect && finalRect.height > 0) {
-        calculateMenuPosition(element, finalRect, rootElement);
-        element.style.display = "block";
-
-        // Handle eraser visibility
-        const eraser = document.getElementById("highlight-eraser");
-        if (eraser && highlighter) {
-            const existing = highlighter.getHighlightsInSelection(selection);
-            eraser.style.display = existing.length > 0 ? "flex" : "none";
-        }
-    }
-
-    return { savedRange };
+    if (!finalRect || finalRect.height <= 0) return false;
+    calculateMenuPosition(element, finalRect, rootElement);
+    return true;
 }

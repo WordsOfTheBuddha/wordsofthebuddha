@@ -50,6 +50,14 @@ export const GET: APIRoute = async ({ cookies }) => {
 			`[${opId}] Found ${highlights.docs.length} highlight documents`,
 		);
 
+		// Old per-view docs (`/mn1?pli=true&layout=split`) are superseded once
+		// the page has a pathname-keyed doc; showing both would duplicate it.
+		const currentPaths = new Set(
+			highlights.docs
+				.map((doc) => (doc.data() as Highlight).slug)
+				.filter((slug) => slug && !slug.includes("?")),
+		);
+
 		const processedHighlights = highlights.docs.map((doc) => {
 			const data = doc.data() as Highlight;
 			const updatedDate = data.updatedAt.toDate();
@@ -57,12 +65,14 @@ export const GET: APIRoute = async ({ cookies }) => {
 			if (data.slug === "/" || data.slug === "/?pli=true") {
 				return null;
 			}
+			if (data.slug?.includes("?") && currentPaths.has(data.slug.split("?")[0])) {
+				return null;
+			}
 
 			const processedHighlight: HighlightResponse = {
 				slug: data.slug,
 				title: data.title,
 				description: data.description,
-				rangyHash: data.rangyHash,
 				highlightSegments: data.highlightSegments,
 				updatedAt: data.updatedAt.toMillis(),
 				formattedDate: formatDate(updatedDate),

@@ -21,7 +21,21 @@ export type ContentPair = {
 	english: string;
 	pali?: string;
 	actualParagraphNumber?: number;
+	/** 1-based position among the Pāli file's content paragraphs (highlight key). */
+	paliOrdinal?: number;
 };
+
+/** Pāli blocks that count as content paragraphs (same filter as `parsePaliOnly`). */
+function isPaliContentParagraph(p: string): boolean {
+	return !p.startsWith("#") && !END_MARKER.test(p);
+}
+
+function paliOrdinals(paliParagraphs: string[]): (number | undefined)[] {
+	let n = 0;
+	return paliParagraphs.map((p) =>
+		isPaliContentParagraph(p) ? ++n : undefined,
+	);
+}
 
 export type ParseContentResult = {
 	pairs: ContentPair[];
@@ -547,6 +561,7 @@ function processBlocks(
 				.map((p) => p.trim())
 				.filter((p) => p.length > 0 && !p.startsWith("---"))
 		: [];
+	const paliOrdinalAt = paliOrdinals(paliParagraphs);
 
 	const englishBlocks = englishText
 		.split(/\n\n+/)
@@ -659,6 +674,7 @@ function processBlocks(
 				actualParagraphNumber: isPlainParagraph
 					? actualParagraphNumber
 					: undefined,
+				paliOrdinal: paliOrdinalAt[paliIndex],
 			});
 		} else {
 			pairs.push({
@@ -681,7 +697,7 @@ function processBlocks(
 	// Skip sutta end markers (e.g. "Dutiyaṁ.") and omit the English placeholder
 	// when only a single trailing paragraph remains.
 	if (import.meta.env.DEV && paliIndex < paliParagraphs.length) {
-		const remaining: string[] = [];
+		const remaining: { pali: string; ordinal?: number }[] = [];
 		for (let i = paliIndex; i < paliParagraphs.length; i++) {
 			const nextPali = paliParagraphs[i];
 			if (
@@ -689,7 +705,7 @@ function processBlocks(
 				!nextPali.startsWith("#") &&
 				!END_MARKER.test(nextPali.trim())
 			) {
-				remaining.push(nextPali);
+				remaining.push({ pali: nextPali, ordinal: paliOrdinalAt[i] });
 			}
 		}
 
@@ -697,7 +713,7 @@ function processBlocks(
 		const soleTrailingParagraph =
 			toAdd.length === 1 && remaining.length === 1;
 
-		for (const pali of toAdd) {
+		for (const { pali, ordinal } of toAdd) {
 			pairs.push({
 				type: "paragraph",
 				english: soleTrailingParagraph
@@ -705,6 +721,7 @@ function processBlocks(
 					: '<span class="text-gray-400 italic">Translation in progress...</span>',
 				pali,
 				// No actualParagraphNumber for unpaired Pali
+				paliOrdinal: ordinal,
 			});
 		}
 	}
@@ -736,10 +753,11 @@ export function parsePaliOnly(paliText: string): ContentPair[] {
 				!END_MARKER.test(p),
 		);
 
-	return paragraphs.map((pali) => ({
+	return paragraphs.map((pali, i) => ({
 		type: "paragraph" as const,
 		english: "",
 		pali,
+		paliOrdinal: i + 1,
 	}));
 }
 
@@ -906,6 +924,7 @@ export function formatBlock(
 		end?: number;
 	} | null,
 	actualParagraphNumber?: number,
+	paliOrdinal?: number,
 ): string {
 	// Helper to convert bold (**text**), italic (*text*), and superscript (^text^) markdown to HTML
 	// Must process bold first to avoid conflicts with italic
@@ -963,6 +982,17 @@ export function formatBlock(
 
 	// Add data-pair-id to track corresponding paragraphs
 	const pairAttr = index !== undefined ? ` data-pair-id="${index}"` : "";
+	// View-independent highlight anchor (split view renumbers data-pair-id).
+	const highlightKey = isPali
+		? paliOrdinal !== undefined
+			? `pli:${paliOrdinal}`
+			: ""
+		: paragraphNum !== undefined
+			? `en:${paragraphNum}`
+			: "";
+	const highlightAttr = highlightKey
+		? ` data-hl-block="${highlightKey}"`
+		: "";
 	const isVerseText = isVerse(text);
 	const className = isPali ? "pali-paragraph" : "english-paragraph";
 	const verseClass = isVerseText ? (isPali ? "verse-basic" : "verse") : "";
@@ -1019,7 +1049,7 @@ export function formatBlock(
 			? paragraphNumberMarkerHtml(paragraphNum)
 			: "";
 
-	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${numberMarker}${
+	return `<p${anchorId}${pairAttr}${highlightAttr} class="${className} ${verseClass}">${numberMarker}${
 		isVerseText ? transformVerseNewlines(processedText) : processedText
 	}</p>`;
 }
@@ -1066,6 +1096,7 @@ export function createCombinedMarkdown(
 						pairIndex++,
 						paragraphRequest,
 						pair.actualParagraphNumber,
+						pair.paliOrdinal,
 					);
 				}
 				return formatBlock(
@@ -1154,6 +1185,7 @@ export function createCombinedMarkdown(
 					currentIndex,
 					paragraphRequest,
 					pair.actualParagraphNumber,
+					pair.paliOrdinal,
 				);
 			}
 			return `${formatBlock(
@@ -1162,6 +1194,7 @@ export function createCombinedMarkdown(
 				currentIndex,
 				paragraphRequest,
 				pair.actualParagraphNumber,
+				pair.paliOrdinal,
 			)}\n\n${formatBlock(
 				pair.english,
 				false,

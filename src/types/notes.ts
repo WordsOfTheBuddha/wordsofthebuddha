@@ -1,4 +1,5 @@
 import type { Timestamp } from 'firebase-admin/firestore';
+import type { HighlightDocument } from '../utils/stableHighlight';
 
 export interface Note {
     id: string;
@@ -8,24 +9,23 @@ export interface Note {
 }
 
 export interface Highlight {
-    slug: string;          // URL path used as key
+    slug: string;          // URL pathname used as key (older docs: pathname + Pāli/layout params)
     title: string;         // content page title
     description: string;   // content page description
-    rangyHash: string;     // Rangy serialized highlight data
+    rangyHash?: string;    // Legacy Rangy serialized highlight data (pre-v3 docs only)
+    highlightDocument?: HighlightDocument;
     highlightSegments: { [segmentId: string]: HighlightSegment };
     updatedAt: Timestamp;
     formattedDate?: string;
 }
 
+/** Review-room snapshot of one highlighted block. */
 export interface HighlightSegment {
-    containerHTML: string;    // Container element with highlights
-    highlightText: string;    // Extracted text from highlight
-    domPath: string;         // For debugging/validation
-    order: number;          // Position in document order
+    containerHTML: string;    // Block element with highlight marks
+    highlightText: string;    // Highlighted text in the block
+    domPath: string;          // Block key (e.g. "en:12", "pli:12")
+    order: number;            // Reading order across the page
 }
-
-// segmentId format: "{elementType}-{index}"
-// e.g.: "p-0" for first paragraph, "h2-1" for second h2
 
 export type HighlightOperation = {
     type: 'add' | 'delete';
