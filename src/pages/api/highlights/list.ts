@@ -3,6 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { app } from "../../../service/firebase/server";
 import { formatDate } from "../../../components/PostCard.astro";
 import type { Highlight } from "../../../types/notes";
+import { sanitizeDiscourseNotes } from "../../../utils/stableHighlight";
 import { verifyUser } from "../../../middleware/auth";
 
 interface HighlightResponse extends Omit<Highlight, "updatedAt"> {
@@ -74,6 +75,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 				title: data.title,
 				description: data.description,
 				highlightSegments: data.highlightSegments,
+				notes: sanitizeDiscourseNotes(data.highlightDocument?.notes),
 				updatedAt: data.updatedAt.toMillis(),
 				formattedDate: formatDate(updatedDate),
 			};

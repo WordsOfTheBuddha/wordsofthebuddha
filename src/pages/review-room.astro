@@ -337,6 +337,53 @@ try {
 } catch (error) {
 	console.error("Error fetching data concurrently:", error);
 }
+
+const notePages = validHighlights.filter(
+	(highlight) => Array.isArray(highlight.notes) && highlight.notes.length > 0,
+);
+
+function noteContextBlocks(highlight: {
+	highlightSegments?: Record<
+		string,
+		{ containerHTML?: string; domPath?: string; highlightText?: string }
+	>;
+}, note: { spans?: { block?: string; quote?: string }[] }) {
+	const segments = Object.values(highlight.highlightSegments || {});
+	const seen = new Set<string>();
+	const blocks: { html: string; quote: string }[] = [];
+	for (const span of note.spans || []) {
+		const key = span.block || "";
+		if (!key || seen.has(key)) continue;
+		seen.add(key);
+		const segment = segments.find((item) => item.domPath === key);
+		const html = (segment?.containerHTML || "").replace(
+			/<p([^>]*?)style="[^"]*"([^>]*?)>/g,
+			"<p$1$2>",
+		);
+		blocks.push({ html, quote: span.quote || segment?.highlightText || "" });
+	}
+	return blocks;
+}
+
+/** Color highlights only. A block saved just to show a note has no highlight text. */
+function colorHighlightSegments(highlight: {
+	highlightSegments?: Record<
+		string,
+		{
+			containerHTML?: string;
+			highlightText?: string;
+			order?: number;
+		}
+	>;
+}) {
+	return Object.values(highlight.highlightSegments || {})
+		.filter((segment) => (segment.highlightText || "").trim().length > 0)
+		.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
+
+const highlightPages = validHighlights.filter(
+	(highlight) => colorHighlightSegments(highlight).length > 0,
+);
 ---
 
 <Layout showAuth={true}>
@@ -1251,14 +1298,55 @@ try {
 				</div>
 
 				<div id="highlights" class="tab-content hidden">
-					<div class="mt-4 space-y-4">
+					<div class="mt-4">
+						<div class="ask-panel-lanes markup-lanes">
+							<div
+								class="ask-history-tabs"
+								role="tablist"
+								aria-label="Highlights and notes"
+							>
+								<button
+									type="button"
+									class="ask-history-tab"
+									role="tab"
+									aria-selected="true"
+									data-markup-lane="highlights"
+								>
+									Highlights
+								</button>
+								<button
+									type="button"
+									class="ask-history-tab"
+									role="tab"
+									aria-selected="false"
+									data-markup-lane="notes"
+								>
+									Notes
+								</button>
+							</div>
+						</div>
+						<input
+							id="markup-search"
+							class="note-search"
+							type="search"
+							placeholder="Search highlights..."
+							aria-label="Search highlights"
+						/>
+						<p
+							id="markup-search-empty"
+							class="note-search-empty text-center py-8 text-gray-500"
+							hidden
+						>
+							No matches.
+						</p>
+						<div data-markup-panel="highlights" class="space-y-4">
 						{
-							validHighlights.length === 0 ? (
+							highlightPages.length === 0 ? (
 								<div class="text-center py-8 text-gray-500">
 									<p>No highlights found.</p>
 								</div>
 							) : (
-								validHighlights.map((highlight: Highlight) => (
+								highlightPages.map((highlight: Highlight) => (
 									<div class="highlight-page">
 										<div class="flex items-start">
 											<div class="min-w-0 pr-4">
@@ -1276,7 +1364,7 @@ try {
 																.split(
 																	"?"
 																)[0] || ""
-														)}
+														)}{" "}
 														{highlight.title}
 													</a>
 												</h2>
@@ -1288,27 +1376,18 @@ try {
 											</div>
 										</div>
 										<div class="highlight-content">
-											{Object.values(
-												highlight.highlightSegments
-											)
-												.sort(
-													(a, b) => a.order - b.order
-												)
-												.map((segment) => {
-													// Remove style attribute from p elements, handling any style content
+											{colorHighlightSegments(highlight).map(
+												(segment) => {
 													const cleanedHTML =
 														segment.containerHTML?.replace(
 															/<p([^>]*?)style="[^"]*"([^>]*?)>/g,
-															"<p$1$2>"
+															"<p$1$2>",
 														);
 													return (
-														<Fragment
-															set:html={
-																cleanedHTML
-															}
-														/>
+														<Fragment set:html={cleanedHTML} />
 													);
-												})}
+												},
+											)}
 										</div>
 										<p class="text-gray-500 text-xs my-0 text-right">
 											Highlighted on{" "}
@@ -1318,6 +1397,81 @@ try {
 								))
 							)
 						}
+						</div>
+						<div data-markup-panel="notes" class="space-y-4" hidden>
+						{
+							notePages.length === 0 ? (
+								<div class="text-center py-8 text-gray-500">
+									<p>No notes yet.</p>
+								</div>
+							) : (
+								notePages.map((highlight) => (
+										<div class="highlight-page note-page">
+											<div class="min-w-0 pr-4">
+												<h2 class="text-base sm:text-lg font-semibold mb-2">
+													<a
+														href={highlight.slug}
+														class="text-gray-500 hover:text-link-color"
+													>
+														{transformId(
+															highlight.slug
+																?.replace(/^\//, "")
+																.split("?")[0] || "",
+														)}{" "}
+														{highlight.title}
+													</a>
+												</h2>
+											</div>
+											{highlight.notes.map(
+												(note: {
+													id: string;
+													text: string;
+													spans?: {
+														block?: string;
+														quote?: string;
+													}[];
+												}) => {
+													const blocks = noteContextBlocks(
+														highlight,
+														note,
+													);
+													const search = [
+														highlight.title,
+														note.text,
+														...(note.spans || []).map(
+															(span) => span.quote || "",
+														),
+													]
+														.join(" ")
+														.toLowerCase();
+													return (
+														<article
+															class="note-entry"
+															data-note-search={search}
+														>
+															<p class="note-entry-text">
+																{note.text}
+															</p>
+															<div class="highlight-content">
+																{blocks.map((block) =>
+																	block.html ? (
+																		<Fragment
+																			set:html={block.html}
+																		/>
+																	) : (
+																		<p>{block.quote}</p>
+																	),
+																)}
+															</div>
+														</article>
+													);
+												},
+											)}
+										</div>
+									))
+							)
+						}
+						</div>
 					</div>
 				</div>
 
@@ -1986,6 +2140,74 @@ try {
 		});
 	}
 
+	let markupLane = "highlights";
+
+	function applyMarkupSearch(): void {
+		const input = document.getElementById("markup-search") as HTMLInputElement | null;
+		const query = input?.value.trim().toLowerCase() ?? "";
+		const panel = document.querySelector<HTMLElement>(
+			`[data-markup-panel="${markupLane}"]`,
+		);
+		const empty = document.getElementById("markup-search-empty");
+		if (!panel) return;
+		let any = false;
+		let counted = 0;
+		if (markupLane === "notes") {
+			panel.querySelectorAll<HTMLElement>(".note-page").forEach((page) => {
+				counted += 1;
+				let visible = false;
+				page.querySelectorAll<HTMLElement>("[data-note-search]").forEach((entry) => {
+					const show =
+						!query || (entry.dataset.noteSearch || "").includes(query);
+					entry.hidden = !show;
+					if (show) visible = true;
+				});
+				page.hidden = !visible;
+				if (visible) any = true;
+			});
+		} else {
+			panel.querySelectorAll<HTMLElement>(".highlight-page").forEach((page) => {
+				counted += 1;
+				const show =
+					!query || (page.textContent || "").toLowerCase().includes(query);
+				page.hidden = !show;
+				if (show) any = true;
+			});
+		}
+		if (empty) empty.hidden = !query || any || counted === 0;
+	}
+
+	function showMarkupLane(lane: string, options?: { skipHash?: boolean }): void {
+		markupLane = lane === "notes" ? "notes" : "highlights";
+		document.querySelectorAll<HTMLElement>("[data-markup-lane]").forEach((button) => {
+			button.setAttribute(
+				"aria-selected",
+				button.dataset.markupLane === markupLane ? "true" : "false",
+			);
+		});
+		document.querySelectorAll<HTMLElement>("[data-markup-panel]").forEach((panel) => {
+			panel.hidden = panel.dataset.markupPanel !== markupLane;
+		});
+		const search = document.getElementById("markup-search");
+		if (search instanceof HTMLInputElement) {
+			const label = markupLane === "notes" ? "Search notes..." : "Search highlights...";
+			search.placeholder = label;
+			search.setAttribute("aria-label", label.replace(/\.\.\.$/, ""));
+		}
+		applyMarkupSearch();
+		const highlights = document.getElementById("highlights");
+		if (!options?.skipHash && highlights && !highlights.classList.contains("hidden")) {
+			history.replaceState(null, "", `#${markupLane}`);
+		}
+	}
+
+	document.querySelectorAll("[data-markup-lane]").forEach((button) => {
+		button.addEventListener("click", () => {
+			showMarkupLane(button.getAttribute("data-markup-lane") || "highlights");
+		});
+	});
+	document.getElementById("markup-search")?.addEventListener("input", applyMarkupSearch);
+
 	let askLaneIsResearch = false;
 	/** Set by bindAskHistoryPanel — no-op until the Asks chrome exists. */
 	let showAskHistoryLane = (_lane, _options) => {};
@@ -2006,10 +2228,16 @@ try {
 		tabLinks.forEach((link) => link.classList.remove("active"));
 		targetContent.classList.remove("hidden");
 		targetLink.classList.add("active");
+		targetLink.scrollIntoView({ inline: "nearest", block: "nearest" });
 		syncMoreMenu(nextTab);
 		closeMoreMenu();
 
-		const hashId = nextTab === "asks" ? asksTabHashId() : nextTab;
+		const hashId =
+			nextTab === "asks"
+				? asksTabHashId()
+				: nextTab === "highlights"
+					? markupLane
+					: nextTab;
 		const url =
 			nextTab === DEFAULT_TAB
 				? window.location.pathname + window.location.search
@@ -2474,6 +2702,11 @@ try {
 		if (lane) {
 			showAskHistoryLane(lane, { skipHash: true });
 			showTabContent("asks");
+			return;
+		}
+		if (hash === "notes" || hash === "highlights") {
+			showMarkupLane(hash, { skipHash: true });
+			showTabContent("highlights");
 			return;
 		}
 		if (hash && hash !== DEFAULT_TAB && document.getElementById(hash)) {

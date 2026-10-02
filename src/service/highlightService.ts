@@ -11,19 +11,24 @@ import { highlightSlugFromUrl } from "../utils/highlightSlug";
 import type { StoredHighlightDoc } from "../utils/pageUserStateClient";
 import {
 	addPieces,
+	anchorsFromPieces,
 	buildBlockIndex,
 	buildHighlightDocument,
 	erasePieces,
+	overlappingNote,
 	paintHighlights,
+	paintNotes,
 	parseHighlightDocument,
 	piecesFromRange,
 	piecesOverlapSpans,
 	spansFromLegacySegments,
+	type DiscourseNote,
 	type HighlightColor,
 	type HighlightSpan,
 } from "../utils/stableHighlight";
 
 let spans: HighlightSpan[] = [];
+let notes: DiscourseNote[] = [];
 /** Review-room snapshots from the loaded doc, kept for blocks not on this page. */
 let storedSegments: Record<string, HighlightSegment> = {};
 let persistChain: Promise<void> = Promise.resolve();
@@ -34,6 +39,10 @@ function getRoot(): HTMLElement | null {
 
 export function getHighlightSpans(): HighlightSpan[] {
 	return spans;
+}
+
+export function getDiscourseNotes(): DiscourseNote[] {
+	return notes;
 }
 
 export function restoreHighlights(state: {
@@ -47,6 +56,7 @@ export function restoreHighlights(state: {
 	let migrated = false;
 	if (doc) {
 		spans = doc.spans;
+		notes = doc.notes;
 		storedSegments =
 			(state.highlights?.highlightSegments as Record<string, HighlightSegment>) ??
 			{};
@@ -63,6 +73,7 @@ export function restoreHighlights(state: {
 			);
 		}
 		spans = recovered;
+		notes = [];
 		storedSegments = {};
 		migrated = spans.length > 0;
 	}
@@ -75,6 +86,7 @@ export function repaintHighlights(): void {
 	const root = getRoot();
 	if (!root) return;
 	spans = paintHighlights(root, spans);
+	notes = paintNotes(root, notes);
 }
 
 export function highlightRange(range: Range, color: HighlightColor): boolean {
@@ -101,6 +113,48 @@ export function eraseRange(range: Range): boolean {
 	return true;
 }
 
+export function noteForRange(range: Range): DiscourseNote | null {
+	const root = getRoot();
+	if (!root || notes.length === 0) return null;
+	return overlappingNote(notes, piecesFromRange(range, root));
+}
+
+export function saveNote(range: Range, text: string): DiscourseNote | null {
+	const root = getRoot();
+	const body = text.replace(/\u0000/g, "").trim();
+	if (!root || !body) return null;
+	const index = buildBlockIndex(root);
+	const pieces = piecesFromRange(range, root, undefined, index);
+	if (pieces.length === 0 || overlappingNote(notes, pieces)) return null;
+	const spansForNote = anchorsFromPieces(pieces, index);
+	if (spansForNote.length === 0) return null;
+	const note: DiscourseNote = {
+		id: `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+		text: body.slice(0, 2000),
+		spans: spansForNote,
+	};
+	notes = [...notes, note];
+	repaintHighlights();
+	persist();
+	return note;
+}
+
+export function updateNote(id: string, text: string): boolean {
+	const body = text.replace(/\u0000/g, "").trim().slice(0, 2000);
+	if (!body || !notes.some((note) => note.id === id)) return false;
+	notes = notes.map((note) => (note.id === id ? { ...note, text: body } : note));
+	persist();
+	return true;
+}
+
+export function deleteNote(id: string): boolean {
+	if (!notes.some((note) => note.id === id)) return false;
+	notes = notes.filter((note) => note.id !== id);
+	repaintHighlights();
+	persist();
+	return true;
+}
+
 export function rangeHasHighlight(range: Range): boolean {
 	const root = getRoot();
 	if (!root || spans.length === 0) return false;
@@ -120,6 +174,9 @@ function keyOrder(key: string): number | null {
 
 function buildReviewSegments(root: HTMLElement): Record<string, HighlightSegment> {
 	const keys = new Set(spans.map((s) => s.block));
+	for (const note of notes) {
+		for (const span of note.spans) keys.add(span.block);
+	}
 	const out: Record<string, HighlightSegment> = {};
 	let base = 0;
 	let bump = 0;
@@ -132,8 +189,10 @@ function buildReviewSegments(root: HTMLElement): Record<string, HighlightSegment
 			bump++;
 		}
 		if (!keys.has(ref.key)) continue;
+		const snapshot = ref.el.cloneNode(true) as HTMLElement;
+		snapshot.querySelectorAll(".note-cue").forEach((cue) => cue.remove());
 		out[segmentId(ref.key)] = {
-			containerHTML: ref.el.outerHTML,
+			containerHTML: snapshot.outerHTML,
 			highlightText: spans
 				.filter((s) => s.block === ref.key)
 				.sort((a, b) => a.start - b.start)
@@ -161,7 +220,7 @@ async function writeHighlights(): Promise<void> {
 	if (!root) return;
 	const slug = highlightSlugFromUrl(window.location.href);
 
-	if (spans.length === 0) {
+	if (spans.length === 0 && notes.length === 0) {
 		storedSegments = {};
 		await fetch("/api/highlights/delete", {
 			method: "POST",
@@ -181,7 +240,7 @@ async function writeHighlights(): Promise<void> {
 			highlights: {
 				title: root.dataset.title || "",
 				description: root.dataset.description || "",
-				highlightDocument: buildHighlightDocument(spans),
+				highlightDocument: buildHighlightDocument(spans, notes),
 				highlightSegments,
 			},
 		}),

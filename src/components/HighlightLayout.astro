@@ -82,12 +82,47 @@ const { title, description } = Astro.props;
 						/>
 					))}
 					<button
+						id="highlight-note"
+						class="note-btn"
+						type="button"
+						aria-label="Add a note"
+						style="display: none;"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4.5 3.75h15A2.25 2.25 0 0 1 21.75 6v9a2.25 2.25 0 0 1-2.25 2.25H10.3l-4.4 3.52a.75.75 0 0 1-1.22-.59v-2.93h-.18A2.25 2.25 0 0 1 2.25 15V6A2.25 2.25 0 0 1 4.5 3.75z" />
+						</svg>
+					</button>
+					<button
 						id="highlight-eraser"
 						class="eraser-btn"
 						style="display: none;"
 					>
 						<Fragment set:html={Eraser} />
 					</button>
+				</div>
+			</div>
+			<div id="note-card" class="note-card" hidden>
+				<p class="note-card-text"></p>
+				<textarea
+					class="note-card-input"
+					maxlength="2000"
+					rows="4"
+					placeholder="Write a note"
+					aria-label="Note"
+				></textarea>
+				<div class="note-card-actions">
+					<button type="button" data-note-action="save">Save</button>
+					<button type="button" data-note-action="edit">Edit</button>
+					<button type="button" data-note-action="delete">Delete</button>
+					<button type="button" data-note-action="cancel">Cancel</button>
 				</div>
 			</div>
 		)
@@ -113,6 +148,11 @@ const { title, description } = Astro.props;
 
 	// Tapping a swatch can collapse the selection (mobile), so keep a copy.
 	let savedRange: Range | null = null;
+	/** Range a new note will be saved against. */
+	let noteDraftRange: Range | null = null;
+	let openNoteId: string | null = null;
+	let noteCardMode: "view" | "edit" = "view";
+	let hoveredNoteId: string | null = null;
 
 	let selectionHandler: typeof import("../service/selectionHandler") | null =
 		null;
@@ -169,6 +209,7 @@ const { title, description } = Astro.props;
 	function scheduleRepaint() {
 		if (rootElement?.dataset.highlightsLoaded !== "true") return;
 		if (repaintTimer) clearTimeout(repaintTimer);
+		closeNoteCard();
 		repaintTimer = setTimeout(() => {
 			highlightService?.repaintHighlights();
 		}, 50);
@@ -182,6 +223,9 @@ const { title, description } = Astro.props;
 				const data = await loadPageUserState();
 				if (!data?.signedIn) return;
 				rootElement.dataset.authenticated = "true";
+				if (data.user?.emailVerified) {
+					rootElement.dataset.emailVerified = "true";
+				}
 			}
 			scheduleRestore();
 		} catch (e) {
@@ -213,7 +257,7 @@ const { title, description } = Astro.props;
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!menu || !selectionHandler || !rootElement) return;
 		const target = e.target as HTMLElement;
-		if (menu.contains(target)) return;
+		if (menu.contains(target) || target.closest?.("#note-card")) return;
 
 		menu.style.display = "none";
 
@@ -243,6 +287,7 @@ const { title, description } = Astro.props;
 			return;
 		}
 		savedRange = range.cloneRange();
+		closeNoteCard();
 
 		const isAuthenticated = rootElement.dataset.authenticated === "true";
 		if (!isAuthenticated) {
@@ -252,6 +297,8 @@ const { title, description } = Astro.props;
 			});
 			const eraserBtn = document.getElementById("highlight-eraser");
 			if (eraserBtn) eraserBtn.style.display = "none";
+			const noteBtn = document.getElementById("highlight-note");
+			if (noteBtn) noteBtn.style.display = "none";
 		} else {
 			updateHighlightingAvailability(intersectsCollapse, range);
 		}
@@ -288,6 +335,14 @@ const { title, description } = Astro.props;
 				!intersectsCollapse &&
 				Boolean(highlightService?.rangeHasHighlight(range));
 			eraserBtn.style.display = canErase ? "flex" : "none";
+		}
+
+		const noteBtn = document.getElementById("highlight-note");
+		if (noteBtn) {
+			const canNote =
+				!intersectsCollapse &&
+				rootElement?.dataset.emailVerified === "true";
+			noteBtn.style.display = canNote ? "flex" : "none";
 		}
 	}
 
@@ -344,6 +399,178 @@ const { title, description } = Astro.props;
 		finishMenuAction();
 	}
 
+	function noteCard(): HTMLElement | null {
+		return document.getElementById("note-card");
+	}
+
+	function canWriteNotes(): boolean {
+		return rootElement?.dataset.emailVerified === "true";
+	}
+
+	function setActiveNote(id: string | null): void {
+		rootElement
+			?.querySelectorAll(".note-range.is-active")
+			.forEach((el) => el.classList.remove("is-active"));
+		if (!id) return;
+		rootElement
+			?.querySelectorAll(`.note-range[data-note="${CSS.escape(id)}"]`)
+			.forEach((el) => el.classList.add("is-active"));
+	}
+
+	function closeNoteCard(): void {
+		const card = noteCard();
+		if (card) card.hidden = true;
+		noteDraftRange = null;
+		openNoteId = null;
+		setActiveNote(null);
+	}
+
+	function isShown(el: Element): boolean {
+		return el.getClientRects().length > 0;
+	}
+
+	/** Where a note's card hangs: its visible marker, else its first visible range. */
+	function noteAnchor(id: string): Element | null {
+		const sel = CSS.escape(id);
+		const cue = [
+			...(rootElement?.querySelectorAll(`.note-cue[data-note="${sel}"]`) ?? []),
+		].find(isShown);
+		if (cue) return cue;
+		return (
+			[
+				...(rootElement?.querySelectorAll(`.note-range[data-note="${sel}"]`) ??
+					[]),
+			].find(isShown) ?? null
+		);
+	}
+
+	/** Below the anchor's line, lined up with the paragraph's left edge. */
+	function placeNoteCard(target: Range | Element): void {
+		const card = noteCard();
+		if (!card || !rootElement) return;
+		card.hidden = false;
+		const lineRect =
+			target instanceof Range
+				? target.getClientRects()[0] ?? target.getBoundingClientRect()
+				: target.getClientRects()[0] ?? target.getBoundingClientRect();
+		const startNode =
+			target instanceof Range ? target.startContainer : (target as Node);
+		const startEl =
+			startNode.nodeType === Node.ELEMENT_NODE
+				? (startNode as Element)
+				: startNode.parentElement;
+		const block = startEl?.closest("[data-hl-block], p, li, td, th, blockquote, pre");
+		const blockRect = block?.getBoundingClientRect() ?? lineRect;
+		const rootRect = rootElement.getBoundingClientRect();
+		const maxLeft = Math.max(0, rootRect.width - card.offsetWidth);
+		const left = Math.min(Math.max(0, blockRect.left - rootRect.left), maxLeft);
+		card.style.left = `${left}px`;
+		card.style.top = `${lineRect.bottom - rootRect.top + 8}px`;
+	}
+
+	function renderNoteCard(): void {
+		const card = noteCard();
+		if (!card) return;
+		const textEl = card.querySelector<HTMLElement>(".note-card-text");
+		const input = card.querySelector<HTMLTextAreaElement>(".note-card-input");
+		const note = openNoteId
+			? highlightService?.getDiscourseNotes().find((item) => item.id === openNoteId)
+			: null;
+		const writing = noteCardMode === "edit";
+		if (textEl) {
+			textEl.hidden = writing;
+			textEl.textContent = note?.text ?? "";
+		}
+		if (input) {
+			input.hidden = !writing;
+			if (writing && document.activeElement !== input) {
+				input.value = note?.text ?? "";
+				input.focus();
+			}
+		}
+		const show = (action: string, visible: boolean) => {
+			const button = card.querySelector<HTMLButtonElement>(
+				`[data-note-action="${action}"]`,
+			);
+			if (button) button.hidden = !visible;
+		};
+		const writable = canWriteNotes();
+		show("save", writing && writable);
+		show("edit", !writing && writable && Boolean(note));
+		show("delete", !writing && writable && Boolean(note));
+		show("cancel", writing);
+	}
+
+	function openNoteViewer(id: string, fallback?: Range | Element): void {
+		openNoteId = id;
+		noteDraftRange = null;
+		noteCardMode = "view";
+		renderNoteCard();
+		setActiveNote(id);
+		const anchor = noteAnchor(id) ?? fallback;
+		if (anchor) placeNoteCard(anchor);
+	}
+
+	function openNoteComposer(range: Range): void {
+		openNoteId = null;
+		noteDraftRange = range;
+		noteCardMode = "edit";
+		renderNoteCard();
+		const input = noteCard()?.querySelector<HTMLTextAreaElement>(".note-card-input");
+		if (input) input.value = "";
+		placeNoteCard(range);
+		input?.focus();
+	}
+
+	function handleAddNote(): void {
+		const range = actionRange();
+		if (!range || !highlightService || !canWriteNotes()) return;
+		if (checkCollapseIntersection(range)) return;
+		const kept = range.cloneRange();
+		const existing = highlightService.noteForRange(range);
+		finishMenuAction();
+		if (existing) openNoteViewer(existing.id, kept);
+		else openNoteComposer(kept);
+	}
+
+	function handleNoteCardAction(action: string): void {
+		if (!highlightService) return;
+		if (action === "cancel") {
+			if (openNoteId) {
+				noteCardMode = "view";
+				renderNoteCard();
+			} else {
+				closeNoteCard();
+			}
+			return;
+		}
+		if (action === "edit" && openNoteId) {
+			noteCardMode = "edit";
+			renderNoteCard();
+			return;
+		}
+		if (action === "delete" && openNoteId) {
+			const id = openNoteId;
+			highlightService.deleteNote(id);
+			closeNoteCard();
+			return;
+		}
+		if (action === "save") {
+			const input = noteCard()?.querySelector<HTMLTextAreaElement>(".note-card-input");
+			const text = input?.value ?? "";
+			if (openNoteId) {
+				if (!highlightService.updateNote(openNoteId, text)) return;
+				noteCardMode = "view";
+				renderNoteCard();
+				return;
+			}
+			if (!noteDraftRange) return;
+			const saved = highlightService.saveNote(noteDraftRange, text);
+			if (!saved) return;
+			openNoteViewer(saved.id);
+		}
+	}
+
 	function setupEventListeners(): void {
 		document.addEventListener("mouseup", handleSelection);
 		document.addEventListener("touchend", handleSelection);
@@ -373,6 +600,76 @@ const { title, description } = Astro.props;
 			});
 			eraserBtn.addEventListener("click", handleClear);
 		}
+
+		const noteBtn = document.getElementById("highlight-note");
+		if (noteBtn) {
+			noteBtn.addEventListener("touchend", (e) => {
+				e.preventDefault();
+				handleAddNote();
+			});
+			noteBtn.addEventListener("click", handleAddNote);
+		}
+
+		noteCard()?.addEventListener("click", (e) => {
+			const action = (e.target as HTMLElement).closest<HTMLButtonElement>(
+				"[data-note-action]",
+			)?.dataset.noteAction;
+			if (action) handleNoteCardAction(action);
+		});
+
+		function setHoveredNote(id: string | null): void {
+			if (hoveredNoteId === id) return;
+			rootElement
+				?.querySelectorAll(".note-range.is-hovered")
+				.forEach((el) => el.classList.remove("is-hovered"));
+			hoveredNoteId = id;
+			if (!id || !rootElement) return;
+			rootElement
+				.querySelectorAll(`.note-range[data-note="${CSS.escape(id)}"]`)
+				.forEach((el) => el.classList.add("is-hovered"));
+		}
+
+		rootElement?.addEventListener("mouseover", (e) => {
+			const target = e.target as HTMLElement;
+			if (target.closest?.(".tooltip-text")) {
+				setHoveredNote(null);
+				return;
+			}
+			const mark = target.closest?.(".note-range[data-note]");
+			setHoveredNote(mark?.getAttribute("data-note") ?? null);
+		});
+		rootElement?.addEventListener("mouseout", (e) => {
+			const next = e.relatedTarget;
+			if (next instanceof Node && rootElement?.contains(next)) return;
+			setHoveredNote(null);
+		});
+
+		rootElement?.addEventListener("click", (e) => {
+			const host = (e.target as HTMLElement).closest<HTMLElement>("[data-note]");
+			if (!host || host.closest("#note-card, #highlight-menu")) return;
+			const id = host.getAttribute("data-note");
+			if (!id) return;
+			const selection = window.getSelection();
+			if (selection && !selection.isCollapsed && selection.toString().trim()) return;
+			e.preventDefault();
+			if (openNoteId === id && !noteCard()?.hidden) {
+				closeNoteCard();
+				return;
+			}
+			openNoteViewer(id, host);
+		});
+
+		document.addEventListener("mousedown", (e) => {
+			const card = noteCard();
+			if (!card || card.hidden) return;
+			const target = e.target as HTMLElement;
+			if (card.contains(target) || target.closest?.("[data-note], #highlight-note")) return;
+			closeNoteCard();
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") closeNoteCard();
+		});
 	}
 
 	async function init() {

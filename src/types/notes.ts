@@ -1,5 +1,5 @@
 import type { Timestamp } from 'firebase-admin/firestore';
-import type { HighlightDocument } from '../utils/stableHighlight';
+import type { DiscourseNote, HighlightDocument } from '../utils/stableHighlight';
 
 export interface Note {
     id: string;
@@ -14,6 +14,8 @@ export interface Highlight {
     description: string;   // content page description
     rangyHash?: string;    // Legacy Rangy serialized highlight data (pre-v3 docs only)
     highlightDocument?: HighlightDocument;
+    /** Private notes stored on the same document as the page's highlights. */
+    notes?: DiscourseNote[];
     highlightSegments: { [segmentId: string]: HighlightSegment };
     updatedAt: Timestamp;
     formattedDate?: string;

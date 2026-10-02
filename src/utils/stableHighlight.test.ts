@@ -5,10 +5,14 @@ import { createCombinedMarkdown, formatBlock, parsePaliOnly } from "./contentPar
 import { highlightSlugFromUrl, legacyHighlightSlugs } from "./highlightSlug";
 import {
 	addPieces,
+	anchorsFromPieces,
 	buildBlockIndex,
 	erasePieces,
 	paintHighlights,
+	paintNotes,
+	parseHighlightDocument,
 	piecesFromRange,
+	sanitizeDiscourseNotes,
 	spansFromLegacySegments,
 	type HighlightSpan,
 } from "./stableHighlight";
@@ -293,5 +297,66 @@ describe("legacy recovery", () => {
 			spans.map((s) => [s.block, s.color, s.quote]).sort(),
 			[["en:2", "blue", "monk"], ["pli:2", "yellow", "bhikkhu"]],
 		);
+	});
+});
+
+describe("notes", () => {
+	beforeEach(() => installDom(interleavedPage()));
+
+	function mixedNote() {
+		const pli1 = root().querySelector('[data-hl-block="pli:1"]')!;
+		const en1 = root().querySelector('[data-hl-block="en:1"]')!;
+		const pieces = piecesFromRange(
+			select(pli1, "Ekaṁ", en1, "At one"),
+			root(),
+			allRendered,
+		);
+		return {
+			id: "note-mixed01",
+			text: "A private note",
+			spans: anchorsFromPieces(pieces, buildBlockIndex(root())),
+		};
+	}
+
+	it("drops a second note that overlaps an earlier range", () => {
+		const note = mixedNote();
+		const kept = sanitizeDiscourseNotes([
+			note,
+			{ ...note, id: "note-second1", text: "another" },
+			{ id: "note-empty01", text: "   ", spans: note.spans },
+		]);
+		assert.deepEqual(kept.map((item) => item.id), ["note-mixed01"]);
+		assert.equal(
+			parseHighlightDocument({ version: 3, spans: [], notes: kept })?.notes.length,
+			1,
+		);
+	});
+
+	it("shows a mixed English and Pāli note from the English part on an English-only page", () => {
+		const note = mixedNote();
+		installDom(englishOnlyPage());
+		const painted = paintNotes(root(), [note], allRendered);
+		const cue = root().querySelector(".note-cue");
+		assert.ok(cue);
+		assert.equal(
+			cue!.closest("[data-hl-block]")!.getAttribute("data-hl-block"),
+			"en:1",
+		);
+		assert.match(root().querySelector("mark[data-note]")!.textContent ?? "", /At one/);
+		assert.ok(painted[0]!.spans.some((span) => span.block === "pli:1"));
+	});
+
+	it("puts the marker on the first visible span when Pāli is hidden", () => {
+		const note = mixedNote();
+		paintNotes(root(), [note], (el) => !el.classList.contains("pali-paragraph"));
+		const cues = [...root().querySelectorAll(".note-cue")];
+		assert.ok(cues.length > 0);
+		assert.ok(
+			cues.every(
+				(cue) => cue.closest("[data-hl-block]")!.getAttribute("data-hl-block") === "en:1",
+			),
+		);
+		assert.ok(root().querySelector('[data-hl-block="pli:1"] mark[data-note]'));
+		assert.ok(root().querySelector('[data-hl-block="en:1"] mark[data-note]'));
 	});
 });

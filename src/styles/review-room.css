@@ -52,6 +52,19 @@
 	width: 100%;
 }
 
+@media (min-width: 768px) {
+	#dashboard-container .pills-scroll {
+		flex-wrap: nowrap;
+		justify-content: safe center;
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+
+	#dashboard-container .pills-scroll::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 /* Desktop-only pills; on mobile they live in the More menu. */
 #dashboard-container .menu-pill {
 	display: none;
@@ -1053,6 +1066,48 @@
 
 .dark #dashboard-container .highlight-page:hover {
 	box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+#dashboard-container .note-search {
+	display: block;
+	width: 100%;
+	margin: 0 0 1rem;
+	padding: 0.55rem 0.75rem;
+	border: 1px solid var(--surface-border, rgba(128, 128, 128, 0.35));
+	border-radius: 0.6rem;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+}
+
+#dashboard-container .markup-lanes {
+	margin-bottom: 0.85rem;
+}
+
+#dashboard-container .note-page[hidden],
+#dashboard-container .note-entry[hidden],
+#dashboard-container .highlight-page[hidden],
+#dashboard-container [data-markup-panel][hidden],
+#dashboard-container .note-search-empty[hidden] {
+	display: none;
+}
+
+#dashboard-container .note-entry {
+	margin-top: 1rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid var(--surface-border, rgba(128, 128, 128, 0.25));
+}
+
+#dashboard-container .note-entry-text {
+	margin: 0 0 0.5rem;
+	white-space: pre-wrap;
+	font-size: 0.95rem;
+	line-height: 1.45;
+}
+
+#dashboard-container .note-range {
+	background-color: rgb(124 106 150 / 0.18);
+	border-radius: 2px;
 }
 
 #dashboard-container .highlight-content {

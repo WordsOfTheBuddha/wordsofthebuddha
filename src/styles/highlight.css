@@ -72,6 +72,145 @@
 	background: #777;
 }
 
+.note-btn {
+	width: 24px;
+	height: 24px;
+	min-width: 24px;
+	border: none;
+	border-radius: 50%;
+	background: #6d5b8a;
+	color: white;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	flex-shrink: 0;
+}
+
+.note-btn svg {
+	width: 14px;
+	height: 14px;
+}
+
+.note-btn:hover {
+	background: #5b4b75;
+}
+
+/* Text stays as written (glossary underlines, highlights); only the cue marks a note. */
+.note-range {
+	background: none;
+	color: inherit;
+	cursor: pointer;
+	border-radius: 2px;
+	transition: background-color 0.15s;
+}
+
+.note-range.is-hovered,
+.note-range.is-active {
+	background-color: rgb(124 106 150 / 0.16);
+}
+
+.dark .note-range.is-hovered,
+.dark .note-range.is-active {
+	background-color: rgb(214 199 240 / 0.14);
+}
+
+.note-cue {
+	display: inline-block;
+	width: 0.85em;
+	height: 0.85em;
+	margin: 0 0.2em 0 0;
+	padding: 0;
+	border: none;
+	background: none;
+	color: #7c6a96;
+	line-height: 0;
+	vertical-align: 0.3em;
+	cursor: pointer;
+	opacity: 0.85;
+}
+
+.dark .note-cue {
+	color: #c9b8e6;
+}
+
+.note-cue:hover,
+.note-cue:focus-visible {
+	opacity: 1;
+}
+
+.note-cue svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.note-card {
+	position: absolute;
+	z-index: 9999;
+	width: min(20rem, calc(100vw - 2rem));
+	padding: 0.75rem 0.85rem;
+	border: 1px solid var(--surface-border, #e5e7eb);
+	border-radius: 8px;
+	background: var(--surface-paper, #fff);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+	color: var(--text-color, inherit);
+}
+
+.note-card[hidden] {
+	display: none;
+}
+
+.note-card-text {
+	margin: 0 0 0.6rem;
+	white-space: pre-wrap;
+	font-size: 0.95rem;
+	line-height: 1.45;
+}
+
+.note-card-input {
+	display: block;
+	width: 100%;
+	margin: 0 0 0.6rem;
+	padding: 0.45rem 0.55rem;
+	border: 1px solid var(--surface-border, #d1d5db);
+	border-radius: 6px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	resize: vertical;
+}
+
+.note-card-input[hidden],
+.note-card-text[hidden],
+.note-card-actions button[hidden] {
+	display: none;
+}
+
+.note-card-actions {
+	display: flex;
+	gap: 0.4rem;
+	justify-content: flex-end;
+}
+
+.note-card-actions button {
+	border: none;
+	border-radius: 6px;
+	padding: 0.3rem 0.65rem;
+	background: #6d5b8a;
+	color: #fff;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.85rem;
+}
+
+.note-card-actions button[data-note-action="cancel"],
+.note-card-actions button[data-note-action="delete"] {
+	background: transparent;
+	color: inherit;
+}
+
 .highlight-yellow {
 	background-color: #fef08a;
 }

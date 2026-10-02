@@ -15,6 +15,11 @@
  *
  * Each span keeps its quote plus a little surrounding text so it can be found
  * again after small wording edits or paragraph renumbering.
+ *
+ * A note is the same kind of range plus a private text. Notes live on the
+ * highlight document, so loading a page does not read a second record. One
+ * note per overlapping range. The marker is drawn on the first span that is
+ * actually on screen, so a mixed English/Pāli note still shows in English-only.
  */
 
 import { shouldSkipCopyElement } from "./plainCopy";
@@ -28,21 +33,35 @@ export const HIGHLIGHT_COLORS: readonly HighlightColor[] = [
 	"blue",
 ];
 
-export interface HighlightSpan {
+/** A stretch of one block, addressed the same way a highlight is. */
+export interface TextAnchor {
 	block: string;
 	start: number;
 	end: number;
-	color: HighlightColor;
 	quote: string;
 	prefix: string;
 	suffix: string;
 }
+
+export interface HighlightSpan extends TextAnchor {
+	color: HighlightColor;
+}
+
+/** One private note on a selection. At most one note covers any given range. */
+export interface DiscourseNote {
+	id: string;
+	text: string;
+	spans: TextAnchor[];
+}
+
+export const NOTE_TEXT_MAX = 2000;
 
 export const HIGHLIGHT_DOC_VERSION = 3;
 
 export interface HighlightDocument {
 	version: typeof HIGHLIGHT_DOC_VERSION;
 	spans: HighlightSpan[];
+	notes: DiscourseNote[];
 }
 
 /** A selected stretch of one block, before it gets a color. */
@@ -91,8 +110,8 @@ const BLOCK_SELECTOR = BLOCK_TAGS.join(",");
 const OPAQUE_SELECTOR =
 	"svg, .mermaid, script, style, noscript, textarea, input, select, .collapse-toggle";
 const EXCLUDED_BLOCK_SELECTOR =
-	".highlight-menu, .tm-popover-overlay, .bottom-popover, .popover-content";
-const MARK_SELECTOR = "mark[data-hl]";
+	".highlight-menu, .note-card, .tm-popover-overlay, .bottom-popover, .popover-content";
+const MARK_SELECTOR = "mark[data-hl], mark[data-note]";
 const CONTEXT_CHARS = 32;
 
 function isNestedBlock(el: Element, block: Element): boolean {
@@ -210,6 +229,22 @@ function textForKey(index: BlockIndex, key: string): string | null {
 	return ref ? blockText(ref.el) : null;
 }
 
+export function makeAnchor(
+	block: string,
+	text: string,
+	start: number,
+	end: number,
+): TextAnchor {
+	return {
+		block,
+		start,
+		end,
+		quote: text.slice(start, end),
+		prefix: text.slice(Math.max(0, start - CONTEXT_CHARS), start),
+		suffix: text.slice(end, end + CONTEXT_CHARS),
+	};
+}
+
 export function makeSpan(
 	block: string,
 	text: string,
@@ -217,15 +252,44 @@ export function makeSpan(
 	end: number,
 	color: HighlightColor,
 ): HighlightSpan {
-	return {
-		block,
-		start,
-		end,
-		color,
-		quote: text.slice(start, end),
-		prefix: text.slice(Math.max(0, start - CONTEXT_CHARS), start),
-		suffix: text.slice(end, end + CONTEXT_CHARS),
-	};
+	return { ...makeAnchor(block, text, start, end), color };
+}
+
+export function anchorsFromPieces(
+	pieces: BlockPiece[],
+	index: BlockIndex,
+): TextAnchor[] {
+	const anchors: TextAnchor[] = [];
+	for (const piece of pieces) {
+		const text = textForKey(index, piece.block);
+		if (text === null || piece.start >= piece.end) continue;
+		anchors.push(makeAnchor(piece.block, text, piece.start, piece.end));
+	}
+	return anchors;
+}
+
+function rangesOverlap(
+	anchor: TextAnchor,
+	piece: { block: string; start: number; end: number },
+): boolean {
+	return (
+		anchor.block === piece.block &&
+		anchor.start < piece.end &&
+		anchor.end > piece.start
+	);
+}
+
+/** The note already covering any of these pieces, if there is one. */
+export function overlappingNote(
+	notes: DiscourseNote[],
+	pieces: BlockPiece[],
+): DiscourseNote | null {
+	for (const note of notes) {
+		if (note.spans.some((span) => pieces.some((piece) => rangesOverlap(span, piece)))) {
+			return note;
+		}
+	}
+	return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -497,7 +561,7 @@ function allIndexes(haystack: string, needle: string): number[] {
  * offset. Approximate matching anchors on the quote's head and tail so a word
  * change in the middle still resolves.
  */
-export function locateInText(text: string, span: HighlightSpan): Located | null {
+export function locateInText(text: string, span: TextAnchor): Located | null {
 	if (text.slice(span.start, span.end) === span.quote && span.quote) {
 		return {
 			start: span.start,
@@ -606,14 +670,15 @@ export function pageHasLang(index: BlockIndex, lang: Lang): boolean {
 // Painting
 
 export function clearHighlightMarks(root: HTMLElement): void {
+	root.querySelectorAll(".note-cue").forEach((cue) => cue.remove());
 	const parents = new Set<Node>();
-	root.querySelectorAll(MARK_SELECTOR).forEach((mark) => {
+	for (const mark of [...root.querySelectorAll(MARK_SELECTOR)]) {
 		const parent = mark.parentNode;
-		if (!parent) return;
+		if (!parent) continue;
 		while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
 		parent.removeChild(mark);
 		parents.add(parent);
-	});
+	}
 	parents.forEach((p) => p.normalize());
 }
 
@@ -656,12 +721,178 @@ export function paintHighlights(
 	return spans.map((s, i) => resolved[i]?.span ?? s);
 }
 
+function resolveAnchor(
+	anchor: TextAnchor,
+	index: BlockIndex,
+): { anchor: TextAnchor; targets: PaintTarget[] } | null {
+	const resolved = resolveSpan({ ...anchor, color: "yellow" }, index);
+	if (!resolved) return null;
+	const { color: _color, ...rest } = resolved.span;
+	return { anchor: rest, targets: resolved.targets };
+}
+
+/** Underline one range. Returns the first mark so a cue can sit at its start. */
+function wrapNoteRange(
+	el: HTMLElement,
+	start: number,
+	end: number,
+	noteId: string,
+): HTMLElement | null {
+	const doc = el.ownerDocument;
+	let acc = 0;
+	let first: HTMLElement | null = null;
+	for (const t of blockTextNodes(el)) {
+		const len = t.length;
+		const s = Math.max(start, acc);
+		const e = Math.min(end, acc + len);
+		acc += len;
+		if (s >= e) continue;
+		let target = t;
+		const localStart = s - (acc - len);
+		if (localStart > 0) target = target.splitText(localStart);
+		if (e - s < target.length) target.splitText(e - s);
+		const mark = doc.createElement("mark");
+		mark.className = "note-range";
+		mark.setAttribute("data-note", noteId);
+		target.parentNode!.insertBefore(mark, target);
+		mark.appendChild(target);
+		first ??= mark;
+	}
+	return first;
+}
+
+export const NOTE_ICON_SVG =
+	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.5 3.75h15A2.25 2.25 0 0 1 21.75 6v9a2.25 2.25 0 0 1-2.25 2.25H10.3l-4.4 3.52a.75.75 0 0 1-1.22-.59v-2.93h-.18A2.25 2.25 0 0 1 2.25 15V6A2.25 2.25 0 0 1 4.5 3.75z"/></svg>';
+
+function placeNoteCue(mark: HTMLElement, noteId: string): void {
+	const cue = mark.ownerDocument.createElement("button");
+	cue.type = "button";
+	cue.className = "note-cue";
+	cue.setAttribute("data-note", noteId);
+	cue.setAttribute("aria-label", "Show note");
+	cue.innerHTML = NOTE_ICON_SVG;
+	mark.insertBefore(cue, mark.firstChild);
+}
+
+/**
+ * Paint each note's visible spans and put * on the first span that is on
+ * screen. Spans whose block is absent stay stored. Returns notes with
+ * offsets refreshed where they were found.
+ */
+export function paintNotes(
+	root: HTMLElement,
+	notes: DiscourseNote[],
+	isRendered: (el: HTMLElement) => boolean = defaultIsRendered,
+): DiscourseNote[] {
+	root.querySelectorAll(".note-cue").forEach((cue) => cue.remove());
+	const parents = new Set<Node>();
+	for (const mark of [...root.querySelectorAll("mark[data-note]")]) {
+		const parent = mark.parentNode;
+		if (!parent) continue;
+		while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+		parent.removeChild(mark);
+		parents.add(parent);
+	}
+	parents.forEach((p) => p.normalize());
+
+	const index = buildBlockIndex(root);
+	return notes.map((note) => {
+		const resolved = note.spans.map((span) => resolveAnchor(span, index));
+		let cueIndex = resolved.findIndex((item) =>
+			item?.targets.some((target) => isRendered(target.el)),
+		);
+		if (cueIndex < 0) {
+			cueIndex = resolved.findIndex((item) => item && item.targets.length > 0);
+		}
+		const cueTargets = cueIndex >= 0 ? resolved[cueIndex]!.targets : [];
+		const anyCueVisible = cueTargets.some((target) => isRendered(target.el));
+
+		resolved.forEach((item, spanIndex) => {
+			if (!item) return;
+			for (const target of item.targets) {
+				const first = wrapNoteRange(target.el, target.start, target.end, note.id);
+				const showCue =
+					spanIndex === cueIndex &&
+					first &&
+					(anyCueVisible ? isRendered(target.el) : true);
+				if (showCue && first) placeNoteCue(first, note.id);
+			}
+		});
+
+		return {
+			...note,
+			spans: note.spans.map((span, i) => resolved[i]?.anchor ?? span),
+		};
+	});
+}
+
+function cleanNoteText(text: string): string {
+	return text.replace(/\u0000/g, "").trim().slice(0, NOTE_TEXT_MAX);
+}
+
+function sanitizeAnchor(raw: unknown): TextAnchor | null {
+	if (!raw || typeof raw !== "object") return null;
+	const anchor = raw as Record<string, unknown>;
+	const block = typeof anchor.block === "string" ? anchor.block.slice(0, 80) : "";
+	const start =
+		typeof anchor.start === "number" && Number.isFinite(anchor.start)
+			? Math.max(0, Math.floor(anchor.start))
+			: -1;
+	const end =
+		typeof anchor.end === "number" && Number.isFinite(anchor.end)
+			? Math.max(0, Math.floor(anchor.end))
+			: -1;
+	const quote = typeof anchor.quote === "string" ? anchor.quote.slice(0, 8000) : "";
+	if (!block || start < 0 || end <= start || !quote) return null;
+	return {
+		block,
+		start,
+		end,
+		quote,
+		prefix: typeof anchor.prefix === "string" ? anchor.prefix.slice(0, CONTEXT_CHARS) : "",
+		suffix: typeof anchor.suffix === "string" ? anchor.suffix.slice(0, CONTEXT_CHARS) : "",
+	};
+}
+
+/** Keep well-formed notes and drop any whose range overlaps an earlier one. */
+export function sanitizeDiscourseNotes(raw: unknown): DiscourseNote[] {
+	if (!Array.isArray(raw)) return [];
+	const notes: DiscourseNote[] = [];
+	for (const item of raw) {
+		if (!item || typeof item !== "object") continue;
+		const record = item as Record<string, unknown>;
+		const text = cleanNoteText(typeof record.text === "string" ? record.text : "");
+		if (!text) continue;
+		const spans = Array.isArray(record.spans)
+			? record.spans
+					.map(sanitizeAnchor)
+					.filter((span): span is TextAnchor => span !== null)
+			: [];
+		if (spans.length === 0) continue;
+		const pieces = spans.map((span) => ({
+			block: span.block,
+			start: span.start,
+			end: span.end,
+		}));
+		if (overlappingNote(notes, pieces)) continue;
+		let id =
+			typeof record.id === "string" && /^note-[a-z0-9-]{6,80}$/.test(record.id)
+				? record.id
+				: "";
+		if (!id || notes.some((note) => note.id === id)) {
+			id = `note-kept-${notes.length}-${spans[0]!.block.replace(/[^a-z0-9]+/gi, "")}`;
+		}
+		notes.push({ id, text, spans });
+	}
+	return notes;
+}
+
 // ---------------------------------------------------------------------------
 // Storage and legacy recovery
 
 export function parseHighlightDocument(raw: unknown): HighlightDocument | null {
 	if (!raw || typeof raw !== "object") return null;
-	const data = raw as { version?: unknown; spans?: unknown };
+	const data = raw as { version?: unknown; spans?: unknown; notes?: unknown };
 	if (data.version !== HIGHLIGHT_DOC_VERSION || !Array.isArray(data.spans)) {
 		return null;
 	}
@@ -673,11 +904,18 @@ export function parseHighlightDocument(raw: unknown): HighlightDocument | null {
 			typeof (s as HighlightSpan).quote === "string" &&
 			HIGHLIGHT_COLORS.includes((s as HighlightSpan).color),
 	);
-	return { version: HIGHLIGHT_DOC_VERSION, spans };
+	return {
+		version: HIGHLIGHT_DOC_VERSION,
+		spans,
+		notes: sanitizeDiscourseNotes(data.notes),
+	};
 }
 
-export function buildHighlightDocument(spans: HighlightSpan[]): HighlightDocument {
-	return { version: HIGHLIGHT_DOC_VERSION, spans };
+export function buildHighlightDocument(
+	spans: HighlightSpan[],
+	notes: DiscourseNote[] = [],
+): HighlightDocument {
+	return { version: HIGHLIGHT_DOC_VERSION, spans, notes };
 }
 
 function colorOfMark(mark: Element): HighlightColor | null {

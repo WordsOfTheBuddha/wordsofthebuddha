@@ -6,6 +6,7 @@ import {
 	loadHighlightDocs,
 } from "../../../service/highlightStore";
 import { normalizeHighlightSlug } from "../../../utils/highlightSlug";
+import { sanitizeDiscourseNotes } from "../../../utils/stableHighlight";
 
 export const prerender = false;
 
@@ -75,6 +76,44 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 		const slug = pathSlug(rawSlug);
 
 		if (operation === "add") {
+			const document =
+				highlights.highlightDocument &&
+				typeof highlights.highlightDocument === "object"
+					? { ...highlights.highlightDocument }
+					: { version: 3, spans: [] };
+			const pageNotes = sanitizeDiscourseNotes(document.notes);
+			if (pageNotes.length > 0 && user.emailVerified !== true) {
+				const existing = await db
+					.collection("notes")
+					.doc(noteId)
+					.collection("highlights")
+					.doc(normalizeHighlightSlug(slug))
+					.get();
+				const stored = sanitizeDiscourseNotes(
+					existing.data()?.highlightDocument?.notes,
+				);
+				const unchanged =
+					pageNotes.length === stored.length &&
+					pageNotes.every((note, index) => {
+						const previous = stored[index];
+						return (
+							previous &&
+							previous.id === note.id &&
+							previous.text === note.text &&
+							JSON.stringify(previous.spans) === JSON.stringify(note.spans)
+						);
+					});
+				if (!unchanged) {
+					return new Response(
+						JSON.stringify({
+							error: "Verify your email to save notes",
+							opId,
+						}),
+						{ status: 403 },
+					);
+				}
+			}
+			document.notes = pageNotes;
 			// Full overwrite: a merge would keep review-room segments of erased highlights.
 			await db
 				.collection("notes")
@@ -85,7 +124,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 					slug,
 					title: highlights.title ?? "",
 					description: highlights.description ?? "",
-					highlightDocument: highlights.highlightDocument,
+					highlightDocument: document,
 					highlightSegments: highlights.highlightSegments ?? {},
 					updatedAt: new Date(),
 				});
