@@ -1,9 +1,12 @@
 ---
+title: Ghaṭīkāra sutta - With Ghaṭīkāra
+description: The deity Ghaṭīkāra visits the Buddha to recount the liberation of seven bhikkhus reborn in the Aviha heaven, reminiscing on their shared past as fellow disciples and friends.
+qualities: ending, dispassion, spiritual life, name, form
+theme: inspiration, story, wisdom
 slug: sn1.50
-source: suttacentral/bilara-data
-title: Ghaṭīkārasutta
-edition: ms
-granularity: paragraph
+character:
+  - Ghaṭikāra the Potter
+priority: 1.2
 ---
 
 “Avihaṁ upapannāse,
@@ -74,12 +77,3 @@ ahuvā me pure sakhā”ti.
 sahāyānaṁ ahu saṅgamo;
 Ubhinnaṁ bhāvitattānaṁ,
 sarīrantimadhārinan”ti.
-
-Ādittavaggo pañcamo.
-
-Tassuddānaṁ
-
-Ādittaṁ kiṁdadaṁ annaṁ,
-ekamūlaanomiyaṁ;
-Accharāvanaropajetaṁ,
-maccharena ghaṭīkaroti.
