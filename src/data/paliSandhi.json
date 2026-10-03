@@ -947,5 +947,9 @@
 	"paridhota": ["cleansed; purified (by); lit. washed all round"],
 	"paññāyatthaṁ": ["paññāya", "atthaṁ"],
 	"kāmakāminoti": ["kāmakāmī"],
-	"passamānānukubbanti": ["passamāna", "anukubbati"]
+	"passamānānukubbanti": ["passamāna", "anukubbati"],
+	"atthajālantipi": ["atthajāla", "iti", "api"],
+	"dhammajālantipi": ["dhammajāla", "iti", "api"],
+	"brahmajālantipi": ["brahmajāla", "iti", "api"],
+	"diṭṭhijālantipi": ["diṭṭhijāla", "iti", "api"]
 }

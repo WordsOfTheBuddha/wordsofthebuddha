@@ -1,9 +1,15 @@
 ---
+title: Brahmajāla sutta - The Supreme Net
+description: When wanderers dispute the Buddha’s virtues, he guides the Saṅgha beyond praise and blame into a profound analysis of human thought. Classifying sixty-two views about self and cosmos, the Buddha reveals how flawed assumptions stem from meditative visions or logic conditioned by feeling, while awakening transcends all mental constructs.
+qualities: wrong view, right view, speculation, felt experience, contact, complete comprehension, perceiving gratification, perceiving drawback, perceiving escape, arising and passing away, craving
+theme: principle, cultivating discernment, wisdom
 slug: dn1
-source: suttacentral/bilara-data
-title: Brahmajālasutta
-edition: ms
-granularity: paragraph
+character:
+  - Suppiya the Wanderer
+  - Student Brahmadatta
+  - Venerable Ānanda
+simile: fisherman over a pool of water, mangoes cut off at the stalk
+priority: 2.2
 ---
 
 1. Paribbājakakathā
@@ -120,7 +126,7 @@ Santi, bhikkhave, eke samaṇabrāhmaṇā pubbantakappikā pubbantānudiṭṭh
 
 Santi, bhikkhave, eke samaṇabrāhmaṇā sassatavādā, sassataṁ attānañca lokañca paññapenti catūhi vatthūhi. Te ca bhonto samaṇabrāhmaṇā kimāgamma kimārabbha sassatavādā sassataṁ attānañca lokañca paññapenti catūhi vatthūhi?
 
-Idha, bhikkhave, ekacco samaṇo vā brāhmaṇo vā ātappamanvāya padhānamanvāya anuyogamanvāya appamādamanvāya sammāmanasikāramanvāya tathārūpaṁ cetosamādhiṁ phusati, yathāsamāhite citte (…) anekavihitaṁ pubbenivāsaṁ anussarati. Seyyathidaṁ—ekampi jātiṁ dvepi jātiyo tissopi jātiyo catassopi jātiyo pañcapi jātiyo dasapi jātiyo vīsampi jātiyo tiṁsampi jātiyo cattālīsampi jātiyo paññāsampi jātiyo jātisatampi jātisahassampi jātisatasahassampi anekānipi jātisatāni anekānipi jātisahassāni anekānipi jātisatasahassāni: ‘amutrāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto amutra udapādiṁ; tatrāpāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto idhūpapanno’ti. Iti sākāraṁ sauddesaṁ anekavihitaṁ pubbenivāsaṁ anussarati.
+Idha, bhikkhave, ekacco samaṇo vā brāhmaṇo vā ātappamanvāya padhānamanvāya anuyogamanvāya appamādamanvāya sammāmanasikāramanvāya tathārūpaṁ cetosamādhiṁ phusati, yathāsamāhite citte anekavihitaṁ pubbenivāsaṁ anussarati. Seyyathidaṁ—ekampi jātiṁ dvepi jātiyo tissopi jātiyo catassopi jātiyo pañcapi jātiyo dasapi jātiyo vīsampi jātiyo tiṁsampi jātiyo cattālīsampi jātiyo paññāsampi jātiyo jātisatampi jātisahassampi jātisatasahassampi anekānipi jātisatāni anekānipi jātisahassāni anekānipi jātisatasahassāni: ‘amutrāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto amutra udapādiṁ; tatrāpāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto idhūpapanno’ti. Iti sākāraṁ sauddesaṁ anekavihitaṁ pubbenivāsaṁ anussarati.
 
 So evamāha: ‘sassato attā ca loko ca vañjho kūṭaṭṭho esikaṭṭhāyiṭṭhito; te ca sattā sandhāvanti saṁsaranti cavanti upapajjanti, atthi tveva sassatisamaṁ. Taṁ kissa hetu? Ahañhi ātappamanvāya padhānamanvāya anuyogamanvāya appamādamanvāya sammāmanasikāramanvāya tathārūpaṁ cetosamādhiṁ phusāmi, yathāsamāhite citte anekavihitaṁ pubbenivāsaṁ anussarāmi. Seyyathidaṁ—ekampi jātiṁ dvepi jātiyo tissopi jātiyo catassopi jātiyo pañcapi jātiyo dasapi jātiyo vīsampi jātiyo tiṁsampi jātiyo cattālīsampi jātiyo paññāsampi jātiyo jātisatampi jātisahassampi jātisatasahassampi anekānipi jātisatāni anekānipi jātisahassāni anekānipi jātisatasahassāni: “amutrāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto amutra udapādiṁ; tatrāpāsiṁ evaṁnāmo evaṅgotto evaṁvaṇṇo evamāhāro evaṁsukhadukkhappaṭisaṁvedī evamāyupariyanto, so tato cuto idhūpapanno”ti. Iti sākāraṁ sauddesaṁ anekavihitaṁ pubbenivāsaṁ anussarāmi.
 
@@ -497,5 +503,3 @@ Evaṁ vutte, āyasmā ānando bhagavantaṁ etadavoca: “acchariyaṁ, bhante,
 “Tasmātiha tvaṁ, ānanda, imaṁ dhammapariyāyaṁ atthajālantipi naṁ dhārehi, dhammajālantipi naṁ dhārehi, brahmajālantipi naṁ dhārehi, diṭṭhijālantipi naṁ dhārehi, anuttaro saṅgāmavijayotipi naṁ dhārehī”ti.
 
 Idamavoca bhagavā. Attamanā te bhikkhū bhagavato bhāsitaṁ abhinandunti. Imasmiñca pana veyyākaraṇasmiṁ bhaññamāne dasasahassī lokadhātu akampitthāti.
-
-Brahmajālasuttaṁ niṭṭhitaṁ paṭhamaṁ.
