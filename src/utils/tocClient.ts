@@ -2,8 +2,10 @@
  * Shared table-of-contents helpers for long posts and sectioned discourses.
  *
  * Discourses use ### / #### / ##### headings. Unexpected # / ## are shown
- * as top-level, same as ###. Lone verse numbers (Dhp “179”) are omitted;
- * dotted sutta ids (“2.11”, “1.268”) are included in the ToC.
+ * as top-level, same as ###. A deeper heading with no shallower predecessor
+ * is also top-level — an opening #### before any ### is not indented.
+ * Lone verse numbers (Dhp “179”) are omitted; dotted sutta ids (“2.11”,
+ * “1.268”) are included in the ToC.
  */
 
 import { decodeHtmlEntities } from "./htmlEntities";
@@ -305,15 +307,53 @@ export function tocDepth(tagName: string, baseLevel: number): number {
 	return Math.max(0, Math.max(level, baseLevel) - baseLevel);
 }
 
+/** Fold # / ## up to the top section level; unknown tags sit at that level. */
+function tocHeadingLevel(tagName: string, baseLevel: number): number {
+	const level = headingLevel(tagName);
+	if (level <= 0) return baseLevel;
+	return Math.max(level, baseLevel);
+}
+
+/**
+ * Indent from the open heading stack, not the raw tag.
+ *
+ * A heading with no shallower predecessor is top-level, even when its tag is
+ * deeper than later siblings (an opening h4 before any h3). Nested headings
+ * keep the level gap under that parent, so an h5 directly under an h3 stays
+ * two steps in.
+ */
+export function tocOutlineDepths(
+	tagNames: readonly string[],
+	baseLevel: number,
+): number[] {
+	const stack: { level: number; depth: number }[] = [];
+	const depths: number[] = [];
+	for (const tagName of tagNames) {
+		const level = tocHeadingLevel(tagName, baseLevel);
+		while (stack.length > 0 && stack[stack.length - 1].level >= level) {
+			stack.pop();
+		}
+		const parent = stack[stack.length - 1];
+		const depth = parent ? parent.depth + (level - parent.level) : 0;
+		depths.push(depth);
+		stack.push({ level, depth });
+	}
+	return depths;
+}
+
+function tocClassForDepth(depth: number): string {
+	if (depth <= 0) return "";
+	if (depth === 1) return "toc-h3";
+	return "toc-h5";
+}
+
 export function tocLinkClass(
 	tagName: string,
 	baseLevel: number,
 	minDepth: number,
 ): string {
 	const depth = Math.max(0, tocDepth(tagName, baseLevel) - minDepth);
-	if (depth <= 0) return "";
-	if (depth === 1) return "toc-h3";
-	return "toc-h5";
+	return tocClassForDepth(depth);
 }
 
 function collectHeadings(
@@ -421,18 +461,21 @@ export function attachTableOfContents(
 	if (!hasEnoughHeadings) return true;
 
 	const baseLevel = tocBaseLevel(options.nestedTag);
-	const minDepth = Math.min(
-		...headings.map((heading) => tocDepth(heading.tagName, baseLevel)),
+	const outlineDepths = tocOutlineDepths(
+		headings.map((heading) => heading.tagName),
+		baseLevel,
 	);
+	const linkClassAt = (index: number) =>
+		tocClassForDepth(outlineDepths[index] ?? 0);
 	const parentDiscourseSlug = discourseSlugForToc(contentRoot);
 	const sectionToc = sectionTocMapForRoot(contentRoot);
 
 	nav.replaceChildren();
-	for (const heading of headings) {
+	for (const [index, heading] of headings.entries()) {
 		nav.appendChild(
 			createTocLink(
 				heading,
-				tocLinkClass(heading.tagName, baseLevel, minDepth),
+				linkClassAt(index),
 				parentDiscourseSlug,
 				sectionToc,
 			),
@@ -446,11 +489,11 @@ export function attachTableOfContents(
 
 	if (mobileNav) {
 		mobileNav.replaceChildren();
-		for (const heading of headings) {
+		for (const [index, heading] of headings.entries()) {
 			mobileNav.appendChild(
 				createTocLink(
 					heading,
-					tocLinkClass(heading.tagName, baseLevel, minDepth),
+					linkClassAt(index),
 					parentDiscourseSlug,
 					sectionToc,
 				),

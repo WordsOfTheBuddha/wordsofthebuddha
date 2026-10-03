@@ -22,6 +22,7 @@ import {
 	slugifyHeading,
 	tocBaseLevel,
 	tocLinkClass,
+	tocOutlineDepths,
 } from "./tocClient";
 
 describe("headingLabel", () => {
@@ -197,6 +198,37 @@ describe("tocLinkClass", () => {
 	it("does not indent a flat list of h4 or h5 headings", () => {
 		assert.equal(tocLinkClass("H4", 3, 1), "");
 		assert.equal(tocLinkClass("H5", 3, 2), "");
+	});
+});
+
+describe("tocOutlineDepths", () => {
+	it("shows an opening h4 as top-level when no shallower heading precedes it", () => {
+		const base = tocBaseLevel("H4");
+		assert.deepEqual(
+			tocOutlineDepths(["H4", "H3", "H4", "H5", "H3", "H4"], base),
+			[0, 0, 1, 2, 0, 1],
+		);
+	});
+
+	it("keeps a flat list of h4 or h5 headings at the top level", () => {
+		const base = tocBaseLevel("H4");
+		assert.deepEqual(tocOutlineDepths(["H4", "H4", "H4"], base), [0, 0, 0]);
+		assert.deepEqual(tocOutlineDepths(["H5", "H5"], base), [0, 0]);
+	});
+
+	it("keeps a skipped level under its parent", () => {
+		const base = tocBaseLevel("H4");
+		assert.deepEqual(tocOutlineDepths(["H3", "H5"], base), [0, 2]);
+	});
+
+	it("folds h1 and h2 to the discourse top level", () => {
+		const base = tocBaseLevel("H4");
+		assert.deepEqual(tocOutlineDepths(["H2", "H4", "H5"], base), [0, 1, 2]);
+	});
+
+	it("nests essay headings under h2", () => {
+		const base = tocBaseLevel("H3");
+		assert.deepEqual(tocOutlineDepths(["H2", "H3", "H4"], base), [0, 1, 2]);
 	});
 });
 
@@ -637,6 +669,52 @@ describe("attachTableOfContents scroll spy", () => {
 			});
 			subsectionLink.dispatchEvent(clickEvent);
 			assert.equal(clickEvent.defaultPrevented, true);
+		} finally {
+			detachTableOfContents("post-toc");
+			globalThis.window = previous.window;
+			globalThis.document = previous.document;
+			globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+			globalThis.HTMLElement = previous.HTMLElement;
+		}
+	});
+
+	it("shows a leading h4 as a top-level ToC item when nothing precedes it", () => {
+		const dom = new JSDOM(
+			`<!doctype html><html><body>
+				<nav id="post-toc"></nav>
+				<nav id="mobile-toc-nav"></nav>
+				<article class="interleaved-article">
+					<h4 id="talk">1. Talk on Wanderers</h4>
+					<h3 id="ethics">2. Ethical Conduct</h3>
+					<h4 id="shorter">2.1. The Shorter Section on Ethical Conduct</h4>
+					<h5 id="eternal">3.1.1. Eternalism</h5>
+				</article>
+			</body></html>`,
+		);
+		const { window } = dom;
+		const previous = {
+			window: globalThis.window,
+			document: globalThis.document,
+			requestAnimationFrame: globalThis.requestAnimationFrame,
+			HTMLElement: globalThis.HTMLElement,
+		};
+		globalThis.window = window as unknown as Window & typeof globalThis;
+		globalThis.document = window.document;
+		globalThis.AbortController = window.AbortController;
+		globalThis.HTMLElement = window.HTMLElement;
+		globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+			cb(0);
+			return 1;
+		};
+		try {
+			assert.equal(attachTableOfContents(discourseTableOfContentsOptions()), true);
+			const classNames = (id: string) => {
+				const nav = window.document.getElementById(id);
+				assert.ok(nav);
+				return [...nav.querySelectorAll("a")].map((link) => link.className);
+			};
+			assert.deepEqual(classNames("post-toc"), ["", "", "toc-h3", "toc-h5"]);
+			assert.deepEqual(classNames("mobile-toc-nav"), ["", "", "toc-h3", "toc-h5"]);
 		} finally {
 			detachTableOfContents("post-toc");
 			globalThis.window = previous.window;
