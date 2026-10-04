@@ -636,6 +636,7 @@ describe("attachTableOfContents scroll spy", () => {
 			cb(0);
 			return 1;
 		};
+		window.scrollTo = () => {};
 		try {
 			assert.equal(attachTableOfContents(discourseTableOfContentsOptions()), true);
 			const nav = window.document.getElementById("post-toc");

@@ -809,7 +809,18 @@ const structuredData = buildStructuredData({
 
 		import { initRefModeFromUrl } from "../utils/refModeClient";
 		import { parseHashRange } from "../utils/paragraphHash";
-		import { scrollToVisibleId } from "../utils/tocClient";
+		import {
+			hashScrollBehavior,
+			isHashTargetAligned,
+			PARAGRAPH_HASH_OFFSET_PX,
+			scheduleInitialHashScroll,
+		} from "../utils/hashScroll";
+		import {
+			findVisibleElementById,
+			HEADING_HASH_ALIGN_PX,
+			scrollToVisibleId,
+			visibleHeadingElement,
+		} from "../utils/tocClient";
 		import {
 			handleNavigation,
 			synchronizePreferences,
@@ -886,118 +897,75 @@ const structuredData = buildStructuredData({
 			// Add click handler for all navigation
 			document.addEventListener("click", handleNavigation);
 
-			// Helper function to apply highlighting and navigation
-			function applyHighlightingAndNavigation(
-				paragraphNumbers: number[],
-				scrollTargetId: number | null,
-			): void {
-				// Clear existing highlights
+			function highlightParagraphs(paragraphNumbers: number[]): void {
 				document
 					.querySelectorAll(".paragraph-highlight")
 					.forEach((element) => {
 						element.classList.remove("paragraph-highlight");
 					});
 
-				// Apply new highlights to all matching paragraph elements (interleaved and split)
+				// Highlight every copy (interleaved article and split columns).
 				paragraphNumbers.forEach((paragraphNum) => {
 					const selector = `[id="${paragraphNum}"]`;
 					document.querySelectorAll(selector).forEach((el) => {
 						el.classList.add("paragraph-highlight");
 					});
 				});
-
-				// Navigate to target paragraph with smooth scroll
-				if (scrollTargetId != null) {
-					const idSel = `[id="${scrollTargetId}"]`;
-
-					// Check if we're in split layout mode (Pali mode with split layout)
-					const isSplitMode =
-						document.documentElement.classList.contains(
-							"pali-on",
-						) && localStorage.getItem("layout") === "split";
-
-					let targetElement: Element | null = null;
-
-					if (isSplitMode) {
-						// Prefer the English panel in split mode if available
-						targetElement = document.querySelector(
-							`#panel1 ${idSel}`,
-						);
-					}
-
-					if (!targetElement) {
-						// Fallback to interleaved article
-						targetElement = document.querySelector(
-							"article.prose " + idSel,
-						);
-					}
-					if (!targetElement) {
-						// Final fallback to any element with that id
-						targetElement = document.querySelector(idSel);
-					}
-
-					if (targetElement) {
-						// Wait for content to fully load and layout to complete
-						const scrollToElement = () => {
-							const rect = targetElement!.getBoundingClientRect();
-							const absoluteTop = rect.top + window.pageYOffset;
-
-							// If rect.top is 0 and we're at the top of the page, the element likely hasn't been laid out yet
-							if (rect.top === 0 && window.pageYOffset === 0) {
-								// Try again after a short delay
-								setTimeout(scrollToElement, 50);
-								return;
-							}
-
-							const scrollToPosition = Math.max(
-								0,
-								absoluteTop - 100,
-							);
-							window.scrollTo({
-								top: scrollToPosition,
-								behavior: "smooth",
-							});
-						};
-
-						// Start with a small delay to let initial render complete
-						setTimeout(scrollToElement, 50);
-					}
-				}
 			}
 
-			// Handle hash navigation for paragraph anchors and section headings
-			function handleHashNavigation() {
+			function hashTargetAligned(): boolean {
+				if (!window.location.hash) return true;
+				const hash = window.location.hash.substring(1);
+				const { paragraphs, scrollTo } = parseHashRange(hash);
+				if (paragraphs.length > 0) {
+					if (scrollTo == null) return true;
+					const el = findVisibleElementById(String(scrollTo));
+					if (!el) return false;
+					return isHashTargetAligned(el, PARAGRAPH_HASH_OFFSET_PX);
+				}
+				const heading = visibleHeadingElement(hash);
+				if (!heading) return false;
+				return isHashTargetAligned(heading, HEADING_HASH_ALIGN_PX);
+			}
+
+			// Paragraph ranges and section headings. `animate` is for in-page
+			// clicks; the first load stays instant so a background tab keeps it.
+			function alignToHash(animate: boolean): void {
 				if (!window.location.hash) return;
 				const hash = window.location.hash.substring(1);
 				const { paragraphs, scrollTo } = parseHashRange(hash);
 				if (paragraphs.length > 0) {
-					applyHighlightingAndNavigation(paragraphs, scrollTo);
+					highlightParagraphs(paragraphs);
+					if (scrollTo == null) return;
+					const target = findVisibleElementById(String(scrollTo));
+					if (!target) return;
+					const rect = target.getBoundingClientRect();
+					if (rect.width === 0 && rect.height === 0) return;
+					window.scrollTo({
+						top: Math.max(
+							0,
+							rect.top + window.scrollY - PARAGRAPH_HASH_OFFSET_PX,
+						),
+						behavior: hashScrollBehavior(animate),
+					});
 					return;
 				}
 
-				document
-					.querySelectorAll(".paragraph-highlight")
-					.forEach((element) => {
-						element.classList.remove("paragraph-highlight");
-					});
-
-				const tryScrollToSection = (attempt = 0) => {
-					if (scrollToVisibleId(hash)) return;
-					if (attempt < 12) {
-						setTimeout(() => tryScrollToSection(attempt + 1), 50);
-					}
-				};
-				tryScrollToSection();
+				highlightParagraphs([]);
+				scrollToVisibleId(hash, hashScrollBehavior(animate));
 			}
 
-			// Handle initial hash navigation
-			handleHashNavigation();
+			if (window.location.hash) {
+				scheduleInitialHashScroll({
+					align: () => alignToHash(false),
+					aligned: hashTargetAligned,
+				});
+			}
 
-			// Listen for hash changes
-			window.addEventListener("hashchange", handleHashNavigation);
-			// Re-apply highlighting when layout or Pali mode changes
-			document.addEventListener("layoutChanged", handleHashNavigation);
-			document.addEventListener("paliModeChanged", handleHashNavigation);
+			const onHashChange = () => alignToHash(true);
+			window.addEventListener("hashchange", onHashChange);
+			document.addEventListener("layoutChanged", onHashChange);
+			document.addEventListener("paliModeChanged", onHashChange);
 
 			// Remove empty spans after preferences are applied
 			const stripEmptySpans = () => {

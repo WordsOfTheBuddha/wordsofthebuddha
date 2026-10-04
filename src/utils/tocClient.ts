@@ -211,6 +211,10 @@ export const TOC_ACTIVE_SLACK_PX = 8;
 /** Extra pixels past the reading line when jumping to a heading. */
 const TOC_SCROLL_NUDGE_PX = 4;
 
+/** Viewport Y a hash-scrolled heading should land on. */
+export const HEADING_HASH_ALIGN_PX =
+	TOC_SCROLL_OFFSET_PX - TOC_SCROLL_NUDGE_PX;
+
 /** Wait this long after load/scroll restoration before painting the active item. */
 const TOC_SPY_SETTLE_MS = 150;
 
@@ -244,23 +248,36 @@ export function scrollYToAlignHeading(
 	);
 }
 
-export function scrollToHeadingElement(heading: HTMLElement): boolean {
+export function scrollToHeadingElement(
+	heading: HTMLElement,
+	behavior?: ScrollBehavior,
+): boolean {
 	if (!isElementVisible(heading)) return false;
 	const rect = heading.getBoundingClientRect();
-	const reduceMotion = window.matchMedia(
+	// A background tab often has no layout yet. Scrolling to that zero rect
+	// reports success and leaves the page at the top.
+	if (rect.width === 0 && rect.height === 0) return false;
+	const reduceMotion = window.matchMedia?.(
 		"(prefers-reduced-motion: reduce)",
-	).matches;
+	)?.matches;
 	window.scrollTo({
 		top: scrollYToAlignHeading(rect.top, window.scrollY),
-		behavior: reduceMotion ? "auto" : "smooth",
+		behavior: behavior ?? (reduceMotion ? "auto" : "smooth"),
 	});
 	return true;
 }
 
-export function scrollToVisibleId(id: string): boolean {
+export function visibleHeadingElement(id: string): HTMLElement | null {
+	return visibleHeadingForId(id);
+}
+
+export function scrollToVisibleId(
+	id: string,
+	behavior?: ScrollBehavior,
+): boolean {
 	const heading = visibleHeadingForId(id);
 	if (!heading) return false;
-	return scrollToHeadingElement(heading);
+	return scrollToHeadingElement(heading, behavior);
 }
 
 function ensureHeadingId(heading: HTMLElement): string {
