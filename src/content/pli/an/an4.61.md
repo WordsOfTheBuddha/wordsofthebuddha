@@ -1,6 +1,11 @@
 ---
 title: Pattakamma sutta - Suitable Action
+description: The Buddha outlines four rare worldly blessings and the four qualities of faith, virtue, generosity, and wisdom needed to acquire them, showing how lawfully gained wealth should be meaningfully utilized.
+qualities: giving, ethical conduct, faith, wisdom, desire
+theme: wisdom
 slug: an4.61
+character: Householder Anāthapiṇḍika
+priority: 1.2
 ---
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:
