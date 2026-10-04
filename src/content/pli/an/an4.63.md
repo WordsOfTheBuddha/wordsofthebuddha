@@ -1,9 +1,10 @@
 ---
+title: Brahma sutta - With Brahmā
+description: Where children honor their mother and father, those families are said to dwell with Brahmā.
+qualities: giving, respect
+theme: wisdom
 slug: an4.63
-source: suttacentral/bilara-data
-title: Brahmasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Sabrahmakāni, bhikkhave, tāni kulāni yesaṁ puttānaṁ mātāpitaro ajjhāgāre pūjitā honti. Sapubbācariyakāni, bhikkhave, tāni kulāni, yesaṁ puttānaṁ mātāpitaro ajjhāgāre pūjitā honti. Sapubbadevatāni, bhikkhave, tāni kulāni yesaṁ puttānaṁ mātāpitaro ajjhāgāre pūjitā honti. Sāhuneyyakāni, bhikkhave, tāni kulāni yesaṁ puttānaṁ mātāpitaro ajjhāgāre pūjitā honti.
@@ -34,5 +35,3 @@ Tāya naṁ pāricariyāya,
 mātāpitūsu paṇḍitā;
 Idheva naṁ pasaṁsanti,
 pecca sagge pamodatī”ti.
-
-Tatiyaṁ.
