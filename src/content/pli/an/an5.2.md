@@ -1,9 +1,6 @@
 ---
+title: Vitthata sutta
 slug: an5.2
-source: suttacentral/bilara-data
-title: Vitthatasutta
-edition: ms
-granularity: paragraph
 ---
 
 “Pañcimāni, bhikkhave, sekhabalāni. Katamāni pañca? Saddhābalaṁ, hirībalaṁ, ottappabalaṁ, vīriyabalaṁ, paññābalaṁ.
@@ -19,5 +16,3 @@ Katamañca, bhikkhave, vīriyabalaṁ? Idha, bhikkhave, ariyasāvako āraddhavī
 Katamañca, bhikkhave, paññābalaṁ? Idha, bhikkhave, ariyasāvako paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā. Idaṁ vuccati, bhikkhave, paññābalaṁ. Imāni kho, bhikkhave, pañca sekhabalāni.
 
 Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘saddhābalena samannāgatā bhavissāma sekhabalena, hirībalena … ottappabalena … vīriyabalena … paññābalena samannāgatā bhavissāma sekhabalenā’ti. Evañhi kho, bhikkhave, sikkhitabban”ti.
-
-Dutiyaṁ.
