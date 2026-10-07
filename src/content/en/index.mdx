@@ -90,7 +90,7 @@ import fireImage from '../../assets/content-images/fire.webp'
     Why study the words of the Buddha &rarr;
   </button>
 </div>
-<script is:inline>{`
+<script is:inline set:html={`
 (function() {
   var trigger = document.getElementById("testimonials-trigger");
   if (!trigger) return;
@@ -160,7 +160,7 @@ import fireImage from '../../assets/content-images/fire.webp'
 
   trigger.addEventListener("click", openTestimonials);
 })();
-`}</script>
+`}></script>
 
 {/* ── Collections ── */}
 <section class="max-w-5xl mx-auto px-4 mb-14">
