@@ -1,9 +1,10 @@
 ---
+title: Ariyavaṁsa sutta - The Noble Lineage
+description: The Buddha outlines the four ancient noble lineages of contentment with basic requisites and dedication to meditation and abandoning, showing how a steadfast practitioner overcomes all discontent in every quarter.
+qualities: contentment, cultivation, giving up, perceiving drawback, discerning escape
+theme: wisdom, principle
 slug: an4.28
-source: suttacentral/bilara-data
-title: Ariyavaṁsasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Cattārome, bhikkhave, ariyavaṁsā aggaññā rattaññā vaṁsaññā porāṇā asaṅkiṇṇā asaṅkiṇṇapubbā, na saṅkīyanti na saṅkīyissanti, appaṭikuṭṭhā samaṇehi brāhmaṇehi viññūhi. Katame cattāro?
@@ -31,5 +32,3 @@ Nekkhaṁ jambonadasseva,
 ko taṁ ninditumarahati;
 Devāpi naṁ pasaṁsanti,
 brahmunāpi pasaṁsito”ti.
-
-Aṭṭhamaṁ.
