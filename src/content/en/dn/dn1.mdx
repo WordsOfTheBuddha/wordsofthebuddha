@@ -1,7 +1,7 @@
 ---
 title: Brahmajāla sutta - The Supreme Net
 description: When wanderers dispute the Buddha’s virtues, he guides the Saṅgha beyond praise and blame into a profound analysis of human thought. Classifying sixty-two views about self and cosmos, the Buddha reveals how flawed assumptions stem from meditative visions or logic conditioned by feeling, while awakening transcends all mental constructs.
-qualities: wrong view, right view, speculation, felt experience, contact, complete comprehension, perceiving gratification, perceiving drawback, perceiving escape, arising and passing away, craving
+qualities: wrong view, right view, speculation, felt experience, contact, complete comprehension, perceiving gratification, perceiving drawback, discerning escape, arising and passing away, craving
 theme: principle, cultivating discernment, wisdom
 slug: dn1
 character:

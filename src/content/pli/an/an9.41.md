@@ -1,7 +1,7 @@
 ---
 title: Tapussa sutta - With Tapussa
 description: When the householder Tapussa finds renunciation daunting like a steep cliff, the Buddha recounts his pre-awakening struggle, explaining how seeing drawbacks and benefits enabled him to master the nine progressive meditative attainments.
-qualities: jhana, giving up, perceiving drawback, perceiving gratification, perceiving escape, complete comprehension
+qualities: jhana, giving up, perceiving drawback, perceiving gratification, discerning escape, complete comprehension
 theme: wisdom, cultivating discernment, training guideline, householder life
 slug: an9.41
 character:

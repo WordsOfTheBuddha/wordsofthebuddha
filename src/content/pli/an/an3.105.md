@@ -1,7 +1,7 @@
 ---
 title: Dutiya assāda sutta - Gratification (Second)
 description: Beings are infatuated with the world because of the gratification found in it, become disenchanted with it because of the drawback, and escape from it because there is an escape.
-qualities: perceiving gratification, perceiving drawback, perceiving escape, passion, disenchantment, direct knowledge, dispassion, liberation, direct knowledge
+qualities: perceiving gratification, perceiving drawback, discerning escape, passion, disenchantment, direct knowledge, dispassion, liberation, direct knowledge
 theme: inquisitiveness, inspiration, wisdom
 slug: an3.105
 priority: 1.2

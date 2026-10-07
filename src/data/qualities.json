@@ -139,7 +139,7 @@
 		"unification",
 		"patience",
 		"perceiving drawback",
-		"perceiving escape",
+		"discerning escape",
         "penetrative vision",
 		"politeness",
 		"psychic power",
@@ -556,6 +556,17 @@
 			"Opposite:{negligence}",
 			"[appamāda]"
 		],
+		"discerning escape": [
+			"observing the release",
+			"seeing the way out",
+			"contemplating the remedy",
+			"recognizing the way leading beyond suffering",
+			"Context: The knowing, understanding, or discerning of the way out—recognizing true escape from bondage after direct comprehension of gratification and danger, seeing cessation of unsatisfactory experience as its genuine release.",
+			"Supported by:{perceiving drawback, discernment}",
+			"Leads to:{giving up, formless, ending}",
+			"Opposite:{perceiving gratification}",
+			"[nissaraṇapañña, nissaraṇaṁ yathābhūtaṁ pajānāti]"
+		],
 		"discernment": [
 			"ability to make out distinctions",
 			"ability to discriminate, distinguish",
@@ -563,7 +574,7 @@
 			"penetrating internal vision",
 			"Context: Clear seeing that distinguishes what is wholesome from unwholesome, true from false.",
 			"Supported by:{examination, clear awareness}",
-			"Leads to:{perceiving drawback, perceiving escape, wisdom}",
+			"Leads to:{perceiving drawback, discerning escape, wisdom}",
 			"[viveka, nipaka, niccheyya]"
 		],
 		"discontentment": [
@@ -629,15 +640,6 @@
 			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
 		],
-		"penetrative vision": [
-			"insight into phenomena",
-			"clear seeing of the Dhammas",
-			"Context: Penetrative vision that discerns phenomena as they arise and pass away, clearly seeing their conditioned nature without clinging.",
-			"Related:{insight}",
-			"Supported by:{stream-entry}",
-			"Leads to:{recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
-			"[vipassanā, dhammavipassanā, anupadadhammavipassanā]"
-		],
 		"drowsiness": [
 			"sleepiness",
 			"torpor",
@@ -676,7 +678,7 @@
 			"gradual ending",
 			"wearing away",
 			"Context: The complete exhaustion and ending of craving, aversion, and delusion—the three roots of suffering. It refers to both the gradual wearing away of defilements through practice and the final cessation that constitutes Nibbāna.",
-			"Supported by:{complete comprehension, free from attachment, perceiving escape, stream-entry}",
+			"Supported by:{complete comprehension, free from attachment, discerning escape, stream-entry}",
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
 		],
@@ -807,7 +809,7 @@
 			"immaterial",
 			"surpassing forms",
 			"Context: A meditative domain that transcends all perception of material form, progressing through the bases of infinite space, infinite consciousness, nothingness, and neither-perception-nor-non-perception. These states represent refined levels of collectedness beyond attachment to physical phenomena.",
-			"Supported by:{imperturbable, perceiving escape}",
+			"Supported by:{imperturbable, discerning escape}",
 			"Leads to:{non-proliferation}",
 			"Opposite:{recognition of diversity}",
 			"[arūpa]"
@@ -855,7 +857,7 @@
 			"letting go",
 			"abandonment",
 			"Context: The mental quality of renunciation and release from attachment. It delights in simplicity and freedom rather than in sensual pleasure. Giving up is not loss but the joyful abandoning of burden, opening the way to peace and insight.",
-			"Supported by:{perceiving escape, spiritual life}",
+			"Supported by:{discerning escape, spiritual life}",
 			"Leads to:{free from attachment}",
 			"Opposite:{sensual desire}",
 			"[nekkhamma]"
@@ -1309,18 +1311,6 @@
 			"Opposite:{stealing}",
 			"[adinnādāna veramaṇī]"
 		],
-		"unification": [
-			"unification of mind",
-			"being collected",
-			"integration",
-			"oneness",
-			"singleness of mind",
-			"Context: Mind becoming single and integrated with the settling down of reflection and examination.",
-			"Related:{collectedness}",
-			"Supported by:{uplifting joy}",
-			"Leads to:{tranquility}",
-			"[ekagga, ekodibhāva]"
-		],
 		"passion": [
 			"burning fever",
 			"intense desire",
@@ -1345,12 +1335,21 @@
 			"Opposite:{impatience}",
 			"[khanti, khama]"
 		],
+		"penetrative vision": [
+			"insight into phenomena",
+			"clear seeing of the Dhammas",
+			"Context: Penetrative vision that discerns phenomena as they arise and pass away, clearly seeing their conditioned nature without clinging.",
+			"Related:{insight}",
+			"Supported by:{stream-entry}",
+			"Leads to:{recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
+			"[vipassanā, dhammavipassanā, anupadadhammavipassanā]"
+		],
 		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
 			"Context: The contemplative perception that discerns the danger, inadequacy, and unsatisfactoriness of conditioned pleasures, leading the mind to turn away from clinging.",
 			"Supported by:{examination}",
-			"Leads to:{disenchantment, recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, perceiving escape}",
+			"Leads to:{disenchantment, recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, discerning escape}",
 			"Opposite:{perceiving gratification}",
 			"[ādīnavānupassī]"
 		],
@@ -1361,19 +1360,8 @@
 			"Context: The contemplative perception that focuses on the attractive or pleasurable aspect of experience, fueling delight and attachment to sense pleasures.",
 			"Supported by:{passion, distraction}",
 			"Leads to:{delight, sensual desire}",
-			"Opposite:{perceiving drawback, perceiving escape}",
+			"Opposite:{perceiving drawback, discerning escape}",
 			"[assādānupassī]"
-		],
-		"perceiving escape": [
-			"observing the release",
-			"seeing the way out",
-			"contemplating the remedy",
-			"recognizing the way leading beyond suffering",
-			"Context: The contemplative perception that recognizes the way out of bondage after understanding gratification and danger, seeing cessation of an unsatisfactory experience as its true escape.",
-			"Supported by:{perceiving drawback, discernment}",
-			"Leads to:{giving up, formless, ending}",
-			"Opposite:{perceiving gratification}",
-			"[nissaraṇānupassī, nissaraṇaṁ yathābhūtaṁ pajānāti]"
 		],
 		"personal existence view": [
 			"identity view",
@@ -1901,6 +1889,18 @@
 			"Leads to:{passion}",
 			"Opposite:{cultivation}",
 			"[abhāvita]"
+		],
+		"unification": [
+			"unification of mind",
+			"being collected",
+			"integration",
+			"oneness",
+			"singleness of mind",
+			"Context: Mind becoming single and integrated with the settling down of reflection and examination.",
+			"Related:{collectedness}",
+			"Supported by:{uplifting joy}",
+			"Leads to:{tranquility}",
+			"[ekagga, ekodibhāva]"
 		],
 		"unprincipled conduct": [
 			"lacking in moral principles",

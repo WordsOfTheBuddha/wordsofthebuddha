@@ -1,7 +1,7 @@
 ---
 title: Paṭhama assāda sutta - Gratification (First)
 description: The Buddha describes his quest for gratification in the world, drawback in the world, and the escape from it. He subsequently directly knew gratification, drawback, and escape as they truly are, leading to his unshakable liberation.
-qualities: perceiving gratification, perceiving drawback, perceiving escape, insight, vision, direct knowledge
+qualities: perceiving gratification, perceiving drawback, discerning escape, insight, vision, direct knowledge
 theme: inquisitiveness, inspiration, wisdom
 slug: an3.104
 priority: 1.2

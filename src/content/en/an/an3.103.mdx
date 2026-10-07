@@ -1,7 +1,7 @@
 ---
 title: Pubbevasambodha sutta - Before Full Awakening
 description: Before his awakening, the Bodhisatta reflected on the gratification in the world, the drawback in the world, and the escape from it.
-qualities: recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, insight, vision, liberation, perceiving gratification, perceiving drawback, direct knowledge, perceiving escape, direct knowledge
+qualities: recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, insight, vision, liberation, perceiving gratification, perceiving drawback, direct knowledge, discerning escape, direct knowledge
 theme: inquisitiveness, recollection of the Buddha, inspiration
 slug: an3.103
 priority: 1.1
