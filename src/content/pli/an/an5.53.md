@@ -1,9 +1,10 @@
 ---
+title: Padhāniyaṅga sutta - Factors of Striving
+description: "The Buddha outlines the five essential factors of striving: conviction in the Buddha’s awakening, physical health with balanced digestion, honesty without deceit, persistent energy, and penetrative wisdom that sees arising and passing away."
+qualities: vigour, rousing of energy, sincerity, faith, wisdom
+theme: wisdom
 slug: an5.53
-source: suttacentral/bilara-data
-title: Padhāniyaṅgasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Pañcimāni, bhikkhave, padhāniyaṅgāni. Katamāni pañca?
@@ -19,5 +20,3 @@ asaṭho hoti amāyāvī; yathābhūtaṁ attānaṁ āvikattā satthari vā vi�
 paññavā hoti, udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā.
 
 Imāni kho, bhikkhave, pañca padhāniyaṅgānī”ti.
-
-Tatiyaṁ.
