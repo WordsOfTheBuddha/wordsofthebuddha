@@ -17,6 +17,8 @@ export type StructuredDataInput = {
 	description?: string | null;
 	/** Discourse id (e.g. `mn1`). Absent on listing and static pages. */
 	id?: string | null;
+	/** Names people search for that differ from the on-page heading. */
+	alternateNames?: string[] | null;
 	imageURL?: string | null;
 	lastUpdated?: string | Date | null;
 	/** Reference views credit B. Sujato rather than the site's own translation. */
@@ -107,6 +109,9 @@ function articleNode(
 		"@type": "Article",
 		"@id": `${input.canonicalURL}#article`,
 		headline: clampHeadline(headline),
+		...(input.alternateNames && input.alternateNames.length > 0
+			? { alternateName: input.alternateNames }
+			: {}),
 		...(input.description ? { description: input.description } : {}),
 		inLanguage: input.viewSource === "gu" ? "gu" : "en",
 		url: input.canonicalURL,
@@ -131,6 +136,12 @@ function websiteNode(origin: string): JsonLdNode {
 		"@type": "WebSite",
 		"@id": `${origin}/#website`,
 		name: SITE_NAME,
+		alternateName: [
+			"Pāli canon suttas in English",
+			"Early Buddhist suttas",
+		],
+		description:
+			"Public-domain English translations of the Pāli canon suttas, with the original Pāli beside each discourse.",
 		url: `${origin}/`,
 		inLanguage: "en",
 		publisher: { "@id": `${origin}/#organization` },

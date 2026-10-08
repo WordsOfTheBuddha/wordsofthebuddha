@@ -40,6 +40,12 @@ import {
 } from "../utils/tocClient";
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
+import {
+	discourseAlsoKnown,
+	discourseAlternateNames,
+	discourseDocumentTitle,
+	discourseMetaDescription,
+} from "../utils/organicSearch";
 import { debug, type TmPaliParagraph } from "../utils/contentParser";
 import discoursePlainCopyInline from "../utils/discoursePlainCopyInline.js?raw";
 import { getPtsDisplay } from "../utils/ptsReferences";
@@ -224,6 +230,12 @@ if (!SEOTitle) {
 			id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
 	}
 }
+// Gujarati pages stay in Gujarati. Everyone else gets the title people search for
+// when this discourse is one of the well-known ones; the on-page heading is unchanged.
+if (!seoTitle && id && viewSource !== "gu") {
+	const searchedTitle = discourseDocumentTitle(id);
+	if (searchedTitle) SEOTitle = searchedTitle;
+}
 
 const SITE_ORIGIN = Astro.site?.origin ?? "https://www.wordsofthebuddha.org";
 
@@ -269,7 +281,15 @@ const offerRead = showRead && !paragraphRequest;
 
 /** No meta description beats a boilerplate one: Google writes a query-relevant snippet instead. */
 const metaDescription =
-	String(seoDescription ?? description ?? "").trim() || null;
+	String(seoDescription ?? "").trim() ||
+	(viewSource !== "gu"
+		? discourseMetaDescription(id, description)
+		: String(description ?? "").trim()) ||
+	null;
+const alsoKnown =
+	viewSource === "gu"
+		? null
+		: discourseAlsoKnown(id, title, description);
 
 const resolvedOgType = ogType ?? (id ? "article" : "website");
 
@@ -287,6 +307,7 @@ const structuredData = buildStructuredData({
 	seoTitle: SEOTitle,
 	description: metaDescription,
 	id,
+	alternateNames: discourseAlternateNames(id),
 	imageURL: socialImageURL,
 	lastUpdated,
 	viewSource,
@@ -656,6 +677,16 @@ const structuredData = buildStructuredData({
 									}
 								</Title>
 							</div>
+						)
+					}
+					{
+						alsoKnown && (
+							<p
+								class="also-known not-prose text-sm mt-1 mb-0"
+								style="color:var(--text-muted);"
+							>
+								{alsoKnown}
+							</p>
 						)
 					}
 					{

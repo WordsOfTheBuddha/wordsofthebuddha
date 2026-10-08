@@ -22,6 +22,7 @@ import { getReferencePostsForCollection } from "../utils/referencePostsForPage";
 import { urlHasRefParam } from "../utils/urlRefParam";
 import type { CollectionCountEntry } from "../utils/collectionCountBadgesClient";
 import { getPtsDisplay } from "../utils/ptsReferences";
+import { collectionDocumentMeta } from "../utils/organicSearch";
 
 import {
 	formatVaggaDisplayTitle,
@@ -229,12 +230,19 @@ if (hasChildren && children) {
 	}
 }
 const collectionCountsJson = JSON.stringify(collectionCountEntries);
+const collectionMeta = collectionDocumentMeta(collectionSlug);
 const hasRefCountableChildren = Object.values(collectionCountEntries).some(
 	({ translated, readable }) => readable > translated,
 );
 ---
 
-<Layout title={title} description={description} showAuth={true}>
+<Layout
+	title={title}
+	description={description}
+	seoTitle={collectionMeta?.title}
+	seoDescription={collectionMeta?.description}
+	showAuth={true}
+>
 	{
 		hasChildren && (
 			<script slot="head" is:inline set:html={collectionViewBootstrapScript} />

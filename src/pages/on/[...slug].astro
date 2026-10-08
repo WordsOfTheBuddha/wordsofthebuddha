@@ -32,6 +32,7 @@ import { shouldShowOnPageChrome } from "../../utils/discourseListPreview";
 import { urlHasRefParam } from "../../utils/urlRefParam";
 import { getPtsDisplay } from "../../utils/ptsReferences";
 import { renderInlineDescription } from "../../utils/renderInlineDescription";
+import { topicDocumentMeta } from "../../utils/organicSearch";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
 export async function getStaticPaths() {
@@ -126,6 +127,7 @@ const additionalDiscoursesBase =
 let additionalDiscourses = additionalDiscoursesBase;
 
 const displayTitle = content.title;
+const topicMeta = topicDocumentMeta(canonicalSlug);
 
 const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
 let referencePostsForPage =
@@ -253,8 +255,8 @@ const showDiscourseSectionHeading =
 ---
 
 <Layout
-	seoTitle={`${displayTitle} - Words of the Buddha`}
-	seoDescription={content.description}
+	seoTitle={topicMeta?.title ?? `${displayTitle} - Words of the Buddha`}
+	seoDescription={topicMeta?.description ?? content.description}
 	showAuth={true}
 	fp={`/on/${canonicalSlug}`}
 >

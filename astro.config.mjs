@@ -20,6 +20,7 @@ import { mermaidVendorVitePlugin } from "./scripts/copy-mermaid-vendor.mjs";
 import { contentImagesVitePlugin } from "./src/utils/copyContentImages.mjs";
 import { externalDataStoreVitePlugin } from "./src/integrations/externalDataStore.mjs";
 import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
+import { organicSearchRedirects } from "./src/utils/organicSearch.ts";
 
 const mnVaggaRedirects = Object.fromEntries(
 	Object.entries(mnVaggaSections).flatMap(([pannasa, sections]) =>
@@ -144,6 +145,7 @@ export default defineConfig({
 	}),
 
 	redirects: {
+		...organicSearchRedirects,
 		"/dhammapada": "/dhp",
 		"/suttanipata": "/snp",
 		"/sitemap.rss": "/sitemap.xml",

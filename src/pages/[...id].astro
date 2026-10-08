@@ -8,6 +8,7 @@ import MDContent from "../components/MDContent.astro";
 import { isAppApiCatchAllId } from "../utils/appApiPath";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
+import { organicSearchRedirects } from "../utils/organicSearch";
 import {
 	parsePostSlugFromGlobPath,
 	slugIsRootPost,
@@ -239,6 +240,10 @@ if (id && !id.includes("/") && APP_TOP_LEVEL_SLUGS.has(id)) {
 // here — Astro omits `draft: true` page files, and prerender rewrite to
 // /posts/:slug also fails under the Node/PWA adapter.
 if (id && !id.includes("/")) {
+	const organicTarget = organicSearchRedirects[`/${id}`];
+	if (organicTarget) {
+		return Astro.redirect(organicTarget, 301);
+	}
 	if (
 		slugIsRootPost(id, rootPostEntries, {
 			includeDrafts: true,

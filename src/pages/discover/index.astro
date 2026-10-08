@@ -4,15 +4,16 @@ import Layout from "../../layouts/Layout.astro";
 import BottomDrawer from "../../components/BottomDrawer.astro";
 import ExploreWidget from "../../components/ExploreWidget.astro";
 import StartHere from "../../components/StartHere.astro";
+import OftenRead from "../../components/OftenRead.astro";
 import CollectionCards from "../../components/CollectionCards.astro";
 import { discoverStartHereEntries } from "../../data/discoverStartHere";
 
-const seoTitle = "Discover the Words of the Buddha";
+const seoTitle = "Browse the Pāli Canon — Suttas by Collection and Topic";
 ---
 
 <Layout
 	seoTitle={seoTitle}
-	seoDescription="Browse the Pāli canon by collection, or explore by topic, quality, simile, and person — parallel Pāli and English texts across the Majjhima, Saṁyutta, Aṅguttara, and Dīgha Nikāyas and more."
+	seoDescription="Browse the suttas of the Pāli canon by collection, or explore by topic, quality, simile, and person — parallel Pāli and English across the Majjhima, Saṁyutta, Aṅguttara, and Dīgha Nikāyas."
 	showAuth="signed-in"
 	showSearch={false}
 >
@@ -30,6 +31,8 @@ const seoTitle = "Discover the Words of the Buddha";
 		</section>
 
 		<StartHere items={discoverStartHereEntries} />
+
+		<OftenRead omitHrefs={["/dhp"]} />
 
 		<section class="max-w-5xl mx-auto px-4 mb-14">
 			<h2 class="text-2xl font-semibold mb-2">Explore the Collections</h2>
