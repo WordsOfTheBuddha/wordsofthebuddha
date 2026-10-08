@@ -4,6 +4,7 @@ description: "Among those entrenched in views, arguing “This alone is truth,�
 qualities: argumentativeness, clinging to rules and observances, feuding, personal existence view, safety, tranquility, perturbation, craving, self-making, equanimity, tranquility, wisdom, stubbornness, attachment, free from attachment
 theme: inspiration, cultivating discernment, wisdom, inquisitiveness
 slug: snp4.13
+priority: 2
 ---
 
 “Ye kecime diṭṭhiparibbasānā,

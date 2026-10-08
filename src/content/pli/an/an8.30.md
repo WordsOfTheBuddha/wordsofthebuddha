@@ -1,12 +1,17 @@
 ---
 title: Anuruddhamahāvitakka sutta - Anuruddha and Thoughts of a Great Person
 description: Venerable Anuruddha reflects on seven qualities conducive for practicing the Dhamma, but his thoughts are incomplete until the Buddha appears to add an eighth.
-qualities: contentment, having many desires, discontentment, solitude, rousing of energy, laziness, collectedness, distraction, discernment, lack of discernment, mental proliferation, non-proliferation, cultivation
-theme: cultivating discernment
+qualities: contentment, having many desires, discontentment, solitude, rousing of energy, laziness, collectedness, distraction, discernment, lack of discernment, mental proliferation, non-proliferation, cultivation, arising and passing away
+theme: cultivating discernment, wisdom, inspiration
 slug: an8.30
+character:
+  - Venerable Anuruddha
+priority: 1.2
 ---
 
 Ekaṁ samayaṁ bhagavā bhaggesu viharati suṁsumāragire bhesakaḷāvane migadāye. Tena kho pana samayena āyasmā anuruddho cetīsu viharati pācīnavaṁsadāye. Atha kho āyasmato anuruddhassa rahogatassa paṭisallīnassa evaṁ cetaso parivitakko udapādi:
+
+#### Eight Thoughts of a Great Person
 
 “appicchassāyaṁ dhammo, nāyaṁ dhammo mahicchassa;
 santuṭṭhassāyaṁ dhammo, nāyaṁ dhammo asantuṭṭhassa;
@@ -19,6 +24,8 @@ paññavato ayaṁ dhammo, nāyaṁ dhammo duppaññassā”ti.
 Atha kho bhagavā āyasmato anuruddhassa cetasā cetoparivitakkamaññāya—seyyathāpi nāma balavā puriso samiñjitaṁ vā bāhaṁ pasāreyya, pasāritaṁ vā bāhaṁ samiñjeyya; evamevaṁ—bhaggesu susumāragire bhesakaḷāvane migadāye antarahito cetīsu pācīnavaṁsadāye āyasmato anuruddhassa sammukhe pāturahosi. Nisīdi bhagavā paññatte āsane. Āyasmāpi kho anuruddho bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ anuruddhaṁ bhagavā etadavoca:
 
 “Sādhu sādhu, anuruddha. Sādhu kho tvaṁ, anuruddha, yaṁ taṁ mahāpurisavitakkaṁ vitakkesi: ‘appicchassāyaṁ dhammo, nāyaṁ dhammo mahicchassa; santuṭṭhassāyaṁ dhammo, nāyaṁ dhammo asantuṭṭhassa; pavivittassāyaṁ dhammo, nāyaṁ dhammo saṅgaṇikārāmassa; āraddhavīriyassāyaṁ dhammo, nāyaṁ dhammo kusītassa; upaṭṭhitassatissāyaṁ dhammo, nāyaṁ dhammo muṭṭhassatissa; samāhitassāyaṁ dhammo, nāyaṁ dhammo asamāhitassa; paññavato ayaṁ dhammo, nāyaṁ dhammo duppaññassā’ti. Tena hi tvaṁ, anuruddha, imampi aṭṭhamaṁ mahāpurisavitakkaṁ vitakkehi: ‘nippapañcārāmassāyaṁ dhammo nippapañcaratino, nāyaṁ dhammo papañcārāmassa papañcaratino’ti.
+
+#### Benefits of Thinking these Eight Thoughts
 
 Yato kho tvaṁ, anuruddha, ime aṭṭha mahāpurisavitakke vitakkessasi, tato tvaṁ, anuruddha, yāvadeva ākaṅkhissasi, vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṁ savicāraṁ vivekajaṁ pītisukhaṁ paṭhamaṁ jhānaṁ upasampajja viharissasi.
 
