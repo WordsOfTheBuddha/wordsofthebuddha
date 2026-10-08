@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 3000" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="title">MN 80 Vekhanasa Sutta — The Supreme Beauty</title>
+  <desc id="desc">A memory map of MN 80: the wanderer Vekhanasa praises a supreme beauty he cannot specify, like a man longing for a woman he has never seen; the Buddha leads him up a ladder of radiance from a beryl gem to firefly, lamp, bonfire, morning star, moon, and sun, to deities beyond them; the five cords of sensual pleasure, sensual pleasure through sense desires, and a pleasure higher than sensuality; why this is difficult to understand for one of another view; Vekhanasa’s angry challenge and the open invitation; and the simile of the infant freed from five bonds, as right release from the bond of ignorance.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="38%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardReject" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#201420" />
+      <stop offset="100%" stop-color="#181018" />
+    </linearGradient>
+    <linearGradient id="cardTrue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#162836" />
+      <stop offset="100%" stop-color="#101e2c" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <linearGradient id="cardGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a2a1c" />
+      <stop offset="100%" stop-color="#1a1c18" />
+    </linearGradient>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1c2840" /><stop offset="100%" stop-color="#1a2436" /></linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e2c38" /><stop offset="100%" stop-color="#1c2830" /></linearGradient>
+    <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#222e30" /><stop offset="100%" stop-color="#202a28" /></linearGradient>
+    <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#252e2a" /><stop offset="100%" stop-color="#222a24" /></linearGradient>
+    <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2a2e22" /><stop offset="100%" stop-color="#262a1e" /></linearGradient>
+    <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2e2c18" /><stop offset="100%" stop-color="#282614" /></linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.18" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+
+    <!-- Icons: symbol ids mirror design-system/icons/<id>.svg -->
+    <symbol id="icon-unknown-beauty" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.30193) translate(-0.5, -5.7125)">
+        <g fill="none" stroke="#b09098" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="-24" cy="-8" r="6" stroke-width="1.1" />
+          <line x1="-24" y1="-1.6" x2="-24" y2="16" stroke-width="1.1" />
+          <path d="M -24 3 L -8 -4" stroke-width="1" />
+          <path d="M -24 5 L -34 13" stroke-width="0.95" />
+          <line x1="-24" y1="16" x2="-31" y2="32" stroke-width="1" />
+          <line x1="-24" y1="16" x2="-17" y2="32" stroke-width="1" />
+          <g stroke="#c8909a" stroke-dasharray="2.2 1.8" opacity="0.68">
+            <circle cx="22" cy="-12" r="5.5" stroke-width="0.95" />
+            <path d="M 16.8 -15.2 C 15.6 -22.5, 28.4 -22.5, 27.2 -15.2" stroke-width="0.8" />
+            <path d="M 16 -4 L 28 -4 L 35 32 L 9 32 Z" stroke-width="0.95" />
+          </g>
+          <g transform="translate(22, 10)" stroke="#c8909a">
+            <path d="M -1.8 -2.8 C -1.8 -4.8, 2.1 -4.8, 2.1 -2.8 C 2.1 -1.2, 0.2 -1.0, 0 0.8" stroke-width="0.9" />
+            <circle cx="0" cy="2.7" r="0.6" fill="#c8909a" stroke="none" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-beryl-gem-blanket" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -11 5.5 Q -6 3.5, 0 5 Q 6 6.5, 11 4.5 L 10 10 Q 4 11.5, 0 10.5 Q -6 9.5, -10 11 Z" stroke="#a06070" stroke-width="0.9" fill="#a06070" fill-opacity="0.2" />
+          <path d="M -7 8 Q -3 7, 1 8" stroke="#a06070" stroke-width="0.5" opacity="0.6" />
+          <polygon points="-2.5,-10 2.5,-10 6,-6.5 6,-1.5 2.5,2 -2.5,2 -6,-1.5 -6,-6.5" stroke="#a0c0d8" stroke-width="1" fill="#a0c0d8" fill-opacity="0.1" />
+          <path d="M -2.5 -10 L 0 -4 L 2.5 -10 M -6 -4 L 6 -4 M -2.5 2 L 0 -4 L 2.5 2" stroke="#a0c0d8" stroke-width="0.45" opacity="0.6" />
+          <g stroke="#c0d8e8" stroke-width="0.5" opacity="0.55">
+            <line x1="-9.5" y1="-9.5" x2="-8" y2="-8" />
+            <line x1="9.5" y1="-9.5" x2="8" y2="-8" />
+            <line x1="-10" y1="-3" x2="-8.2" y2="-3" />
+            <line x1="10" y1="-3" x2="8.2" y2="-3" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-firefly" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <circle cx="3" cy="3" r="6.5" fill="#d8e070" fill-opacity="0.12" stroke="none" />
+        <g fill="none" stroke="#a0a890" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="-5" cy="-5" r="1.6" stroke-width="0.9" />
+          <ellipse cx="-2" cy="-2" rx="2.2" ry="1.6" transform="rotate(45 -2 -2)" stroke-width="0.9" />
+          <path d="M -2 -2 Q -9 0, -7.5 5.5 Q -3.5 3, -2 -2 Z" stroke-width="0.6" opacity="0.7" />
+          <path d="M -2 -2 Q 0 -9, 5.5 -7.5 Q 3 -3.5, -2 -2 Z" stroke-width="0.6" opacity="0.7" />
+          <path d="M -6 -6.2 Q -7 -10, -10 -10" stroke-width="0.55" />
+          <path d="M -6.2 -6 Q -10 -7, -10 -10" stroke-width="0.55" />
+        </g>
+        <ellipse cx="2.4" cy="2.4" rx="3.4" ry="2.3" transform="rotate(45 2.4 2.4)" fill="#e8f080" fill-opacity="0.55" stroke="#d8e070" stroke-width="0.8" />
+        <circle cx="8" cy="7.5" r="0.6" fill="#e8f080" opacity="0.7" />
+        <circle cx="10" cy="4.5" r="0.45" fill="#e8f080" opacity="0.5" />
+      </g>
+    </symbol>
+    <symbol id="icon-oil-lamp-flame-radiance" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.85) translate(0, 1.5)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <g stroke="#c8a040" stroke-width="0.6" opacity="0.5">
+            <path d="M -13 -4 A 13 13 0 0 1 -8.5 -10" />
+            <path d="M 13 -4 A 13 13 0 0 0 8.5 -10" />
+            <path d="M -9.5 -12.5 A 13 13 0 0 1 -3 -15" />
+            <path d="M 9.5 -12.5 A 13 13 0 0 0 3 -15" />
+          </g>
+          <path d="M 0 -11 C 3.6 -7, 4.6 -3, 2.2 0.4 C 1 2, -1 2, -2.2 0.4 C -4.6 -3, -3.6 -7, 0 -11 Z" stroke="#ffd700" stroke-width="1" />
+          <line x1="0" y1="0.4" x2="0" y2="3.4" stroke="#c8a040" stroke-width="0.8" />
+          <line x1="-11" y1="3.4" x2="11" y2="3.4" stroke="#c8a040" stroke-width="0.9" />
+          <path d="M -9 3.4 C -8 9.5, -4.5 12, 0 12 C 4.5 12, 8 9.5, 9 3.4" stroke="#c8a040" stroke-width="1" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-great-bonfire" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="-10" y1="10" x2="9" y2="5" stroke="#a07a60" stroke-width="1.2" />
+          <line x1="10" y1="10" x2="-9" y2="5" stroke="#a07a60" stroke-width="1.2" />
+          <path d="M 0 -11 C 5 -5, 7 -1, 5 3.5 C 3.5 6, -3.5 6, -5 3.5 C -7 -1, -5 -5, 0 -11 Z" stroke="#e0a050" stroke-width="1" />
+          <path d="M 0 -4 C 2.5 -1, 3 1.5, 1.8 3.5 C 1 4.6, -1 4.6, -1.8 3.5 C -3 1.5, -2.5 -1, 0 -4 Z" fill="#ffd700" fill-opacity="0.35" stroke="#ffd700" stroke-width="0.5" />
+          <path d="M -6 -6 C -8.5 -2, -9 1.5, -6.5 4.5" stroke="#e09050" stroke-width="0.8" opacity="0.75" />
+          <path d="M 6 -6 C 8.5 -2, 9 1.5, 6.5 4.5" stroke="#e09050" stroke-width="0.8" opacity="0.75" />
+        </g>
+        <circle cx="-3" cy="-11.5" r="0.5" fill="#ffd700" opacity="0.8" />
+        <circle cx="4" cy="-12" r="0.45" fill="#ffd700" opacity="0.7" />
+        <circle cx="8" cy="-9" r="0.4" fill="#ffd700" opacity="0.6" />
+      </g>
+    </symbol>
+    <symbol id="icon-morning-star" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -9 8 A 9 5.5 0 0 1 9 8" stroke="#e0a870" stroke-width="0.6" opacity="0.5" />
+          <line x1="-11" y1="8" x2="11" y2="8" stroke="#c8a040" stroke-width="0.7" opacity="0.6" />
+          <path d="M 0 -11 Q 0.9 -4.9, 6 -4 Q 0.9 -3.1, 0 3 Q -0.9 -3.1, -6 -4 Q -0.9 -4.9, 0 -11 Z" stroke="#f0e0b0" stroke-width="0.9" fill="#fff4d0" fill-opacity="0.2" />
+          <g stroke="#f0e0b0" stroke-width="0.5" opacity="0.6">
+            <line x1="2.6" y1="-6.6" x2="4" y2="-8" />
+            <line x1="-2.6" y1="-6.6" x2="-4" y2="-8" />
+            <line x1="2.6" y1="-1.4" x2="4" y2="0" />
+            <line x1="-2.6" y1="-1.4" x2="-4" y2="0" />
+          </g>
+        </g>
+        <circle cx="0" cy="-4" r="0.9" fill="#fffde8" />
+      </g>
+    </symbol>
+    <symbol id="icon-full-moon" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <circle cx="0" cy="0" r="10.5" fill="none" stroke="#d8d8c0" stroke-width="0.5" stroke-dasharray="1.5 2" opacity="0.4" />
+        <circle cx="0" cy="0" r="7.5" fill="#e0e0c8" fill-opacity="0.15" stroke="#e0e0c8" stroke-width="1.1" />
+        <g fill="#e0e0c8" stroke="none">
+          <circle cx="-2.5" cy="-2.2" r="1.6" fill-opacity="0.3" />
+          <circle cx="2.6" cy="1.4" r="2.2" fill-opacity="0.22" />
+          <circle cx="-1.2" cy="4" r="0.9" fill-opacity="0.3" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-autumn-sun" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <circle cx="0" cy="0" r="5" fill="#ffd700" fill-opacity="0.2" stroke="#ffd700" stroke-width="1.1" />
+        <g stroke="#ffd700" stroke-linecap="round">
+          <line x1="0" y1="-7" x2="0" y2="-11" stroke-width="0.9" />
+          <line x1="7" y1="0" x2="11" y2="0" stroke-width="0.9" />
+          <line x1="0" y1="7" x2="0" y2="11" stroke-width="0.9" />
+          <line x1="-7" y1="0" x2="-11" y2="0" stroke-width="0.9" />
+          <g stroke="#ffe680" stroke-width="0.6" opacity="0.8">
+            <line x1="4.95" y1="-4.95" x2="6.72" y2="-6.72" />
+            <line x1="4.95" y1="4.95" x2="6.72" y2="6.72" />
+            <line x1="-4.95" y1="4.95" x2="-6.72" y2="6.72" />
+            <line x1="-4.95" y1="-4.95" x2="-6.72" y2="-6.72" />
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-deities" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.01295) translate(-10, -7.925)">
+        <circle cx="10" cy="5" r="3" fill="none" stroke="#a0b0c8" stroke-width="0.7" />
+        <line x1="10" y1="9" x2="10" y2="18" stroke="#a0b0c8" stroke-width="0.7" />
+        <path d="M 4 0 Q 10 -3, 16 0" stroke="#ffd700" stroke-width="0.5" fill="none" opacity="0.8" />
+      </g>
+    </symbol>
+    <symbol id="icon-seen" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.24235) translate(-10, -10)">
+        <path d="M 2 10 Q 10 2, 18 10" fill="none" stroke="#b07880" stroke-width="1" stroke-linecap="round" />
+        <path d="M 2 10 Q 10 18, 18 10" fill="none" stroke="#b07880" stroke-width="1" stroke-linecap="round" />
+        <circle cx="10" cy="10" r="2.5" fill="none" stroke="#b07880" stroke-width="0.8" />
+      </g>
+    </symbol>
+    <symbol id="icon-heard" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.408) translate(-10, -9)">
+        <path d="M 14 2 Q 6 2, 6 10 Q 6 16, 10 16" fill="none" stroke="#b07880" stroke-width="1" stroke-linecap="round" />
+        <path d="M 10 10 Q 12 8, 12 12" fill="none" stroke="#b07880" stroke-width="0.7" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="icon-sense-nose" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.3118) translate(0, -7.5)">
+        <g fill="none" stroke="#b07880" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+          <path d="M 0 0 L 0 12 Q -5 16, -3 12" />
+          <path d="M 0 12 Q 5 16, 3 12" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-sense-tongue" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.3118) translate(0, -6.5)">
+        <g fill="none" stroke="#b07880" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+          <path d="M -5 2 Q 0 -2, 5 2 Q 7 8, 0 14 Q -7 8, -5 2 Z" />
+          <line x1="-2" y1="7" x2="2" y2="7" stroke-width="0.7" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-sensed" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.408) translate(-12.925, -11)">
+        <path d="M 6 18 L 6 8 Q 6 4, 10 4 Q 14 4, 14 8 L 14 12" fill="none" stroke="#b07880" stroke-width="1" stroke-linecap="round" />
+        <path d="M 14 10 Q 14 7, 17 7 Q 20 7, 20 10 L 20 14" fill="none" stroke="#b07880" stroke-width="0.7" stroke-linecap="round" />
+        <line x1="6" y1="18" x2="20" y2="18" stroke="#b07880" stroke-width="0.7" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="icon-bait-five-cords" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.9304) translate(0, 1)">
+        <g opacity="0.8" stroke="#b07880" fill="none" stroke-linecap="round" stroke-width="0.8">
+          <circle cx="0" cy="0" r="5" fill="#b07880" fill-opacity="0.15" stroke-width="0.8" />
+          <line x1="0" y1="-5" x2="0" y2="-12" stroke-width="0.7" />
+          <line x1="4.8" y1="-1.5" x2="11" y2="-4" stroke-width="0.7" />
+          <line x1="2.9" y1="4" x2="7" y2="10" stroke-width="0.7" />
+          <line x1="-2.9" y1="4" x2="-7" y2="10" stroke-width="0.7" />
+          <line x1="-4.8" y1="-1.5" x2="-11" y2="-4" stroke-width="0.7" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-feeling-droplet" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.31163) translate(0, 0.551)">
+        <g opacity="0.85" stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 0 7 C -8 -3 -9 -7 -4 -8 C -1.5 -8.5 0 -7 0 -7 C 0 -7 1.5 -8.5 4 -8 C 9 -7 8 -3 0 7 Z" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-liberation-sparkle" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.52491)">
+        <line x1="-6.5" y1="0" x2="6.5" y2="0" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round" />
+        <line x1="0" y1="-6.5" x2="0" y2="6.5" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round" />
+        <line x1="-3.9" y1="-3.9" x2="3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round" />
+        <line x1="3.9" y1="-3.9" x2="-3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round" />
+        <circle cx="0" cy="0" r="1.2" fill="#fffde8" />
+      </g>
+    </symbol>
+    <symbol id="icon-defilements-ended" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.63614) translate(-2, 0)">
+        <g opacity="0.85" stroke="#c0a860" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+          <ellipse cx="-7" cy="0" rx="7" ry="9" />
+          <ellipse cx="11" cy="0" rx="7" ry="9" />
+          <line x1="0" y1="-5" x2="4" y2="-9" stroke-width="0.9" />
+          <line x1="0" y1="5" x2="4" y2="9" stroke-width="0.9" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-ariya-header" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.57236) translate(-12, -18.95)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+        <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+      </g>
+    </symbol>
+    <symbol id="icon-five-faculties" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g opacity="0.85" stroke="#88a8c0" fill="none" stroke-linecap="round">
+          <line x1="-9" y1="8" x2="-9" y2="3" stroke-width="1.3" />
+          <line x1="-4.5" y1="8" x2="-4.5" y2="0" stroke-width="1.3" />
+          <line x1="0" y1="8" x2="0" y2="-3" stroke-width="1.3" />
+          <line x1="4.5" y1="8" x2="4.5" y2="-6" stroke-width="1.3" />
+          <line x1="9" y1="8" x2="9" y2="-9" stroke-width="1.3" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-infant-five-bonds" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g fill="none" stroke="#b0a0a8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="-8" cy="0" r="2.8" stroke-width="0.9" />
+          <line x1="-5.2" y1="0" x2="4" y2="0" stroke-width="1" />
+          <path d="M -3 0 L -1 -5.5" stroke-width="0.85" />
+          <path d="M -3 0 L -1 5.5" stroke-width="0.85" />
+          <path d="M 4 0 L 8.5 -4" stroke-width="0.85" />
+          <path d="M 4 0 L 8.5 4" stroke-width="0.85" />
+        </g>
+        <g fill="none" stroke="#a06070" stroke-linecap="round" stroke-dasharray="1.2 1">
+          <line x1="-1" y1="-5.5" x2="-1" y2="-10.5" stroke-width="0.6" />
+          <line x1="-1" y1="5.5" x2="-1" y2="10.5" stroke-width="0.6" />
+          <line x1="8.5" y1="-4" x2="11.2" y2="-8" stroke-width="0.6" />
+          <line x1="8.5" y1="4" x2="11.2" y2="8" stroke-width="0.6" />
+          <line x1="-5.3" y1="-1" x2="-6.5" y2="-10.5" stroke-width="0.6" />
+        </g>
+        <g fill="#a06070" stroke="none">
+          <circle cx="-1" cy="-5.5" r="0.8" />
+          <circle cx="-1" cy="5.5" r="0.8" />
+          <circle cx="8.5" cy="-4" r="0.8" />
+          <circle cx="8.5" cy="4" r="0.8" />
+          <circle cx="-5.3" cy="-1" r="0.8" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-infant-bonds-released" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)">
+        <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="0" cy="-8" r="2.8" stroke-width="0.9" />
+          <line x1="0" y1="-5.2" x2="0" y2="3" stroke-width="1" />
+          <path d="M 0 -2.5 L -6 -6.5" stroke-width="0.85" />
+          <path d="M 0 -2.5 L 6 -6.5" stroke-width="0.85" />
+          <path d="M 0 3 L -4 10" stroke-width="0.85" />
+          <path d="M 0 3 L 4 10" stroke-width="0.85" />
+        </g>
+        <g fill="none" stroke="#60a088" stroke-linecap="round" stroke-width="0.55" stroke-dasharray="1.2 1" opacity="0.6">
+          <path d="M -11 8 Q -9.5 6.5, -8 8" />
+          <path d="M 8 8 Q 9.5 9.5, 11 8" />
+          <path d="M -10.5 1 Q -9 -0.5, -7.5 1" />
+          <path d="M 7.5 1 Q 9 2.5, 10.5 1" />
+        </g>
+        <g stroke="#ffd700" stroke-linecap="round" stroke-width="0.5" opacity="0.7">
+          <line x1="-4.5" y1="-11" x2="-3.5" y2="-10" />
+          <line x1="4.5" y1="-11" x2="3.5" y2="-10" />
+          <line x1="0" y1="-12" x2="0" y2="-11.4" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="icon-broken-chain" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.57438) translate(-18, -7)">
+        <rect x="0" y="2" width="16" height="10" rx="5" fill="none" stroke="#c8a040" stroke-width="1" transform="rotate(-16 8 7)" />
+        <rect x="20" y="2" width="16" height="10" rx="5" fill="none" stroke="#c8a040" stroke-width="1" transform="rotate(16 28 7)" />
+        <path d="M 16 8 L 19 5 L 20 8 L 23 5" fill="none" stroke="#ffd700" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+      </g>
+    </symbol>
+  </defs>
+
+  <rect width="920" height="3000" fill="url(#bg)" />
+  <ellipse cx="460" cy="300" rx="320" ry="140" fill="#a06070" opacity="0.03" />
+  <ellipse cx="460" cy="1060" rx="340" ry="260" fill="#c8a040" opacity="0.035" />
+  <ellipse cx="460" cy="1960" rx="320" ry="180" fill="#60a088" opacity="0.03" />
+  <ellipse cx="460" cy="2780" rx="340" ry="170" fill="#ffd700" opacity="0.025" />
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  HEADER                                        ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="3">MN 80 — VEKHANASA SUTTA</text>
+    <text x="460" y="72" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">To Vekhanasa · The Supreme Beauty</text>
+    <line x1="270" y1="88" x2="650" y2="88" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+    <text x="460" y="112" text-anchor="middle" fill="#b0a0a8" font-size="12" font-style="italic">“This is the supreme beauty! This is the supreme beauty!”</text>
+    <text x="460" y="132" text-anchor="middle" fill="#887888" font-size="11" font-style="italic" opacity="0.85">ayaṁ paramo vaṇṇo, ayaṁ paramo vaṇṇo</text>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  1. AN UNSPECIFIED BEAUTY                      ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="unspecified-beauty" transform="translate(0, 156)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">AN UNSPECIFIED BEAUTY · TAÑCA VAṆṆAṀ NA PAÑÑAPESI</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Praising a beauty one cannot point to is like longing for someone one has never seen</text>
+
+    <g id="circular-definition" transform="translate(68, 66)">
+      <rect x="0" y="0" width="384" height="268" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <g transform="translate(340, 14)" opacity="0.65" fill="none" stroke="#a06070" stroke-linecap="round">
+        <path d="M 18 12 A 8 8 0 1 1 14 5" stroke-width="1" />
+        <polygon points="14,1.5 17,6 12,7" fill="#a06070" stroke="none" />
+      </g>
+      <text x="22" y="30" fill="#c8a8b0" font-size="13" font-weight="bold">Vekhanasa’s Definition</text>
+      <text x="22" y="47" fill="#7a5e66" font-size="10.5" font-style="italic">so paramo vaṇṇo</text>
+      <line x1="20" y1="60" x2="364" y2="60" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+
+      <text x="22" y="82" fill="#c8a040" font-size="9.5" font-weight="bold" letter-spacing="1.5">THE BLESSED ONE</text>
+      <text x="22" y="99" fill="#b8a8b0" font-size="11">“What, Kaccāna, is that supreme beauty?”</text>
+      <text x="22" y="115" fill="#7a5e66" font-size="10" font-style="italic">katamo, kaccāna, so paramo vaṇṇo</text>
+
+      <text x="22" y="141" fill="#a06878" font-size="9.5" font-weight="bold" letter-spacing="1.5">VEKHANASA</text>
+      <text x="22" y="158" fill="#b8a8b0" font-size="11">“That beauty than which there is no other beauty</text>
+      <text x="22" y="174" fill="#b8a8b0" font-size="11">more excellent or more sublime is the supreme beauty.”</text>
+      <text x="22" y="190" fill="#7a5e66" font-size="10" font-style="italic">yasmā vaṇṇā añño vaṇṇo uttaritaro vā paṇītataro vā natthi</text>
+
+      <line x1="20" y1="206" x2="364" y2="206" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="192" y="228" text-anchor="middle" fill="#9a8088" font-size="10.5" font-style="italic">Asked again, he repeats the very same words:</text>
+      <text x="192" y="246" text-anchor="middle" fill="#c8a8b0" font-size="11">“yet you do not specify what that beauty is”</text>
+      <text x="192" y="261" text-anchor="middle" fill="#7a5e66" font-size="10" font-style="italic">tañca vaṇṇaṁ na paññapesi</text>
+    </g>
+
+    <g id="simile-janapadakalyani" transform="translate(468, 66)">
+      <rect x="0" y="0" width="384" height="268" rx="8" fill="url(#cardNeutral)" stroke="#a06070" stroke-opacity="0.3" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <use href="#icon-unknown-beauty" x="332" y="8" width="40" height="40" opacity="0.8" filter="url(#iconGlow)" />
+      <text x="22" y="30" fill="#c8b8c0" font-size="13" font-weight="bold">The Most Beautiful Woman of the Country</text>
+      <text x="22" y="47" fill="#806870" font-size="10.5" font-style="italic">janapadakalyāṇī · taṁ icchāmi taṁ kāmemi</text>
+      <line x1="20" y1="60" x2="364" y2="60" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="22" y="80" fill="#9aa0b0" font-size="10.5" font-style="italic">A man says he longs for her. They ask him:</text>
+
+      <g id="question-1" transform="translate(0, 92)">
+        <circle cx="32" cy="16" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="19" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">1</text>
+        <text x="50" y="12" fill="#b8b0b8" font-size="10.5">Her caste: aristocrat, brahmin, merchant, worker?</text>
+        <text x="50" y="27" fill="#806870" font-size="9.5" font-style="italic">khattiyī vā brāhmaṇī vā vessī vā suddī vā</text>
+        <rect x="324" y="8" width="44" height="16" rx="8" fill="#2a1820" stroke="#a06070" stroke-opacity="0.6" stroke-width="0.7" />
+        <text x="346" y="17" text-anchor="middle" dominant-baseline="central" fill="#d0a0a8" font-size="9.5" font-style="italic">‘No’</text>
+      </g>
+      <g id="question-2" transform="translate(0, 132)">
+        <circle cx="32" cy="16" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="19" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">2</text>
+        <text x="50" y="12" fill="#b8b0b8" font-size="10.5">Her name, clan, height, complexion, or village?</text>
+        <text x="50" y="27" fill="#806870" font-size="9.5" font-style="italic">evaṁnāmā evaṅgottā … dīghā vā rassā vā</text>
+        <rect x="324" y="8" width="44" height="16" rx="8" fill="#2a1820" stroke="#a06070" stroke-opacity="0.6" stroke-width="0.7" />
+        <text x="346" y="17" text-anchor="middle" dominant-baseline="central" fill="#d0a0a8" font-size="9.5" font-style="italic">‘No’</text>
+      </g>
+      <g id="question-3" transform="translate(0, 172)">
+        <circle cx="32" cy="16" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="18" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">3</text>
+        <text x="50" y="12" fill="#b8b0b8" font-size="10.5">Longing for one you do not know and do not see?</text>
+        <text x="50" y="27" fill="#806870" font-size="9.5" font-style="italic">yaṁ tvaṁ na jānāsi na passasi</text>
+        <rect x="324" y="8" width="44" height="16" rx="8" fill="#2a1820" stroke="#c07080" stroke-opacity="0.8" stroke-width="0.8" />
+        <text x="346" y="17" text-anchor="middle" dominant-baseline="central" fill="#e0b0b8" font-size="9.5" font-style="italic">‘Yes’</text>
+      </g>
+
+      <line x1="20" y1="218" x2="364" y2="218" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="192" y="240" text-anchor="middle" fill="#c8a8b0" font-size="11">Such a man’s statement turns out to be ungrounded</text>
+      <text x="192" y="256" text-anchor="middle" fill="#806870" font-size="10" font-style="italic">appāṭihīrakataṁ bhāsitaṁ sampajjati</text>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  2. A LADDER OF RADIANCE                       ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="ladder-of-radiance" transform="translate(0, 520)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">A LADDER OF RADIANCE · ABHIKKANTATARO CA PAṆĪTATARO CA</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">“Which of these two kinds of beauty is more excellent and more sublime?”</text>
+    <text x="460" y="68" text-anchor="middle" fill="#5e6e80" font-size="10.5" font-style="italic">imesaṁ ubhinnaṁ vaṇṇānaṁ katamo vaṇṇo abhikkantataro ca paṇītataro cā</text>
+
+    <g id="ladder-rows" transform="translate(130, 88)">
+      <g id="rung-gem" transform="translate(0, 0)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="35" text-anchor="middle" fill="#c0889a" font-size="11" font-weight="bold">1</text>
+        <use href="#icon-beryl-gem-blanket" x="56" y="8" width="48" height="48" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#c8a8b0" font-size="13" font-weight="bold">A beryl gem on a crimson blanket</text>
+        <text x="116" y="45" fill="#7a5e66" font-size="10.5" font-style="italic">maṇi veḷuriyo … paṇḍukambale nikkhitto</text>
+        <text x="640" y="27" text-anchor="end" fill="#b08890" font-size="10.5" font-style="italic">Vekhanasa: “of such beauty is the self, healthy after death”</text>
+        <text x="640" y="45" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">evaṁ vaṇṇo attā hoti arogo paraṁ maraṇā</text>
+      </g>
+
+      <path d="M 25 78 L 30 83 L 35 78" fill="none" stroke="#a06070" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="330" y="83" text-anchor="middle" fill="#b08890" font-size="10.5" font-style="italic">He concedes: even a firefly in the dark of night is more excellent than his gem</text>
+
+      <g id="rung-firefly" transform="translate(0, 94)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg1)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#6888a0" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="35" text-anchor="middle" fill="#a8b8d0" font-size="11" font-weight="bold">2</text>
+        <use href="#icon-firefly" x="56" y="8" width="48" height="48" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#a8b8d0" font-size="13" font-weight="bold">A firefly</text>
+        <text x="116" y="45" fill="#708090" font-size="10.5" font-style="italic">kimi khajjopanako</text>
+        <text x="640" y="27" text-anchor="end" fill="#8898b0" font-size="10.5" font-style="italic">in the dark of night</text>
+        <text x="640" y="45" text-anchor="end" fill="#687890" font-size="10" font-style="italic">rattandhakāratimisāya</text>
+      </g>
+
+      <path d="M 25 161 L 30 166 L 35 161" fill="none" stroke="#7090a0" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="rung-oil-lamp" transform="translate(0, 170)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg2)" stroke="#7090a0" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#7090a0" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="34" text-anchor="middle" fill="#b0bcc8" font-size="11" font-weight="bold">3</text>
+        <use href="#icon-oil-lamp-flame-radiance" x="56" y="8" width="48" height="48" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#b0bcc8" font-size="13" font-weight="bold">An oil lamp</text>
+        <text x="116" y="45" fill="#788a90" font-size="10.5" font-style="italic">telappadīpo</text>
+        <text x="640" y="27" text-anchor="end" fill="#8898b0" font-size="10.5" font-style="italic">in the dark of night</text>
+        <text x="640" y="45" text-anchor="end" fill="#687890" font-size="10" font-style="italic">rattandhakāratimisāya</text>
+      </g>
+
+      <path d="M 25 237 L 30 242 L 35 237" fill="none" stroke="#8a9a88" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="rung-bonfire" transform="translate(0, 246)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg3)" stroke="#8a9a88" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#8a9a88" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="34" text-anchor="middle" fill="#c0c0b8" font-size="11" font-weight="bold">4</text>
+        <use href="#icon-great-bonfire" x="56" y="8" width="48" height="48" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#c0c0b8" font-size="13" font-weight="bold">A great bonfire</text>
+        <text x="116" y="45" fill="#808c88" font-size="10.5" font-style="italic">mahāaggikkhandho</text>
+        <text x="640" y="27" text-anchor="end" fill="#8898b0" font-size="10.5" font-style="italic">in the dark of night</text>
+        <text x="640" y="45" text-anchor="end" fill="#687890" font-size="10" font-style="italic">rattandhakāratimisāya</text>
+      </g>
+
+      <path d="M 25 313 L 30 318 L 35 313" fill="none" stroke="#a0a070" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="rung-morning-star" transform="translate(0, 322)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg4)" stroke="#a0a070" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#a0a070" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="34" text-anchor="middle" fill="#d0c8a8" font-size="11" font-weight="bold">5</text>
+        <use href="#icon-morning-star" x="56" y="8" width="48" height="48" opacity="0.9" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#d0c8a8" font-size="13" font-weight="bold">The morning star</text>
+        <text x="116" y="45" fill="#8a8c78" font-size="10.5" font-style="italic">osadhitārakā</text>
+        <text x="640" y="27" text-anchor="end" fill="#8898b0" font-size="10.5" font-style="italic">at the break of dawn, in a clear, cloudless sky</text>
+        <text x="640" y="45" text-anchor="end" fill="#687890" font-size="10" font-style="italic">rattiyā paccūsasamayaṁ viddhe vigatavalāhake deve</text>
+      </g>
+
+      <path d="M 25 389 L 30 394 L 35 389" fill="none" stroke="#b0a060" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="rung-full-moon" transform="translate(0, 398)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg5)" stroke="#b0a060" stroke-opacity="0.45" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#b0a060" stroke-width="0.9" opacity="0.75" />
+        <text x="30" y="36" text-anchor="middle" fill="#dcd0a0" font-size="11" font-weight="bold">6</text>
+        <use href="#icon-full-moon" x="56" y="8" width="48" height="48" opacity="0.9" filter="url(#iconGlow)" />
+        <text x="116" y="27" fill="#dcd0a0" font-size="13" font-weight="bold">The full moon</text>
+        <text x="116" y="45" fill="#948c68" font-size="10.5" font-style="italic">cando</text>
+        <text x="640" y="27" text-anchor="end" fill="#8898b0" font-size="10.5" font-style="italic">around midnight on the fifteenth-day Uposatha</text>
+        <text x="640" y="45" text-anchor="end" fill="#687890" font-size="10" font-style="italic">tadahuposathe pannarase … aḍḍharattasamayaṁ</text>
+      </g>
+
+      <path d="M 25 465 L 30 470 L 35 465" fill="none" stroke="#c8a040" stroke-opacity="0.7" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="rung-autumn-sun" transform="translate(0, 474)">
+        <rect x="0" y="0" width="660" height="64" rx="8" fill="url(#stg6)" stroke="#c8a040" stroke-opacity="0.5" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <circle cx="30" cy="32" r="11" fill="none" stroke="#c8a040" stroke-width="0.9" opacity="0.8" />
+        <text x="30" y="35" text-anchor="middle" fill="#ffd980" font-size="11" font-weight="bold">7</text>
+        <use href="#icon-autumn-sun" x="56" y="8" width="48" height="48" opacity="0.95" filter="url(#glow1)" />
+        <text x="116" y="27" fill="#ffd980" font-size="13" font-weight="bold">The autumn sun</text>
+        <text x="116" y="45" fill="#a89050" font-size="10.5" font-style="italic">sūriyo</text>
+        <text x="640" y="27" text-anchor="end" fill="#a8a088" font-size="10.5" font-style="italic">at midday in autumn, the last month of the rains</text>
+        <text x="640" y="45" text-anchor="end" fill="#887850" font-size="10" font-style="italic">vassānaṁ pacchime māse saradasamaye … majjhanhikasamayaṁ</text>
+      </g>
+
+      <path d="M 25 548 L 30 553 L 35 548" fill="none" stroke="#c8a040" stroke-opacity="0.7" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <g id="beyond-sun-and-moon" transform="translate(130, 652)">
+      <rect x="0" y="0" width="660" height="156" rx="10" fill="url(#cardGold)" stroke="#c8a040" stroke-opacity="0.6" stroke-width="1" filter="url(#shadowDrop)" />
+      <circle cx="70" cy="78" r="70" fill="url(#libGlow)" />
+      <use href="#icon-deities" x="34" y="42" width="72" height="72" opacity="0.95" filter="url(#glow1)" />
+      <text x="140" y="30" fill="#ffd980" font-size="13.5" font-weight="bold">Beyond this: many deities, far more numerous</text>
+      <text x="140" y="47" fill="#a89050" font-size="10.5" font-style="italic">bahū hi bahutarā devā ye imesaṁ candimasūriyānaṁ ābhā nānubhonti</text>
+      <text x="140" y="68" fill="#d8d0b8" font-size="11">on whom the radiance of the sun and moon makes no impression: <tspan fill="#ffd980">“these I know”</tspan></text>
+      <text x="140" y="86" fill="#d8d0b8" font-size="11">Even so, I do not say: ‘There is no beauty more excellent than this.’</text>
+      <text x="140" y="101" fill="#a89050" font-size="10" font-style="italic">tyāhaṁ pajānāmi · atha ca panāhaṁ na vadāmi</text>
+      <line x1="140" y1="114" x2="640" y2="114" stroke="#c8a040" stroke-opacity="0.2" stroke-width="0.6" />
+      <text x="140" y="132" fill="#c8a0a8" font-size="11">Yet you call a beauty inferior and viler than a firefly’s ‘the supreme beauty’</text>
+      <text x="140" y="147" fill="#806870" font-size="10" font-style="italic">kiminā khajjopanakena nihīnataro ca patikiṭṭhataro ca so paramo vaṇṇo</text>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  3. FIVE CORDS OF SENSUAL PLEASURE             ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="five-cords" transform="translate(0, 1352)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">FIVE CORDS OF SENSUAL PLEASURE · PAÑCA KĀMAGUṆĀ</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Desirable, lovely, agreeable, pleasing, sensual, and enticing</text>
+    <text x="460" y="68" text-anchor="middle" fill="#5e6e80" font-size="10.5" font-style="italic">iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā</text>
+
+    <g id="cords-row" transform="translate(130, 86)">
+      <g id="cord-forms" transform="translate(0, 0)">
+        <rect x="0" y="0" width="124" height="92" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-seen" x="46" y="10" width="32" height="32" opacity="0.8" filter="url(#iconGlow)" />
+        <text x="62" y="60" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Forms</text>
+        <text x="62" y="77" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">cakkhuviññeyyā rūpā</text>
+      </g>
+      <g id="cord-sounds" transform="translate(134, 0)">
+        <rect x="0" y="0" width="124" height="92" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-heard" x="46" y="10" width="32" height="32" opacity="0.8" filter="url(#iconGlow)" />
+        <text x="62" y="60" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Sounds</text>
+        <text x="62" y="77" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">sotaviññeyyā saddā</text>
+      </g>
+      <g id="cord-odors" transform="translate(268, 0)">
+        <rect x="0" y="0" width="124" height="92" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-sense-nose" x="46" y="10" width="32" height="32" opacity="0.8" filter="url(#iconGlow)" />
+        <text x="62" y="60" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Odors</text>
+        <text x="62" y="77" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">ghānaviññeyyā gandhā</text>
+      </g>
+      <g id="cord-tastes" transform="translate(402, 0)">
+        <rect x="0" y="0" width="124" height="92" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-sense-tongue" x="46" y="10" width="32" height="32" opacity="0.8" filter="url(#iconGlow)" />
+        <text x="62" y="60" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Tastes</text>
+        <text x="62" y="77" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">jivhāviññeyyā rasā</text>
+      </g>
+      <g id="cord-tangibles" transform="translate(536, 0)">
+        <rect x="0" y="0" width="124" height="92" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-sensed" x="46" y="10" width="32" height="32" opacity="0.8" filter="url(#iconGlow)" />
+        <text x="62" y="60" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Tangibles</text>
+        <text x="62" y="77" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">kāyaviññeyyā phoṭṭhabbā</text>
+      </g>
+    </g>
+
+    <path d="M 455 186 L 460 194 L 465 186" fill="none" stroke="#a06070" stroke-opacity="0.55" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g id="pleasure-chain" transform="translate(130, 206)">
+      <g id="chain-cords" transform="translate(0, 0)">
+        <rect x="0" y="0" width="200" height="108" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-bait-five-cords" x="12" y="12" width="26" height="26" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="46" y="28" fill="#c8a8b0" font-size="12" font-weight="bold">Sensual objects</text>
+        <text x="46" y="44" fill="#7a5e66" font-size="10" font-style="italic">kāmehi</text>
+        <text x="100" y="68" text-anchor="middle" fill="#a89098" font-size="10.5">Sensual pleasure arises</text>
+        <text x="100" y="84" text-anchor="middle" fill="#a89098" font-size="10.5">through these</text>
+      </g>
+
+      <path d="M 204 54 L 226 54" stroke="#8898b0" stroke-opacity="0.5" stroke-width="1.1" stroke-linecap="round" />
+      <polygon points="230,54 224,51 224,57" fill="#8898b0" fill-opacity="0.6" />
+
+      <g id="chain-kamasukha" transform="translate(230, 0)">
+        <rect x="0" y="0" width="200" height="108" rx="8" fill="url(#cardNeutral)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-feeling-droplet" x="12" y="16" width="26" height="26" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="46" y="28" fill="#a8b8d0" font-size="12" font-weight="bold">Sensual pleasure</text>
+        <text x="46" y="44" fill="#708090" font-size="10" font-style="italic">kāmasukhaṁ</text>
+        <text x="100" y="68" text-anchor="middle" fill="#90a0b8" font-size="10.5">Happiness and pleasure arising</text>
+        <text x="100" y="84" text-anchor="middle" fill="#90a0b8" font-size="10.5">dependent on the five cords</text>
+        <text x="100" y="99" text-anchor="middle" fill="#687890" font-size="9.5" font-style="italic">sukhaṁ somanassaṁ</text>
+      </g>
+
+      <path d="M 434 54 L 456 54" stroke="#c8a040" stroke-opacity="0.5" stroke-width="1.1" stroke-linecap="round" />
+      <polygon points="460,54 454,51 454,57" fill="#c8a040" fill-opacity="0.6" />
+
+      <g id="chain-kamaggasukha" transform="translate(460, 0)">
+        <rect x="0" y="0" width="200" height="108" rx="8" fill="url(#cardGold)" stroke="#c8a040" stroke-opacity="0.5" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#icon-liberation-sparkle" x="12" y="12" width="26" height="26" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="44" y="28" fill="#ffd980" font-size="11" font-weight="bold">Higher than sensuality</text>
+        <text x="44" y="44" fill="#a89050" font-size="10" font-style="italic">kāmaggasukhaṁ</text>
+        <text x="100" y="70" text-anchor="middle" fill="#d0c8a8" font-size="10.5">Beyond sensual pleasure,</text>
+        <text x="100" y="86" text-anchor="middle" fill="#d0c8a8" font-size="10.5">declared supreme among them</text>
+      </g>
+    </g>
+
+    <text x="460" y="342" text-anchor="middle" fill="#c8a040" font-size="11.5" font-style="italic">iti kāmehi kāmasukhaṁ, kāmasukhā kāmaggasukhaṁ tattha aggamakkhāyati</text>
+    <text x="460" y="362" text-anchor="middle" fill="#8898b0" font-size="10.5" font-style="italic">Vekhanasa: “It is wonderful, sir Gotama, it is marvelous!” · <tspan fill="#687890">acchariyaṁ, bho gotama, abbhutaṁ</tspan></text>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  4. HARD TO KNOW                               ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="hard-to-know" transform="translate(0, 1746)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">DIFFICULT TO UNDERSTAND · DUJJĀNAṀ</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">What sensual objects are, what sensual pleasure is, what the pleasure higher than sensual pleasure is</text>
+    <text x="460" y="68" text-anchor="middle" fill="#5e6e80" font-size="10.5" font-style="italic">kāmā vā kāmasukhaṁ vā kāmaggasukhaṁ vā</text>
+
+    <line x1="460" y1="86" x2="460" y2="322" stroke="#c8a040" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="2 3" />
+
+    <g id="other-view" transform="translate(68, 86)">
+      <rect x="0" y="0" width="376" height="236" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <text x="22" y="30" fill="#c8a8b0" font-size="13" font-weight="bold">Difficult for you to understand, Kaccāna</text>
+      <text x="22" y="47" fill="#7a5e66" font-size="10.5" font-style="italic">dujjānaṁ kho etaṁ, kaccāna, tayā</text>
+      <line x1="20" y1="60" x2="356" y2="60" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="22" y="80" fill="#9a8088" font-size="10.5" font-style="italic">when you…</text>
+
+      <g id="other-1" transform="translate(0, 104)">
+        <circle cx="32" cy="0" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="3" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">1</text>
+        <text x="50" y="4" fill="#b8a8b0" font-size="11">hold another view</text>
+        <text x="356" y="4" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">aññadiṭṭhikena</text>
+      </g>
+      <g id="other-2" transform="translate(0, 130)">
+        <circle cx="32" cy="0" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="3" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">2</text>
+        <text x="50" y="4" fill="#b8a8b0" font-size="11">approve of another teaching</text>
+        <text x="356" y="4" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">aññakhantikena</text>
+      </g>
+      <g id="other-3" transform="translate(0, 156)">
+        <circle cx="32" cy="0" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="2" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">3</text>
+        <text x="50" y="4" fill="#b8a8b0" font-size="11">have another preference</text>
+        <text x="356" y="4" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">aññarucikena</text>
+      </g>
+      <g id="other-4" transform="translate(0, 182)">
+        <circle cx="32" cy="0" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="2" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">4</text>
+        <text x="50" y="4" fill="#b8a8b0" font-size="11">practice another discipline</text>
+        <text x="356" y="4" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">aññatrayogena</text>
+      </g>
+      <g id="other-5" transform="translate(0, 208)">
+        <circle cx="32" cy="0" r="9" fill="none" stroke="#a06878" stroke-width="0.9" opacity="0.7" />
+        <text x="32" y="2" text-anchor="middle" fill="#c0889a" font-size="10" font-weight="bold">5</text>
+        <text x="50" y="4" fill="#b8a8b0" font-size="11">follow another teacher</text>
+        <text x="356" y="4" text-anchor="end" fill="#7a5e66" font-size="10" font-style="italic">aññatrācariyakena</text>
+      </g>
+    </g>
+
+    <g id="arahants-know" transform="translate(476, 86)">
+      <rect x="0" y="0" width="376" height="236" rx="8" fill="url(#cardTrue)" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <use href="#icon-defilements-ended" x="322" y="12" width="36" height="36" opacity="0.85" filter="url(#iconGlow)" />
+      <text x="22" y="30" fill="#90c8b0" font-size="13" font-weight="bold">Arahants would understand this</text>
+      <text x="22" y="47" fill="#688c78" font-size="10.5" font-style="italic">te kho etaṁ jāneyyuṁ</text>
+      <line x1="20" y1="60" x2="356" y2="60" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+
+      <g id="arahant-qualities" font-size="10.5">
+        <circle cx="28" cy="81" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="85" fill="#a8c8bc">taints worn away</text>
+        <text x="356" y="85" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">khīṇāsavā</text>
+        <circle cx="28" cy="102" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="106" fill="#a8c8bc">fulfilled the spiritual life</text>
+        <text x="356" y="106" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">vusitavanto</text>
+        <circle cx="28" cy="123" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="127" fill="#a8c8bc">done what had to be done</text>
+        <text x="356" y="127" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">katakaraṇīyā</text>
+        <circle cx="28" cy="144" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="148" fill="#a8c8bc">put down the burden</text>
+        <text x="356" y="148" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">ohitabhārā</text>
+        <circle cx="28" cy="165" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="169" fill="#a8c8bc">achieved the highest goal</text>
+        <text x="356" y="169" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">anuppattasadatthā</text>
+        <circle cx="28" cy="186" r="2" fill="#80c0a0" opacity="0.7" />
+        <text x="40" y="190" fill="#a8c8bc">exhausted the fetter of existence</text>
+        <text x="356" y="190" text-anchor="end" fill="#688c78" font-size="10" font-style="italic">parikkhīṇabhavasaṁyojanā</text>
+        <circle cx="28" cy="207" r="2" fill="#ffd700" opacity="0.8" />
+        <text x="40" y="211" fill="#d0d8b0">freed through complete comprehension</text>
+        <text x="356" y="211" text-anchor="end" fill="#a89050" font-size="10" font-style="italic">sammadaññāvimuttā</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  5. CHALLENGE AND INVITATION                   ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="challenge-and-invitation" transform="translate(0, 2096)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">AN ANGRY CHALLENGE · AN OPEN INVITATION</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Angry and displeased, Vekhanasa thinks: ‘The ascetic Gotama will be defeated!’</text>
+    <text x="460" y="68" text-anchor="middle" fill="#5e6e80" font-size="10.5" font-style="italic">kupito anattamano … samaṇo gotamo pāpito bhavissati</text>
+
+    <line x1="460" y1="86" x2="460" y2="322" stroke="#c8a040" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="2 3" />
+
+    <g id="vekhanasa-charge" transform="translate(68, 86)">
+      <rect x="0" y="0" width="376" height="236" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <text x="22" y="30" fill="#c8a8b0" font-size="13" font-weight="bold">Vekhanasa’s Charge</text>
+      <text x="22" y="47" fill="#7a5e66" font-size="10.5" font-style="italic">evameva panidhekacce samaṇabrāhmaṇā</text>
+      <line x1="20" y1="60" x2="356" y2="60" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="22" y="80" fill="#b8a8b0" font-size="11">Some ascetics and brahmins, not knowing the past</text>
+      <text x="22" y="96" fill="#b8a8b0" font-size="11">nor seeing the future, nevertheless claim:</text>
+      <text x="22" y="112" fill="#7a5e66" font-size="10" font-style="italic">ajānantā pubbantaṁ, apassantā aparantaṁ</text>
+
+      <rect x="20" y="122" width="336" height="48" rx="4" fill="#1a0f16" stroke="#a06070" stroke-opacity="0.25" stroke-width="0.7" />
+      <text x="188" y="141" text-anchor="middle" fill="#c8a8b0" font-size="10.5" font-style="italic">“Birth is ended … there is no further for this state of being.”</text>
+      <text x="188" y="159" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">khīṇā jāti, vusitaṁ brahmacariyaṁ … nāparaṁ itthattāya</text>
+
+      <text x="22" y="188" fill="#9a8088" font-size="10" font-style="italic">Such a statement turns out to be:</text>
+      <g id="charge-chips" transform="translate(20, 196)">
+        <g transform="translate(0, 0)">
+          <rect x="0" y="0" width="78" height="30" rx="6" fill="#2a1820" stroke="#a06070" stroke-opacity="0.5" stroke-width="0.7" />
+          <text x="39" y="12" text-anchor="middle" fill="#d0a0a8" font-size="10">ridiculous</text>
+          <text x="39" y="24" text-anchor="middle" fill="#7a5e66" font-size="8.5" font-style="italic">hassakaṁyeva</text>
+        </g>
+        <g transform="translate(86, 0)">
+          <rect x="0" y="0" width="78" height="30" rx="6" fill="#2a1820" stroke="#a06070" stroke-opacity="0.5" stroke-width="0.7" />
+          <text x="39" y="12" text-anchor="middle" fill="#d0a0a8" font-size="10">mere words</text>
+          <text x="39" y="24" text-anchor="middle" fill="#7a5e66" font-size="8.5" font-style="italic">nāmakaṁyeva</text>
+        </g>
+        <g transform="translate(172, 0)">
+          <rect x="0" y="0" width="78" height="30" rx="6" fill="#2a1820" stroke="#a06070" stroke-opacity="0.5" stroke-width="0.7" />
+          <text x="39" y="12" text-anchor="middle" fill="#d0a0a8" font-size="10">empty</text>
+          <text x="39" y="24" text-anchor="middle" fill="#7a5e66" font-size="8.5" font-style="italic">rittakaṁyeva</text>
+        </g>
+        <g transform="translate(258, 0)">
+          <rect x="0" y="0" width="78" height="30" rx="6" fill="#2a1820" stroke="#a06070" stroke-opacity="0.5" stroke-width="0.7" />
+          <text x="39" y="12" text-anchor="middle" fill="#d0a0a8" font-size="10">hollow</text>
+          <text x="39" y="24" text-anchor="middle" fill="#7a5e66" font-size="8.5" font-style="italic">tucchakaṁyeva</text>
+        </g>
+      </g>
+    </g>
+
+    <g id="buddha-reply" transform="translate(476, 86)">
+      <rect x="0" y="0" width="376" height="236" rx="8" fill="url(#cardTrue)" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <use href="#icon-ariya-header" x="326" y="10" width="36" height="36" opacity="0.85" filter="url(#iconGlow)" />
+      <text x="22" y="30" fill="#90c8b0" font-size="13" font-weight="bold">The Buddha’s Reply</text>
+      <text x="22" y="47" fill="#688c78" font-size="10.5" font-style="italic">tesaṁ soyeva sahadhammiko niggaho hoti</text>
+      <line x1="20" y1="60" x2="356" y2="60" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="22" y="80" fill="#a8c8bc" font-size="11">Such claims are legitimately refuted by that very fact.</text>
+      <text x="22" y="104" fill="#c8e0d0" font-size="11.5" font-weight="bold">“Let the past be, let the future be.”</text>
+      <text x="22" y="120" fill="#688c78" font-size="10" font-style="italic">tiṭṭhatu pubbanto, tiṭṭhatu aparanto</text>
+      <text x="22" y="144" fill="#a8c8bc" font-size="11">Let an intelligent person come: honest, sincere, upright.</text>
+      <text x="22" y="160" fill="#688c78" font-size="10" font-style="italic">etu viññū puriso asaṭho amāyāvī ujujātiko</text>
+      <text x="22" y="184" fill="#a8c8bc" font-size="11">I shall instruct him. Practicing as instructed, before long</text>
+      <text x="22" y="200" fill="#a8c8bc" font-size="11">he will know for himself, see for himself.</text>
+      <text x="22" y="216" fill="#688c78" font-size="10" font-style="italic">ahamanusāsāmi … sāmaññeva ñassati sāmaṁ dakkhiti</text>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  6. THE INFANT AND THE FIVE BONDS              ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="infant-simile" transform="translate(0, 2446)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE BOUND INFANT · KAṆṬHAPAÑCAMEHI BANDHANEHI</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">A young, helpless infant lying on his back, tied by strings at both hands, both feet, and the neck as the fifth</text>
+    <text x="460" y="68" text-anchor="middle" fill="#5e6e80" font-size="10.5" font-style="italic">daharo kumāro mando uttānaseyyako kaṇṭhapañcamehi bandhanehi baddho assa suttabandhanehi</text>
+
+    <g id="infant-stages" transform="translate(130, 86)">
+      <g id="stage-bound" transform="translate(0, 0)">
+        <rect x="0" y="0" width="200" height="176" rx="8" fill="url(#cardReject)" stroke="#a06070" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-infant-five-bonds" x="72" y="14" width="56" height="56" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="100" y="92" text-anchor="middle" fill="#c8a8b0" font-size="12" font-weight="bold">Bound by five strings</text>
+        <text x="100" y="109" text-anchor="middle" fill="#7a5e66" font-size="10" font-style="italic">bandhanehi baddho</text>
+        <text x="100" y="130" text-anchor="middle" fill="#a89098" font-size="10.5">Both hands, both feet,</text>
+        <text x="100" y="145" text-anchor="middle" fill="#a89098" font-size="10.5">and the neck as the fifth</text>
+        <text x="100" y="162" text-anchor="middle" fill="#7a5e66" font-size="9.5" font-style="italic">kaṇṭhapañcamehi</text>
+      </g>
+
+      <path d="M 204 88 L 226 88" stroke="#8898b0" stroke-opacity="0.5" stroke-width="1.1" stroke-linecap="round" />
+      <polygon points="230,88 224,85 224,91" fill="#8898b0" fill-opacity="0.6" />
+
+      <g id="stage-growth" transform="translate(230, 0)">
+        <rect x="0" y="0" width="200" height="176" rx="8" fill="url(#cardNeutral)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-five-faculties" x="76" y="18" width="48" height="48" opacity="0.85" filter="url(#iconGlow)" />
+        <text x="100" y="92" text-anchor="middle" fill="#a8b8d0" font-size="12" font-weight="bold">Growth of the faculties</text>
+        <text x="100" y="109" text-anchor="middle" fill="#708090" font-size="10" font-style="italic">indriyānaṁ paripākamanvāya</text>
+        <text x="100" y="130" text-anchor="middle" fill="#90a0b8" font-size="10.5">As he grows, those bonds</text>
+        <text x="100" y="145" text-anchor="middle" fill="#90a0b8" font-size="10.5">come undone</text>
+        <text x="100" y="162" text-anchor="middle" fill="#687890" font-size="9.5" font-style="italic">tāni bandhanāni mucceyyuṁ</text>
+      </g>
+
+      <path d="M 434 88 L 456 88" stroke="#60a088" stroke-opacity="0.55" stroke-width="1.1" stroke-linecap="round" />
+      <polygon points="460,88 454,85 454,91" fill="#60a088" fill-opacity="0.65" />
+
+      <g id="stage-released" transform="translate(460, 0)">
+        <rect x="0" y="0" width="200" height="176" rx="8" fill="url(#cardTrue)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <use href="#icon-infant-bonds-released" x="72" y="14" width="56" height="56" opacity="0.9" filter="url(#iconGlow)" />
+        <text x="100" y="92" text-anchor="middle" fill="#90c8b0" font-size="12" font-weight="bold">‘I am released’</text>
+        <text x="100" y="109" text-anchor="middle" fill="#688c78" font-size="10" font-style="italic">mokkhomhīti kho jāneyya</text>
+        <text x="100" y="130" text-anchor="middle" fill="#a0c0b4" font-size="10.5">He knows he is free,</text>
+        <text x="100" y="145" text-anchor="middle" fill="#a0c0b4" font-size="10.5">and there is no more bond</text>
+        <text x="100" y="162" text-anchor="middle" fill="#688c78" font-size="9.5" font-style="italic">no ca bandhanaṁ</text>
+      </g>
+    </g>
+
+    <g id="release-from-ignorance" transform="translate(130, 290)">
+      <rect x="0" y="0" width="660" height="128" rx="10" fill="url(#cardGold)" stroke="#c8a040" stroke-opacity="0.65" stroke-width="1" filter="url(#shadowDrop)" />
+      <circle cx="70" cy="64" r="64" fill="url(#libGlow)" />
+      <use href="#icon-broken-chain" x="30" y="24" width="80" height="80" opacity="0.95" filter="url(#glow1)" />
+      <text x="140" y="30" fill="#c8a040" font-size="10.5" font-weight="bold" letter-spacing="2">IN THE SAME WAY</text>
+      <text x="140" y="53" fill="#ffd980" font-size="13" font-weight="bold">“So it is in this way that there is right release from the bond,</text>
+      <text x="140" y="71" fill="#ffd980" font-size="13" font-weight="bold">that is, the bond of ignorance.”</text>
+      <text x="140" y="92" fill="#a89050" font-size="11" font-style="italic">evaṁ kira sammā bandhanā vippamokkho hoti, yadidaṁ avijjā bandhanā</text>
+      <text x="140" y="113" fill="#a0b8bc" font-size="10.5">Known for oneself, seen for oneself · <tspan fill="#708878" font-style="italic">sāmaññeva ñassati, sāmaṁ dakkhiti</tspan></text>
+    </g>
+
+    <g id="refuge" transform="translate(0, 446)">
+      <text x="460" y="0" text-anchor="middle" fill="#90a0b8" font-size="11" font-style="italic">Vekhanasa: “Magnificent, sir Gotama! … May sir Gotama remember me as a lay follower gone for refuge for life.”</text>
+      <text x="460" y="18" text-anchor="middle" fill="#5e6e80" font-size="10" font-style="italic">upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan</text>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  FOOTER                                        ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="footer" transform="translate(0, 2950)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn80" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="18" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn80</text>
+    </a>
+    <g transform="translate(460, 34) scale(0.24)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>

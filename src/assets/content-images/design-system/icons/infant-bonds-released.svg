@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <g fill="none" stroke="#80c0a0" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="-8" r="2.8" stroke-width="0.9" />
+      <line x1="0" y1="-5.2" x2="0" y2="3" stroke-width="1" />
+      <path d="M 0 -2.5 L -6 -6.5" stroke-width="0.85" />
+      <path d="M 0 -2.5 L 6 -6.5" stroke-width="0.85" />
+      <path d="M 0 3 L -4 10" stroke-width="0.85" />
+      <path d="M 0 3 L 4 10" stroke-width="0.85" />
+    </g>
+    <g fill="none" stroke="#60a088" stroke-linecap="round" stroke-width="0.55" stroke-dasharray="1.2 1" opacity="0.6">
+      <path d="M -11 8 Q -9.5 6.5, -8 8" />
+      <path d="M 8 8 Q 9.5 9.5, 11 8" />
+      <path d="M -10.5 1 Q -9 -0.5, -7.5 1" />
+      <path d="M 7.5 1 Q 9 2.5, 10.5 1" />
+    </g>
+    <g stroke="#ffd700" stroke-linecap="round" stroke-width="0.5" opacity="0.7">
+      <line x1="-4.5" y1="-11" x2="-3.5" y2="-10" />
+      <line x1="4.5" y1="-11" x2="3.5" y2="-10" />
+      <line x1="0" y1="-12" x2="0" y2="-11.4" />
+    </g>
+  </g>
+</svg>

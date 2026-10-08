@@ -16,6 +16,7 @@
 				"mn18",
 				"mn43",
 				"mn47",
+				"mn80",
 				"mn138",
 				"mn140",
 				"mn148",
@@ -41,6 +42,7 @@
 				"mn18",
 				"mn43",
 				"mn47",
+				"mn80",
 				"mn95",
 				"mn138",
 				"mn140",
@@ -64,6 +66,7 @@
 			"discourse": [
 				"mn1",
 				"mn18",
+				"mn80",
 				"mn138",
 				"mn140",
 				"mn148",
@@ -138,6 +141,7 @@
 				"mn1",
 				"mn29",
 				"mn30",
+				"mn80",
 				"mn110",
 				"mn113",
 				"mn138",
@@ -250,6 +254,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn80",
 				"mn110",
 				"dn9"
 			],
@@ -1016,6 +1021,7 @@
 				"mn9",
 				"mn10",
 				"mn43",
+				"mn80",
 				"dn22"
 			],
 			"labels": [
@@ -1784,6 +1790,7 @@
 				"mn25",
 				"mn43",
 				"mn77",
+				"mn80",
 				"mn111",
 				"mn119",
 				"mn140"
@@ -1979,6 +1986,7 @@
 				"mn9",
 				"mn18",
 				"mn43",
+				"mn80",
 				"mn111",
 				"mn138",
 				"mn140"
@@ -2312,6 +2320,7 @@
 				"mn2",
 				"mn43",
 				"mn53",
+				"mn80",
 				"mn119",
 				"mn138"
 			],
@@ -2338,6 +2347,7 @@
 				"mn10",
 				"mn18",
 				"mn43",
+				"mn80",
 				"mn138",
 				"mn140",
 				"dn22"
@@ -2361,6 +2371,7 @@
 				"mn10",
 				"mn18",
 				"mn43",
+				"mn80",
 				"mn138",
 				"mn140",
 				"dn22"
@@ -2854,6 +2865,7 @@
 				"mn25",
 				"mn9",
 				"mn19",
+				"mn80",
 				"dn9",
 				"sn46.2"
 			],
@@ -3303,13 +3315,14 @@
 		{
 			"id": "five-faculties",
 			"title": "Five spiritual faculties",
-			"description": "Five ascending bars — pañcindriyāni",
+			"description": "Five ascending bars — pañcindriyāni; reused for maturing faculties (indriyānaṁ paripāka)",
 			"tags": [
 				"line-art"
 			],
 			"discourse": [
 				"mn77",
-				"mn70"
+				"mn70",
+				"mn80"
 			],
 			"labels": [
 				"collectedness",
@@ -3628,7 +3641,8 @@
 			],
 			"discourse": [
 				"mn43",
-				"mn70"
+				"mn70",
+				"mn80"
 			],
 			"labels": [
 				"dependent co arising",
@@ -3697,7 +3711,10 @@
 				"line-art",
 				"simile"
 			],
-			"discourse": "dn9",
+			"discourse": [
+				"dn9",
+				"mn80"
+			],
 			"labels": [
 				"simile",
 				"wrong view"
@@ -3737,6 +3754,139 @@
 				"simile"
 			],
 			"svg": "icons/known-palace.svg"
+		},
+		{
+			"id": "beryl-gem-blanket",
+			"title": "Beryl gem on a red blanket",
+			"description": "Octagonal beryl gem glowing on a crimson draped cloth — maṇi veḷuriyo … paṇḍukambale nikkhitto, the self after death imagined as a shining gem",
+			"tags": [
+				"line-art",
+				"simile"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"personal existence view",
+				"simile",
+				"speculation"
+			],
+			"valence": "-ve",
+			"svg": "icons/beryl-gem-blanket.svg"
+		},
+		{
+			"id": "firefly",
+			"title": "Firefly",
+			"description": "Small insect with a glowing yellow-green abdomen — kimi khajjopanako, outshining the beryl gem",
+			"tags": [
+				"line-art",
+				"simile"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/firefly.svg"
+		},
+		{
+			"id": "great-bonfire",
+			"title": "Great bonfire",
+			"description": "Crossed logs with a tall central flame, side tongues and sparks — mahāaggikkhandho, a great mass of fire",
+			"tags": [
+				"line-art",
+				"simile",
+				"gold"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/great-bonfire.svg"
+		},
+		{
+			"id": "morning-star",
+			"title": "Morning star",
+			"description": "Four-point star above a dawn horizon arc — osadhitārakā, the healing star at dawn",
+			"tags": [
+				"line-art",
+				"simile",
+				"gold"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/morning-star.svg"
+		},
+		{
+			"id": "full-moon",
+			"title": "Full moon",
+			"description": "Disc with soft craters and a dashed halo — cando, the moon at midnight on the uposatha of the fifteenth",
+			"tags": [
+				"line-art",
+				"simile",
+				"gold"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/full-moon.svg"
+		},
+		{
+			"id": "autumn-sun",
+			"title": "Autumn sun",
+			"description": "Radiant disc with eight rays — sūriyo, the midday sun in the cloudless last month of the rains",
+			"tags": [
+				"line-art",
+				"simile",
+				"gold"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/autumn-sun.svg"
+		},
+		{
+			"id": "infant-five-bonds",
+			"title": "Infant in five bonds",
+			"description": "Swaddled infant lying down, tied by dashed strings at hands, feet and neck — kaṇṭhapañcamehi bandhanehi, bound with the neck as fifth",
+			"tags": [
+				"line-art",
+				"simile",
+				"burgundy",
+				"dashed"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"attachment",
+				"ignorance",
+				"simile"
+			],
+			"valence": "-ve",
+			"svg": "icons/infant-five-bonds.svg"
+		},
+		{
+			"id": "infant-bonds-released",
+			"title": "Released from the bonds",
+			"description": "Upright figure with loosened strings falling away and a gold sparkle — mokkhomhi, ‘I am released’; release from the bond of ignorance",
+			"tags": [
+				"line-art",
+				"simile",
+				"teal"
+			],
+			"discourse": "mn80",
+			"labels": [
+				"direct knowledge",
+				"liberation",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/infant-bonds-released.svg"
 		}
 	]
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <circle cx="0" cy="0" r="10.5" fill="none" stroke="#d8d8c0" stroke-width="0.5" stroke-dasharray="1.5 2" opacity="0.4" />
+    <circle cx="0" cy="0" r="7.5" fill="#e0e0c8" fill-opacity="0.15" stroke="#e0e0c8" stroke-width="1.1" />
+    <g fill="#e0e0c8" stroke="none">
+      <circle cx="-2.5" cy="-2.2" r="1.6" fill-opacity="0.3" />
+      <circle cx="2.6" cy="1.4" r="2.2" fill-opacity="0.22" />
+      <circle cx="-1.2" cy="4" r="0.9" fill-opacity="0.3" />
+    </g>
+  </g>
+</svg>

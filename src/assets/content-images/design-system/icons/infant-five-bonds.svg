@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <g fill="none" stroke="#b0a0a8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="-8" cy="0" r="2.8" stroke-width="0.9" />
+      <line x1="-5.2" y1="0" x2="4" y2="0" stroke-width="1" />
+      <path d="M -3 0 L -1 -5.5" stroke-width="0.85" />
+      <path d="M -3 0 L -1 5.5" stroke-width="0.85" />
+      <path d="M 4 0 L 8.5 -4" stroke-width="0.85" />
+      <path d="M 4 0 L 8.5 4" stroke-width="0.85" />
+    </g>
+    <g fill="none" stroke="#a06070" stroke-linecap="round" stroke-dasharray="1.2 1">
+      <line x1="-1" y1="-5.5" x2="-1" y2="-10.5" stroke-width="0.6" />
+      <line x1="-1" y1="5.5" x2="-1" y2="10.5" stroke-width="0.6" />
+      <line x1="8.5" y1="-4" x2="11.2" y2="-8" stroke-width="0.6" />
+      <line x1="8.5" y1="4" x2="11.2" y2="8" stroke-width="0.6" />
+      <line x1="-5.3" y1="-1" x2="-6.5" y2="-10.5" stroke-width="0.6" />
+    </g>
+    <g fill="#a06070" stroke="none">
+      <circle cx="-1" cy="-5.5" r="0.8" />
+      <circle cx="-1" cy="5.5" r="0.8" />
+      <circle cx="8.5" cy="-4" r="0.8" />
+      <circle cx="8.5" cy="4" r="0.8" />
+      <circle cx="-5.3" cy="-1" r="0.8" />
+    </g>
+  </g>
+</svg>

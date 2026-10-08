@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <circle cx="3" cy="3" r="6.5" fill="#d8e070" fill-opacity="0.12" stroke="none" />
+    <g fill="none" stroke="#a0a890" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="-5" cy="-5" r="1.6" stroke-width="0.9" />
+      <ellipse cx="-2" cy="-2" rx="2.2" ry="1.6" transform="rotate(45 -2 -2)" stroke-width="0.9" />
+      <path d="M -2 -2 Q -9 0, -7.5 5.5 Q -3.5 3, -2 -2 Z" stroke-width="0.6" opacity="0.7" />
+      <path d="M -2 -2 Q 0 -9, 5.5 -7.5 Q 3 -3.5, -2 -2 Z" stroke-width="0.6" opacity="0.7" />
+      <path d="M -6 -6.2 Q -7 -10, -10 -10" stroke-width="0.55" />
+      <path d="M -6.2 -6 Q -10 -7, -10 -10" stroke-width="0.55" />
+    </g>
+    <ellipse cx="2.4" cy="2.4" rx="3.4" ry="2.3" transform="rotate(45 2.4 2.4)" fill="#e8f080" fill-opacity="0.55" stroke="#d8e070" stroke-width="0.8" />
+    <circle cx="8" cy="7.5" r="0.6" fill="#e8f080" opacity="0.7" />
+    <circle cx="10" cy="4.5" r="0.45" fill="#e8f080" opacity="0.5" />
+  </g>
+</svg>
