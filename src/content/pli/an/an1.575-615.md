@@ -1,10 +1,10 @@
 ---
 title: Kāyagatāsati vagga - The Chapter on Mindfulness of the Body
-description: Short teachings on the benefits of cultivating mindfulness of the body
+description: Short teachings on the benefits of cultivating mindfulness of the body.
 qualities: mindfulness of body, wholesome, wisdom, liberation, conceit, ignorance, radical comprehension
 theme: training guideline, wisdom
 slug: an1.575-615
-priority: 1.1
+priority: 1.2
 ---
 
 #### 1.575

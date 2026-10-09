@@ -4,6 +4,7 @@ description: When the Buddha asks the bhikkhus on how they cultivate recollectio
 qualities: recollection of death, diligence, negligence, quenching, recollection of the Buddha, vigour
 theme: training guideline, urgency
 slug: an6.19
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā nātike viharati giñjakāvasathe. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

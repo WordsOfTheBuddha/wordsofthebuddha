@@ -10,9 +10,7 @@ Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati gho
 
 “Āvuso”ti kho te bhikkhū āyasmato ānandassa paccassosuṁ. Āyasmā ānando etadavoca:
 
-“Yo hi koci, āvuso, bhikkhu vā bhikkhunī vā mama santike arahattappattiṁ byākaroti, sabbo so catūhi maggehi, etesaṁ vā aññatarena.
-
-Katamehi catūhi?
+“Yo hi koci, āvuso, bhikkhu vā bhikkhunī vā mama santike arahattappattiṁ byākaroti, sabbo so catūhi maggehi, etesaṁ vā aññatarena. Katamehi catūhi?
 
 1.) Idha, āvuso, bhikkhu samathapubbaṅgamaṁ vipassanaṁ bhāveti. Tassa samathapubbaṅgamaṁ vipassanaṁ bhāvayato maggo sañjāyati. So taṁ maggaṁ āsevati bhāveti bahulīkaroti. Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni pahīyanti, anusayā byantīhonti.
 
