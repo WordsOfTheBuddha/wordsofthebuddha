@@ -1,10 +1,13 @@
 ---
 slug: an7.47
+character:
+  - Brahmin Uggatasarīra
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fires (2nd)
-description: The Buddha teaches on fires (2nd), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha tells the brahmin Uggatasarīra, prompted by Venerable Ānanda, that preparing an animal sacrifice raises three unskillful knives of body, speech, and mind, and that the fires of greed, hate, and delusion should be shunned while one tends the fires of parents, family, and ascetics, putting out the wood fire from time to time.
 qualities: harm, undeveloped, wholesome, suffering, unwholesome, delusion
 theme: story, urgency
 ---

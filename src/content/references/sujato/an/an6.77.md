@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Superhuman States
-description: The Buddha teaches on superhuman states, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists the six failings that block realization of a superhuman distinction in knowledge and vision worthy of the noble ones—lack of mindfulness and situational awareness, not guarding the sense doors, eating too much, fawning, and flattery—and the six corresponding virtues that make realization possible.
 qualities: vision, giving, giving up, mindfulness
 theme: wisdom
 ---

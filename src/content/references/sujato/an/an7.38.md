@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Textual Analysis (1st)
-description: The Buddha teaches on textual analysis (1st), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes seven qualities with which a mendicant soon realizes the four kinds of textual analysis, from truly understanding mental sluggishness to knowing feelings, perceptions, and thoughts as they arise, remain, and go away.
 qualities: examination, insight, wisdom, dullness, laziness
 theme: wisdom
 ---

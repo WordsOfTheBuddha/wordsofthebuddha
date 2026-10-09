@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Yoking and Unyoking
-description: The Buddha teaches on yoking and unyoking, presenting a sevenfold teaching for disciples on the path.
+description: In an exposition on yoking and unyoking, the Buddha explains how a woman or man who relishes their own femininity or masculinity is yoked to the other, while one who does not relish it transcends it and is unyoked.
 qualities: happiness, desire
 theme: principle
 ---

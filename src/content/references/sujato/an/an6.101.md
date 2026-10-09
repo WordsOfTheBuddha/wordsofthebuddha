@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguished
-description: The Buddha teaches on extinguished, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who regards extinguishment as suffering cannot accept views that conform with the teaching, while one who regards extinguishment as pleasurable can.
 qualities: suffering, wrong view
 theme: principle
 ---

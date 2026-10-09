@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Gratification
-description: The Buddha teaches on gratification, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up the view that things are gratifying, the theory of self, and wrong view one should develop the perception of impermanence, the perception of not-self, and right view.
 qualities: wrong view, right view, recognition of impermanence
 theme: urgency, training guideline
 ---

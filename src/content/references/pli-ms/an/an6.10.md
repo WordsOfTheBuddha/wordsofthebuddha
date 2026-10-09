@@ -1,5 +1,7 @@
 ---
 slug: an6.10
+character:
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 title: Mahānāmasutta
 edition: ms

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sāma Village
-description: The Buddha teaches on at sāma village, presenting a sixfold teaching for disciples on the path.
+description: A deity visits the Buddha by night and reports three qualities that lead to a mendicant’s decline—relishing work, talk, and sleep—and in the morning the Buddha adds enjoyment of company, being hard to admonish, and having bad friends.
 qualities: delight, wholesome, harm
 theme: story, inspiration
 ---

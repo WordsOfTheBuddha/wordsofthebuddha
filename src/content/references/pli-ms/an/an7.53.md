@@ -1,5 +1,10 @@
 ---
 slug: an7.53
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Laywoman Nandamātā
+  - King Vessavaṇa
 source: suttacentral/bilara-data
 title: Nandamātāsutta
 edition: ms

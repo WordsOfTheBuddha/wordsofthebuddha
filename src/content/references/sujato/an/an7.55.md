@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Places People Are Reborn
-description: The Buddha teaches on places people are reborn, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha explains seven places people are reborn after ending the five lower fetters—like sparks from a struck iron pot, extinguished sooner or later or heading upstream to the Akaniṭṭha realm—and complete extinguishment with no fuel for grasping.
 qualities: ending, wisdom, equanimity, giving, giving up, conceit
 theme: training guideline, wisdom
 ---

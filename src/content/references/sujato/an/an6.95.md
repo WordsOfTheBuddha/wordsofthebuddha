@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Things That Can’t Be Done (4th)
-description: The Buddha teaches on things that can’t be done (4th), presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that an individual accomplished in view cannot fall back on the ideas that pleasure and pain are made by oneself, by another, or by both, or that they arise anomalously, because they have clearly seen causes and the phenomena that arise from causes.
 qualities: suffering, wrong view
 theme: principle, wisdom
 ---

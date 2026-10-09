@@ -1,10 +1,12 @@
 ---
 slug: an7.70
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Honor
-description: The Buddha teaches on honor, presenting a sevenfold teaching for disciples on the path.
+description: In private retreat Venerable Sāriputta reflects on what a mendicant should honor and respect to give up the unskillful and develop the skillful—the Teacher, the teaching, the Saṅgha, the training, immersion, diligence, and hospitality—and the Buddha affirms his detailed exposition of what he taught in brief.
 qualities: respect, diligence, wholesome, unwholesome, contempt, collectedness
 theme: training guideline, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impermanence
-description: The Buddha teaches on impermanence, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who regards any condition as permanent cannot accept views that conform with the teaching, step into the sure path, or realize stream-entry through perfection—one who regards all conditions as impermanent can do all of this.
 qualities: wrong view, wisdom
 theme: urgency
 ---

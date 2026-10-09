@@ -1,5 +1,8 @@
 ---
 slug: an7.56
+character:
+  - Venerable Mahāmoggallāna
+  - Tissa the Divinity
 source: suttacentral/bilara-data
 title: Tissabrahmāsutta
 edition: ms

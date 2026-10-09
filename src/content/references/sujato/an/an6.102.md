@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Transience
-description: The Buddha teaches on transience, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists six benefits that are quite enough to establish the perception of impermanence in all conditions, including a mind that will not delight anywhere in the world, fetters given up, and the achievement of the ultimate goal of the ascetic life.
 qualities: recognition of impermanence, delight
 theme: urgency
 ---

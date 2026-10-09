@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Contentment
-description: The Buddha teaches on contentment, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up lack of contentment, lack of situational awareness, and having many wishes one should develop contentment, situational awareness, and having few wishes.
 qualities: contentment, mindfulness
 theme: training guideline, principle
 ---

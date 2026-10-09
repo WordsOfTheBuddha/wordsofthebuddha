@@ -1,10 +1,12 @@
 ---
 slug: an7.57
+character:
+  - General Sīha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: General Sīha
-description: The Buddha teaches on general sīha, presenting a sevenfold teaching for disciples on the path.
+description: General Sīha asks about the fruits of giving apparent in this life, and the Buddha draws out seven benefits that a faithful donor enjoys, which Sīha confirms he knows for himself—rebirth in heaven alone he takes on faith in the Buddha.
 qualities: giving, wholesome, adventurousness, compassion, faith
 theme: story, urgency
 ---

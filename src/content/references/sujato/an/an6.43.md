@@ -1,10 +1,13 @@
 ---
 slug: an6.43
+character:
+  - Venerable Ānanda
+  - Venerable Udāyī
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Giant
-description: The Buddha teaches on the giant, presenting a sixfold teaching for disciples on the path.
+description: When King Pasenadi’s giant elephant appears, Venerable Udāyī asks what deserves the name ‘giant’, and the Buddha answers that one who does nothing monstrous by way of body, speech, and mind is the true giant, which Udāyī celebrates in verses.
 qualities: jhana, wholesome, equanimity, faith, giving, giving up
 theme: story, training guideline
 ---

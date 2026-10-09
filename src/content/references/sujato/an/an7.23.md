@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Non-Decline for Mendicants (1st)
-description: The Buddha describes the seven principles that prevent decline last among the mendicants, and as long as the mendicants.
+description: The Buddha teaches the mendicants seven principles that prevent decline for the Saṅgha, from meeting frequently and in harmony to establishing mindfulness so that good-hearted spiritual companions may come and live comfortably.
 qualities: cultivation, mindfulness, respect, craving, wholesome, harm
 theme: story, training guideline
 ---

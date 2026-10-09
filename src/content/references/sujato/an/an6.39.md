@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sources
-description: The Buddha teaches on sources, presenting a sixfold teaching for disciples on the path.
+description: The Buddha teaches that greed, hate, and delusion are sources of deeds leading to bad places, while contentment, love, and understanding are sources leading to good ones, for each gives rise only to its own kind.
 qualities: contentment, delusion, greed, affection, aversion, harm
 theme: principle, wisdom
 ---

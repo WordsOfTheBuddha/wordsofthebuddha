@@ -1,10 +1,21 @@
 ---
 slug: an6.17
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Venerable Mahākassapa
+  - Venerable Mahākaccāna
+  - Venerable Mahākoṭṭhita
+  - Venerable Mahācunda
+  - Venerable Mahākappina
+  - Venerable Anuruddha
+  - Venerable Revata
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sleep
-description: The Buddha teaches on sleep, presenting a sixfold teaching for disciples on the path.
+description: Finding the junior mendicants sleeping until sunrise after their senior companions left, the Buddha teaches that no king, official, or ascetic who indulges in sleep has ever been dear and beloved to their people, and urges wakefulness, moderation in eating, and development of the awakening factors.
 qualities: wholesome, cultivation, wrong speech, wakefulness, dearness, liberation
 theme: story, training guideline
 ---

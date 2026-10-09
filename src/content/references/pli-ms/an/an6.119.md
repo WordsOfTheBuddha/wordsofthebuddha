@@ -1,5 +1,7 @@
 ---
 slug: an6.119
+character:
+  - Householder Tapussa
 source: suttacentral/bilara-data
 title: Tapussasutta
 edition: ms

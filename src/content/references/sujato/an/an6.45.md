@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Debt
-description: The Buddha teaches on debt, presenting a sixfold teaching for disciples on the path.
+description: The Buddha likens a mendicant lacking faith, conscience, prudence, energy, and wisdom to a poor person who falls into debt, pays interest, is warned, prosecuted, and imprisoned in hell, while the faithful are released from debt.
 qualities: suffering, desire, harm, conscience, faith, wholesome
 theme: story, urgency
 ---

@@ -1,5 +1,7 @@
 ---
 slug: an7.83
+character:
+  - Venerable Upāli
 source: suttacentral/bilara-data
 title: Satthusāsanasutta
 edition: ms

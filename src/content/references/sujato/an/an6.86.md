@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Obstacles
-description: The Buddha teaches on obstacles, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that someone obstructed by deeds, defilements, or results, and who is faithless, unenthusiastic, and witless, cannot step into the sure path with regard to skillful qualities even when listening to the true teaching—while one free of obstruction, faithful, enthusiastic, and wise, can.
 qualities: wholesome, faith
 theme: inspiration
 ---

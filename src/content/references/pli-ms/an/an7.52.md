@@ -1,5 +1,7 @@
 ---
 slug: an7.52
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Dānamahapphalasutta
 edition: ms

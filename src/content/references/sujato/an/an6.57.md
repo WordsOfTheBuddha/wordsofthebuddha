@@ -1,10 +1,12 @@
 ---
 slug: an6.57
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Six Classes of Rebirth
-description: The Buddha teaches a disciple on the six classes of rebirth, presenting a sixfold teaching for disciples on the path.
+description: Venerable Ānanda reports the six classes of rebirth that Pūraṇa Kassapa describes, which the Buddha dismisses as unauthorized, and then sets out his own six—someone born into a dark or bright class giving rise to a dark result, a bright result, or extinguishment.
 qualities: wholesome, harm, mindfulness, wisdom, cultivation, jhana
 theme: principle
 ---

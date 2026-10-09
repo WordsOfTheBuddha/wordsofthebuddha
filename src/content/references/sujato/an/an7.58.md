@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nothing to Hide
-description: The Buddha teaches on nothing to hide, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha explains the four areas where he has nothing to hide—pure bodily, verbal, and mental behavior and pure livelihood—and the three ways he lives secure and fearless, having taught the path to extinguishment with many hundreds of disciples realizing freedom.
 qualities: liberation, ending, insight, wisdom, wrong livelihood
 theme: story, recollection of the Buddha
 ---

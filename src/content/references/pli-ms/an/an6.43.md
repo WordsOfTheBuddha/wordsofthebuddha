@@ -1,5 +1,8 @@
 ---
 slug: an6.43
+character:
+  - Venerable Ānanda
+  - Venerable Udāyī
 source: suttacentral/bilara-data
 title: Nāgasutta
 edition: ms

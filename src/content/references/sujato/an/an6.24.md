@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Himalaya
-description: The Buddha teaches on the himalaya, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant skilled in entering, remaining in, and emerging from immersion, along with its positivity, territory, and projection of the purified mind, could shatter the Himalaya, king of mountains, let alone wretched ignorance.
 qualities: ignorance, delusion, collectedness
 theme: story, training guideline
 ---

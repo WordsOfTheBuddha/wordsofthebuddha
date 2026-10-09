@@ -1,10 +1,12 @@
 ---
 slug: an6.40
+character:
+  - Venerable Kimbila
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kimbila
-description: The Buddha teaches Venerable Kimbila on with kimbila, presenting a sixfold teaching for disciples on the path.
+description: Venerable Kimbila asks why the true teaching does not last long after the Realized One’s final quenching, and the Buddha answers that it is when monks, nuns, laymen, and laywomen lack respect and reverence for the Teacher, the teaching, the Saṅgha, the training, diligence, and hospitality—and that respect makes it last.
 qualities: quenching, respect, diligence
 theme: story, recollection of the Buddha
 ---

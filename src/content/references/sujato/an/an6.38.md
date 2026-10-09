@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: One’s Own Volition
-description: The Buddha teaches on one’s own volition, presenting a sixfold teaching for disciples on the path.
+description: A brahmin declares his view that no one acts of their own or another’s volition, and the Buddha refutes him by pointing to the elements of initiative, persistence, exertion, strength, endurance, and energy, and the brahmin goes for refuge.
 qualities: vigour, patience, wrong view
 theme: story, wisdom
 ---

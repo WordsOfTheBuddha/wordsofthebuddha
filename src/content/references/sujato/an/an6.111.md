@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Elements
-description: The Buddha teaches on elements, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up the elements of sensuality, malice, and cruelty one should develop the elements of renunciation, good will, and harmlessness.
 qualities: cruelty, giving up, non-harm, wholesome, sensual desire, harm
 theme: training guideline, principle
 ---

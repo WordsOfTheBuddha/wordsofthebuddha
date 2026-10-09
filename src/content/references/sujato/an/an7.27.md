@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perceptions
-description: The Buddha describes the seven principles that prevent decline last among the mendicants, and as long as the mendicants.
+description: The Buddha teaches that as long as mendicants develop the perceptions of impermanence, not-self, ugliness, drawbacks, giving up, fading away, and cessation, they can expect growth, not decline.
 qualities: cultivation, giving, giving up, ending, recognition of impermanence
 theme: urgency, principle
 ---

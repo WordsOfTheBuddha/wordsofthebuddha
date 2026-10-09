@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Giving Up
-description: The Buddha teaches on giving up, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha tells the mendicants that the spiritual life is lived to give up the seven fetters—attraction, aversion, views, doubt, conceit, desire to be reborn, and ignorance—and that one who has cut them off at the root has made an end of suffering.
 qualities: conceit, spiritual life, doubt, ignorance, desire, giving
 theme: wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Greed
-description: The Buddha teaches on greed, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up greed, hate, and delusion one should develop the perception of ugliness, love, and wisdom respectively.
 qualities: greed, delusion, aversion, wisdom, affection, craving
 theme: training guideline, principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Diligence
-description: The Buddha teaches on diligence, presenting a sixfold teaching for disciples on the path.
+description: A brahmin asks whether one thing developed and cultivated secures benefits in this life and lives to come, and the Buddha answers with diligence, illustrated by the elephant’s footprint, the bungalow’s peak, and other similes.
 qualities: diligence, wisdom
 theme: story
 ---

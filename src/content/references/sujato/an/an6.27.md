@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Proper Occasions (1st)
-description: The Buddha teaches on proper occasions (1st), presenting a sixfold teaching for disciples on the path.
+description: A mendicant asks how many occasions there are for going to see an esteemed mendicant, and the Buddha lists six—when the heart is mired in sensual desire, ill will, dullness and drowsiness, restlessness and remorse, or doubt, or when one doesn’t know what meditation to practice to end the defilements.
 qualities: sensual desire, desire, cultivation, jhana, doubt, drowsiness
 theme: training guideline, wisdom
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an6.28
+character:
+  - Venerable Mahākaccāna
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Proper Occasions (2nd)
-description: The Buddha teaches on proper occasions (2nd), presenting a sixfold teaching for disciples on the path.
+description: Senior mendicants at Isipatana debate the proper occasions for visiting an esteemed mendicant, until Venerable Mahākaccāna settles it by citing the Buddha’s six occasions, chiefly when a hindrance has overcome the heart or one is unsure what to meditate on.
 qualities: sensual desire, desire, mindfulness, cultivation, jhana, learning
 theme: training guideline, wisdom
 ---

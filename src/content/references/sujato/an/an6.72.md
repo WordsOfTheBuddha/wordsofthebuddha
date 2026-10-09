@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Strength
-description: The Buddha teaches on strength, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists the six failings that keep a mendicant from attaining strength in immersion—not being skilled in entering, remaining, and emerging from immersion, and not practicing carefully and persistently—and the six corresponding skills that make it possible.
 qualities: collectedness, wisdom
 theme: training guideline
 ---

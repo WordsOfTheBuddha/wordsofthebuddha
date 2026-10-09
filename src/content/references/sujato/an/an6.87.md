@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Murderer
-description: The Buddha teaches on a murderer, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that someone who murders their mother, father, or a perfected one, maliciously sheds the blood of a Realized One, or causes a schism in the Saṅgha, and who is witless, dull, and idiotic, cannot step into the sure path even when listening to the true teaching—while one who avoids these and is wise, bright, and clever, can.
 qualities: wholesome, wisdom
 theme: recollection of the Buddha
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Principles, Etc.
-description: The Buddha teaches that without giving up six things one cannot attain higher fruits of the path, and that abandoning them opens the way to deeper realization.
+description: The Buddha says that without giving up relishing work, talk, sleep, and company, not guarding the sense doors, and eating too much, mendicants cannot meditate observing an aspect of the body, feelings, mind, or principles.
 qualities: giving, giving up, delight
 theme: training guideline, principle
 ---

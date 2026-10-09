@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend (2nd)
-description: The Buddha teaches on a friend (2nd), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that a friend who is likable, agreeable, respected, and admired, who admonishes and accepts admonishment, speaks on deep matters, and does not urge you to do bad things is worth attending even if they drive you away.
 qualities: harm, wisdom
 theme: principle
 ---

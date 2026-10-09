@@ -1,10 +1,12 @@
 ---
 slug: an7.52
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Very Fruitful Gift
-description: The Buddha teaches on a very fruitful gift, presenting a sevenfold teaching for disciples on the path.
+description: Sāriputta asks why the same gift can be fruitful for one giver and not another, and the Buddha explains that gifts given as an investment yield only transient heavenly rewards, while giving as an adornment and requisite for the mind leads to the non-returner.
 qualities: wholesome, giving
 theme: story, urgency
 ---

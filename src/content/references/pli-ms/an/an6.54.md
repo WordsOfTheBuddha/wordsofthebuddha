@@ -1,5 +1,7 @@
 ---
 slug: an6.54
+character:
+  - Brahmin Dhammika
 source: suttacentral/bilara-data
 title: Dhammikasutta
 edition: ms

@@ -1,10 +1,13 @@
 ---
 slug: an6.60
+character:
+  - Venerable Mahākoṭṭhita
+  - Venerable Citta Hatthisāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hatthisāriputta
-description: The Buddha teaches Venerable Mah on with hatthisāriputta, presenting a sixfold teaching for disciples on the path.
+description: When Venerable Citta Hatthisāriputta interrupts the senior mendicants, Venerable Mahākoṭṭhita teaches with a series of similes that even deep meditative attainments are no guarantee, for one who prizes attainments may lose them and return to the lay life—a lesson borne out when Citta Hatthisāriputta disrobes, only to return to the training and attain perfection.
 qualities: jhana, giving up, passion, sensual desire, giving, attachment
 theme: story, training guideline
 ---

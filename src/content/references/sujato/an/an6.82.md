@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hell (2nd)
-description: The Buddha teaches on hell (2nd), presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that someone who kills living creatures, steals, commits sexual misconduct, and lies, and who is greedy and rude, is placed in hell as if delivered there—while one who does the opposite is placed in heaven.
 qualities: sexual misconduct, craving
 theme: principle
 ---

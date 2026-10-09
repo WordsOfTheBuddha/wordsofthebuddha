@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Committed to Development
-description: The Buddha teaches the seven awakening factors—mindfulness, investigation of principles, energy, rapture, tranquility, immersion, and equanimity—and how they are developed and fulfilled on the path.
+description: The Buddha compares commitment to development to a hen incubating her eggs—without developing the factors of the path, even wishing for liberation does not free the mind, but with development it is freed, while the defilements wear away imperceptibly like an adze handle and the fetters rot like weathered ship ropes.
 qualities: cultivation, attachment, free from attachment, desire, mindfulness, psychic power
 theme: principle
 ---

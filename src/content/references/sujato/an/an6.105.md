@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: States of Existence
-description: The Buddha teaches on states of existence, presenting a sixfold teaching for disciples on the path.
+description: The Buddha tells the mendicants to give up the three states of existence—the sensual, form, and formless realms—and to train in the higher ethics, higher mind, and higher wisdom; such a mendicant has cut off craving, cast off the fetters, and made an end of suffering.
 qualities: formless, wisdom, conceit, craving, suffering, tame
 theme: training guideline, wisdom
 ---

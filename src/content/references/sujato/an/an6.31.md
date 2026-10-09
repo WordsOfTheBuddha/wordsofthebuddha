@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Trainee
-description: The Buddha teaches on a trainee, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists six things that lead to the decline of a mendicant trainee—relishing work, talk, sleep, and company, not guarding the sense doors, and eating too much—along with their opposites that prevent decline.
 qualities: wisdom
 theme: principle
 ---

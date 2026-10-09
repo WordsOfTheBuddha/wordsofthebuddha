@@ -1,5 +1,7 @@
 ---
 slug: an6.26
+character:
+  - Venerable Mahākaccāna
 source: suttacentral/bilara-data
 title: Mahākaccānasutta
 edition: ms

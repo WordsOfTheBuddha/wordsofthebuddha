@@ -1,5 +1,7 @@
 ---
 slug: an6.42
+character:
+  - Venerable Nāgita
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0

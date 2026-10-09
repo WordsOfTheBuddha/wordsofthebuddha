@@ -1,10 +1,13 @@
 ---
 slug: an6.34
+character:
+  - Venerable Mahāmoggallāna
+  - Tissa the Divinity
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahāmoggallāna
-description: The Buddha teaches Venerable Mah on with mahāmoggallāna, presenting a sixfold teaching for disciples on the path.
+description: Venerable Mahāmoggallāna wonders which gods know that they are stream-enterers, and visits the divinity Tissa in a heavenly realm, learning that only those with experiential confidence in the Buddha, teaching, and Saṅgha, and ethics beloved by the noble ones, know it.
 qualities: wholesome, faith, affection, craving
 theme: story, directly knowing
 ---

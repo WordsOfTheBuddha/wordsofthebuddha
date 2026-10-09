@@ -1,10 +1,12 @@
 ---
 slug: an6.54
+character:
+  - Brahmin Dhammika
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Dhammika
-description: The Buddha teaches that an individual accomplished in view has given up six things that obstruct the path to liberation.
+description: After the abusive monk Dhammika is banished from all seven monasteries of his homeland, the Buddha welcomes him with similes of a land-spotting bird and a royal banyan tree, teaching that harming even one individual accomplished in view brims with more wickedness than insulting six famous teachers of the past with all their followers.
 qualities: desire, faith, wholesome, harm, sensual desire, cruelty
 theme: story, urgency
 ---

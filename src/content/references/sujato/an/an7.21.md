@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sārandada
-description: The Buddha describes the seven principles that prevent decline last among the vajjis, and as long as the vajjis.
+description: At the Sārandada Shrine the Buddha teaches the visiting Licchavīs seven principles that prevent decline for the Vajjīs, from meeting frequently and in harmony to sheltering perfected ones.
 qualities: cultivation, respect, safety, harm
 theme: story, principle
 ---

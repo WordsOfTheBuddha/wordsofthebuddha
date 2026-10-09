@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Respect for Conscience
-description: The Buddha teaches on respect for conscience, presenting a sevenfold teaching for disciples on the path.
+description: A glorious deity lights up Jeta's Grove at night to tell the Buddha that seven respects, culminating in conscience and prudence, keep a mendicant from decline, and the Buddha repeats the teaching in verse.
 qualities: conscience, respect, unassuming, rousing of energy, collectedness
 theme: training guideline, principle
 ---

@@ -1,5 +1,16 @@
 ---
 slug: an6.17
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Venerable Mahākassapa
+  - Venerable Mahākaccāna
+  - Venerable Mahākoṭṭhita
+  - Venerable Mahācunda
+  - Venerable Mahākappina
+  - Venerable Anuruddha
+  - Venerable Revata
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Soppasutta
 edition: ms

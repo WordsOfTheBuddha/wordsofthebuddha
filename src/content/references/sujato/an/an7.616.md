@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (2nd)
-description: The Buddha teaches that seven things should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+description: The Buddha teaches that the perceptions of impermanence, not-self, ugliness, drawbacks, giving up, fading away, and cessation should be developed for insight into greed.
 qualities: greed, insight, giving, giving up, ending, recognition of impermanence
 theme: urgency, principle
 ---

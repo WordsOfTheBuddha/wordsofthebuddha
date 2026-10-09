@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Suffering
-description: The Buddha describes the seven individuals—first, take an individual who meditates observing suffering in all conditions, they perceive suffering and experience suffering, constantly, continually, and without interruption, and they apply the mind and fathom with wisdom.
+description: The Buddha describes seven individuals who meditate observing suffering in all conditions and are worthy of offerings as the supreme field of merit for the world.
 qualities: suffering, merit, wisdom
 theme: training guideline, wisdom
 ---

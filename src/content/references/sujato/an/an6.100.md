@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Not-Self
-description: The Buddha teaches on not-self, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who regards any condition as self cannot accept views that agree with the teaching, while one who regards all things as not-self can.
 qualities: wrong view, wisdom
 theme: principle
 ---

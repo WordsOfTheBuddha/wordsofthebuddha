@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Things That Can’t Be Done (2nd)
-description: The Buddha teaches on things that can’t be done (2nd), presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that an individual accomplished in view cannot take conditions to be permanent, pleasurable, or self, cannot do deeds with fixed result in the next life, cannot fall back on purificatory rites, and cannot seek those worthy of religious donations outside the Buddhist community.
 qualities: happiness, wrong view
 theme: principle, wisdom
 ---

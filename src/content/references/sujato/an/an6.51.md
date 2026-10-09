@@ -1,10 +1,13 @@
 ---
 slug: an6.51
+character:
+  - Venerable Ānanda
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
-description: The Buddha teaches a disciple on with ānanda, presenting a sixfold teaching for disciples on the path.
+description: Venerable Ānanda explains to Venerable Sāriputta how a mendicant hears teachings not heard before, remembers those heard, keeps exercising familiar ones, and comes to understand the not-yet-understood—by memorizing the nine kinds of teaching, teaching and rehearsing them, and questioning learned senior mendicants.
 qualities: learning, doubt
 theme: inspiration, inquisitiveness
 ---

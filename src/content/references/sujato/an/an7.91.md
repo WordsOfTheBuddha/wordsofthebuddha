@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Noble One
-description: The Buddha teaches on a noble one, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is when seven foes have been nobbled—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes a noble one.
 qualities: wisdom
 theme: principle
 ---

@@ -1,5 +1,8 @@
 ---
 slug: an6.44
+character:
+  - Venerable Ānanda
+  - Laywoman Migasālā
 source: suttacentral/bilara-data
 title: Migasālāsutta
 edition: ms

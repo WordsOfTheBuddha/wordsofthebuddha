@@ -1,5 +1,7 @@
 ---
 slug: an6.37
+character:
+  - Laywoman Veḷukaṇṭakī, Nanda’s mother
 source: suttacentral/bilara-data
 title: Chaḷaṅgadānasutta
 edition: ms

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Ascetic
-description: The Buddha teaches on an ascetic, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is by quelling seven things—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes an ascetic.
 qualities: wisdom
 theme: principle
 ---

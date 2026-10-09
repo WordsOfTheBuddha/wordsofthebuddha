@@ -1,10 +1,13 @@
 ---
 slug: an6.29
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Udāyī
-description: The Buddha teaches the Buddha on with udāyī, presenting a sixfold teaching for disciples on the path.
+description: The Buddha asks Udāyī how many topics for recollection there are, but Udāyī stays silent, so Ānanda answers with five recollections leading to bliss, knowledge and vision, giving up sensual desire, uprooting conceit, and penetration of elements, to which the Buddha adds mindfulness in all activities.
 qualities: jhana, suffering, mindfulness, giving, giving up, vision
 theme: training guideline, cultivating discernment
 ---

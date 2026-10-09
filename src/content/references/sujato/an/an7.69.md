@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Shady Orchid Tree
-description: The Buddha teaches on the shady orchid tree, presenting a sevenfold teaching for disciples on the path.
+description: With the simile of the Shady Orchid Tree of the thirty-three gods, the Buddha compares a noble disciple’s going forth to the tree’s gradual blossoming—each stage of the trainee’s progress elates the gods, until the disciple realizes the undefiled freedom of heart and freedom by wisdom in this very life and the cry soars up to the realm of divinity.
 qualities: liberation, flexible, jhana, ending, insight, wisdom
 theme: training guideline, inspiration
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suffering
-description: The Buddha teaches on suffering, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who regards any condition as pleasurable cannot accept views that agree with the teaching, while one who regards all conditions as suffering can.
 qualities: suffering, wrong view
 theme: principle
 ---

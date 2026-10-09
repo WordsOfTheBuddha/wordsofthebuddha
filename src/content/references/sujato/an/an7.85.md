@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Mendicant
-description: The Buddha teaches on a mendicant, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is by breaking seven things—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes a mendicant.
 qualities: delusion, conceit, doubt, greed, aversion, craving
 theme: principle, wisdom
 ---

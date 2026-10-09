@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Conduct
-description: The Buddha teaches on bad conduct, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up bad conduct of body, speech, and mind one should develop the corresponding good conduct of body, speech, and mind.
 qualities: harm, wholesome
 theme: training guideline, principle
 ---

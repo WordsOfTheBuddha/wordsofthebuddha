@@ -1,5 +1,8 @@
 ---
 slug: an6.49
+character:
+  - Venerable Khema
+  - Venerable Sumana
 source: suttacentral/bilara-data
 title: Khemasutta
 edition: ms

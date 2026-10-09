@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Perfected One
-description: The Buddha teaches on a perfected one, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is by being impeccably remote from seven things—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes a perfected one.
 qualities: delusion, conceit, doubt, greed, aversion, craving
 theme: principle, wisdom
 ---

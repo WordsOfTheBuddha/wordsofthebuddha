@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend (1st)
-description: The Buddha teaches on a friend (1st), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes seven factors of a true friend, who gives what is hard to give, does and endures what is hard, shares and keeps secrets, and does not abandon or look down on you in times of trouble and loss.
 qualities: wisdom
 theme: principle
 ---

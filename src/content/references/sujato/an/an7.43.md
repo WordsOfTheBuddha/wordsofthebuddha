@@ -1,10 +1,12 @@
 ---
 slug: an7.43
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Graduation (2nd)
-description: The Buddha teaches a disciple on graduation (2nd), presenting a sevenfold teaching for disciples on the path.
+description: When Ānanda hears wanderers of other religions say that twelve years of the spiritual life makes a graduate mendicant, the Buddha tells him that seven qualifications—faith, conscience, prudence, learning, energy, mindfulness, and wisdom—define one, whether they have trained for twelve years or forty-eight.
 qualities: insight, spiritual life, learning, fear of wrongdoing, faith, mindfulness
 theme: story, training guideline
 ---

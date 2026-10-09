@@ -1,5 +1,7 @@
 ---
 slug: an7.57
+character:
+  - General Sīha
 source: suttacentral/bilara-data
 title: Sīhasenāpatisutta
 edition: ms
