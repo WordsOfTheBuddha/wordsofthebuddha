@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: Inclusion
 description: The four ways of being inclusive—giving, kindly words, taking care, and equality—make parents honored by their children and win the astute praise and greatness, like a chariot's linchpin.
+qualities: giving, companionship
+theme: principle
 ---
 
 <!-- @segment an4.32:1.1 -->

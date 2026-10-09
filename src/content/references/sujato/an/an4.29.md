@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: Footprints of the Dhamma
 description: The Buddha describes the four primordial footprints of the Dhamma—contentment, good will, right mindfulness, and right immersion—ancient, uncorrupted, and not to be criticized.
+qualities: contentment, loving-kindness, mindfulness, collectedness
+theme: principle, inspiration
 ---
 
 <!-- @segment an4.29:1.1 -->

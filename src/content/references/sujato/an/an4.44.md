@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: Valuing Anger (2nd)
 description: Valuing anger, denigration, material things, or honor over the true teaching opposes the Dhamma; a mendicant who does so doesn't grow, like a rotten seed in a good field, while valuing the true teaching grows like well-watered herbs.
+qualities: anger, contempt, faith, wisdom
+theme: principle, cultivating discernment
 ---
 
 <!-- @segment an4.44:1.1 -->

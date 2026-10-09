@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: The Spiritual Life
 description: The spiritual life is lived not for fawning, possessions, or winning debates, but for the sake of restraint, giving up, fading away, and extinguishment—the path of the great seers that makes an end of suffering.
+qualities: spiritual life, contentment
+theme: principle
 ---
 
 <!-- @segment an4.25:1.1 -->

@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: Valuing Anger
 description: People who value anger, denigration, material things, or honor rather than the true teaching don't grow in the teaching of the perfected Buddha; those who value the true teaching do.
+qualities: anger, contempt, faith, wisdom
+theme: principle, cultivating discernment
 ---
 
 <!-- @segment an4.43:1.1 -->

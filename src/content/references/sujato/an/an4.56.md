@@ -5,6 +5,8 @@ translator: sujato
 license: CC0
 title: Equality (2nd)
 description: If wife and husband want to see each other in this life and the next, they should be equals in faith, ethics, generosity, and wisdom.
+qualities: faith, ethical conduct, giving, wisdom
+theme: householder life, wisdom
 ---
 
 <!-- @segment an4.56:1.1 -->
