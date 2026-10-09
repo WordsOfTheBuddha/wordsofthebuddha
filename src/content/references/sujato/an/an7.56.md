@@ -1,10 +1,13 @@
 ---
 slug: an7.56
+character:
+  - Venerable Mahāmoggallāna
+  - Tissa the Divinity
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Tissa the Divinity
-description: The Buddha teaches Venerable Mah on tissa the divinity, presenting a sevenfold teaching for disciples on the path.
+description: After two deities announce that certain nuns are freed, Mahāmoggallāna visits Tissa the Divinity, a monk newly reborn in the realm of divinity, who explains which gods know whether a meditator has residues of attachment, and the Buddha completes the list with the seventh individual, the signless meditator.
 qualities: wholesome, insight, happiness, wisdom, faith, flexible
 theme: story, training guideline
 ---

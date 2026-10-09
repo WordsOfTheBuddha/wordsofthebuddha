@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bathed
-description: The Buddha teaches on bathed, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is by bathing off seven things—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes a bathed initiate.
 qualities: wisdom
 theme: principle
 ---

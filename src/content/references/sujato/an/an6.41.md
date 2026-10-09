@@ -1,10 +1,12 @@
 ---
 slug: an6.41
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Tree Trunk
-description: The Buddha teaches Venerable S on a tree trunk, presenting a sixfold teaching for disciples on the path.
+description: On Vulture’s Peak Venerable Sāriputta points out a large tree trunk and explains that a mendicant with psychic powers who has mastered their mind could determine it as nothing but earth, water, fire, or air, or as beautiful or ugly, since those elements exist in it.
 qualities: tame, wisdom
 theme: principle
 ---

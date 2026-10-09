@@ -1,10 +1,12 @@
 ---
 slug: an6.59
+character:
+  - Householder Dārukammika
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Dārukammika
-description: The Buddha teaches the householder on with dārukammika, presenting a sixfold teaching for disciples on the path.
+description: The householder Dārukammika says he gives gifts to wilderness dwellers who eat only almsfood and wear rag robes, and the Buddha teaches that inner composure, not outer austerity, is what makes a mendicant praiseworthy, urging him to give gifts to the Saṅgha.
 qualities: respect, mindfulness, wholesome, collectedness, sensual desire
 theme: story, urgency
 ---

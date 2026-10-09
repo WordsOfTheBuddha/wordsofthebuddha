@@ -1,10 +1,13 @@
 ---
 slug: an6.56
+character:
+  - Venerable Ānanda
+  - Venerable Phagguna
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Phagguna
-description: The Buddha describes the six benefits to hearing the teaching at the right time and examining the meaning at the right—firstly, take the case of a mendicant whose mind is not freed from the five lower fetters, at the time of death they get to see the realized one, the realized one proclaims a teaching to them that’s good in the beginning, good in the middle, and good in the end, meaningful and well-phrased. and he reveals a spiritual practice that’s entirely full and pure, and when they hear that teaching their mind is freed from the five lower fetters, and this is the first benefit of listening to the teaching, and next, take the case of another mendicant whose mind is not freed from the five lower fetters.
+description: Venerable Ānanda asks the Buddha to visit the gravely ill Venerable Phagguna, who dies with bright faculties soon after the Dhamma talk; the Buddha then explains six benefits of hearing the teaching and examining the meaning at the right time, by which a mendicant’s mind is freed from the five lower fetters or with the supreme ending of attachments.
 qualities: ending, suffering, wholesome, learning, compassion, craving
 theme: urgency, recollection of the Buddha
 ---

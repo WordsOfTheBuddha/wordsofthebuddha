@@ -1,5 +1,8 @@
 ---
 slug: an6.16
+character:
+  - Householder Nakulapitā
+  - Laywoman Nakulamātā
 source: suttacentral/bilara-data
 title: Nakulapitusutta
 edition: ms

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Joy and Happiness
-description: The Buddha teaches on joy and happiness, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who enjoys the teaching, meditation, giving up, seclusion, kindness, and non-proliferation is full of joy and happiness in this very life and has laid the groundwork for ending the defilements.
 qualities: happiness, joy, ending, giving, giving up, non-proliferation
 theme: training guideline, inspiration
 ---

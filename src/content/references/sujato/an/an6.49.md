@@ -1,10 +1,13 @@
 ---
 slug: an6.49
+character:
+  - Venerable Khema
+  - Venerable Sumana
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Khema
-description: The Buddha teaches on with khema, presenting a sixfold teaching for disciples on the path.
+description: Venerable Khema and Venerable Sumana each declare that a perfected mendicant is beyond comparing himself with others—neither better, equal, nor worse—and the Buddha approves both declarations, saying that gentlemen declare enlightenment with the goal spoken but the self not involved.
 qualities: anxiety, suffering
 theme: story
 ---

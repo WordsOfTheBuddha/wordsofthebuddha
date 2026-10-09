@@ -1,10 +1,12 @@
 ---
 slug: an6.46
+character:
+  - Venerable Mahācunda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: By Mahācunda
-description: The Buddha teaches on by mahācunda, presenting a sixfold teaching for disciples on the path.
+description: Venerable Mahācunda rebukes mendicants who practice absorption and those who practice discernment of principles for disparaging each other, urging each group to praise the other, since both are rare individuals in the world.
 qualities: jhana, discernment, happiness, cultivation, wisdom, mindfulness
 theme: urgency, training guideline
 ---

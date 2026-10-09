@@ -1,8 +1,8 @@
 ---
 title: Metta sutta - Loving-kindness
+qualities: loving-kindness, merit, wholesome, happiness, respect
+theme: story, inspiration, training guideline
 slug: an7.62
-character:
-  - "Sakka, lord of the gods"
 ---
 
 “Mā, bhikkhave, puññānaṁ bhāyittha. Sukhassetaṁ, bhikkhave, adhivacanaṁ yadidaṁ puññāni. Abhijānāmi kho panāhaṁ, bhikkhave, dīgharattaṁ katānaṁ puññānaṁ dīgharattaṁ iṭṭhaṁ kantaṁ manāpaṁ vipākaṁ paccanubhūtaṁ. Satta vassāni mettacittaṁ bhāvesiṁ. Satta vassāni mettacittaṁ bhāvetvā satta saṁvaṭṭavivaṭṭakappe nayimaṁ lokaṁ punāgamāsiṁ. Saṁvaṭṭamāne sudāhaṁ, bhikkhave, loke ābhassarūpago homi, vivaṭṭamāne loke suññaṁ brahmavimānaṁ upapajjāmi.

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Friends
-description: The Buddha teaches on friends, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant with bad friends cannot fulfill the training, and that with good friends it becomes possible to fulfill ethics and give up sensual desire and the desire for rebirth in the realms of luminous form and the formless.
 qualities: desire, quenching, formless, sensual desire, harm, wholesome
 theme: principle
 ---

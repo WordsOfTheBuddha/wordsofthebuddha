@@ -1,10 +1,12 @@
 ---
 slug: an6.62
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Knowledge of the Faculties of Persons
-description: The Buddha teaches a disciple on knowledge of the faculties of persons, presenting a sixfold teaching for disciples on the path.
+description: Venerable Ānanda asks whether the Buddha's declaration that Devadatta was bound for hell was made after wholehearted deliberation, and the Buddha explains that it was. He then analyzes how, by encompassing a person's mind, he knows whether their qualities are liable to grow or to decline, like seeds sown in a fertile field or on bare rock.
 qualities: unwholesome, wholesome, attachment, harm, examination, liberation
 theme: story, urgency
 ---

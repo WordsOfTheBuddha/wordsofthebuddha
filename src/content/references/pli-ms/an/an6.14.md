@@ -1,5 +1,7 @@
 ---
 slug: an6.14
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Bhaddakasutta
 edition: ms

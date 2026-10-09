@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Not-self
-description: The Buddha teaches on observing not-self, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes individuals who meditate observing not-self in all things—perceiving and experiencing not-self constantly—among the seven individuals worthy of offerings as the supreme field of merit for the world.
 qualities: wisdom
 theme: training guideline, wisdom
 ---

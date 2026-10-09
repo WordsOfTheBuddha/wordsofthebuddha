@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Things That Play a Part in Realization
-description: The Buddha teaches on things that play a part in realization, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists six perceptions that play a part in realization—the perception of impermanence, of suffering in impermanence, of not-self in suffering, of giving up, of fading away, and of cessation.
 qualities: suffering, giving, giving up, ending, recognition of impermanence
 theme: urgency, principle
 ---

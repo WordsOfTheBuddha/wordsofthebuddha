@@ -1,10 +1,12 @@
 ---
 slug: an6.37
+character:
+  - Laywoman Veḷukaṇṭakī, Nanda’s mother
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Gift With Six Factors
-description: The Buddha teaches on a gift with six factors, presenting a sixfold teaching for disciples on the path.
+description: Seeing Veḷukaṇṭakī, Nanda’s mother preparing a six-factored donation for the Saṅgha headed by Sāriputta and Moggallāna, the Buddha explains that such a gift joins the donor’s good mood, confidence, and uplift with recipients free of greed, hate, and delusion, and bears incalculable merit like the water of the ocean.
 qualities: giving, merit, happiness, delusion, greed, aversion
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shines as an Expert in the Monastic Law (1st)
-description: The Buddha teaches on shines as an expert in the monastic law (1st), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes a mendicant who shines as an expert in the monastic law with seven qualities—including mastery of offenses, ethics, immersion, and the ending of defilements.
 qualities: liberation, ending, insight, wisdom, ethical conduct, ill will
 theme: training guideline, wisdom
 ---

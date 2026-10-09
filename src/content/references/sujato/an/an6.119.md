@@ -1,10 +1,12 @@
 ---
 slug: an6.119
+character:
+  - Householder Tapussa
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Tapussa
-description: The Buddha teaches on about tapussa, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that the householder Tapussa, endowed with experiential confidence in the Buddha, the teaching, and the Saṅgha, and with noble ethics, knowledge, and freedom, is certain about the Realized One and lives having realized the deathless.
 qualities: liberation, faith, ethical conduct
 theme: story, urgency
 ---

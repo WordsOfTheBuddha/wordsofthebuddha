@@ -1,10 +1,12 @@
 ---
 slug: an7.59
+character:
+  - Venerable Kimbila
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kimbila
-description: The Buddha teaches Venerable Kimbila on with kimbila, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha tells Venerable Kimbila that the true teaching does not last long when monks, nuns, laymen, and laywomen lack respect for the Teacher, the teaching, the Saṅgha, the training, immersion, diligence, and hospitality, and lasts long when they maintain it.
 qualities: quenching, respect, diligence, collectedness
 theme: story, recollection of the Buddha
 ---

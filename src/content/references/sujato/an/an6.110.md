@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perceptions
-description: The Buddha teaches on perceptions, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up sensual, malicious, and cruel perceptions one should develop perceptions of renunciation, good will, and harmlessness.
 qualities: giving up, non-harm, wholesome, harm
 theme: training guideline, principle
 ---

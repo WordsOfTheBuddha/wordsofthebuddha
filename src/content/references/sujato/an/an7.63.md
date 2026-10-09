@@ -1,10 +1,13 @@
 ---
 slug: an7.63
+character:
+  - Householder Anāthapiṇḍika
+  - Sujātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Wives
-description: The Buddha teaches the Buddha on kinds of wives, presenting a sevenfold teaching for disciples on the path.
+description: When the Buddha finds a colossal racket at Anāthapiṇḍika’s home, Anāthapiṇḍika blames his daughter-in-law Sujātā, and the Buddha questions her on the seven kinds of wife, from killer to bondservant, until she resolves to live like a bondservant.
 qualities: respect, anger, aversion, wholesome, aggressiveness, fear of wrongdoing
 theme: story, principle
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an7.39
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Textual Analysis (2nd)
-description: The Buddha teaches on textual analysis (2nd), presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes the seven qualities through which Sāriputta realized the four kinds of textual analysis, from truly understanding mental sluggishness to penetrating the patterns of qualities with wisdom.
 qualities: examination, insight, wisdom, dullness, laziness
 theme: wisdom
 ---

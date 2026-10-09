@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Seven Suns
-description: The Buddha teaches on the seven suns, presenting a sevenfold teaching for disciples on the path.
+description: At Vesālī the Buddha teaches that conditions are impermanent and unreliable through the drying up of the world by the seven suns, and the story of the teacher Sunetta, who through love became a Great Divinity, Sakka thirty-six times, and a wheel-turning monarch hundreds of times, yet remained unfree for lack of the noble path.
 qualities: suffering, wisdom, affection, liberation, insight, truth
 theme: story, urgency
 ---

@@ -1,5 +1,7 @@
 ---
 slug: an7.7
+character:
+  - Ugga the royal minister
 source: suttacentral/bilara-data
 title: Uggasutta
 edition: ms

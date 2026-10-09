@@ -1,10 +1,13 @@
 ---
 slug: an6.16
+character:
+  - Householder Nakulapitā
+  - Laywoman Nakulamātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nakula’s Father
-description: The Buddha teaches on nakula’s father, presenting a sixfold teaching for disciples on the path.
+description: When the householder Nakula’s father is gravely ill, his wife Nakula’s mother encourages him not to die with concerns, reassuring him of her competence, faithfulness, and spiritual attainment; after he recovers the Buddha praises her kindness and sympathy.
 qualities: compassion, doubt, suffering, tranquility, loving-kindness, giving
 theme: story, recollection of the Buddha
 ---

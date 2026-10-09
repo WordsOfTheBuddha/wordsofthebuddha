@@ -1,5 +1,7 @@
 ---
 slug: an6.40
+character:
+  - Venerable Kimbila
 source: suttacentral/bilara-data
 title: Kimilasutta
 edition: ms

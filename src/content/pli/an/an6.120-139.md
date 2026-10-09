@@ -5,7 +5,6 @@ character:
   - Layman Isidatta
   - Layman Purāṇa
   - Householder Ugga of Vesāli
-  - "Sakka, lord of the gods"
   - Householder Anāthapiṇḍika
   - Mahānāma the Sakyan
   - Hatthaka of Āḷavi

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seven Qualities
-description: The Buddha teaches on seven qualities, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who is faithful, ethical, learned, secluded, energetic, mindful, and wise soon realizes the supreme culmination of the spiritual path in this very life.
 qualities: insight, learning, ethical conduct, faith, mindfulness
 theme: inspiration, wisdom
 ---

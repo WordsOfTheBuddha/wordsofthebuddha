@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fires (1st)
-description: The Buddha describes the seven fires—the fires of greed, hate, delusion, the fire of those worthy of offerings dedicated to the gods, a householder’s fire, and the fire of those worthy of a religious donation, and and a wood fire.
+description: "The Buddha lists seven fires: the fires of greed, hate, and delusion, the fire of those worthy of offerings dedicated to the gods, a householder's fire, the fire of those worthy of a religious donation, and a wood fire."
 qualities: delusion, greed, aversion, craving, ill will
 theme: story
 ---

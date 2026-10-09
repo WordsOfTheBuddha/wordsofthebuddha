@@ -1,10 +1,12 @@
 ---
 slug: an7.42
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Graduation (1st)
-description: The Buddha teaches Venerable S on graduation (1st), presenting a sevenfold teaching for disciples on the path.
+description: When Sāriputta hears wanderers of other religions say that twelve years of the spiritual life makes a graduate mendicant, the Buddha tells him that seven qualifications for graduation define one, whether they have trained for twelve years or forty-eight.
 qualities: insight, spiritual life, vigour, mindfulness, diligence, wakefulness
 theme: training guideline, inquisitiveness
 ---

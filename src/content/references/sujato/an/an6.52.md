@@ -1,10 +1,12 @@
 ---
 slug: an6.52
+character:
+  - Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aristocrats
-description: The Buddha teaches on aristocrats, presenting a sixfold teaching for disciples on the path.
+description: Brahmin Jāṇussoṇi asks the Buddha the ambition, preoccupation, fixation, insistence, and ultimate goal of aristocrats, brahmins, householders, women, bandits, and ascetics, and goes for refuge.
 qualities: wisdom, ethical conduct, patience, stealing
 theme: story, wisdom
 ---

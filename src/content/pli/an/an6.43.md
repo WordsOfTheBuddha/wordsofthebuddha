@@ -3,7 +3,6 @@ slug: an6.43
 character:
   - Venerable Udāyī
   - Venerable Ānanda
-  - King Pasenadi of Kosala
 source: suttacentral/bilara-data
 title: Nāgasutta
 edition: ms

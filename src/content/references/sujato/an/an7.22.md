@@ -1,10 +1,14 @@
 ---
 slug: an7.22
+character:
+  - King Ajātasattu
+  - Brahmin Vassakāra
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vassakāra
-description: The Buddha describes the seven principles that prevent decline last among the vajjis, and as long as the vajjis.
+description: Sent by King Ajātasattu to size up the Buddha before his planned invasion of the Vajjīs, the brahmin minister Vassakāra hears the Buddha confirm with Ānanda the seven principles preventing decline among the Vajjīs, and concedes that Ajātasattu cannot defeat them in war except by bribery or sowing dissension.
 qualities: cultivation, respect, safety, wholesome, craving, harm
 theme: story, recollection of the Buddha
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an6.26
+character:
+  - Venerable Mahākaccāna
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahākaccāna
-description: The Buddha teaches on with mahākaccāna, presenting a sixfold teaching for disciples on the path.
+description: Venerable Mahākaccāna praises the Buddha for finding an opening amid confinement in the six topics for recollection—of the Buddha, the teaching, the Saṅgha, ethics, generosity, and the deities—through which a noble disciple’s mind becomes unswerving and vast as space.
 qualities: greed, delusion, aversion, giving, faith, wisdom
 theme: recollection of the Buddha, training guideline
 ---

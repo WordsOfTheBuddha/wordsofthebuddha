@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Not Determined by Anything
-description: The Buddha teaches on not determined by anything, presenting a sixfold teaching for disciples on the path.
+description: The Buddha lists six benefits that are quite enough to establish the perception of not-self in all things, including not being determined by anything in the world and the stopping of I-making and mine-making.
 qualities: wisdom
 theme: wisdom
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an6.69
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A God
-description: The Buddha teaches on a god, presenting a sixfold teaching for disciples on the path.
+description: A deity visits the Buddha at night and lists six things that do not lead to a mendicant's decline, and Venerable Sāriputta expands the Buddha's brief statement in detail, winning his approval.
 qualities: wholesome, respect, companionship, good friendship
 theme: training guideline, inspiration
 ---

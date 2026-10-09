@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Impermanence
-description: The Buddha describes the seven individuals—first, take an individual who meditates observing impermanence in all conditions, they perceive impermanence and experience impermanence, constantly, continually, and without interruption, and they apply the mind and fathom with wisdom.
+description: The Buddha describes seven individuals who meditate observing impermanence in all conditions and are worthy of offerings, from one liberated in this very life to those who, having ended the five lower fetters, head upstream to the Akaniṭṭha realm.
 qualities: ending, merit, wisdom, liberation, vigour, insight
 theme: urgency, training guideline
 ---

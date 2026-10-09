@@ -1,5 +1,7 @@
 ---
 slug: an6.28
+character:
+  - Venerable Mahākaccāna
 source: suttacentral/bilara-data
 title: Dutiyasamayasutta
 edition: ms

@@ -1,5 +1,7 @@
 ---
 slug: an6.62
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Purisindriyañāṇasutta
 edition: ms

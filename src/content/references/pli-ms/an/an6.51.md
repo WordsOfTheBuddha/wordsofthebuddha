@@ -1,5 +1,8 @@
 ---
 slug: an6.51
+character:
+  - Venerable Ānanda
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

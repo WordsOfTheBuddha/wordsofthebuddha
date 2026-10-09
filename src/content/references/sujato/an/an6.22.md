@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Non-decline
-description: The Buddha teaches on non-decline, presenting a sixfold teaching for disciples on the path.
+description: The Buddha teaches six principles that prevent decline—not relishing work, talk, sleep, and company, being easy to admonish, and having good friends.
 qualities: wholesome, delight
 theme: principle
 ---

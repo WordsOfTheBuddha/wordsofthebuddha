@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Irritable
-description: The Buddha teaches on irritable, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha explains the seven things that please and assist an enemy which befall an irritable person—ugliness, bad sleep, poverty, lost wealth and fame, abandoned friends, and rebirth in hell—and versifies the ruin that anger brings.
 qualities: anger, harm, wholesome, truth, slaughtering, conscience
 theme: urgency, principle
 ---

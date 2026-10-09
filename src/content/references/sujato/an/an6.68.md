@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Enjoying Company
-description: The Buddha teaches on enjoying company, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who enjoys company and groups cannot take pleasure in seclusion, and so cannot fulfill right view and right immersion, give up the fetters, or realize extinguishment—one who does not enjoy company can do all of this.
 qualities: right view, solitude, quenching, giving, giving up, affection
 theme: training guideline, inspiration
 ---

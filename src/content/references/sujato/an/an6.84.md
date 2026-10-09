@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Day and Night
-description: The Buddha teaches on day and night, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant with many wishes who is discontent with robes, almsfood, lodgings, and medicines, and who is faithless, unethical, unmindful, and witless, can expect decline in skillful qualities by day and by night—while one with the opposite qualities can expect growth.
 qualities: cultivation, wholesome, ethical conduct, faith, mindfulness
 theme: inspiration
 ---

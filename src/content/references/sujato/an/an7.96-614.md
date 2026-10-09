@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Suffering in the Eye, Etc.
-description: The Buddha teaches a repeated simile applying eleven factors of a cowherd to eleven qualities a mendicant needs to meditate on impermanence, suffering, and not-self in the sense bases in this grouped discourse.
+description: In this grouped discourse the seven individuals who meditate on impermanence, suffering, not-self, ending, vanishing, fading away, cessation, and letting go are applied in repetition to the sense bases and their objects, consciousness, contact, feeling, perception, intention, craving, thought, and consideration, and to the five aggregates.
 qualities: craving, desire, ending, suffering, giving up
 theme: urgency, training guideline
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an6.10
+character:
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahānāma
-description: The Buddha teaches on with mahānāma, presenting a sixfold teaching for disciples on the path.
+description: Mahānāma the Sakyan asks what meditation a noble disciple should frequently practice, and the Buddha teaches the six recollections—of the Buddha, the teaching, the Saṅgha, ethics, generosity, and the deities—which steady the mind and lead to joy and immersion.
 qualities: giving, delusion, greed, aversion, imperturbable, uplifting joy
 theme: story, recollection of the Buddha
 ---

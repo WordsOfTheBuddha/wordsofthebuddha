@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Respect for Diligence
-description: The Buddha teaches on respect for diligence, presenting a sevenfold teaching for disciples on the path.
+description: A glorious deity lights up Jeta's Grove at night to tell the Buddha that seven respects, from the Teacher to hospitality, keep a mendicant from decline, and the Buddha recites the verse to the mendicants the next morning.
 qualities: respect, diligence, rousing of energy, collectedness
 theme: training guideline, principle
 ---

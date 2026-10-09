@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Thoughts
-description: The Buddha teaches on thoughts, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that to give up sensual, malicious, and cruel thoughts one should develop thoughts of renunciation, good will, and harmlessness.
 qualities: giving up, non-harm, wholesome, harm
 theme: training guideline, principle
 ---

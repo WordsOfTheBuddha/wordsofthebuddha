@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Greed
-description: The Buddha teaches a repeated formula on seven things that should be developed for complete understanding, ending, and letting go of unwholesome qualities in this grouped discourse.
+description: In this grouped discourse a repeated formula applies the seven things to be developed for the complete understanding, ending, giving up, vanishing, fading away, cessation, giving away, and letting go of greed.
 qualities: ending, greed, giving, giving up, craving
 theme: principle, wisdom
 ---

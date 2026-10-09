@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Undeclared Points
-description: The Buddha teaches on the undeclared points, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha explains that a learned noble disciple has no doubts about the undeclared points because they understand views and regrets—the cravings and proliferations behind the questions of whether a realized one exists after death—and so their views and regrets cease.
 qualities: suffering, learning, ending, lamentation, regret, sorrow
 theme: urgency, recollection of the Buddha
 ---

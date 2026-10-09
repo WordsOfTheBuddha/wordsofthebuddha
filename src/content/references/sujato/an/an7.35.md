@@ -1,10 +1,12 @@
 ---
 slug: an7.35
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Easy to Admonish (2nd)
-description: The Buddha teaches on easy to admonish (2nd), presenting a sevenfold teaching for disciples on the path.
+description: After a deity tells the Buddha that seven things, including being easy to admonish and good friendship, keep a mendicant from decline, Sāriputta explains the detailed meaning of each respect and of good friendship, and the Buddha approves.
 qualities: respect, wholesome, companionship, good friendship, collectedness
 theme: training guideline, inspiration
 ---

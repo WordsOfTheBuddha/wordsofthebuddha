@@ -1,5 +1,7 @@
 ---
 slug: an7.61
+character:
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0

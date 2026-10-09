@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Craving
-description: The Buddha teaches on craving, presenting a sixfold teaching for disciples on the path.
+description: The Buddha tells the mendicants to give up the three cravings—for sensual pleasures, existence, and nonexistence—and the three conceits of conceit, inferiority complex, and superiority complex; giving these up, a mendicant has cut off craving, cast off the fetters, and made an end of suffering.
 qualities: craving, conceit, suffering, sensual desire
 theme: principle, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Scholar
-description: The Buddha teaches on scholar, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that it is by scouring off seven things—substantialist view, doubt, misapprehension of precepts and observances, greed, hate, delusion, and conceit—that one becomes a scholar.
 qualities: wisdom
 theme: principle
 ---

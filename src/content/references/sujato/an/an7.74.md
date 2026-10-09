@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Araka
-description: The Buddha teaches on about araka, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha recalls the ancient teacher Araka’s similes on the brevity of human life—dewdrops, bubbles, a line drawn in water, and more—taught even when people lived 60,000 years, and counts the meals of a hundred-year life to urge the mendicants to practice absorption without negligence.
 qualities: suffering, spiritual life, anxiety, wholesome, anger, regret
 theme: story, urgency
 ---

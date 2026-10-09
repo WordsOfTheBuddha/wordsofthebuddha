@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment
-description: The Buddha teaches on extinguishment, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha describes seven individuals who meditate observing the happiness in extinguishment and are worthy of offerings, from one liberated in this very life to those who, having ended the five lower fetters, head upstream to the Akaniṭṭha realm.
 qualities: happiness, ending, wisdom, liberation, vigour, insight
 theme: training guideline, wisdom
 ---

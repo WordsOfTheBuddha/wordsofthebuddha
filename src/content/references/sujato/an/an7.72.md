@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Great Mass of Fire
-description: The Buddha teaches on the simile of the great mass of fire, presenting a sevenfold teaching for disciples on the path.
+description: Seeing a great mass of fire by the road, the Buddha says it would be better for an unethical monk to embrace that fire, wear a horse-hair rope about his shins, be stabbed, boiled, or roasted than to wrongly enjoy the faith-given robes, almsfood, lodgings, and reverence of the laity, which lead to hell—sixty monks vomit hot blood, sixty resign, and sixty are freed.
 qualities: harm, suffering, faith, wholesome, diligence, inquisitiveness
 theme: story, urgency
 ---

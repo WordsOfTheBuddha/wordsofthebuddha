@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Don’t Fear Good Deeds
-description: The Buddha teaches on don’t fear good deeds, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha urges the mendicants not to fear good deeds, for good deeds is a term for happiness, recalling that a mind of love developed for seven years carried him through seven eons of cosmic expansion and contraction as a Great Divinity, thirty-six times as Sakka, and many hundreds of times as a wheel-turning monarch.
 qualities: wholesome, merit, happiness, fear, affection, respect
 theme: story, inspiration
 ---

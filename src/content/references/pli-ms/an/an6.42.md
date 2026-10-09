@@ -1,5 +1,7 @@
 ---
 slug: an6.42
+character:
+  - Venerable Nāgita
 source: suttacentral/bilara-data
 title: Nāgitasutta
 edition: ms

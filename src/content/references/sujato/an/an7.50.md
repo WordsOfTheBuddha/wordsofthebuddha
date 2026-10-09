@@ -1,10 +1,12 @@
 ---
 slug: an7.50
+character:
+  - Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sex
-description: The Buddha teaches on sex, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha tells the brahmin Jānussoṇi that seven sexual yokes are breaks in chastity, from consenting to being touched by a woman to living hoping for rebirth as a god, and that only after giving up all seven did he announce his perfect awakening.
 qualities: suffering, lamentation, spiritual life, vision, sorrow, anxiety
 theme: story, urgency
 ---

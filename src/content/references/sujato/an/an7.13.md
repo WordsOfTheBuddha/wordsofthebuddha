@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Family
-description: The Buddha teaches on a family, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha says that a family that fails to rise, bow, or offer a seat, hides what it has, and gives little, coarse, and careless gifts is not worth visiting, while a family that does the opposite is.
 qualities: wisdom
 theme: principle
 ---

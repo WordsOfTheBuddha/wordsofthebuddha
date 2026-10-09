@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Coolness
-description: The Buddha teaches on coolness, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who fails to check, exert, encourage, and watch over the mind at the right times, who has inferior convictions, and who delights in substantial reality cannot realize supreme coolness—while one who does the opposite and delights in extinguishment can.
 qualities: equanimity, delight
 theme: inspiration
 ---

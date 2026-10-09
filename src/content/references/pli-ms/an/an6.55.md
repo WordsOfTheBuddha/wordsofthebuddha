@@ -1,5 +1,7 @@
 ---
 slug: an6.55
+character:
+  - Venerable Soṇa
 source: suttacentral/bilara-data
 title: Soṇasutta
 edition: ms

@@ -1,5 +1,7 @@
 ---
 slug: an6.57
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Chaḷabhijātisutta
 edition: ms

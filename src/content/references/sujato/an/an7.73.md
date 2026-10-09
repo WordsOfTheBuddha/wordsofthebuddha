@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Sunetta
-description: The Buddha teaches on about sunetta, presenting a sevenfold teaching for disciples on the path.
+description: The Buddha recalls seven ancient teachers including Sunetta and Araka, and says that abusing them and their hundreds of followers brings great wickedness, but that maliciously abusing a single noble disciple accomplished in view brings even more, so one should have no malicious intent for spiritual companions.
 qualities: faith, desire, harm, wholesome, cruelty, sensual desire
 theme: story, urgency
 ---

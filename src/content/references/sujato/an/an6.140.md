@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (1st)
-description: The Buddha describes six unsurpassable things—the unsurpassable sight, sound, happiness, training, generosity, and reflection—that inspire faith and confidence in the teaching.
+description: The Buddha says that for insight into greed one should develop six things—the unsurpassable seeing, listening, acquisition, training, service, and recollection.
 qualities: greed, insight, attachment, craving
 theme: training guideline, principle
 ---

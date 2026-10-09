@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Best Thing
-description: The Buddha teaches on the best thing, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that a mendicant who is faithless, shameless, imprudent, lazy, and witless, and who is preoccupied with their body and their life, cannot realize the best thing, perfection—while one with the opposite qualities can.
 qualities: compassion, fear of wrongdoing, faith
 theme: inspiration
 ---

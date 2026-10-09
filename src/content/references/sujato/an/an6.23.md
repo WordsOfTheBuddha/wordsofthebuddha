@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Dangers
-description: The Buddha teaches on dangers, presenting a sixfold teaching for disciples on the path.
+description: The Buddha explains that ‘danger’, ‘suffering’, ‘disease’, ‘boil’, ‘snare’, and ‘bog’ are all terms for sensual pleasures, for one besotted by lustful desire is not freed from them in this life or in lives to come.
 qualities: suffering, greed, desire, ending, attachment, sensual desire
 theme: urgency
 ---

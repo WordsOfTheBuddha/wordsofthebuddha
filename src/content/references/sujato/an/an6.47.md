@@ -1,10 +1,12 @@
 ---
 slug: an6.47
+character:
+  - Wanderer Moḷiyasīvaka
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Apparent in the Present Life (1st)
-description: The Buddha teaches the wanderer on apparent in the present life (1st), presenting a sixfold teaching for disciples on the path.
+description: The wanderer Moḷiyasīvaka asks how the teaching is apparent in the present life, and the Buddha shows that one directly knows the presence and absence of one’s own greed, hate, and delusion and the thoughts they give rise to, and Sīvaka goes for refuge.
 qualities: greed, delusion, aversion, craving, ill will
 theme: wisdom
 ---

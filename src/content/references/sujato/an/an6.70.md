@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Immersion
-description: The Buddha teaches on immersion, presenting a sixfold teaching for disciples on the path.
+description: The Buddha says that without immersion that is peaceful, refined, tranquil, and unified, a mendicant cannot wield psychic powers, hear divine and human sounds, read minds, recollect past lives, see beings passing away and being reborn, or realize liberation—but with such immersion all of this is possible.
 qualities: liberation, ending, insight, psychic power, wisdom, greed
 theme: training guideline, wisdom
 ---

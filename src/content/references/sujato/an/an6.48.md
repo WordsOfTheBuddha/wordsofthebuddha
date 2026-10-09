@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Apparent in the Present Life (2nd)
-description: The Buddha teaches on apparent in the present life (2nd), presenting a sixfold teaching for disciples on the path.
+description: A brahmin asks how the teaching is apparent in the present life, and the Buddha shows that one directly knows the presence and absence of greed, hate, delusion, and corruption in oneself, and the brahmin goes for refuge.
 qualities: greed, delusion, aversion, craving, ill will
 theme: story, wisdom
 ---
