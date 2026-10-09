@@ -1,8 +1,8 @@
 ---
 title: Duccarita sutta - Misconducts
+qualities: truth, politeness, well-spoken-speech
+theme: training guideline
 description: The four verbal misconducts and the four good verbal conducts.
-fetter: ignorance
-tags: right speech,an,an4
 slug: an4.221
 ---
 

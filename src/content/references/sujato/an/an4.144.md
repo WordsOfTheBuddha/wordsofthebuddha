@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shining
-description: The Buddha teaches on shining, presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes four things that shine—the moon, the sun, fire, and wisdom.
 qualities: wisdom
 theme: principle, wisdom
 ---

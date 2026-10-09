@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unethical
-description: The Buddha teaches on unethical, presenting a fourfold teaching for disciples on the path.
+description: The faithless, unethical, lazy, and witless are placed in hell; the faithful, ethical, energetic, and wise, in heaven.
 qualities: ethical conduct, faith
 theme: inspiration
 ---

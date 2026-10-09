@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment
-description: The Buddha teaches on extinguishment, presenting a fourfold teaching for disciples on the path.
+description: Venerable Ānanda asks Venerable Sāriputta why some beings aren't fully extinguished; he answers that they don't really understand which perceptions make things worse, keep them steady, lead to distinction, or lead to penetration.
 qualities: wisdom
 theme: wisdom
 ---

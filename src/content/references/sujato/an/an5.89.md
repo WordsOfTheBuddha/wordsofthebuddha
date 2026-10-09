@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Trainee (1st)
-description: The Buddha teaches on a trainee (1st), presenting a fivefold teaching for disciples on the path.
+description: Relishing work, talk, sleep, and company, and not reviewing the extent of the mind's freedom, lead to the decline of a mendicant trainee; their opposites don't.
 qualities: liberation, wrong view
 theme: principle
 ---

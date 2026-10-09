@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Very Far Apart
-description: The Buddha describes the four things—the firmament and the earth. ..., the near and the far shore of the ocean. ..., and where the sun rises and where it sets. ....
+description: The firmament, the ocean's shores, and the sunrise and sunset are far apart, but the teaching of the virtuous is even farther from the wicked, whose company is fickle.
 qualities: wisdom
 theme: principle
 ---

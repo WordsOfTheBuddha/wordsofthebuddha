@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Character (2nd)
-description: The Buddha teaches on bad character (2nd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha defines bad, worse, good, and better character through the ten courses of karma, done and encouraged by oneself or others.
 qualities: mindfulness, harm, liberation, vigour, wholesome, right effort
 theme: training guideline, inspiration
 ---

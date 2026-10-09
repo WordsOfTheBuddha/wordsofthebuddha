@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Devadatta
-description: The Buddha teaches on devadatta, presenting a fourfold teaching for disciples on the path.
+description: Possessions, honor, and popularity came to Devadatta for his own ruin and downfall, like a banana plant destroyed by its own fruit or a mule by pregnancy.
 qualities: recollection of the Buddha, wisdom
 theme: story
 ---

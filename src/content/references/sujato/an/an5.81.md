@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Desirable
-description: The Buddha teaches on desirable, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant who desires the desirable, hates the hateful, is deluded by the delusory, annoyed by the annoying, and intoxicated by the intoxicating is unlikable to their spiritual companions; the opposite five are dear and beloved.
 qualities: desire, aversion, dearness, ill will
 theme: principle
 ---

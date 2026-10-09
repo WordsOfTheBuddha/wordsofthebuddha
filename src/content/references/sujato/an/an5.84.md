@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faithless
-description: The Buddha teaches on faithless, presenting a fivefold teaching for disciples on the path.
+description: A faithless, shameless, imprudent, lazy, and witless senior mendicant is unlikable and disagreeable; the faithful, conscientious, prudent, energetic, and wise are dear and beloved.
 qualities: dearness, fear of wrongdoing, faith
 theme: inspiration
 ---

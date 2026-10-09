@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Becoming
-description: The Buddha teaches on becoming, presenting a fivefold teaching for disciples on the path.
+description: You don't become unskillful while faith, conscience, prudence, energy, and wisdom are established in skillful qualities; when they vanish and faithlessness or witlessness take over, you do.
 qualities: unwholesome, faith, wisdom, wholesome, conscience, faithlessness
 theme: inspiration, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Fruits of Initiative
-description: The Buddha describes the four individuals—one who lives off the fruit of initiative, but not deeds;, one who lives off the fruit of deeds, but not initiative;, and one who lives off the fruit of both deeds and initiative;.
+description: The Buddha names four individuals—those who live off the fruit of initiative alone, of deeds alone, of both, and of neither.
 qualities: wisdom
 theme: principle
 ---

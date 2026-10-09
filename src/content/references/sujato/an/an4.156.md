@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Eons
-description: The Buddha teaches on eons, presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes the four uncountable periods of an eon, so long that a man casting a pebble the size of a jujube seed each century would exhaust the Himalayas.
 qualities: wisdom
 theme: principle
 ---

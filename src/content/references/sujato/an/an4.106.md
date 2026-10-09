@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mangoes (2nd)
-description: The Buddha teaches on mangoes (2nd), presenting a fourfold teaching for disciples on the path.
+description: No text of this discourse survives in any available edition; it is preserved by title alone in the collection.
 qualities: wisdom
 theme: principle
 ---

@@ -1,5 +1,8 @@
 ---
 title: Akataññutā sutta - Ungratefulness
+description: "The Buddha explains how ungratefulness, along with misconduct in body, speech, and mind, leads one to be cast into hell, while gratefulness and ethical conduct lead one to be cast into heaven."
+qualities: entitlement, gratefulness, unprincipled conduct, ethical conduct
+theme: principle, cultivating discernment
 slug: an4.213
 ---
 

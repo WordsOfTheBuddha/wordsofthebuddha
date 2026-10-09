@@ -4,6 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Self-assured
+description: The Realized One's four kinds of self-assurance leave no legitimate ground for criticism by ascetics, brahmins, gods, or Māra; with them he claims the bull's place and turns the divine wheel.
 ---
 
 <!-- @segment an4.8:1.1 -->

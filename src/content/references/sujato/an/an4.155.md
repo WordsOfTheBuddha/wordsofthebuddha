@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Power of Reflection
-description: The Buddha describes the four powers, explaining this fourfold teaching for disciples on the path.
+description: The Buddha names the powers of reflection, development, blamelessness, and inclusiveness.
 qualities: examination, cultivation
 theme: principle
 ---

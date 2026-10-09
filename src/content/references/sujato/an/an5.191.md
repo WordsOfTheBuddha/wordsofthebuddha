@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hounds
-description: The Buddha describes the five ancient traditions of the brahmins—in the past brahmins had sex only with brahmin women, not with others, these days brahmins have sex with both brahmin women and others, but these days hounds have sex only with female hounds, not with other species, and this is the first ancient tradition of the brahmins exhibited these days among hounds, but not among brahmins, and in the past brahmins had sex only with brahmin women in the fertile phase of the menstrual cycle, not at other times.
+description: The Buddha describes five ancient traditions of the brahmins—fidelity in sex, mating in season, not buying or selling, and seeking food at the door and at fixed times—now exhibited among hounds but not among brahmins.
 qualities: affection, wisdom
 theme: story
 ---

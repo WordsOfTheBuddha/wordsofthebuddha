@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lack of Conscience
-description: The Buddha teaches on lack of conscience, presenting a fourfold teaching for disciples on the path.
+description: The faithless, unethical, shameless, and imprudent are placed in hell; the faithful, ethical, conscientious, and prudent, in heaven.
 qualities: conscience, fear of wrongdoing, ethical conduct, faith
 theme: inspiration
 ---

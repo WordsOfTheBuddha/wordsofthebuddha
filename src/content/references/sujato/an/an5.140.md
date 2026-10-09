@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Listener
-description: The Buddha describes the five qualities is worthy of offerings dedicated to the gods, wort—a royal bull elephant listens, destroys, protects, endures, and goes fast, and how does a royal bull elephant listen?, it’s when a royal bull elephant pays attention, applies the mind, concentrates wholeheartedly, and actively listens to whatever task the elephant trainer has it do,, and whether or not it has done it before, and that’s how a royal bull elephant listens.
+description: A royal bull elephant worthy of a king listens, destroys, protects, endures, and goes fast; the parallel five qualities make a mendicant the supreme field of merit, where going fast means going to what's never gone before.
 qualities: harm, unwholesome, ending, merit, displeasure, adventurousness
 theme: story, urgency
 ---

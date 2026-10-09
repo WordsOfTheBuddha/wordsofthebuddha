@@ -1,9 +1,8 @@
 ---
 title: Patoda sutta - Whip
+qualities: rousing of energy, continuous effort, wisdom
 description: The Buddha describes four noble thoroughbred horses, each stirred and driven to urgency by progressively stronger stimuli. He draws a parallel to four noble thoroughbred persons, who likewise respond to increasingly intense circumstances with urgency and determination, leading them to the highest truth.
 theme: urgency
-fetter: ignorance
-tags: noble, horse, noble person, urgency, whip, affliction, passing away, relative, family member, wisdom, highest truth, ultimate reality, suffering, ignorance, an, an4
 simile: whip
 slug: an4.113
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Uggaha
-description: The Buddha teaches on with uggaha, presenting a fivefold teaching for disciples on the path.
+description: After a meal at Uggaha's home, the Buddha advises his daughters going to their husbands' families—rising early, working tirelessly, managing the household, preserving wealth, and being agreeable to their husbands.
 qualities: happiness, respect, desire, compassion, craving, loving-kindness
 theme: story, urgency
 ---

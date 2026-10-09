@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hell
-description: The Buddha teaches on hell, presenting a fourfold teaching for disciples on the path.
+description: Someone who kills, steals, commits sexual misconduct, and lies is placed in hell as if delivered there; astute people don't praise these deeds.
 qualities: sexual misconduct, stealing, slaughtering
 theme: principle
 ---

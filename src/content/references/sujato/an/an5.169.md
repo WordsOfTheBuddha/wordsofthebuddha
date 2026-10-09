@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Quick-witted
-description: The Buddha teaches a disciple on quick-witted, presenting a fivefold teaching for disciples on the path.
+description: Asked how to define the quick-witted mendicant, Venerable Ānanda names skill in meaning, teaching, definition, phrasing, and sequence.
 qualities: learning, wholesome
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Obstacles to Rain
-description: The Buddha describes the five obstacles to rain, which the forecasters don’t know, and which their vision does not trave—in the upper atmosphere the fire element flares up,, which disperses the clouds, this is the first obstacle to rain, which the forecasters don’t know, and which their vision does not traverse, and furthermore, in the upper atmosphere the air element flares up,, and which disperses the clouds.
+description: The Buddha describes five obstacles to rain that forecasters don't know—a flaring of the fire or air element in the upper atmosphere, Rāhu seizing the water, negligent rain-cloud gods, and unprincipled humans.
 qualities: vision, wisdom
 theme: principle
 ---

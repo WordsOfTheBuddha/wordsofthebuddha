@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sensual Pleasures
-description: The Buddha teaches on sensual pleasures, presenting a fivefold teaching for disciples on the path.
+description: Sentient beings are mostly charmed by sensual pleasures; the Buddha praises the faithful renunciate who has gone forth, illustrates kind discipline with the nursemaid simile, and need not worry about the mendicant who has developed faith, conscience, prudence, energy, and wisdom.
 qualities: wholesome, conscience, faith, wisdom, vigour, negligence
 theme: inspiration, wisdom
 ---

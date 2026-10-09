@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Killing Living Creatures
-description: The Buddha teaches on killing living creatures, presenting a fourfold teaching for disciples on the path.
+description: Someone who kills living creatures—doing it themselves, encouraging others, approving, or praising it—is placed in hell; one who abstains and encourages abstention, in heaven.
 qualities: slaughtering, wisdom
 theme: inspiration
 ---

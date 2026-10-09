@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhaddiya
-description: The Buddha teaches on with bhaddiya, presenting a fourfold teaching for disciples on the path.
+description: Bhaddiya the Licchavi reports the accusation that Gotama converts by a trick; the Buddha demonstrates that his method is simply teaching for giving up unskillful qualities and embracing skillful ones.
 qualities: wholesome, unwholesome, harm, happiness, suffering, greed
 theme: story, inspiration
 ---

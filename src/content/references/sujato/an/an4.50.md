@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Corruptions
-description: The Buddha teaches on corruptions, presenting a fourfold teaching for disciples on the path.
+description: The Buddha compares the corruptions of beer, sexual misconduct, gold, and wrong livelihood to stormclouds, fog, smoke, and Rāhu's eclipse that obscure the sun and moon; corrupt ascetics don't shine but swell the horrors of the charnel ground.
 qualities: craving, greed, ignorance, wrong livelihood, aversion, delusion
 theme: inspiration, principle
 ---

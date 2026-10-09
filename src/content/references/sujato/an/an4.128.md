@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Incredible Things About the Realized One (2nd)
-description: The Buddha teaches on incredible things about the realized one (2nd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches the perception of non-clinging, non-conceit, peace, and the removal of ignorance, marveling that people still cling, grow conceited, delight in continued existence, and remain engulfed in ignorance.
 qualities: affection, conceit, ignorance, attachment, perturbation, delusion
 theme: recollection of the Buddha, inspiration
 ---

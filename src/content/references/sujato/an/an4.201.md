@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Training Rules
-description: The Buddha teaches on training rules, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person, who breaks the five precepts, with the true person, who keeps them.
 qualities: sexual misconduct, recollection of the Buddha
 theme: training guideline, inspiration
 ---

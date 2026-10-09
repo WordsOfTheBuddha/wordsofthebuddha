@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Māluṅkyaputta
-description: The Buddha teaches on with māluṅkyaputta, presenting a fourfold teaching for disciples on the path.
+description: Venerable Māluṅkyaputta, old and senior, asks the Buddha for a brief teaching; freed of craving for robes, almsfood, lodgings, and rebirth among the gods, he becomes one of the perfected.
 qualities: craving, insight, conceit, suffering, recollection of the Buddha
 theme: recollection of the Buddha, principle
 ---

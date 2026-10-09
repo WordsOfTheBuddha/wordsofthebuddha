@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Agreeable
-description: The Buddha teaches on agreeable, presenting a fivefold teaching for disciples on the path.
+description: Ugga of Vesālī serves the Buddha his finest foods, recalling that the giver of the agreeable gets the agreeable; the Buddha confirms in verse that giving the foremost and the best brings long life and fame wherever reborn.
 qualities: compassion, learning, appreciative joy, gratefulness, mindfulness, respect
 theme: story
 ---

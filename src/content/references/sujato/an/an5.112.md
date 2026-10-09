@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Second Monk
-description: The Buddha teaches on a second monk, presenting a fivefold teaching for disciples on the path.
+description: The Buddha lists five faults that make a second monk unsuitable to take along—walking too far away or too close, not taking the full bowl, not warning of borderline speech, interrupting, and witlessness—and the opposite qualities to look for.
 qualities: wisdom
 theme: principle
 ---

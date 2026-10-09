@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Searches
-description: The Buddha describes the four ignoble searches—someone liable to old age searches only for what grows old, someone liable to sickness searches only for what gets sick, and someone liable to death searches only for what dies.
+description: The Buddha contrasts the ignoble search of one liable to old age, sickness, death, and corruption who seeks only more of the same, with the noble search for the undefiled sanctuary—extinguishment.
 qualities: safety, wisdom
 theme: urgency
 ---

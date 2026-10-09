@@ -2,9 +2,6 @@
 slug: an4.243
 character:
   - Venerable Ānanda
-  - Venerable Sāriputta
-  - Venerable Mahāmoggallāna
-  - Venerable Anuruddha
 source: suttacentral/bilara-data
 title: Saṅghabhedakasutta
 edition: ms

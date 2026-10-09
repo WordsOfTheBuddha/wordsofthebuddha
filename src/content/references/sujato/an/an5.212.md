@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Starting Fights
-description: The Buddha teaches on starting fights, presenting a fivefold teaching for disciples on the path.
+description: A mendicant who starts fights, quarrels, and disciplinary issues in the Saṅgha can expect not achieving the unachieved, losing what's achieved, a bad reputation, dying lost, and rebirth in hell.
 qualities: harm, wisdom
 theme: urgency
 ---

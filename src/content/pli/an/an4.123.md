@@ -1,6 +1,6 @@
 ---
 title: Paṭhama nānākaraṇa sutta - Difference (First)
-description: The Buddha shares the four kinds of persons — those who cultivate the first jhāna, the second jhāna, the third jhāna, and the fourth jhāna while perceiving gratification — and the difference in their rebirths.
+description:  The Buddha shares the four kinds of persons — those who cultivate the first jhāna, the second jhāna, the third jhāna, and the fourth jhāna while perceiving gratification — and the difference in their rebirths.
 qualities: jhana, unification, uplifting joy, tranquility, mindfulness, clear awareness, equanimity, perceiving gratification,  craving, desire
 theme: inspiration, principle
 slug: an4.123

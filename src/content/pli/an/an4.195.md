@@ -2,7 +2,7 @@
 slug: an4.195
 character:
   - Venerable Mahāmoggallāna
-  - "Sakka, lord of the gods"
+  - Vappa the Sakyan
 source: suttacentral/bilara-data
 title: Vappasutta
 edition: ms

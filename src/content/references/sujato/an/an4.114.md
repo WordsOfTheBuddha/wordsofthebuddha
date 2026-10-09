@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Royal Elephant
-description: The Buddha teaches on a royal elephant, presenting a fourfold teaching for disciples on the path.
+description: The Buddha likens a royal elephant's kingly factors—listening, destroying, protecting, enduring, and going fast—to a mendicant's qualities, where going fast means the ending of craving in the highest training.
 qualities: ending, merit, craving, giving up, harm, respect
 theme: story, urgency
 ---

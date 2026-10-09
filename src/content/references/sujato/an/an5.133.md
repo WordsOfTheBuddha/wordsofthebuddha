@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Principled King
-description: The Buddha teaches on a principled king, presenting a fivefold teaching for disciples on the path.
+description: Even a wheel-turning monarch has his own king—principle; protecting his realm by relying on principle, he parallels the Realized One, who protects the four assemblies and rolls forth the supreme Wheel of Dhamma.
 qualities: safety, wisdom
 theme: story, recollection of the Buddha
 ---

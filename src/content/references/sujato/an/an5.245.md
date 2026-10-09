@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Conduct (2nd)
-description: The Buddha describes the five drawbacks of bad conduct—you blame yourself, after examination, sensible people criticize you, you get a bad reputation, and you drift away from true teachings, and you settle on untrue teachings.
+description: Bad conduct brings self-blame, criticism by sensible people, a bad reputation, drifting away from true teachings, and settling on untrue ones; good conduct brings the opposite.
 qualities: harm, wholesome, examination
 theme: principle
 ---

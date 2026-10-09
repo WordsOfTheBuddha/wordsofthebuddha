@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Both
-description: The Buddha teaches on both, presenting a fourfold teaching for disciples on the path.
+description: Of the four ways of practice, painful practice with slow insight is inferior in both ways, and pleasant practice with swift insight is superior in both ways—pleasant and swift.
 qualities: insight, wisdom
 theme: principle, wisdom
 ---

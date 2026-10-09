@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mice
-description: The Buddha describes the four kinds of mice—one makes a hole but doesn’t live in it,, one lives in a hole but doesn’t make it,, one neither makes a hole nor lives in it, and and.
+description: The Buddha compares one who memorizes the teaching but doesn't understand it to a mouse that gnaws through a pouch and takes nothing, and places highest the one who both memorizes and understands.
 qualities: suffering, ending
 theme: cultivating discernment, inspiration
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Rāhula
-description: The Buddha teaches on with rāhula, presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches Rāhula to contemplate the four elements as 'not mine, not self, not my self,' comparing their equanimity under provocation to the elements themselves.
 qualities: right view, conceit, craving, suffering, recollection of the Buddha
 theme: wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Detail
-description: The Buddha teaches on in detail, presenting a fourfold teaching for disciples on the path.
+description: The Buddha explains how greed, hate, and delusion are exhausted in detail through developing the five faculties of faith, energy, mindfulness, immersion, and wisdom.
 qualities: insight, delusion, greed, aversion, ending, faith
 theme: urgency, training guideline
 ---

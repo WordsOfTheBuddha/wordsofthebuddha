@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Living Together (2nd)
-description: The Buddha teaches on living together (2nd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha details the four ways of living together by tenfold conduct—a male and female zombie, a zombie with a goddess, a god with a zombie, and a god with a goddess—by whether wife and husband are equal in ethics and view.
 qualities: harm, wholesome, sexual misconduct, stinginess, right view, wrong view
 theme: principle, wisdom
 ---

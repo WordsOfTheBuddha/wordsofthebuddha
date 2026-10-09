@@ -1,10 +1,12 @@
 ---
 slug: an4.111
+character:
+  - Kesi Assadammasārathi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kesi
-description: The Buddha teaches on with kesi, presenting a fourfold teaching for disciples on the path.
+description: The horse trainer Kesi explains that he tames the tamable with gentleness or harshness and leaves the untamable to die; the Buddha declares that he trains the trainable the same way and lets the untamable go their own way.
 qualities: harm, wholesome, flexible, slaughtering, recollection of the Buddha
 theme: recollection of the Buddha, training guideline
 ---

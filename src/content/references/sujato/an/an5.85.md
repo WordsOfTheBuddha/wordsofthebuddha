@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Cannot Endure
-description: The Buddha teaches on cannot endure, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant who can't endure sights, sounds, smells, tastes, and touches is unlikable and disagreeable; the one who can endure them is dear and beloved.
 qualities: dearness, wisdom
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Warriors (1st)
-description: The Buddha describes the five hindrances—sensual desire, ill will, dullness and drowsiness, restlessness and worry, and doubt—that overwhelm the mind and weaken wisdom until they are abandoned.
+description: Five kinds of warriors are found in the world—from the one who falters at the mere sight of a dust cloud to the one who wins victory in battle—parallel to monks who give up the training under trials or persevere to the highest attainment.
 qualities: spiritual life, ending, giving, giving up, suffering, jhana
 theme: training guideline, principle
 ---

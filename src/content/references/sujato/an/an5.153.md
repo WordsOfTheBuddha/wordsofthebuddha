@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sure Path (3rd)
-description: The Buddha teaches on the sure path (3rd), presenting a fivefold teaching for disciples on the path.
+description: Listening bent on putting down the talk, with a hostile fault-finding mind, antagonistic to the teacher, witless, and pretending knowledge blocks the sure path; the opposite dispositions open it.
 qualities: wholesome, wisdom
 theme: principle
 ---

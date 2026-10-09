@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Talk
-description: The Buddha teaches on talk, presenting a fivefold teaching for disciples on the path.
+description: A mendicant developing mindfulness of breathing with few concerns, little food, wakefulness, access to heart-opening talk on self-effacement, and review of the mind's freedom will soon penetrate the unshakable.
 qualities: liberation, contentment, mindfulness, vision, wakefulness, wisdom
 theme: training guideline, principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Lion
-description: The Buddha teaches on the lion, presenting a fourfold teaching for disciples on the path.
+description: The Buddha compares his teaching to the lion's roar that terrifies even the long-lived gods, who realize they haven't passed beyond substantial reality and are impermanent.
 qualities: fear, ending, insight, suffering, attachment, recollection of the Buddha
 theme: story, urgency
 ---

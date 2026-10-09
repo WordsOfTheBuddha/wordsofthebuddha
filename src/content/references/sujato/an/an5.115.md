@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stingy
-description: The Buddha teaches on stingy, presenting a fivefold teaching for disciples on the path.
+description: A nun stingy with dwellings, families, material things, praise, and the teaching is placed in hell as if delivered there; the un-stingy, in heaven.
 qualities: wisdom
 theme: principle
 ---

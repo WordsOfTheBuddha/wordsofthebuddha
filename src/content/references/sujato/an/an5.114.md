@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Andhakavinda
-description: The Buddha teaches a disciple on at andhakavinda, presenting a fivefold teaching for disciples on the path.
+description: Venerable Ānanda is told to establish junior mendicants in five things—restraint in the monastic code, sense restraint, limiting speech, retreat, and right view.
 qualities: mindfulness, right view, sense restraint, ethical conduct, wrong view, ill will
 theme: story, training guideline
 ---

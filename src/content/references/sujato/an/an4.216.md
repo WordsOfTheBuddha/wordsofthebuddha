@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Path (2nd)
-description: The Buddha teaches on path (2nd), presenting a fourfold teaching for disciples on the path.
+description: Wrong livelihood, effort, mindfulness, and immersion send someone to hell; their right counterparts, to heaven.
 qualities: mindfulness, vigour, right effort, right livelihood, wrong effort, wrong livelihood
 theme: training guideline
 ---

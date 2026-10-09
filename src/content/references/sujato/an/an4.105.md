@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mangoes
-description: The Buddha describes the four mangoes—one is unripe but seems ripe,, one is ripe but seems unripe,, one is unripe and seems unripe, and and.
+description: The Buddha compares people to mangoes—unripe yet looking ripe, ripe yet looking unripe, unripe and unripe-looking, or ripe and ripe-looking—placing highest the one who is ripe and looks it.
 qualities: suffering, ending
 theme: cultivating discernment, wisdom
 ---

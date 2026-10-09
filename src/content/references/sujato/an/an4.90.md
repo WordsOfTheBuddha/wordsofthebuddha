@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aggregates
-description: The Buddha describes the four individuals—the confirmed ascetic, the white lotus ascetic, the pink lotus ascetic, and the delicate ascetic of ascetics, and and how is an individual a confirmed ascetic?.
+description: The Buddha defines the four ascetics from the trainee aspiring to the supreme sanctuary through meditating on rise and fall in the five aggregates, up to the delicate ascetic of ascetics who claims the title himself.
 qualities: ending, attachment, desire, safety, liberation
 theme: training guideline
 ---

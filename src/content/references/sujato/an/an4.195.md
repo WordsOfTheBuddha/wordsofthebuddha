@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vappa
-description: The Buddha teaches on with vappa, presenting a fourfold teaching for disciples on the path.
+description: Vappa of the Sakyans, a disciple of the Jains, hears from Venerable Mahāmoggallāna how defilements are cut off by the fading away of ignorance; he whisks away his confidence in the Jains and goes for refuge to the Buddha.
 qualities: giving, ending, ignorance, faith, harm, delusion
 theme: story, inspiration
 ---

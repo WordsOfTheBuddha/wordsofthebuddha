@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perceptions (1st)
-description: The Buddha describes the five perceptions, when developed and cultivated—the perceptions of ugliness, death, drawbacks, repulsiveness of food, and dissatisfaction with the whole world, these five perceptions, when developed and cultivated, and are very fruitful and beneficial. they have freedom from death as their objective and culmination.”.
+description: The perceptions of ugliness, death, drawbacks, repulsiveness of food, and dissatisfaction with the whole world, when developed and cultivated, have freedom from death as their objective and culmination.
 qualities: liberation, wholesome, discontentment, suffering
 theme: urgency
 ---

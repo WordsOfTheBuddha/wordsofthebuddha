@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Thoroughbred (1st)
-description: The Buddha teaches on a thoroughbred (1st), presenting a fourfold teaching for disciples on the path.
+description: A fine royal thoroughbred worthy of a king is beautiful, strong, fast, and well-proportioned; the Buddha likens these to the qualities of a mendicant who is the supreme field of merit.
 qualities: suffering, merit, ending, wholesome, giving, giving up
 theme: story, principle
 ---

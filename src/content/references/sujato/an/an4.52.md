@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Overflowing Merit (2nd)
-description: "The Buddha describes the four kinds of overflowing merit, overflowing goodness—it’s when a noble disciple has experiential confidence in the buddha:, and this is the first kind of overflowing merit ...."
+description: The Buddha describes four kinds of overflowing merit—experiential confidence in the Buddha, the teaching, and the Saṅgha, and the ethics dear to the noble ones—whose extent, like rivers reaching the ocean, can hardly be measured.
 qualities: merit, faith, happiness, ethical conduct, wholesome, insight
 theme: recollection of the Buddha, directly knowing
 ---

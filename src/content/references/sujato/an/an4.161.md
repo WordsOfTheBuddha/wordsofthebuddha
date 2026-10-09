@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Brief
-description: The Buddha teaches on in brief, presenting a fourfold teaching for disciples on the path.
+description: The Buddha names the four ways of practice—painful with slow insight, painful with swift insight, pleasant with slow insight, and pleasant with swift insight.
 qualities: insight, wisdom
 theme: principle, wisdom
 ---

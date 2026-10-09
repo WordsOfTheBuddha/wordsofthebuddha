@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lay Practice
-description: The Buddha describes the four things they.
+description: The Buddha tells Anāthapiṇḍika that a noble disciple serving the mendicant Saṅgha with robes, almsfood, lodgings, and medicines practices appropriately for a layperson, with merit growing day and night.
 qualities: merit, ethical conduct, recollection of the Buddha
 theme: story, principle
 ---

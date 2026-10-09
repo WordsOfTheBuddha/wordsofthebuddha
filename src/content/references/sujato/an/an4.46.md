@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Rohitassa (2nd)
-description: The Buddha teaches on with rohitassa (2nd), presenting a fourfold teaching for disciples on the path.
+description: In the night the godling Rohitassa, lighting up Jeta's Grove, asks whether one can reach the world's end by travel; the rest matches the previous discourse, on knowing the world in this very fathom-long body.
 qualities: safety, recollection of the Buddha
 theme: principle
 ---

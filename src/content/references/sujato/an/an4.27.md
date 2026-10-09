@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Contentment
-description: The Buddha describes the four trifles are easy to find and—rag-robes ..., a lump of almsfood ..., and lodgings at the root of a tree ....
+description: The Buddha describes four easy-to-find, blameless trifles—rag-robes, almsfood, lodgings at the root of a tree, and rancid urine as medicine—with which a contented mendicant is never obstructed.
 qualities: wholesome, contentment, aversion, tame
 theme: principle
 ---

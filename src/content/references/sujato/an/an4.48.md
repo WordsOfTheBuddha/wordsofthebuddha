@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Visākha, Pañcāli’s Son
-description: The Buddha teaches on with visākha, pañcāli’s son, presenting a fourfold teaching for disciples on the path.
+description: The Buddha praises Visākha, Pañcāli's son, in the assembly hall, saying that a wise person mixed up with fools is known when they speak, teaching the state free of death.
 qualities: wholesome, recollection of the Buddha
 theme: story, urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Living Together (1st)
-description: The Buddha teaches on living together (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes four ways of living together—zombie with zombie, zombie with god, god with zombie, and god with goddess—by whether wife and husband are equal in ethics.
 qualities: stinginess, harm, wholesome, sexual misconduct, delight, desire
 theme: story, inspiration
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mother and Son
-description: The Buddha describes the five kinds of sensual stimulation.
+description: When a mother and son, both ordained, fall into sex out of lust, the Buddha teaches that no sight is more arousing and obstructive to recluseship than that of a woman; those who don't comprehend sensual pleasures transmigrate, while those who do cross over.
 qualities: passion, sensual desire, sorrow, safety, ending, wholesome
 theme: story, training guideline
 ---

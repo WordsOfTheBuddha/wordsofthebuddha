@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Eightfold
-description: The Buddha teaches on eightfold, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person, who pursues the wrong eightfold path, with the true person, who pursues the noble eightfold path.
 qualities: mindfulness, vigour, right effort, right livelihood, right speech, right view
 theme: training guideline, inspiration
 ---

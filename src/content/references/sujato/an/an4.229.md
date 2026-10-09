@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lack of Conscience
-description: The Buddha teaches on lack of conscience, presenting a fourfold teaching for disciples on the path.
+description: Lacking conscience and prudence keeps a foolish untrue person broken and damaged; having them keeps an astute true person healthy and whole.
 qualities: conscience, merit, fear of wrongdoing, ethical conduct, faith
 theme: inspiration
 ---

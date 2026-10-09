@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Titans
-description: The Buddha describes the four individuals—a titan surrounded by titans,, a titan surrounded by gods,, a god surrounded by titans, and and.
+description: The Buddha names four individuals—a titan surrounded by titans or gods, and a god surrounded by titans or gods—by whether a teacher and their followers are ethical or unethical.
 qualities: harm, wholesome, ethical conduct
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Path with Ten Factors
-description: The Buddha teaches on the path with ten factors, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person, who pursues the wrong tenfold path, with the true person, who pursues the right tenfold path.
 qualities: mindfulness, liberation, vigour, right effort, right livelihood, right speech
 theme: training guideline, inspiration
 ---

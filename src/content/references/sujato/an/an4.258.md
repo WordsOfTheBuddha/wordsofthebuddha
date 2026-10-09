@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Families
-description: The Buddha teaches on families, presenting a fourfold teaching for disciples on the path.
+description: The Buddha explains why families don't stay wealthy—not looking for what's lost, not repairing old things, immoderate eating, and putting an unethical person in charge—and their opposites for lasting wealth.
 qualities: ethical conduct, wisdom
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wilderness Dwellers
-description: The Buddha describes the five kinds of wilderness dwellers.
+description: There are five kinds of wilderness dwellers—from stupidity, corrupt wishes, madness, because praised by the Buddhas, or for fewness of wishes—the last being the foremost, like cream of ghee.
 qualities: contentment, insanity, solitude
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fetters
-description: The Buddha describes the four individuals—the confirmed ascetic, the white lotus ascetic, the pink lotus ascetic, and the delicate ascetic of ascetics, and and how is an individual a confirmed ascetic?.
+description: The Buddha defines the four ascetics—the confirmed ascetic (stream-enterer), the white lotus (once-returner), the pink lotus (non-returner), and the delicate ascetic of ascetics (perfected one).
 qualities: ending, liberation, insight, wisdom, delusion, greed
 theme: wisdom
 ---

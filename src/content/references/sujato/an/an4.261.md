@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers
-description: The Buddha describes the four powers, explaining this fourfold teaching for disciples on the path.
+description: The Buddha names the powers of energy, mindfulness, immersion, and wisdom.
 qualities: mindfulness, wisdom, vigour, collectedness
 theme: training guideline, wisdom
 ---

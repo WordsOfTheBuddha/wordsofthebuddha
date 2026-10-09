@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Schism in the Saṅgha
-description: The Buddha teaches on schism in the saṅgha, presenting a fourfold teaching for disciples on the path.
+description: Venerable Ānanda reports that Bāhiya, Anuruddha's protégé, remains committed to creating a schism in the Saṅgha; the Buddha explains the four reasons a bad monk relishes schism.
 qualities: harm, respect, wrong livelihood, wrong view, desire, ethical conduct
 theme: story, wisdom
 ---

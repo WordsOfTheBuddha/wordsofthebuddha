@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ujjaya
-description: The Buddha teaches on with ujjaya, presenting a fourfold teaching for disciples on the path.
+description: Ujjaya the brahmin asks about sacrifice; the Buddha contrasts violent sacrifice, where creatures are killed, with the non-violent and propitious offering that even the deities are pleased with.
 qualities: recollection of the Buddha, wisdom
 theme: story
 ---

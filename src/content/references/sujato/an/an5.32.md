@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Cundī
-description: The Buddha teaches on with cundī, presenting a fivefold teaching for disciples on the path.
+description: Princess Cundī relays her brother's claim that going for refuge and keeping the five precepts ensure a good rebirth, and asks in what to place confidence; the Buddha points to the Buddha, the teaching, and the Saṅgha, the supreme field of merit.
 qualities: faith, harm, wholesome, merit, ending, ethical conduct
 theme: story, urgency
 ---

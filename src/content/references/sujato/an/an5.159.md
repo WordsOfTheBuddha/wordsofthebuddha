@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Udāyī
-description: The Buddha teaches on with udāyī, presenting a fivefold teaching for disciples on the path.
+description: Seeing Venerable Udāyī teaching a large assembly, Venerable Ānanda is told five things to establish before teaching Dhamma—step by step, showing the method, out of kindness, without hoping for profit, without damaging self or others.
 qualities: loving-kindness, wisdom
 theme: story, principle
 ---

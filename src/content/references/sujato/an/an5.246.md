@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Bodily Conduct (2nd)
-description: The Buddha describes the five drawbacks in bad bodily conduct … benefits in good bodily conduct …”.
+description: The Buddha describes the five drawbacks of bad bodily conduct and the five benefits of good bodily conduct.
 qualities: harm, wholesome
 theme: principle
 ---

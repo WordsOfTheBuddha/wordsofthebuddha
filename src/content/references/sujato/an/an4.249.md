@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Very Helpful
-description: The Buddha describes the four things, explaining this fourfold teaching for disciples on the path.
+description: The Buddha names four things very helpful to a human being—associating with true persons, listening to the true teaching, rational application of mind, and practicing in line with the teaching.
 qualities: wisdom
 theme: principle
 ---

@@ -1,5 +1,8 @@
 ---
 slug: an4.196
+character:
+  - Licchavi Sāḷha
+  - Licchavi Abhaya
 source: suttacentral/bilara-data
 title: Sāḷhasutta
 edition: ms

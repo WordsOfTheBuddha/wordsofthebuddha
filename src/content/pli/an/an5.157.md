@@ -1,8 +1,8 @@
 ---
 title: Dukkathā sutta - Difficult Discussions
+qualities: faith, ethical conduct, learning, giving, wisdom
+theme: principle, cultivating discernment
 description: Five types of persons for whom specific discussions are difficult, and five types of persons for whom specific discussions are pleasant.
-fetter: conceit
-tags: faith, morality, learning, generosity, wisdom, an, an5
 slug: an5.157
 ---
 

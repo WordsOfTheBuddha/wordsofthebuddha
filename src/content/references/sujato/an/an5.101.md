@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assurance
-description: The Buddha teaches on assurance, presenting a fivefold teaching for disciples on the path.
+description: The Buddha names the five qualities that make a trainee self-assured—faith, ethics, learning, energy, and wisdom—each removing a corresponding insecurity.
 qualities: faith, learning, ethical conduct, wisdom
 theme: inspiration
 ---

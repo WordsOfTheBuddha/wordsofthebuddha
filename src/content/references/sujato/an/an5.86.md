@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Attaining the Methods of Textual Analysis
-description: The Buddha teaches on attaining the methods of textual analysis, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant who has attained the four methods of textual analysis—meaning, text, definition, and eloquence—and is deft and tireless in duties for their companions is dear and beloved.
 qualities: dearness, examination, inspiration
 theme: wisdom
 ---

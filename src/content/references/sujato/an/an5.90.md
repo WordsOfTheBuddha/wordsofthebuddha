@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Trainee (2nd)
-description: The Buddha teaches on a trainee (2nd), presenting a fivefold teaching for disciples on the path.
+description: Many duties, trivial work, mixing closely with laypeople, entering towns at the wrong time, and neglecting retreat and serenity lead to the decline of a mendicant trainee; the learned, absorbed, and secluded opposites don't.
 qualities: tranquility, contentment, vision, liberation, solitude, wisdom
 theme: training guideline, principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Declarations
-description: The Buddha teaches on declarations, presenting a fivefold teaching for disciples on the path.
+description: One declares enlightenment out of stupidity and folly, corrupt wishes, madness, overestimation, or rightly—these are the five ways of declaring enlightenment.
 qualities: insanity, wisdom
 theme: principle
 ---

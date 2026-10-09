@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accomplishment (2nd)
-description: The Buddha teaches on accomplishment (2nd), presenting a fivefold teaching for disciples on the path.
+description: The five accomplishments are in ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom.
 qualities: vision, liberation, wisdom, collectedness
 theme: training guideline, wisdom
 ---

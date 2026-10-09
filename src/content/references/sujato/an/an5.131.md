@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wielding Power (1st)
-description: The Buddha teaches on wielding power (1st), presenting a fivefold teaching for disciples on the path.
+description: A wheel-turning monarch with five factors—knowing what is right, principle, moderation, the right time, and the assembly—wields power in a principled manner; the Realized One rolls forth the supreme Wheel of Dhamma with the same five.
 qualities: wisdom
 theme: story, recollection of the Buddha
 ---

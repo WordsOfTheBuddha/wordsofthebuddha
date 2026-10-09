@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Patience (2nd)
-description: The Buddha teaches on patience (2nd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches the same four dispositions through enduring cold, heat, hunger, insect bites, and harsh words, repaying abuse only with composure.
 qualities: harm, suffering, unwholesome, patience, displeasure, adventurousness
 theme: principle
 ---

@@ -1,8 +1,8 @@
 ---
-title: Abhiññā sutta - Direct Knowledge
-description: The four mental qualities that should be fully comprehended, abandoned, developed, and personally realized by direct knowledge.
-fetter: ignorance
-tags: an,an4,mental qualities,five aggregates,ignorance,craving,tranquility,insight,wisdom,liberation
+title: Abhiññā sutta - directly knowing
+qualities: direct knowledge, ignorance, craving, tranquility, insight, liberation
+theme: wisdom, principle
+description: The four things that should be fully comprehended, abandoned, developed, and personally realized by directly knowing.
 slug: an4.254
 ---
 

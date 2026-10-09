@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sudatta
-description: The Buddha teaches on sudatta, presenting a fourfold teaching for disciples on the path.
+description: The Buddha tells Anāthapiṇḍika that giving food gives the recipients long life, beauty, happiness, and strength, and the giver has long life and fame wherever reborn.
 qualities: happiness, giving, recollection of the Buddha
 theme: story, principle
 ---

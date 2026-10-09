@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Benefits of Training
-description: The Buddha teaches on the benefits of training, presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches that a mendicant should make the benefit of the training their aim, wisdom their overseer, freedom their core, and mindfulness their ruler.
 qualities: wisdom, mindfulness, spiritual life, liberation, suffering, faith
 theme: training guideline, inspiration
 ---

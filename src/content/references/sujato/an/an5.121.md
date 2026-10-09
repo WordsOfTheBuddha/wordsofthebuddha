@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sick
-description: The Buddha teaches on sick, presenting a fivefold teaching for disciples on the path.
+description: A weak and sick mendicant who doesn't neglect five things—observing the ugliness of the body, the repulsiveness of food, dissatisfaction with the world, impermanence, and their own death—will soon realize the undefiled freedom.
 qualities: liberation, ending, insight, wisdom, discontentment, suffering
 theme: story, urgency
 ---

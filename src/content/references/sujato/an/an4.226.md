@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Path (2nd)
-description: The Buddha teaches on path (2nd), presenting a fourfold teaching for disciples on the path.
+description: The wrong tenfold path keeps a foolish untrue person broken and damaged; the right tenfold path keeps an astute true person healthy and whole.
 qualities: mindfulness, vigour, merit, right effort, right livelihood, wrong effort
 theme: training guideline
 ---

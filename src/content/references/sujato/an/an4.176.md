@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aspiration
-description: The Buddha teaches on aspiration, presenting a fourfold teaching for disciples on the path.
+description: The Buddha names the role models for his disciples—Sāriputta and Moggallāna among monks, Khemā and Uppalavaṇṇā among nuns, Citta and Hatthaka among laymen, and Khujjuttarā and Veḷukaṇṭakī among laywomen.
 qualities: desire, faith
 theme: story, inspiration
 ---

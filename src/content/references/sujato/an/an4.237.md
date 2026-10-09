@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Noble Path
-description: The Buddha teaches on the noble path, presenting a fourfold teaching for disciples on the path.
+description: The Buddha explains how the noble eightfold path is the deed that is neither dark nor bright, leading to the ending of deeds.
 qualities: ending, insight, dearness, mindfulness, right effort, right livelihood
 theme: training guideline, principle
 ---

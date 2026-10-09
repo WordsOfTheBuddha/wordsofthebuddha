@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: From Darkness to Darkness
-description: The Buddha describes the four individuals—the dark bound for darkness,, the dark bound for light,, the light bound for darkness, and and.
+description: The Buddha names four individuals—the dark bound for darkness, the dark bound for light, the light bound for darkness, and the light bound for light—by their low or high birth and their ethical or unethical conduct.
 qualities: attachment, wholesome, harm
 theme: urgency
 ---

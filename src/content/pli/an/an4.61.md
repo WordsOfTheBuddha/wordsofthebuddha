@@ -4,7 +4,6 @@ description: The Buddha outlines four rare worldly blessings and the four qualit
 qualities: giving, ethical conduct, faith, wisdom, desire
 theme: wisdom
 slug: an4.61
-character: Householder Anāthapiṇḍika
 priority: 1.2
 ---
 

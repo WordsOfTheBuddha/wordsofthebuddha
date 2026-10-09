@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Overflowing Merit
-description: The Buddha describes the five kinds of overflowing merit, overflowing goodness—when a mendicant enters and remains in a limitless immersion of heart while using a robe, almsfood … lodging … bed and chair, medicines and supplies for the sick, and the overflowing of merit for the donor is limitless.
+description: When a mendicant enters and remains in a limitless immersion of heart while using robes, almsfood, lodgings, beds, or medicines, the donor's overflowing merit is limitless, like rivers reaching the boundless ocean.
 qualities: merit, happiness, collectedness, wisdom
 theme: training guideline, principle
 ---

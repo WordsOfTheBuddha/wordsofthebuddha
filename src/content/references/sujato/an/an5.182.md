@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Robes
-description: The Buddha teaches on robes, presenting a fivefold teaching for disciples on the path.
+description: One may wear rag robes from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost.
 qualities: insanity, wisdom
 theme: principle
 ---

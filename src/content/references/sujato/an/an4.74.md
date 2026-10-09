@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Best (1st)
-description: The Buddha describes the four things, explaining this fourfold teaching for disciples on the path.
+description: The best ethics, immersion, wisdom, and freedom are the four best things.
 qualities: wisdom, liberation, collectedness
 theme: training guideline, principle
 ---

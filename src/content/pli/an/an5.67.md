@@ -1,8 +1,8 @@
 ---
 title: Paṭhama iddhipāda sutta - Bases for Psychic Power (First)
 description: Developing the bases of psychic power can lead to enlightenment in this very life or the state of non-returning.
-fetter: desire for fine-material existence, desire for immaterial existence, conceit, restlessness, ignorance
-tags: spiritual power, psychic power, success, collectedness, aspiration, persistence, mind, investigation, reflection, close examination, an, an5
+qualities: psychic power, collectedness, desire, vigour, investigation
+theme: training guideline
 slug: an5.67
 ---
 

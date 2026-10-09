@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Speaker
-description: The Buddha describes the four speakers—there’s a speaker who runs out of meaningful things to say, but not of ways of phrasing things, there’s a speaker who runs out of ways of phrasing things, but not of meaningful things to say, there’s a speaker who runs out of both meaningful things to say, and and ways of phrasing things.
+description: The Buddha contrasts those who, when questioned, run out of meaning or phrasing with those who expound both, then explains the four methods of textual analysis—meaning, text, definition, and eloquence.
 qualities: examination, wisdom
 theme: principle
 ---

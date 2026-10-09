@@ -4,6 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Stream
+description: Four individuals are found in the world—one who goes with the stream, one who goes against it, a steadfast one, and a brahmin who has crossed over and stands on solid ground.
 ---
 
 <!-- @segment an4.5:1.1 -->

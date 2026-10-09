@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Immersion
-description: The Buddha teaches on immersion, presenting a fivefold teaching for disciples on the path.
+description: Developing limitless immersion alert and mindful brings five personal knowledges—that it's blissful now and later, noble, not cultivated by reprobates, peaceful and not forced, and entered and emerged mindfully.
 qualities: undeveloped, collectedness, mindfulness
 theme: training guideline, wisdom
 ---

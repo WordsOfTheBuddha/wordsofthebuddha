@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Arising of Craving
-description: The Buddha teaches on the arising of craving, presenting a fourfold teaching for disciples on the path.
+description: Robes, almsfood, lodgings, and rebirth in this or that state give rise to craving in a mendicant; craving is a person's partner as they transmigrate on this long journey.
 qualities: craving, suffering, attachment, mindfulness
 theme: principle
 ---

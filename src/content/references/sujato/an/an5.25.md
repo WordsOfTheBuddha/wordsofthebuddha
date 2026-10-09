@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Supported
-description: The Buddha teaches on supported, presenting a fivefold teaching for disciples on the path.
+description: Right view supported by ethics, learning, discussion, serenity, and discernment has freedom of heart and freedom by wisdom as its fruit and benefit.
 qualities: liberation, right view, wisdom, discernment, tranquility, wrong view
 theme: principle, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Lodgings Allotter
-description: The Buddha presents a repeated fivefold teaching on a lodgings allotter in this grouped discourse.
+description: Thirteen monastic posts—from lodgings allotter to supervisor of novices—should be held only by someone free of favoritism, hostility, stupidity, and cowardice who knows what's assigned; such a person is placed in heaven as if delivered there.
 qualities: aggressiveness, aversion
 theme: principle
 ---

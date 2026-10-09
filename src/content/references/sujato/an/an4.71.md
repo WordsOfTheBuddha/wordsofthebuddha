@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Effort
-description: The Buddha teaches on effort, presenting a fourfold teaching for disciples on the path.
+description: Ethics, learning, energy, and wisdom give a mendicant's practice a sure bet and lay the groundwork for ending the defilements.
 qualities: ending, learning, vigour, ethical conduct, right effort
 theme: training guideline, principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
-description: The Buddha teaches a disciple on with ānanda, presenting a fivefold teaching for disciples on the path.
+description: Asked by Venerable Ānanda how to live comfortably in a monastic community, the Buddha gives five successive answers, culminating in attaining the absorptions and realizing the undefiled freedom of heart.
 qualities: ethical conduct, liberation, ending, insight, wisdom
 theme: story, training guideline
 ---

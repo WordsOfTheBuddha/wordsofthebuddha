@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Expression (1st)
-description: The Buddha teaches on kinds of expression (1st), presenting a fourfold teaching for disciples on the path.
+description: Falsely claiming to have seen what one hasn't seen keeps a foolish untrue person broken and damaged; truthful reporting keeps an astute true person healthy and whole.
 qualities: merit, wisdom
 theme: principle
 ---

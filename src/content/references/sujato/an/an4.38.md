@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Withdrawn
-description: The Buddha teaches on withdrawn, presenting a fourfold teaching for disciples on the path.
+description: A mendicant who has cast aside idiosyncratic interpretations of the truth, given up searching, stilled the physical process, and comprehended conceit is called 'withdrawn'.
 qualities: truth, conceit, suffering, ending, equanimity, giving
 theme: urgency, recollection of the Buddha
 ---

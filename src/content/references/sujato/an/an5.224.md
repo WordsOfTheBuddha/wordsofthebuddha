@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stingy
-description: The Buddha describes the five drawbacks of overstaying.
+description: Overstaying makes a mendicant stingy with dwellings, families, material things, praise, and the teaching; staying a reasonable length of time removes each stinginess.
 qualities: wisdom
 theme: principle
 ---

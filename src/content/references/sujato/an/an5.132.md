@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wielding Power (2nd)
-description: The Buddha teaches on wielding power (2nd), presenting a fivefold teaching for disciples on the path.
+description: As a wheel-turning monarch's eldest son continues his father's principled power, Sāriputta rightly keeps rolling the supreme Wheel of Dhamma rolled forth by the Realized One, with the same five factors.
 qualities: wisdom
 theme: story, recollection of the Buddha
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Harsh Speech
-description: The Buddha teaches on harsh speech, presenting a fourfold teaching for disciples on the path.
+description: Someone who speaks harshly—doing it themselves, encouraging others, approving, or praising it—is placed in hell; one who abstains and encourages abstention, in heaven.
 qualities: wisdom
 theme: principle
 ---

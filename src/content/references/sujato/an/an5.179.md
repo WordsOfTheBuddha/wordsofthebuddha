@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Layperson
-description: The Buddha teaches the householder on a layperson, presenting a fivefold teaching for disciples on the path.
+description: Venerable Sāriputta tells Anāthapiṇḍika's assembly of laypeople that those restrained in the five precepts who attain the four absorptions may, if they wish, declare themselves stream-enterers, freed from rebirth in the underworld.
 qualities: faith, harm, cultivation, jhana, ethical conduct, merit
 theme: story, urgency
 ---

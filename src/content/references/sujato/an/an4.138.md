@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Retreat
-description: The Buddha describes the four individuals—one is on retreat in body, but not mind;, one is on retreat in mind, but not body;, and one is on retreat in neither body nor mind; and.
+description: The Buddha describes the fulfillment of retreat by body—fewness of wishes—and retreat by mind—internal serenity of heart.
 qualities: giving up, non-harm, wholesome, harm
 theme: principle
 ---

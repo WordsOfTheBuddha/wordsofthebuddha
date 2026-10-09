@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Awakening Factors
-description: The Buddha teaches on awakening factors, presenting a fourfold teaching for disciples on the path.
+description: The Buddha declares dark, bright, dark-and-bright, and neither-dark-nor-bright deeds, the last being the seven awakening factors that lead to the ending of deeds.
 qualities: ending, insight, dearness, equanimity, mindfulness, tranquility
 theme: training guideline, principle
 ---

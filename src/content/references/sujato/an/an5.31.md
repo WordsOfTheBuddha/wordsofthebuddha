@@ -1,10 +1,12 @@
 ---
 slug: an5.31
+character:
+  - Princess Sumanā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sumanā
-description: The Buddha teaches on with sumanā, presenting a fivefold teaching for disciples on the path.
+description: Princess Sumanā asks how a giver and a non-giver equal in faith, ethics, and wisdom differ; as gods and as humans, the giver surpasses in lifespan, beauty, happiness, and more.
 qualities: merit, giving, happiness, liberation, faith, vision
 theme: story, urgency
 ---

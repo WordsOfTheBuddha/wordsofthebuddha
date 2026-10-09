@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unimpressive Conduct (1st)
-description: The Buddha describes the five drawbacks of unimpressive conduct—you blame yourself, after examination, sensible people criticize you, you get a bad reputation, and you feel lost when you die, and and when your body breaks up, after death, you’re reborn in a place of loss, a bad place, the underworld, hell.
+description: Unimpressive conduct brings self-blame, criticism by sensible people, a bad reputation, dying lost, and rebirth in hell; impressive conduct brings the opposite benefits.
 qualities: examination, harm, wholesome
 theme: urgency
 ---

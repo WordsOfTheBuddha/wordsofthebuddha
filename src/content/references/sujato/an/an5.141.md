@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Scorn
-description: "The Buddha describes the five individuals—one gives then scorns, one lives together then scorns, one is gullible for gossip, one is impulsive, and one is dull and stupid, and how does an individual give then scorn?, it’s when an individual gives an individual robes, almsfood, lodgings, and medicines and supplies for the sick, and they think:, and ‘i give;."
+description: The Buddha names five individuals—those who give then scorn, live together then scorn, are gullible for gossip, are impulsive, and are dull and stupid.
 qualities: faith, unwholesome, wholesome, affection
 theme: inspiration
 ---

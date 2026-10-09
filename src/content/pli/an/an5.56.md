@@ -1,7 +1,7 @@
 ---
 title: Upajjhāya sutta - Mentor
 description: The Buddha explains the five causes for dullness and drowsiness occupying the mind and persisting, and doubt regarding the Dhamma arising.
-qualities: doubt, dullness, wakefulness, sense restraint, vision, cultivation, drowsiness, spiritual life
+qualities: doubt, dullness, wakefulness, sense restraint, vision, cultivation, drowsiness, spiritual life, non-restraint
 theme: inquisitiveness, wisdom, training guideline, cultivating discernment
 slug: an5.56
 priority: 1.2

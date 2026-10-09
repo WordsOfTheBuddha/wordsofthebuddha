@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Training Rules (2nd)
-description: The Buddha teaches on training rules (2nd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha declares dark deeds with dark results, such as the five immediate deeds and splitting the Saṅgha; bright, mixed, and neither-dark-nor-bright deeds that lead to the ending of deeds.
 qualities: ending, insight, right view, sexual misconduct, dearness, desire
 theme: recollection of the Buddha, training guideline
 ---

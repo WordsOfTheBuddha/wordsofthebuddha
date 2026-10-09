@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Brahmin Doṇa
-description: The Buddha teaches on with the brahmin doṇa, presenting a fivefold teaching for disciples on the path.
+description: Doṇa the brahmin accuses the Buddha of disrespecting elderly brahmins; questioned on what makes a true brahmin, Doṇa concedes he doesn't even qualify as a brahmin corpse-worker, and goes for refuge.
 qualities: jhana, delight, wholesome, equanimity, spiritual life, ill will
 theme: story, urgency
 ---

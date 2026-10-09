@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Guarantee
-description: The Buddha teaches on guarantee, presenting a fourfold teaching for disciples on the path.
+description: No one—not ascetic, brahmin, god, Māra, or divinity—can guarantee that someone liable to old age, sickness, or death will escape them, or that past bad deeds won't produce their result.
 qualities: suffering, harm
 theme: story, urgency
 ---

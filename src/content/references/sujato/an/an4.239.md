@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Blameworthy
-description: The Buddha teaches on blameworthy, presenting a fourfold teaching for disciples on the path.
+description: Blameworthy deeds by body, speech, and mind with blameworthy view send someone to hell; blameless deeds and view, to heaven.
 qualities: unwholesome, wholesome, wrong view
 theme: wisdom
 ---

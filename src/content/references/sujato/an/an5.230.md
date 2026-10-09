@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Black Snakes (2nd)
-description: The Buddha describes the five drawbacks of a black snake.
+description: A black snake is irritable, acrimonious, venomous, fork-tongued, and treacherous; so is a lady—very lustful, backbiting, and adulterous.
 qualities: treachery, ill will
 theme: principle
 ---

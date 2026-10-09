@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suspected
-description: The Buddha teaches on suspected, presenting a fivefold teaching for disciples on the path.
+description: Even an impeccable monk might be suspected of being a bad monk for five reasons—for resorting for alms to prostitutes, widows, voluptuous girls, eunuchs, or nuns.
 qualities: harm, wisdom
 theme: principle
 ---

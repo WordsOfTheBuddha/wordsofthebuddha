@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethical
-description: The Buddha teaches on ethical, presenting a fivefold teaching for disciples on the path.
+description: Ethics, learning, clear articulate speech, attainment of the four absorptions, and realization of the undefiled freedom make a senior mendicant dear and beloved to their spiritual companions.
 qualities: wholesome, learning, dearness, liberation, mindfulness, ending
 theme: training guideline, wisdom
 ---

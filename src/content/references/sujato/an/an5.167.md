@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accusation
-description: The Buddha teaches on accusation, presenting a fivefold teaching for disciples on the path.
+description: Before accusing another, a mendicant should establish five things—speaking at the right time, truthfully, gently, beneficially, and lovingly; Sāriputta then explains how to reassure one accused improperly.
 qualities: aversion, faith, respect, truth, wakefulness, mindfulness
 theme: training guideline, inspiration
 ---

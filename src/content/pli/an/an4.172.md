@@ -4,7 +4,6 @@ description: Venerable Sāriputta describes the four analytical knowledges he re
 qualities: learning, wisdom
 theme: inspiration, cultivating discernment
 slug: an4.172
-character: Venerable Sāriputta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.

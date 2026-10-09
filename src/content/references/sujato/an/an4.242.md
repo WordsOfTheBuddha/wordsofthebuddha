@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Benefits of Relying on a True Person
-description: The Buddha teaches on benefits of relying on a true person, presenting a fourfold teaching for disciples on the path.
+description: Relying on a true person, one can expect growth in noble ethics, immersion, wisdom, and freedom.
 qualities: wisdom, cultivation, liberation, ethical conduct, collectedness
 theme: training guideline, wisdom
 ---

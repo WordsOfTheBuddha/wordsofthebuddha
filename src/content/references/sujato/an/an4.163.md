@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ugly
-description: The Buddha teaches on ugly, presenting a fourfold teaching for disciples on the path.
+description: The Buddha explains how greed, hate, and delusion are exhausted in detail through contemplating the ugliness of the body, the repulsiveness of food, and dissatisfaction with the whole world.
 qualities: insight, faith, wisdom, jhana, vigour, mindfulness
 theme: urgency, training guideline
 ---

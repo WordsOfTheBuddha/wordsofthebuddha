@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Witless
-description: The Buddha teaches on witless, presenting a fourfold teaching for disciples on the path.
+description: Being witless, dull, and idiotic keeps a foolish untrue person broken and damaged; being wise, bright, and clever keeps an astute true person healthy and whole.
 qualities: merit, wholesome, ethical conduct, faith
 theme: inspiration
 ---

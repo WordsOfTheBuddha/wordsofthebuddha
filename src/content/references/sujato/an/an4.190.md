@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sabbath
-description: The Buddha teaches on sabbath, presenting a fourfold teaching for disciples on the path.
+description: On the sabbath the Buddha surveys his silent assembly and declares it free of chaff, then explains that attainment to nobility is certified by truly understanding the four noble truths.
 qualities: suffering, jhana, imperturbable, equanimity, giving, ill will
 theme: story, training guideline
 ---

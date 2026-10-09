@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Beautification
-description: The Buddha teaches on beautification, presenting a fivefold teaching for disciples on the path.
+description: Ethics, learning, inspiring Dhamma talks, and attainment of the four absorptions make a resident mendicant grace the monastery.
 qualities: wholesome, learning, mindfulness, ethical conduct, ill will
 theme: training guideline, inspiration
 ---

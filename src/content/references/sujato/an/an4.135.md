@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Blameworthy
-description: The Buddha describes the four individuals—the blameworthy, the mostly blameworthy, the slightly blameworthy, and the blameless, and how is an individual blameworthy?, it’s when an individual does things by way of body, speech, and and mind that are blameworthy.
+description: The Buddha distinguishes four individuals—the blameworthy, mostly blameworthy, slightly blameworthy, and blameless—by the conduct of their body, speech, and mind.
 qualities: unwholesome, wholesome
 theme: principle
 ---

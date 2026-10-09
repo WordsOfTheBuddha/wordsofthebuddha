@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Upaka
-description: The Buddha teaches on with upaka, presenting a fourfold teaching for disciples on the path.
+description: Upaka the son of Maṇḍikā claims that complaining without reasons is reprehensible; contradicted by the Buddha, he's reported to King Ajātasattu, who orders him banished.
 qualities: unwholesome, wholesome, giving, aversion, craving, wrong view
 theme: story, recollection of the Buddha
 ---

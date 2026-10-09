@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Clouds (1st)
-description: The Buddha describes the four kinds of clouds—one thunders but doesn’t rain,, one rains but doesn’t thunder,, one neither thunders nor rains, and and.
+description: The Buddha ranks four people by whether they talk and act—the talker who doesn't act, the doer who doesn't talk, the one who neither talks nor acts, and the best, who both talks and acts.
 qualities: recollection of the Buddha, wisdom
 theme: story, cultivating discernment
 ---

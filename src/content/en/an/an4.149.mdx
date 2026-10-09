@@ -1,8 +1,8 @@
 ---
 title: Sucarita sutta - Good Conduct
+qualities: truth, politeness, well-spoken-speech
+theme: training guideline
 description: The Buddha shares in brief the four kinds of good verabl conduct - 1) truthful speech, 2) non-divisive speech, 3) gentle speech, and 4) wise counsel.
-fetter: sensual desire, ill will, personal existence, conceit, ignorance
-tags: good verabl conduct, truthful speech, non-divisive speech, gentle speech, wise counsel, speech, communication, an, an4
 slug: an4.149
 ---
 

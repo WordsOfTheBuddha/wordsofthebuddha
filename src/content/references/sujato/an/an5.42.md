@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A True Person
-description: The Buddha teaches on a true person, presenting a fivefold teaching for disciples on the path.
+description: A true person is born in a family for the benefit, welfare, and happiness of the people—like a great rain cloud nourishing all the crops—and the gods protect one who uses wealth for the welfare of the many.
 qualities: happiness, ethical conduct, learning, fear of wrongdoing
 theme: principle
 ---

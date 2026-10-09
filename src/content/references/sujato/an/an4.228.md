@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Expression (2nd)
-description: The Buddha teaches on kinds of expression (2nd), presenting a fourfold teaching for disciples on the path.
+description: Denying having seen what one has seen keeps a foolish untrue person broken and damaged; truthful reporting keeps an astute true person healthy and whole.
 qualities: merit, wisdom
 theme: principle
 ---

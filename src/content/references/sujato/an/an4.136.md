@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics (1st)
-description: The Buddha describes the four individuals—one individual has not fulfilled ethics, immersion, or wisdom, one individual has fulfilled ethics, but not immersion or wisdom, one individual has fulfilled ethics and immersion, and but not wisdom.
+description: The Buddha teaches how ethics, immersion, and wisdom each fulfill the others, so that all three are fulfilled together.
 qualities: wisdom, quenching, collectedness
 theme: training guideline, wisdom
 ---

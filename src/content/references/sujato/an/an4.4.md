@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (2nd)
-description: The Buddha teaches on broken (2nd), presenting a fourfold teaching for disciples on the path.
+description: Acting wrongly toward one's mother, father, a Realized One, or one of their disciples brings rebirth in a place of loss; principled conduct toward them brings praise by the astute and rebirth in heaven.
 qualities: merit, unprincipled conduct, recollection of the Buddha
 theme: recollection of the Buddha
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an5.58
+character:
+  - Mahānāma the Licchavi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Licchavi Youths
-description: The Buddha teaches on the licchavi youths, presenting a fivefold teaching for disciples on the path.
+description: Seeing rowdy Licchavi youths pay silent homage to the Buddha, Mahānāma the Licchavi marvels; the Buddha explains five qualities that mean growth not decline for any gentleman, starting with enjoying legitimate wealth.
 qualities: cultivation, wholesome, respect, affection, joy, jhana
 theme: story, training guideline
 ---

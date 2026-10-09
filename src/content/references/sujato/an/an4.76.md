@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Kusinārā
-description: The Buddha teaches on at kusinārā, presenting a fourfold teaching for disciples on the path.
+description: At his full extinguishment between the twin sal trees at Kusinārā, the Buddha assures Ānanda that not even one of the five hundred mendicants doubts the Buddha, teaching, Saṅgha, path, or practice—the last is a stream-enterer.
 qualities: doubt, faith, respect, regret, mindfulness, recollection of the Buddha
 theme: story, recollection of the Buddha
 ---

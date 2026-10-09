@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rapture
-description: The Buddha teaches on rapture, presenting a fivefold teaching for disciples on the path.
+description: The Buddha tells Anāthapiṇḍika and five hundred lay followers not to be content with supplying requisites, but to train in dwelling in the rapture of seclusion; Venerable Sāriputta lists five things absent for one dwelling in such rapture.
 qualities: attachment, uplifting joy, displeasure, solitude, suffering, happiness
 theme: story, training guideline
 ---

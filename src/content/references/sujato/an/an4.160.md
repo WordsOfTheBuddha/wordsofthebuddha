@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Training of a Holy One
-description: The Buddha teaches on the training of a holy one, presenting a fourfold teaching for disciples on the path.
+description: A Holy One and a Holy One's training remain in the world for the welfare of the many; the Buddha explains four things that lead to the decline or continuation of the true teaching.
 qualities: vigour, happiness, learning, solitude, wholesome, compassion
 theme: recollection of the Buddha, training guideline
 ---

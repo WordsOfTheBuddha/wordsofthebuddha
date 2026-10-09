@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Meal Assigner
-description: The Buddha teaches on a meal assigner, presenting a fourfold teaching for disciples on the path.
+description: A meal assigner who makes decisions prejudiced by favoritism, hostility, stupidity, or cowardice is placed in hell as if delivered there; the impartial one, in heaven.
 qualities: aggressiveness, aversion, respect, sensual desire
 theme: principle
 ---

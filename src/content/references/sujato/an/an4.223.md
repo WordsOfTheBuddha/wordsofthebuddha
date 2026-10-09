@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ungrateful
-description: The Buddha teaches on ungrateful, presenting a fourfold teaching for disciples on the path.
+description: The ungrateful person keeps themselves broken and damaged, while the grateful and thankful create much merit.
 qualities: merit, harm, wholesome
 theme: principle
 ---

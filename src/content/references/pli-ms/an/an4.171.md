@@ -1,5 +1,7 @@
 ---
 slug: an4.171
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Cetanāsutta
 edition: ms

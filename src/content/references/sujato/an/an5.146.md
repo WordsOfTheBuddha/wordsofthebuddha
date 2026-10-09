@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend
-description: The Buddha teaches on a friend, presenting a fivefold teaching for disciples on the path.
+description: Don't associate with a mendicant friend who starts work projects, takes up disciplinary issues, conflicts with leading mendicants, likes aimless wandering, or can't give Dhamma talks; do associate with the opposite.
 qualities: feuding, wisdom
 theme: inspiration
 ---

@@ -1,5 +1,8 @@
 ---
 slug: an5.194
+character:
+  - Brahmin Kāraṇapālī
+  - Brahmin Piṅgiyānī
 source: suttacentral/bilara-data
 title: Kāraṇapālīsutta
 edition: ms

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics (2nd)
-description: The Buddha describes the four individuals—one individual doesn’t value or submit to ethics, immersion, or wisdom, one individual values and submits to ethics, but not to immersion or wisdom, one individual values and submits to ethics and immersion, and but not wisdom.
+description: One individual doesn't value ethics, immersion, or wisdom; others value some but not all of the three, and one values and submits to all of them.
 qualities: wisdom, collectedness
 theme: training guideline, wisdom
 ---

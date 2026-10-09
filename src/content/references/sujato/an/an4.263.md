@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deeds
-description: The Buddha teaches on deeds, presenting a fourfold teaching for disciples on the path.
+description: Blameless deeds by body, speech, and mind with blameless view keep an astute true person healthy and whole; the foolish untrue person's opposite deeds keep them broken and damaged.
 qualities: wholesome, merit, unwholesome, wrong view
 theme: wisdom
 ---

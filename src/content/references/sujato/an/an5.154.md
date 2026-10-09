@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Decline of the True Teaching (1st)
-description: The Buddha teaches on the decline of the true teaching (1st), presenting a fivefold teaching for disciples on the path.
+description: Not listening to and memorizing the teachings, not examining their meaning, and not practicing in line with it leads to the decline and disappearance of the true teaching; the opposites preserve it.
 qualities: vigour, wisdom
 theme: inquisitiveness, principle
 ---

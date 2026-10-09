@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faith
-description: The Buddha teaches on faith, presenting a fivefold teaching for disciples on the path.
+description: A faithful gentleman gains five benefits—the true persons sympathize with, approach, receive alms from, and teach the faithful first, and the faithful are reborn in heaven; like a great banyan, they become a refuge for many.
 qualities: faith, merit, delusion, greed, suffering, aversion
 theme: urgency, inspiration
 ---

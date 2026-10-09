@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With General Sīha
-description: The Buddha teaches on with general sīha, presenting a fivefold teaching for disciples on the path.
+description: General Sīha asks for a fruit of giving apparent in the present life; the Buddha names being beloved, association with good people, a good reputation, self-assurance in assemblies, and heavenly rebirth.
 qualities: giving, wholesome, faith, adventurousness, delight, dearness
 theme: story, urgency
 ---

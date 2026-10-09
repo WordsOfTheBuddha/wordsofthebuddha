@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fearless
-description: The Buddha teaches on fearless, presenting a fourfold teaching for disciples on the path.
+description: The brahmin Jāṇussoṇi holds that all who are liable to death fear it; the Buddha distinguishes those who cling to sensual pleasures from the trained disciple with nothing to cling to, and Jāṇussoṇi goes for refuge.
 qualities: sorrow, affection, doubt, wholesome, craving, greed
 theme: story, urgency
 ---

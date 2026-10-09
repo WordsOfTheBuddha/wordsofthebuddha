@@ -1,10 +1,12 @@
 ---
 slug: an4.171
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Intention
-description: The Buddha teaches on intention, presenting a fourfold teaching for disciples on the path.
+description: The Buddha explains that bodily, verbal, and mental intentions cause pleasure and pain dependent on ignorance; asked about rebirth in the sphere of neither perception nor non-perception, he explains who returns and who doesn't.
 qualities: desire, suffering, ignorance, examination, delusion, liberation
 theme: training guideline, inspiration
 ---

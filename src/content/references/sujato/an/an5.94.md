@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Living Comfortably
-description: The Buddha describes the five ways of living comfortably—as the placing of the mind and keeping it connected are stilled, they enter and remain in the second absorption … third absorption … fourth absorption, and they realize the undefiled freedom of heart and freedom by wisdom in this very life. and they live having realized it with their own insight due to the ending of defilements.
+description: The five ways of living comfortably are the four absorptions—from the first, with rapture and bliss born of seclusion, to the fourth—culminating in realizing the undefiled freedom of heart and by wisdom in this very life.
 qualities: jhana, attachment, liberation, ending, insight, wisdom
 theme: principle, wisdom
 ---

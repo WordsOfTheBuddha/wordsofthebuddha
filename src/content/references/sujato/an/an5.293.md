@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Ājīvaka
-description: The Buddha teaches on an ājīvaka, presenting a fivefold teaching for disciples on the path.
+description: An Ājīvaka ascetic who kills, steals, has sex, lies, and consumes intoxicants is placed in hell as if delivered there.
 qualities: wisdom
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Abuser
-description: The Buddha teaches on an abuser, presenting a fivefold teaching for disciples on the path.
+description: A mendicant who abuses and insults their spiritual companions can expect expulsion, a corrupt offense, severe illness, dying lost, and rebirth in hell.
 qualities: harm, wisdom
 theme: urgency
 ---

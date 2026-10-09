@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Oxen
-description: The Buddha describes the four kinds of oxen—one hostile to its own herd, not others;, one hostile to other herds, not its own;, and one hostile to both its own herd and others; and.
+description: The Buddha compares the person who intimidates their fellow followers to an ox that intimidates its own herd, and the one who intimidates others as well to an ox that intimidates its own and other herds.
 qualities: wisdom
 theme: cultivating discernment, principle
 ---

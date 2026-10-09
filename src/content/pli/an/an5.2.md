@@ -1,6 +1,10 @@
 ---
-title: Vitthata sutta
+title: Vitthata sutta - In Detail
+description: The Buddha analyzes the five trainee powers, explaining what it means to possess faith, conscience, fear of wrongdoing, steadfast energy against unwholesome states, and penetrative wisdom that sees arising and passing away.
+qualities: faith, conscience, fear of wrongdoing, right effort, wisdom, trainee
+theme: principle, training guideline, wisdom
 slug: an5.2
+priority: 1.1
 ---
 
 “Pañcimāni, bhikkhave, sekhabalāni. Katamāni pañca? Saddhābalaṁ, hirībalaṁ, ottappabalaṁ, vīriyabalaṁ, paññābalaṁ.

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Thoroughbred (2nd)
-description: The Buddha teaches on a thoroughbred (2nd), presenting a fourfold teaching for disciples on the path.
+description: A fine royal thoroughbred worthy of a king is beautiful, strong, fast, and well-proportioned; the Buddha likens these to a mendicant's qualities, where going fast means liberation.
 qualities: merit, liberation, wholesome, ending, giving, giving up
 theme: story, principle
 ---

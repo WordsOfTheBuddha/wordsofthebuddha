@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Lion
-description: The Buddha teaches on the lion, presenting a fivefold teaching for disciples on the path.
+description: Toward evening the lion emerges, surveys the four quarters, and roars three times, hunting all prey carefully; the Realized One teaches every assembly carefully, out of respect and reverence for the teaching.
 qualities: respect, wisdom
 theme: story, recollection of the Buddha
 ---
