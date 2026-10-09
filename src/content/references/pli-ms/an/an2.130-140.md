@@ -1,5 +1,10 @@
 ---
 slug: an2.130-140
+character:
+  - Laywoman Nandamātā
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: 12. Āyācanavagga
 edition: ms

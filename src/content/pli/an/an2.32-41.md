@@ -1,9 +1,8 @@
 ---
 title: Samacitta vagga - The Chapter on the Even-Minded
 description: The Buddha teaches about integrity, gratitude, how one can repay one's parents, action and non-action, who to make offerings to, persons who are internally or externally fettered, and the importance of right practice and well grasp of the Dhamma. The chapter gets its name from the [AN 2.36](/an2.36) discourse.
-qualities: ethical conduct, faith, giving, wisdom, disenchantment, sensual desire, feuding, respect, wrong view
-fetter: adherence to rules and observances,sensual desire,personal existence,conceit
-tags: integrity,parents,good conduct,bad conduct,even mind,immature,wise,wrong grasp,well grasp,fetters,personal existence,conceit,an,an2
+qualities: ethical conduct, faith, giving, wisdom, disenchantment, sensual desire, feuding, respect, wrong view, person of integrity
+theme: cultivating discernment
 slug: an2.32-41
 commentary:
     - "[1] In AN 2.36, the fettered |internally::bound in oneself| is a reference to the five lower fetters of personal existence view, doubt, adherence to rules and observances, sensual desire, and ill will. This refers to a person training to attain stream-entry, a stream-enterer, or a once-returner."
