@@ -1,7 +1,6 @@
 ---
 slug: an8.25
 character:
-  - "Sakka, lord of the gods"
   - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 title: Mahānāmasutta

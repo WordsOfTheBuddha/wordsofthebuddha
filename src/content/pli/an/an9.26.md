@@ -1,9 +1,8 @@
 ---
 title: Silāyūpa sutta - Stone Pillar
 description: Venerable Sāriputta clarifies on a teaching on how liberation is to be verified. He shares a simile of the stone pillar.
-fetter: ignorance
+theme: cultivating discernment
 qualities: arahant
-tags: passion, aversion, delusion, sense realm, form realm, formless realm, an, an9
 slug: an9.26
 ---
 

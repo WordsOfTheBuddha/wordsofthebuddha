@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Overflowing Merit
-description: The Buddha describes the eight kinds of overflowing merit, overflowing goodness—firstly, a noble disciple has gone for refuge to the buddha, this is the first kind of overflowing merit, furthermore, a noble disciple has gone for refuge to the teaching, and this is the second kind of overflowing merit, and furthermore, a noble disciple has gone for refuge to the saṅgha, and this is the third kind of overflowing merit, and mendicants, these five gifts are great, primordial, long-standing, traditional, and ancient. they are uncorrupted, as they have been since the beginning. they’re not being corrupted now nor will they be. sensible ascetics and brahmins don’t look down on them, and what five?.
+description: "The Buddha describes eight streams of merit, streams of the wholesome: a noble disciple’s going for refuge to the Buddha, the teaching, and the Saṅgha, along with giving up killing, stealing, sexual misconduct, lying, and intoxicants—streams that ripen in happiness and lead to heaven."
 qualities: merit, happiness, fear, ill will, liberation, sexual misconduct
 theme: inspiration, principle
 ---

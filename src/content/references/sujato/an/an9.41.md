@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Householder Tapussa
-description: The Buddha teaches on with the householder tapussa, presenting a ninefold teaching for disciples on the path.
+description: When the householder Tapussa tells venerable Ānanda that renunciation seems like an abyss to laypeople, the Buddha recounts how seeing the drawbacks of sensual pleasures and realizing the benefits of renunciation led him through the nine progressive meditative attainments, in forward and reverse order, culminating in the awakening he announced to the world.
 qualities: faith, suffering, jhana, uplifting joy, giving up, ending
 theme: story, training guideline
 ---

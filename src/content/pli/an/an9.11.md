@@ -3,7 +3,6 @@ slug: an9.11
 character:
   - Venerable Sāriputta
   - Venerable Mahāmoggallāna
-  - Venerable Maṁ
   - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Sīhanādasutta

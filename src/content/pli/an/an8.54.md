@@ -1,8 +1,8 @@
 ---
 title: Dīghajāṇu sutta - With A Koliyan Man
 description: The Buddha explains the four qualities that lead to the benefit and happiness in this life and in the future life.
-fetter: ignorance
-tags: virtue, learning, wisdom, praise, criticism, an, an8
+qualities: good friendship, vigour, faith, ethical conduct, giving, wisdom
+theme: householder life
 slug: an8.54
 ---
 
