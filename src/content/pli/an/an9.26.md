@@ -2,7 +2,7 @@
 title: Silāyūpa sutta - Stone Pillar
 description: Venerable Sāriputta clarifies on a teaching on how liberation is to be verified. He shares a simile of the stone pillar.
 theme: cultivating discernment
-qualities: arahant
+qualities: arahant, liberation
 slug: an9.26
 ---
 

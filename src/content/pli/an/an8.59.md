@@ -1,7 +1,7 @@
 ---
 title: Paṭhama puggala sutta - Eight People (First)
 description: The eight people who are worthy of offerings, hospitality, gifts, and reverential salutation, and are the unsurpassed field of merit for the world.
-qualities: faith, wisdom, liberation
+qualities: faith, wisdom, liberation, trainee
 theme: inspiration
 slug: an8.59
 ---
