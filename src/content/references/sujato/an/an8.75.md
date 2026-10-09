@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accomplishments (1st)
-description: The Buddha describes the eight accomplishments—accomplishment in initiative, protection, good friendship, and balanced finances, and accomplishment in faith, ethics, generosity, and and wisdom.
+description: The Buddha describes the eight accomplishments of a faithful householder—initiative, protection, good friendship, balanced finances, faith, ethics, generosity, and wisdom—with a verse on how merit grows by generosity and leads to happiness in this life and the next.
 qualities: happiness, giving, discernment, faith, good friendship, merit
 theme: story, inspiration
 ---

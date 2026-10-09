@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Turning the Bowl Upside Down
-description: The Buddha teaches on turning the bowl upside down, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight grounds on which the Saṅgha may turn the bowl upside down for a lay follower—trying to prevent the mendicants from gaining material things, harming or abusing them, driving them from a monastery, dividing them, and criticizing the Buddha, the teaching, and the Saṅgha—and the grounds for turning the bowl upright again.
 qualities: harm, cruelty
 theme: principle
 ---

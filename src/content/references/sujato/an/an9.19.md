@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Deity
-description: The Buddha teaches on a deity, presenting a ninefold teaching for disciples on the path.
+description: Several deities report to the Buddha that, as humans, they rose for visiting renunciates but failed to bow, offer seats, share, listen to, memorize, examine, or practice the teachings, and so were reborn in a lesser realm, while those who fulfilled their duty were reborn in a superior one; the Buddha urges the mendicants to practice absorption and not be negligent like those former deities.
 qualities: regret, quenching, jhana
 theme: inquisitiveness, wisdom
 ---

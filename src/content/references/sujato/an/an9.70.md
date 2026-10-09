@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Higher Fetters
-description: The Buddha teaches on higher fetters, presenting a ninefold teaching for disciples on the path.
+description: The Buddha names the five higher fetters—desire for rebirth in the realm of luminous form, desire for rebirth in the formless realm, conceit, restlessness, and ignorance—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: desire, formless, mindfulness, conceit, ignorance, anxiety
 theme: training guideline
 ---

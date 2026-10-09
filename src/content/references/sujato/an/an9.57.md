@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Reaching a Place Without Fear
-description: The Buddha teaches on reaching a place without fear, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what way the Buddha declared reaching a place without fear; the reply, repeating the chapter's recurrent formula, is abbreviated to an ellipsis.
 qualities: without fear, fear
 theme: principle
 ---

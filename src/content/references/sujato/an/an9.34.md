@@ -1,10 +1,13 @@
 ---
 slug: an9.34
+character:
+  - Venerable Udāyī
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment is Bliss
-description: The Buddha teaches on extinguishment is bliss, presenting a ninefold teaching for disciples on the path.
+description: Venerable Sāriputta declares to the mendicants that extinguishment is bliss; when Venerable Udāyī objects that nothing is felt there, he answers that the absence of feeling is precisely the bliss, showing how each of the nine attainments leaves the feelings of the states before it as an affliction.
 qualities: suffering, jhana, cultivation, uplifting joy, equanimity, happiness
 theme: training guideline, principle
 ---

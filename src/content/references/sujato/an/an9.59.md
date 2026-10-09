@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Progressive Tranquility
-description: The Buddha teaches on progressive tranquility, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what way the Buddha declared progressive tranquility; the reply, repeating the chapter's recurrent formula, is abbreviated to an ellipsis.
 qualities: tranquility, wisdom
 theme: principle
 ---

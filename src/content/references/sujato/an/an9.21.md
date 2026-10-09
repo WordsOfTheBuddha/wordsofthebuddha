@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Three Particulars
-description: The Buddha teaches on in three particulars, presenting a ninefold teaching for disciples on the path.
+description: "The Buddha compares three realms: the northern Kuru land excels in selflessness, fixed lifespan, and distinctive nature, the gods of the Thirty-Three in heavenly lifespan, beauty, and happiness, while the humans of the Black Plum Tree Land excel in bravery, mindfulness, and the spiritual life lived here."
 qualities: happiness, mindfulness, spiritual life
 theme: principle
 ---

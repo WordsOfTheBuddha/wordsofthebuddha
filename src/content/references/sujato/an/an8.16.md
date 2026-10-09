@@ -1,5 +1,7 @@
 ---
 slug: an8.16
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0

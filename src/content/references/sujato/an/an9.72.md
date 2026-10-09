@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shackles of the Heart
-description: The Buddha teaches on shackles of the heart, presenting a ninefold teaching for disciples on the path.
+description: The Buddha describes five shackles of the heart—unstilled craving for sensual pleasures, greed for the body and for form, eating until the belly is full and indulging in sleep, and leading the spiritual life aspiring to rebirth among the gods—which keep the mind from striving, and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: greed, mindfulness, displeasure, cultivation, jealousy, jhana
 theme: training guideline
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Proclamation of No Confidence
-description: The Buddha teaches on a proclamation of no confidence, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight qualities that allow lay followers to proclaim their loss of confidence in a mendicant—including harming, abusing, and dividing laypeople, criticizing the Buddha, the teaching, and the Saṅgha, and being seen collecting alms at inappropriate places—and the qualities for proclaiming confidence.
 qualities: faith, desire, harm, cruelty
 theme: inspiration
 ---

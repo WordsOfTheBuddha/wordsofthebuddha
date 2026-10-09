@@ -1,10 +1,14 @@
 ---
 slug: an9.11
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sāriputta’s Lion’s Roar
-description: The Buddha teaches Venerable S on sāriputta’s lion’s roar, presenting a ninefold teaching for disciples on the path.
+description: Accused by a monk of striking him and leaving without apology, Venerable Sāriputta roars his lion's roar before the Buddha, likening his mind to the earth, water, fire, wind, a rag, a humble corpse-worker, and a horn-cut bull, unrepelled by clean and unclean alike, and the monk confesses his false accusation.
 qualities: mindfulness, ill will, unwholesome, cruelty, cultivation, desire
 theme: story, training guideline
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an8.82
+character:
+  - Venerable Puṇṇiya
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Puṇṇiya
-description: The Buddha teaches Venerable Pu on with puṇṇiya, presenting a eightfold teaching for disciples on the path.
+description: Venerable Puṇṇiya asks the Buddha why the Realized One sometimes feels inspired to teach and sometimes not, and the Buddha explains that he feels inspired when a mendicant has faith, approaches, pays homage, asks questions, listens, remembers, examines the meaning, and practices in line with the teaching.
 qualities: faith, wisdom
 theme: recollection of the Buddha, inspiration
 ---

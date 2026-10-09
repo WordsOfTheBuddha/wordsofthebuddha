@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Supported
-description: The Buddha teaches on supported, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks how a mendicant who is supported is defined, and the Buddha explains that one supported by faith, conscience, prudence, energy, or wisdom gives up the unskillful and develops the skillful, and, grounded on these five things, uses, endures, avoids, and gets rid of things after appraisal.
 qualities: unwholesome, wisdom, wholesome, conscience, faith, vigour
 theme: inspiration, principle
 ---

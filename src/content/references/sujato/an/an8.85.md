@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Terms for the Realized One
-description: The Buddha teaches on terms for the realized one, presenting a eightfold teaching for disciples on the path.
+description: The Buddha explains that ascetic, brahmin, knowledge master, healer, unstained, immaculate, knower, and freed are all terms for the Realized One, the perfected one, the fully awakened Buddha, followed by verses on attaining the supreme.
 qualities: liberation, wisdom
 theme: story, recollection of the Buddha
 ---

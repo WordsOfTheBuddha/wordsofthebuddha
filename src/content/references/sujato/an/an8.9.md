@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nanda
-description: The Buddha teaches on nanda, presenting a eightfold teaching for disciples on the path.
+description: The Buddha praises the mendicant Nanda as handsome, strong, and charming precisely because he guards the sense doors, eats in moderation, stays wakeful through the watches of the night, and knows feelings, perceptions, and thoughts as they arise, remain, and pass away.
 qualities: mindfulness, wakefulness, harm, cultivation, jhana, spiritual life
 theme: training guideline
 ---

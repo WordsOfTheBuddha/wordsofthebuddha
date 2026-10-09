@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freedom From Death
-description: The Buddha teaches on freedom from death, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what way the Buddha declared freedom from death; the reply, repeating the chapter's recurrent formula, is abbreviated to an ellipsis.
 qualities: liberation, wisdom
 theme: urgency
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an9.4
+character:
+  - Venerable Nandaka
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nandaka
-description: The Buddha teaches on with nandaka, presenting a ninefold teaching for disciples on the path.
+description: The Buddha praises Venerable Nandaka's Dhamma talk in the assembly hall—his back ached waiting for it to end—then lays out a mendicant's progressive completion in faith, ethics, serenity of heart, and the higher wisdom of discernment, with the simile of a lame four-footed animal; Nandaka later explains five benefits of timely Dhamma discussion.
 qualities: respect, tranquility, wisdom, discernment, wholesome, shyness
 theme: story, inspiration
 ---

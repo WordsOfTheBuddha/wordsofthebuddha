@@ -1,10 +1,12 @@
 ---
 slug: an8.52
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Adviser for Nuns
-description: The Buddha teaches a disciple on an adviser for nuns, presenting a eightfold teaching for disciples on the path.
+description: Asked by Ānanda how many qualities a monk should have to be deemed an adviser for nuns, the Buddha lists eight, from being ethical, learned, and mastered in both monastic codes to being able to inspire the nuns and never having sexually harassed a woman in ocher robes.
 qualities: wholesome, learning, mindfulness, tame, ethical conduct, ill will
 theme: story, inspiration
 ---

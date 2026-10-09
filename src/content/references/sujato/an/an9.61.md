@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Progressive Cessation
-description: The Buddha teaches on progressive cessation, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what sense the Buddha spoke of progressive cessation; the reply affirms, in a qualified sense, a mendicant who enters the successive absorptions, and, in the definitive sense, one who attains the cessation of perception and feeling with defilements ended.
 qualities: ending, wisdom, jhana, sensual desire
 theme: wisdom
 ---

@@ -1,7 +1,5 @@
 ---
 slug: an8.9
-character:
-  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Nandasutta
 edition: ms

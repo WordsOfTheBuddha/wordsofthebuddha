@@ -1,6 +1,6 @@
 ---
 slug: an8.70
-character: Venerable Ānanda
+character: Venerable Ānanda, Māra the Evil One
 source: suttacentral/bilara-data
 title: Bhūmicālasutta
 edition: ms

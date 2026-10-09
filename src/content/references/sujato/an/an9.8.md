@@ -1,10 +1,12 @@
 ---
 slug: an9.8
+character:
+  - Wanderer Sajjha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Wanderer Sajjha
-description: The Buddha teaches the wanderer on with the wanderer sajjha, presenting a ninefold teaching for disciples on the path.
+description: The wanderer Sajjha recalls hearing that a perfected mendicant cannot transgress in five respects, and the Buddha confirms it, adding four more—one with defilements ended also cannot abandon the Buddha, the teaching, the Saṅgha, or the training—making nine respects in all.
 qualities: learning, delight, desire, faith, mindfulness
 theme: story, training guideline
 ---

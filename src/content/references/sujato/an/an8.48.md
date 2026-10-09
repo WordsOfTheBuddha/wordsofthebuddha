@@ -1,10 +1,12 @@
 ---
 slug: an8.48
+character:
+  - Housewife Nakulamātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nakula’s Mother on the Agreeable Gods
-description: The Buddha teaches on with nakula’s mother on the agreeable gods, presenting a eightfold teaching for disciples on the path.
+description: The Buddha teaches the housewife Nakula's mother the eight qualities by which a lady is reborn among the Gods of the Agreeable Host, from being obliging to her husband and managing his household to guarding his wealth and being accomplished in faith, ethics, generosity, and wisdom.
 qualities: sexual misconduct, stinginess, desire, compassion, craving, giving
 theme: story, urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Greed
-description: The Buddha teaches a repeated formula on nine things that should be developed for complete understanding, ending, and letting go of unwholesome qualities in this grouped discourse.
+description: The Buddha teaches, in a repeated formula, nine things to be developed for each of nine aims regarding greed—complete understanding, complete ending, giving up, ending, vanishing, fading away, cessation, giving away, and letting go.
 qualities: ending, greed, giving, giving up, craving
 theme: principle, wisdom
 ---

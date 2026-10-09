@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Sensual Stimulation
-description: The Buddha teaches on kinds of sensual stimulation, presenting a ninefold teaching for disciples on the path.
+description: The Buddha lists the five kinds of sensual stimulation—likable, pleasant, sensual, and arousing sights, sounds, smells, tastes, and touches—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: mindfulness, cultivation, jhana
 theme: training guideline, principle
 ---

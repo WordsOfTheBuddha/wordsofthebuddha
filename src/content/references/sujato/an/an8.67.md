@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ignoble Expressions
-description: The Buddha describes the eight ignoble expressions—saying you’ve seen, heard, thought, or known something, but you haven’t, and saying you haven’t seen, heard, thought, or known something, and and you have.
+description: The Buddha defines the eight ignoble expressions—claiming to have seen, heard, thought, or known what one has not, and denying that one has seen, heard, thought, or known what one has.
 qualities: wisdom
 theme: principle
 ---

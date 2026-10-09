@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness of Death (1st)
-description: The Buddha teaches on mindfulness of death (1st), presenting a eightfold teaching for disciples on the path.
+description: At Ñātika, a series of mendicants tell the Buddha they develop mindfulness of death by wishing to live a day and night, a day, half a day, an almsmeal, a few mouthfuls, a single mouthful, or a single breath; the Buddha calls those with longer horizons negligent and only those with the shortest diligent.
 qualities: mindfulness, recollection of death, ending, liberation, wholesome
 theme: story, urgency
 ---

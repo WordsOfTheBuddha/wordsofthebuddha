@@ -1,5 +1,7 @@
 ---
 slug: an9.27
+character:
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 title: Paṭhamaverasutta
 edition: ms

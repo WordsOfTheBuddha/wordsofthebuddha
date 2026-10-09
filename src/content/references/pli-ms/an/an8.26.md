@@ -1,5 +1,7 @@
 ---
 slug: an8.26
+character:
+  - Jīvaka Komārabhacca
 source: suttacentral/bilara-data
 title: Jīvakasutta
 edition: ms

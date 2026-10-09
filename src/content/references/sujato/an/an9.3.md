@@ -1,10 +1,12 @@
 ---
 slug: an9.3
+character:
+  - Venerable Meghiya
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Meghiya
-description: The Buddha teaches Venerable Meghiya on with meghiya, presenting a ninefold teaching for disciples on the path.
+description: The Buddha teaches his attendant Meghiya, who fled to a lovely mango grove only to be besieged by sensual, malicious, and cruel thoughts, that good friendship is the prime of five things ripening the heart's release, and that a mendicant grounded in them should develop four perceptions to uproot the conceit 'I am'.
 qualities: wholesome, cultivation, liberation, unwholesome, contentment, vision
 theme: principle
 ---

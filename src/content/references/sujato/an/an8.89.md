@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Reconciliation
-description: The Buddha teaches on reconciliation, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight qualities on whose grounds the Saṅgha may perform an act requiring a mendicant to pursue reconciliation with laypeople—including harming, abusing, and dividing them, criticizing the Buddha, the teaching, and the Saṅgha, and not keeping a legitimate promise—and the grounds for revoking the act.
 qualities: harm, cruelty
 theme: principle
 ---

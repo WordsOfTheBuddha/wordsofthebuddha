@@ -1,10 +1,12 @@
 ---
 slug: an8.43
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Visākhā on the Sabbath
-description: The Buddha teaches on with visākhā on the sabbath, presenting a eightfold teaching for disciples on the path.
+description: The Buddha teaches Visākhā, Migāra's mother, to observe the eight-factored sabbath by doing as the perfected ones do, and shows that it outweighs sovereignty over the sixteen great countries, since its observance can win rebirth among the gods, whose lifespans dwarf any human reign.
 qualities: happiness, wholesome, respect, compassion, slaughtering, merit
 theme: principle
 ---

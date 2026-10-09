@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Boil
-description: The Buddha teaches on the simile of the boil, presenting a ninefold teaching for disciples on the path.
+description: With the simile of an old boil with nine orifices, ever-oozing filthy, stinking, and disgusting matter, the Buddha teaches the mendicants to have no illusion about this body.
 qualities: delusion, ending, ill will
 theme: urgency
 ---

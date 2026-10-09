@@ -1,10 +1,13 @@
 ---
 slug: an9.13
+character:
+  - Venerable Sāriputta
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Koṭṭhita
-description: The Buddha teaches Venerable Mah on with koṭṭhita, presenting a ninefold teaching for disciples on the path.
+description: Venerable Mahākoṭṭhita asks Venerable Sāriputta whether the spiritual life is lived under the Buddha for any of nine ways deeds might be experienced, gets 'certainly not' each time, and learns the true goal is to know and realize the four noble truths, the unknown yet to be known.
 qualities: spiritual life, suffering, ending
 theme: wisdom
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an8.55
+character:
+  - Brahmin Ujjaya
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ujjaya
-description: The Buddha describes the eight qualities of a faithful householder of discernment.
+description: The brahmin Ujjaya, about to travel abroad, asks for a teaching for welfare and happiness in both lives, and the Buddha gives four things that bring happiness in this life—initiative, protection, good friendship, and balanced finances—and four for the next—faith, ethics, generosity, and wisdom.
 qualities: happiness, giving, faith, wisdom, wholesome, good friendship
 theme: story, urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Teaching in Brief
-description: The Buddha teaches on a teaching in brief, presenting a eightfold teaching for disciples on the path.
+description: A mendicant asks the Buddha for a teaching in brief, and is told to steady the mind internally and develop the heart’s releases by love, compassion, rejoicing, and equanimity, then meditate on the four establishings of mindfulness—after which he attains perfection.
 qualities: attachment, uplifting joy, equanimity, liberation, displeasure, greed
 theme: training guideline, wisdom
 ---

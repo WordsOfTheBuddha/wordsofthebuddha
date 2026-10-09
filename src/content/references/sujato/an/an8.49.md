@@ -1,10 +1,12 @@
 ---
 slug: an8.49
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Winning in This Life (1st)
-description: The Buddha describes the eight qualities.
+description: The Buddha teaches Visākhā, Migāra's mother, four qualities by which a lady wins in this life—skill at work, managing the domestic help, loving her husband, and preserving his earnings—and four by which she wins in the next life—faith, ethics, generosity, and wisdom.
 qualities: faith, wisdom, giving, stinginess, ending, sexual misconduct
 theme: story, recollection of the Buddha
 ---

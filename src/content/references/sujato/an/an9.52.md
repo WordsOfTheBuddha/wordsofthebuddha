@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Safe Place
-description: The Buddha teaches on a safe place, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what sense the Buddha spoke of a safe place; the reply affirms, in a qualified sense, a mendicant who enters the successive absorptions, and, in the definitive sense, one who attains the cessation of perception and feeling with defilements ended.
 qualities: wisdom, ending, jhana, sensual desire
 theme: wisdom
 ---

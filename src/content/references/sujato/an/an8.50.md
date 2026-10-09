@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Winning in This Life (2nd)
-description: The Buddha describes the eight qualities.
+description: The Buddha teaches the mendicants four qualities by which a lady wins in this life—skill at work, managing the domestic help, loving her husband, and preserving his earnings—and four by which she wins in the next life—faith, ethics, generosity, and wisdom.
 qualities: faith, wisdom, giving, stinginess, ending, sexual misconduct
 theme: recollection of the Buddha, inspiration
 ---

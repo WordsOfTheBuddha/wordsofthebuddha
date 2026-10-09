@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Direct Witness
-description: The Buddha teaches on a direct witness, presenting a ninefold teaching for disciples on the path.
+description: "Defining the 'direct witness', the discourse walks through the nine meditative attainments: a mendicant who meditates directly experiencing each dimension in every way is a direct witness in a qualified sense, while one who reaches the cessation of perception and feeling, ending the defilements with wisdom, is a direct witness in the definitive sense."
 qualities: jhana, wisdom, attachment, ending, sensual desire
 theme: training guideline, wisdom
 ---

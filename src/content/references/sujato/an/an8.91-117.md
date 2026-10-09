@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses With Various Laywomen on the Sabbath
-description: The Buddha presents a repeated eightfold teaching on untitled discourses with various laywomen on the sabbath in this grouped discourse.
+description: A series of grouped discourses, each opening with a different named laywoman—Bojjhā, Sirīmā, Padumā, Khemā, Somā, Visākhā Migāramātā, Khujjuttarā, Sāmāvatī, Suppavāsā the Koliyan, Nakula’s mother, and others—approaching the Buddha.
 qualities: wisdom
 theme: principle
 ---

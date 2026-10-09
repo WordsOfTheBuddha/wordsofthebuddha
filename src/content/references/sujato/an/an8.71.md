@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Inspiring All Around (1st)
-description: The Buddha teaches on inspiring all around (1st), presenting a eightfold teaching for disciples on the path.
+description: The Buddha shows how a mendicant becomes impressive all around by progressively completing eight qualities—faith, ethics, learning, being a Dhamma speaker, frequenting assemblies, teaching with assurance, attaining the four absorptions, and realizing the ending of defilements.
 qualities: respect, learning, ending, liberation, insight, wisdom
 theme: training guideline, inspiration
 ---

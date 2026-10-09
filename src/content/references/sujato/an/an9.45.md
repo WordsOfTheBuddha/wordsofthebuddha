@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freed Both Ways
-description: The Buddha teaches on freed both ways, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what sense the Buddha spoke of one freed both ways; the reply affirms, in a qualified sense, a mendicant who enters the successive absorptions directly experiencing each state and understanding it with wisdom, and, in the definitive sense, one who attains the cessation of perception and feeling with defilements ended.
 qualities: wisdom, ending, jhana, sensual desire
 theme: training guideline, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freed by Wisdom
-description: The Buddha teaches on freed by wisdom, presenting a ninefold teaching for disciples on the path.
+description: "Defining the one 'freed by wisdom', the discourse presents nine attainments: a mendicant who understands each attainment with wisdom is freed by wisdom in a qualified sense, and one who enters the cessation of perception and feeling with defilements ended is freed by wisdom in the definitive sense."
 qualities: wisdom, ending, jhana, sensual desire
 theme: wisdom
 ---

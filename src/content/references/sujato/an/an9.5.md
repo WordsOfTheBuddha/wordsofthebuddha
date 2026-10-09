@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers
-description: The Buddha teaches on powers, presenting a ninefold teaching for disciples on the path.
+description: The Buddha describes four powers—wisdom, energy, blamelessness, and inclusiveness, the last built on giving, kindly words, taking care, and equality—by which a noble disciple gets past five fears, those concerning livelihood, disrepute, insecurity in an assembly, death, and a bad rebirth.
 qualities: fear, vigour, wisdom, unwholesome, wholesome, harm
 theme: urgency, training guideline
 ---

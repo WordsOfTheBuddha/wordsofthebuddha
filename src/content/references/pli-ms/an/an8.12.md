@@ -1,5 +1,7 @@
 ---
 slug: an8.12
+character:
+  - General Sīha
 source: suttacentral/bilara-data
 title: Sīhasutta
 edition: ms

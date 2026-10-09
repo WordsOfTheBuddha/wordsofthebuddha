@@ -1,10 +1,13 @@
 ---
 slug: an9.14
+character:
+  - Venerable Sāriputta
+  - Venerable Samiddhi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Samiddhi
-description: The Buddha teaches Venerable Samiddhi on with samiddhi, presenting a ninefold teaching for disciples on the path.
+description: Venerable Sāriputta questions Venerable Samiddhi on nine aspects of thought—that they arise based on name and form, diversify in the elements, originate in contact, have immersion as their chief, mindfulness as their ruler, wisdom as their overseer, freedom as their core, and freedom from death as their objective—then cautions him not to get conceited over his answers.
 qualities: liberation, wholesome, mindfulness, wisdom, collectedness, conceit
 theme: urgency, training guideline
 ---

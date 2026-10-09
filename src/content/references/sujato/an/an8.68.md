@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Noble Expressions
-description: The Buddha describes the eight noble expressions—saying you haven’t seen, heard, thought, or known something, and you haven’t, and saying you’ve seen, heard, thought, or known something, and and you have.
+description: The Buddha defines the eight noble expressions—honestly saying one has not seen, heard, thought, or known what one has not, and saying one has seen, heard, thought, or known what one has.
 qualities: wisdom
 theme: principle
 ---

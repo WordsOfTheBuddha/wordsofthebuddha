@@ -1,5 +1,9 @@
 ---
 slug: an8.8
+character:
+  - Venerable Uttara
+  - King Vessavaṇa
+  - Sakka, lord of the gods
 source: suttacentral/bilara-data
 title: Uttaravipattisutta
 edition: ms

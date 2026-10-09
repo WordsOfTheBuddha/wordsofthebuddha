@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Desire
-description: The Buddha describes the eight individuals—first, when a mendicant stays secluded, living independently, a desire arises for material things, they try hard, strive, and make an effort to get them, but material things don’t come to them, and and so they sorrow and wail and lament, beating their breast and falling into confusion because they don’t get those material things, and this is called, and a mendicant who lives desiring material things. they try hard, strive, and make an effort to get them. but when they do not acquire material things, they sorrow and lament. they’ve fallen from the true teaching, and next, when a mendicant stays secluded, living independently, a desire arises for material things, and they try hard, strive, and make an effort to get them.
+description: The Buddha describes eight kinds of mendicant who live desiring material things, distinguished by whether they strive for gain or not, whether they get it or not, and whether they sorrow over loss or grow negligent over gain; those who neither sorrow nor grow negligent have not fallen from the true teaching.
 qualities: vigour, desire, sorrow, negligence, doubt, right effort
 theme: training guideline
 ---

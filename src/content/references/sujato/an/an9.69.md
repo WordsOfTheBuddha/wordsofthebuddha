@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess
-description: The Buddha teaches on stinginess, presenting a ninefold teaching for disciples on the path.
+description: The Buddha names the five kinds of stinginess—regarding dwellings, families, material things, praise, and the teaching—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: stinginess, mindfulness, cultivation, jhana
 theme: training guideline, principle
 ---

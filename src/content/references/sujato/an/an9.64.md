@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hindrances
-description: The Buddha teaches on hindrances, presenting a ninefold teaching for disciples on the path.
+description: The Buddha names the five hindrances—sensual desire, ill will, dullness and drowsiness, restlessness and remorse, and doubt—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: mindfulness, displeasure, cultivation, greed, jealousy, jhana
 theme: training guideline, principle
 ---

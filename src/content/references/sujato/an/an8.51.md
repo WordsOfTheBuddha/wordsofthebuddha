@@ -1,10 +1,13 @@
 ---
 slug: an8.51
+character:
+  - Venerable Ānanda
+  - Mahāpajāpati Gotamī
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Gotamī
-description: The Buddha teaches a disciple on with gotamī, presenting a eightfold teaching for disciples on the path.
+description: Mahāpajāpati Gotamī three times asks the Buddha to let women go forth, and, refused, follows him to Vesālī in ocher robes; Ānanda intercedes, recalling that she nursed the Buddha as his aunt, and the Buddha grants her ordination on her acceptance of the eight principles of respect, predicting the Dhamma will now last only five hundred years.
 qualities: respect, spiritual life, lamentation, suffering, learning, cruelty
 theme: story, recollection of the Buddha
 ---

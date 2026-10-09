@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Field
-description: The Buddha teaches on a field, presenting a eightfold teaching for disciples on the path.
+description: Just as seed sown in a field of mounds, gravel, and salt is unfruitful while a well-irrigated field yields an excellent crop, so a gift to an ascetic or brahmin with the eight wrong factors is unfruitful, while a gift to one with the eight right factors is very fruitful, the Buddha teaches.
 qualities: wholesome, mindfulness, vigour, right effort, right livelihood, right speech
 theme: story, training guideline
 ---

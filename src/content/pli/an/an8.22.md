@@ -1,8 +1,8 @@
 ---
 title: Dutiya ugga sutta - With Ugga of Hatthigāma
 description: Ugga, the householder of Hatthigāma is endowed with eight wonderful and marvelous qualities. The 6th quality is different from [AN 8.21](/an8.21).
-fetter: doubt
-tags: confidence, Buddha, Dhamma, Sangha, virtues, wealth, possessions, fame, an, an8
+qualities: faith, giving, respect, learning, liberation
+theme: inspiration
 slug: an8.22
 character: Householder Ugga of Hatthigāma
 priority: 1.1

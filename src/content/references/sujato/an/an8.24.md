@@ -1,10 +1,12 @@
 ---
 slug: an8.24
+character:
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hatthaka (2nd)
-description: The Buddha teaches the householder on with hatthaka (2nd), presenting a eightfold teaching for disciples on the path.
+description: The householder Hatthaka of Āḷavī, arriving with some five hundred lay followers, explains that he gathers his congregation by the four ways of being inclusive, and the Buddha holds him up to the mendicants as endowed with eight amazing qualities, from faith to fewness of wishes.
 qualities: wholesome, giving, learning, fear of wrongdoing, ethical conduct, faith
 theme: story, inspiration
 ---
