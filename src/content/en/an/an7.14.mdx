@@ -1,7 +1,7 @@
 ---
 title: Puggala sutta - Seven Persons
 description: The Buddha identifies seven types of persons worthy of offerings who act as the world's unsurpassed field of merit, including those liberated by wisdom and Dhamma-followers.
-qualities: stream-entry, faith, liberation
+qualities: stream-entry, faith, liberation, trainee
 theme: principle
 slug: an7.14
 ---
