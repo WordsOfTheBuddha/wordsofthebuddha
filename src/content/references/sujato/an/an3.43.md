@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good Reasons
-description: The Buddha teaches on good reasons, presenting a threefold teaching for disciples on the path.
+description: The Buddha says that when the teacher, the audience, or both understand the meaning and the teaching, that provides quite enough motivation to teach Dhamma to another.
 qualities: wholesome, wisdom
 theme: wisdom
 ---

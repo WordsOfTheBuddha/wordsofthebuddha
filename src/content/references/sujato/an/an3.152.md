@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (3rd)
-description: The Buddha teaches on broken (3rd), presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how an immature person with unethical deeds of body, speech, and mind keeps themselves broken, while an astute person with ethical deeds stays intact and brims with merit.
 qualities: ethical conduct, immaturity, wisdom
 theme: principle
 ---

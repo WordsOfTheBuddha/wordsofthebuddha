@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (3rd)
-description: The Buddha teaches on the thoroughbred (3rd), presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a royal thoroughbred that is beautiful, strong, and fast with a mendicant who is ethical, energetically vigorous, and realizes the undefiled freedom of heart and freedom by wisdom in this very life.
 qualities: merit, liberation, respect, wholesome, ending, giving
 theme: story, principle
 ---

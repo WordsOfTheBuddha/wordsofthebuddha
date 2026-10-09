@@ -1,7 +1,6 @@
 ---
 slug: an3.127
 character:
-  - "Sakka, lord of the gods"
   - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: Hatthakasutta

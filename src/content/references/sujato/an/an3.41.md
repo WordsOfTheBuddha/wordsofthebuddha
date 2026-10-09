@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Present
-description: The Buddha describes the three things—when faith is present,, when a gift to give is present,, and and when those worthy of a religious donation are present.
+description: The Buddha says that when faith is present, a gift to give is present, and those worthy of a religious donation are present, a faithful gentleman brims with much merit.
 qualities: merit, faith
 theme: inspiration, principle
 ---

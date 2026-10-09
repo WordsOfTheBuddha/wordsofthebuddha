@@ -1,10 +1,12 @@
 ---
 slug: an3.38
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Four Great Kings (2nd)
-description: The Buddha teaches on the four great kings (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha repeats Sakka's verse on sabbath observance, explaining that it suits Sakka poorly, since he is not exempt from rebirth, old age, and death, while a perfected mendicant may rightly say it.
 qualities: suffering, lamentation, sorrow, anxiety, displeasure
 theme: story, urgency
 ---

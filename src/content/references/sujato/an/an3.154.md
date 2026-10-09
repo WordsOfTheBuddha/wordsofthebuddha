@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Homage
-description: The Buddha teaches on homage, presenting a threefold teaching for disciples on the path.
+description: "The Buddha names the three kinds of homage: by way of body, speech, and mind."
 qualities: wisdom
 theme: principle
 ---

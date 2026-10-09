@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken
-description: The Buddha teaches on broken, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how an immature person with bad conduct of body, speech, and mind keeps themselves broken and blameworthy, while an astute person with good conduct stays intact and brims with much merit.
 qualities: merit, wholesome, harm, immaturity, wisdom
 theme: principle
 ---

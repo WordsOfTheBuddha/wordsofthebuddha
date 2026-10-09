@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Three Trainings (1st)
-description: The Buddha teaches on three trainings (1st), presenting a threefold teaching for disciples on the path.
+description: "The Buddha defines the three trainings: the higher ethics restrained in the monastic code, the higher mind in the four absorptions, and the higher wisdom that penetrates the four noble truths."
 qualities: suffering, jhana, wisdom, ending, unwholesome, ethical conduct
 theme: training guideline, wisdom
 ---

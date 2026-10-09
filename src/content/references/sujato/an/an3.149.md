@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impure
-description: The Buddha teaches on impure, presenting a threefold teaching for disciples on the path.
+description: The Buddha says someone with impure deeds of body, speech, and mind is placed in hell as if delivered there, while one with pure deeds is placed in heaven.
 qualities: wisdom
 theme: principle
 ---

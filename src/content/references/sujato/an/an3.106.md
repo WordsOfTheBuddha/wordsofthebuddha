@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ascetics and Brahmins
-description: The Buddha teaches on ascetics and brahmins, presenting a threefold teaching for disciples on the path.
+description: The Buddha says he deems as true ascetics and brahmins only those who truly understand the world's gratification, drawback, and escape.
 qualities: insight, wisdom
 theme: story, wisdom
 ---

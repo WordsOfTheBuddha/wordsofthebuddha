@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Morning
-description: The Buddha teaches on morning, presenting a threefold teaching for disciples on the path.
+description: The Buddha says that beings who do good deeds of body, speech, and mind in the morning, at midday, and in the evening have a good morning, midday, and evening, and recites verses on auspicious deeds and their benefits.
 qualities: wholesome, wisdom
 theme: principle
 ---

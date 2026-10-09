@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Master Thief
-description: The Buddha teaches on a master thief, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a master thief who relies on uneven ground, thick cover, and the powerful with a bad mendicant who relies on unethical conduct, wrong view, and the patronage of rulers.
 qualities: harm, wrong view, ethical conduct
 theme: principle, wisdom
 ---

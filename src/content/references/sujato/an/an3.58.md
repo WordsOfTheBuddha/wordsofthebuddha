@@ -1,10 +1,12 @@
 ---
 slug: an3.58
+character:
+  - Brahmin Tikaṇṇa
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Tikaṇṇa
-description: The Buddha teaches on with tikaṇṇa, presenting a threefold teaching for disciples on the path.
+description: The brahmin Tikaṇṇa praises mastery of the three Vedas; the Buddha contrasts it with mastery of the three true knowledges in the noble training—recollection of past lives, knowledge of beings' passing and rebirth, and the ending of defilements.
 qualities: suffering, ending, flexible, jhana, ignorance, harm
 theme: story, urgency
 ---

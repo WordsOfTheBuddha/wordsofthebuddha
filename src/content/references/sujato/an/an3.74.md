@@ -1,10 +1,14 @@
 ---
 slug: an3.74
+character:
+  - Venerable Ānanda
+  - Licchavi Abhaya
+  - Licchavi Paṇḍitakumāra
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jains
-description: The Buddha teaches on jains, presenting a threefold teaching for disciples on the path.
+description: The Licchavis Abhaya and Paṇḍitakumāra ask Venerable Ānanda about the Jain ascetic of the Ñātika clan's claim of universal knowledge; Ānanda expounds the three true purifications by wearing away, through ethics, the four absorptions, and realization of the undefiled freedom of heart.
 qualities: ending, suffering, jhana, vision, liberation, insight
 theme: recollection of the Buddha, training guideline
 ---

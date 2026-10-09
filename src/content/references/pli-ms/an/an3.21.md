@@ -1,5 +1,9 @@
 ---
 slug: an3.21
+character:
+  - Venerable Sāriputta
+  - Venerable Samiddha
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 title: Samiddhasutta
 edition: ms

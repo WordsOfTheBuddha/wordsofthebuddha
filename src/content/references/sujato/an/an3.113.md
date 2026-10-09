@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bound for Loss
-description: The Buddha teaches on bound for loss, presenting a threefold teaching for disciples on the path.
+description: "The Buddha names three people bound for a place of loss: one unchaste who claims to be chaste, one who groundlessly accuses a chaste person of unchastity, and one who holds that there is nothing wrong with sensual pleasures."
 qualities: attachment, spiritual life, sensual desire, wrong view
 theme: wisdom
 ---

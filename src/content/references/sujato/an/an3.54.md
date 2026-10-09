@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Wanderer
-description: The Buddha teaches on a wanderer, presenting a threefold teaching for disciples on the path.
+description: A brahmin wanderer asks how the teaching is apparent in the present life; the Buddha explains that giving up greed, hate, and delusion ends harm to self and others and restores true understanding of what is good.
 qualities: wholesome, displeasure, delusion, greed, harm, suffering
 theme: story, wisdom
 ---

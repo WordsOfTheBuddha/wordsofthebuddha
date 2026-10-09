@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Choices
-description: The Buddha describes the three individuals—firstly, a certain individual makes hurtful choices by way of body, speech, and mind, having made these choices, they’re reborn in a hurtful world,, and where hurtful contacts strike them.
+description: The Buddha describes the three individuals—those who make hurtful choices and are reborn in a hurtful world, those who make pleasing choices and are reborn in a pleasing world, and those whose choices are mixed, like humans, some gods, and some beings in the underworld.
 qualities: dearness, happiness, suffering
 theme: principle
 ---

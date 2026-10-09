@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Breaking Apart
-description: The Buddha teaches on breaking apart, presenting a threefold teaching for disciples on the path.
+description: A well-to-do brahmin asks why human numbers dwindle; the Buddha attributes the decline to people's love of illicit desire, which brings murder, blighted harvests when the rains fail, and vicious monsters unleashed by native spirits.
 qualities: desire, affection, greed, harm, unprincipled conduct, craving
 theme: story
 ---

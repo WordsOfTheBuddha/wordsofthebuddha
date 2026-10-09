@@ -1,5 +1,7 @@
 ---
 slug: an3.70
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 title: Uposathasutta
 edition: ms

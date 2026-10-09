@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At the Peacocks’ Feeding Ground (2nd)
-description: The Buddha teaches on at the peacocks’ feeding ground (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha says a mendicant with the three demonstrations—of psychic power, of revealing, and of instruction—has reached the ultimate end, the ultimate sanctuary from the yoke, and the ultimate spiritual life.
 qualities: spiritual life, safety, psychic power
 theme: principle
 ---

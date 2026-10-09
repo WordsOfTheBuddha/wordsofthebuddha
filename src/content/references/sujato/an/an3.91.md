@@ -1,10 +1,12 @@
 ---
 slug: an3.91
+character:
+  - Venerable Kassapagotta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Paṅkadhā
-description: The Buddha teaches on at paṅkadhā, presenting a threefold teaching for disciples on the path.
+description: The monk Kassapagotta resents a Dhamma talk on the training rules, becomes remorseful, and confesses to the Buddha, who accepts his confession and explains which mendicants he praises and which he does not.
 qualities: happiness, harm, suffering, cultivation, unwholesome, immaturity
 theme: story, training guideline
 ---

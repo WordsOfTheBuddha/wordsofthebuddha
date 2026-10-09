@@ -1,7 +1,5 @@
 ---
 slug: an3.84
-character:
-  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Vajjiputtasutta
 edition: ms

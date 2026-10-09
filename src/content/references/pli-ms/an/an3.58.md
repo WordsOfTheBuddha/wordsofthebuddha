@@ -1,5 +1,7 @@
 ---
 slug: an3.58
+character:
+  - Brahmin Tikaṇṇa
 source: suttacentral/bilara-data
 title: Tikaṇṇasutta
 edition: ms

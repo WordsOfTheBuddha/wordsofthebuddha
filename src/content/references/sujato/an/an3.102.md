@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Basis
-description: The Buddha teaches on basis, presenting a threefold teaching for disciples on the path.
+description: The Buddha teaches that a mendicant committed to the higher mind should focus from time to time on the basis of immersion, the basis of exertion, and the basis of equanimity, with the simile of the goldsmith treating native gold.
 qualities: flexible, equanimity, ending, insight, liberation, psychic power
 theme: training guideline, principle
 ---

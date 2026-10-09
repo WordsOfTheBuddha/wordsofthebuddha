@@ -1,5 +1,7 @@
 ---
 slug: an3.55
+character:
+  - Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 title: Nibbutasutta
 edition: ms

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (2nd)
-description: The Buddha teaches on the thoroughbred (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a royal thoroughbred that is beautiful, strong, and fast with a mendicant who is ethical, energetically vigorous, and destined for spontaneous rebirth in the Pure Abodes as a non-returner.
 qualities: merit, respect, wholesome, ending, giving, giving up
 theme: story, principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accomplishment
-description: The Buddha teaches on accomplishment, presenting a threefold teaching for disciples on the path.
+description: "The Buddha names the three accomplishments: in faith, ethics, and wisdom."
 qualities: faith, wisdom
 theme: inspiration, wisdom
 ---

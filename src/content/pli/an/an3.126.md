@@ -1,8 +1,8 @@
 ---
 slug: an3.126
 character:
-  - "Sakka, lord of the gods"
   - Mahānāma the Sakyan
+  - Bharaṇḍu the Kālāma
 source: suttacentral/bilara-data
 title: Bharaṇḍukālāmasutta
 edition: ms

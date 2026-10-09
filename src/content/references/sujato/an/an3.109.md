@@ -1,10 +1,12 @@
 ---
 slug: an3.109
+character:
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unprotected
-description: The Buddha teaches the householder on unprotected, presenting a threefold teaching for disciples on the path.
+description: The Buddha tells the householder Anāthapiṇḍika that when the mind is unprotected, deeds of body, speech, and mind fester and rot, like a bungalow with a bad roof, so one will not have a good death.
 qualities: wholesome, harm
 theme: story, urgency
 ---

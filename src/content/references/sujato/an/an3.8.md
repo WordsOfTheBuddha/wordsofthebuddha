@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hurtful
-description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+description: The Buddha contrasts the fool, known by hurtful deeds of body, speech, and mind, with the astute person, known by kind deeds, and urges shunning the former and undertaking the latter.
 qualities: immaturity, wisdom
 theme: training guideline, cultivating discernment
 ---

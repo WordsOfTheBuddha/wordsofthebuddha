@@ -1,10 +1,12 @@
 ---
 slug: an3.72
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Disciple of the Ājīvakas
-description: The Buddha teaches on a disciple of the ājīvakas, presenting a threefold teaching for disciples on the path.
+description: An Ājīvaka householder asks Venerable Ānanda whose teaching is well explained; Ānanda leads him to see for himself that the teaching that gives up greed, hate, and delusion is well explained, and the householder goes for refuge.
 qualities: delusion, greed, aversion, giving, giving up, craving
 theme: story
 ---

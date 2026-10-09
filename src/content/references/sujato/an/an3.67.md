@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Topics of Discussion
-description: The Buddha teaches on topics of discussion, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains the three topics of discussion—past, future, and present—and how to recognize a competent discussant, urging noble consultation free of hostility, whose purpose is the liberation of the mind by not grasping.
 qualities: aversion, liberation, attachment, examination, jealousy, aggressiveness
 theme: directly knowing, inquisitiveness
 ---

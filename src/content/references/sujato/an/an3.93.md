@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seclusion
-description: The Buddha teaches on seclusion, presenting a threefold teaching for disciples on the path.
+description: Contrasting the outer seclusion in robes, almsfood, and lodgings advocated by other religions, the Buddha teaches the mendicant's true seclusion in ethics, right view, and the end of defilements.
 qualities: solitude, giving, giving up, right view, wrong view, adventurousness
 theme: urgency, training guideline
 ---

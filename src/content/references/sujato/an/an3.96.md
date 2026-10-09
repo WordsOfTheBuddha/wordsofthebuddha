@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (1st)
-description: The Buddha teaches on the thoroughbred (1st), presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a royal thoroughbred that is beautiful, strong, and fast with a mendicant who is ethical, energetically vigorous, and penetrates the four noble truths, worthy of the supreme field of merit.
 qualities: suffering, merit, ending, respect, wholesome, giving
 theme: story, principle
 ---

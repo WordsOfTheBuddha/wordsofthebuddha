@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: You Should be Disgusted
-description: The Buddha describes the three individuals—there is an individual you should be disgusted by, and you shouldn’t associate with, accompany, or attend them, there is an individual you should regard with equanimity, and you shouldn’t associate with, accompany, or attend them, there is an individual you should associate with, accompany, and and attend.
+description: The Buddha describes the three individuals—one you should be disgusted by and not associate with, one you should regard with equanimity and not associate with, and one you should associate with, accompany, and attend.
 qualities: harm, equanimity, respect, wholesome, aversion, cruelty
 theme: principle
 ---

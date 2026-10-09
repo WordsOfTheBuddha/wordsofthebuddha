@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Shopkeeper (2nd)
-description: The Buddha teaches on a shopkeeper (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a shopkeeper who sees clearly, is indefatigable, and has supporters with a mendicant who penetrates the four noble truths, rouses energy, and questions the learned, and so soon acquires abundant skillful qualities.
 qualities: wholesome, suffering, ending, giving, giving up, learning
 theme: inquisitiveness, principle
 ---

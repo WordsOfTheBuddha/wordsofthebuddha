@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Arising
-description: The Buddha teaches on arising, presenting a threefold teaching for disciples on the path.
+description: "The Buddha declares the law of nature that persists whether Realized Ones arise or not: all conditions are impermanent, all conditions are suffering, and all things are not-self."
 qualities: suffering, wisdom
 theme: urgency, recollection of the Buddha
 ---

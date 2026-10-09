@@ -1,10 +1,12 @@
 ---
 slug: an3.78
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Precepts and Observances
-description: The Buddha teaches a disciple on precepts and observances, presenting a threefold teaching for disciples on the path.
+description: Venerable Ānanda answers that precepts and observances, lifestyles, and spiritual paths are fruitful only when they make unskillful qualities decline and skillful qualities grow, and the Buddha hails him as a trainee whose equal in wisdom is hard to find.
 qualities: unwholesome, wholesome, wisdom
 theme: wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Wheel-Turning Monarch
-description: The Buddha teaches on the wheel-turning monarch, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares the wheel-turning monarch who wields power relying only on principle with the Realized One, who provides just protection of bodily, verbal, and mental actions and rolls forth the supreme Wheel of Dhamma.
 qualities: safety, wisdom
 theme: story, recollection of the Buddha
 ---

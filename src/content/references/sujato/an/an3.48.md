@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The King of Mountains
-description: The Buddha teaches on the king of mountains, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares great sal trees growing supported by the Himalayas with a family growing supported by a family head with faith—in faith, ethics, and wisdom.
 qualities: faith, wholesome, ethical conduct, wisdom, delight, desire
 theme: story, inspiration
 ---

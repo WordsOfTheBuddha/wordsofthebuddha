@@ -1,10 +1,13 @@
 ---
 slug: an3.126
+character:
+  - Mahānāma the Sakyan
+  - Bharaṇḍu the Kālāma
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bharaṇḍu Kālāma
-description: The Buddha describes the three teachers found in the world—one teacher advocates the complete understanding of sensual pleasures,, but not of forms or feelings, one teacher advocates the complete understanding of sensual pleasures and forms,.
+description: The Buddha describes the three teachers found in the world—those who advocate the complete understanding of sensual pleasures only, of sensual pleasures and forms, and of sensual pleasures, forms, and feelings—and rebukes Bharaṇḍu the Kālāma, who repeatedly urged him to declare their ends the same.
 qualities: flexible, sensual desire
 theme: story, wisdom
 ---

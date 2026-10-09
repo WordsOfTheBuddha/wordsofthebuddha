@@ -1,6 +1,9 @@
 ---
 slug: an3.74
-character: Venerable Ānanda
+character:
+  - Venerable Ānanda
+  - Licchavi Abhaya
+  - Licchavi Paṇḍitakumāra
 source: suttacentral/bilara-data
 title: Nigaṇṭhasutta
 edition: ms

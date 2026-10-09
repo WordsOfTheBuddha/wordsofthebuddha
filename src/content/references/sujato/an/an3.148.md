@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unethical
-description: The Buddha teaches on unethical, presenting a threefold teaching for disciples on the path.
+description: The Buddha says someone with unethical deeds of body, speech, and mind is placed in hell as if delivered there, while one with ethical deeds is placed in heaven.
 qualities: ethical conduct, wisdom
 theme: principle
 ---

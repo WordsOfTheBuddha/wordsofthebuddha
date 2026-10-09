@@ -1,10 +1,12 @@
 ---
 slug: an3.15
+character:
+  - King Pacetana
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Pacetana
-description: The Buddha teaches on about pacetana, presenting a threefold teaching for disciples on the path.
+description: The Buddha tells how King Pacetana's chariot-maker finished one wheel over six months and one in six days, and applies the simile to giving up the crooks, flaws, and defects of body, speech, and mind.
 qualities: wholesome, ill will
 theme: story, recollection of the Buddha
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an3.79
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fragrances
-description: The Buddha describes the three kinds of fragrance that spread only with the wind, not against it.
+description: The Buddha describes the three kinds of fragrance that spread only with the wind, not against it, and the fragrance of the ethical person's virtue, which spreads against the wind and in every direction.
 qualities: wholesome, sexual misconduct, stinginess, ethical conduct, giving
 theme: principle
 ---

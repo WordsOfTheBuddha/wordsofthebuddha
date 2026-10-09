@@ -1,5 +1,7 @@
 ---
 slug: an3.15
+character:
+  - King Pacetana
 source: suttacentral/bilara-data
 title: Sacetanasutta
 edition: ms

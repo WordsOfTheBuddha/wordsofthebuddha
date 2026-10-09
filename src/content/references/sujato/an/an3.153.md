@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (4th)
-description: The Buddha teaches on broken (4th), presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how an immature person with impure deeds of body, speech, and mind keeps themselves broken, while an astute person with pure deeds stays intact and brims with merit.
 qualities: immaturity, wisdom
 theme: principle
 ---

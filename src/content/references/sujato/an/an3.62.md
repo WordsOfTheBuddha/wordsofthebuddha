@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perils
-description: The Buddha teaches on perils, presenting a threefold teaching for disciples on the path.
+description: The Buddha contrasts the perils of fire, flood, and turmoil, from which mothers and children are sometimes separated, with the perils of old age, sickness, and death, which always separate them, and points to the noble eightfold path as the way to go beyond both kinds.
 qualities: desire, giving, giving up, mindfulness, right effort, right livelihood
 theme: urgency, training guideline
 ---

@@ -1,5 +1,8 @@
 ---
 slug: an3.73
+character:
+  - Venerable Ānanda
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 title: Mahānāmasakkasutta
 edition: ms

@@ -1,10 +1,12 @@
 ---
 slug: an3.37
+character:
+  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Four Great Kings (1st)
-description: The Buddha teaches on the four great kings (1st), presenting a threefold teaching for disciples on the path.
+description: The Buddha describes how the ministers, sons, and the four great kings themselves wander the world on the fortnight's sabbath days, and how Sakka's poorly sung verse on sabbath observance befits only a mendicant free of greed, hate, and delusion.
 qualities: merit, respect, delusion, greed, aversion, craving
 theme: story
 ---

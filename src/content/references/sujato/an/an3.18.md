@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Realm of the Gods
-description: The Buddha teaches on the realm of the gods, presenting a threefold teaching for disciples on the path.
+description: The Buddha says one should be horrified and repelled by the very idea of leading the spiritual life for rebirth in the heavens—all the more so by bad conduct of body, speech, and mind.
 qualities: happiness, spiritual life, harm, shyness
 theme: inquisitiveness
 ---

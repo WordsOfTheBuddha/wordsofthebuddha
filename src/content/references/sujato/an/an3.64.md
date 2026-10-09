@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sarabha
-description: The Buddha teaches on with sarabha, presenting a threefold teaching for disciples on the path.
+description: The Buddha visits the wanderer Sarabha, who had boasted of learning his teaching and then leaving it, reduces him to silence, roars his lion's roar three times, and flies away.
 qualities: learning, with nothing, doubt, aversion, ending, suffering
 theme: story, recollection of the Buddha
 ---
