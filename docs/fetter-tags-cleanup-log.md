@@ -1161,3 +1161,15 @@ site landing page, not a discourse.
 ### src/content/en/anthologies/in-the-buddhas-words.mdx
 - Added `theme: inspiration` — the curated anthology's breadth, from
   impermanence and not-self to the path to awakening.
+
+### src/content/en/an/an7.59.mdx (+ pli mirror)
+- Added `qualities: respect, diligence, collectedness, ethical conduct`
+  — Rationale: the sutta's subject is the seven things to be honored with
+  respect and reverence; respect is the core quality whose presence or
+  absence is the stated cause, and diligence (appamāda), collectedness
+  (samādhi), and the training (rendered as ethical conduct) are three of the
+  seven explicitly developed. (The seventh, courteousness/hospitality, has no
+  vocabulary term and was left out.)
+- Added `theme: principle` — the discourse states a two-way conditional:
+  with respect and reverence the good Dhamma lasts long; without them it does
+  not.

@@ -1,5 +1,7 @@
 ---
 title: Kimila sutta
+qualities: respect, diligence, collectedness, ethical conduct
+theme: principle
 slug: an7.59
 character: Venerable Kimila
 ---
