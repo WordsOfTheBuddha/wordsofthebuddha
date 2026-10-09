@@ -1,8 +1,8 @@
 ---
 title: Appaka sutta - Few
 description: There are few in the world, who having obtained great wealth, neither become arrogant nor negligent, do not become obsessed with sensual pleasures, and do not act wrongly towards others.
-fetter: ignorance, sensual desire
-tags: arrogance, wealth, sensual pleasure, sensual desire, deer, trap, negligance, sn, sn1-11, sn3
+qualities: conceit, negligence, sensual desire
+theme: principle
 slug: sn3.6
 ---
 

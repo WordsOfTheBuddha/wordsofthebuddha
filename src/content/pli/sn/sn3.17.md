@@ -1,8 +1,8 @@
 ---
 title: Appamāda sutta - Diligence
 description: King Pasenadi asks the Buddha if there is one Dhamma which, having accomplished, secures both kinds of welfare — welfare pertaining to the present life and that pertaining to the next life. The Buddha explains that diligence is that one Dhamma.
-fetter: ignorance
-tags: diligence, welfare, present, future, ignorance, sn, sn1-11, sn3
+qualities: diligence, merit
+theme: principle, householder life
 slug: sn3.17
 ---
 

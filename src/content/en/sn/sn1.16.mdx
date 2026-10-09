@@ -1,8 +1,8 @@
 ---
 title: Niddātandī sutta - Sleep And Sluggishness
 description: Excessive sleep, sluggishness, yawning, discontent, and post-meal drowsiness can obstruct the noble path from appearing.
-fetter: doubt, ignorance
-tags: sleep, sluggishness, yawning, discontent, drowsiness, energy, willpower, determination, noble path, sn, sn1-11, sn1
+qualities: drowsiness, dullness, discontentment, vigour
+theme: principle
 slug: sn1.16
 ---
 

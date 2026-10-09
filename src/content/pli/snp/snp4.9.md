@@ -1,8 +1,7 @@
 ---
 title: Māgaṇḍiya sutta - With Māgaṇḍiya
 description: The Buddha refused Māgaṇḍiya's offer of his daughter, rejecting worldly desires. He taught that true peace arises not from clinging to views, observances, or status, but from letting go of all attachments. Like a lotus unstained by water, the sage remains free, calm, and detached amidst the world.
-fetter: personal existence, sensual desire, conceit, ignorance
-tags: snp, snp4, right view, ethics, observances, peace, attachment, sensual desire, purity, liberation, wisdom, delusion, confusion, debate, discrimination, detachment, perception
+theme: principle, story
 simile: thorny-stemmed lotus
 slug: snp4.9
 commentary:

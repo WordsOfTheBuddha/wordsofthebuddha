@@ -1,8 +1,8 @@
 ---
 title: Kuṭikā sutta - Little Hut
 description: Do you have a little hut, a nest, or ties that extend? Are you freed from bondage?
-fetter: personal existence, conceit, ignorance
-tags: personal existence, conceit, ignorance, craving, attachment, bondage, freedom, sn, sn1-11, sn1
+qualities: craving, attachment, free from attachment
+theme: principle
 slug: sn1.19
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: Ajakalāpaka sutta - The native spirit Ajakalāpaka
 description: An awakened person has transcended fear through going beyond their own attachments.
-fetter: adherence to rules and observances, personal existence, conceit, ignorance
-tags: fear, demon, spirit, brahmin, attachment, transcendence, ud, ud1
+qualities: without fear, giving up
+theme: principle, inspiration
 slug: ud1.7
 ---
 

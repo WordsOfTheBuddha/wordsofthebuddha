@@ -1,8 +1,7 @@
 ---
 title: Pabbatūpama sutta - Simile Of The Mountain
 description: The Buddha shares a simile of a mountain to illustrate the inevitability of old age and death, and the importance of living by the Dhamma.
-fetter: doubt, adherence to rules and observances, personal existence, ignorance
-tags: mountain, old age, aging, death, wholesome conduct, merit, faith, Buddha, Dhamma, Saṅgha
+theme: urgency
 simile: mountain
 slug: sn3.25
 image: himalayas.webp

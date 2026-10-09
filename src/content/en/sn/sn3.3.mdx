@@ -1,8 +1,8 @@
 ---
 title: Jarāmaraṇa sutta - Aging And Death
 description: The Buddha explains to King Pasenadi of Kosala that no one, regardless of their wealth or status, is free from aging and death. Even arahants, who have attained the ultimate goal, are subject to the breaking up of this body.
-fetter: doubt, personal existence, conceit, ignorance
-tags: aging, death, arahant, dhamma, birth, brahmin, king, virtuous, sn, sn1-11, sn3
+qualities: recollection of death, suffering
+theme: urgency, principle
 slug: sn3.3
 ---
 
