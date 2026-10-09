@@ -1,6 +1,7 @@
 ---
 title: Tatiya vagga - The Chapter on One Thing (Third)
 slug: an1.316-332
+priority: 1.1
 description: The dangers of wrong view and the benefits of right view. A badly expounded teaching leads even the energetic to suffering, while a well-expounded one rewards the diligent. The Buddha does not praise even a tiny amount of existence.
 qualities: wrong view, right view, wisdom, harm, merit, suffering, happiness, discernment, rousing of energy, laziness
 theme: cultivating discernment, wisdom, urgency

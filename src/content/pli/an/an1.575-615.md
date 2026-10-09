@@ -4,6 +4,7 @@ description: Short teachings on the benefits of cultivating mindfulness of the b
 qualities: mindfulness of body, wholesome, wisdom, liberation, conceit, ignorance, radical comprehension
 theme: training guideline, wisdom
 slug: an1.575-615
+priority: 1.1
 ---
 
 #### 1.575

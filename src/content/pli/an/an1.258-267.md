@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his female lay disciples in va
 qualities: giving, learning, loving-kindness, collectedness, faith
 theme: inspiration
 slug: an1.258-267
+priority: 1.1
 ---
 
 #### 1.258

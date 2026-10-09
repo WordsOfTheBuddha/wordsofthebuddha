@@ -1,5 +1,6 @@
 ---
 slug: an1.278-286
+priority: 1.1
 character:
   - "Sakka, lord of the gods"
 source: suttacentral/bilara-data

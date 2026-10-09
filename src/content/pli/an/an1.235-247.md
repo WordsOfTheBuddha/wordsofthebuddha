@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his bhikkhunī disciples in va
 qualities: wisdom, psychic power, collectedness, direct knowledge
 theme: inspiration
 slug: an1.235-247
+priority: 1.1
 ---
 
 #### 1.235

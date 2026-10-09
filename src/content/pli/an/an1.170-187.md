@@ -4,6 +4,7 @@ description: The Buddha describes the unique qualities of the Tathāgata, the Ar
 qualities: compassion, vision, wisdom
 theme: recollection of the Buddha
 slug: an1.170-187
+priority: 1.1
 ---
 
 #### 1.170

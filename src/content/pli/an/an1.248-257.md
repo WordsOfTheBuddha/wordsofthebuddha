@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his lay disciples in various c
 qualities: giving, faith
 theme: inspiration
 slug: an1.248-257
+priority: 1.1
 ---
 
 #### 1.248

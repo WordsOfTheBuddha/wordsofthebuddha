@@ -4,6 +4,7 @@ description: The Buddha explains the importance of mindfulness of the body in pa
 qualities: mindfulness of body, negligence
 theme: training guideline, wisdom
 slug: an1.616-627
+priority: 1.1
 ---
 
 #### 1.616

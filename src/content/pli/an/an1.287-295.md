@@ -1,5 +1,6 @@
 ---
 slug: an1.287-295
+priority: 1.1
 source: suttacentral/bilara-data
 title: 23. Tatiyavagga
 edition: ms

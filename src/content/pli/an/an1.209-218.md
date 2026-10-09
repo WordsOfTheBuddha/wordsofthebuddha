@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his bhikkhu disciples in vario
 qualities: faith, inspiration, tame, well-spoken-speech
 theme: inspiration
 slug: an1.209-218
+priority: 1.1
 ---
 
 #### 1.209

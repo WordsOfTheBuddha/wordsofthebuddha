@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his bhikkhu disciples in vario
 qualities: collectedness, solitude, perception, rousing of energy, faith
 theme: inspiration
 slug: an1.198-208
+priority: 1.1
 commentary:
     - "[1] Per the commentary, venerable Subhūti was Anāthapiṇḍika’s younger brother and went forth on the day Jetavana Monastery was dedicated to the Buddha. He attained arahantship through developing insight grounded in loving-kindness. Before giving Dhamma teachings or receiving alms, he would first enter collectedness through loving-kindness and then emerge. The Buddha praised him for his peaceful conduct and for living “without contention toward anyone.”"
     - "[2] Per the commentary, venerable Revata of the Acacia forest is the youngest brother of the venerable Sāriputta. Compelled by his mother to marry when still young, he ran away and received ordination."

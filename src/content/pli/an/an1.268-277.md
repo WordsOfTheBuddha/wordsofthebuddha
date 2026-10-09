@@ -1,5 +1,6 @@
 ---
 slug: an1.268-277
+priority: 1.1
 source: suttacentral/bilara-data
 title: 21. Paṭhamavagga
 edition: ms

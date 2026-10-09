@@ -4,6 +4,7 @@ description: The Buddha shares the importance of recollection of the Buddha, Dha
 qualities: disenchantment, dispassion, ending, tranquility, direct knowledge, ethical conduct, giving, recollection of death, mindfulness of body, recollection of the Buddha, breathing
 theme: recollection of the Buddha, training guideline
 slug: an1.296-305
+priority: 1.1
 ---
 
 #### 1.296

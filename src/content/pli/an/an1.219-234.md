@@ -4,6 +4,7 @@ description: The Buddha describes the foremost of his bhikkhu disciples in vario
 qualities: learning, mindfulness, psychic power, sense restraint, inspiration
 theme: inspiration
 slug: an1.219-234
+priority: 1.1
 ---
 
 #### 1.219

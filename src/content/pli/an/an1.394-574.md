@@ -4,6 +4,7 @@ description: How much practice makes one a true practitioner? The Buddha declare
 qualities: cultivation, collectedness, mindfulness, continuous effort, clear awareness, right effort, wholesome, unwholesome
 theme: wisdom, inspiration
 slug: an1.394-574
+priority: 1.1
 ---
 
 #### 1.394

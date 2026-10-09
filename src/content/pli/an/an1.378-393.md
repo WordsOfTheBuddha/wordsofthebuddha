@@ -4,6 +4,7 @@ description: The Buddha shares qualities that inspire confidence in the spiritua
 qualities: faith, contentment, right speech
 theme: wisdom
 slug: an1.378-393
+priority: 1.1
 ---
 
 #### 1.378
