@@ -3,8 +3,6 @@ title: Paṭhama parihāni sutta - Decline (First)
 description: The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.
 qualities: personal existence view, non-restraint, wrong speech, sensual desire, sense restraint, right speech
 theme: cultivating discernment, wisdom
-fetter: doubt, adherence to rules and observances
-tags: an,an7
 slug: an7.28
 ---
 

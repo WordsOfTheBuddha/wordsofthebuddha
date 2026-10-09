@@ -1,8 +1,7 @@
 ---
 slug: an6.60
 character:
-  - Citta Hatthisāriputta
-  - Venerable Citta
+  - Venerable Citta Hatthisāriputta
   - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 title: Hatthisāriputtasutta
