@@ -2,6 +2,7 @@
 title: Cara sutta - Walking
 description: The Buddha describes two types of bhikkhus based on how they deal with thoughts of sensuality, ill will, and harming while walking, standing, sitting, and lying down, and which one is capable of reaching the highest awakening.
 qualities: sensual desire, aversion, harm, laziness, wrong effort, giving up, ending, rousing of energy, continuous effort, right effort
+theme: training guideline
 slug: an4.11
 similar: iti110
 commentary: A more detailed discourse on the theme of dealing with thoughts is in [MN 19](/mn19), and one on shaping of thoughts is in [MN 20](/mn20).

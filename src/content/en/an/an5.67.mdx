@@ -1,6 +1,8 @@
 ---
 title: Paṭhama iddhipāda sutta - Bases for Psychic Power (First)
 description: Developing the bases of psychic power can lead to enlightenment in this very life or the state of non-returning.
+qualities: psychic power, collectedness, desire, vigour, investigation
+theme: training guideline
 slug: an5.67
 ---
 
