@@ -1,9 +1,12 @@
 ---
-title: Kimila sutta
+title: Kimila sutta - With Kimila
+description: The Buddha identifies seven qualities of respect and reverence that ensure the long-lasting endurance of the good Dhamma.
 qualities: respect, diligence, collectedness, ethical conduct
 theme: principle
 slug: an7.59
 character: Venerable Kimila
+priority: 1.1
+similar: an5.201, an6.40
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kimilāyaṁ viharati niculavane. Atha kho āyasmā kimilo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā kimilo bhagavantaṁ etadavoca:
