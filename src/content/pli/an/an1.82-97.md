@@ -67,8 +67,6 @@ priority: 1.1
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yo evaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, anuyogo akusalānaṁ dhammānaṁ, ananuyogo kusalānaṁ dhammānaṁ. Anuyogo, bhikkhave, akusalānaṁ dhammānaṁ, ananuyogo kusalānaṁ dhammānaṁ mahato anatthāya saṁvattatī”ti.
 
-Pannarasamaṁ.
-
 #### 1.97
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yo evaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, anuyogo kusalānaṁ dhammānaṁ, ananuyogo akusalānaṁ dhammānaṁ. Anuyogo, bhikkhave, kusalānaṁ dhammānaṁ, ananuyogo akusalānaṁ dhammānaṁ mahato atthāya saṁvattatī”ti.
