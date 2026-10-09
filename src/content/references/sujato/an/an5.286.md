@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Monk
-description: The Buddha teaches on a monk, presenting a fivefold teaching for disciples on the path.
+description: A monk who kills, steals, has sex, lies, and consumes intoxicants is placed in hell as if delivered there; the abstainer, in heaven.
 qualities: wisdom
 theme: principle
 ---

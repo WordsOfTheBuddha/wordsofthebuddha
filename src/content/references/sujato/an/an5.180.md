@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Gavesī
-description: The Buddha describes the five hundred lay followers ….
+description: Asked why he smiled, the Buddha tells Venerable Ānanda how Gavesī, a lay follower of Kassapa Buddha who hadn't fulfilled the precepts, ended up heading five hundred lay followers upward in virtue, realizing the supreme bliss of freedom.
 qualities: quenching, mindfulness, liberation, insight
 theme: story, recollection of the Buddha
 ---

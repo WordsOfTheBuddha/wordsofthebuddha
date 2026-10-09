@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (1st)
-description: The Buddha teaches on broken (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes how praising the unworthy and scorning the worthy keeps a foolish person broken and damaged, like a gambler who loses at the dice.
 qualities: faith, merit, happiness, aversion, harm, ill will
 theme: inspiration
 ---

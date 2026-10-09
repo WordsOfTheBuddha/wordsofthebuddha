@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perils (2nd)
-description: The Buddha describes the four perils, explaining this fourfold teaching for disciples on the path.
+description: The Buddha describes four perils—fire, water, kings, and bandits—that an energetic mendicant striving intently would quickly abandon, but that a lazy one cannot escape.
 qualities: wisdom
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Decline
-description: "The Buddha describes the four things inside themselves should conclude: ‘my skillful qualities—they have much greed, much hate, and much delusion; and their wisdom eye doesn’t go into the many deep matters, any monk or nun who sees these four things inside themselves should conclude:, and ‘my skillful qualities are declining."
+description: Venerable Sāriputta lists the qualities of decline—greed, hate, and delusion—and points to the wisdom eye that knows the escape from each.
 qualities: wholesome, wisdom, delusion, greed, aversion, craving
 theme: principle, wisdom
 ---

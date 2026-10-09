@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Growth (2nd)
-description: The Buddha teaches on growth (2nd), presenting a fivefold teaching for disciples on the path.
+description: A female noble disciple who grows in faith, ethics, learning, generosity, and wisdom grows nobly, taking on what is essential and excellent in this life.
 qualities: faith, wisdom, giving, cultivation
 theme: inspiration, principle
 ---

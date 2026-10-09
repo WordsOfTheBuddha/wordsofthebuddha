@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Times Good for Meditation
-description: The Buddha teaches on times good for meditation, presenting a fivefold teaching for disciples on the path.
+description: Old age, sickness, famine, turmoil, and schism are five times not good for meditation; youth and health, abundance, peace, and a harmonious Saṅgha are the five times that are good.
 qualities: cultivation, jhana, wholesome, faith, cruelty, harm
 theme: training guideline, inspiration
 ---

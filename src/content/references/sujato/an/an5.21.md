@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrespect (1st)
-description: The Buddha teaches on disrespect (1st), presenting a fivefold teaching for disciples on the path.
+description: A disrespectful and irreverent mendicant can't fulfill the supplementary regulations, the trainee's practice, ethics, right view, or right immersion; the respectful and reverent mendicant fulfills them all.
 qualities: right view, quenching, contempt, unassuming, collectedness, wrong view
 theme: training guideline, wisdom
 ---

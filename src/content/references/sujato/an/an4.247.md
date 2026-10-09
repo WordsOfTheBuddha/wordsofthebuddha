@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Worthy of a Monument
-description: The Buddha teaches on worthy of a monument, presenting a fourfold teaching for disciples on the path.
+description: The Buddha names the four worthy of a monument—the Realized One, an Independent Buddha, a disciple of a Realized One, and a wheel-turning monarch.
 qualities: recollection of the Buddha, wisdom
 theme: recollection of the Buddha
 ---

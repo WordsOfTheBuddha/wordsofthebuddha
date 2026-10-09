@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sound of Singing
-description: "The Buddha describes the five drawbacks in reciting with a drawn-out singing voice—you relish the sound of your own voice. others relish the sound of your voice. householders complain:, ‘these ascetics who follow the sakyan, sing just like us!’ when you’re enjoying the melody, and your immersion breaks up. those who come after follow your example."
+description: Reciting with a drawn-out singing voice brings five drawbacks—relishing one's own voice, others relishing it, householders' complaints, broken immersion, and setting a bad example.
 qualities: collectedness, wisdom
 theme: training guideline, inspiration
 ---

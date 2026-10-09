@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deceivers
-description: The Buddha teaches on deceivers, presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes mendicants who are deceivers and flatterers, pompous and fake, insolent, and scattered, contrasting them with the genuine mendicant.
 qualities: cultivation, recollection of the Buddha
 theme: training guideline
 ---

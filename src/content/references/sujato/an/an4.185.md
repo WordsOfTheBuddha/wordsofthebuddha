@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Truths of the Brahmins
-description: The Buddha teaches on truths of the brahmins, presenting a fourfold teaching for disciples on the path.
+description: On Vulture's Peak the Buddha declares the four truths of the brahmins he has realized with his own insight, practiced by one who doesn't think of themselves as better, equal, or worse.
 qualities: truth, insight, dispassion, suffering, ending, compassion
 theme: story, urgency
 ---

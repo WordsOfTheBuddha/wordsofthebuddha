@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: View
-description: The Buddha teaches on view, presenting a fourfold teaching for disciples on the path.
+description: Bad conduct by body, speech, and mind with wrong view sends someone to hell; good conduct with right view, to heaven.
 qualities: right view, wrong view, harm, wholesome
 theme: wisdom
 ---

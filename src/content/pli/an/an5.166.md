@@ -5,11 +5,6 @@ qualities: politeness, collectedness, ethical conduct, learning, liberation
 theme: wisdom, inspiration
 slug: an5.166
 priority: 1.1
-character:
-  - Venerable Sāriputta
-  - Venerable Ānanda
-  - Venerable Udāyī
-  - Venerable Upavāṇa
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe…

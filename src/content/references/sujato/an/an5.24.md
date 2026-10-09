@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unethical
-description: The Buddha teaches on unethical, presenting a fivefold teaching for disciples on the path.
+description: An unethical person destroys a vital condition for right immersion, and so for knowledge and vision, dispassion, and freedom; the ethical person fulfills them, like a tree with branches and foliage.
 qualities: vision, quenching, dispassion, true knowledge, liberation, ethical conduct
 theme: training guideline, wisdom
 ---

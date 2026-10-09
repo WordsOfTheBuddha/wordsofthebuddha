@@ -1,5 +1,8 @@
 ---
 slug: an4.174
+character:
+  - Venerable Ānanda
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 title: Ānandasutta
 edition: ms

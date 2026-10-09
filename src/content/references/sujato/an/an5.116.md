@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Praise
-description: The Buddha teaches on praise, presenting a fivefold teaching for disciples on the path.
+description: A nun who without scrutiny praises the blameworthy and criticizes the praiseworthy, arouses faith in the dubious, and wastes gifts given in faith is placed in hell; the discerning opposite, in heaven.
 qualities: faith, wisdom
 theme: inspiration
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrobing
-description: The Buddha teaches on disrobing, presenting a fivefold teaching for disciples on the path.
+description: A monk or nun who disavows the training deserves criticism for lacking faith, conscience, prudence, energy, and wisdom; one who lives the full spiritual life even in pain deserves praise for having them.
 qualities: conscience, faith, spiritual life, wisdom, displeasure, suffering
 theme: training guideline, inspiration
 ---

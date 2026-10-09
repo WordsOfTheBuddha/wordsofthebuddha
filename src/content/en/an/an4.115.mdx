@@ -1,8 +1,8 @@
 ---
 title: Ṭhāna sutta - Cases Of Deeds
+qualities: discernment, wisdom, wholesome
+theme: principle, cultivating discernment
 description: The Buddha describes four cases of deeds, and how an immature person and a wise person are to be understood by their responses to deeds that are disagreeable but lead to benefit and deeds that are agreeable but lead to harm.
-fetter: ignorance
-tags: deed, harm, benefit, agreeable, disagreeable, immature person, wise person, resilience, energy, continued effort, discernment, good sense, an, an4
 slug: an4.115
 ---
 

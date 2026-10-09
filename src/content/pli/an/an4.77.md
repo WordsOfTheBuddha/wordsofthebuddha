@@ -1,9 +1,10 @@
 ---
 title: Acinteyya sutta - The Inconceivable
-description: The domain of wisdom of the Buddhas, on one in jhānas, the result of kamma, and speculation about the world are inconceivable and shouldn't be speculated over or thought about.
-fetter: doubt,ignorance
-tags: inconceivable,an,an4,speculation,universe,wisdom,kamma,jhāna,buddha,confusion,distress
+description: The domain of wisdom of the Buddhas, on one in jhānas, the result of kamma, and speculation about the world are inconceivable and shouldn’t be speculated about or pondered upon.
+qualities: jhana, wisdom, speculation
+theme: wisdom
 slug: an4.77
+priority: 1.1
 ---
 
 “Cattārimāni, bhikkhave, acinteyyāni, na cintetabbāni; yāni cintento ummādassa vighātassa bhāgī assa. Katamāni cattāri?

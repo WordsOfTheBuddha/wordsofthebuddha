@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Benefits of Giving
-description: The Buddha teaches on the benefits of giving, presenting a fivefold teaching for disciples on the path.
+description: The five benefits of giving—being dear and beloved, association with good and true persons, a good reputation, not neglecting a layperson's duties, and rebirth in a heavenly realm.
 qualities: wholesome, giving, suffering, dearness
 theme: urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Udāyī
-description: The Buddha teaches on with udāyī, presenting a fourfold teaching for disciples on the path.
+description: Udāyī the brahmin asks whether the Buddha praises sacrifice; he praises no sacrifice that harms living creatures, but praises one well-gotten and well-offered to those worthy of donations.
 qualities: dearness, giving up, faith, recollection of the Buddha
 theme: story, inspiration
 ---

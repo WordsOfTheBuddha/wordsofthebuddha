@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Incredible Things About the Realized One (1st)
-description: The Buddha teaches on incredible things about the realized one (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes four incredible and unmatched qualities of the Realized One—his immeasurable light, unproliferated perception, unshakable meditative life, and stainless freedom of heart.
 qualities: mindfulness, recollection of the Buddha
 theme: recollection of the Buddha, inspiration
 ---

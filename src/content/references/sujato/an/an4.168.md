@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sāriputta’s Practice
-description: The Buddha teaches on sāriputta’s practice, presenting a fourfold teaching for disciples on the path.
+description: Venerable Sāriputta tells the Buddha that as a trainee he relied on the pleasant practice with swift insight to reach fulfillment.
 qualities: insight, attachment, free from attachment
 theme: principle, wisdom
 ---

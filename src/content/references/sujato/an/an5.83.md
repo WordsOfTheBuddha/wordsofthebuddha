@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deceiver
-description: The Buddha teaches on deceiver, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant who uses deceit, flattery, hinting, belittling, and material things to chase after other material things is unlikable; the one who doesn't is dear and beloved.
 qualities: dearness, wisdom
 theme: principle
 ---

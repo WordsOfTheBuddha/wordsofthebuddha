@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess (1st)
-description: The Buddha teaches on stinginess (1st), presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant stingy regarding monasteries, families, material things, and praise, who wastes gifts given in faith, is placed in hell; the opposite, in heaven.
 qualities: faith, stinginess
 theme: inspiration
 ---

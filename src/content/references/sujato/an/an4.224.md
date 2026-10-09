@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Killing Living Creatures
-description: The Buddha teaches on killing living creatures, presenting a fourfold teaching for disciples on the path.
+description: Killing, stealing, sexual misconduct, and lying—done and encouraged—keep a foolish untrue person broken and damaged; their abstention keeps an astute true person healthy and whole.
 qualities: sexual misconduct, merit, slaughtering
 theme: principle
 ---

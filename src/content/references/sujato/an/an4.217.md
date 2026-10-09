@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Expression (1st)
-description: The Buddha teaches on kinds of expression (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha places in hell someone who claims to have seen what they haven't seen, and in heaven the one who truthfully reports what they've seen.
 qualities: wisdom
 theme: principle
 ---

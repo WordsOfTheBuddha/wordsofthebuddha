@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Very Helpful
-description: The Buddha teaches on very helpful, presenting a fivefold teaching for disciples on the path.
+description: Ethics, learning, repairing what's decayed, announcing merit opportunities to laypeople, and attainment of the four absorptions make a resident mendicant very helpful to the monastery.
 qualities: learning, wholesome, merit, mindfulness, ethical conduct, ill will
 theme: training guideline, wisdom
 ---

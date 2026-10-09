@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Character (4th)
-description: The Buddha teaches on bad character (4th), presenting a fourfold teaching for disciples on the path.
+description: The Buddha defines good and better character through abstention from the ten unskillful courses, the better person encouraging others in them too.
 qualities: mindfulness, harm, liberation, vigour, wholesome, right effort
 theme: training guideline, inspiration
 ---

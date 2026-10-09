@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Visiting Families
-description: The Buddha describes the five qualities who visits families is unlikable and disagreeable—they act as though they’re close to people they hardly know. they give away things they don’t own. they over-associate with close friends. they whisper in the ear. and they ask for too much, a mendicant with these five qualities who visits families is unlikable and disagreeable, not respected or admired, a mendicant with five qualities who visits families is dear and beloved, respected and admired, and what five?, and they don’t act as though they’re close to people they hardly know. they don’t give away things they don’t own. they don’t over-associate with close friends. they don’t whisper in the ear. and they don’t ask for too much.
+description: Acting close to strangers, giving away what's not one's own, over-associating, whispering, and asking too much make a mendicant unlikable when visiting families; their opposites make them dear and beloved.
 qualities: dearness, wisdom
 theme: principle
 ---

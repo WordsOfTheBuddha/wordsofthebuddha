@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Conduct (1st)
-description: The Buddha describes the five drawbacks of bad conduct—you blame yourself, after examination, sensible people criticize you, you get a bad reputation, and you feel lost when you die, and and when your body breaks up, after death, you’re reborn in a place of loss, a bad place, the underworld, hell.
+description: Bad conduct brings self-blame, criticism by sensible people, a bad reputation, dying lost, and rebirth in hell; good conduct brings the opposite benefits.
 qualities: harm, wholesome, examination
 theme: urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics
-description: The Buddha teaches on ethics, presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches that a mendicant who lives by the precepts, keen and prudent, lives at ease in all four postures—standing, sitting, walking, and lying down.
 qualities: wrong speech, mindfulness, doubt, drowsiness, dullness, ill will
 theme: training guideline
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Right Efforts
-description: The Buddha teaches that four things should be developed for insight into greed, four things should be devel.
+description: For insight into greed, a mendicant should develop the four right efforts, from preventing unskillful qualities to maintaining those that have arisen.
 qualities: insight, greed, unwholesome, vigour, wholesome, cultivation
 theme: training guideline, principle
 ---

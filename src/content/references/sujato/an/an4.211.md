@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assembly
-description: The Buddha teaches on assembly, presenting a fourfold teaching for disciples on the path.
+description: The Buddha lists the unethical monk, nun, layman, and laywoman as those who corrupt an assembly, and the ethical ones as those who grace it.
 qualities: harm, wholesome, ethical conduct
 theme: principle
 ---

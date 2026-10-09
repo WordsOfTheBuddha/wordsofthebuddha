@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Clouds (2nd)
-description: The Buddha describes the four kinds of clouds—one thunders but doesn’t rain,, one rains but doesn’t thunder,, one neither thunders nor rains, and and.
+description: The Buddha compares one who memorizes the teaching without understanding it to one who understands but barely remembers, placing highest the one who both memorizes and understands the four noble truths.
 qualities: suffering, ending
 theme: cultivating discernment, inspiration
 ---

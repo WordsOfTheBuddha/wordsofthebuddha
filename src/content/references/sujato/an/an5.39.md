@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Child
-description: The Buddha teaches on a child, presenting a fivefold teaching for disciples on the path.
+description: Parents wish for a child to be cared for in return, to keep family traditions, inheritance, and offerings; grateful and thankful true persons look after their parents, remembering past deeds.
 qualities: desire, mindfulness, faith, wisdom
 theme: inspiration
 ---

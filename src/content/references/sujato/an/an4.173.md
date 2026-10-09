@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahākoṭṭhita
-description: The Buddha teaches on with mahākoṭṭhita, presenting a fourfold teaching for disciples on the path.
+description: Asked by Venerable Mahākoṭṭhita, Venerable Sāriputta explains that one who has seen with wisdom the origin and ending of the five aggregates shouldn't further proliferate the unproliferated.
 qualities: wisdom
 theme: principle
 ---

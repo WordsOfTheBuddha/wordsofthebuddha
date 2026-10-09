@@ -5,7 +5,6 @@ qualities: sorrow, sorrow-free, lamentation, wisdom, recognition of impermanence
 theme: inspiration, inquisitiveness, wisdom
 slug: an5.49
 priority: 2
-character: King Pasenadi of Kosala
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho rājā pasenadi kosalo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi.

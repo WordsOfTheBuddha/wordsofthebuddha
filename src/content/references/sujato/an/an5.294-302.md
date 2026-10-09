@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Jain Ascetic, Etc.
-description: The Buddha presents a repeated fivefold teaching on a jain ascetic, etc. in this grouped discourse.
+description: Jain ascetics, disciples of the shavelings, matted-hair ascetics, wanderers, followers of Māgaṇḍiya, trident-bearers, the unobstructed, followers of Gotama, and ritual performers who kill, steal, commit sexual misconduct, lie, and consume intoxicants are placed in hell.
 qualities: sexual misconduct, wisdom
 theme: principle
 ---

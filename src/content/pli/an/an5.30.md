@@ -1,11 +1,10 @@
 ---
 title: Nāgita sutta - With Nāgita
 description: When approached with abundant offerings, the Buddha expresses a heartfelt wish to avoid fame, and speaks of five contemplations which result in being established in dispassion and wisdom.
-qualities: self-making, conceit, recognition of impermanence, recognition of unattractiveness, recognition of unsatisfactoriness dispassion, passion
+qualities: self-making, conceit, recognition of impermanence, recognition of unattractiveness, recognition of unsatisfactoriness, dispassion, passion, arising and passing away
 theme: cultivating discernment, inspiration, wisdom, recollection of the Buddha, inquisitiveness
 slug: an5.30
 simile: fishermen making a haul of fish
-character: Venerable Nāgita
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ yena icchānaṅgalaṁ nāma kosalānaṁ brāhmaṇagāmo tadavasari. Tatra sudaṁ bhagavā icchānaṅgale viharati icchānaṅgalavanasaṇḍe. Assosuṁ kho icchānaṅgalakā brāhmaṇagahapatikā:

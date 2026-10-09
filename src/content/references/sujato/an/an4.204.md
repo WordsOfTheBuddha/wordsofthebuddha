@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ten Kinds of Deeds
-description: The Buddha teaches on ten kinds of deeds, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person, who commits ten kinds of wicked deeds, with the true person, who commits ten kinds of good deeds.
 qualities: sexual misconduct, right view, wrong view
 theme: inspiration, wisdom
 ---

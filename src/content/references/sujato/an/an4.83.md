@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Where Criticism Takes You
-description: The Buddha teaches on where criticism takes you, presenting a fourfold teaching for disciples on the path.
+description: Someone who without scrutiny praises the blameworthy and criticizes the praiseworthy, arouses faith in the dubious, and wastes gifts given in faith is placed in hell; the scrutinizing opposite, in heaven.
 qualities: faith, wisdom
 theme: inspiration
 ---

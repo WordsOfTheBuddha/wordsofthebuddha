@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Snake King
-description: The Buddha teaches on the snake king, presenting a fourfold teaching for disciples on the path.
+description: After a monk dies of a snake bite, the Buddha explains he lacked a mind of love toward the four royal snake families, and recites the safeguarding verses of love to the Virūpakkha, Erāpatha, Chabyāputta, and Kaṇhāgotamaka serpents.
 qualities: affection, harm, safety, recollection of the Buddha
 theme: story, recollection of the Buddha
 ---

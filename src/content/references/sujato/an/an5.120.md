@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wrong Effort
-description: The Buddha teaches on wrong effort, presenting a fivefold teaching for disciples on the path.
+description: A nun who without scrutiny praises the blameworthy and criticizes the praiseworthy, holds wrong effort and wrong mindfulness, and wastes gifts given in faith is placed in hell; with right effort and mindfulness, in heaven.
 qualities: vigour, faith, mindfulness, wrong effort, right effort, wrong mindfulness
 theme: training guideline, inspiration
 ---

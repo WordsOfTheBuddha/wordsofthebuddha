@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Sympathetic Mendicant
-description: The Buddha teaches on a sympathetic mendicant, presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant shows sympathy to laypeople by encouraging them in higher ethics, equipping them to see the truth, prompting the sick to mindfulness, announcing merit opportunities, and not wasting gifts given in faith.
 qualities: merit, mindfulness, compassion, faith, truth, wholesome
 theme: inspiration
 ---

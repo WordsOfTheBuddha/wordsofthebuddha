@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Carer (1st)
-description: The Buddha teaches on a carer (1st), presenting a fivefold teaching for disciples on the path.
+description: Doing the unsuitable, immoderation, refusing medicine, inaccurate symptom reports, and low pain tolerance make a patient hard to care for; their opposites make them easy to care for.
 qualities: suffering, wisdom
 theme: principle
 ---

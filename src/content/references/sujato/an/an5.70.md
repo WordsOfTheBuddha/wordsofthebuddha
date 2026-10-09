@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Ending of Defilements
-description: The Buddha teaches on the ending of defilements, presenting a fivefold teaching for disciples on the path.
+description: The perceptions of the body's ugliness, the repulsiveness of food, dissatisfaction with the world, impermanence, and one's own death, when developed and cultivated, lead to the ending of defilements.
 qualities: ending, discontentment, suffering
 theme: urgency, training guideline
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wrong Speech
-description: The Buddha teaches on wrong speech, presenting a fivefold teaching for disciples on the path.
+description: A nun who without scrutiny praises the blameworthy and criticizes the praiseworthy, holds wrong speech and wrong action, and wastes gifts given in faith is placed in hell; with right speech and action, in heaven.
 qualities: faith, wrong speech, right speech, ethical conduct, unprincipled conduct
 theme: inspiration
 ---

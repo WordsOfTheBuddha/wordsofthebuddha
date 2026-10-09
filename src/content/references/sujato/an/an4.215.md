@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Path (1st)
-description: The Buddha teaches on path (1st), presenting a fourfold teaching for disciples on the path.
+description: Wrong view, purpose, speech, and action send someone to hell; their right counterparts, to heaven.
 qualities: right speech, right view, wrong speech, wrong view, ethical conduct, unprincipled conduct
 theme: wisdom
 ---

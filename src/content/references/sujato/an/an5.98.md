@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In the Wilderness
-description: The Buddha teaches on in the wilderness, presenting a fivefold teaching for disciples on the path.
+description: A mendicant practicing mindfulness of breathing with few obligations, little food, wakefulness, wilderness lodgings, and review of the mind's freedom will soon penetrate the unshakable.
 qualities: mindfulness, wakefulness, liberation, wrong view
 theme: principle, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Thoroughbred
-description: The Buddha describes the five qualities is worthy of offerings dedicated to the gods, wort—integrity, speed, tenderness, patience, and gentleness, a fine royal thoroughbred with these five factors is worthy of a king., what five?, and integrity, speed, tenderness, patience, and gentleness.
+description: A fine royal thoroughbred with integrity, speed, tenderness, patience, and gentleness is worthy of a king; a mendicant with these five is the supreme field of merit for the world.
 qualities: merit, patience, respect
 theme: story, principle
 ---

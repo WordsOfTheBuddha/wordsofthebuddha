@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Having Wrong View
-description: The Buddha teaches on having wrong view, presenting a fivefold teaching for disciples on the path.
+description: A nun who without scrutiny praises the blameworthy and criticizes the praiseworthy, holds wrong view and wrong purpose, and wastes gifts given in faith is placed in hell; with right view and purpose, in heaven.
 qualities: faith, wrong view, right view
 theme: inspiration, wisdom
 ---

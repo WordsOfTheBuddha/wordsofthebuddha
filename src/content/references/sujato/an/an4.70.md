@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unprincipled
-description: The Buddha teaches on unprincipled, presenting a fourfold teaching for disciples on the path.
+description: When kings are unprincipled, royal officials, brahmins and householders, and the people of town and country in turn become unprincipled.
 qualities: safety, wholesome, ill will
 theme: story
 ---

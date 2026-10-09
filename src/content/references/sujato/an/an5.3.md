@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suffering
-description: The Buddha teaches on suffering, presenting a fivefold teaching for disciples on the path.
+description: A faithless, shameless, imprudent, lazy, and witless mendicant lives unhappily in this very life and can expect a bad rebirth; the faithful, conscientious, prudent, energetic, and wise live happily and expect a good rebirth.
 qualities: suffering, anxiety, harm, wholesome, fear of wrongdoing, faith
 theme: urgency, inspiration
 ---

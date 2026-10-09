@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Whatever Region
-description: The Buddha describes the five qualities lives with mind freed, no matter what region they—an anointed aristocratic king is well born on both his mother’s and father’s side, stemming from a clean vessel, with irrefutable and impeccable genealogy back to the seventh paternal generation, he is rich, affluent, and wealthy, with a full treasury and storehouses, he is powerful, having an army of four divisions that is obedient and carries out instructions, and he has a commander who is astute, competent, and intelligent, able to think issues through as they bear upon the past, future, and present, and these four things bring his glory to fruition.
+description: Good birth, wealth, an obedient army, an astute commander, and glory let an anointed king live in his own realm; the parallel five let a mendicant live with mind freed, wherever they are.
 qualities: wholesome, learning, liberation, mindfulness, ending, giving
 theme: story, principle
 ---

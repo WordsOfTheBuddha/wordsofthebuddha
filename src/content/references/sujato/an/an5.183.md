@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Dwelling at the Root of a Tree
-description: The Buddha describes the five who dwell at the root of a tree.
+description: One may dwell at the root of a tree from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost.
 qualities: insanity, wisdom
 theme: principle
 ---

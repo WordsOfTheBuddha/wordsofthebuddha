@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Living Comfortably
-description: The Buddha describes the five ways of living comfortably—it’s when a mendicant consistently treats their spiritual companions with kindness by way of body, speech, and mind, both in public and in private, they live according to the view shared with their spiritual companions, both in public and in private. that view is noble and emancipating, and and brings one who practices it to the complete ending of suffering.
+description: The Buddha names the five ways of living comfortably—kindness by body, speech, and mind toward spiritual companions, and shared precepts and view leading to the complete ending of suffering.
 qualities: ending, suffering, loving-kindness, collectedness, wrong view
 theme: training guideline, principle
 ---

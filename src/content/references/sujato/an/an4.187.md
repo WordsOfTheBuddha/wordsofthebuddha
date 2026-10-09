@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vassakāra
-description: The Buddha teaches on with vassakāra, presenting a fourfold teaching for disciples on the path.
+description: Vassakāra the brahmin asks whether an untrue person knows an untrue person; the Buddha explains who knows whom, adding the story of Todeyya, Eḷeyya, and Rāmaputta.
 qualities: respect, wholesome, craving, recollection of the Buddha
 theme: story, recollection of the Buddha
 ---

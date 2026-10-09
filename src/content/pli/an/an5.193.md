@@ -5,7 +5,6 @@ qualities: ill will, sensual desire, dullness, drowsiness, doubt, anxiety, disce
 theme: wisdom, inspiration, inquisitiveness
 slug: an5.193
 priority: 1.3
-character: Brahmin Saṅgārava
 ---
 
 Atha kho saṅgāravo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho saṅgāravo brāhmaṇo bhagavantaṁ etadavoca:

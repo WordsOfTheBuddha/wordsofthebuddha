@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Longevity (1st)
-description: The Buddha teaches on longevity (1st), presenting a fivefold teaching for disciples on the path.
+description: Unsuitable conduct, immoderation, unfit food, activity at unsuitable times, and unchastity impede longevity; their opposites promote it.
 qualities: spiritual life, wisdom
 theme: principle
 ---

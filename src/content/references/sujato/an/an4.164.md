@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Patient (1st)
-description: The Buddha teaches on patient (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha distinguishes the impatient person who repays abuse, the patient one who doesn't, the tamer, and the one who calms by eliminating unskillful qualities.
 qualities: harm, unwholesome, displeasure, adventurousness, cruelty, greed
 theme: principle
 ---

@@ -1,11 +1,10 @@
 ---
-title: Paṭhama uruvela  sutta - Uruvelā (First)
+title: Paṭhama uruvela sutta - Uruvelā (First)
 description: The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.
 qualities: respect, ethical conduct, collectedness, wisdom, liberation
 theme: inspiration
 slug: an4.21
 similar: sn6.2
-character: Brahmā Sahampati
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

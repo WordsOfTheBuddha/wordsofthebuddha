@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kimbila
-description: The Buddha teaches Venerable Kimbila on with kimbila, presenting a fivefold teaching for disciples on the path.
+description: Venerable Kimbila asks why the true teaching doesn't last long after the Realized One's quenching; the Buddha cites lack of respect and reverence for the Teacher, teaching, Saṅgha, training, and each other, and their opposites for its endurance.
 qualities: quenching, respect
 theme: story, recollection of the Buddha
 ---

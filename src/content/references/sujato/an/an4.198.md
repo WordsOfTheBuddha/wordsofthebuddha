@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fervent Mortification of Oneself
-description: The Buddha describes the four individuals—one individual mortifies themselves, pursuing the practice of mortifying themselves, one individual mortifies others, pursuing the practice of mortifying others, one individual mortifies themselves and others, and pursuing the practice of mortifying themselves and others.
+description: The Buddha describes four individuals—those who mortify themselves, mortify others, both, or neither—identifying the last, who harms neither themselves nor others, as the most advanced.
 qualities: wholesome, ending, giving, giving up, greed, jealousy
 theme: story, urgency
 ---

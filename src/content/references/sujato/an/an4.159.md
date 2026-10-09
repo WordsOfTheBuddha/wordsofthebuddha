@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nun
-description: The Buddha teaches on nun, presenting a fourfold teaching for disciples on the path.
+description: Venerable Ānanda visits a sick nun, explaining that this body arises from food, craving, conceit, and sex; her confession of wrongdoing is carried back and confirmed as well-answered.
 qualities: conceit, craving, liberation, wisdom, suffering, ending
 theme: story, training guideline
 ---

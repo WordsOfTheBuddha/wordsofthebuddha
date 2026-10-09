@@ -5,6 +5,7 @@ qualities: diligence, rousing of energy, continuous effort, recollection of deat
 theme: urgency
 slug: an5.77
 priority: 1.2
+imageCaption: "Bamboo Grove, Japan, Edo period (1615–1868)"
 ---
 
 “Pañcimāni, bhikkhave, anāgatabhayāni sampassamānena alameva āraññikena bhikkhunā appamattena ātāpinā pahitattena viharituṁ appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Katamāni pañca?

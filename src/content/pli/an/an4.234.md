@@ -4,7 +4,6 @@ description: Refuting a claim that he teaches the annihilation of the world, the
 qualities: wholesome, unwholesome, intentional constructs, self-erasure
 theme: wisdom, principle
 slug: an4.234
-character: Brahmin Sikhāmoggallāna, Soṇakāyana
 priority: 1.1
 ---
 

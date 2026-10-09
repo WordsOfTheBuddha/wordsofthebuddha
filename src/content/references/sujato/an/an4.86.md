@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sunk Low
-description: The Buddha describes the four individuals—one sunk low who sinks lower,, one sunk low who rises high,, one risen high who sinks low, and and.
+description: The Buddha names four individuals—one sunk low who sinks lower, one sunk low who rises high, one risen high who sinks low, and one risen high who rises higher.
 qualities: wisdom
 theme: principle
 ---

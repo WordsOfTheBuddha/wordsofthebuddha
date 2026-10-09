@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unshakable
-description: The Buddha teaches on unshakable, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant who has attained the four methods of textual analysis and reviews the extent of their mind's freedom will soon penetrate the unshakable.
 qualities: examination, inspiration, liberation, wrong view
 theme: principle, wisdom
 ---

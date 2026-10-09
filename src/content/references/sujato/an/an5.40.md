@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Great Sal Trees
-description: The Buddha teaches on great sal trees, presenting a fivefold teaching for disciples on the path.
+description: Great sal trees grow five ways supported by the Himalayas; a family grows five ways—faith, ethics, learning, generosity, and wisdom—supported by a family head with faith.
 qualities: faith, giving, wholesome, ethical conduct, wisdom, delight
 theme: story, inspiration
 ---

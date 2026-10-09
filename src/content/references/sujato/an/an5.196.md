@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Great Dreams
-description: The Buddha teaches on the great dreams, presenting a fivefold teaching for disciples on the path.
+description: Before his awakening the Realized One saw five great dreams—of the earth as bed and Himalaya as pillow, grass from his navel reaching the sky, white caterpillars to his knees, four birds turning white, and walking unsoiled on dust.
 qualities: quenching, liberation
 theme: story, recollection of the Buddha
 ---

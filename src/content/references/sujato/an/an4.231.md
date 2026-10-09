@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Poets
-description: The Buddha describes the four poets, explaining this fourfold teaching for disciples on the path.
+description: The Buddha names four poets—one who thoughtfully composes their own work, one who repeats the oral transmission, one who educates, and one who improvises.
 qualities: wisdom
 theme: principle
 ---

@@ -5,7 +5,6 @@ qualities: resentment
 theme: wisdom, training guideline, inquisitiveness
 slug: an5.162
 simile: cow’s footprint
-character: Venerable Sāriputta
 priority: 1.1
 ---
 

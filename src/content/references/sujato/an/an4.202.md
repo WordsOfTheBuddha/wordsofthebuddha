@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faithless
-description: The Buddha teaches on faithless, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person—faithless, shameless, imprudent, lazy, and witless—with the true person of faith, conscience, prudence, energy, and wisdom.
 qualities: conscience, faith, learning, mindfulness, wisdom, fear of wrongdoing
 theme: inspiration, wisdom
 ---

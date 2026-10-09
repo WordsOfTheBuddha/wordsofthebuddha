@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sārandada
-description: The Buddha teaches on at sārandada, presenting a fivefold teaching for disciples on the path.
+description: Five hundred Licchavis discuss the five rare treasures of elephant, horse, jewel, woman, and householder; the Buddha's five treasures are faith in the Realized One, understanding and practicing the teaching, and gratitude.
 qualities: compassion, sensual desire
 theme: story, recollection of the Buddha
 ---

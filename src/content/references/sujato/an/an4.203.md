@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seven Kinds of Deeds
-description: The Buddha teaches on seven kinds of deeds, presenting a fourfold teaching for disciples on the path.
+description: The Buddha contrasts the untrue person, who commits seven kinds of wicked deeds, with the true person, who commits seven kinds of good deeds.
 qualities: sexual misconduct, wisdom
 theme: inspiration
 ---

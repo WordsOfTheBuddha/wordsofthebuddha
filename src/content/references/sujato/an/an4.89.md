@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Right View
-description: The Buddha describes the four individuals—the confirmed ascetic, the white lotus ascetic, the pink lotus ascetic, and the delicate ascetic of ascetics, and and how is an individual a confirmed ascetic?.
+description: The Buddha defines the four ascetics by the noble eightfold path for the confirmed ascetic, and the observances of fewness of wishes through to the undefiled freedom for the delicate ascetic of ascetics.
 qualities: right view, mindfulness, right effort, right livelihood, right speech, ethical conduct
 theme: training guideline, wisdom
 ---

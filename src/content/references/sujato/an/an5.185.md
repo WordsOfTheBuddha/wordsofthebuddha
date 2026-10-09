@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Open Air Dwellers
-description: The Buddha teaches on open air dwellers, presenting a fivefold teaching for disciples on the path.
+description: One may dwell in the open air from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost.
 qualities: wisdom
 theme: principle
 ---

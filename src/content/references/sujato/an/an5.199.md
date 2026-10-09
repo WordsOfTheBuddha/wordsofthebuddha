@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Families
-description: The Buddha teaches on families, presenting a fivefold teaching for disciples on the path.
+description: When ethical renunciates visit a family, the people brim with merit—raising confidence, honoring them, giving up stinginess, sharing, and asking questions—paths to heaven, eminent birth, illustriousness, wealth, and wisdom.
 qualities: merit, wisdom, stinginess, faith, ethical conduct
 theme: inspiration, inquisitiveness
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Doṇa
-description: The Buddha teaches on doṇa, presenting a fourfold teaching for disciples on the path.
+description: Doṇa the brahmin follows wheel footprints and finds the Buddha seated at their end; asked what he is, the Buddha, whose defilements are ended like a lotus unclung by water, says to remember him as a Buddha.
 qualities: mindfulness, self-control, attachment, tame, tranquility, recollection of the Buddha
 theme: story
 ---

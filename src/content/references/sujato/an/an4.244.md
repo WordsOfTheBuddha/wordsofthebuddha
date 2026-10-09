@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perils of Offenses
-description: "The Buddha describes the four perils of offenses—suppose they were to arrest a bandit, a criminal and present him to the king, saying:, ‘your majesty, this is a bandit, a criminal, and may your majesty punish them!’."
+description: The Buddha compares the consequences of offenses for a mendicant to the escalating punishments of a bandit, teaching vigilance so that confessable offenses are dealt with properly.
 qualities: harm, wisdom
 theme: story
 ---

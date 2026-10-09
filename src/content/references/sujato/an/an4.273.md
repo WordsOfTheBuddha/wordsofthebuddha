@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wrong View
-description: The Buddha teaches on wrong view, presenting a fourfold teaching for disciples on the path.
+description: Someone who has wrong view—doing it themselves, encouraging others, approving, or praising it—is placed in hell; one with right view who encourages it in others, in heaven.
 qualities: right view, wrong view
 theme: inspiration, wisdom
 ---

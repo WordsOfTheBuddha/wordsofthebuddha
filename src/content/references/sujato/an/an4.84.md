@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Valuing Anger
-description: The Buddha teaches on valuing anger, presenting a fourfold teaching for disciples on the path.
+description: Someone who values anger, denigration, material things, or honor rather than the true teaching is placed in hell; one who values the true teaching, in heaven.
 qualities: anger, contempt, ill will
 theme: principle
 ---

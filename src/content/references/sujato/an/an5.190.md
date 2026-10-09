@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Those Who Eat Only From the Almsbowl
-description: The Buddha teaches on those who eat only from the almsbowl, presenting a fivefold teaching for disciples on the path.
+description: One may eat only from the almsbowl from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost, like cream of ghee.
 qualities: contentment, insanity, solitude
 theme: principle
 ---

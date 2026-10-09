@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shackles
-description: The Buddha describes the five shackles of the heart—firstly, a mendicant isn’t free of greed, desire, fondness, thirst, passion, and craving for sensual pleasures, this being so, their mind doesn’t incline toward keenness, commitment, persistence, and striving, this is the first shackle of the heart, and furthermore, a mendicant isn’t free of greed for the body, and they’re not free of greed for form.
+description: Craving for sensual pleasures, greed for the body and form, gluttony and drowsiness, and longing for rebirth among the gods are the five shackles of the heart, each blocking keenness and striving.
 qualities: greed, vigour, spiritual life, craving, passion, desire
 theme: training guideline
 ---

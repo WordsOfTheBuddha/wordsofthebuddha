@@ -1,7 +1,5 @@
 ---
 slug: an5.75
-character:
-  - "Sakka, lord of the gods"
 source: suttacentral/bilara-data
 title: Paṭhamayodhājīvasutta
 edition: ms

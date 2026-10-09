@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Resident Mendicant
-description: The Buddha teaches on a resident mendicant, presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant not accomplished in presentation and duties, learning, self-effacement, clear speech, and wisdom is not admirable; the opposite five are admirable.
 qualities: learning, unassuming, wholesome
 theme: inspiration
 ---

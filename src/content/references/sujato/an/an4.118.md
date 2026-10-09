@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Inspiring
-description: The Buddha teaches on inspiring, presenting a fourfold teaching for disciples on the path.
+description: The Buddha describes the four inspiring places—the sites of his birth, awakening, first teaching, and final quenching—that faithful followers should visit and honor.
 qualities: faith, recollection of the Buddha
 theme: recollection of the Buddha, inspiration
 ---

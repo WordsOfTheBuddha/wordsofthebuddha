@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness Well Established
-description: The Buddha teaches on mindfulness well established, presenting a fivefold teaching for disciples on the path.
+description: Any monk or nun who develops well-established mindfulness together with the perceptions of the body's ugliness, the repulsiveness of food, dissatisfaction with the world, and impermanence can expect enlightenment or non-return.
 qualities: mindfulness, discontentment, suffering
 theme: urgency, training guideline
 ---

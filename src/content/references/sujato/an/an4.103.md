@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Pots
-description: The Buddha describes the four pots—covered but hollow,, uncovered but full,, uncovered and hollow, and and.
+description: The Buddha compares an impressive-looking person who doesn't understand the four noble truths to a vessel polished outside and filthy within, placing highest the one who is both graceful and understanding.
 qualities: suffering, ending
 theme: cultivating discernment, principle
 ---

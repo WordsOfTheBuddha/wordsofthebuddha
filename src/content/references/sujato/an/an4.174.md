@@ -1,10 +1,13 @@
 ---
 slug: an4.174
+character:
+  - Venerable Ānanda
+  - Venerable Mahākoṭṭhita
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
-description: The Buddha teaches on with ānanda, presenting a fourfold teaching for disciples on the path.
+description: Venerable Ānanda asks Venerable Mahākoṭṭhita the same question; he gives the same answer about not proliferating, and Ānanda approves it with a garland simile.
 qualities: wisdom
 theme: inquisitiveness
 ---

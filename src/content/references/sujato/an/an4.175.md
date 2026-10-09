@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Upavāṇa
-description: The Buddha teaches on with upavāṇa, presenting a fourfold teaching for disciples on the path.
+description: Venerable Upavāṇa asks Venerable Sāriputta what the phrase 'terminator of the flood' refers to; Sāriputta explains it through knowing and seeing by good conduct at each stage of the training.
 qualities: wholesome, complete comprehension, vision
 theme: wisdom
 ---

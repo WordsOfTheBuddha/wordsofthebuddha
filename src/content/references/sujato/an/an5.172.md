@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assured
-description: The Buddha teaches on assured, presenting a fivefold teaching for disciples on the path.
+description: A lay follower living at home who kills, steals, commits sexual misconduct, lies, and consumes intoxicants is not self-assured; the abstainer is self-assured.
 qualities: sexual misconduct, wisdom
 theme: principle
 ---

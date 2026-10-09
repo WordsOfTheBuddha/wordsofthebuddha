@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kakudha
-description: "The Buddha describes the five teachers found in the world—firstly, some teacher with impure conduct claims: ‘i am pure in ethics. my ethical conduct is pure, bright, uncorrupted.’, but their disciples know:, ‘this teacher has impure ethical conduct, but claims to be ethically pure, and they wouldn’t like it if we were to tell the laypeople, and and how could we treat them in a way that they don’t like?."
+description: The godling Kakudha tells Venerable Mahāmoggallāna that Devadatta lost his psychic power the moment he intended to lead the Saṅgha; the Buddha describes five kinds of teachers whose claimed purity their disciples know to be true or false.
 qualities: vision, ethical conduct, psychic power, desire
 theme: story, wisdom
 ---

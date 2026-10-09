@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess (2nd)
-description: The Buddha teaches on stinginess (2nd), presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant stingy regarding monasteries, families, material things, praise, and the teachings is placed in hell as if delivered there; the opposite, in heaven.
 qualities: stinginess, wisdom
 theme: principle
 ---

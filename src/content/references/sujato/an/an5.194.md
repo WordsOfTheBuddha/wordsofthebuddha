@@ -1,10 +1,13 @@
 ---
 slug: an5.194
+character:
+  - Brahmin Kāraṇapālī
+  - Brahmin Piṅgiyānī
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kāraṇapālī
-description: The Buddha teaches on with kāraṇapālī, presenting a fivefold teaching for disciples on the path.
+description: The brahmin Kāraṇapālī questions Piṅgiyānī about his devotion to the ascetic Gotama; Piṅgiyānī's praise of the Buddha's lucidity of wisdom moves Kāraṇapālī to go for refuge.
 qualities: suffering, wisdom, wakefulness, ending, happiness, joy
 theme: story, recollection of the Buddha
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Best (2nd)
-description: The Buddha describes the four things, explaining this fourfold teaching for disciples on the path.
+description: The best form, feeling, perception, and existence are the four best things.
 qualities: wisdom
 theme: principle
 ---

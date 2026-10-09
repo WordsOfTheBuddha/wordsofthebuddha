@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness Meditation
-description: The Buddha teaches that four things should be developed for insight into greed, four things should be devel.
+description: For insight into greed, a mendicant should develop the four establishments of mindfulness, observing an aspect of body, feelings, mind, and principles.
 qualities: greed, insight, displeasure, jealousy, mindfulness, cultivation
 theme: training guideline, principle
 ---

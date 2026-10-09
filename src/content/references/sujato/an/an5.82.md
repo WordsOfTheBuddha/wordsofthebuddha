@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Free of Greed
-description: The Buddha teaches on free of greed, presenting a fivefold teaching for disciples on the path.
+description: A senior mendicant not free of greed, hate, and delusion, offensive and contemptuous, is unlikable to their spiritual companions; the one free of them is dear and beloved.
 qualities: greed, delusion, aversion, dearness, craving, ill will
 theme: principle
 ---

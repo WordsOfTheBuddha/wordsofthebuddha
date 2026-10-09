@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aspiration (2nd)
-description: The Buddha describes the five qualities aspires to end the defilements—it’s when an anointed aristocratic king’s eldest son is well born on both his mother’s and father’s side, stemming from a clean vessel, with irrefutable and impeccable genealogy back to the seventh paternal generation, he is attractive, good-looking, lovely, of surpassing beauty, he is dear and beloved to his parents, and he is dear and beloved to the armed forces, and he is astute, competent, and intelligent, able to think issues through as they bear upon the past, future, and present.
+description: An eldest son well born, beautiful, beloved by parents and the armed forces, and astute aspires to become viceroy; the mendicant with the trainee's five powers aspires to end the defilements.
 qualities: wholesome, learning, dearness, mindfulness, ending, wisdom
 theme: story, training guideline
 ---

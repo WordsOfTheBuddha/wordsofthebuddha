@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Times (2nd)
-description: The Buddha describes the four times, explaining this fourfold teaching for disciples on the path.
+description: The Buddha repeats the four practices—listening, discussion, serenity, and discernment—that end the defilements, like rain filling mountain streams that run down to the great ocean.
 qualities: ending, discernment, tranquility, wisdom
 theme: wisdom
 ---

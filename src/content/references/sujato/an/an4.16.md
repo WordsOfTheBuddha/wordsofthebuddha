@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Subtlety
-description: The Buddha describes the four kinds of subtlety—a mendicant has ultimate subtlety of form, they don’t see any other subtlety of form that’s better or finer than that,, and nor do they aim for it.
+description: A mendicant with ultimate subtlety of form, feeling, perception, and choices doesn't aim for anything finer; knowing them as alien, suffering, and not-self, they see rightly and bear their final body.
 qualities: suffering, affection
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Carer (2nd)
-description: The Buddha teaches on a carer (2nd), presenting a fivefold teaching for disciples on the path.
+description: Inability to prepare medicine, ignoring suitability, mercenary motives, disgust at removing waste, and inability to give Dhamma talks make a carer incompetent; their opposites make them competent.
 qualities: affection, wisdom
 theme: inspiration
 ---

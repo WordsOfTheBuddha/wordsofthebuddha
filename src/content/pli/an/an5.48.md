@@ -1,7 +1,7 @@
 ---
 title: Alabbhanīyaṭhāna sutta - Unobtainable States
 description: The Buddha explains the distinction between how an uninstructed ordinary person and a learned disciple of the Noble Ones respond to the five unobtainable states of aging, illness, death, perishing, and loss.
-qualities: sorrow, sorrow-free, lamentation, wisdom, recognition of impermanence, recognition of unsatisfactoriness, wisdom, discernment, quenching, patience
+qualities: sorrow, sorrow-free, lamentation, wisdom, recognition of impermanence, recognition of unsatisfactoriness, discernment, quenching, patience
 theme: inspiration, inquisitiveness, wisdom
 slug: an5.48
 ---

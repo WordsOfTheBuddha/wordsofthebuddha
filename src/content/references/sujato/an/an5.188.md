@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Those Who Eat in One Sitting
-description: The Buddha teaches on those who eat in one sitting, presenting a fivefold teaching for disciples on the path.
+description: One may eat in one sitting per day from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost.
 qualities: wisdom
 theme: principle
 ---

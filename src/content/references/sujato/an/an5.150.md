@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Temporarily Free (2nd)
-description: The Buddha teaches on temporarily free (2nd), presenting a fivefold teaching for disciples on the path.
+description: Relishing work, talk, and sleep, not guarding the sense doors, and eating too much lead to the decline of a mendicant who is temporarily free; sense restraint and moderation in eating prevent it.
 qualities: sense restraint, wisdom
 theme: principle
 ---

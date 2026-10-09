@@ -1,5 +1,7 @@
 ---
 slug: an5.31
+character:
+  - Princess Sumanā
 source: suttacentral/bilara-data
 title: Sumanasutta
 edition: ms

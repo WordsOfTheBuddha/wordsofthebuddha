@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Nun
-description: The Buddha presents a repeated fivefold teaching on a nun in this grouped discourse.
+description: A nun, trainee nun, novice monk, novice nun, layman, or laywoman who kills, steals, commits sexual misconduct, lies, and consumes intoxicants is placed in hell; the abstainer, in heaven.
 qualities: sexual misconduct, wisdom
 theme: principle
 ---

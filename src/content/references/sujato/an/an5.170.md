@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhaddaji
-description: The Buddha teaches Venerable Bhaddaji on with bhaddaji, presenting a fivefold teaching for disciples on the path.
+description: Asked by Venerable Ānanda for the best sight, sound, happiness, perception, and state of existence, Venerable Bhaddaji answers with the best of gods, then places the ending of the defilements above all.
 qualities: happiness, learning
 theme: inspiration
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Visiting Families (2nd)
-description: The Buddha describes the five drawbacks for a mendicant who visits families for too long, mixing closely with them—you often see members of the opposite sex, seeing them, you become close, being so close, you become intimate, and being intimate, lust overcomes you, and when your mind is swamped by lust, you can expect that you will lead the spiritual life dissatisfied, or commit one of the corrupt offenses, or resign the training and return to a lesser life.
+description: Visiting families too long and mixing closely with them, a mendicant often sees the opposite sex, becomes close, intimate, and lust-swamped—expecting dissatisfaction, a corrupt offense, or giving up the training.
 qualities: passion, sensual desire, spiritual life
 theme: training guideline
 ---

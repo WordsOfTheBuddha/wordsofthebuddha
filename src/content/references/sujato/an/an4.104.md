@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lakes
-description: The Buddha describes the four lakes—one is shallow but appears deep,, one is deep but appears shallow,, one is shallow and appears shallow, and and.
+description: The Buddha compares people to lakes—shallow yet appearing deep, deep yet appearing shallow, shallow and shallow, or deep and deep—placing highest the deep one, inwardly and outwardly.
 qualities: suffering, ending
 theme: cultivating discernment, wisdom
 ---

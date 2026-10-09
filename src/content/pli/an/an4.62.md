@@ -4,7 +4,6 @@ description: The Buddha explains the four kinds of happiness that are attainable
 qualities: happiness, ethical conduct, wisdom, felt experience, merit
 theme: wisdom, cultivating discernment, inquisitiveness
 slug: an4.62
-character: Householder Anāthapiṇḍika
 commentary:
   - "[1] The two kinds of happiness compared here are: the happiness of debtlessness, ownership, and the enjoyment of wealth as one kind, available to laypersons who enjoy sensual pleasures; and the happiness of being blameless as the second kind, available to laypersons who enjoy sensual pleasures and in addition are purified in ethical conduct, disciples of the Noble Ones."
 priority: 1.1

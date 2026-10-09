@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard to Get Rid Of
-description: The Buddha describes the five things—greed, hate, delusion, the feeling of being inspired to speak out, and thoughts of traveling, and these five things are hard to get rid of once they’ve arisen.”.
+description: Greed, hate, delusion, the feeling of being inspired to speak out, and thoughts of traveling are five things hard to get rid of once they've arisen.
 qualities: delusion, greed, aversion, craving, ill will
 theme: inspiration, principle
 ---

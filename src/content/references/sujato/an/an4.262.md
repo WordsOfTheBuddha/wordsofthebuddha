@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wilderness
-description: The Buddha teaches on wilderness, presenting a fourfold teaching for disciples on the path.
+description: Thoughts of renunciation, good will, and harmlessness, together with wisdom, make a mendicant ready to frequent remote lodgings in the wilderness; their opposites make them unfit.
 qualities: flexible, giving up, non-harm, wholesome, harm
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sure Path (2nd)
-description: The Buddha teaches on the sure path (2nd), presenting a fivefold teaching for disciples on the path.
+description: Someone who disparages the talk, the speaker, or themselves, is witless, and assumes knowledge they lack can't step onto the sure path even hearing the true teaching; their opposites can.
 qualities: wholesome, wisdom
 theme: principle
 ---

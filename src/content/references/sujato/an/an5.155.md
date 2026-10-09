@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Decline of the True Teaching (2nd)
-description: The Buddha teaches on the decline of the true teaching (2nd), presenting a fivefold teaching for disciples on the path.
+description: The true teaching endures when mendicants memorize, explain, recite, rehearse, and contemplate the ninefold canonical teaching; its neglect brings decline and disappearance.
 qualities: learning, vigour
 theme: inspiration, principle
 ---

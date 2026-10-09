@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freedom of Heart is the Fruit (1st)
-description: The Buddha teaches on freedom of heart is the fruit (1st), presenting a fivefold teaching for disciples on the path.
+description: The perceptions of the body's ugliness, the repulsiveness of food, dissatisfaction with the world, impermanence, and one's own death have freedom of heart and by wisdom as their fruit; such a mendicant has lifted the cross-bar, filled in the moat, and pulled up the pillar.
 qualities: liberation, wisdom, conceit, craving, ignorance, discontentment
 theme: urgency, training guideline
 ---

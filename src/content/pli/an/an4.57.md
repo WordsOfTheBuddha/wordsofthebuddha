@@ -4,7 +4,6 @@ description: The Buddha teaches the laywoman Suppavāsā that giving food bestow
 qualities: giving, stinginess, merit
 theme: inspiration, principle, wisdom
 slug: an4.57
-character: Suppavāsā
 ---
 
 Ekaṁ samayaṁ bhagavā koliyesu viharati pajjanikaṁ nāma koliyānaṁ nigamo.

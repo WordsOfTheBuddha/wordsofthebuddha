@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Guilt
-description: The Buddha describes the four fears, explaining this fourfold teaching for disciples on the path.
+description: The Buddha describes four fears—guilt about misconduct, fear of being exposed by others, fear of punishment, and fear of a bad rebirth—each stilled by living ethically.
 qualities: harm, fear, wholesome
 theme: urgency
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Moggallāna’s Practice
-description: The Buddha teaches on moggallāna’s practice, presenting a fourfold teaching for disciples on the path.
+description: Venerable Mahāmoggallāna tells the Buddha that as a trainee he relied on the painful practice with swift insight to reach fulfillment.
 qualities: insight, attachment, free from attachment
 theme: principle, wisdom
 ---

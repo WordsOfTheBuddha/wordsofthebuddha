@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Right View
-description: The Buddha teaches on right view, presenting a fourfold teaching for disciples on the path.
+description: Thoughts of renunciation, good will, and harmlessness, together with right view, give a mendicant's practice a sure bet and lay the groundwork for ending the defilements.
 qualities: ending, right view, giving up, non-harm, wholesome, wrong view
 theme: principle, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Future Perils (4th)
-description: The Buddha teaches on future perils (4th), presenting a fivefold teaching for disciples on the path.
+description: In a future time mendicants who like nice robes, almsfood, lodgings, and medicines will neglect the austere practices, settle in towns, and use improper solicitation; the Buddha calls these five future perils to watch for and give up.
 qualities: spiritual life, wisdom
 theme: training guideline
 ---

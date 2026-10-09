@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lying Postures
-description: The Buddha describes the four ways of lying down—the ways a corpse, a pleasure seeker, a lion, and a realized one lie down, and how does a corpse lie down?, and corpses usually lie flat on their backs.
+description: The Buddha describes the four ways of lying down—like a corpse flat on the back, a pleasure seeker on the side, a lion at rest, and the Realized One absorbed in the four absorptions.
 qualities: jhana, wrong speech, unwholesome, sensual desire, recollection of the Buddha
 theme: story, recollection of the Buddha
 ---

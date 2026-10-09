@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Character (3rd)
-description: The Buddha teaches on bad character (3rd), presenting a fourfold teaching for disciples on the path.
+description: The Buddha defines bad and worse character through killing, stealing, sexual misconduct, wrong speech, and wrong view—worse when encouraging others—and good and better character in their opposite.
 qualities: sexual misconduct, harm, wholesome, right view, wrong view
 theme: inspiration, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Meal Assigner
-description: The Buddha teaches on a meal assigner, presenting a fivefold teaching for disciples on the path.
+description: Don't appoint as meal assigner someone prejudiced by favoritism, hostility, stupidity, or cowardice who doesn't know if a meal has been assigned; the impartial one who knows is appointed and placed in heaven.
 qualities: aggressiveness, aversion, immaturity, wisdom
 theme: cultivating discernment
 ---

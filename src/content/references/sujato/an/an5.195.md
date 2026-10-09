@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Piṅgiyānī
-description: The Buddha teaches on piṅgiyānī, presenting a fivefold teaching for disciples on the path.
+description: Amid resplendent Licchavis, the brahmin Piṅgiyānī extols the Buddha in verse, receives five hundred robes for him, and the Buddha lists the five treasures whose appearance is rare in the world.
 qualities: mindfulness, wisdom
 theme: story, recollection of the Buddha
 ---

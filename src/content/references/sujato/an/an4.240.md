@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Pleasing
-description: The Buddha teaches on pleasing, presenting a fourfold teaching for disciples on the path.
+description: Hurtful deeds by body, speech, and mind with hurtful view send someone to hell; pleasing deeds and view, to heaven.
 qualities: dearness, wrong view
 theme: wisdom
 ---

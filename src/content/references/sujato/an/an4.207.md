@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Character (1st)
-description: The Buddha teaches on bad character (1st), presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches bad, worse, good, and better character through ten kinds of deeds, from killing to wrong view, done and encouraged by oneself or others.
 qualities: sexual misconduct, harm, wholesome, right view, wrong view
 theme: inspiration, wisdom
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Tikaṇḍakī
-description: The Buddha teaches on at tikaṇḍakī, presenting a fivefold teaching for disciples on the path.
+description: A mendicant would do well to meditate perceiving the repulsive in the unrepulsive and the unrepulsive in the repulsive, so that greed, hate, and delusion don't arise, at times staying equanimous, shunning both.
 qualities: greed, aversion, delusion, craving, mindfulness, ill will
 theme: story, training guideline
 ---

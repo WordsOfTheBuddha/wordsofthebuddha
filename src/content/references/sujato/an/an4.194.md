@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sāpūga
-description: The Buddha teaches on at sāpūga, presenting a fourfold teaching for disciples on the path.
+description: Venerable Ānanda explains the four factors of trying to be pure—purifying ethics, mind, view, and freedom—to the Koliyans of Sāpūga, to get past sorrow and realize extinguishment.
 qualities: vigour, mindfulness, suffering, liberation, wisdom, jhana
 theme: story, recollection of the Buddha
 ---

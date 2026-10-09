@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Corpse-worker
-description: The Buddha teaches on corpse-worker, presenting a fivefold teaching for disciples on the path.
+description: A faithless, unethical lay follower who believes in omens over deeds and donates outside the community is a corpse-worker, a stain, and a reject among lay followers; the faithful opposite is a gem and a lotus.
 qualities: ethical conduct, faith
 theme: inspiration
 ---

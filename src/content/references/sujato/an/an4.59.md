@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Food
-description: The Buddha teaches on food, presenting a fourfold teaching for disciples on the path.
+description: When a donor gives food, they give the recipients four things—long life, beauty, happiness, and strength.
 qualities: happiness, wisdom
 theme: principle
 ---

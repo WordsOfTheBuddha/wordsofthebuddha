@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Loss
-description: The Buddha describes the five losses—loss of relatives, wealth, health, ethics, and view, it is not because of loss of relatives, wealth, or health that sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, hell, it is because of loss of ethics or view that sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, and hell.
+description: Loss of ethics or view—not of relatives, wealth, or health—sends sentient beings to hell, and their endowment leads to heaven; the Buddha lists the five losses and endowments.
 qualities: harm, wholesome, wrong view
 theme: urgency, wisdom
 ---

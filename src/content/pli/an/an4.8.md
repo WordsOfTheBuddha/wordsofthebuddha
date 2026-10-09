@@ -1,10 +1,8 @@
 ---
 title: Vesārajja sutta - Assurances
 description: The Buddha describes the four assurances possessed by the Tathāgata.
-fetter: ignorance
 qualities: faith, recollection of the Buddha
 theme: inspiration, principle
-tags: confidence, tathāgata, realization, taints, obstruction, end of suffering, an, an4
 slug: an4.8
 ---
 

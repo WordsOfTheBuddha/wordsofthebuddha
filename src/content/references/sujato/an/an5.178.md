@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kings
-description: The Buddha teaches on kings, presenting a fivefold teaching for disciples on the path.
+description: Kings arrest and punish people for murder, theft, sexual misconduct, lying, and intoxication—never for giving these up—showing which deeds draw penalties.
 qualities: harm, wholesome, stealing, wrong speech, slaughtering, sexual misconduct
 theme: story
 ---

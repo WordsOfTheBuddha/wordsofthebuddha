@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Vassakāra on What is Heard
-description: The Buddha teaches on vassakāra on what is heard, presenting a fourfold teaching for disciples on the path.
+description: Vassakāra the brahmin holds that there's nothing wrong in talking; the Buddha agrees one should talk—but about how unskillful qualities decline while skillful qualities grow.
 qualities: unwholesome, wholesome, craving, wrong view, recollection of the Buddha
 theme: story, wisdom
 ---

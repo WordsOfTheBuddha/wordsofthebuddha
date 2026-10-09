@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nārada
-description: The Buddha teaches on with nārada, presenting a fivefold teaching for disciples on the path.
+description: Grieving King Muṇḍa preserves dead Queen Bhaddā's corpse in oil; the treasury keeper Piyaka brings the ascetic Nārada, whose teaching on possession, affection, and craving as the root of sorrow frees the king to cremate the body and return to his duties.
 qualities: sorrow, wholesome, doubt, learning, ending, dearness
 theme: story, urgency
 ---

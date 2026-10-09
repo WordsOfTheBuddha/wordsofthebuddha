@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deserving Criticism (2nd)
-description: The Buddha teaches on deserving criticism (2nd), presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant who without scrutiny praises the blameworthy and criticizes the praiseworthy, is stingy regarding monasteries and families, and wastes gifts given in faith is placed in hell; the opposite, in heaven.
 qualities: faith, wisdom
 theme: inspiration
 ---

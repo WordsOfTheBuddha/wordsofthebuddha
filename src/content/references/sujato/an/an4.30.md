@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wanderers
-description: The Buddha describes the four footprints of the dhamma—contentment ..., and good will ... right mindfulness ... right immersion ....
+description: Visiting well-known wanderers, the Buddha describes the four primordial footprints of the Dhamma—contentment, good will, right mindfulness, and right immersion—that sensible people don't criticize.
 qualities: mindfulness, wholesome, contentment, ill will, passion, sensual desire
 theme: story, training guideline
 ---

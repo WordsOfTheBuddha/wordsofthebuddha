@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vassakāra
-description: The Buddha teaches on with vassakāra, presenting a fourfold teaching for disciples on the path.
+description: Vassakāra the brahmin asks what makes a great man of great wisdom; the Buddha answers that he knows what is the path and what is not, has completed the task, and is free of defilements.
 qualities: wisdom, liberation, ending, happiness, insight, learning
 theme: story, urgency
 ---

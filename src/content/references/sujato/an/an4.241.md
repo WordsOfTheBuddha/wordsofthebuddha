@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ascetics
-description: The Buddha teaches on ascetics, presenting a fourfold teaching for disciples on the path.
+description: The Buddha teaches how to rightly roar the lion's roar—'only here are the four ascetics'—from the stream-enterer to the perfected one, with other sects empty of ascetics.
 qualities: ending, liberation, insight, wisdom, delusion, greed
 theme: wisdom
 ---

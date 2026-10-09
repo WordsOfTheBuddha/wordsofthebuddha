@@ -1,10 +1,13 @@
 ---
 slug: an4.196
+character:
+  - Licchavi Sāḷha
+  - Licchavi Abhaya
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sāḷha
-description: The Buddha teaches on with sāḷha, presenting a fourfold teaching for disciples on the path.
+description: Sāḷha and Abhaya the Licchavis ask about crossing the flood by ethics and mortification; the Buddha teaches the noble eightfold path, by which a noble disciple with right freedom shatters the great mass of ignorance.
 qualities: right view, suffering, ending, liberation, ignorance, delusion
 theme: story, training guideline
 ---

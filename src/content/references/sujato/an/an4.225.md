@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Path (1st)
-description: The Buddha teaches on path (1st), presenting a fourfold teaching for disciples on the path.
+description: The wrong eightfold path keeps a foolish untrue person broken and damaged; the noble eightfold path keeps an astute true person healthy and whole.
 qualities: merit, right speech, right view, wrong speech, wrong view, ethical conduct
 theme: wisdom
 ---

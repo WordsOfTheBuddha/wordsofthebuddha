@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lying
-description: The Buddha teaches on lying, presenting a fourfold teaching for disciples on the path.
+description: Someone whose speech is false, backbiting, harsh, or nonsensical is placed in hell; the truthful speaker, in heaven.
 qualities: wrong speech, wisdom
 theme: principle
 ---

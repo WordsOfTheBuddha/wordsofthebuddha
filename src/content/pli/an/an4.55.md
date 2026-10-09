@@ -4,7 +4,6 @@ description: If both husband and wife wish to see one another in this very life 
 qualities: faith, ethical conduct, giving, wisdom
 theme: wisdom
 slug: an4.55
-character: Householder Nakulapitā, Housewife Nakulamātā
 priority: 1.1
 ---
 

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Timidity
-description: The Buddha teaches on timidity, presenting a fivefold teaching for disciples on the path.
+description: A lay follower who kills, steals, commits sexual misconduct, lies, and consumes intoxicants is overcome by timidity; the abstainer is self-assured.
 qualities: sexual misconduct, wisdom
 theme: story
 ---

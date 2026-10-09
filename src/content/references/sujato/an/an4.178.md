@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Billabong
-description: The Buddha describes the four individuals—take a mendicant who enters and remains in a peaceful release of the heart, they focus on the cessation of substantial reality,, but on that their mind does not leap forth, gain confidence, settle down, and and become decided.
+description: A mendicant in peaceful release whose mind doesn't leap forth toward the cessation of substantial reality won't realize it, like a hand gripping a glue-smeared branch; the mind focused on smashing ignorance does, like one prepared.
 qualities: ignorance, ending, faith, liberation, delusion
 theme: inspiration
 ---

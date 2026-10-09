@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Speed
-description: The Buddha teaches on speed, presenting a fourfold teaching for disciples on the path.
+description: The Buddha likens a thoroughbred's royal factors—integrity, speed, patience, and gentleness—to the qualities that make a mendicant an outstanding field of merit for the world.
 qualities: merit, patience, respect
 theme: story, principle
 ---

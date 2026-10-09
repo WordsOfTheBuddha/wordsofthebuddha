@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deserving Criticism (1st)
-description: The Buddha teaches on deserving criticism (1st), presenting a fivefold teaching for disciples on the path.
+description: A resident mendicant who without scrutiny praises the blameworthy and criticizes the praiseworthy, arouses faith in the dubious, and wastes gifts given in faith is placed in hell; the scrutinizing opposite, in heaven.
 qualities: faith, wisdom
 theme: inspiration
 ---

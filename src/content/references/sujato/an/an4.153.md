@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Power of Wisdom
-description: The Buddha describes the four powers, explaining this fourfold teaching for disciples on the path.
+description: The Buddha names the powers of wisdom, energy, blamelessness, and inclusiveness.
 qualities: wisdom, vigour
 theme: wisdom
 ---

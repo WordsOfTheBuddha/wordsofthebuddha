@@ -4,7 +4,7 @@ description: Using the example of a king’s elephant on the battlefield, the Bu
 qualities: patience, impatience, sensual desire
 theme: cultivating discernment, inspiration
 slug: an5.139
-simile: king's elephant
+simile: king’s elephant
 priority: 1.4
 ---
 

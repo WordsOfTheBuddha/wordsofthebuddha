@@ -1,8 +1,8 @@
 ---
 title: Ummagga sutta - Fundamental Questions
+qualities: craving, delusion
+theme: principle, inquisitiveness
 description: A bhikkhu asks the Buddha about the nature of the world, the mind, and wisdom.
-fetter: ignorance
-tags: an,an4,ignorance,mind,wisdom
 slug: an4.186
 ---
 

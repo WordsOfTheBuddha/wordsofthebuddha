@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Grace
-description: The Buddha describes the four who, explaining this fourfold teaching for disciples on the path.
+description: Competent, educated, self-assured, and learned monks, nuns, laymen, and laywomen who practice in line with the teaching grace the Saṅgha.
 qualities: learning, faith
 theme: inspiration
 ---

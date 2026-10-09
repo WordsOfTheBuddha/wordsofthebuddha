@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Those Who Sleep Wherever a Mat is Laid
-description: The Buddha teaches on those who sleep wherever a mat is laid, presenting a fivefold teaching for disciples on the path.
+description: One may sleep wherever they lay their mat from stupidity, corrupt wishes, madness, because it's praised by the Buddhas, or for fewness of wishes—the last being the foremost.
 qualities: wisdom
 theme: principle
 ---

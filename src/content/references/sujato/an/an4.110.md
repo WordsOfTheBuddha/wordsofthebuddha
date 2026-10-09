@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Vipers
-description: The Buddha describes the four kinds of viper—one whose venom is fast-acting but not lethal,, one whose venom is lethal but not fast-acting,, one whose venom is both fast-acting and lethal, and and.
+description: The Buddha likens four kinds of people to vipers, by whether their anger flares like lightning, lingers long, needs constant tending, or is thoroughly venomous.
 qualities: anger, ill will
 theme: cultivating discernment, principle
 ---

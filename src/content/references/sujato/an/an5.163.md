@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Discussions
-description: The Buddha describes the five qualities is fit to hold a discussion with their spiritual c—a mendicant is personally accomplished in ethics, and answers questions that come up when discussing accomplishment in ethics, they’re personally accomplished in immersion,, they’re personally accomplished in wisdom,, and they’re personally accomplished in freedom,, and they’re personally accomplished in the knowledge and vision of freedom, and they answer questions that come up when discussing accomplishment in the knowledge and vision of freedom.
+description: A mendicant personally accomplished in ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom, answering questions on each, is fit to hold a discussion with their spiritual companions.
 qualities: vision, liberation, wisdom, collectedness
 theme: training guideline, inquisitiveness
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Asking Questions
-description: The Buddha teaches on asking questions, presenting a fivefold teaching for disciples on the path.
+description: Venerable Sāriputta lists five reasons for asking questions—from stupidity, corrupt wishes, to disparage, wanting to understand, or to answer if the other can't—saying he asks only for the last two.
 qualities: wholesome, craving
 theme: inquisitiveness, wisdom
 ---

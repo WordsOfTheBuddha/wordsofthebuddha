@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Queen Mallikā
-description: The Buddha teaches on queen mallikā, presenting a fourfold teaching for disciples on the path.
+description: Queen Mallikā asks why some women are ugly, poor, and insignificant, or beautiful, wealthy, and influential; the Buddha attributes their lot to temper, giving, and jealousy, and she goes for refuge.
 qualities: harm, respect, wholesome, aversion, ill will, recollection of the Buddha
 theme: story
 ---

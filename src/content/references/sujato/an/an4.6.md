@@ -4,6 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Little Learning
+description: Individuals may have little learning or much, and get the point of learning or miss it; the wise disciple, learned and steady in ethics, is praised even by the gods.
 ---
 
 <!-- @segment an4.6:1.1 -->
