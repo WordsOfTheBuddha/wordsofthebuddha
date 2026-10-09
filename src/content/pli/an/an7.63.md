@@ -1,10 +1,13 @@
 ---
+title: Bhariyā sutta - Kinds of Wives
+description: The Buddha teaches Anāthapiṇḍika’s haughty daughter-in-law Sujātā about the seven kinds of wives, leading her to renounce pride and aspire to be a virtuous, patient wife
+qualities: respect, anger, patience, right speech, ethical conduct, wholesome
+theme: householder life, principle
 slug: an7.63
-character: Householder Anāthapiṇḍika
-source: suttacentral/bilara-data
-title: Bhariyāsutta
-edition: ms
-granularity: paragraph
+character:
+  - Householder Anāthapiṇḍika
+  - Laywoman Sujātā
+priority: 1.2
 ---
 
 Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya yena anāthapiṇḍikassa gahapatissa nivesanaṁ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
@@ -25,76 +28,58 @@ Atha kho bhagavā sujātaṁ gharasuṇhaṁ āmantesi: “ehi, sujāte”ti.
 
 “Evaṁ, bhante”ti kho sujātā gharasuṇhā bhagavato paccassosi. Bhagavā etadavoca:
 
+“Paduṭṭhacittā ahitānukampinī,
 Aññesu rattā atimaññate patiṁ;
-
 Dhanena kītassa vadhāya ussukā,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Vadhā ca bhariyā’ti ca sā pavuccati.
 
+Yaṁ itthiyā vindati sāmiko dhanaṁ,
 Sippaṁ vaṇijjañca kasiṁ adhiṭṭhahaṁ;
-
 Appampi tassa apahātumicchati,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Corī ca bhariyā’ti ca sā pavuccati.
 
+Akammakāmā alasā mahagghasā,
 Pharusā ca caṇḍī duruttavādinī;
-
 Uṭṭhāyakānaṁ abhibhuyya vattati,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Ayyā ca bhariyā’ti ca sā pavuccati.
 
+Yā sabbadā hoti hitānukampinī,
 Mātāva puttaṁ anurakkhate patiṁ;
-
 Tato dhanaṁ sambhatamassa rakkhati,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Mātā ca bhariyā’ti ca sā pavuccati.
 
+Yathāpi jeṭṭhā bhaginī kaniṭṭhakā,
 Sagāravā hoti sakamhi sāmike;
-
 Hirīmanā bhattuvasānuvattinī,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Bhaginī ca bhariyā’ti ca sā pavuccati.
 
+Yācīdha disvāna patiṁ pamodati,
 Sakhī sakhāraṁva cirassamāgataṁ;
-
 Koleyyakā sīlavatī patibbatā,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Sakhī ca bhariyā’ti ca sā pavuccati.
 
+Akkuddhasantā vadhadaṇḍatajjitā,
 Aduṭṭhacittā patino titikkhati;
-
 Akkodhanā bhattuvasānuvattinī,
-
 Yā evarūpā purisassa bhariyā;
-
 ‘Dāsī ca bhariyā’ti ca sā pavuccati.
 
+Yācīdha bhariyā vadhakāti vuccati,
 ‘Corī ca ayyā’ti ca yā pavuccati;
-
 Dussīlarūpā pharusā anādarā,
-
 Kāyassa bhedā nirayaṁ vajanti tā.
 
+Yācīdha mātā bhaginī sakhīti ca,
 ‘Dāsī ca bhariyā’ti ca sā pavuccati;
-
 Sīle ṭhitattā cirarattasaṁvutā,
-
 Kāyassa bhedā sugatiṁ vajanti tāti.
 
 Imā kho, sujāte, satta purisassa bhariyāyo. Tāsaṁ tvaṁ katamā”ti?
 
 “Ajjatagge maṁ, bhante, bhagavā dāsīsamaṁ sāmikassa bhariyaṁ dhāretū”ti.
-
-Dasamaṁ.
