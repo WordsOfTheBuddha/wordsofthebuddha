@@ -1,12 +1,13 @@
 ---
+title: Paṭhamasaṁvāsa sutta - Living Together (First)
+description: "The Buddha contrasts four ways couples live together based on virtue and stinginess: pairs of wretches, mixed partnerships, and virtuous couples who share ethical conduct, prospering here and hereafter."
+qualities: ethical conduct, giving, unwholesome, wholesome
+theme: householder life, wisdom
 slug: an4.53
-source: suttacentral/bilara-data
-title: Paṭhamasaṁvāsasutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
-Ekaṁ samayaṁ bhagavā antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipanno hoti. Sambahulāpi kho gahapatī ca gahapatāniyo ca antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipannā honti. Atha kho bhagavā maggā okkamma aññatarasmiṁ rukkhamūle (…) nisīdi. Addasaṁsu kho gahapatī ca gahapatāniyo ca bhagavantaṁ aññatarasmiṁ rukkhamūle nisinnaṁ.
+Ekaṁ samayaṁ bhagavā antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipanno hoti. Sambahulāpi kho gahapatī ca gahapatāniyo ca antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipannā honti. Atha kho bhagavā maggā okkamma aññatarasmiṁ rukkhamūle nisīdi. Addasaṁsu kho gahapatī ca gahapatāniyo ca bhagavantaṁ aññatarasmiṁ rukkhamūle nisinnaṁ.
 
 Disvā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinne kho te gahapatī ca gahapatāniyo ca bhagavā etadavoca:
 
@@ -63,5 +64,3 @@ Idha dhammaṁ caritvāna,
 samasīlabbatā ubho;
 Nandino devalokasmiṁ,
 modanti kāmakāmino”ti.
-
-Tatiyaṁ.
