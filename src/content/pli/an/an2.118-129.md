@@ -1,9 +1,8 @@
 ---
 title: Āsāduppajaha vagga - The Chapter Beginning With The Difficult to Abandon
 description: The Buddha teaches on two hopes that are difficult to abandon, two kinds of people who are rare in the world, two kinds of people who are difficult to satisfy, two causes for the arising of passion, aversion, wrong view, and right view, and two kinds of offenses.
-qualities: attachment, respect, contentment, passion, superficial attention, aversion, wrong view, right view, radical attention, passion, aversion, delusion
-fetter: sensual desire,ill will,ignorance
-tags: acquisition,existence,gratitude,content,passion,aversion,wrong view,right view,offense,an,an2
+qualities: attachment, respect, contentment, passion, superficial attention, aversion, wrong view, right view, radical attention
+theme: cultivating discernment, training guideline
 slug: an2.118-129
 ---
 
