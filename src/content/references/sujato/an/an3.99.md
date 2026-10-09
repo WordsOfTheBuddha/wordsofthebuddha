@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jute
-description: The Buddha teaches on jute, presenting a threefold teaching for disciples on the path.
+description: With the simile of jute canvas versus cloth from Kāsi, the Buddha shows that an unethical mendicant of any seniority is ugly, unpleasant, and worthless, while an ethical one is beautiful and their requisites fruitful for the donor.
 qualities: harm, wholesome, suffering, happiness, aversion, ethical conduct
 theme: training guideline
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unskillful
-description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+description: The Buddha contrasts the fool, known by unskillful deeds of body, speech, and mind, with the astute person, known by skillful deeds.
 qualities: unwholesome, wholesome, immaturity, wisdom
 theme: training guideline, principle
 ---

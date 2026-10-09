@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Well-known
-description: The Buddha teaches on well-known, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how a well-known mendicant encourages deeds of body and speech, and principles, in line—or not in line—with good qualities, working for the welfare or detriment of gods and humans.
 qualities: happiness, suffering, harm, wholesome
 theme: inspiration
 ---

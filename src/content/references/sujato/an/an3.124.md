@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Arguments
-description: The Buddha teaches on arguments, presenting a threefold teaching for disciples on the path.
+description: The Buddha says he is not even comfortable thinking of a place where mendicants quarrel, but feels comfortable going where they live in harmony, inferring which thoughts each has given up and cultivated.
 qualities: feuding, giving up, non-harm, wholesome, harm
 theme: principle
 ---

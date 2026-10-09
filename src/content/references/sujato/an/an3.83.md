@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fields
-description: The Buddha teaches on fields, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares the farmer's three primary duties—ploughing, planting, and watering—with a mendicant's undertaking of the training in the higher ethics, the higher mind, and the higher wisdom.
 qualities: wisdom, vigour
 theme: training guideline, wisdom
 ---

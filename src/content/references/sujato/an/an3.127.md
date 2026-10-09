@@ -1,10 +1,12 @@
 ---
 slug: an3.127
+character:
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hatthaka
-description: The Buddha teaches on with hatthaka, presenting a threefold teaching for disciples on the path.
+description: The godling Hatthaka of Āḷavi appears to the Buddha and explains how the godlings flock to hear his teaching, and that he passed away without getting enough of seeing the Buddha, hearing the true teaching, and serving the Saṅgha.
 qualities: mindfulness, wisdom
 theme: story, training guideline
 ---

@@ -1,7 +1,7 @@
 ---
 slug: an3.15
 character:
-  - "Sakka, lord of the gods"
+  - King Pacetana
 source: suttacentral/bilara-data
 title: Sacetanasutta
 edition: ms

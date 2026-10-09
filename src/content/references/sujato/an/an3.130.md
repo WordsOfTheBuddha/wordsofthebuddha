@@ -1,10 +1,13 @@
 ---
 slug: an3.130
+character:
+  - Venerable Sāriputta
+  - Venerable Anuruddha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Anuruddha (2nd)
-description: The Buddha teaches Venerable Anuruddha on with anuruddha (2nd), presenting a threefold teaching for disciples on the path.
+description: Venerable Sāriputta diagnoses Venerable Anuruddha's spiritual pride in his clairvoyance and attainments as conceit, restlessness, and remorse; giving them up and applying his mind to freedom from death, Anuruddha soon became one of the perfected.
 qualities: mindfulness, attachment, free from attachment, liberation, vigour, insight
 theme: urgency, principle
 ---

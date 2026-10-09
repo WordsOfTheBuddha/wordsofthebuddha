@@ -1,10 +1,12 @@
 ---
 slug: an3.55
+character:
+  - Brahmin Jāṇussoṇi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Quenched
-description: The Buddha teaches on quenched, presenting a threefold teaching for disciples on the path.
+description: The brahmin Jānussoṇi asks how extinguishment is apparent in the present life; the Buddha explains that greed, hate, and delusion bring mental pain, and that their ending without remainder is extinguishment apparent here and now.
 qualities: displeasure, suffering, delusion, greed, ending, aversion
 theme: story
 ---

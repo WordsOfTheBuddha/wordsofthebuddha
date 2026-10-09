@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Training (3rd)
-description: The Buddha teaches on training (3rd), presenting a threefold teaching for disciples on the path.
+description: The Buddha explains that the training rules recited each fortnight are all included in the three trainings, and that full practice succeeds fully and partial practice partially, descending from liberation in this very life to at most seven rebirths.
 qualities: ending, suffering, wisdom, liberation, vigour, insight
 theme: training guideline, wisdom
 ---

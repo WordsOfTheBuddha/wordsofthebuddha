@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Immeasurable
-description: The Buddha describes the three individuals—someone easy to measure, someone hard to measure, and someone who is immeasurable, and who is the individual easy to measure?, it’s an individual who is restless, insolent, fickle, scurrilous, loose-tongued, unmindful, lacking situational awareness and immersion, and with straying mind and undisciplined faculties.
+description: "The Buddha describes the three individuals—someone easy to measure, someone hard to measure, and someone who is immeasurable: the perfected mendicant who has ended defilements."
 qualities: mindfulness, collectedness
 theme: training guideline
 ---

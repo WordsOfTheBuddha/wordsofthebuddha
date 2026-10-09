@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Certain Brahmin
-description: The Buddha teaches on a certain brahmin, presenting a threefold teaching for disciples on the path.
+description: A brahmin asks how the teaching is apparent in the present life; the Buddha explains that greed, hate, and delusion make one intend to hurt themselves and others, and that giving them up makes the teaching evident here and now.
 qualities: displeasure, suffering, delusion, greed, aversion, craving
 theme: story
 ---

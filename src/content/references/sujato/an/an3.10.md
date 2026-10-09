@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stains
-description: The Buddha teaches on stains, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains that anyone unethical, jealous, and stingy who has not given up these three stains is placed in hell as if delivered there, while one ethical, unjealous, and generous is placed in heaven.
 qualities: jealousy, stinginess, ethical conduct
 theme: principle
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sure-bet Dice
-description: The Buddha teaches on sure-bet dice, presenting a threefold teaching for disciples on the path.
+description: Like sure-bet dice that always fall the right side up, failure in ethics, mind, and view sends beings to hell, while accomplishment in them sends them to heaven.
 qualities: harm, wholesome, giving, insight, sexual misconduct, right view
 theme: story, urgency
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an3.129
+character:
+  - Venerable Anuruddha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Anuruddha (1st)
-description: The Buddha describes the three qualities, when their body breaks up, after death, they—a lady lives at home with a heart full of the stain of stinginess in the morning, jealousy at midday, and sexual desire in the evening, when ladies possess these three qualities, when their body breaks up, after death, they are reborn in a place of loss, a bad place, the underworld, and hell.”.
+description: "Answering Venerable Anuruddha's clairvoyant observation, the Buddha names the three qualities that see ladies reborn in places of loss: a heart full of the stain of stinginess in the morning, jealousy at midday, and sexual desire in the evening."
 qualities: harm, jealousy, stinginess, desire
 theme: urgency
 ---

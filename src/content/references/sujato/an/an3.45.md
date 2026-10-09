@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Recommended by the Astute
-description: The Buddha describes the three things—going forth,, and and taking care of your mother and father.
+description: "The Buddha names the three things recommended by astute true persons: giving, going forth, and taking care of your mother and father."
 qualities: giving, self-control, vision, non-harm, wholesome, harm
 theme: inspiration, principle
 ---

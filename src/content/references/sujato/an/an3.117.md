@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Failures and Accomplishments
-description: The Buddha teaches on failures and accomplishments, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains the three failures—in ethics, mind, and view—that send beings to places of loss, and the three accomplishments—in ethics, mind, and view—that send them to heavenly realms.
 qualities: harm, wholesome, giving, insight, sexual misconduct, right view
 theme: story, urgency
 ---

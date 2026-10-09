@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred
-description: The Buddha teaches on the thoroughbred, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares the three fine thoroughbred horses with the fine thoroughbred person who realizes the undefiled freedom of heart and freedom by wisdom in this very life, answers questions without faltering, and receives the requisites.
 qualities: liberation, ending, insight, wisdom
 theme: training guideline, inquisitiveness
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: When Conversation Flows
-description: The Buddha teaches on when conversation flows, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains that conversation flows when the teacher, the audience, or both understand the meaning and the teaching.
 qualities: wisdom
 theme: wisdom
 ---

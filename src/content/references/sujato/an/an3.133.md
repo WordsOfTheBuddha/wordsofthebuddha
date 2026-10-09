@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Warrior
-description: The Buddha teaches on a warrior, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a warrior who is a long-distance shooter, a marksman, and one who shatters large objects with a mendicant who sees all form, feeling, perception, choices, and consciousness as not-self, penetrates the four noble truths, and shatters the great mass of ignorance.
 qualities: right view, suffering, merit, ending, respect, ignorance
 theme: story, principle
 ---

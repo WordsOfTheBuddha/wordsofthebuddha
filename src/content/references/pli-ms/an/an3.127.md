@@ -1,5 +1,7 @@
 ---
 slug: an3.127
+character:
+  - Hatthaka of Āḷavi
 source: suttacentral/bilara-data
 title: Hatthakasutta
 edition: ms

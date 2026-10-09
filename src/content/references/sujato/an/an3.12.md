@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Commemoration
-description: The Buddha teaches on commemoration, presenting a threefold teaching for disciples on the path.
+description: "The Buddha draws an analogy between the three places an anointed king commemorates for life and the three places a mendicant should commemorate: going forth, penetrating the four noble truths, and realizing liberation."
 qualities: suffering, ending, liberation, insight, wisdom
 theme: story, wisdom
 ---

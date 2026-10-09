@@ -1,5 +1,7 @@
 ---
 slug: an3.75
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 title: Nivesakasutta
 edition: ms

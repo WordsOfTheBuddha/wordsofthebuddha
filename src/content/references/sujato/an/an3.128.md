@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bitter
-description: The Buddha teaches on bitter, presenting a threefold teaching for disciples on the path.
+description: At Isipatana the Buddha advises a disgruntled monk not to be bitter, defining desire as bitterness, ill will as the putrefaction, and bad, unskillful thoughts as the flies that plague an unguarded mind.
 qualities: doubt, wisdom, ill will, desire, anxiety, harm
 theme: story, training guideline
 ---

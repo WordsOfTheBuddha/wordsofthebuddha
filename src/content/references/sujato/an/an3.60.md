@@ -1,10 +1,13 @@
 ---
 slug: an3.60
+character:
+  - Brahmin Saṅgārava
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Saṅgārava
-description: The Buddha teaches on with saṅgārava, presenting a threefold teaching for disciples on the path.
+description: The brahmin Saṅgārava argues that sacrifice benefits many while going forth benefits only one; the Buddha shows that many practice the path he realized, and expounds the three demonstrations—psychic power, revealing, and instruction—of which Saṅgārava finds instruction the finest.
 qualities: psychic power, wholesome, attachment, insight, spiritual life, delusion
 theme: story, recollection of the Buddha
 ---

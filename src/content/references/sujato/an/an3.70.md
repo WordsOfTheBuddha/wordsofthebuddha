@@ -1,10 +1,12 @@
 ---
 slug: an3.70
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sabbath
-description: The Buddha teaches on sabbath, presenting a threefold teaching for disciples on the path.
+description: When Visākhā, Migāra's mother, observes the sabbath, the Buddha explains the sabbaths of the cowherds, the Jains, and the noble ones, whose eight factors he rates above sovereign rule over sixteen great countries.
 qualities: vigour, joy, respect, happiness, ethical conduct, faith
 theme: story, urgency
 ---

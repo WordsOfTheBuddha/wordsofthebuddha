@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Urgent
-description: The Buddha teaches on urgent, presenting a threefold teaching for disciples on the path.
+description: With the simile of the farmer's three urgent duties, the Buddha urges keen enthusiasm for the three trainings, whose fruit—freedom of mind from defilements—ripens in its own season.
 qualities: wisdom, attachment, free from attachment, vigour
 theme: urgency, training guideline
 ---

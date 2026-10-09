@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (1st)
-description: The Buddha teaches on broken (1st), presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how an immature person with unskillful deeds of body, speech, and mind keeps themselves broken and blameworthy, while an astute person with skillful deeds stays intact and brims with merit.
 qualities: merit, unwholesome, wholesome, immaturity, wisdom
 theme: principle
 ---

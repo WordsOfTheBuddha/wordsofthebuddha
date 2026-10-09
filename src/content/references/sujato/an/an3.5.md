@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Irrational
-description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+description: The Buddha contrasts the fool and the astute person by how rationally they ask and answer questions, and whether they agree with a well-rounded, coherent answer.
 qualities: immaturity, wisdom
 theme: training guideline, inquisitiveness
 ---

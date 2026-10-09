@@ -1,10 +1,12 @@
 ---
 slug: an3.110
+character:
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fallen
-description: The Buddha teaches on fallen, presenting a threefold teaching for disciples on the path.
+description: The Buddha tells the householder Anāthapiṇḍika that when the mind is fallen, deeds of body, speech, and mind fall in like a bungalow with a bad roof, so one will not have a good death.
 qualities: wholesome, harm
 theme: story, urgency
 ---

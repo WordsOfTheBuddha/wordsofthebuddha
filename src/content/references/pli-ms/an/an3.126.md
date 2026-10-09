@@ -1,5 +1,8 @@
 ---
 slug: an3.126
+character:
+  - Mahānāma the Sakyan
+  - Bharaṇḍu the Kālāma
 source: suttacentral/bilara-data
 title: Bharaṇḍukālāmasutta
 edition: ms

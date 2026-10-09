@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Followers of Other Religions
-description: The Buddha teaches on followers of other religions, presenting a threefold teaching for disciples on the path.
+description: The Buddha teaches how to answer wanderers of other religions who ask about the difference between greed, hate, and delusion—their blameworthiness, the irrational application of mind behind them, and the rational application of mind and the heart's release by love that end them.
 qualities: aversion, delusion, greed, unwholesome, affection, liberation
 theme: principle
 ---

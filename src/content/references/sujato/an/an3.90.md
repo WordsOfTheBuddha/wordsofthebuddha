@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Three Trainings (2nd)
-description: The Buddha teaches on three trainings (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha defines the three trainings in ethics, mind, and wisdom, declaring that one who masters every direction with limitless immersion is a trainee on the path, while one gone to the end of the path is called a Buddha.
 qualities: wisdom, jhana, ending, liberation, insight, craving
 theme: training guideline, wisdom
 ---

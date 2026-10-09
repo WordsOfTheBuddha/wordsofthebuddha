@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ascetics
-description: The Buddha teaches on ascetics, presenting a threefold teaching for disciples on the path.
+description: "The Buddha defines the three duties of an ascetic: undertaking the training in the higher ethics, the higher mind, and the higher wisdom."
 qualities: wisdom, vigour
 theme: training guideline, wisdom
 ---

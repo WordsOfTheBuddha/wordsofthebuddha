@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (2nd)
-description: The Buddha teaches on broken (2nd), presenting a threefold teaching for disciples on the path.
+description: The Buddha explains how an immature person with blameworthy deeds of body, speech, and mind keeps themselves broken, while an astute person with blameless deeds stays intact and brims with merit.
 qualities: unwholesome, wholesome, immaturity, wisdom
 theme: principle
 ---

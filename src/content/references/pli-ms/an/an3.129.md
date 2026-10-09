@@ -1,5 +1,7 @@
 ---
 slug: an3.129
+character:
+  - Venerable Anuruddha
 source: suttacentral/bilara-data
 title: Paṭhamaanuruddhasutta
 edition: ms

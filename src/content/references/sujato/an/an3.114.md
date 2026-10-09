@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rare
-description: The Buddha teaches on rare, presenting a threefold teaching for disciples on the path.
+description: "The Buddha says the appearance of three individuals is rare in the world: a Realized One, a teacher of the teaching he proclaims, and a person who is grateful and thankful."
 qualities: wisdom
 theme: recollection of the Buddha, training guideline
 ---

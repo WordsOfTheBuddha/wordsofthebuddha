@@ -1,10 +1,13 @@
 ---
 slug: an3.73
+character:
+  - Venerable Ānanda
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahānāma the Sakyan
-description: The Buddha teaches a disciple on with mahānāma the sakyan, presenting a threefold teaching for disciples on the path.
+description: When Mahānāma the Sakyan asks whether knowledge or immersion comes first, Venerable Ānanda—seeing the question is too deep for the convalescent Buddha—teaches him the ethics, immersion, and wisdom of both the trainee and the adept.
 qualities: wisdom, suffering, jhana, ending, liberation, insight
 theme: story, training guideline
 ---

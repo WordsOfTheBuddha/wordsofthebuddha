@@ -1,10 +1,13 @@
 ---
 slug: an3.71
+character:
+  - Venerable Ānanda
+  - Wanderer Channa
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Channa
-description: The Buddha teaches the wanderer on with channa, presenting a threefold teaching for disciples on the path.
+description: The wanderer Channa asks why Venerable Ānanda advocates giving up greed, hate, and delusion; Ānanda explains their drawbacks and points to the noble eightfold path as the way to give them up.
 qualities: delusion, greed, wholesome, aversion, displeasure, giving
 theme: story, training guideline
 ---

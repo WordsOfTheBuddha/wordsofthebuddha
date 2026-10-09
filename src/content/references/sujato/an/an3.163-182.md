@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Three Qualities
-description: The Buddha presents a repeated threefold teaching on untitled discourses on three qualities in this grouped discourse.
+description: In a series of untitled discourses, the Buddha explains triplets of qualities—doing, encouraging, and approving evil or good conduct—by which someone is placed in hell or heaven as if delivered there.
 qualities: sexual misconduct, right view, ill will, wrong view, stealing, slaughtering
 theme: inspiration, wisdom
 ---

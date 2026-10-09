@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assemblies
-description: The Buddha teaches on assemblies, presenting a threefold teaching for disciples on the path.
+description: The Buddha describes the assembly of the best, the divided assembly, and the harmonious assembly, where mendicants blending like milk and water live in the heart's release by rejoicing and brim with much merit.
 qualities: uplifting joy, merit, liberation, solitude, vigour, collectedness
 theme: inspiration, principle
 ---

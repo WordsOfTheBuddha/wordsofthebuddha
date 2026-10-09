@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethical
-description: The Buddha teaches on ethical, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains that when ethical renunciates are supported by a town or village, the people there brim with much merit by way of body, speech, and mind.
 qualities: merit, ethical conduct
 theme: principle
 ---

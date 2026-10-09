@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Autumn
-description: The Buddha teaches on autumn, presenting a threefold teaching for disciples on the path.
+description: Like the autumn sun dispelling the darkness of space, when the stainless vision of the teaching arises in a noble disciple, the three fetters are given up, covetousness and ill will are shed, and the first absorption is entered.
 qualities: attachment, vision, doubt, ill will, delusion, greed
 theme: wisdom
 ---

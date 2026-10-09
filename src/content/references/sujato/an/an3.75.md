@@ -1,10 +1,12 @@
 ---
 slug: an3.75
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Support
-description: The Buddha teaches a disciple on support, presenting a threefold teaching for disciples on the path.
+description: The Buddha tells Venerable Ānanda to establish those he has sympathy for in experiential confidence in the Buddha, the teaching, and the Saṅgha, which not even a change in the four principal states can shake.
 qualities: faith, compassion, merit, wholesome
 theme: recollection of the Buddha, directly knowing
 ---

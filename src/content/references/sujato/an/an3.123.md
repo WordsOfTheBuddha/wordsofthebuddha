@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Kusinārā
-description: The Buddha teaches on at kusinārā, presenting a threefold teaching for disciples on the path.
+description: The Buddha contrasts the mendicant who eats a donor's food tied, infatuated, and attached, thinking of future meals, with the one who eats untied, uninfatuated, and unattached, seeing the drawback, and says a gift to the diligent one is very fruitful.
 qualities: wholesome, giving up, non-harm, harm
 theme: story, wisdom
 ---

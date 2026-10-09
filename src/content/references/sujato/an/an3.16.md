@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Sure Bet
-description: The Buddha teaches on a sure bet, presenting a threefold teaching for disciples on the path.
+description: The Buddha explains that a mendicant who guards the sense doors, eats in moderation, and is dedicated to wakefulness has a practice that is a sure bet and has laid the groundwork for ending the defilements.
 qualities: wakefulness, harm, cultivation, jhana, ending, displeasure
 theme: training guideline, principle
 ---

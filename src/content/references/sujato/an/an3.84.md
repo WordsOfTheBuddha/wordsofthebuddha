@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Vajji
-description: The Buddha teaches on the vajji, presenting a threefold teaching for disciples on the path.
+description: A Vajji monk says he cannot train in the training rules recited each fortnight; the Buddha points him to the three trainings, through which he gives up greed, hate, and delusion.
 qualities: wisdom, delusion, greed, aversion, harm, unwholesome
 theme: story, training guideline
 ---

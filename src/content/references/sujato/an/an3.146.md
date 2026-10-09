@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unskillful
-description: The Buddha teaches on unskillful, presenting a threefold teaching for disciples on the path.
+description: The Buddha says someone with unskillful deeds of body, speech, and mind is placed in hell as if delivered there, while one with skillful deeds is placed in heaven.
 qualities: unwholesome, wholesome
 theme: principle
 ---

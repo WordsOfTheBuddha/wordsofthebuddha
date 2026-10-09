@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend
-description: The Buddha teaches on a friend, presenting a threefold teaching for disciples on the path.
+description: The Buddha says you should associate with a friend who gives what is hard to give, does what is hard to do, and bears what is hard to bear.
 qualities: wisdom
 theme: principle
 ---

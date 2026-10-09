@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Shopkeeper (1st)
-description: The Buddha teaches on a shopkeeper (1st), presenting a threefold teaching for disciples on the path.
+description: The Buddha compares a shopkeeper who fails to focus on his work morning, midday, and afternoon with a mendicant who fails to focus on a meditation subject as a basis of immersion, and so cannot gain new skillful qualities.
 qualities: wholesome, cultivation, jhana, collectedness
 theme: training guideline, principle
 ---

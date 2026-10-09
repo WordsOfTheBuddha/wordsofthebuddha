@@ -1,10 +1,12 @@
 ---
 slug: an3.59
+character:
+  - Brahmin Jānussoṇi
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Jānussoṇi
-description: The Buddha teaches on with jānussoṇi, presenting a threefold teaching for disciples on the path.
+description: The brahmin Jānussoṇi says gifts should be given to masters of the three Vedic knowledges; the Buddha contrasts Vedic mastery with mastery of the three knowledges in the training of the Noble One.
 qualities: flexible, ending, ignorance, suffering, imperturbable, tame
 theme: story, urgency
 ---

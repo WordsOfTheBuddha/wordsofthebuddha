@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vacchagotta
-description: The Buddha teaches the wanderer on with vacchagotta, presenting a threefold teaching for disciples on the path.
+description: The wanderer Vacchagotta asks whether the Buddha really says gifts are fruitful only when given to him; the Buddha denies it, explains how obstructing giving blocks three people at once, and says a gift's fruitfulness depends on the receiver's ethics, with the simile of the tamed bull.
 qualities: faith, giving, merit, vision, liberation, ethical conduct
 theme: urgency, training guideline
 ---

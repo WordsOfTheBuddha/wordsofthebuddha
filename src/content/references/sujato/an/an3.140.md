@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Wild Colt
-description: The Buddha teaches on a wild colt, presenting a threefold teaching for disciples on the path.
+description: The Buddha compares three wild colts—fast, beautiful, and well proportioned in varying degrees—with three wild people, graded by their penetration of the four noble truths, their mastery of questions on the teaching, and the requisites they receive.
 qualities: adventurousness, suffering, ending
 theme: training guideline, inquisitiveness
 ---

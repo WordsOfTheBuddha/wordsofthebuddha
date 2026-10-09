@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Hair Blanket
-description: The Buddha teaches on a hair blanket, presenting a threefold teaching for disciples on the path.
+description: With the simile of a hair blanket, the Buddha says the bamboo-staffed ascetic's doctrine that there is no power in deeds, action, or energy is the worst of doctrines, and that such a man is a trap for many beings.
 qualities: vigour, harm, suffering, wrong view
 theme: recollection of the Buddha, wisdom
 ---

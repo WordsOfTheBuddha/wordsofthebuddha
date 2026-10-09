@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mistakes
-description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+description: The Buddha contrasts the fool and the astute person by how they recognize and properly deal with their own mistakes, and how they receive another's confession.
 qualities: immaturity, wisdom
 theme: training guideline, principle
 ---

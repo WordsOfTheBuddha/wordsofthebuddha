@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Donkey
-description: The Buddha teaches on the donkey, presenting a threefold teaching for disciples on the path.
+description: With the simile of a donkey following a cattle herd thinking 'I can moo too!', the Buddha rebukes mendicants who follow the Saṅgha without enthusiasm for the three trainings.
 qualities: wisdom, vigour
 theme: training guideline, wisdom
 ---

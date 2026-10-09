@@ -1,10 +1,12 @@
 ---
 slug: an3.33
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sāriputta
-description: The Buddha teaches Venerable S on with sāriputta, presenting a threefold teaching for disciples on the path.
+description: The Buddha instructs Venerable Sāriputta to train so that there is no I-making, mine-making, or underlying tendency to conceit for this conscious body or externally, describing such a mendicant as one who has cut off craving and made an end of suffering.
 qualities: conceit, liberation, wisdom, equanimity, giving, giving up
 theme: training guideline, inquisitiveness
 ---

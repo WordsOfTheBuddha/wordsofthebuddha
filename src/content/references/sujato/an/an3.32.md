@@ -1,10 +1,12 @@
 ---
 slug: an3.32
+character:
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
-description: The Buddha teaches a disciple on with ānanda, presenting a threefold teaching for disciples on the path.
+description: Venerable Ānanda asks how a mendicant might attain immersion free of I-making, mine-making, and the underlying tendency to conceit; the Buddha points to the stilling of all activities, the letting go of all attachments, and the ending of craving.
 qualities: conceit, liberation, wisdom, ending, craving, giving up
 theme: training guideline, inquisitiveness
 ---
