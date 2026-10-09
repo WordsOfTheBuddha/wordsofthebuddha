@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment
-description: The Buddha teaches on extinguishment, presenting a ninefold teaching for disciples on the path.
+description: A mendicant asks in what way the Buddha declared extinguishment; the reply, repeating the chapter's recurrent formula, is abbreviated to an ellipsis.
 qualities: wisdom
 theme: principle
 ---

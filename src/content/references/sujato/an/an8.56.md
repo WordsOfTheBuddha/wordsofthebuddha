@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Danger
-description: The Buddha teaches on danger, presenting a eightfold teaching for disciples on the path.
+description: The Buddha explains why danger, suffering, disease, boil, dart, chain, bog, and womb are terms for sensual pleasures—someone besotted by sensual greed and shackled by lustful desire is not freed from these in this life or in lives to come.
 qualities: suffering, greed, desire, mindfulness, sensual desire, craving
 theme: principle
 ---

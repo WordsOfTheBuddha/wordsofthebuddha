@@ -1,5 +1,7 @@
 ---
 slug: an8.82
+character:
+  - Venerable Puṇṇiya
 source: suttacentral/bilara-data
 title: Puṇṇiyasutta
 edition: ms

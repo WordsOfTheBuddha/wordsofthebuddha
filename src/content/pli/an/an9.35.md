@@ -1,6 +1,5 @@
 ---
 slug: an9.35
-character:
 source: suttacentral/bilara-data
 title: Gāvīupamāsutta
 edition: ms

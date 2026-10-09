@@ -1,10 +1,12 @@
 ---
 slug: an8.86
+character:
+  - Venerable Nāgita
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nāgita
-description: The Buddha teaches on with nāgita, presenting a eightfold teaching for disciples on the path.
+description: When the brahmins and householders of Icchānaṅgala arrive at the forest with abundant food and a colossal racket, the Buddha tells his attendant Venerable Nāgita that he never wants fame, contrasting the pleasure of renunciation, seclusion, peace, and awakening with the filthy, lazy pleasure of possessions, honor, and popularity, and praising mendicants who live in the wilderness.
 qualities: giving up, solitude, wholesome, wrong speech, wisdom, craving
 theme: story, recollection of the Buddha
 ---

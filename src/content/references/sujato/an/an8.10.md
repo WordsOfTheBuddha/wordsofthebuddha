@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Trash
-description: The Buddha teaches on trash, presenting a eightfold teaching for disciples on the path.
+description: When a mendicant accused of an offense reacts with evasion, irrelevant objections, and bitterness, the Buddha has the mendicants expel him, comparing him to bad barley in a field, chaff blown from winnowed grain, and a rotten tree that thuds when struck.
 qualities: wholesome, harm, suffering, aversion, respect, wrong view
 theme: story
 ---

@@ -1,10 +1,14 @@
 ---
 slug: an8.8
+character:
+  - Venerable Uttara
+  - King Vessavaṇa
+  - Sakka, lord of the gods
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Uttara on Failure
-description: The Buddha teaches on uttara on failure, presenting a eightfold teaching for disciples on the path.
+description: When Venerable Uttara teaches mendicants to check their own and others' failings and successes, King Vessavaṇa reports it to Sakka, who comes to ask whether the teaching is his own inspiration; Uttara answers with the simile of grain taken from a heap and passes on the Buddha's teaching on how eight things, ending in bad friendship, drove Devadatta to hell.
 qualities: wholesome, bad friendship, companionship, harm, inspiration, spiritual life
 theme: story, recollection of the Buddha
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Hate, Etc.
-description: The Buddha teaches a repeated formula on nine things that should be developed for insight into and the complete ending of hate, delusion, anger, and other unwholesome qualities in this grouped discourse.
+description: The Buddha teaches, in a repeated formula, nine things to be developed for each unwholesome quality from hate, delusion, and anger through conceit, arrogance, vanity, and negligence—by way of insight, complete understanding, complete ending, giving up, and the further aims of ending, vanishing, fading away, ceasing, giving away, and letting go.
 qualities: ending, giving, giving up, insight, conceit, negligence
 theme: principle, wisdom
 ---

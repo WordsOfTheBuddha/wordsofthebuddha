@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Places of Rebirth
-description: The Buddha teaches on places of rebirth, presenting a ninefold teaching for disciples on the path.
+description: The Buddha lists the five destinations—hell, the animal realm, the ghost realm, humanity, and the gods—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: mindfulness, cultivation, jhana
 theme: training guideline
 ---

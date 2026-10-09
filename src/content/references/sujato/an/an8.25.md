@@ -1,10 +1,12 @@
 ---
 slug: an8.25
+character:
+  - Mahānāma the Sakyan
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahānāma
-description: The Buddha teaches on with mahānāma, presenting a eightfold teaching for disciples on the path.
+description: The Buddha defines for Mahānāma the Sakyan who counts as a lay follower and as an ethical lay follower, and how a lay follower accomplished in faith, ethics, generosity, and the rest benefits either themselves alone or both themselves and others by encouraging others in the same.
 qualities: ethical conduct, faith, giving, sexual misconduct
 theme: story, inspiration
 ---

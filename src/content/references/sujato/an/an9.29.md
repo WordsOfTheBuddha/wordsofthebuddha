@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Grounds for Resentment
-description: The Buddha teaches on grounds for resentment, presenting a ninefold teaching for disciples on the path.
+description: "The Buddha enumerates nine grounds for resentment: wrong done, being done, or threatening to be done to oneself or someone one loves, and help given, being given, or promised to someone one dislikes."
 qualities: resentment, affection
 theme: principle
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an8.46
+character:
+  - Venerable Anuruddha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Anuruddha and the Agreeable Deities
-description: The Buddha teaches Venerable Anuruddha on anuruddha and the agreeable deities, presenting a eightfold teaching for disciples on the path.
+description: Deities of the Agreeable Host perform for Venerable Anuruddha, who averts his senses until they vanish; he reports this to the Buddha and asks how a lady is reborn among those gods, and the Buddha lists eight qualities, from devotion to her husband and his kin to faith, ethics, and generosity.
 qualities: sexual misconduct, stinginess, desire, compassion, craving, cultivation
 theme: story, urgency
 ---

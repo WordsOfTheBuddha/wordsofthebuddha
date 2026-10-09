@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Proper Behavior in a Case of Aggravated Misconduct
-description: The Buddha teaches on proper behavior in a case of aggravated misconduct, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight respects in which a mendicant convicted of aggravated misconduct must behave properly, such as not performing ordinations, giving dependence, being attended by a novice, or advising the nuns.
 qualities: wisdom
 theme: principle
 ---

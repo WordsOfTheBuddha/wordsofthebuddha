@@ -1,10 +1,12 @@
 ---
 slug: an9.6
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Association
-description: The Buddha teaches on association, presenting a ninefold teaching for disciples on the path.
+description: Venerable Sāriputta teaches which individuals, robes, almsfood, lodgings, villages, and countries a mendicant should frequent or avoid, judging each by whether unskillful qualities grow and the goal of the ascetic life is being developed.
 qualities: unwholesome, wholesome
 theme: cultivating discernment
 ---

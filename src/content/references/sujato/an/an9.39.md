@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The War Between the Gods and the Titans
-description: The Buddha teaches on the war between the gods and the titans, presenting a ninefold teaching for disciples on the path.
+description: The Buddha recalls battles between the gods and the titans where the losers found safety only within their own castle; likewise a mendicant in the four absorptions is beyond Māra's reach, and in the formless attainments and cessation has blinded Māra, put out his eyes without a trace, and crossed over clinging to the world.
 qualities: jhana, attachment, wisdom, ending, uplifting joy, solitude
 theme: story, wisdom
 ---

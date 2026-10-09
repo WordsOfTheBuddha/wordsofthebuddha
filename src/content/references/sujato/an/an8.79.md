@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Decline
-description: The Buddha teaches on decline, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight things that lead to the decline of a mendicant trainee—relishing work, talk, sleep, and company, not guarding the sense doors, eating too much, and relishing closeness and proliferation—and their eight opposites that ward off decline.
 qualities: wisdom
 theme: principle
 ---

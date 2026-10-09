@@ -1,10 +1,12 @@
 ---
 slug: an8.45
+character:
+  - Laywoman Bojjhā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bojjhā on the Sabbath
-description: The Buddha teaches on with bojjhā on the sabbath, presenting a eightfold teaching for disciples on the path.
+description: The Buddha teaches the laywoman Bojjhā to observe the eight-factored sabbath by doing as the perfected ones do, and shows that it outweighs sovereignty over the sixteen great countries, since its observance can win rebirth among the gods, whose lifespans dwarf any human reign.
 qualities: happiness, wholesome, respect, compassion, slaughtering, merit
 theme: principle
 ---

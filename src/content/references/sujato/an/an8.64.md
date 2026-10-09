@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Gayā Head
-description: The Buddha teaches on at gayā head, presenting a eightfold teaching for disciples on the path.
+description: At Gayā Head, the Buddha recalls how, before his awakening, he purified his knowledge and vision of the deities in eight rounds—from perceiving light and seeing forms to learning their order, rebirth, food, lifespan, and whether he had lived with them before—announcing his supreme perfect awakening only when this was complete.
 qualities: vision, suffering, liberation
 theme: story, wisdom
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an8.11
+character:
+  - Brahmin Verañja
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Verañjā
-description: The Buddha teaches on at verañjā, presenting a eightfold teaching for disciples on the path.
+description: The brahmin Verañja accuses the Buddha of failing to honor aged brahmins and lists eight slanders; the Buddha reinterprets each one in a favorable sense, then recounts how he broke open the egg of ignorance like a chick and realized the three knowledges in the three watches of the night, and Verañja goes for refuge.
 qualities: suffering, harm, unwholesome, ending, ignorance, flexible
 theme: story, urgency
 ---

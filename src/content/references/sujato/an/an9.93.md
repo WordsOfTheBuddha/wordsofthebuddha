@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (1st)
-description: The Buddha teaches that nine things should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+description: The Buddha teaches nine things to be developed for insight into greed—the perceptions of ugliness, death, repulsiveness of food, dissatisfaction with the whole world, impermanence, suffering in impermanence, not-self in suffering, giving up, and fading away.
 qualities: greed, suffering, insight, giving, giving up, discontentment
 theme: urgency, principle
 ---

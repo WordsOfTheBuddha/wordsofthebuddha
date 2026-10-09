@@ -1,10 +1,12 @@
 ---
 slug: an8.28
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers (2nd)
-description: The Buddha teaches Venerable S on powers (2nd), presenting a eightfold teaching for disciples on the path.
+description: Asked by the Buddha how many powers qualify a mendicant who has ended the defilements to claim just that, Venerable Sāriputta lists eight, from seeing all conditions as impermanent and sensual pleasures as a pit of glowing coals to a mind inclined to seclusion and mastery of the four absorptions, the faculties, and the path.
 qualities: wisdom, mindfulness, psychic power, cultivation, giving up, jhana
 theme: principle
 ---

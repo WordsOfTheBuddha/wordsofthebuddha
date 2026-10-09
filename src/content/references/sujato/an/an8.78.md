@@ -1,10 +1,12 @@
 ---
 slug: an8.78
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good Enough
-description: The Buddha teaches on good enough, presenting a eightfold teaching for disciples on the path.
+description: Venerable Sāriputta teaches the mendicants, in descending sets from six qualities down to two, what makes a mendicant good enough for themselves and others—being quick-witted in skillful teachings, memorizing, examining the meaning, practicing in line with the teaching, being a good speaker, and inspiring spiritual companions.
 qualities: wholesome, wisdom
 theme: inspiration, inquisitiveness
 ---

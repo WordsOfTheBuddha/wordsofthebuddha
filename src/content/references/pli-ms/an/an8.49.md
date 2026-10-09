@@ -1,5 +1,7 @@
 ---
 slug: an8.49
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 title: Paṭhamaidhalokikasutta
 edition: ms

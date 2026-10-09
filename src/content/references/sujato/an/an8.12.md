@@ -1,10 +1,12 @@
 ---
 slug: an8.12
+character:
+  - General Sīha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sīha
-description: The Buddha teaches on with sīha, presenting a eightfold teaching for disciples on the path.
+description: General Sīha, a Jain disciple, is urged by prominent Licchavis to visit the Buddha and asks whether he truly teaches a doctrine of inaction; the Buddha explains the sense in which he teaches inaction, action, annihilation, and the rest, and Sīha goes for refuge, offers a meal, and rebuts the Jains' slander that he had a calf slaughtered for the Buddha.
 qualities: unwholesome, flexible, giving, doubt, harm, wholesome
 theme: story, recollection of the Buddha
 ---

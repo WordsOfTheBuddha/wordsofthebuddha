@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Weaknesses in Training and Effort
-description: The Buddha teaches on weaknesses in training and effort, presenting a ninefold teaching for disciples on the path.
+description: The Buddha names the five weaknesses in the training—killing living creatures, stealing, sexual misconduct, lying, and intoxication—and says to give them up by developing the four right efforts.
 qualities: vigour, harm, unwholesome, wholesome, sexual misconduct, stealing
 theme: training guideline
 ---

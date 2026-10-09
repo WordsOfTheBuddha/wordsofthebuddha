@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (1st)
-description: The Buddha teaches that eight things should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+description: The Buddha teaches that the eight factors of the noble eightfold path should be developed for insight into greed.
 qualities: greed, insight, mindfulness, right effort, right livelihood, right speech
 theme: training guideline, principle
 ---

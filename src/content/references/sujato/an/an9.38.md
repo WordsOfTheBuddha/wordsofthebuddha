@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Brahmin Cosmologists
-description: The Buddha teaches on brahmin cosmologists, presenting a ninefold teaching for disciples on the path.
+description: Two brahmin cosmologists ask the Buddha to judge between Pūraṇa Kassapa's claim that the cosmos is infinite and the Jain ascetic of the Ñātika clan's claim that it is finite; he sets the question aside and shows that the end of the world is reached not by running to the four oceans but by meditating at the end of the world in the nine attainments.
 qualities: vision, jhana, attachment, truth, wisdom, suffering
 theme: story, training guideline
 ---

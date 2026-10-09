@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Master Thief
-description: The Buddha teaches on a master thief, presenting a eightfold teaching for disciples on the path.
+description: The Buddha lists the eight factors that bring a master thief to swift execution—attacking unprovoked, stealing everything, killing a woman, raping a girl, robbing a monk, robbing the royal treasury, working close to home, and being unskilled at hiding his booty—and their opposites that let him live long.
 qualities: wisdom
 theme: principle
 ---

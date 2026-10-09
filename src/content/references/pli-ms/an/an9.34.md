@@ -1,5 +1,8 @@
 ---
 slug: an9.34
+character:
+  - Venerable Udāyī
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Nibbānasukhasutta
 edition: ms

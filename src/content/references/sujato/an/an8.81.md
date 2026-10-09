@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness and Situational Awareness
-description: The Buddha teaches on mindfulness and situational awareness, presenting a eightfold teaching for disciples on the path.
+description: The Buddha shows how mindfulness and situational awareness fulfill conscience and prudence, sense restraint, ethical conduct, right immersion, true knowledge and vision, disillusionment and dispassion, and knowledge and vision of freedom—likened to a tree complete with branches and foliage whose shoots, bark, softwood, and heartwood grow to fullness.
 qualities: vision, mindfulness, quenching, conscience, dispassion, sense restraint
 theme: training guideline, wisdom
 ---

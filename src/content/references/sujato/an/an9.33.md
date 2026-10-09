@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Nine Progressive Meditative Attainments
-description: The Buddha teaches on the nine progressive meditative attainments, presenting a ninefold teaching for disciples on the path.
+description: The Buddha teaches the nine progressive meditative attainments, showing exactly where each attainment stills what precedes it, from sensual pleasures ceasing in the first absorption to perception and feeling ceasing in the ninth, so that any sincere inquirer can be told where each ceases.
 qualities: respect, wholesome, attachment, uplifting joy, equanimity, jhana
 theme: training guideline
 ---

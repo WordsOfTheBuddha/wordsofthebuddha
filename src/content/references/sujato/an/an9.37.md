@@ -1,10 +1,13 @@
 ---
 slug: an9.37
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: By Ānanda
-description: The Buddha teaches on by ānanda, presenting a ninefold teaching for disciples on the path.
+description: Venerable Ānanda marvels that the Buddha found an opening amid confinement—though the eye and its sights are present, one in the formless attainments does not experience those sense-fields; asked by Venerable Udāyī what such a person perceives, he points to the formless attainments and recalls the nun Jaṭilagāhikā's question about the unforced immersion whose fruit is enlightenment.
 qualities: sorrow, displeasure, lamentation, suffering, collectedness
 theme: recollection of the Buddha, training guideline
 ---

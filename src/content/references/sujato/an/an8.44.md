@@ -1,10 +1,12 @@
 ---
 slug: an8.44
+character:
+  - Young Brahmin Vāseṭṭha
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vāseṭṭha on the Sabbath
-description: The Buddha teaches on with vāseṭṭha on the sabbath, presenting a eightfold teaching for disciples on the path.
+description: After the Buddha teaches Vāseṭṭha the eight-factored sabbath, the layman expresses the wish that his kin and all people everywhere observe it, and the Buddha affirms that its observance would be for the lasting welfare and happiness of the whole world, even of sentient sal trees.
 qualities: happiness, wholesome
 theme: story, principle
 ---

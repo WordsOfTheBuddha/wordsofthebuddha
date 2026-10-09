@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Dimensions of Mastery
-description: "The Buddha describes the eight dimensions of mastery—perceiving form internally, someone sees forms externally, limited, both pretty and ugly, mastering them, they perceive: ‘i know and see.’, this is the first dimension of mastery, and perceiving form internally, someone sees forms externally, limitless, both pretty and ugly, and mastering them, they perceive: ‘i know and see.’, and this is the second dimension of mastery, and not perceiving form internally, someone sees forms externally, limited, both pretty and ugly, and mastering them, they perceive: ‘i know and see.’."
+description: The Buddha defines the eight dimensions of mastery—seeing limited or limitless external forms, both pretty and ugly, while perceiving or not perceiving form internally, and mastering forms of blue, yellow, red, and white color.
 qualities: wisdom
 theme: principle
 ---

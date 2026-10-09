@@ -1,5 +1,7 @@
 ---
 slug: an9.4
+character:
+  - Venerable Nandaka
 source: suttacentral/bilara-data
 title: Nandakasutta
 edition: ms

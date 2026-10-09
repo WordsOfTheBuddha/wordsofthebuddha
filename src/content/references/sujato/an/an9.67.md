@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lower Fetters
-description: The Buddha teaches on lower fetters, presenting a ninefold teaching for disciples on the path.
+description: The Buddha names the five lower fetters—substantialist view, doubt, misapprehension of precepts and observances, sensual desire, and ill will—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: mindfulness, doubt, ill will, sensual desire, desire, cultivation
 theme: training guideline, wisdom
 ---

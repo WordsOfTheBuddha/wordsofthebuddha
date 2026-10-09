@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fears and Enmities (2nd)
-description: The Buddha teaches on fears and enmities (2nd), presenting a ninefold teaching for disciples on the path.
+description: The Buddha teaches that a noble disciple who has quelled the five fears and enmities tied to breaking the five precepts, and possesses the four factors of stream-entry—confidence in the Buddha, the teaching, and the Saṅgha, and ethical conduct loved by the noble ones—may declare themselves a stream-enterer, finished with all places of loss.
 qualities: displeasure, suffering, fear, desire, harm, slaughtering
 theme: directly knowing, training guideline
 ---

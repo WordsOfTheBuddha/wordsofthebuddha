@@ -1,5 +1,7 @@
 ---
 slug: an9.8
+character:
+  - Wanderer Sajjha
 source: suttacentral/bilara-data
 title: Sajjhasutta
 edition: ms

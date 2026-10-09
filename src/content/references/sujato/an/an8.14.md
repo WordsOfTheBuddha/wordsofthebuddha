@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Wild Colt
-description: The Buddha teaches on a wild colt, presenting a eightfold teaching for disciples on the path.
+description: The Buddha matches eight defects of wild colts—rearing up, bolting off track, ignoring the bit, sitting down on all fours, and the rest—with eight ways a mendicant reacts badly when accused of an offense, from claiming to have forgotten it to resigning the training altogether.
 qualities: adventurousness, aversion, ill will, immaturity
 theme: training guideline
 ---

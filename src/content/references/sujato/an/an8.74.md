@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness of Death (2nd)
-description: The Buddha teaches on mindfulness of death (2nd), presenting a eightfold teaching for disciples on the path.
+description: The Buddha explains how to develop mindfulness of death by reflecting each day and night on the many causes of death, checking whether any bad, unskillful qualities remain that would be an obstacle, and giving them up with the urgency of someone whose clothes or head are on fire.
 qualities: vigour, mindfulness, harm, unwholesome, wholesome, recollection of death
 theme: story, urgency
 ---

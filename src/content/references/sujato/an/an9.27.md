@@ -1,10 +1,12 @@
 ---
 slug: an9.27
+character:
+  - Householder Anāthapiṇḍika
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fears and Enmities (1st)
-description: The Buddha teaches the householder on fears and enmities (1st), presenting a ninefold teaching for disciples on the path.
+description: The Buddha tells the householder Anāthapiṇḍika that a noble disciple who has quelled the five fears and enmities tied to breaking the five precepts, and possesses the four factors of stream-entry, may declare themselves a stream-enterer, finished with rebirth in hell, the animal realm, and the ghost realm.
 qualities: displeasure, suffering, fear, faith, desire, harm
 theme: story, recollection of the Buddha
 ---

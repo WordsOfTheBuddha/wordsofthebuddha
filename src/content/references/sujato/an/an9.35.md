@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Cow
-description: The Buddha teaches on the simile of the cow, presenting a ninefold teaching for disciples on the path.
+description: With the simile of a foolish mountain cow that lifts a hind-hoof before its fore-hoof is set and so loses both old and new ground, the Buddha warns against the mendicant who, mastering the first absorption poorly, can enter neither it nor the second, while the astute cow models one who stabilizes each attainment in turn until the mind is pliable and capable of the psychic powers and liberation.
 qualities: jhana, attachment, uplifting joy, unwholesome, desire, ending
 theme: training guideline, wisdom
 ---

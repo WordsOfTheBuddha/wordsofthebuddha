@@ -1,10 +1,12 @@
 ---
 slug: an9.12
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Residue
-description: The Buddha describes the nine individuals who, dying with residue, are exempt from hell, the animal realm, and the ghost—there’s an individual who has fulfilled ethics and immersion, but has limited wisdom, with the ending of the five lower fetters they’re extinguished between one life and the next, this is the first individual, and furthermore, there’s an individual who has fulfilled ethics and immersion, but has limited wisdom, and with the ending of the five lower fetters they’re extinguished upon landing. this is the second individual, and with the ending of the five lower fetters they’re extinguished without extra effort, and this is the third individual, and with the ending of the five lower fetters they’re extinguished with extra effort, and this is the fourth individual.
+description: Venerable Sāriputta brings the Buddha the wanderers' claim that nobody dying with residue escapes hell, the animal realm, and the ghost realm, and the Buddha answers with nine individuals exempt from all places of loss, an exposition he had never before given even to the four assemblies.
 qualities: ending, wisdom, quenching, suffering, harm, vigour
 theme: story, training guideline
 ---

@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Families
-description: The Buddha teaches on families, presenting a ninefold teaching for disciples on the path.
+description: The Buddha lists nine factors that make a family unworthy of a mendicant's visit—not rising, bowing, or offering a seat, hiding what they have, giving little or carelessly, and not listening to the teachings—and the nine opposite factors that make a visit worthwhile.
 qualities: wisdom
 theme: principle
 ---

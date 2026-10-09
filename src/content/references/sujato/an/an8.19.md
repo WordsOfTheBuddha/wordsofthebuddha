@@ -1,10 +1,12 @@
 ---
 slug: an8.19
+character:
+  - Pahārāda Asurinda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Pahārāda
-description: The Buddha teaches on with pahārāda, presenting a eightfold teaching for disciples on the path.
+description: Pahārāda, lord of the titans, tells the Buddha the eight wonders for which the titans love the ocean, and the Buddha answers with the eight wonders for which mendicants love this teaching and training, from gradual training to the one taste of freedom and the noble ones who dwell in it.
 qualities: affection, mindfulness, psychic power, cultivation, harm, jhana
 theme: principle
 ---

@@ -1,10 +1,12 @@
 ---
 slug: an8.26
+character:
+  - Jīvaka Komārabhacca
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Jīvaka
-description: The Buddha teaches on with jīvaka, presenting a eightfold teaching for disciples on the path.
+description: The Buddha defines for Jīvaka Komārabhacca who counts as a lay follower and as an ethical lay follower, and how a lay follower accomplished in faith, ethics, generosity, and the rest benefits either themselves alone or both themselves and others by encouraging others in the same.
 qualities: ethical conduct, faith, giving, sexual misconduct
 theme: story, inspiration
 ---

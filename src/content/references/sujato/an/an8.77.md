@@ -1,10 +1,12 @@
 ---
 slug: an8.77
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Desires
-description: The Buddha describes the eight individuals—first, when a mendicant stays secluded, living independently, a desire arises for material things, they try hard, strive, and make an effort to get them, but material things don’t come to them, and and so they sorrow and wail and lament, beating their breast and falling into confusion because they don’t get those material things, and this is called a mendicant who lives desiring material things. they try hard, strive, and make an effort to get them. but when they do not acquire material things, they sorrow and lament. they’ve fallen from the true teaching, and next, when a mendicant stays secluded, living independently, a desire arises for material things, and they try hard, strive, and make an effort to get them, and and material things do come to them.
+description: Venerable Sāriputta teaches the mendicants on the eight kinds of mendicant who live desiring material things, distinguished by whether they strive for gain, obtain it, and whether they sorrow over loss or grow negligent over gain; those who do neither have not fallen from the true teaching.
 qualities: vigour, sorrow, desire, negligence, doubt, right effort
 theme: training guideline
 ---

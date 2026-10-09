@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard-heartedness
-description: The Buddha teaches on hard-heartedness, presenting a ninefold teaching for disciples on the path.
+description: The Buddha describes five kinds of hard-heartedness—doubt about the teacher, the teaching, the Sangha, or the training, and being angry and closed off toward one's spiritual companions—each preventing the mind from inclining to effort, and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: vigour, mindfulness, aversion, cultivation, faith, jhana
 theme: training guideline, inspiration
 ---

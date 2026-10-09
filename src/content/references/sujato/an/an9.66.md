@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Grasping Aggregates
-description: The Buddha teaches on grasping aggregates, presenting a ninefold teaching for disciples on the path.
+description: The Buddha lists the five grasping aggregates of form, feeling, perception, choices, and consciousness, and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: attachment, mindfulness, cultivation, jhana
 theme: training guideline
 ---

@@ -1,5 +1,7 @@
 ---
 slug: an9.12
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Saupādisesasutta
 edition: ms

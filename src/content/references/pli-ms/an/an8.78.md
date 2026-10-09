@@ -1,5 +1,7 @@
 ---
 slug: an8.78
+character:
+  - Venerable Sāriputta
 source: suttacentral/bilara-data
 title: Alaṁsutta
 edition: ms

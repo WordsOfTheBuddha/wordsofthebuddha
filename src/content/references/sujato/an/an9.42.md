@@ -1,10 +1,13 @@
 ---
 slug: an9.42
+character:
+  - Venerable Udāyī
+  - Venerable Ānanda
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Cramped
-description: The Buddha teaches Venerable Ud on cramped, presenting a ninefold teaching for disciples on the path.
+description: Venerable Udāyī asks Venerable Ānanda what confinement and the opening amid confinement mean in the godling Pañcālacaṇḍa's verse; Ānanda explains that the five kinds of sensual stimulation are the confinement, and that each of the nine attainments is an opening that is still confined until the cessation of perception and feeling.
 qualities: jhana, attachment, uplifting joy, equanimity, giving, giving up
 theme: principle, wisdom
 ---

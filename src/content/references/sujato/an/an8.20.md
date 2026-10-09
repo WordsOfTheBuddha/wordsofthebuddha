@@ -1,10 +1,13 @@
 ---
 slug: an8.20
+character:
+  - Venerable Ānanda
+  - Venerable Mahāmoggallāna
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sabbath
-description: The Buddha teaches Venerable Mah on sabbath, presenting a eightfold teaching for disciples on the path.
+description: On the sabbath night Ānanda three times asks the Buddha to recite the monastic code, but the assembly is not pure; Mahāmoggallāna scans the minds of the Saṅgha and ejects an unethical monk, after which the Buddha draws the ocean's wonders in parallel and vows never to recite the code in an impure assembly.
 qualities: affection, joy, harm, ethical conduct
 theme: story, recollection of the Buddha
 ---

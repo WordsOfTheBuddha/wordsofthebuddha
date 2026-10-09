@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good Enough
-description: The Buddha teaches on good enough, presenting a eightfold teaching for disciples on the path.
+description: The Buddha teaches, in descending sets from six qualities down to two, what makes a mendicant good enough for themselves and others—being quick-witted in skillful teachings, memorizing, examining the meaning, practicing in line with the teaching, being a good speaker, and inspiring spiritual companions—and how fewer qualities leave them good enough for themselves but not for others.
 qualities: wholesome, wisdom
 theme: inspiration, inquisitiveness
 ---

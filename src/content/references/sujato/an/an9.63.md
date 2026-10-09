@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Weaknesses in Training and Mindfulness Meditation
-description: The Buddha teaches on weaknesses in training and mindfulness meditation, presenting a ninefold teaching for disciples on the path.
+description: The Buddha tells the mendicants of five weaknesses in the training—killing living creatures, stealing, sexual misconduct, lying, and intoxication—and says to give them up by developing the four kinds of mindfulness meditation.
 qualities: mindfulness, cultivation, jhana, displeasure, greed, jealousy
 theme: training guideline
 ---

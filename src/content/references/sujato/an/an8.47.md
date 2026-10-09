@@ -1,10 +1,12 @@
 ---
 slug: an8.47
+character:
+  - Laywoman Visākhā Migāramātā
 source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Visākhā on the Agreeable Gods
-description: The Buddha teaches on with visākhā on the agreeable gods, presenting a eightfold teaching for disciples on the path.
+description: The Buddha teaches Visākhā, Migāra's mother, the eight qualities by which a lady is reborn among the Gods of the Agreeable Host, from being obliging to her husband and managing his household to guarding his wealth and being accomplished in faith, ethics, generosity, and wisdom.
 qualities: stinginess, desire, compassion, craving, giving, loving-kindness
 theme: story, urgency
 ---

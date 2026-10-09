@@ -4,7 +4,7 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stains
-description: The Buddha describes the eight stains—not rehearsing is the stain of hymns, neglect is the stain of houses, laziness is the stain of beauty, and negligence is a guard’s stain, and misconduct is a woman’s stain, and stinginess is a giver’s stain, and bad, unskillful qualities are a stain in this world and the next, and worse than any of these is ignorance, the worst stain of all.
+description: The Buddha lists eight stains—not rehearsing for hymns, neglect for houses, laziness for beauty, negligence for guards, misconduct for women, stinginess for givers, and bad, unskillful qualities in this world and the next—with ignorance the worst stain of all.
 qualities: ignorance, laziness, negligence, stinginess, harm, unwholesome
 theme: principle
 ---
