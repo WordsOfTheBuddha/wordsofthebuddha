@@ -1,5 +1,6 @@
 ---
 title: Macchabandha sutta - Fisherman
+theme: urgency, principle
 description: On observing a fisherman killing fish and selling them, the Buddha explains the consequences of cruelty.
 simile: fisherman
 slug: an6.18

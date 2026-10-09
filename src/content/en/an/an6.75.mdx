@@ -1,5 +1,6 @@
 ---
 title: Dukkha sutta - Suffering
+theme: training guideline
 description: Six qualities to dwell in ease, without distress, without anguish - 1) thoughts of relinquishment, 2) non-ill will, 3) non-harming, 4) perceptions of relinquishment, 5) non-ill will, 6) non-harming.
 slug: an6.75
 ---

@@ -1,5 +1,6 @@
 ---
 title: Subhūti sutta - Subhūti
+theme: inspiration
 description: Venerable Subhūti is sitting in meditation posture, aligning his body upright, having entered collectedness free from thought. The Blessed One sees this and expresses an inspired utterance.
 qualities: formless, collectedness
 slug: ud6.7

@@ -1,5 +1,6 @@
 ---
 title: Dhaniya sutta - Dhaniya
+theme: story, inspiration
 description: Verses depicting a poetic duel between the wealthy cowherd Dhaniya and the Buddha. While Dhaniya boasts of his worldly security, family, and thriving herd, the Buddha counters with declarations of profound spiritual freedom.
 qualities: contentment, quenching, attachment, free from attachment, sorrow
 slug: snp1.2

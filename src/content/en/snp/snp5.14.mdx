@@ -1,5 +1,6 @@
 ---
 title: Posālamāṇavapucchā - Posāla’s Questions
+theme: training guideline
 description: The venerable Posāla asks the Buddha how to guide a meditator who has transcended all perception of form and is established in the sphere of Nothingness.
 qualities: imperturbable, formless, delight
 slug: snp5.14

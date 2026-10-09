@@ -1,5 +1,6 @@
 ---
 title: Dvayatānupassanā sutta
+theme: directly knowing, principle
 slug: snp3.12
 ---
 

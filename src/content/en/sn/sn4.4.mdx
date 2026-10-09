@@ -1,5 +1,6 @@
 ---
 title: Paṭhama mārapāsa sutta - Māra’s Snare (First)
+theme: inspiration
 description: The Buddha attained the unsurpassed liberation through radical attention and radically striving aright.
 qualities: radical attention, right effort, liberation
 slug: sn4.4

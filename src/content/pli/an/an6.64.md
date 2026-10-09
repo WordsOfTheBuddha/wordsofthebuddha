@@ -1,5 +1,6 @@
 ---
 title: Sīhanāda sutta - Lion's Roar
+theme: directly knowing, inspiration
 description: The Buddha explains the six powers of a Tathāgata and the importance of collectedness.
 slug: an6.64
 ---

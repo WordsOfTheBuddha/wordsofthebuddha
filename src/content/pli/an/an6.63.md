@@ -1,5 +1,6 @@
 ---
 title: Nibbedhika sutta - Penetrating
+theme: directly knowing, principle
 description: The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.
 slug: an6.63
 ---

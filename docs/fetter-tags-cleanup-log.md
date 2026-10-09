@@ -14,7 +14,7 @@ Every change to an English file is mirrored in the frontmatter block of its
 Pāli counterpart under `src/content/pli/` (same path, `.md` extension), keeping
 the Pāli file's own title, description, and commentary.
 
-Sections: [Non-SN](#non-sn-collections) · [SN batch 1](#sn-batch-1) · [SN batch 2](#sn-batch-2) · [SN batch 3](#sn-batch-3) · [SN batch 4](#sn-batch-4)
+Sections: [Non-SN](#non-sn-collections) · [SN batch 1](#sn-batch-1) · [SN batch 2](#sn-batch-2) · [SN batch 3](#sn-batch-3) · [SN batch 4](#sn-batch-4) · [Missing theme pass](#missing-theme-pass)
 
 ---
 
@@ -1024,3 +1024,140 @@ SN batch 4 (sn51, sn55, sn56, sn7)
 - Added `qualities: non-harm, harm, ethical conduct` — Rationale: The Buddha clarifies that harmlessness is established not by name but by doing no harm by body, speech, or mind — true ethical conduct.
 - Added `theme: cultivating discernment` — Rationale: A discriminative clarification of what truly makes one harmless versus merely bearing the name.
 - Mirrored to `src/content/pli/sn/sn7.5.md`.
+
+---
+
+## Missing theme pass
+
+Follow-up sweep over `src/content/en` for discourses whose frontmatter still
+lacked a `theme:` key (most of these were already clean of `fetter:`/`tags:`,
+so they pre-date the main pass). Every addition is mirrored to the Pāli
+counterpart. `src/content/en/index.mdx` intentionally has no theme — it is the
+site landing page, not a discourse.
+
+### src/content/en/an/an6.18.mdx (+ pli mirror)
+- Added `theme: urgency, principle` — the fisherman's cruelty is traced
+  cause-by-cause through rebirth in the great hell, a pointed warning about
+  the consequences of cruelty.
+
+### src/content/en/an/an6.63.mdx (+ pli mirror)
+- Added `theme: directly knowing, principle` — the "penetrative" exposition:
+  each thing (sense pleasures, feeling, perception, taints, action, suffering)
+  is to be known directly through its definition, origin, cessation, and way.
+
+### src/content/en/an/an6.64.mdx (+ pli mirror)
+- Added `theme: directly knowing, inspiration` — the six Tathāgata powers
+  presented as knowledges realized through collectedness.
+
+### src/content/en/an/an6.75.mdx (+ pli mirror)
+- Added `theme: training guideline` — six thoughts/perceptions to develop
+  enumerated as a practice for dwelling in ease.
+
+### src/content/en/mn/mn101.mdx (+ pli mirror)
+- Added `theme: principle, training guideline` — refutes the principle that
+  suffering is eroded by past-action austerities, then walks the gradual
+  training to dispassion.
+
+### src/content/en/mn/mn102.mdx (+ pli mirror)
+- Added `theme: principle` — speculative views deconstructed as clinging;
+  liberation through non-clinging to the six sense bases.
+- Fixed invalid pre-existing quality `feeling` → `felt experience` (the
+  vocabulary term; also mirrored to pli).
+
+### src/content/en/mn/mn43.mdx (+ pli mirror)
+- Added `theme: directly knowing, wisdom` — Sāriputta/Mahākoṭṭhika Q&A that
+  defines and discriminates wisdom, consciousness, feeling, and the rest.
+
+### src/content/en/mn/mn54.mdx (+ pli mirror)
+- Added `theme: principle, training guideline` — true "cutting off of all
+  dealings" redefined as abandoning unwholesome actions, with a graduated
+  sequence of similes.
+
+### src/content/en/mn/mn64.mdx (+ pli mirror)
+- Added `theme: training guideline` — the five lower fetters and the stepwise
+  way of practice (collectedness, fading of interest, perception of not-self)
+  for their abandonment.
+
+### src/content/en/sn/sn1.2.mdx (+ pli mirror)
+- Fixed typo'd frontmatter key `themes:` → `theme:` (kept values
+  `inspiration, wisdom` — the plural key is not in the schema and was being
+  silently dropped).
+
+### src/content/en/sn/sn56.1.mdx (+ pli mirror)
+- Fixed typo'd frontmatter key `themes:` → `theme:` (kept value `wisdom`);
+  also removed the `fetter:`/`tags:` still present in the pli counterpart.
+
+### src/content/en/sn/sn11.5.mdx (+ pli mirror)
+- Added `theme: story, principle` — Sakka's verse-contest victory over
+  Vepacitti demonstrates that patience and mindfulness conquer anger.
+
+### src/content/en/sn/sn12.68.mdx (+ pli mirror)
+- Added `theme: directly knowing` — the Kosambi dialogues on knowing
+  dependent co-arising by personal knowledge independent of faith,
+  preference, hearsay, and reasoning.
+- Note: the English file is a content stub (title/slug only, empty body);
+  the full discourse text exists in `src/content/pli/sn/sn12.68.md`. Content
+  import would be a separate follow-up.
+
+### src/content/en/sn/sn17.30.mdx (+ pli mirror)
+- Added `theme: urgency` — acquisitions, respect, and popularity as an
+  obstacle even to an arahant's pleasant abiding here and now.
+
+### src/content/en/sn/sn2.2.mdx (+ pli mirror)
+- Added `theme: inspiration, training guideline` — the young deity Kassapa's
+  verse instruction for a bhikkhu.
+
+### src/content/en/sn/sn20.12.mdx (+ pli mirror)
+- Added `theme: training guideline` — the old jackal simile urging training
+  in gratefulness; also removed the `fetter:`/`tags:` still present in the
+  pli counterpart.
+
+### src/content/en/sn/sn22.1.mdx (+ pli mirror)
+- Added `theme: story, directly knowing` — householder Nakulapitā's aging
+  body vs the unafflicted mind, then Sāriputta's not-self clarification.
+- Fixed invalid pre-existing quality `feeling` → `felt experience` (mirrored
+  to pli).
+
+### src/content/en/sn/sn22.90.mdx (+ pli mirror)
+- Added `theme: principle, story` — Channa's struggle resolved through the
+  middle-way principle avoiding existence and non-existence.
+
+### src/content/en/sn/sn47.4.mdx (+ pli mirror)
+- Added `theme: training guideline` — who should cultivate the four
+  establishments of mindfulness and to what purpose.
+
+### src/content/en/sn/sn47.40.mdx (+ pli mirror)
+- Added `theme: training guideline, directly knowing` — the analysis of the
+  establishments and the cultivation stage of observing arising and vanishing.
+
+### src/content/en/sn/sn47.8.mdx (+ pli mirror)
+- Added `theme: training guideline` — the cook simile: the meditator must
+  know their mind's theme, as the cook knows the king's preference.
+
+### src/content/en/sn/sn4.4.mdx (+ pli mirror)
+- Added `theme: inspiration` — the Buddha's attainment of the unsurpassed
+  liberation through radical attention and right striving, unshaken by Māra.
+
+### src/content/en/snp/snp1.2.mdx (+ pli mirror)
+- Added `theme: story, inspiration` — the poetic duel between Dhaniya and
+  the Buddha ending in the cowherd's going for refuge.
+
+### src/content/en/snp/snp3.12.mdx (+ pli mirror)
+- Added `theme: directly knowing, principle` — liberating knowledge from
+  observing pairs of principles and the dependent arising of suffering.
+
+### src/content/en/snp/snp5.14.mdx (+ pli mirror)
+- Added `theme: training guideline` — Posāla's question on guiding a
+  meditator established in the sphere of nothingness toward further release.
+
+### src/content/en/ud/ud6.7.mdx (+ pli mirror)
+- Added `theme: inspiration` — the Blessed One's inspired utterance on seeing
+  venerable Subhūti absorbed in collectedness.
+
+### src/content/en/anthologies/noble-truths-noble-path.mdx
+- Added `theme: wisdom` — Bhikkhu Bodhi's anthology structured entirely
+  around the Four Noble Truths and the Noble Eightfold Path.
+
+### src/content/en/anthologies/in-the-buddhas-words.mdx
+- Added `theme: inspiration` — the curated anthology's breadth, from
+  impermanence and not-self to the path to awakening.

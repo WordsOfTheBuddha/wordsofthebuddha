@@ -1,10 +1,7 @@
 ---
+title: Kimila sutta
 slug: an7.59
 character: Venerable Kimila
-source: suttacentral/bilara-data
-title: Kimilasutta
-edition: ms
-granularity: paragraph
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kimilāyaṁ viharati niculavane. Atha kho āyasmā kimilo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā kimilo bhagavantaṁ etadavoca:
@@ -16,5 +13,3 @@ Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kimilāyaṁ viharati niculavane.
 “Ko pana, bhante, hetu ko paccayo yena tathāgate parinibbute saddhammo ciraṭṭhitiko hotī”ti?
 
 “Idha, kimila, tathāgate parinibbute bhikkhū bhikkhuniyo upāsakā upāsikāyo satthari sagāravā viharanti sappatissā, dhamme sagāravā viharanti sappatissā, saṅghe sagāravā viharanti sappatissā, sikkhāya sagāravā viharanti sappatissā, samādhismiṁ sagāravā viharanti sappatissā, appamāde sagāravā viharanti sappatissā, paṭisanthāre sagāravā viharanti sappatissā. Ayaṁ kho, kimila, hetu ayaṁ paccayo yena tathāgate parinibbute saddhammo ciraṭṭhitiko hotī”ti.
-
-Chaṭṭhaṁ.

@@ -1,5 +1,6 @@
 ---
 title: Dutiya kassapa sutta - Kassapa (Second)
+theme: inspiration, training guideline
 slug: sn2.2
 ---
 
