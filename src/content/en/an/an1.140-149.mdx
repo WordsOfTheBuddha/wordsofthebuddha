@@ -1,9 +1,8 @@
 ---
 title: Adhamma vagga - The Chapter on not the Teaching
 description: The Buddha shares the importance of explaining correctly what is not the Dhamma, Vinaya, spoken or uttered, practiced, and prescribed by the Tathāgata.
-fetter: ignorance
 qualities: merit, wholesome
-tags: teaching, discipline, vinaya, spoken, practiced, prescribed, an, an1
+theme: cultivating discernment, wisdom
 slug: an1.140-149
 ---
 

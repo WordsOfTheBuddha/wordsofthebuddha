@@ -1,9 +1,8 @@
 ---
 title: Cittapariyādāna vagga - The Chapter on the Obsession of the Mind
 description: The Buddha explains how the mind can be obsessed by the senses.
-fetter: sensual desire
 qualities: passion, sensual desire
-tags: mind, senses, man, woman, obsession, an, an1
+theme: cultivating discernment, wisdom
 slug: an1.1-10
 ---
 
