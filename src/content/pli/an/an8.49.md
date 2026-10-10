@@ -1,13 +1,18 @@
 ---
+title: Paṭhama idhalokika sutta - The Present Life (First)
+description: The Buddha teaches Visākhā four qualities by which a woman succeeds in this life and four qualities by which she succeeds in the next life.
+commentary: "[1] Per the Manorathapūraṇī, the 'sixteen aspects' (soḷasākāra) refer either to the eight qualities stated in the prose and restated in the verse (8 + 8 = 16), or to the eight qualities practiced personally and enjoined on others (8 × 2 = 16).\n\nAlternatively, what can be seen from the discourse is that each quality embodies a twofold operative aspect: the four domestic virtues balance execution with organizing, supervision with care, devotion with boundaries, and protection with temperance; while the four spiritual virtues balance inner conviction with outward realization. Thus, there are sixteen aspects of the eight qualities."
+qualities: faith, ethical conduct, generosity, wisdom, unwholesome, wholesome
+theme: householder life, principle, wisdom
 slug: an8.49
-character: Laywoman Visākhā Migāramātā
-source: suttacentral/bilara-data
-title: Paṭhamaidhalokikasutta
-edition: ms
-granularity: paragraph
+character:
+  - Laywoman Visākhā Migāramātā
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Atha kho visākhā migāramātā yena bhagavā tenupasaṅkami …pe…. Ekamantaṁ nisinnaṁ kho visākhaṁ migāramātaraṁ bhagavā etadavoca:
+
+#### Success in This Life
 
 “Catūhi kho, visākhe, dhammehi samannāgato mātugāmo idhalokavijayāya paṭipanno hoti, ayaṁsa loko āraddho hoti. Katamehi catūhi? Idha, visākhe, mātugāmo susaṁvihitakammanto hoti, saṅgahitaparijano, bhattu manāpaṁ carati, sambhataṁ anurakkhati.
 
@@ -21,6 +26,8 @@ Kathañca, visākhe, mātugāmo sambhataṁ anurakkhati? Idha, visākhe, mātug�
 
 Imehi kho, visākhe, catūhi dhammehi samannāgato mātugāmo idhalokavijayāya paṭipanno hoti, ayaṁsa loko āraddho hoti.
 
+#### Success in the Next Life
+
 Catūhi kho, visākhe, dhammehi samannāgato mātugāmo paralokavijayāya paṭipanno hoti, paraloko āraddho hoti. Katamehi catūhi? Idha, visākhe, mātugāmo saddhāsampanno hoti, sīlasampanno hoti, cāgasampanno hoti, paññāsampanno hoti.
 
 Kathañca, visākhe, mātugāmo saddhāsampanno hoti? Idha, visākhe, mātugāmo saddho hoti, saddahati tathāgatassa bodhiṁ: ‘itipi so bhagavā arahaṁ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṁ buddho bhagavā’ti. Evaṁ kho, visākhe, mātugāmo saddhāsampanno hoti.
@@ -32,6 +39,8 @@ Kathañca, visākhe, mātugāmo cāgasampanno hoti? Idha, visākhe, mātugāmo v
 Kathañca, visākhe, mātugāmo paññāsampanno hoti? Idha, visākhe, mātugāmo paññavā hoti …pe… evaṁ kho, visākhe, mātugāmo paññāsampanno hoti.
 
 Imehi kho, visākhe, catūhi dhammehi samannāgato mātugāmo paralokavijayāya paṭipanno hoti, paraloko āraddho hotīti.
+
+#### Verse
 
 Susaṁvihitakammantā,
 saṅgahitaparijjanā;
@@ -52,5 +61,3 @@ Soḷasākārasampannā,
 Aṭṭhaṅgasusamāgatā;
 Tādisī sīlavatī upāsikā,
 Upapajjati devalokaṁ manāpan”ti.
-
-Navamaṁ.

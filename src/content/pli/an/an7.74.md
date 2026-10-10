@@ -1,9 +1,12 @@
 ---
+title: Araka sutta - About Araka
+description: Through seven vivid similes, the Buddha demonstrates the fleeting brevity of human life, urging prompt, diligent meditation.
+qualities: recognition of impermanence, recollection of death, diligence, collectedness, urgency, diligence
+theme: urgency, wisdom
+simile: dewdrop, water bubble, line etched on water, mountain river, ball of saliva, piece of meat, cow being led to slaughter
 slug: an7.74
-source: suttacentral/bilara-data
-title: Arakasutta
-edition: ms
-granularity: paragraph
+character: Teacher Araka
+priority: 1.5
 ---
 
 “Bhūtapubbaṁ, bhikkhave, arako nāma satthā ahosi titthakaro kāmesu vītarāgo. Arakassa kho pana, bhikkhave, satthuno anekāni sāvakasatāni ahesuṁ. Arako satthā sāvakānaṁ evaṁ dhammaṁ deseti: ‘appakaṁ, brāhmaṇa, jīvitaṁ manussānaṁ parittaṁ lahukaṁ bahudukkhaṁ bahupāyāsaṁ mantāyaṁ boddhabbaṁ, kattabbaṁ kusalaṁ, caritabbaṁ brahmacariyaṁ, natthi jātassa amaraṇaṁ.
@@ -27,14 +30,3 @@ Tena kho pana, bhikkhave, samayena manussānaṁ saṭṭhivassasahassāni āyup
 Etarahi taṁ, bhikkhave, sammā vadamāno vadeyya: ‘appakaṁ jīvitaṁ manussānaṁ parittaṁ lahukaṁ bahudukkhaṁ bahupāyāsaṁ mantāyaṁ boddhabbaṁ, kattabbaṁ kusalaṁ, caritabbaṁ brahmacariyaṁ, natthi jātassa amaraṇan’ti. Etarahi, bhikkhave, yo ciraṁ jīvati so vassasataṁ appaṁ vā bhiyyo. Vassasataṁ kho pana, bhikkhave, jīvanto tīṇiyeva utusatāni jīvati— utusataṁ hemantānaṁ, utusataṁ gimhānaṁ, utusataṁ vassānaṁ. Tīṇi kho pana, bhikkhave, utusatāni jīvanto dvādasayeva māsasatāni jīvati— cattāri māsasatāni hemantānaṁ, cattāri māsasatāni gimhānaṁ, cattāri māsasatāni vassānaṁ. Dvādasa kho pana, bhikkhave, māsasatāni jīvanto catuvīsatiyeva addhamāsasatāni jīvati— aṭṭhaddhamāsasatāni hemantānaṁ, aṭṭhaddhamāsasatāni gimhānaṁ, aṭṭhaddhamāsasatāni vassānaṁ. Catuvīsati kho pana, bhikkhave, addhamāsasatāni jīvanto chattiṁsaṁyeva rattisahassāni jīvati— dvādasa rattisahassāni hemantānaṁ, dvādasa rattisahassāni gimhānaṁ, dvādasa rattisahassāni vassānaṁ. Chattiṁsaṁ kho pana, bhikkhave, rattisahassāni jīvanto dvesattatiyeva bhattasahassāni bhuñjati— catuvīsati bhattasahassāni hemantānaṁ, catuvīsati bhattasahassāni gimhānaṁ, catuvīsati bhattasahassāni vassānaṁ saddhiṁ mātuthaññāya saddhiṁ bhattantarāyena.
 
 Tatrime bhattantarāyā kapimiddhopi bhattaṁ na bhuñjati, dukkhitopi bhattaṁ na bhuñjati, byādhitopi bhattaṁ na bhuñjati, uposathikopi bhattaṁ na bhuñjati, alābhakenapi bhattaṁ na bhuñjati. Iti kho, bhikkhave, mayā vassasatāyukassa manussassa āyupi saṅkhāto, āyuppamāṇampi saṅkhātaṁ, utūpi saṅkhātā, saṁvaccharāpi saṅkhātā, māsāpi saṅkhātā, addhamāsāpi saṅkhātā, rattipi saṅkhātā, divāpi saṅkhātā, bhattāpi saṅkhātā, bhattantarāyāpi saṅkhātā. Yaṁ, bhikkhave, satthārā karaṇīyaṁ sāvakānaṁ hitesinā anukampakena anukampaṁ upādāya; kataṁ vo taṁ mayā etāni, bhikkhave, rukkhamūlāni etāni suññāgārāni. Jhāyatha, bhikkhave, mā pamādattha; mā pacchā vippaṭisārino ahuvattha. Ayaṁ vo amhākaṁ anusāsanī”ti.
-
-Dasamaṁ.
-
-Mahāvaggo sattamo.
-
-Tassuddānaṁ
-
-Hirīsūriyaṁ upamā,
-dhammaññū pārichattakaṁ;
-Sakkaccaṁ bhāvanā aggi,
-sunettaarakena cāti.
