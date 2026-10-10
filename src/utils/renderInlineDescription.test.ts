@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { renderInlineDescription } from "./renderInlineDescription";
+import { renderInlineDescription, splitDescriptionParagraphs } from "./renderInlineDescription";
 
 describe("renderInlineDescription", () => {
 	it("renders discourse links", () => {
@@ -43,5 +43,31 @@ describe("renderInlineDescription", () => {
 
 	it("returns empty for empty input", () => {
 		assert.equal(renderInlineDescription(""), "");
+	});
+});
+
+describe("splitDescriptionParagraphs", () => {
+	it("keeps a single-paragraph description whole", () => {
+		assert.deepEqual(splitDescriptionParagraphs("One paragraph only."), [
+			"One paragraph only.",
+		]);
+	});
+
+	it("splits two paragraphs on a blank line and trims them", () => {
+		assert.deepEqual(
+			splitDescriptionParagraphs("First paragraph.  \nSecond line. \n\n  Second paragraph."),
+			["First paragraph. Second line.", "Second paragraph."],
+		);
+	});
+
+	it("allows at most the paragraphs present, ignoring extra blanks", () => {
+		assert.deepEqual(
+			splitDescriptionParagraphs("One.\n\n\n\nTwo.\n\n\nThree."),
+			["One.", "Two.", "Three."],
+		);
+	});
+
+	it("returns empty for empty input", () => {
+		assert.deepEqual(splitDescriptionParagraphs(""), []);
 	});
 });

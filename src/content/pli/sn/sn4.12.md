@@ -2,7 +2,6 @@
 slug: sn4.12
 character:
   - Māra the Evil One
-  - Māro Pāpimā
 source: suttacentral/bilara-data
 title: Kinnusīhasutta
 edition: ms

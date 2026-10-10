@@ -20,7 +20,8 @@ type CurationEntry = {
 	sortLetter?: string;
 	extraSortLetters?: string[];
 	title?: string;
-	description?: string;
+	/** Bio text; may hold up to two paragraphs as an array or a "\n\n"-joined string. */
+	description?: string | string[];
 };
 
 type DiscourseRef = {
@@ -29,6 +30,16 @@ type DiscourseRef = {
 	description: string;
 	collection: string;
 };
+
+/** Normalize a curated bio: arrays of paragraphs (max 2) become one "\n\n"-joined string. */
+function curationDescription(cur: CurationEntry | undefined): string | undefined {
+	if (!cur?.description) return undefined;
+	const joined = Array.isArray(cur.description)
+		? cur.description.join("\n\n")
+		: cur.description;
+	const trimmed = joined.trim();
+	return trimmed || undefined;
+}
 
 function computeSortLetter(
 	raw: string,
@@ -116,7 +127,7 @@ function addPersonDiscourse(
 		const cur = curation[slug];
 		byLetter[bucketLetter][slug] = {
 			title: formatDisplayTitle(resolved, curation, slug),
-			description: cur?.description?.trim(),
+			description: curationDescription(cur),
 			discourses: new Map(),
 		};
 	} else {

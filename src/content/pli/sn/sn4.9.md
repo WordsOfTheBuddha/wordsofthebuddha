@@ -2,7 +2,6 @@
 slug: sn4.9
 character:
   - Māra the Evil One
-  - Māro Pāpimā
 source: suttacentral/bilara-data
 title: Paṭhamaāyusutta
 edition: ms

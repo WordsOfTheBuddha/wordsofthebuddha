@@ -3,7 +3,6 @@ slug: sn4.18
 character:
   - Māra the Evil One
   - Brahmin Yathādhotena Pattena Pañcasāla
-  - Māro Pāpimā
 source: suttacentral/bilara-data
 title: Piṇḍasutta
 edition: ms

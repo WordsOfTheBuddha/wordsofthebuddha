@@ -240,7 +240,7 @@ Errors:
 
 Notes:
 
--   Data is built from JSON mappings in `src/data`: `topicMappings.json`, `qualityMappings.json`, `simileMappings.json`, `personMappings.json` (generated from `character` front matter in English MDX; optional overrides in `personCurations.json`), and `qualities.json`.
+-   Data is built from JSON mappings in `src/data`: `topicMappings.json`, `qualityMappings.json`, `simileMappings.json`, `personMappings.json` (generated from `character` front matter in English MDX; optional overrides in `personCurations.json`, where a person's `description` is a bio string or an array of up to two paragraph strings), and `qualities.json`.
 -   Ordering: featured items first within each item’s discourses, then by numeric priority (higher first), then stable collection ordering, then alphanumeric id. Items themselves are sorted alphabetically by title.
 
 ---

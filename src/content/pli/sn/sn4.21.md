@@ -2,7 +2,7 @@
 slug: sn4.21
 character:
   - Māra the Evil One
-  - Brahmin Māro Pāpimā
+  - Māra the Evil One
 source: suttacentral/bilara-data
 title: Sambahulasutta
 edition: ms

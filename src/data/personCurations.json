@@ -2,11 +2,15 @@
 	"ananda": {
 		"sortLetter": "A",
 		"title": "Venerable Ānanda",
-		"description": "Foremost disciple of the Buddha in great learning, remembrance, conduct, resoluteness and service."
+		"description": [
+			"The Buddha's cousin, attendant, and the canon's faithful memory, Ānanda was foremost in learning, conduct, resoluteness, and service. He stood beside the Teacher in the great scenes: the elders' festival of answers in the Gosiṅga sāl grove ([MN 32](/mn32)), the inauguration of the Sākyans' new assembly hall at Kapilavatthu ([MN 53](/mn53)), the abiding in the empty abidings of the mind he shared with the Buddha ([MN 121](/mn121)); and he asked the questions others assumed were settled, learning that good friendship is not half the spiritual life but the whole of it ([SN 45.2](/sn45.2)) and declaring the wonderful and marvelous circumstances of the Tathāgata's birth ([MN 123](/mn123)).",
+			"His tenderness shaped the Saṅgha's future: it was Ānanda who spoke for Mahāpajāpatī Gotamī until the Buddha allowed women to go forth, for the sake of the nurse who raised him ([AN 8.51](/an8.51)), who arranged teachers for the nuns ([MN 146](/mn146)), visited the sick ([AN 6.56](/an6.56)), and stood by Sāriputta at Anāthapiṇḍika's deathbed ([MN 143](/mn143)). He guided the frightened Channa past his terror of 'who is my self?' ([SN 22.90](/sn22.90)) and grieved when Sāriputta, his elder, passed beyond ([SN 47.13](/sn47.13)). At the Cāpāla shrine he missed the hint to ask the Buddha to remain an eon, and the life force was surrendered ([AN 8.70](/an8.70)); at Kusinārā the Buddha consoled him that their long companionship was merit, and that the way to honor a Buddha is the path itself ([DN 16](/dn16)). Soon after, he could tell the brahmin Gopaka Moggallāna that the Teacher left no successor — the Saṅgha lives on the Dhamma alone ([MN 108](/mn108))."
+		]
 	},
 	"brahma-sahampati": {
 		"sortLetter": "S",
-		"title": "Brahmā Sahampati"
+		"title": "Brahmā Sahampati",
+		"description": "Brahmā Sahampati stands at the hinge of the whole teaching. When the freshly awakened Buddha inclined to let the Dhamma go, too deep and subtle for beings who delight in attachment; it was Sahampati who appeared, uncovered one shoulder, and pleaded: there are beings with little dust in their eyes who will understand; may the Blessed One teach ([SN 6.1](/sn6.1), [MN 26](/mn26)). When the Buddha wondered whom one so awakened should honor, the Brahmā urged him to honor the Dhamma itself ([AN 4.21](/an4.21), [SN 6.2](/sn6.2)). He kept the practice company after that: verses in the storm-black night on the courage of solitude and the beings freed there ([SN 6.13](/sn6.13)), confirming the direct path of the establishments of mindfulness ([SN 47.18](/sn47.18)), and when the Teacher lay down between the twin sāla trees, his was the Brahmā-world's last verse: even such a one as this must lay the body down ([SN 6.15](/sn6.15), [DN 16](/dn16))."
 	},
 	"ghatikara": {
 		"sortLetter": "G",
@@ -14,7 +18,8 @@
 	},
 	"hatthaka-of-alavi": {
 		"sortLetter": "H",
-		"title": "Householder Hatthaka of Āḷavi"
+		"title": "Householder Hatthaka of Āḷavi",
+		"description": "Hatthaka of Āḷavi met the Buddha with a question from the world's comforts: how could anyone sleep at ease in such cold? The answer, that the mind free from the fevers of lust, hate, and delusion sleeps at ease anywhere, stayed with him ([AN 3.35](/an3.35)). He gathered a following of some five hundred householders by the four ways of being inclusive, giving, kind speech, and helpfulness ([AN 8.24](/an8.24)), and the Buddha held up his seven wondrous qualities (faith, ethics, generosity, learning, and the rest), only for Hatthaka to worry who else had heard the praise, so the Buddha added contentment as the eighth ([AN 8.23](/an8.23)). After death he reappeared as a godling among gods, sending the godlings flocking to hear the Dhamma, and confessed he had passed without getting enough of seeing the Buddha, hearing the true teaching, and serving the Saṅgha ([AN 3.127](/an3.127))."
 	},
 	"young-householder-singalaka": {
 		"sortLetter": "S",
@@ -30,7 +35,9 @@
 	},
 	"annasikondanna": {
 		"sortLetter": "A",
-		"extraSortLetters": ["K"],
+		"extraSortLetters": [
+			"K"
+		],
 		"title": "Venerable Aññāsikoṇḍañña"
 	},
 	"layman-isidatta": {
@@ -51,7 +58,8 @@
 	},
 	"visakha-migaramata": {
 		"sortLetter": "V",
-		"title": "Laywoman Visākhā Migāramātā"
+		"title": "Laywoman Visākhā Migāramātā",
+		"description": "Visākhā, Migāra's mother, was the great woman patron of Sāvatthī: the monastery in the Eastern Park, 'Migāra's Mother's Palace,' bore her name. Asked about the uposatha, she heard the noble observance rated above sovereign rule over sixteen great countries with all their jewels ([AN 3.70](/an3.70)), and returned for the eight-factored sabbath done as the perfected ones do ([AN 8.43](/an8.43)); she was taught the eight qualities that carry a lady to the Gods of the Agreeable Host, from being obliging to her husband to guarding his wealth ([AN 8.47](/an8.47)). When her beloved granddaughter died, the Buddha consoled her: would she really want all of Sāvatthī's people under her control, knowing they die daily? Whatever is under another's control brings sorrow ([UD 2.9](/ud2.9), [UD 8.8](/ud8.8))."
 	},
 	"nakulamata": {
 		"sortLetter": "N",
@@ -91,7 +99,8 @@
 	},
 	"vasettha": {
 		"sortLetter": "V",
-		"title": "Young Brahmin Vāseṭṭha"
+		"title": "Young Brahmin Vāseṭṭha",
+		"description": "Vāseṭṭha was the young brahmin who let the Vedas lead him out of the Vedas. With his fellow student Bhāradvāja he asked how one unites with Brahmā, and was told that memorizing mantras without ethics, immersion, and wisdom cannot reach the Brahmā world; the way there is love, like the great rivers finding the sea ([DN 13](/dn13)). Mocked by their fellow brahmins for following 'the shaveling fake ascetic,' they received the origin of the classes and the declaration that one is a brahmin by deeds, not by birth ([DN 27](/dn27), [MN 98](/mn98))."
 	},
 	"bharadvaja": {
 		"sortLetter": "B",
@@ -100,31 +109,172 @@
 	"anathapindika": {
 		"sortLetter": "A",
 		"title": "Householder Anāthapiṇḍika",
-		"description": "Householder Anāthapiṇḍika, the donor of Jeta's Grove, first journeys through the night to meet the Buddha ([SN 10.8](/sn10.8)). As a patron he receives practical guidance on wealth, giving, and stream-entry ([AN 5.41](/an5.41), [AN 9.20](/an9.20), [SN 55.26–28](/sn55.26)). Gravely ill, he is taught non-clinging by Sāriputta — weeping that he never heard such a teaching as a layman, and asking that laypeople also receive it ([MN 143](/mn143)). Soon after he passes away and returns as a young deity, praising examination of the Dhamma and Sāriputta's wisdom ([SN 2.20](/sn2.20))."
+		"description": "Householder Anāthapiṇḍika, the donor of Jeta's Grove, first journeys through the night to meet the Buddha ([SN 10.8](/sn10.8)). As a patron he receives practical guidance on wealth, giving, and stream-entry ([AN 5.41](/an5.41), [AN 9.20](/an9.20), [SN 55.26–28](/sn55.26)). Gravely ill, he is taught non-clinging by Sāriputta, weeping that he never heard such a teaching as a layman and asking that laypeople also receive it ([MN 143](/mn143)). Soon after he passes away and returns as a young deity, praising examination of the Dhamma and Sāriputta's wisdom ([SN 2.20](/sn2.20))."
 	},
 	"vacchagotta": {
 		"sortLetter": "V",
 		"title": "Wanderer Vacchagotta",
-		"description": "The wanderer Vacchagotta begins as a long-term debate partner, pressing the Buddha on omniscience ([MN 71](/mn71)) and the eternity of the world and the Tathāgata after death — met each time with refusal and the simile of an extinguished fire ([MN 72](/mn72), [SN 44.8–10](/sn44.8)). Trained on the aggregates ([SN 33](/sn33)), he then asks simply what is wholesome, is awed by the success of the fourfold assembly, takes refuge, and ordains ([MN 73](/mn73)). Half a month later he asks for further training, develops tranquility and insight, and attains arahantship with the three true knowledges: \"The Blessed One has been served by me.\""
+		"description": "The wanderer Vacchagotta begins as a long-term debate partner, pressing the Buddha on omniscience ([MN 71](/mn71)) and the eternity of the world and the Tathāgata after death, met each time with refusal and the simile of an extinguished fire ([MN 72](/mn72), [SN 44.8–10](/sn44.8)). Trained on the aggregates ([SN 33](/sn33)), he then asks simply what is wholesome, is awed by the success of the fourfold assembly, takes refuge, and ordains ([MN 73](/mn73)). Half a month later he asks for further training, develops tranquility and insight, and attains arahantship with the three true knowledges: \"The Blessed One has been served by me.\""
 	},
 	"devadatta": {
 		"sortLetter": "D",
 		"title": "Devadatta",
-		"description": "Devadatta, a bhikkhu of the Buddha's own circle, is the canon's great warning about ambition. The Buddha traces his fall to a mind obsessed with acquisitions, respect, and popularity, which cuts off his wholesome root ([SN 17.31–34](/sn17.31)). Not long after his departure, possessions, honor, and popularity are shown to have come to him for his own ruin — like the banana plant that bears fruit to its destruction ([SN 17.35–36](/sn17.35)). The arc ends when he tells Ānanda he will observe the Uposatha separately from the Buddha and the Saṅgha, and the Buddha responds: evil is easily done by the bad, hard for the noble ones ([UD 5.8](/ud5.8))."
+		"description": "Devadatta, a bhikkhu of the Buddha's own circle, is the canon's great warning about ambition. The Buddha traces his fall to a mind obsessed with acquisitions, respect, and popularity, which cuts off his wholesome root ([SN 17.31–34](/sn17.31)). Not long after his departure, possessions, honor, and popularity are shown to have come to him for his own ruin, like the banana plant that bears fruit to its destruction ([SN 17.35–36](/sn17.35)). The arc ends when he tells Ānanda he will observe the Uposatha separately from the Buddha and the Saṅgha, and the Buddha responds: evil is easily done by the bad, hard for the noble ones ([UD 5.8](/ud5.8))."
 	},
 	"citta": {
 		"sortLetter": "C",
 		"title": "Citta the Householder",
-		"description": "Citta the householder of Macchikāsaṇḍa is the layman monks came to question. When elders debate the meaning of 'fetter,' his simile of two yoked oxen settles it: the fetter is the desire that arises in dependence on the senses ([SN 41.1](/sn41.1)). Monks debate him and rival ascetics question him in turn, and his answers show the wisdom and direct knowledge of an exemplary lay follower ([SN 41.2–9](/sn41.2)). Gravely ill, he refuses when deities urge him to wish for a wheel-turning monarchy — 'that too is impermanent' — establishes his family in the Buddha, Dhamma, Saṅgha, and generosity, and passes away ([SN 41.10](/sn41.10))."
+		"description": "Citta the householder of Macchikāsaṇḍa is the layman monks came to question. When elders debate the meaning of 'fetter,' his simile of two yoked oxen settles it: the fetter is the desire that arises in dependence on the senses ([SN 41.1](/sn41.1)). Monks debate him and rival ascetics question him in turn, and his answers show the wisdom and direct knowledge of an exemplary lay follower ([SN 41.2–9](/sn41.2)). Gravely ill, he refuses when deities urge him to wish for a wheel-turning monarchy ('that too is impermanent'), establishes his family in the Buddha, Dhamma, Saṅgha, and generosity, and passes away ([SN 41.10](/sn41.10))."
 	},
 	"pasenadi-of-kosala": {
 		"sortLetter": "P",
 		"title": "King Pasenadi of Kosala",
-		"description": "Pasenadi, king of Kosala, meets the Buddha first as a young skeptic asking whether he too claims full awakening ([SN 3.1](/sn3.1)). Across many visits he brings war with his nephew Ajātasattu — victory breeds hatred, while the peaceful sleep at ease ([SN 3.14–15](/sn3.14)) — grief at his queen's death ([AN 5.49](/an5.49)), and blunt questions on conduct, caste, and omniscience put to Ānanda and the Buddha ([MN 88](/mn88), [MN 90](/mn90)). The teaching he returns to: good friendship is the entire spiritual life ([SN 3.18](/sn3.18))."
+		"description": [
+			"Pasenadi, king of Kosala, came to the Buddha young and unimpressed, asking whether this self-professed Buddha had really awakened at so early an age, and was answered that youth is no disqualification for a prince, a serpent, a fire, or a monk ([SN 3.1](/sn3.1)). He kept returning: on who truly treats themselves as dear and who as a foe ([SN 3.4](/sn3.4)), on conduct as one's only real protection ([SN 3.5](/sn3.5)), on judgment and sacrifice ([SN 3.7](/sn3.7), [SN 3.9](/sn3.9)), and on how to read another's character ([UD 6.2](/ud6.2)). With Queen Mallikā he confessed on a shared night that no one is dearer to them than themselves, and was taught what it really means to hold oneself dear ([SN 3.8](/sn3.8), [UD 5.1](/ud5.1)).",
+			"His reign gave the canon its most human king. He grieved his grandmother's death and heard that no one is exempt ([SN 3.22](/sn3.22)), then his queen's, and received the same truth from a different side ([AN 5.49](/an5.49)). His wars with his nephew Ajātasattu won him Kāsi and bred only hatred: victory breeds hatred, the Buddha said, and only the peaceful sleep at ease ([SN 3.14](/sn3.14), [SN 3.15](/sn3.15)). He hunted the murderer Aṅgulimāla with his army and found the Saṅgha's peace instead ([MN 86](/mn86)); he asked Ānanda whether the Buddha's conduct could be criticized by the wise ([MN 88](/mn88)), and the Buddha whether anyone knows everything at once, or whether birth decides one's fate ([MN 90](/mn90)). The teaching he returned to across his reign was good friendship as the entire spiritual life ([SN 3.18](/sn3.18))."
+		]
 	},
 	"vangisa": {
 		"sortLetter": "V",
 		"title": "Venerable Vaṅgīsa",
-		"description": "Vaṅgīsa wandered village to village, 'drunk on poetry,' until he saw the Buddha and faith arose; hearing the teaching on aggregates, sense fields, and elements, he went forth ([SN 8.12](/sn8.12)). His gift becomes his training: seized by lust at the sight of finely dressed women, he answers himself in verse, defying Māra ([SN 8.1–2](/sn8.1)); moved by Dhamma talks, he extols Sāriputta, Moggallāna, Koṇḍañña, and the assembly the same way ([SN 8.5–11](/sn8.5)). The chapter closes with him 'recently attained perfection' — master of the three knowledges, fulfilled in the Buddha's instructions."
+		"description": "Vaṅgīsa wandered village to village, 'drunk on poetry,' until he saw the Buddha and faith arose; hearing the teaching on aggregates, sense fields, and elements, he went forth ([SN 8.12](/sn8.12)). His gift becomes his training: seized by lust at the sight of finely dressed women, he answers himself in verse, defying Māra ([SN 8.1–2](/sn8.1)); moved by Dhamma talks, he extols Sāriputta, Moggallāna, Koṇḍañña, and the assembly the same way ([SN 8.5–11](/sn8.5)). The chapter closes with him 'recently attained perfection': master of the three knowledges, fulfilled in the Buddha's instructions."
+	},
+	"sariputta": {
+		"sortLetter": "S",
+		"title": "Venerable Sāriputta",
+		"description": [
+			"Foremost among the Buddha's disciples in wisdom, Sāriputta realized the four analytical knowledges just half a month after his full ordination ([AN 4.172](/an4.172)) and spent his life turning the Buddha's summaries into Dhamma the Saṅgha could live by. His expositions became classics: the unfolding of right view ([MN 9](/mn9)), all wholesome states gathered into the four truths like an elephant's footprint into its track ([MN 28](/mn28)), his exchange with Puṇṇa Mantāṇiputta on the relay of purifications ([MN 24](/mn24)), and the unraveling of consciousness, feeling, and cessation with Mahākoṭṭhika ([MN 43](/mn43)). When the Buddha's back was sore at Naḷakapāna he simply asked Sāriputta to speak in his place ([AN 10.67](/an10.67)), and it was Sāriputta who recited the doctrinal sets of the Saṅgīti for the assembled Saṅgha ([DN 34](/dn34)).",
+			"His lion's roar was humility, not power: falsely accused of striking a monk, he likened his mind to the earth and the open road: how could it be soiled? ([AN 9.11](/an9.11)) And he declared that nothing in the world, not even the Buddha's passing, could raise sorrow in him ([SN 21.2](/sn21.2)). He reported the absorptions, formless attainments, and cessation to Ānanda from his private retreats ([SN 28.1–10](/sn28.1)), guided the dying Anāthapiṇḍika into non-clinging ([MN 143](/mn143)), comforted the ailing Channa ([MN 144](/mn144)), and gently dismantled Yamaka's annihilationism ([SN 22.85](/sn22.85)). The one rebuke he carried came from compassion: he had taught the corrupt brahmin Dhanañjāni only the path to the brahmā worlds ([MN 97](/mn97)). Not long before the Buddha's own passing, Sāriputta attained final Nibbāna; Ānanda's grief drew from the Buddha the truth that no meeting ends without parting ([SN 47.13](/sn47.13)), and the Saṅgha was left to dwell with the Dhamma as its island and refuge ([SN 47.14](/sn47.14))."
+		]
+	},
+	"mahamoggallana": {
+		"sortLetter": "M",
+		"title": "Venerable Mahāmoggallāna",
+		"description": [
+			"Sāriputta's inseparable friend and the Buddha's foremost disciple in psychic power, Moggallāna reached the goal by the harder road, the painful practice rather than the pleasant, and just as swiftly ([AN 4.167](/an4.167), [AN 4.168](/an4.168)). His signature is the saṃyutta of noble stillness: distraction after distraction in each absorption and formless attainment, met each time by the Buddha appearing psychically to set him straight ([SN 40.1–9](/sn40.1)). With Sāriputta he could measure himself as a pinch of gravel beside the Himalayas ([SN 21.3](/sn21.3)), and he laid out the sixteen qualities that make a mendicant hard to admonish ([MN 15](/mn15)).",
+			"His journeys through the sky made the Dhamma credible. He saw the skeleton spirit drifting overhead and had the Buddha confirm its cause ([SN 19.1](/sn19.1)); he humbled a conceited Brahmā alongside the Buddha and Sāriputta ([SN 6.5](/sn6.5)); and finding Sakka drifting in divine comfort, he gave the heavenly palace a shake with his toe until the king of gods confessed his negligence and recalled the Teacher's words that nothing is worth holding on to ([MN 37](/mn37)). When Māra slipped into his belly, Moggallāna simply told the Evil One what his stay would cost ([MN 50](/mn50)); when restless monks would not listen, he shook Migāra's Mother's longhouse ([SN 51.14](/sn51.14)); and at the uposatha he scanned the assembly's minds and ejected the one the Buddha knew was impure ([AN 8.20](/an8.20)). With Sāriputta he bore the slander of Kokālika and saw it answered ([AN 10.89](/an10.89)); when both elders passed at Ukkacelā, the Buddha urged the Saṅgha to live with the Dhamma as their island ([SN 47.14](/sn47.14))."
+		]
+	},
+	"anuruddha": {
+		"sortLetter": "A",
+		"title": "Venerable Anuruddha",
+		"description": [
+			"One of the young Sākyan princes who traded the clan's comforts for the going forth ([MN 68](/mn68)), Anuruddha was foremost in the divine eye. At the Gosiṅga sāl grove he lived the harmony he taught with Nandiya and Kimbila: goodwill in body, speech, and mind, shared duties, and an all-night Dhamma discussion ([MN 31](/mn31)). When Moggallāna came to sound the grove, he showed what a mind trained to purity could see ([MN 32](/mn32)). Before a conceited Brahmā he displayed mastery of the fire element and humbled the god's claim that no ascetic could reach his realm ([SN 6.5](/sn6.5)); he reflected on the thoughts of a great person until the Buddha appeared to add the eighth ([AN 8.30](/an8.30)); and when deities of the Agreeable Host performed for him, he averted his senses until they vanished ([AN 8.46](/an8.46)).",
+			"His clairvoyance still needed completion by humility: telling Sāriputta he saw a thousand worlds, he heard his pride diagnosed as conceit, restlessness, and remorse, and gave them up ([AN 3.130](/an3.130)). He taught the four establishments of mindfulness as the noble path to the ending of suffering in one setting after another, in Ambapālī's mango grove and across the whole saṃyutta in his name, down to questions of past lives, psychic powers, and the ending of the defilements ([SN 52.1–24](/sn52.1)); and he kept asking the Buddha what qualities send women to heaven and what to loss ([SN 37.5–24](/sn37.5)). When the Buddha lay down between the twin sāla trees, it was Anuruddha who led the monks through the night, stage by stage, announcing each of the Tathāgata's final absorptions until there was nothing left to bear ([DN 16](/dn16))."
+		]
+	},
+	"mahakassapa": {
+		"sortLetter": "M",
+		"title": "Venerable Mahākassapa",
+		"description": [
+			"Foremost in austere practice, Mahākassapa was the Buddha's mirror in contentment: whichever absorption the Teacher entered, whichever power he wielded, Kassapa could enter and wield the same ([SN 16.9](/sn16.9), [SN 16.10](/sn16.10)). Once the Buddha took the elder's patched outer robe for himself and draped his own cast-off rag robe over Kassapa, a seniority in the homeless life the whole Saṅgha could see ([SN 16.11](/sn16.11)). Offered household robes and invitations as he grew old, he refused: he had lived on almsfood and rag robes all his life, seeing his own happiness in them and the escape ([SN 16.5](/sn16.5)); recovering from grave illness, he turned from deities eager to serve him toward the poor and destitute ([UD 1.6](/ud1.6)), even when Sakka, disguised as a weaver, tried to fill his bowl ([UD 3.7](/ud3.7)).",
+			"Asked to advise the monks, he was blunt about decline: monks competing in studies rather than in the mind ([SN 16.6](/sn16.6)), elders honoring famous recipients of gifts instead of wilderness ascetics ([SN 16.8](/sn16.8)), a training whose rules multiply while its arahants thin: the counterfeit of the true teaching ([SN 16.13](/sn16.13)). To Sāriputta's question about the Realized One after death he gave the same restraint as the Buddha: the undeclared points lead to what is suffering ([SN 16.12](/sn16.12)). And it was Mahākassapa who, on the road from Pāvā, overheard the old monk Subhadda's glee at the news, 'we're well rid of that great ascetic; now we can do as we like,' and answered the monks' grief with the Teacher's own formula: whatever is born, formed, and liable to break up cannot be held, even the Tathāgata's body ([DN 16](/dn16))."
+		]
+	},
+	"sakka-lord-of-the-gods": {
+		"sortLetter": "S",
+		"title": "Sakka, Lord of the Gods",
+		"description": [
+			"Ruler of the gods in Tāvatiṃsa, Sakka came to the Buddha as a king should, into a mountain cave and in awe, with the heavenly musician Pañcasikha's music as an offering ([DN 21](/dn21)). His question was a king's question: why do beings who long for peace live in war? The Buddha pointed to envy and stinginess, and led Sakka through restraint, giving, and the ending of craving until the lord of the gods attained the fruit of stream-entry ([DN 21](/dn21)). He asked the same for his realm: what makes some beings end the taints here and now and others not ([SN 35.118](/sn35.118)).",
+			"The saṃyutta in his name is a king's education in power. He won lordship of the gods by seven vows: supporting parents, honoring elders, gentle speech, no slander ([SN 11.11](/sn11.11)); bound in chains and dragged before the devas, he endured his captor Vepacitti's abuse in perfect calm, to his own charioteer's amazement ([SN 11.4](/sn11.4)); challenged to a verse contest before both hosts, he beat the asura lord with patience instead of weapons ([SN 11.5](/sn11.5)); and he honored the homeless Saṅgha above all the powers of heaven ([SN 11.17](/sn11.17)). Even his liturgy was measured; his sabbath verse, the Buddha noted, suits him poorly, since Sakka is still subject to rebirth, aging, and death ([AN 3.38](/an3.38)). Moggallāna shook his palace to rouse him from divine comfort ([MN 37](/mn37)); and serving Mahākassapa's austere alms round, he disguised himself as a poor weaver just to refill the elder's bowl ([UD 3.7](/ud3.7))."
+		]
+	},
+	"mara-the-evil-one": {
+		"sortLetter": "M",
+		"title": "Māra the Evil One",
+		"description": [
+			"Māra the Evil One is death and desire personified, and the suttas follow him to work. For seven years he pursued the Buddha, by his own admission, and found no vulnerability ([SN 4.24](/sn4.24)). He came as a terrifying elephant king in the rain ([SN 4.2](/sn4.2)), as hypnotic rainbow colors ([SN 4.3](/sn4.3)), as crashing boulders on Vulture's Peak ([SN 4.11](/sn4.11)); he claimed the six sense fields as his farm ([SN 4.19](/sn4.19)), offered an empire without conquest ([SN 4.20](/sn4.20)), and sent his daughters Craving, Malignancy, and Lust ([SN 4.25](/sn4.25)). Each time the Buddha recognized him and answered in verse, declaring the defeat of the Wicked One.",
+			"When the Teacher was beyond reach, Māra turned to the disciples, and lost there too. The nuns Āḷavikā, Somā, Kisāgotamī, Vijayā, Uppalavaṇṇā, Cālā, Upacālā, Sīsupacālā, Selā, and Vajirā each sent him away in verse, Vajirā dissolving his 'who made this being?' into a mere heap of conditions, like a chariot assembled from parts ([SN 5.1–10](/sn5.1)); Samiddhi was steadied against his terror noise ([SN 4.22](/sn4.22)); and when he slipped into Moggallāna's belly, the master of psychic power simply told him what the trip would cost ([MN 50](/mn50)). His one clear victory came at the end: at the Cāpāla shrine he pressed the Buddha's own promise, and the life force was relinquished ([AN 8.70](/an8.70))."
+		]
+	},
+	"radha": {
+		"sortLetter": "R",
+		"title": "Venerable Rādha",
+		"description": "An aging wanderer who came to the Buddha late in life, Rādha received a drill no other disciple got: dozens of short suttas, each ending the same way. Asked what people mean by 'Māra,' the Buddha answered that where there is form, feeling, perception, choices, or consciousness there is Māra, the killer, what dies; so see each aggregate as Māra, as a disease, as a dart, and see it rightly ([SN 23.1](/sn23.1)). The formula ran through 'being' and the conduit to further existence ([SN 23.2](/sn23.2), [SN 23.3](/sn23.3)), through impermanence, suffering, and not-self, aggregate by aggregate ([SN 23.13–18](/sn23.13)), and through the six senses: give up desire for whatever is impermanent ([SN 35.76–78](/sn35.76)), and know and see so that no I-making, mine-making, or conceit remains ([SN 22.71](/sn22.71))."
+	},
+	"rahula": {
+		"sortLetter": "R",
+		"title": "Venerable Rāhula",
+		"description": "The Buddha's son, and the disciple he taught like a craftsman, in small lessons exactly fitted. He had the boy contemplate the four elements as 'not mine, not self, not my self,' each as unshaken by praise and blame as the earth and water themselves ([AN 4.177](/an4.177)); and he drilled the senses, the aggregates, and their craving in the short suttas of the saṃyutta in his name, until nothing was fit to be called 'mine, I am this, my self' ([SN 18.1–22](/sn18.1)). The training matured in the Dark Forest: seeing that Rāhula's qualities for liberation had ripened, the Buddha taught the six sense bases and their objects, and Rāhula's mind was freed from the taints by not grasping ([MN 147](/mn147)). The verses of the Rāhula Sutta keep the father's voice: shun sensual craving, abide secluded, keep the body in mindfulness ([SNP 2.11](/snp2.11))."
+	},
+	"mahakotthika": {
+		"sortLetter": "M",
+		"title": "Venerable Mahākoṭṭhika",
+		"description": "Foremost in analytical knowledge, Mahākoṭṭhika was Sāriputta's peer in dialogue, and his questions drew out the teaching's fine grain: what wisdom is and how consciousness, feeling, and cessation relate ([MN 43](/mn43)); how consciousness and name-and-form lean on each other like two sheaves of reeds ([SN 12.67](/sn12.67)); whether the eye fetters forms or forms the eye (neither, only the desire and lust between them) ([SN 35.232](/sn35.232)); and why one who has seen the aggregates' origin and ending should not proliferate beyond ([AN 4.173](/an4.173)). He pressed Sāriputta with nine ways deeds might be experienced and heard 'certainly not' each time: the spiritual life is lived for disenchantment and cessation ([AN 9.13](/an9.13)); he showed the senior monk Citta Hatthisāriputta that even deep attainments are not enough without the ending of defilements ([AN 6.60](/an6.60)); and with Sāriputta he handled the undeclared questions on the Realized One after death ([SN 44.3–6](/sn44.3))."
+	},
+	"mahanama-the-sakyan": {
+		"sortLetter": "M",
+		"title": "Mahānāma the Sakyan",
+		"description": "The Buddha's kinsman at Kapilavatthu, Mahānāma carried a layman's anxieties and brought them all to the Teacher. Busy with the crowd's press at work, he asked how a disciple should dwell when the Teacher is gone, and received the five spiritual strengths supporting the six recollections: of the Buddha, the teaching, the Saṅgha, and the rest ([AN 11.11–12](/an11.11)); convalescent, he asked which comes first, knowledge or immersion, and heard Ānanda gently take the question too deep for the sick Buddha ([AN 3.73](/an3.73)). When he worried about dying heedless amid Kapilavatthu's chaotic streets, the Buddha reassured him with the simile of the leaning tree, that a trained mind falls the way it has grown ([SN 55.22](/sn55.22)), and taught him the factors of stream-entry that free a noble disciple from loss ([SN 55.21–25](/sn55.21), [SN 55.37](/sn55.37), [SN 55.49](/sn55.49), [SN 55.54](/sn55.54))."
+	},
+	"jambukhadaka": {
+		"sortLetter": "J",
+		"title": "Wanderer Jambukhādaka",
+		"description": "A wanderer who kept hermitages and teachers busy with questions, Jambukhādaka found in Sāriputta a guide who answered without appeal to the Buddha's authority. What is nibbāna? The destruction of greed, hate, and delusion, and the noble eightfold path is the way to it ([SN 38.1](/sn38.1)). What is the goal, what is solace, what are the floods and taints, craving and the fetters, the aggregates and the self? ([SN 38.4–15](/sn38.4)); each time the elder answered and the wanderer went away delighted. His sixteen questions, together with the parallel series of his fellow wanderer Sāmaṇḍaka ([SN 39.1–15](/sn39.1)), stand in the canon as proof that the Dhamma lived in the disciple: Sāriputta could carry its whole weight."
+	},
+	"janussoni": {
+		"sortLetter": "J",
+		"title": "Brahmin Jāṇussoṇi",
+		"description": "A wealthy brahmin with an appetite for testing teachers against each other, Jāṇussoṇi sent his student Vāseṭṭha to find out what the recluse Gotama really was, and received back the report of the elephant's footprint, each footfall holding the whole beast ([MN 27](/mn27)). He asked the Buddha how he had overcome fear and dread in the forest solitudes ([MN 4](/mn4)); whether everything one feels is made by past deeds, and heard that feeling arises dependently, by the middle ([SN 12.47](/sn12.47)); whether gifts and memorial rites truly reach the departed, and heard that they do only in some rebirths ([AN 10.177](/an10.177)); and how extinguishment is visible here and now ([AN 3.55](/an3.55)). Again and again he went for refuge 'for life' ([AN 4.184](/an4.184), [AN 6.52](/an6.52)) — a brahmin who kept his questions and found his answers."
+	},
+	"brahmin-sangarava": {
+		"sortLetter": "S",
+		"title": "Brahmin Saṅgārava",
+		"description": "Saṅgārava was the brahmin who kept bringing his tradition's premises to the Buddha and leaving with less of them. Sacrifice benefits many, he argued; the Buddha showed him that many tread the path he realized, and the three demonstrations of psychic power, revelation, and instruction, the last the finest ([AN 3.60](/an3.60)). When he believed ritual bathing washes away wrongdoing, he was taught the true bathing pool, its banks of ethics, where the wise bathe and cross to the far shore ([SN 7.21](/sn7.21)); when he wondered why memorized mantras fade, he heard the five hindrances as waters dyed, boiling, overgrown, rippling, and muddy ([AN 5.193](/an5.193)); and to his question of near shore and far shore, every wrong path factor was the near shore, its abandonment the far ([AN 10.117](/an10.117))."
+	},
+	"upali": {
+		"sortLetter": "U",
+		"title": "Venerable Upāli",
+		"description": "Upāli was the barber of the Sākyan princes who went forth, and the Buddha had him ordained first, so that the proud young nobles would one day bow to a former servant: the Saṅgha's order taught in a single act. He became the tradition's foremost in the monastic discipline, and the suttas show why: the Buddha gave him the ten qualifications for giving ordination, for taking dependence, for being attended by a novice ([AN 10.33](/an10.33), [AN 10.35](/an10.35), [AN 10.36](/an10.36)), and mapped for him the grounds of schism, the roots of dispute, and the grounds of harmony in the Saṅgha ([AN 10.37](/an10.37), [AN 10.38](/an10.38), [AN 10.41](/an10.41)). Even his aspiration to forest lodging was gently turned: stay with the Saṅgha, the Buddha told him, where the training's comfort lies ([AN 10.99](/an10.99))."
+	},
+	"udayi": {
+		"sortLetter": "U",
+		"title": "Venerable Udāyī",
+		"description": "Udāyī's persistent questions gave the canon some of its clearest maps of feeling and absorption, sometimes at his own expense. He asked what deserves the name 'giant' when the king's great elephant paraded by, and celebrated the answer, one who does nothing monstrous by body, speech, or mind, in verse ([AN 6.43](/an6.43)); he asked Ānanda what confinement and the opening amid confinement mean ([AN 9.42](/an9.42)); and when he objected that nothing at all is felt in extinguishment, Sāriputta showed him that the very absence of feeling is its bliss, each attainment leaving the last as an affliction ([AN 9.34](/an9.34)). Seen teaching a large assembly, he was given the five things to establish first ([AN 5.159](/an5.159)); when he contradicted Sāriputta past the point of sense, the Buddha stepped in to straighten him out ([AN 5.166](/an5.166)); the awakening-factor dialogues in his name show the training he kept asking for ([SN 46.26](/sn46.26))."
+	},
+	"mahakaccana": {
+		"sortLetter": "M",
+		"title": "Venerable Mahākaccāna",
+		"description": "Foremost in elaborating what the Buddha said in brief, Mahākaccāna made brevity audible. When a monk could not unravel the Honeyball verse on non-conflict, the elder expounded it and the Buddha approved: so should it be said of Kaccāna ([MN 18](/mn18)); again with the summary on keeping consciousness unscattered ([MN 138](/mn138)). At Madhurā he told King Avantiputta that preeminence is not born but made: by conduct, by wealth rightly used, by liberation ([MN 84](/mn84)). To the householder Hāliddikāni he unfolded the aggregates and the senses for practice amid aging and illness ([SN 22.3](/sn22.3), [SN 35.130](/sn35.130)); to the laywoman Kāḷī, the meaning of the Buddha's verses in 'The Maidens' Questions' ([AN 10.26](/an10.26))."
+	},
+	"vepacitti-lord-of-the-asuras": {
+		"sortLetter": "V",
+		"title": "Vepacitti, Lord of the Asuras",
+		"description": "Vepacitti, lord of the asuras, is heaven's eternal adversary, and the canon's study in how an enemy is really beaten. Bound in chains and dragged before the devas, he abused Sakka the whole way to the gate while the victor endured in perfect calm, to his own charioteer's amazement ([SN 11.4](/sn11.4)); challenged to a verse contest before both hosts, he argued for repaying anger and lost to Sakka's patience ([SN 11.5](/sn11.5)). Even his sorcery ended in verses the Buddha retold for the Saṅgha ([SN 11.23](/sn11.23)), and when his titans seized the moon and the sun, they were freed at the Teacher's word ([SN 2.9](/sn2.9), [SN 2.10](/sn2.10))."
+	},
+	"mahacunda": {
+		"sortLetter": "M",
+		"title": "Venerable Mahācunda",
+		"description": "Mahācunda, the questioning elder, would not let the Saṅgha mistake itself. When monks absorbed in serenity and monks given to insight disparaged each other, he rebuked both: each practice fulfills the other, and only together do they make the truly skilled ([AN 6.46](/an6.46)). He pressed the Buddha on how effacement differs from mere views ([MN 8](/mn8)), taught when a declaration of awakening is honestly fulfilled ([AN 10.24](/an10.24)) and how the boaster of attainments falls under questioning ([AN 10.85](/an10.85)), and recited the seven factors of awakening by the gravely ill Buddha's bedside until the illness eased ([SN 46.16](/sn46.16)). With Sāriputta he counseled the dying Channa, whose ending the Buddha later declared blameless, for he had not clung ([MN 144](/mn144))."
+	},
+	"ajatasattu": {
+		"sortLetter": "A",
+		"title": "King Ajātasattu",
+		"description": "Ajātasattu carried the heaviest story in the canon: a king who had his own father killed. He sent the brahmin Vassakāra to size up the Buddha before an invasion of the Vajjīs, and got back the report that concord cannot be beaten ([AN 7.22](/an7.22)); his wars with his uncle Pasenadi won him Kāsi and bred only hatred: victory breeds hatred, the Buddha said, and the defeated live in pain ([SN 3.14](/sn3.14), [SN 3.15](/sn3.15)). What keeps such a man awake? On a moonlit night he rode out to the Buddha to ask what fruit the spiritual life bears here and now, confessed his filicide, 'transgression overcame me,' and was told that seeing it as such and making amends in the training is amends ([DN 2](/dn2))."
+	},
+	"samiddhi": {
+		"sortLetter": "S",
+		"title": "Venerable Samiddhi",
+		"description": "The young monk Samiddhi stands at the crossing of three worlds in the suttas. A deity urged him to enjoy his youth before it passed; he brought the taunt to the Buddha and heard how one established in the nameable comes under death's yoke ([SN 1.20](/sn1.20)). Māra made the earth-shattering noise at his contentment ([SN 4.22](/sn4.22)) and probed his sense bases for a hold ([SN 35.65](/sn35.65)). A deity pressed him to learn the One Fine Night; the Buddha gave the summary and Mahākaccāna the exposition ([MN 133](/mn133)), and a garbled report of the Buddha's teaching on action drew from the Teacher the great exposition on kamma ([MN 136](/mn136)). Even his questions came back refined, by Sāriputta's nine aspects of thought ([AN 9.14](/an9.14))."
+	},
+	"upavana": {
+		"sortLetter": "U",
+		"title": "Venerable Upavāṇa",
+		"description": "Upavāṇa served at the Buddha's side — when the Teacher lay with a wind ailment, it was Upavāṇa who fetched the warm water from the brahmin Devahita ([SN 7.13](/sn7.13)). His own questions ran to the roots of things: what makes one a 'terminator of the flood' ([AN 4.175](/an4.175)); what contact has to do with suffering ([SN 12.26](/sn12.26)); how the Dhamma is directly visible here and now through the six senses ([SN 35.70](/sn35.70)); and which awakening factors to kindle or bank when the mind runs sluggish or restless ([SN 46.8](/sn46.8)). Asked while Udāyī's quarrel with Sāriputta was still fresh, he named the five qualities that make an elder truly worthy of respect ([AN 5.166](/an5.166))."
+	},
+	"vassakara": {
+		"sortLetter": "V",
+		"title": "Brahmin Vassakāra",
+		"description": "Vassakāra, chief minister of Magadha, brought a statesman's questions to the Buddha and got answers that outlasted the kingdom. What makes a man of great wisdom great? Knowing the path from the not-path, and finishing the task ([AN 4.35](/an4.35)). He held that nothing is wrong in talking; the Buddha agreed: talk about how unskillful qualities decline and skillful ones grow ([AN 4.183](/an4.183)). Sent by Ajātasattu to size up the Buddha before invading the Vajjīs, he heard the seven principles preventing their decline confirmed, and conceded to his king that they could not be overcome by force, only by discord or bribery ([AN 7.22](/an7.22), [DN 16](/dn16))."
+	},
+	"cunda": {
+		"sortLetter": "C",
+		"title": "Cunda the Smith",
+		"description": "Cunda the smith of Pāvā fed the Buddha his last meal — and the meal itself became the teaching. When the sūkaramaddava he offered was followed by the Buddha's grave illness, the Buddha had Ānanda reassure him that the offering of the Tathāgata's final meal bears fruit equal to the meal that preceded the awakening, and that no evil should be laid at the donor's door ([DN 16](/dn16), [UD 8.5](/ud8.5)). He asked his own question, the ten courses of action unskillful and skillful and where each leads ([AN 10.176](/an10.176)), and his home at Pāvā heard the Saṅgīti recited in concert ([DN 33](/dn33))."
+	},
+	"kimila": {
+		"sortLetter": "K",
+		"title": "Venerable Kimila",
+		"description": "Kimila asked the question every tradition must answer: why does the true Dhamma not last long after a Realized One's quenching? The reply, given more than once, is a curriculum of respect: the Dhamma endures when monks, nuns, laymen, and laywomen hold reverence for the Teacher, the teaching, the Saṅgha, the training, and each other, and fades when they do not ([AN 6.40](/an6.40), [AN 5.201](/an5.201)), with seven qualities of respect and reverence that keep it long ([AN 7.59](/an7.59)). He also received the sixteen steps of mindfulness of breathing in full ([SN 54.10](/sn54.10)), the practice that keeps a teaching alive one breath at a time."
 	}
 }

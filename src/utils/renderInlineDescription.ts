@@ -56,3 +56,15 @@ export function renderInlineDescription(raw: string): string {
 		(_, index: string) => links[Number(index)] ?? "",
 	);
 }
+
+/**
+ * Person bios may hold up to two paragraphs, separated by a blank line.
+ * Collapses each paragraph's internal whitespace to keep rendering uniform.
+ */
+export function splitDescriptionParagraphs(raw: string): string[] {
+	if (!raw) return [];
+	return raw
+		.split(/\n{2,}/)
+		.map((paragraph) => paragraph.replace(/\s+/g, " ").trim())
+		.filter(Boolean);
+}
