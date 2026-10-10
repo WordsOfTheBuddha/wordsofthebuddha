@@ -12,7 +12,7 @@
  * Toggle button is separate (ImageToggle.astro) and placed in icon row.
  */
 import { Image } from "astro:assets";
-import { getEntry } from "astro:content";
+import { getEnglishEntry } from "../utils/getContentEntry";
 import { hasContentImage, type ContentImageData } from "../utils/contentImage";
 import { routes } from "../utils/routes";
 import ZoomIcon from "../assets/magnifying-glass-plus.svg?raw";
@@ -60,7 +60,7 @@ const computeFallbackVizNeighbor = async (direction: -1 | 1) => {
 		const candidatePrefix = (candidateSlug.match(/^[a-z]+/i)?.[0] || "").toLowerCase();
 		if (candidatePrefix !== fallbackCollectionPrefix) continue;
 		if (!hasContentImage(candidateSlug)) continue;
-		const candidateEntry = await getEntry("all", candidateSlug);
+		const candidateEntry = await getEnglishEntry(candidateSlug);
 
 		return {
 			slug: candidateSlug,

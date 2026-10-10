@@ -51,6 +51,10 @@ function resolveEnglishPath(slug: string, hintPath?: string): string | null {
 		if (fs.existsSync(direct)) return direct;
 	}
 
+	// Root-level files (e.g. index.mdx) live directly under EN_ROOT.
+	const rootFile = path.join(EN_ROOT, `${slug}.mdx`);
+	if (fs.existsSync(rootFile)) return rootFile;
+
 	try {
 		for (const entry of fs.readdirSync(EN_ROOT, { withFileTypes: true })) {
 			if (!entry.isDirectory()) continue;
@@ -252,12 +256,18 @@ function probeContentFallback(
 export async function getEnglishEntry(
 	slug: string,
 ): Promise<ContentEntryLike | null> {
-	const stored = await findStoredEnglishEntry(slug);
-	const diskPath = resolveEnglishPath(slug, stored?.filePath);
+	const diskPath = resolveEnglishPath(slug);
 
+	// Dev: read the file directly before touching the content store. The stored
+	// entry would be discarded in favor of the disk read anyway, and consulting
+	// the store forces evaluation of the whole data-store module (~100 MB inline
+	// JSON), which Astro re-invalidates after every content edit — the main
+	// source of multi-second page loads in dev.
 	if (import.meta.env.DEV && diskPath) {
-		return readMarkdownEntry(diskPath, stored?.id ?? slug);
+		return readMarkdownEntry(diskPath, slug);
 	}
+
+	const stored = await findStoredEnglishEntry(slug);
 
 	if (stored) return storedToLike(stored);
 
@@ -272,6 +282,13 @@ export async function getEnglishEntry(
 export async function getPaliEntry(
 	slug: string,
 ): Promise<ContentEntryLike | null> {
+	// Dev: disk-first, same rationale as getEnglishEntry — avoid the content
+	// store (and its full re-evaluation after each edit) when the file exists.
+	const devDiskPath = import.meta.env.DEV ? resolvePaliPath(slug) : null;
+	if (devDiskPath) {
+		return readMarkdownEntry(devDiskPath, slug);
+	}
+
 	const stored = await findStoredPaliEntry(slug);
 	const diskPath = resolvePaliPath(slug, stored?.filePath);
 
@@ -292,6 +309,14 @@ export async function getPaliEntry(
 export async function getReferenceSujatoEntry(
 	slug: string,
 ): Promise<ContentEntryLike | null> {
+	// Dev: disk-first, same rationale as getEnglishEntry.
+	const devDiskPath = import.meta.env.DEV
+		? resolveReferencePath(SUJATO_ROOT, slug)
+		: null;
+	if (devDiskPath) {
+		return readMarkdownEntry(devDiskPath, slug);
+	}
+
 	const stored = await findStoredReferenceEntry("referenceSujato", slug);
 	const diskPath = resolveReferencePath(SUJATO_ROOT, slug, stored?.filePath);
 
@@ -312,6 +337,14 @@ export async function getReferenceSujatoEntry(
 export async function getReferencePliMsEntry(
 	slug: string,
 ): Promise<ContentEntryLike | null> {
+	// Dev: disk-first, same rationale as getEnglishEntry.
+	const devDiskPath = import.meta.env.DEV
+		? resolveReferencePath(PLI_MS_ROOT, slug)
+		: null;
+	if (devDiskPath) {
+		return readMarkdownEntry(devDiskPath, slug);
+	}
+
 	const stored = await findStoredReferenceEntry("referencePliMs", slug);
 	const diskPath = resolveReferencePath(PLI_MS_ROOT, slug, stored?.filePath);
 
@@ -333,6 +366,14 @@ export async function getReferencePliMsEntry(
 export async function getGuEntry(
 	slug: string,
 ): Promise<ContentEntryLike | null> {
+	// Dev: disk-first, same rationale as getEnglishEntry.
+	const devDiskPath = import.meta.env.DEV
+		? resolveReferencePath(GU_ROOT, slug)
+		: null;
+	if (devDiskPath) {
+		return readMarkdownEntry(devDiskPath, slug);
+	}
+
 	const stored = await findStoredReferenceEntry("gu", slug);
 	const diskPath = resolveReferencePath(GU_ROOT, slug, stored?.filePath);
 

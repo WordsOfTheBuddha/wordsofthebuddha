@@ -50,15 +50,12 @@ function createCollection(
 	});
 }
 
-const dn = createCollection("src/content/en/dn/");
-const dhp = createCollection("src/content/en/dhp/");
-const mn = createCollection("src/content/en/mn/");
-const ud = createCollection("src/content/en/ud/");
-const sn = createCollection("src/content/en/sn/");
-const an = createCollection("src/content/en/an/");
-const snp = createCollection("src/content/en/snp/");
-const iti = createCollection("src/content/en/iti/");
-const kp = createCollection("src/content/en/kp/");
+// NOTE: per-nikaya collections (dn/dhp/mn/ud/sn/an/snp/iti/kp) were removed:
+// nothing read them (all lookups go through `all`, `pliAll`, `anthologies`, or
+// the reference collections), and their glob loaders stored every English file
+// a SECOND time in Astro's content data store (~100 MB in dev), doubling
+// content-store reload and persist work after every content edit.
+
 const anthologies = createCollection(
 	"src/content/en/anthologies/",
 	"*.mdx",
@@ -85,15 +82,6 @@ const referencePliMs = createCollection(
 const gu = createCollection("src/content/gu/", "**/*.md");
 
 export const collections = {
-	dn,
-	dhp,
-	mn,
-	ud,
-	sn,
-	snp,
-	an,
-	iti,
-    kp,
 	anthologies,
 	all,
 	pliAll,
