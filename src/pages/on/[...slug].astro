@@ -277,8 +277,8 @@ const showDiscourseSectionHeading =
 					hasHeaderMeta ? "p-5" : "px-5 py-4",
 				]}
 			>
-				<div class="flex items-start justify-between">
-					<div class="flex items-start flex-grow">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center flex-grow">
 						<div class="min-w-0 pr-4">
 							<h1
 								class="text-xl font-semibold my-0 flex items-center flex-wrap gap-2"
@@ -319,7 +319,7 @@ const showDiscourseSectionHeading =
 							</h1>
 						</div>
 					</div>
-					<div class="shrink-0 self-start">
+					<div class="shrink-0 flex items-center">
 						<span
 							id="on-discourse-count-badge"
 							class="px-2 py-0.25 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm"
@@ -812,12 +812,16 @@ const showDiscourseSectionHeading =
 			contain-intrinsic-size: auto 110px;
 		}
 
-		/* Person bios: citation links read as quiet references, not navigation.
-		   Full link color returns on hover. */
+		/* Person bios: citation links match the EntityPopover card overlay
+		   color. Full link color returns on hover. */
 		.person-bio a:not(:hover):not(:focus-visible) {
-			color: inherit;
+			color: var(--color-primary, #d97706);
 			text-decoration: underline;
-			text-decoration-color: color-mix(in srgb, var(--link-color) 45%, transparent);
+			text-decoration-color: color-mix(
+				in srgb,
+				var(--color-primary, #d97706) 45%,
+				transparent
+			);
 			text-underline-offset: 2px;
 		}
 	</style>

@@ -1,0 +1,79 @@
+---
+import EntityPopover from "./EntityPopover.astro";
+import { resolveCharacterLinks, type CharacterLink } from "../utils/personTagLinks";
+
+interface Props {
+	characters?: string | string[] | null | undefined;
+}
+
+const resolved: CharacterLink[] = resolveCharacterLinks(Astro.props.characters);
+const label = resolved.length === 1 ? "Person:" : "Persons:";
+---
+
+{
+	resolved.length > 0 && (
+		<div class="character-tags my-4">
+			<p class="text-sm" style="color: var(--gray-500);">{label}</p>
+			<div class="character-list ml-2 inline-flex">
+				{resolved.map((character) => (
+					<EntityPopover
+						title={character.title}
+						context={character.description ?? character.fallbackContext}
+						href={character.href}
+					>
+						{character.href ? (
+							<a href={character.href} class="character-tag person">
+								{character.label}
+							</a>
+						) : (
+							<span class="character-tag person">{character.label}</span>
+						)}
+					</EntityPopover>
+				))}
+			</div>
+		</div>
+	)
+}
+
+<style>
+	.character-tags {
+		margin: 1rem 0;
+	}
+
+	.character-list {
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.character-tag {
+		display: inline-block;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.character-tag.person {
+		background-color: rgba(139, 92, 246, 0.1); /* violet-500 with opacity */
+		color: #7c3aed; /* violet-600 */
+		border: 1px solid rgba(139, 92, 246, 0.2);
+	}
+
+	html.dark .character-tag.person {
+		background-color: rgba(139, 92, 246, 0.2);
+		color: #a78bfa; /* violet-400 for better contrast in dark mode */
+		border: 1px solid rgba(139, 92, 246, 0.3);
+	}
+
+	.character-tag.person:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .character-tag.person:hover {
+		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+	}
+</style>

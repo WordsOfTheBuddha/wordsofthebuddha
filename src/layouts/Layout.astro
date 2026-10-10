@@ -29,6 +29,7 @@ import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ListenButton from "../components/ListenButton.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
+import CharacterTags from "../components/CharacterTags.astro";
 import Commentary from "../components/Commentary.astro";
 import DiscourseImage from "../components/DiscourseImage.astro";
 import ImageToggle from "../components/ImageToggle.astro";
@@ -64,6 +65,7 @@ const {
 	title,
 	description,
 	qualities,
+	characters,
 	prev,
 	next,
 	lastUpdated,
@@ -99,6 +101,7 @@ const {
 	title?: string;
 	description?: string;
 	qualities?: string[];
+	characters?: string | string[] | null;
 	prev?: any;
 	next?: any;
 	lastUpdated?: string;
@@ -713,6 +716,7 @@ const structuredData = buildStructuredData({
 							<QualityTags tags={qualities} />
 						)
 					}
+					<CharacterTags characters={characters} />
 					{
 						lastUpdated && (
 							<LastUpdated

@@ -40,6 +40,7 @@ export type ReferenceDiscoursePage = {
 		title: string;
 		description?: string;
 		qualities?: string[];
+		characters?: string | string[] | null;
 		prev: ContentEntryLike | null;
 		next: ContentEntryLike | null;
 		id: string;
@@ -173,6 +174,9 @@ export async function buildReferenceDiscoursePage(
 		?.split(",")
 		.map((t: string) => t.trim())
 		.filter(Boolean);
+	const characters = (
+		paliParagraphEntry.data as { character?: string | string[] }
+	).character;
 	const filePath = paliParagraphEntry.filePath || "";
 	const lastUpdated = getLastModified(filePath);
 	const subsetFallback =
@@ -199,6 +203,7 @@ export async function buildReferenceDiscoursePage(
 			title: displayTitle,
 			description,
 			qualities,
+			characters,
 			prev: refPrev,
 			next: refNext,
 			id,

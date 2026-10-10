@@ -333,6 +333,7 @@ export async function resolveCatchAllDiscoursePage(
 		qualities: contentItem.data.qualities
 			?.split(",")
 			.map((tag: string) => tag.trim()),
+		characters: contentItem.data.character,
 		prev,
 		next,
 		id,
