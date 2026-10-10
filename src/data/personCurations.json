@@ -14,7 +14,8 @@
 	},
 	"ghatikara": {
 		"sortLetter": "G",
-		"title": "Ghaṭikāra the Potter"
+		"title": "Ghaṭikāra the Potter",
+		"description": "The potter whose loyalty crossed two Buddhas: in a past life he persuaded his brilliant friend Jotipāla, the Bodhisatta himself, to go and see Kassapa Buddha, who extolled his unmatched virtue ([MN 81](/mn81)); now a young deity, he visits the Buddha to rejoice over seven monks reborn in the Aviha heavens ([SN 1.50](/sn1.50), [SN 2.24](/sn2.24))."
 	},
 	"hatthaka-of-alavi": {
 		"sortLetter": "H",
@@ -42,7 +43,8 @@
 	},
 	"layman-isidatta": {
 		"sortLetter": "I",
-		"title": "Layman Isidatta"
+		"title": "Layman Isidatta",
+		"description": "One of the two master builders of Rājagaha, the celibate and the married pair whom Migasālā held up as proof that conduct does not decide destiny: both were declared stream-enterers, and the Buddha turned her challenge into the teaching on the ten kinds of persons ([AN 6.44](/an6.44), [AN 10.75](/an10.75)). Isidatta received the four factors of stream-entry with his fellow builder ([SN 55.6](/sn55.6)) and was counted among the six-quality householders bound for heaven ([AN 6.120–139](/an6.120))."
 	},
 	"layman-purana": {
 		"sortLetter": "P",
@@ -63,11 +65,13 @@
 	},
 	"nakulamata": {
 		"sortLetter": "N",
-		"title": "Laywoman Nakulamātā"
+		"title": "Laywoman Nakulamātā",
+		"description": "Nakulamātā, the canon's model wife. When her husband lay gravely ill she steadied him with her speech at the bedside: the household is in good hands, she is faithful, capable, and serene; do not die anxious ([AN 6.16](/an6.16)). The Buddha held up their marriage as alike in faith, ethics, giving, and wisdom ([AN 4.55](/an4.55)), and taught her the eight qualities by which a lady wins rebirth among the Gods of the Agreeable Host ([AN 8.48](/an8.48))."
 	},
 	"nandamata": {
 		"sortLetter": "N",
-		"title": "Laywoman Nandamātā"
+		"title": "Laywoman Nandamātā",
+		"description": "The devout laywoman Nandamātā played host to heaven: the great king Vessavaṇa himself visited her home, and she retold the meeting to Sāriputta, listing her seven wondrous qualities of generous faith ([AN 7.53](/an7.53)). The Buddha, seeing her prepare a six-factored gift for the Saṅgha headed by Sāriputta and Moggallāna, used her giving to define the perfect donor: cheerful, confident, and sustained in the good mood of the gift ([AN 6.37](/an6.37))."
 	},
 	"suppavasa": {
 		"sortLetter": "S",
@@ -87,7 +91,8 @@
 	},
 	"siha": {
 		"sortLetter": "S",
-		"title": "General Sīha"
+		"title": "General Sīha",
+		"description": "General Sīha, the Licchavis' commander and a devoted Jain until the Licchavis themselves urged him to check the Buddha out: he asked whether the Buddha really taught a doctrine of inaction and heard what he actually teaches ([AN 8.12](/an8.12)); then, as a donor, he asked what fruit giving shows in this very life and was told of good repute, easy confidence in any assembly, and an unconfused death ([AN 5.34](/an5.34), [AN 7.57](/an7.57))."
 	},
 	"sona": {
 		"sortLetter": "S",
@@ -104,7 +109,8 @@
 	},
 	"bharadvaja": {
 		"sortLetter": "B",
-		"title": "Young Brahmin Bhāradvāja"
+		"title": "Young Brahmin Bhāradvāja",
+		"description": "The young brahmin who stood beside Vāseṭṭha through the canon's great caste debates: how one unites with Brahmā ([DN 13](/dn13)), how the classes arose ([DN 27](/dn27)), and how one is truly a brahmin, by deed and not by birth ([MN 98](/mn98), [Snp 3.9](/snp3.9))."
 	},
 	"anathapindika": {
 		"sortLetter": "A",
@@ -276,5 +282,104 @@
 		"sortLetter": "K",
 		"title": "Venerable Kimila",
 		"description": "Kimila asked the question every tradition must answer: why does the true Dhamma not last long after a Realized One's quenching? The reply, given more than once, is a curriculum of respect: the Dhamma endures when monks, nuns, laymen, and laywomen hold reverence for the Teacher, the teaching, the Saṅgha, the training, and each other, and fades when they do not ([AN 6.40](/an6.40), [AN 5.201](/an5.201)), with seven qualities of respect and reverence that keep it long ([AN 7.59](/an7.59)). He also received the sixteen steps of mindfulness of breathing in full ([SN 54.10](/sn54.10)), the practice that keeps a teaching alive one breath at a time."
+	},
+	"dona": {
+		"description": "Doṇa the brahmin followed a set of wheel footprints to their end and found the Buddha seated there; asked what he was, he heard the definition that named a Buddha for the ages, one whose defilements are ended like a lotus unclung by water ([AN 4.36](/an4.36)). He pressed the Buddha on respect for elderly brahmins and left asking to be remembered as a follower ([AN 5.192](/an5.192)); at Kusinārā it was Doṇa who divided the relics into eight equal portions and stopped the war over them ([DN 16](/dn16))."
+	},
+	"nanda": {
+		"description": "The Buddha's handsome cousin went forth half in jest and had to grow into it: dressed in pressed robes with a polished bowl, he was admonished toward the wilderness life ([SN 21.8](/sn21.8)); lovesick and ready to quit, he was carried to the heaven worlds, where the nymphs made his beloved look plain, and he returned to strive in earnest ([UD 3.2](/ud3.2)). Asked whether a sage is made by knowledge or by observance, the canon's Nanda hears that neither views nor observances liberate; only the abandoning of all fixed ways ([Snp 5.7](/snp5.7))."
+	},
+	"nakulapita": {
+		"description": "The aging householder told the Buddha plainly that his body was breaking, and heard the classic instruction: train so the mind stays unafflicted while the body declines, then received Sāriputta's elaboration on the aggregates ([SN 22.1](/sn22.1)). With his wife Nakulamātā he became the canon's model marriage, alike in faith, ethics, giving, and wisdom and hoping to meet again in heaven ([AN 4.55](/an4.55)); gravely ill once more, it was his wife's fearless deathbed encouragement, not a teacher's, that stilled his pain ([AN 6.16](/an6.16))."
+	},
+	"nagita": {
+		"description": "The attendant who guarded the Buddha's seclusion: emissaries of the Kosalan and Magadhan kings and a Licchavi chief all had to come to Nāgita first, asking where the Teacher could be seen ([DN 6](/dn6)). The Buddha told him, three times over as householders arrived in the forest with offerings and noise, that he never wanted fame or the pleasure of gains, only the seclusion that ripens in dispassion and wisdom ([AN 8.86](/an8.86), [AN 5.30](/an5.30), [AN 6.42](/an6.42))."
+	},
+	"nandaka": {
+		"description": "The elder the Buddha made teach. Reluctantly assigned to instruct the nuns, Nandaka gave Mahāpajāpatī Gotamī's five hundred a lesson on the six senses and their objects as impermanent, stressful guests ([MN 146](/mn146)); the Buddha praised a Dhamma talk of his so thorough that the Teacher's own back ached in the waiting ([AN 9.4](/an9.4)); and he taught the young layman Sāḷha to verify wholesome and unwholesome qualities for himself, not on any teacher's word ([AN 3.66](/an3.66))."
+	},
+	"nandiya-the-sakyan": {
+		"description": "The Sakyan householder who asked the busy man's question: how should a family man hemmed in by work practice? He received eleven supports, the six strengths and the five recollections ([AN 11.13](/an11.13)), and the four factors of stream-entry that free a noble disciple from loss ([SN 55.40](/sn55.40), [SN 55.47](/sn55.47))."
+	},
+	"channa": {
+		"description": "The Buddha's onetime charioteer carried his old intensity into the training and got stuck at the point of letting go: though he saw impermanence and not-self, he panicked at extinguishment, wondering 'who is my self?' until Ānanda's patient instruction steadied him ([SN 22.90](/sn22.90)). Gravely ill and desperate, he used the knife; Sāriputta and Mahācunda had counseled him at the end, and the Buddha declared the death blameless, for he had died without clinging ([MN 144](/mn144))."
+	},
+	"candana": {
+		"description": "A young godling with a taste for the Dhamma: Candana carried the verses of 'One who has had a single auspicious night' from the heaven worlds to the elder Lomasakaṅgiya ([MN 134](/mn134)), addressed the Buddha in verse ([SN 2.15](/sn2.15)), and stood among the godlings Moggallāna taught on refuge and noble ethics ([SN 40.11](/sn40.11))."
+	},
+	"asibandhakaputta": {
+		"description": "The village headman who asked the administrator's question: could the Teacher send all beings to heaven? No, the Buddha answered; beings are reborn by their own doing, not a teacher's wish ([SN 42.6](/sn42.6)), and the headman received the Buddha's lay teachings through the similes of the field, the horn blower, and the family ([SN 42.7–9](/sn42.7))."
+	},
+	"assaji": {
+		"description": "One of the first five to hear the Dhamma, by the tradition's count. In the canon's own scenes, the Jain debater Saccaka tested him on how the Buddha trains disciples and failed to shake him ([MN 35](/mn35)); gravely ill at the Kassaka park in Rājagaha, he was freed by the Buddha's teaching on the aggregates as impermanent and not-self ([SN 22.88](/sn22.88)); and the monks led by Assaji and Punabbasuka at Kīṭāgiri were corrected by the Buddha on eating at night ([MN 70](/mn70))."
+	},
+	"malukyaputta": {
+		"description": "The old elder whose impatience made the canon's best-known correction: pressing the Buddha with questions on the world, the life force, and the after-death, he was given the simile of the man struck by two arrows and left with the undeclared questions undeclared ([MN 63](/mn63)), and the deeper inquiry on the five lower fetters in the Greater discourse to Mālukya ([MN 64](/mn64)). In old age he asked for one teaching to live by and received the classic: in the seen, only the seen; in the heard, only the heard ([SN 35.95](/sn35.95), [AN 4.257](/an4.257)), and became one of the perfected."
+	},
+	"mahapajapati-gotami": {
+		"description": "The Buddha's aunt and foster mother, who raised him after his mother's death and would not take no for an answer: refused ordination three times, she followed the Saṅgha to Vesālī in ocher robes until Ānanda spoke for her, and the Buddha allowed women to go forth under eight chief rules ([AN 8.51](/an8.51)). As leader of the nuns she brought them to Nandaka for instruction ([MN 146](/mn146)); she offered the Buddha a robe she had woven and was pointed to the Saṅgha as the greater field of giving ([MN 142](/mn142)); and she asked how to tell the true Teacher's instruction from an impostor's, and received the eight marks ([AN 8.53](/an8.53))."
+	},
+	"mahali-the-licchavi": {
+		"description": "The Licchavi aristocrat of Vesālī who asked about the roots of bad and good kamma, greed, hate, delusion, and a wandering mind, and their opposites ([AN 10.47](/an10.47)); heard of the seven vows by which Sakka won lordship of the gods in a former life ([SN 11.13](/sn11.13)); and received the five aggregates as the field for insight ([SN 22.60](/sn22.60))."
+	},
+	"mahakappina": {
+		"description": "The elder the Buddha held up to the Saṅgha as mighty and accomplished, one who had realized the supreme end of the path in this very life ([SN 21.11](/sn21.11)). He stood with the Buddha and the chief disciples displaying mastery of the fire element before a conceited Brahmā ([SN 6.5](/sn6.5)), and received the sixteen steps of mindfulness of breathing ([SN 54.7](/sn54.7))."
+	},
+	"kappa": {
+		"description": "Kappa's question in the Masters' Songs asks for an island amid the flood of old age and death, and the answer is the one island, the ending of craving ([Snp 5.10](/snp5.10)); as an elder he was drilled on the five aggregates as impermanent and not-self until nothing there remained to hold ([SN 22.124–125](/sn22.124))."
+	},
+	"kokalika": {
+		"description": "The mendicant who kept slandering Sāriputta and Moggallāna as corrupt, was warned by the Buddha and by the deities, persisted, and after an agonizing death was reborn in the Paduma hell ([AN 10.89](/an10.89), [SN 6.10](/sn6.10)) — the canon's standing caution on speech one cannot take back. The Kokālika Sutta collects the Buddha's verses spoken to him ([Snp 3.10](/snp3.10))."
+	},
+	"kassapa": {
+		"description": "The naked ascetic who tested the Buddha on austerity and received the Lion's Roar: self-torment is not practice; the middle way is ([DN 8](/dn8)). He heard dependent origination taught by the middle ([SN 12.17](/sn12.17)), was corrected by the layman Citta in an exchange the canon holds up as an exemplary lay disciple's mastery ([SN 41.9](/sn41.9)), and as the old friend of the elder Bākkula ordained and quickly quenched ([MN 124](/mn124))."
+	},
+	"kamabhu": {
+		"description": "The elder who took his hardest questions to a layman: Kāmabhū asked the householder Citta and heard answers the canon holds up as an exemplary lay follower's direct knowledge ([SN 41.5–6](/sn41.5)); the Buddha taught him how contemplating the six senses fades the fetters and ends suffering ([SN 35.233](/sn35.233))."
+	},
+	"lakundaka-bhaddiya": {
+		"description": "Small in body and vast in attainment: mocked by monks who judged by appearance, Lakuṇḍaka ('dwarf') Bhaddiya had his great psychic power and arahantship revealed by the Buddha ([UD 7.5](/ud7.5)); it was Sāriputta's Dhamma talk that freed his mind from the taints through not grasping ([UD 7.1–2](/ud7.1))."
+	},
+	"suciloma": {
+		"description": "The spiky-haired spirit who blocked the Buddha's road with his companion Khara and demanded answers: where do passion, hatred, and discontent come from? From this, the Buddha said, they spring, and here they end ([Snp 2.5](/snp2.5), [SN 10.3](/sn10.3)). When Moggallāna later saw a needle-haired ghost in torment above Rājagaha, the Buddha confirmed it was Sūciloma ([SN 19.8–9](/sn19.8))."
+	},
+	"subha": {
+		"description": "The young brahmin who asked why human beings are so unequal in lifespan, health, wealth, and wisdom, and received the doctrine that beings are owners and heirs of their kamma ([MN 135](/mn135)); he asked whether householders or renunciants live the better life and heard the Buddha weigh actions with discernment ([MN 99](/mn99)); and after the Buddha's passing he brought the same inquiries to Ānanda ([DN 10](/dn10))."
+	},
+	"sakuludayi": {
+		"description": "The wanderer whose assembly marveled at how honored the Buddha was; the Buddha showed it was not ascetic competition but the graded teaching and the realized fruit ([MN 77](/mn77)), walked him through the successive refinements of bliss up to the ceasing of perception and feeling ([MN 79](/mn79)), and declared the four truths of the true brahmins, realized in his own insight ([AN 4.185](/an4.185)), with contentment, goodwill, right mindfulness, and right immersion as the Dhamma's primordial footprints ([AN 4.30](/an4.30))."
+	},
+	"samandaka": {
+		"description": "The second of Sāriputta's wanderer catechumens: Sāmaṇḍaka's questions on what happiness and suffering are drew the elder's answer that rebirth is suffering and no rebirth happiness ([AN 10.65–66](/an10.65)), and his saṃyutta of questions on extinguishment, the goal, and what is hard to do stands beside Jambukhādaka's ([SN 39.1–15](/sn39.1), [SN 39.16](/sn39.16))."
+	},
+	"householder-sona": {
+		"description": "The lay follower Soṇa received the Buddha's drill for lay practice: the aggregates as impermanent, to be seen with dispassion amid aging and illness ([SN 22.49–50](/sn22.49)), and the six senses taught for release ([SN 35.128](/sn35.128))."
+	},
+	"pancakanga": {
+		"description": "The king's builder and chamberlain who could not leave the question of feeling alone: his debate over whether feeling is twofold or many reached the Buddha twice, and both times the Buddha reconciled the countings as teachings for different contexts ([MN 59](/mn59), [SN 36.19](/sn36.19)). He asked Anuruddha to distinguish the attainment of cessation from mere non-perception ([MN 127](/mn127)), and heard that a supreme ascetic is not made by what an infant can already do ([MN 78](/mn78))."
+	},
+	"purana": {
+		"description": "One of the two master builders of Rājagaha, the celibate and the married pair whom Migasālā held up as proof that conduct does not decide destiny: both were declared stream-enterers, and the Buddha turned her challenge into the teaching on the ten kinds of persons ([AN 6.44](/an6.44), [AN 10.75](/an10.75)). Purāṇa received the four factors of stream-entry with his fellow builder ([SN 55.6](/sn55.6)) and was counted among the six-quality householders bound for heaven ([AN 6.120–139](/an6.120))."
+	},
+	"rohita": {
+		"description": "The deity who had once spent a lifetime flying through space toward the world's edge and died short of it. The Buddha told him the end of the world is not won by travel: in this very fathom-long body, with its perception and mind, the world, its arising and ending, and the path ([AN 4.45–46](/an4.45), [SN 2.26](/sn2.26))."
+	},
+	"queen-mallika": {
+		"description": "Queen Mallikā, Pasenadi's beloved and his sharpest questioner. On the famous night she and the king each confessed that no one was dearer to them than themselves, and the Buddha taught them what holding oneself dear really means ([SN 3.8](/sn3.8), [UD 5.1](/ud5.1)); she asked why some women are unlovely and powerless while others are honored, and heard temper, giving, and jealousy decide it ([AN 4.197](/an4.197)); and when a daughter's birth disappointed the king, the Buddha answered with the worth of a woman ([SN 3.16](/sn3.16))."
+	},
+	"ugga-of-vesali": {
+		"description": "The wealthy householder of Vesālī whose giving the Buddha rated remarkable: he served the finest foods, saying that the giver of the agreeable receives the agreeable, and heard that giving the best bears the best fruit ([AN 5.44](/an5.44)). Endowed with eight wondrous qualities ([AN 8.21](/an8.21)), he asked why some beings attain nibbāna here and now and others do not ([SN 35.124](/sn35.124)), and was counted among the stream-enterers ([AN 6.120–139](/an6.120))."
+	},
+	"bhadda": {
+		"description": "The elder who kept asking Ānanda the durable questions: what wholesome virtue is for, answered as the cultivation of the four establishments of mindfulness ([SN 47.21](/sn47.21)); and why the true Dhamma lasts long or fades after a Tathāgata's passing, answered with whether the four establishments of mindfulness are cultivated and revered ([SN 47.22–23](/sn47.22))."
+	},
+	"buddha-kassapa": {
+		"description": "The awakened one of an earlier age: the suttas recall Kassapa Buddha finding the escape from suffering before his own full awakening, just as Gotama would ([SN 12.9](/sn12.9)); and when Moggallāna saw ghosts in torment above Rājagaha, the Buddha confirmed deeds done in the days of Kassapa's dispensation bearing their fruit ([SN 19.12](/sn19.12), [SN 19.17](/sn19.17), [SN 19.21](/sn19.21))."
+	},
+	"haliddikani": {
+		"description": "The householder whose questions went to the master of exposition: Mahākaccāna unfolded for him the aggregates to practice amid aging and illness ([SN 22.3–4](/sn22.3)) and the six senses as the field of release ([SN 35.130](/sn35.130))."
+	},
+	"jivaka-komarabhacca": {
+		"description": "The celebrated physician and the Buddha's doctor: Jīvaka Komārabhacca it was who prompted the remorseful Ajātasattu to visit the Buddha on his moonlit night ([DN 2](/dn2)); he asked about eating meat and heard the circumstances in which the Tathāgata may accept it ([MN 55](/mn55)); and he received the definition of a lay follower and an ethical one ([AN 8.26](/an8.26))."
 	}
 }
