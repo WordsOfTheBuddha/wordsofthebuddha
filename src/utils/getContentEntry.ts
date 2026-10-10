@@ -132,66 +132,82 @@ function readMarkdownEntry(
 	};
 }
 
-async function findStoredEnglishEntry(slug: string) {
-	try {
-		let entry = await getEntry("all", slug);
-		if (entry) return entry;
+type StoredCollectionName =
+	| "all"
+	| "pliAll"
+	| "referenceSujato"
+	| "referencePliMs"
+	| "gu";
 
-		const allEntries = await getCollection("all");
-		return (
-			allEntries.find(
-				(item) =>
-					item.id === slug ||
-					item.data.slug === slug ||
-					item.id.endsWith(`/${slug}`),
-			) ?? null
-		);
+type StoredEntry = NonNullable<Awaited<ReturnType<typeof getEntry>>>;
+
+/**
+ * `getEntry` misses (e.g. reference-only discourses have no English entry) used
+ * to fall back to `getCollection(...).find(...)` on every request, loading and
+ * scanning the whole collection each time. Build the fallback index once per
+ * warm function instance instead, so a miss is an O(1) map lookup.
+ */
+const fallbackIndexes = new Map<
+	StoredCollectionName,
+	Promise<Map<string, StoredEntry>>
+>();
+
+function getFallbackIndex(
+	collection: StoredCollectionName,
+): Promise<Map<string, StoredEntry>> {
+	// Dev: content changes live, so never reuse a stale index.
+	let index = import.meta.env.DEV ? undefined : fallbackIndexes.get(collection);
+	if (!index) {
+		index = (async () => {
+			const map = new Map<string, StoredEntry>();
+			const entries = (await getCollection(
+				collection as "all",
+			)) as unknown as StoredEntry[];
+			for (const item of entries) {
+				const data = item.data as { slug?: string };
+				if (!map.has(item.id)) map.set(item.id, item);
+				if (data.slug && !map.has(data.slug)) map.set(data.slug, item);
+				const tail = item.id.slice(item.id.lastIndexOf("/") + 1);
+				if (!map.has(tail)) map.set(tail, item);
+			}
+			return map;
+		})().catch((err) => {
+			fallbackIndexes.delete(collection);
+			throw err;
+		});
+		if (!import.meta.env.DEV) fallbackIndexes.set(collection, index);
+	}
+	return index;
+}
+
+async function findStoredEntry(
+	collection: StoredCollectionName,
+	slug: string,
+) {
+	try {
+		const entry = await getEntry(collection as "all", slug);
+		if (entry) return entry;
+		return (await getFallbackIndex(collection)).get(slug) ?? null;
 	} catch {
 		return null;
 	}
 }
 
+async function findStoredEnglishEntry(slug: string) {
+	return findStoredEntry("all", slug);
+}
+
 async function findStoredPaliEntry(slug: string) {
 	// Skip content-store lookups that only produce "Entry … was not found" noise.
 	if (isAnthologySlug(slug) || slug === "index") return null;
-	try {
-		let entry = await getEntry("pliAll", slug);
-		if (entry) return entry;
-
-		const allEntries = await getCollection("pliAll");
-		return (
-			allEntries.find(
-				(item) =>
-					item.id === slug ||
-					item.data.slug === slug ||
-					item.id.endsWith(`/${slug}`),
-			) ?? null
-		);
-	} catch {
-		return null;
-	}
+	return findStoredEntry("pliAll", slug);
 }
 
 async function findStoredReferenceEntry(
 	collection: "referenceSujato" | "referencePliMs" | "gu",
 	slug: string,
 ) {
-	try {
-		let entry = await getEntry(collection, slug);
-		if (entry) return entry;
-
-		const allEntries = await getCollection(collection);
-		return (
-			allEntries.find(
-				(item) =>
-					item.id === slug ||
-					item.data.slug === slug ||
-					item.id.endsWith(`/${slug}`),
-			) ?? null
-		);
-	} catch {
-		return null;
-	}
+	return findStoredEntry(collection, slug);
 }
 
 function storedToLike(entry: {

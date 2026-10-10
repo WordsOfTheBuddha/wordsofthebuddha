@@ -790,6 +790,16 @@ const showDiscourseSectionHeading =
 		}
 	</main>
 
+	<style is:global>
+		/* Topic/person pages can list hundreds of cards (300KB+ HTML). Skip
+		   layout/paint for off-screen cards to cut initial render cost and INP. */
+		.on-discourse-section .post-item,
+		.on-page-discourses .post-item {
+			content-visibility: auto;
+			contain-intrinsic-size: auto 110px;
+		}
+	</style>
+
 	<script>
 		import { initReferenceDiscourseCards } from "../../utils/referenceDiscourseCardsClient";
 		import { initOnPageDiscourseFilter } from "../../utils/onPageDiscourseFilter";
