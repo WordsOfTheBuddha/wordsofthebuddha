@@ -768,9 +768,18 @@ export type TmPaliParagraph = {
 };
 
 /**
+ * Plain-text section heading, e.g. `2. Soṇadaṇḍaguṇakathā`.
+ * Pāli files use bare numbered lines for section titles (paired with the
+ * English files' `#### N. Title` markdown headings). They are not content
+ * paragraphs and must not consume a ¶ number.
+ */
+const PLAIN_SECTION_HEADING = /^\d+\.\s+\S/;
+
+/**
  * Numbered plain Pāli paragraphs from a discourse body (dev TM embed).
- * Skips frontmatter separators, headings, and collection end markers so
- * numbering matches translated ¶ numbers (1…N content paragraphs).
+ * Skips frontmatter separators, headings (markdown and plain-text `N. Title`
+ * section lines), and collection end markers so numbering matches translated
+ * ¶ numbers (1…N content paragraphs).
  */
 export function extractPaliParagraphsForTm(paliText: string): TmPaliParagraph[] {
 	if (!paliText?.trim()) return [];
@@ -784,6 +793,7 @@ export function extractPaliParagraphsForTm(paliText: string): TmPaliParagraph[] 
 	let num = 1;
 	for (const block of blocks) {
 		if (block.startsWith("#")) continue;
+		if (PLAIN_SECTION_HEADING.test(block)) continue;
 		if (END_MARKER.test(block)) continue;
 		const text = block.replace(/\s+/g, " ").trim();
 		if (!text) continue;

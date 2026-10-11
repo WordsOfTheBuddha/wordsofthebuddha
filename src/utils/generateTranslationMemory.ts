@@ -63,6 +63,17 @@ function normalizePali(text: string): string {
 }
 
 /**
+ * Plain-text section heading, e.g. `2. Soṇadaṇḍaguṇakathā`.
+ * Pāli files use bare numbered lines for section titles while the English
+ * files mark the same sections as markdown headings (`#### 2. The Praises…`).
+ * The site's renderer pairs Pāli/English blocks 1:1 by raw block index, so
+ * these lines must be excluded here just like `#` headings, or every Pāli
+ * paragraph after the first heading shifts and pairs with the wrong English
+ * paragraph (and gets the wrong ¶ number).
+ */
+const PLAIN_SECTION_HEADING = /^\d+\.\s+\S/;
+
+/**
  * Extract paragraphs from markdown content
  * Returns array of paragraph texts (excluding headings, frontmatter, etc.)
  */
@@ -87,6 +98,10 @@ function extractParagraphs(content: string): string[] {
 			return false;
 		// Skip horizontal rules
 		if (block.startsWith("---")) return false;
+		// Skip MDX imports (no visual output; the page renderer skips them too)
+		if (block.startsWith("import ")) return false;
+		// Skip plain-text section headings (Pāli files use bare `N. Title` lines)
+		if (PLAIN_SECTION_HEADING.test(block)) return false;
 		return true;
 	});
 }

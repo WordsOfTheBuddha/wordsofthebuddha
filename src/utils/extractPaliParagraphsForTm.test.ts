@@ -23,6 +23,24 @@ describe("extractPaliParagraphsForTm", () => {
 		assert.equal(paragraphs[2].text, "Rūpaṁ attato samanupassati.");
 	});
 
+	it("skips plain-text numbered section headings (e.g. `2. Soṇadaṇḍaguṇakathā`)", () => {
+		const pali = [
+			"1. Campeyyakabrāhmaṇagahapatikā",
+			"Evaṁ me sutaṁ.",
+			"2. Soṇadaṇḍaguṇakathā",
+			"Tena kho pana samayena …pe…",
+		].join("\n\n");
+
+		const paragraphs = extractPaliParagraphsForTm(pali);
+
+		assert.deepEqual(
+			paragraphs.map((p) => p.num),
+			[1, 2],
+		);
+		assert.equal(paragraphs[0].text, "Evaṁ me sutaṁ.");
+		assert.equal(paragraphs[1].text, "Tena kho pana samayena …pe…");
+	});
+
 	it("normalizes whitespace and returns empty for blank input", () => {
 		assert.deepEqual(extractPaliParagraphsForTm(""), []);
 		assert.deepEqual(extractPaliParagraphsForTm("   \n\n  "), []);
