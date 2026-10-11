@@ -4,7 +4,7 @@ description: The Buddha uses the simile of a swift mountain river to illustrate 
 qualities: sensual desire, ill will, dullness, drowsiness, anxiety, doubt, wisdom
 theme: wisdom, inquisitiveness
 slug: an5.51
-simile: mountain river flowing with a swift current
+simile: mountain river
 priority: 1.1
 ---
 
