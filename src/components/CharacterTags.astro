@@ -76,4 +76,11 @@ const label = resolved.length === 1 ? "Person:" : "Persons:";
 	html.dark .character-tag.person:hover {
 		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
 	}
+
+	/* Never print the Persons row — matches Topics & Qualities. */
+	@media print {
+		.character-tags {
+			display: none !important;
+		}
+	}
 </style>
