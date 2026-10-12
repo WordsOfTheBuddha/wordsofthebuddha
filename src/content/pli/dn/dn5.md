@@ -1,9 +1,13 @@
 ---
+title: Kūṭadanta sutta - With Kūṭadanta
+description: "Preparing to slaughter thousands of animals for a grand ritual, the brahmin Kūṭadanta seeks guidance from the Buddha. Rather than condemning him outright, the Buddha transforms the concept of sacrifice: progressing from non-violent social generosity and moral discipline to meditation and spiritual liberation, showing what truly yields the highest fruit."
+qualities: ethical conduct, wisdom, generosity, renunciation
+theme: sacrifice, ethical conduct, spiritual practice
 slug: dn5
-source: suttacentral/bilara-data
-title: Kūṭadantasutta
-edition: ms
-granularity: paragraph
+character:
+  - Brahmin Kūṭadanta
+  - King Mahāvijita
+priority: 1.6
 ---
 
 1. Khāṇumatakabrāhmaṇagahapatikā
@@ -319,5 +323,3 @@ Atha kho kūṭadanto brāhmaṇo bhagavato adhivāsanaṁ viditvā uṭṭhāy�
 Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya saddhiṁ bhikkhusaṅghena yena kūṭadantassa brāhmaṇassa yaññavāṭo tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
 
 Atha kho kūṭadanto brāhmaṇo buddhappamukhaṁ bhikkhusaṅghaṁ paṇītena khādanīyena bhojanīyena sahatthā santappesi sampavāresi. Atha kho kūṭadanto brāhmaṇo bhagavantaṁ bhuttāviṁ onītapattapāṇiṁ aññataraṁ nīcaṁ āsanaṁ gahetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho kūṭadantaṁ brāhmaṇaṁ bhagavā dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṁsetvā uṭṭhāyāsanā pakkāmīti.
-
-Kūṭadantasuttaṁ niṭṭhitaṁ pañcamaṁ.
