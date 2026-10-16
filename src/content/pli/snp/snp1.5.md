@@ -1,26 +1,23 @@
 ---
+title: Cunda sutta
 slug: snp1.5
 character: Cunda the smith
-source: suttacentral/bilara-data
-title: Cundasutta
-edition: ms
-granularity: paragraph
 ---
 
+“Pucchāmi muniṁ pahūtapaññaṁ,
 (iti cundo kammāraputto)
-
 Buddhaṁ dhammassāmiṁ vītataṇhaṁ;
 Dvipaduttamaṁ sārathīnaṁ pavaraṁ,
 Kati loke samaṇā tadiṅgha brūhi”.
 
+“Caturo samaṇā na pañcamatthi,
 (cundāti bhagavā)
-
 Te te āvikaromi sakkhipuṭṭho;
 Maggajino maggadesako ca,
 Magge jīvati yo ca maggadūsī”.
 
+“Kaṁ maggajinaṁ vadanti buddhā,
 (iti cundo kammāraputto)
-
 Maggakkhāyī kathaṁ atulyo hoti;
 Magge jīvati me brūhi puṭṭho,
 Atha me āvikarohi maggadūsiṁ”.
@@ -51,5 +48,3 @@ Sabbe netādisāti ñatvā,
 Iti disvā na hāpeti tassa saddhā;
 Kathaṁ hi duṭṭhena asampaduṭṭhaṁ,
 Suddhaṁ asuddhena samaṁ kareyyā”ti.
-
-Cundasuttaṁ pañcamaṁ.
