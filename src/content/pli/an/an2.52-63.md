@@ -1,5 +1,5 @@
 ---
-title: Puggala vagga - Persons
+title: Puggala vagga - The Chapter on Persons
 description: The Buddha explains the importance of the perfectly Awakened One and the wheel-turning monarch, shares about the two types of Buddhas, who does not tremble when a thunder strikes, how living with the unvirtuous and virtuous occurs, and the consequences of not internally settling contention of views and resentment arising from a disciplinary issue.
 qualities: without fear, wrong speech, discontentment, resentment
 theme: principle, training guideline

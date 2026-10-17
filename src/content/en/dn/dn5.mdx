@@ -1,7 +1,7 @@
 ---
 title: Kūṭadanta sutta - With Kūṭadanta
 description: "Preparing to slaughter thousands of animals for a grand ritual, the brahmin Kūṭadanta seeks guidance from the Buddha. Rather than condemning him outright, the Buddha transforms the concept of sacrifice: progressing from non-violent social generosity and moral discipline to meditation and spiritual liberation, showing what truly yields the highest fruit."
-qualities: ethical conduct, wisdom, generosity, renunciation
+qualities: ethical conduct, wisdom, giving, giving up
 theme: sacrifice, ethical conduct, spiritual practice
 slug: dn5
 character:

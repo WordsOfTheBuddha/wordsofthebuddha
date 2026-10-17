@@ -4,6 +4,7 @@ description: Five people who sleep little at night and stay awake much.
 qualities: wakefulness, craving
 theme: inspiration
 slug: an5.137
+priority: 1.1
 ---
 
 “Pañcime, bhikkhave, appaṁ rattiyā supanti, bahuṁ jagganti. Katame pañca?
