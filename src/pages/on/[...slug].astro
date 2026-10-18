@@ -173,15 +173,25 @@ const displayDiscourseCount = refModeOnPage
 	: curatedDiscourseCount;
 const hasReferenceOnlyDiscourses = referencePostsForPage.length > 0;
 const referencePostsJson = JSON.stringify(referencePostsForPage);
-const showDiscoursesList =
-	additionalDiscourses.length > 0 || hasReferenceOnlyDiscourses;
-
 const isTagPage = contentType === "topic" || contentType === "quality";
 const chromeDiscourseCount = curatedDiscourseCount + referenceDiscourseCount;
 const showOnPageChrome =
 	(isTagPage || contentType === "person") &&
-	(primaryDiscourses.length > 0 || showDiscoursesList) &&
+	(primaryDiscourses.length > 0 ||
+		additionalDiscourses.length > 0 ||
+		hasReferenceOnlyDiscourses) &&
 	shouldShowOnPageChrome(chromeDiscourseCount);
+// When the filter/download chrome is hidden (below MIN_THRESHOLD), the plain
+// list falls back to ALL discourses — otherwise a topic whose discourses are
+// all featured (isFeatured: true) would render zero cards. Person pages keep
+// the curated split (their allDiscourses list also holds reference-only ids).
+const plainListDiscourses = showOnPageChrome
+	? additionalDiscourses
+	: contentType === "person"
+		? additionalDiscourses
+		: allDiscourses;
+const showDiscoursesList =
+	plainListDiscourses.length > 0 || hasReferenceOnlyDiscourses;
 
 const personPdfSplit =
 	contentType === "person"
@@ -202,7 +212,7 @@ const onPagePdfReferencePosts = personPdfSplit
 	? personPdfSplit.referencePosts
 	: referencePostsForPage;
 const ssrReferencePosts = personRefsDefaultOn ? referencePostsForPage : [];
-const listedNativeDiscourses = additionalDiscourses.map(
+const listedNativeDiscourses = plainListDiscourses.map(
 	(d: { id: string; title: string; description?: string }) => ({
 		id: d.id,
 		title: d.title,
@@ -260,7 +270,7 @@ const hasHeaderMeta =
 
 /** Person/simile pages: one curated discourse needs no section heading (count is in the header badge). */
 const showDiscourseSectionHeading =
-	additionalDiscourses.length !== 1 || hasReferenceOnlyDiscourses;
+	plainListDiscourses.length !== 1 || hasReferenceOnlyDiscourses;
 ---
 
 <Layout
