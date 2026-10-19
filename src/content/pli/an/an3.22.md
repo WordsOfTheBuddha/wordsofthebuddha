@@ -1,9 +1,11 @@
 ---
+title: Gilāna sutta - Patients
+description: Just as nursing care is prescribed for the patient who recovers only with suitable food, medicine, and an attendant, the Dhamma is taught for the sake of those who awaken through hearing it.
+qualities: wholesome, compassion, giving, faith
+theme: wisdom, cultivating discernment
 slug: an3.22
-source: suttacentral/bilara-data
-title: Gilānasutta
-edition: ms
-granularity: paragraph
+simile: patient
+priority: 1.2
 ---
 
 “Tayome, bhikkhave, gilānā santo saṁvijjamānā lokasmiṁ. Katame tayo?
@@ -27,5 +29,3 @@ Idha pana, bhikkhave, ekacco puggalo labhantova tathāgataṁ dassanāya no alab
 Tatra, bhikkhave, yvāyaṁ puggalo labhantova tathāgataṁ dassanāya no alabhanto, labhantova tathāgatappaveditaṁ dhammavinayaṁ savanāya no alabhanto okkamati niyāmaṁ kusalesu dhammesu sammattaṁ, imaṁ kho, bhikkhave, puggalaṁ paṭicca dhammadesanā anuññātā. Imañca pana, bhikkhave, puggalaṁ paṭicca aññesampi dhammo desetabbo.
 
 Ime kho, bhikkhave, tayo gilānūpamā puggalā santo saṁvijjamānā lokasmin”ti.
-
-Dutiyaṁ.
