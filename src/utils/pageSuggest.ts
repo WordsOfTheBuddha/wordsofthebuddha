@@ -142,6 +142,13 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 		aliases: ["noble truths noble path", "noble-truths-noble-path"],
 		label: "Anthology",
 	},
+	{
+		kind: "page",
+		title: "The Word of the Buddha",
+		href: "/anthologies/word-of-the-buddha",
+		aliases: ["word of the buddha", "word-of-the-buddha"],
+		label: "Anthology",
+	},
 ];
 
 export function pageKindLabel(entry: Pick<PageSuggestEntry, "kind" | "label">): string {

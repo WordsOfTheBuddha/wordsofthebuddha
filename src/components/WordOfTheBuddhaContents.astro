@@ -1,0 +1,41 @@
+---
+import Item from "./WordOfTheBuddhaContentsItem.astro";
+import { loadWotbBook, type WotbNode } from "../utils/wordOfTheBuddha";
+
+interface Props {
+	/** Defaults to the eight chapters. A chapter page passes its own sections. */
+	nodes?: WotbNode[];
+	/** Visible label. The book page supplies its own heading in the MDX. */
+	heading?: string;
+}
+
+const { nodes, heading } = Astro.props;
+const items = nodes ?? loadWotbBook();
+---
+
+<nav
+	class:list={["wotb-contents not-prose", heading && "chapter-contents"]}
+	aria-label={heading ?? "Contents"}
+>
+	{heading && <h2>{heading}</h2>}
+	<ul>
+		{items.map((node) => <Item node={node} />)}
+	</ul>
+</nav>
+
+<style>
+	.wotb-contents > ul {
+		list-style: none;
+		margin: 0;
+		padding-left: 0;
+	}
+	.chapter-contents {
+		margin-top: 2.5rem;
+	}
+	h2 {
+		font-size: 1.05rem;
+		font-weight: 650;
+		line-height: 1.3;
+		margin: 0 0 0.35rem;
+	}
+</style>

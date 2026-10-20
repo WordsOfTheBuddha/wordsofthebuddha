@@ -1,9 +1,10 @@
 ---
 title: Dhammavagga - The Chapter on Two Things
-description: "The Buddha presents pairs including freedom of heart and freedom by wisdom, conscience and fear of wrongdoing, good friendship and being easy to admonish, and skill in elements, offenses, and their resolution."
+description: "The Buddha presents pairs including freedom of heart and freedom by wisdom, conscience and fear of wrongdoing, good friendship and being easy to instruct, and skill in elements, offenses, and their resolution."
 qualities: liberation, true knowledge, wisdom, continuous effort, distraction, name, form, wrong view, shamelessness, moral recklessness, conscience, fear of wrongdoing, bad friendship, good friendship, companionship, radical attention, wholesome, unwholesome
 theme: principle, cultivating discernment
 slug: an2.87-97
+priority: 1.1
 ---
 
 #### 2.87

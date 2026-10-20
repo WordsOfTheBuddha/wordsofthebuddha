@@ -3,6 +3,7 @@ description: "A form of meditation practiced while walking back and forth along 
 synonyms:
     - walking back and forth
     - mindful walking
+    - walking-meditation
 pali:
     - caṅkama
 redirects:
@@ -20,5 +21,9 @@ discourses:
       note: "⭐️"
     - id: "an7.61"
       note: "Walking meditation can alleviate drowsiness"
+    - id: "mn53"
+      note: "Walking meditation in gradual training"
     - id: "an3.63"
       note: "When is walking meditation heavenly"
+    - id: "snp1.8"
+      note: "Loving-kindness while walking"

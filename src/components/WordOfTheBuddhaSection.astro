@@ -1,0 +1,26 @@
+---
+import Passage from "./Passage.astro";
+import type { WotbBlock } from "../utils/wordOfTheBuddha";
+
+interface Props {
+	blocks: WotbBlock[];
+}
+
+const { blocks } = Astro.props;
+---
+
+{
+	blocks.map((block) =>
+		block.type === "prose" ? (
+			<p>{block.text}</p>
+		) : (
+			<Passage
+				slug={block.slug}
+				cite={block.cite}
+				start={block.start}
+				end={block.end}
+				note={block.note}
+			/>
+		),
+	)
+}

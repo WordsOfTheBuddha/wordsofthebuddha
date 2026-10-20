@@ -52,7 +52,7 @@ export const formatDate = (date: string | Date) => {
 	<div class="book-cover w-full sm:w-[30%] sm:mr-4 shrink-0">
 		<CoverImage
 			src={imagePath || bookItem.data.imagePath}
-			alt={`Cover for ${title}`}
+			alt={`Cover for ${title || bookItem.data.title}`}
 			variant="card"
 			class="w-full h-96 sm:h-auto my-1 object-contain rounded-lg"
 		/>
@@ -98,7 +98,7 @@ export const formatDate = (date: string | Date) => {
 			}
 			{
 				hasPlaylist && (
-					<div class="flex justify-center sm:justify-end sm:ml-4">
+					<div class="flex justify-center sm:ml-auto sm:justify-end">
 						<PlayAll group={slug} />
 					</div>
 				)

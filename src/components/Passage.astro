@@ -1,0 +1,74 @@
+---
+import {
+	passagePairs,
+	renderPassageHtml,
+	selectPassage,
+} from "../utils/passageText";
+
+interface Props {
+	slug: string;
+	cite: string;
+	/** First paragraph on the discourse page. Omit to show the whole discourse. */
+	start?: number;
+	/** Last paragraph. Defaults to `start`. */
+	end?: number;
+	note?: string;
+}
+
+const { slug, cite, start, end, note } = Astro.props;
+const last = end ?? start;
+const pairs = await passagePairs(slug);
+const selected = pairs ? selectPassage(pairs, start, last) : [];
+const html = await renderPassageHtml(selected);
+
+const href =
+	start == null
+		? `/${slug}`
+		: last != null && last > start
+			? `/${slug}#${start}-${last}`
+			: `/${slug}#${start}`;
+const mark =
+	start == null
+		? ""
+		: last != null && last > start
+			? ` ¶${start}–${last}`
+			: ` ¶${start}`;
+---
+
+<div class="passage">
+	<a class="passage-cite" href={href}>{cite}{mark}</a>
+	{note && <span class="passage-note">{note}</span>}
+	{html ? (
+		<div class="md-content passage-body" set:html={html} />
+	) : (
+		<p><a href={href}>Open {cite}</a></p>
+	)}
+</div>
+
+<style>
+	.passage {
+		margin: 1.35rem 0 1.75rem;
+	}
+	.passage-cite {
+		display: inline-block;
+		font-size: 0.82rem;
+		font-weight: 650;
+		line-height: 1.4;
+		letter-spacing: 0.01em;
+		text-decoration: none;
+		border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+		border-radius: 0.35rem;
+		padding: 0.02rem 0.45rem;
+		margin-bottom: 0.15rem;
+	}
+	.passage-cite:hover {
+		text-decoration: underline;
+	}
+	.passage-note {
+		margin-left: 0.55rem;
+		font-size: 0.92rem;
+	}
+	.passage-body {
+		margin-top: 0.35rem;
+	}
+</style>

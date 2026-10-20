@@ -1,51 +1,147 @@
 ---
 export const prerender = false;
+
 import { render, getEntry } from "astro:content";
 import { routes } from "../../utils/routes";
 import Layout from "../../layouts/Layout.astro";
 import { getLastModified } from "../../utils/getLastModified";
+import WordOfTheBuddhaContents from "../../components/WordOfTheBuddhaContents.astro";
+import WordOfTheBuddhaSection from "../../components/WordOfTheBuddhaSection.astro";
+import {
+	resolveWotb,
+	wotbChapter,
+	wotbDescription,
+	wotbHref,
+	wotbNeighbors,
+	type WotbNode,
+} from "../../utils/wordOfTheBuddha";
 
-// Extract slug from params
-const { id } = Astro.params;
+const { id: rawId = "" } = Astro.params;
+const wotbRest = rawId.startsWith("word-of-the-buddha/")
+	? rawId.slice("word-of-the-buddha/".length)
+	: "";
+const wotbSegments = wotbRest.split("/").filter(Boolean);
 
-// Find current index in sorted routes
-const currentIndex = routes.findIndex((route) => route === id);
-if (currentIndex === -1) {
-	// Ensure non-ASCII characters are encoded for safe redirect Location header
-	return Astro.redirect(`/search?q=${encodeURIComponent(`anthology ${id}`)}`);
+let wotbPage: WotbNode | null = null;
+if (wotbSegments.length > 0) {
+	const resolved = resolveWotb(wotbSegments);
+	if (!resolved) {
+		return Astro.redirect("/anthologies/word-of-the-buddha");
+	}
+	if (resolved.redirectTo) {
+		return Astro.redirect(resolved.redirectTo);
+	}
+	wotbPage = resolved.node;
 }
 
-const contentItem = await getEntry("all", id);
+const wotbBookChapter = wotbPage ? wotbChapter(wotbPage) : null;
+const wotbNested = Boolean(wotbPage && wotbPage.segments.length > 1);
+const wotbOutline =
+	wotbPage && wotbPage.segments.length === 1 && wotbPage.children.length > 0
+		? wotbPage.children
+		: null;
+const { prev: wotbPrev, next: wotbNext } = wotbPage
+	? wotbNeighbors(wotbPage)
+	: { prev: null, next: null };
 
-// Extract last two segments of file path and remove extension
-const fpParts = (contentItem.filePath ?? "").split("/");
-let folder = fpParts[fpParts.length - 2] || "";
-const fp = folder ? `${folder}/${id}` : id;
+const id = wotbPage ? "word-of-the-buddha" : rawId;
+const currentIndex = wotbPage ? -1 : routes.findIndex((route) => route === id);
+if (!wotbPage && currentIndex === -1) {
+	return Astro.redirect(
+		`/search?q=${encodeURIComponent(`anthology ${rawId}`)}`,
+	);
+}
 
-const { Content } = await render(contentItem);
+const contentItem = wotbPage ? null : await getEntry("all", id);
+if (!wotbPage && !contentItem) {
+	return Astro.rewrite("/404");
+}
 
-// Find next and previous items
+const fpParts = (contentItem?.filePath ?? "").split("/");
+const folder = fpParts[fpParts.length - 2] || "";
+const fp = wotbPage
+	? `anthologies/word-of-the-buddha/${wotbPage.segments.join("/")}`
+	: folder
+		? `${folder}/${id}`
+		: id;
+
+const rendered = contentItem ? await render(contentItem) : null;
+const BookContent = rendered?.Content;
+
 const nextIndex = currentIndex + 1;
 const prevIndex = currentIndex - 1;
 const next =
-	nextIndex < routes.length ? await getEntry("all", routes[nextIndex]) : null;
-const prev = prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
+	!wotbPage && nextIndex < routes.length
+		? await getEntry("all", routes[nextIndex])
+		: null;
+const prev =
+	!wotbPage && prevIndex >= 0
+		? await getEntry("all", routes[prevIndex])
+		: null;
 
-// Get last updated time using our cache-based utility
-const lastUpdated = contentItem.filePath
-	? getLastModified(contentItem.filePath)
-	: null;
+const lastUpdated = wotbPage
+	? getLastModified(wotbBookChapter?.file ?? "")
+	: contentItem?.filePath
+		? getLastModified(contentItem.filePath)
+		: null;
+
+const title = wotbPage?.title ?? contentItem?.data.title ?? "";
+const seoDescription = wotbPage
+	? wotbDescription(wotbPage)
+	: contentItem?.data.description;
 ---
 
 <Layout
 	fp={fp}
-	title={contentItem.data.title}
-	seoDescription={contentItem.data.description}
+	title={title}
+	seoDescription={seoDescription}
 	prev={prev}
 	next={next}
 	id={id}
 	lastUpdated={lastUpdated}
 	showAuth={true}
 >
-	<Content />
+	{
+		wotbPage ? (
+			<>
+				<p class="not-prose mb-6 text-sm">
+					<a href="/anthologies/word-of-the-buddha">The Word of the Buddha</a>
+					{wotbNested && wotbBookChapter && (
+						<>
+							<span aria-hidden="true"> · </span>
+							<a href={wotbHref([wotbBookChapter.slug])}>
+								{wotbBookChapter.title}
+							</a>
+						</>
+					)}
+				</p>
+				<WordOfTheBuddhaSection blocks={wotbPage.blocks} />
+				{
+					wotbOutline && (
+						<WordOfTheBuddhaContents
+							nodes={wotbOutline}
+							heading="Contents"
+						/>
+					)
+				}
+				<nav
+					class="not-prose mt-12 flex items-start justify-between gap-6 text-sm"
+					aria-label="Previous and next"
+				>
+					<div class="min-w-0 flex-1">
+						{wotbPrev && (
+							<a href={wotbHref(wotbPrev.segments)}>{wotbPrev.title}</a>
+						)}
+					</div>
+					<div class="min-w-0 flex-1 text-right">
+						{wotbNext && (
+							<a href={wotbHref(wotbNext.segments)}>{wotbNext.title}</a>
+						)}
+					</div>
+				</nav>
+			</>
+		) : (
+			BookContent && <BookContent />
+		)
+	}
 </Layout>

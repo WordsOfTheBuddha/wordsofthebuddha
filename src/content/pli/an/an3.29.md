@@ -1,6 +1,6 @@
 ---
 title: Andha sutta - Blind
-description: The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.
+description: "The Buddha describes three types of people: the blind, the one-eyed, and the two-eyed."
 qualities: sensual desire, hypocrisy, wholesome, unwholesome, collectedness, sorrow, sorrow-free
 theme: cultivating discernment, principle
 slug: an3.29

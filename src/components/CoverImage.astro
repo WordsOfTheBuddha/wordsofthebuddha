@@ -2,10 +2,14 @@
 import { Picture, type ImageMetadata } from "astro:assets";
 import itbw from "../assets/covers/in-the-buddhas-words.jpg";
 import ntnp from "../assets/covers/noble-truths-noble-path.jpg";
+import inquisitive from "../assets/covers/inquisitive-mind.jpg";
+import wordOfTheBuddha from "../assets/covers/word-of-the-buddha.jpg";
 
 const covers: Record<string, ImageMetadata> = {
 	"/assets/in-the-buddha's-words.jpg": itbw,
 	"/assets/noble-truths-noble-path-book-cover.jpeg": ntnp,
+	"/assets/inquisitive-mind.jpg": inquisitive,
+	"/assets/word-of-the-buddha.jpg": wordOfTheBuddha,
 };
 
 interface Props {

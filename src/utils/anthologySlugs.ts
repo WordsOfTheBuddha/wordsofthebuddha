@@ -2,6 +2,8 @@
 export const ANTHOLOGY_SLUGS = [
 	"in-the-buddhas-words",
 	"noble-truths-noble-path",
+	"word-of-the-buddha",
+	"inquisitive-mind",
 ] as const;
 
 export const anthologySlugSet = new Set<string>(ANTHOLOGY_SLUGS);

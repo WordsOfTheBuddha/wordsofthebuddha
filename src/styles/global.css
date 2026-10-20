@@ -477,3 +477,41 @@ html.dark .toggle-ref.filter-toolbar-btn--active {
 		transparent
 	) !important;
 }
+
+/* Word of the Buddha contents. Chapter pages do not emit the component's
+   scoped styles, so the outline lives here. */
+.wotb-contents > ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+.wotb-contents li {
+	margin: 0.45rem 0;
+}
+
+.wotb-contents ul ul {
+	list-style: none;
+	margin: 0.15rem 0 0.25rem;
+	padding-left: 1.15rem;
+}
+
+.wotb-contents a {
+	color: var(--link-color);
+	text-decoration: none;
+}
+
+.wotb-contents a:hover {
+	text-decoration: underline;
+}
+
+.wotb-contents.chapter-contents {
+	margin-top: 2.5rem;
+}
+
+.wotb-contents h2 {
+	font-size: 1.05rem;
+	font-weight: 650;
+	line-height: 1.3;
+	margin: 0 0 0.35rem;
+}

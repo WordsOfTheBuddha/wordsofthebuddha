@@ -1,0 +1,41 @@
+---
+import Item from "./WordOfTheBuddhaContentsItem.astro";
+import { wotbPageHref, type WotbNode } from "../utils/wordOfTheBuddha";
+
+interface Props {
+	node: WotbNode;
+}
+
+const { node } = Astro.props;
+---
+
+<li>
+	<a href={wotbPageHref(node)}>{node.title}</a>
+	{
+		node.children.length > 0 && (
+			<ul>
+				{node.children.map((child) => (
+					<Item node={child} />
+				))}
+			</ul>
+		)
+	}
+</li>
+
+<style>
+	li {
+		margin: 0.45rem 0;
+	}
+	ul {
+		list-style: none;
+		margin: 0.15rem 0 0.25rem;
+		padding-left: 1.15rem;
+	}
+	a {
+		color: var(--link-color);
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+</style>

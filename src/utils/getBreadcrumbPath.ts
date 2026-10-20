@@ -3,11 +3,34 @@ import { transformId } from "../utils/transformId";
 import { keyMap } from "./transformId";
 import { vaggaSectionHref } from "./vaggaSections";
 import { findContentBySlug } from "./discover-data";
+import { findWotbNode, wotbHref } from "./wordOfTheBuddha";
 
 export interface BreadcrumbItem {
 	label: string;
 	path: string;
 	title?: string;
+}
+
+const wordOfTheBuddhaChapters: Record<string, string> = {
+	introduction: "Introduction",
+	"the-four-noble-truths": "The Four Noble Truths",
+	suffering: "I. The Noble Truth of Suffering",
+	origin: "II. The Noble Truth of the Origin of Suffering",
+	extinction: "III. The Noble Truth of the Extinction of Suffering",
+	path: "IV. The Path that Leads to the Extinction of Suffering",
+	"gradual-development": "Gradual Development of the Eightfold Path",
+	"chain-of-causes": "The Path as a Chain of Causes",
+};
+
+function anthologyChapterTitle(book: string, chapter: string): string {
+	if (book === "word-of-the-buddha") {
+		return (
+			findWotbNode([chapter])?.title ||
+			wordOfTheBuddhaChapters[chapter] ||
+			chapter
+		);
+	}
+	return chapter;
 }
 
 export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
@@ -23,11 +46,28 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		// On the listing page itself (`/anthologies`), `idPath` is just
 		// ["anthologies"]; emitting another crumb here would duplicate the
 		// label. Only push the per-book crumb when we have a child segment.
-		if (idPath.length > 1) {
+		const book = idPath[1];
+		if (book) {
 			path.push({
-				label: keyMap[id],
-				path: `/${id}`,
+				label: keyMap[book] || book,
+				path: `/anthologies/${book}`,
 			});
+		}
+		const chapter = idPath[2];
+		if (book && chapter) {
+			path.push({
+				label: anthologyChapterTitle(book, chapter),
+				path: `/anthologies/${book}/${chapter}`,
+			});
+		}
+		if (book === "word-of-the-buddha" && idPath.length > 3) {
+			const section = findWotbNode(idPath.slice(2));
+			if (section && section.segments.length > 1) {
+				path.push({
+					label: section.title,
+					path: wotbHref(section.segments),
+				});
+			}
 		}
 		return path;
 	}

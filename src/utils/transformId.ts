@@ -12,6 +12,8 @@ export const keyMap: { [key: string]: string } = {
 	anthologies: "Anthologies",
 	"noble-truths-noble-path": "Noble Truths, Noble Path",
 	"in-the-buddhas-words": "In the Buddha's Words",
+	"inquisitive-mind": "Teachings of the Buddha for an Inquisitive Mind",
+	"word-of-the-buddha": "The Word of the Buddha",
 };
 
 // Function to transform the ID based on character and digit boundaries
