@@ -49,12 +49,12 @@ export const formatDate = (date: string | Date) => {
 		marginTop,
 	]}
 >
-	<div class="book-cover w-full sm:w-[30%] sm:mr-4 shrink-0">
+	<div class="book-cover not-prose w-full sm:w-[30%] sm:mr-4 shrink-0">
 		<CoverImage
 			src={imagePath || bookItem.data.imagePath}
 			alt={`Cover for ${title || bookItem.data.title}`}
 			variant="card"
-			class="w-full h-96 sm:h-auto my-1 object-contain rounded-lg"
+			class="w-full h-96 sm:h-auto mt-4 object-contain rounded-lg"
 		/>
 	</div>
 
