@@ -1,6 +1,7 @@
 ---
 title: Paṭhama saṅgāma sutta
 slug: sn3.14
+qualities: good friendship, bad friendship, tranquility, sleep
 character:
   - King Pasenadi of Kosala
   - King Ajātasattu

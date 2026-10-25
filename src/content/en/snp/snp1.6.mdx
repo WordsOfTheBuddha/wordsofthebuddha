@@ -1,7 +1,7 @@
 ---
 title: Parābhava sutta - Downfall
 description: The Buddha details twelve causes of ruin to a deity. These downfalls include detesting the Dhamma, extreme pride, laziness, neglecting aging parents, and gambling. A wise person avoids these to reach an auspicious world.
-qualities: aversion, bad friendship, laziness, drowsiness, weak in effort, anger, wrong speech, stinginess, conceit, contempt, consuming intoxicants, sexual misconduct, jealousy, craving
+qualities: aversion, bad friendship, laziness, drowsiness, weak in effort, anger, wrong speech, stinginess, conceit, contempt, consuming intoxicants, sexual misconduct, jealousy, craving, sleep
 theme: wisdom, inspiration
 slug: snp1.6
 priority: 1.2

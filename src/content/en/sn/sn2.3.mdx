@@ -1,7 +1,7 @@
 ---
 title: Māgha sutta - Māgha
 description: The young deity Māgha asks the Buddha in a verse on what to cut off to sleep with ease and grieve no more. The Buddha advises to cut off anger.
-qualities: anger
+qualities: anger, sleep
 theme: wisdom
 slug: sn2.3
 character:

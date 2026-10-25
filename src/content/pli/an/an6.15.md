@@ -1,7 +1,7 @@
 ---
 title: Anutappiya sutta - Regret
 description: One who delights in work, talk, sleep, company, bonding, and mental proliferation faces a passing full of regret and remains bound to personal existence.
-qualities: personal existence view, delight, drowsiness, wrong speech, mental proliferation, attachment, regret, non-regret
+qualities: personal existence view, delight, drowsiness, wrong speech, mental proliferation, attachment, regret, non-regret, sleep
 theme: wisdom, inspiration
 character: Venerable Sāriputta
 slug: an6.15

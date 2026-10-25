@@ -1,7 +1,7 @@
 ---
 title: Appaṁsupati sutta - Little Sleep
 description: Five people who sleep little at night and stay awake much.
-qualities: wakefulness, craving
+qualities: wakefulness, craving, sleep
 theme: inspiration
 slug: an5.137
 priority: 1.1

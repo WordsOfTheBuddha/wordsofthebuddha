@@ -1,7 +1,7 @@
 ---
 title: Hatthaka sutta - With Hatthaka
 description: Astonished that the Buddha could sleep comfortably amid harsh conditions, a layman asks how this is possible. The Buddha contrasts worldly luxury with the serene ease of one whose mind is free from the fevers of lust, aversion, and delusion.
-qualities: passion, aversion, delusion, free from attachment, without fear, tranquility
+qualities: passion, aversion, delusion, free from attachment, without fear, tranquility, sleep
 theme: recollection of the Buddha, inspiration, inquisitiveness, wisdom
 slug: an3.35
 character: Hatthaka of Āḷavi

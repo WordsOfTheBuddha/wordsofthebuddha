@@ -1,7 +1,7 @@
 ---
 title: Bhaddaka sutta - Good
 description: One who delights in work, talk, sleep, company, bonding, and mental proliferation faces a bad death, remaining bound to personal existence.
-qualities: personal existence view, delight, drowsiness, wrong speech, mental proliferation, attachment
+qualities: personal existence view, delight, drowsiness, wrong speech, mental proliferation, attachment, sleep
 theme: wisdom, inspiration
 character: Venerable Sāriputta
 slug: an6.14

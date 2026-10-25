@@ -1,7 +1,7 @@
 ---
 title: Chetvā sutta - Cutting Off
 description: A deity asks the Buddha what must be cut off to sleep at ease and slain to end sorrow.
-qualities: anger, sorrow
+qualities: anger, sorrow, sleep
 theme: wisdom, inspiration
 slug: sn1.71
 ---
