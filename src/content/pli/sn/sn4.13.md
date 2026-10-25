@@ -1,11 +1,11 @@
 ---
+title: Sakalika sutta - The Stone Splinter
+description: After the Buddha’s foot is cut by a stone splinter, he endures the severe bodily pain mindfully and lies down in the lion’s posture. Māra approaches to taunt him for sleeping, and the Buddha replies in verse, explaining why one whose dart is removed sleeps in peace.
+qualities: mindfulness, clear awareness, imperturbable, compassion, free from attachment, sleep
+theme: inspiration, wisdom, story, recollection of the Buddha
 slug: sn4.13
-character:
-  - Māra the Evil One
-source: suttacentral/bilara-data
-title: Sakalikasutta
-edition: ms
-granularity: paragraph
+character: Māra the Evil One
+simile: dart
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati maddakucchismiṁ migadāye.
