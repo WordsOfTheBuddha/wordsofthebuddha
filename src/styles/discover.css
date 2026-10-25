@@ -75,6 +75,43 @@ html.dark .sticky-button-container {
 	--bg-color: rgb(31, 41, 55); /* gray-800 */
 }
 
+/* Note rides the title row and drops under it only when the row is full. */
+.discourse-row-heading {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	column-gap: 0.5rem;
+	row-gap: 0.3rem;
+	max-width: 100%;
+}
+
+.discourse-row-title {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	flex: 0 1 auto;
+	min-width: min(100%, max-content);
+	max-width: 100%;
+}
+
+.discourse-row-name {
+	margin-left: 0.25em;
+}
+
+/* Icon is a flex item, so the global baseline nudge does not apply. */
+.discourse-row-title .voice-listen-icon {
+	margin-left: 0.35rem;
+	align-self: center;
+}
+
+.discourse-row-note {
+	flex: 0 0 auto;
+	width: max-content;
+	max-width: 100%;
+	white-space: normal;
+	line-height: 1.35;
+}
+
 .discourse-list::-webkit-scrollbar {
 	width: 6px;
 }

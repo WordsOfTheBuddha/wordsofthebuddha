@@ -455,13 +455,7 @@ export class DiscoverRenderer {
 		);
 
 		const noteBlock = discourse.note
-			? `
-			<div class="mt-1">
-				<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
-					${discourse.note}
-				</span>
-			</div>
-		`
+			? `<span class="discourse-row-note px-2 py-0.5 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">${discourse.note}</span>`
 			: "";
 
 		const descriptionBlock =
@@ -483,11 +477,15 @@ export class DiscoverRenderer {
 			href="${href}"
 			class="discourse-row-link block text-sm rounded-lg px-2 py-1 mt-1 w-full text-left border border-transparent hover:border-[color:var(--surface-border)] hover:bg-[var(--surface-elevated)]/80 transition-colors"
 		>
-			<span class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium">${idLabel}</span>
-			<span class="text-[var(--text-color)]"> ${discourse.title}</span>
-			${referenceBadge}
-			${voiceIcon}
-			${noteBlock}
+			<span class="discourse-row-heading">
+				<span class="discourse-row-title">
+					<span class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium">${idLabel}</span>
+					<span class="discourse-row-name text-[var(--text-color)]">${discourse.title}</span>
+					${referenceBadge}
+					${voiceIcon}
+				</span>
+				${noteBlock}
+			</span>
 			${descriptionBlock}
 		</a>
 	`;
