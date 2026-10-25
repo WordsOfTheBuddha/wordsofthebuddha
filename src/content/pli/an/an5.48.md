@@ -4,6 +4,7 @@ description: The Buddha explains the distinction between how an uninstructed ord
 qualities: sorrow, sorrow-free, lamentation, wisdom, recognition of impermanence, recognition of unsatisfactoriness, discernment, quenching, patience
 theme: inspiration, inquisitiveness, wisdom
 slug: an5.48
+priority: 1.2
 ---
 
 “Pañcimāni, bhikkhave, alabbhanīyāni ṭhānāni samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ. Katamāni pañca? ‘Jarādhammaṁ mā jīrī’ti alabbhanīyaṁ ṭhānaṁ samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ. ‘Byādhidhammaṁ mā byādhīyī’ti …pe… ‘maraṇadhammaṁ mā mīyī’ti … ‘khayadhammaṁ mā khīyī’ti … ‘nassanadhammaṁ mā nassī’ti alabbhanīyaṁ ṭhānaṁ samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ.

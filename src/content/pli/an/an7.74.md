@@ -1,7 +1,7 @@
 ---
 title: Araka sutta - About Araka
 description: Through seven vivid similes, the Buddha demonstrates the fleeting nature of human life, urging prompt, diligent meditation so that one does not have regrets later.
-qualities: recognition of impermanence, recollection of death, diligence, collectedness, urgency, diligence
+qualities: recognition of impermanence, recollection of death, diligence, collectedness
 theme: urgency, wisdom
 simile: dewdrop, water bubble, line etched on water, mountain river, ball of saliva, piece of meat, cow being led to slaughter
 slug: an7.74
