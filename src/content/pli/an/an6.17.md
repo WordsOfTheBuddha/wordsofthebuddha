@@ -1,15 +1,21 @@
 ---
+title: Soppa sutta - Sleep
+description: Seeing junior bhikkhus sleeping until sunrise, the Buddha urges them to train in sense restraint, moderation in eating, and wakefulness.
+qualities: drowsiness, dullness, wakefulness, sense restraint, non-restraint, vision, cultivation, liberation, sleep
+theme: story, training guideline, urgency
 slug: an6.17
 character:
-  - Venerable Mahākassapa
-  - Venerable Mahācunda
   - Venerable Sāriputta
   - Venerable Mahāmoggallāna
+  - Venerable Mahākassapa
+  - Venerable Mahākaccāna
+  - Venerable Mahākoṭṭhika
+  - Venerable Mahācunda
+  - Venerable Mahākappina
   - Venerable Anuruddha
-source: suttacentral/bilara-data
-title: Soppasutta
-edition: ms
-granularity: paragraph
+  - Venerable Revata
+  - Venerable Ānanda
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
