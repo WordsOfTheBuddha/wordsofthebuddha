@@ -44,13 +44,29 @@ function isoFromStat(date) {
 	return date.toISOString();
 }
 
+function isShallowRepository() {
+	try {
+		return git("git rev-parse --is-shallow-repository").trim() === "true";
+	} catch {
+		return false;
+	}
+}
+
 try {
-	// Full history helps last-modified dates on Vercel’s shallow clone.
-	if (process.env.VERCEL_GIT_FETCH_DEPTH) {
+	// Vercel clones shallowly. The oldest fetched commit then appears to add
+	// every file, so untouched discourses would all share that commit's date.
+	if (isShallowRepository()) {
 		try {
 			execSync("git fetch --unshallow", { stdio: "pipe" });
-		} catch {
-			// Repository might already have full history
+		} catch (error) {
+			console.warn(
+				`timestamps: git fetch --unshallow failed (${error?.message ?? error})`,
+			);
+		}
+		if (isShallowRepository()) {
+			console.warn(
+				"timestamps: repository is still shallow; Last updated dates will be wrong",
+			);
 		}
 	}
 

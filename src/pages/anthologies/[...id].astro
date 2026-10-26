@@ -1,13 +1,16 @@
 ---
-export const prerender = false;
+// Static so visitors far from the function region are served from the edge.
+export const prerender = true;
 
 import { render, getEntry } from "astro:content";
 import { routes } from "../../utils/routes";
+import { ANTHOLOGY_SLUGS } from "../../utils/anthologySlugs";
 import Layout from "../../layouts/Layout.astro";
 import { getLastModified } from "../../utils/getLastModified";
 import WordOfTheBuddhaContents from "../../components/WordOfTheBuddhaContents.astro";
 import WordOfTheBuddhaSection from "../../components/WordOfTheBuddhaSection.astro";
 import {
+	loadWotbBook,
 	resolveWotb,
 	wotbChapter,
 	wotbDescription,
@@ -15,6 +18,17 @@ import {
 	wotbNeighbors,
 	type WotbNode,
 } from "../../utils/wordOfTheBuddha";
+
+export function getStaticPaths() {
+	const ids: string[] = [...ANTHOLOGY_SLUGS];
+	// Headings without passages of their own redirect to their first page.
+	const walk = (node: WotbNode) => {
+		ids.push(`word-of-the-buddha/${node.segments.join("/")}`);
+		node.children.forEach(walk);
+	};
+	loadWotbBook().forEach(walk);
+	return ids.map((id) => ({ params: { id } }));
+}
 
 const { id: rawId = "" } = Astro.params;
 const wotbRest = rawId.startsWith("word-of-the-buddha/")

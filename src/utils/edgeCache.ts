@@ -21,7 +21,6 @@ export const PUBLIC_SSR_ROUTE_PATTERNS: ReadonlySet<string> = new Set([
 	"/discourse-gu/[id]",
 	"/listen-dynamic/[discourse]",
 	"/editorial/[slug]",
-	"/anthologies/[...id]",
 	"/topic",
 	"/topic/[...slug]",
 	"/qualities/[...id]",

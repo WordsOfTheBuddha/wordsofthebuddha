@@ -186,6 +186,11 @@ self.addEventListener("activate", (event) => {
 					}),
 				);
 			} catch {}
+			// The browser starts the navigation request while this worker boots,
+			// instead of after it has started and run its fetch handler.
+			try {
+				await self.registration.navigationPreload?.enable();
+			} catch {}
 			await self.clients.claim();
 		})(),
 	);
@@ -276,45 +281,53 @@ document.querySelectorAll('a[href="${safePath}"]').forEach(function(a){
 }
 
 async function networkFirst(req, event) {
-	const cache = await caches.open(NAV_CACHE);
 	const url = new URL(req.url);
+	const ctrl = new AbortController();
+	// Request before any cache lookup: matchNavigationCache can search every
+	// offline cache, and the document must not wait on that.
+	const network = Promise.resolve(event && event.preloadResponse)
+		.catch(() => undefined)
+		.then((preloaded) => preloaded || fetch(req, { signal: ctrl.signal }));
+	network.catch(() => {});
+
+	const cache = await caches.open(NAV_CACHE);
 	const existing = await matchNavigationCache(req, url, cache);
 	const timeoutMs = existing
 		? NAV_TIMEOUT_CACHED_MS
 		: NAV_TIMEOUT_UNCACHED_MS;
+	// A preloaded response cannot be aborted, so race it against the timeout.
+	let timer;
+	const timeout = new Promise((_, reject) => {
+		timer = setTimeout(() => {
+			ctrl.abort();
+			reject(new Error("navigation timeout"));
+		}, timeoutMs);
+	});
 
 	// Special-case /search: don't cache per-query HTML; only cache base shell when online
-	if (url.pathname === "/search") {
-		try {
-			const ctrl = new AbortController();
-			const to = setTimeout(() => ctrl.abort(), timeoutMs);
-			const res = await fetch(req, { signal: ctrl.signal });
-			clearTimeout(to);
-			if (res && res.ok && !url.search) {
-				const warm = warmFromResponse(res, "/search", cache, url);
-				if (event) event.waitUntil(warm);
-			}
-			return res;
-		} catch (_) {
-			const base = await caches.match("/search");
-			if (base) return decodeCachedResponse(base);
-			return unavailableNavigationResponse(url);
-		}
-	}
+	const isSearch = url.pathname === "/search";
 
 	try {
-		const ctrl = new AbortController();
-		const to = setTimeout(() => ctrl.abort(), timeoutMs);
-		const res = await fetch(req, { signal: ctrl.signal });
-		clearTimeout(to);
-		if (res && res.ok) {
-			const warm = warmFromResponse(res, req, cache, url);
+		const res = await Promise.race([network, timeout]);
+		clearTimeout(timer);
+		if (res && res.ok && !(isSearch && url.search)) {
+			const warm = warmFromResponse(
+				res,
+				isSearch ? "/search" : req,
+				cache,
+				url,
+			);
 			if (event) event.waitUntil(warm);
 		}
 		return res;
 	} catch (_) {
-		const cached = await matchNavigationCache(req, url, cache);
-		if (cached) return decodeCachedResponse(cached);
+		clearTimeout(timer);
+		if (isSearch) {
+			const base = await caches.match("/search");
+			if (base) return decodeCachedResponse(base);
+			return unavailableNavigationResponse(url);
+		}
+		if (existing) return decodeCachedResponse(existing);
 		// Do not substitute the Offline control center for arbitrary URLs —
 		// that made flaky networks look like a broken / blank offline page.
 		return unavailableNavigationResponse(url);
@@ -463,6 +476,16 @@ self.addEventListener("fetch", (event) => {
 	if (
 		url.origin === self.location.origin &&
 		url.pathname.startsWith("/vendor/")
+	) {
+		event.respondWith(networkFirstAsset(req, ASSETS_CACHE));
+		return;
+	}
+
+	// /on reference + export lists are fetched on demand; keep the last copy
+	// so See Refs still works offline on a page the reader has used before.
+	if (
+		url.origin === self.location.origin &&
+		url.pathname.startsWith("/on-data/")
 	) {
 		event.respondWith(networkFirstAsset(req, ASSETS_CACHE));
 		return;

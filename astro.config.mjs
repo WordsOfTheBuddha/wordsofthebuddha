@@ -72,6 +72,15 @@ const vercelMermaidUmd = existsSync(
 	? ["public/vendor/mermaid/mermaid.min.js"]
 	: [];
 
+/**
+ * `getLastModified` reads this from `process.cwd()` when SSR pages render
+ * (reference discourses, anthologies); without it they show today's date.
+ * Written by `updateTimestamps.mjs` in `prebuild`.
+ */
+const vercelTimestampCache = existsSync(join(__dirname, ".timestamp-cache.json"))
+	? [".timestamp-cache.json"]
+	: [];
+
 const externalLinksOptions = {
 	target: "_blank",
 	rel: ["noopener", "noreferrer"],
@@ -134,6 +143,7 @@ export default defineConfig({
 			...vercelPdfIncludeContentImages,
 			...vercelSearchIndexFiles,
 			...vercelMermaidUmd,
+			...vercelTimestampCache,
 		],
 		excludeFiles: [
 			"generated/search-index.json",
