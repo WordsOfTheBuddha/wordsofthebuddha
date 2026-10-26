@@ -163,7 +163,9 @@ export default defineConfig({
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
 		[`/${WOTB_LEGACY_SLUG}`]: `/anthologies/${WOTB_SLUG}`,
 		[`/anthologies/${WOTB_LEGACY_SLUG}`]: `/anthologies/${WOTB_SLUG}`,
-		[`/anthologies/${WOTB_LEGACY_SLUG}/[...path]`]: `/anthologies/${WOTB_SLUG}/[...path]`,
+		// Chapter paths stay out of this map. A dynamic destination has to be an
+		// existing route pattern, and these pages live under /anthologies/[...id].
+		// Middleware and the catch-all redirect /anthologies/word-of-the-buddha/*.
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
 		"/explore": "/discover",
