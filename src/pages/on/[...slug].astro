@@ -19,16 +19,9 @@ import {
 	resolveOnSlugFallback,
 } from "../../utils/discover-data";
 import { qualityListIncludes } from "../../utils/ContentTagUtils";
-import {
-	getReferencePostsForTag,
-	personOnPagePdfSplit,
-	personPageShowsRefsByDefault,
-	splitPersonOnPageDiscourses,
-} from "../../utils/referencePostsForPage";
-import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
+import { buildOnPageLists, onPageDataUrls } from "../../utils/onPageLists";
 import { discourseHasSvgAssetForExport } from "../../utils/contentImage";
 import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClient";
-import { shouldShowOnPageChrome } from "../../utils/discourseListPreview";
 import { urlHasRefParam } from "../../utils/urlRefParam";
 import { getPtsDisplay } from "../../utils/ptsReferences";
 import { renderInlineDescription, splitDescriptionParagraphs } from "../../utils/renderInlineDescription";
@@ -111,20 +104,18 @@ if (isQuality) {
 		qualityType = "negative-quality";
 }
 
-// ...existing code... (process discourses data, collections, etc.)
 const allDiscourses = content.discourses || [];
-
-const primaryDiscourses =
-	contentType === "topic"
-		? allDiscourses.filter((d: any) => d.isFeatured)
-		: [];
-
-const additionalDiscoursesBase =
-	contentType === "topic"
-		? allDiscourses.filter((d: any) => !d.isFeatured)
-		: allDiscourses;
-
-let additionalDiscourses = additionalDiscoursesBase;
+const {
+	primaryDiscourses,
+	additionalDiscourses,
+	referencePosts: referencePostsForPage,
+	curatedDiscourseCount,
+	personRefsDefaultOn,
+	showOnPageChrome,
+	exportDiscourses: onPageExportDiscourses,
+	exportTree: onPagePdfExportTree,
+} = buildOnPageLists(slug, contentType, content.title, allDiscourses);
+const onPageData = onPageDataUrls(slug);
 
 const displayTitle = content.title;
 const topicMeta = topicDocumentMeta(canonicalSlug);
@@ -138,49 +129,12 @@ const pageSeoDescription =
 		.replace(/\s+/g, " ")
 		.trim() || null;
 
-const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
-let referencePostsForPage =
-	contentType === "quality" || contentType === "topic"
-		? getReferencePostsForTag(slug, enSlugsOnPage)
-		: [];
-
-if (contentType === "person") {
-	const split = splitPersonOnPageDiscourses(
-		allDiscourses.map((d: { id: string; title: string; description?: string }) => ({
-			id: d.id,
-			title: d.title,
-			description: d.description,
-		})),
-	);
-	additionalDiscourses = split.curated;
-	referencePostsForPage = split.referencePosts;
-}
-
-const curatedDiscourseCount =
-	contentType === "person"
-		? additionalDiscourses.length
-		: allDiscourses.length;
 const referenceDiscourseCount = referencePostsForPage.length;
-const personRefsDefaultOn =
-	contentType === "person" &&
-	personPageShowsRefsByDefault(
-		curatedDiscourseCount,
-		referenceDiscourseCount,
-	);
 const refModeOnPage = urlHasRefParam(Astro.url.searchParams) || personRefsDefaultOn;
 const displayDiscourseCount = refModeOnPage
 	? curatedDiscourseCount + referenceDiscourseCount
 	: curatedDiscourseCount;
 const hasReferenceOnlyDiscourses = referencePostsForPage.length > 0;
-const referencePostsJson = JSON.stringify(referencePostsForPage);
-const isTagPage = contentType === "topic" || contentType === "quality";
-const chromeDiscourseCount = curatedDiscourseCount + referenceDiscourseCount;
-const showOnPageChrome =
-	(isTagPage || contentType === "person") &&
-	(primaryDiscourses.length > 0 ||
-		additionalDiscourses.length > 0 ||
-		hasReferenceOnlyDiscourses) &&
-	shouldShowOnPageChrome(chromeDiscourseCount);
 // When the filter/download chrome is hidden (below MIN_THRESHOLD), the plain
 // list falls back to ALL discourses — otherwise a topic whose discourses are
 // all featured (isFeatured: true) would render zero cards. Person pages keep
@@ -193,24 +147,6 @@ const plainListDiscourses = showOnPageChrome
 const showDiscoursesList =
 	plainListDiscourses.length > 0 || hasReferenceOnlyDiscourses;
 
-const personPdfSplit =
-	contentType === "person"
-		? personOnPagePdfSplit(
-				allDiscourses.map(
-					(d: { id: string; title: string; description?: string }) => ({
-						id: d.id,
-						title: d.title,
-						description: d.description,
-					}),
-				),
-			)
-		: null;
-const onPageExportDiscourses = personPdfSplit
-	? personPdfSplit.curated
-	: allDiscourses;
-const onPagePdfReferencePosts = personPdfSplit
-	? personPdfSplit.referencePosts
-	: referencePostsForPage;
 const ssrReferencePosts = personRefsDefaultOn ? referencePostsForPage : [];
 const listedNativeDiscourses = plainListDiscourses.map(
 	(d: { id: string; title: string; description?: string }) => ({
@@ -232,20 +168,6 @@ const listedDiscourses = [
 	...listedNativeDiscourses,
 	...listedReferenceDiscourses,
 ];
-const onPagePdfExportTree = showOnPageChrome
-	? buildOnPagePdfExportTree(
-			slug,
-			displayTitle,
-			onPageExportDiscourses.map(
-				(d: { id: string; title: string; description?: string }) => ({
-					id: d.id,
-					title: d.title,
-					description: d.description,
-				}),
-			),
-			onPagePdfReferencePosts,
-		)
-	: null;
 const onPageExportApiPath = showOnPageChrome
 	? `/api/export/on/${slug}`
 	: undefined;
@@ -798,6 +720,7 @@ const showDiscourseSectionHeading =
 					previewChapters={[]}
 					previewHasSvgViz={onPagePreviewHasSvgViz}
 					exportSelectionTree={onPagePdfExportTree}
+					exportTreeSrc={onPageData.exportTree}
 				/>
 			)
 		}
@@ -807,7 +730,7 @@ const showDiscourseSectionHeading =
 				<script
 					id="reference-posts-data"
 					type="application/json"
-					set:html={referencePostsJson}
+					data-src={onPageData.referencePosts}
 				/>
 			)
 		}
@@ -817,7 +740,8 @@ const showDiscourseSectionHeading =
 		/* Topic/person pages can list hundreds of cards (300KB+ HTML). Skip
 		   layout/paint for off-screen cards to cut initial render cost and INP. */
 		.on-discourse-section .post-item,
-		.on-page-discourses .post-item {
+		.on-page-discourses .post-item,
+		#discourses-grid > .post-item--reference {
 			content-visibility: auto;
 			contain-intrinsic-size: auto 110px;
 		}

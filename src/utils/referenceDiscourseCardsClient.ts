@@ -64,16 +64,44 @@ function slugFromPostItem(post: Element) {
 	return href.replace(/^\//, "");
 }
 
-function getReferencePostsData(dataScriptId: string) {
+type ReferencePost = {
+	slug: string;
+	title: string;
+	description: string;
+	volpage?: string;
+};
+
+const referencePostRequests = new Map<string, Promise<ReferencePost[]>>();
+
+/**
+ * Collection pages inline the JSON; `/on` pages point `data-src` at a static
+ * file so the list only downloads once the reader turns references on.
+ */
+function getReferencePostsData(
+	dataScriptId: string,
+): ReferencePost[] | Promise<ReferencePost[]> {
 	const el = document.getElementById(dataScriptId);
+	const src = el?.getAttribute("data-src");
+	if (src) {
+		let request = referencePostRequests.get(src);
+		if (!request) {
+			request = fetch(src)
+				.then((res) => {
+					if (!res.ok) throw new Error(`HTTP ${res.status}`);
+					return res.json() as Promise<ReferencePost[]>;
+				})
+				.catch((err) => {
+					referencePostRequests.delete(src);
+					console.error("[ref-discourse-cards] reference list failed to load", err);
+					return [];
+				});
+			referencePostRequests.set(src, request);
+		}
+		return request;
+	}
 	if (!el?.textContent?.trim()) {
 		debugLog("reference-posts-data element missing or empty");
-		return [] as Array<{
-			slug: string;
-			title: string;
-			description: string;
-			volpage?: string;
-		}>;
+		return [];
 	}
 	try {
 		const data = JSON.parse(el.textContent);
@@ -85,21 +113,22 @@ function getReferencePostsData(dataScriptId: string) {
 	}
 }
 
-function renderReferenceCard(entry: {
-	slug: string;
-	title: string;
-	description: string;
-	volpage?: string;
-}) {
+const REFERENCE_CARD_CLASS =
+	"post-item post-item--reference not-prose relative flex flex-col w-full p-5 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
+
+/** Parses every card in one pass; per-card innerHTML dominated large topics. */
+function renderReferenceCards(entries: ReferencePost[]): HTMLElement[] {
+	const template = document.createElement("template");
+	template.innerHTML = entries.map(referenceCardHtml).join("");
+	return [...template.content.children] as HTMLElement[];
+}
+
+function referenceCardHtml(entry: ReferencePost) {
 	const href = discourseLinkHref(entry.slug);
 	const volpageHtml = entry.volpage
 		? `<span class="post-card-volpage text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(entry.volpage)}">${escapeHtml(entry.volpage)}</span>`
 		: "";
-	const card = document.createElement("div");
-	card.className =
-		"post-item post-item--reference not-prose relative flex flex-col w-full p-5 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
-	card.dataset.slug = entry.slug;
-	card.innerHTML = `
+	return `<div class="${REFERENCE_CARD_CLASS}" data-slug="${escapeHtml(entry.slug)}">
 			<div class="flex items-start justify-between">
 				<div class="flex items-start flex-grow">
 					<div class="min-w-0 pr-4">
@@ -116,8 +145,7 @@ function renderReferenceCard(entry: {
 				<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
 				${volpageHtml}
 			</div>
-		`;
-	return card;
+		</div>`;
 }
 
 function sortPostsGrid(grid: HTMLElement) {
@@ -273,7 +301,7 @@ export function initReferenceDiscourseCards(
 		debugLog("removed reference cards");
 	}
 
-	function loadReferenceCards() {
+	function loadReferenceCards(referencePostsData: ReferencePost[]) {
 		const nativeSlugs = new Set(
 			[
 				...(grid?.querySelectorAll(
@@ -299,7 +327,6 @@ export function initReferenceDiscourseCards(
 			shownRefs: shownRefSlugs.size,
 		});
 
-		const referencePostsData = getReferencePostsData(dataScriptId);
 		const refs = referenceEntriesToAppend(
 			referencePostsData,
 			nativeSlugs,
@@ -316,13 +343,12 @@ export function initReferenceDiscourseCards(
 			return;
 		}
 
-		const fragment = document.createDocumentFragment();
-		const sectioned = isSectionedLayout(grid);
-		const unmatched: HTMLElement[] = [];
+		const cards = renderReferenceCards(refs);
 
-		for (const entry of refs) {
-			const card = renderReferenceCard(entry);
-			if (sectioned) {
+		if (isSectionedLayout(grid)) {
+			const unmatched: HTMLElement[] = [];
+			refs.forEach((entry, i) => {
+				const card = cards[i];
 				const postsGrid = findTargetPostsGrid(grid, entry.slug);
 				if (postsGrid) {
 					const section = postsGrid.closest<HTMLElement>(
@@ -333,23 +359,28 @@ export function initReferenceDiscourseCards(
 				} else {
 					unmatched.push(card);
 				}
-			} else {
-				fragment.appendChild(card);
-			}
-		}
-
-		if (sectioned) {
+			});
 			for (const card of unmatched) {
 				const otherSection = grid.querySelector<HTMLElement>(
 					":scope > .vagga-section:not([id]) .posts-grid, .book-section .book-flat-section .posts-grid",
 				);
 				(otherSection ?? grid).appendChild(card);
 			}
-		} else if (fragment.childNodes.length) {
-			grid?.insertBefore(fragment, mount);
+			sortDiscourseGrid(grid, mountId);
+		} else {
+			// Sort once and insert everything in a single DOM operation.
+			const items = [
+				...grid.querySelectorAll<HTMLElement>(":scope > .post-item"),
+				...cards,
+			];
+			items.sort((a, b) =>
+				compareDiscourseIds(slugFromPostItem(a), slugFromPostItem(b)),
+			);
+			const fragment = document.createDocumentFragment();
+			fragment.append(...items);
+			grid.insertBefore(fragment, mount);
 		}
 
-		sortDiscourseGrid(grid, mountId);
 		hideEmptyVaggaSections(grid);
 		debugLog("appended reference cards", {
 			count: refs.length,
@@ -357,23 +388,41 @@ export function initReferenceDiscourseCards(
 		});
 	}
 
+	let syncGeneration = 0;
+
 	function syncReferenceDiscourseCards(refOn = resolvePageRefMode()) {
 		debugLog("syncReferenceDiscourseCards", {
 			refOn,
 			search: window.location.search,
 		});
+		const generation = ++syncGeneration;
+
+		const finish = () => {
+			if (options.applyFilter && options.getActiveFilter) {
+				options.applyFilter(options.getActiveFilter());
+			}
+			options.onAfterSync?.();
+			options.onRefModeChange?.(refOn);
+		};
 
 		if (!refOn) {
 			removeReferenceCards();
-		} else {
-			loadReferenceCards();
+			finish();
+			return;
 		}
 
-		if (options.applyFilter && options.getActiveFilter) {
-			options.applyFilter(options.getActiveFilter());
+		const data = getReferencePostsData(dataScriptId);
+		if (Array.isArray(data)) {
+			loadReferenceCards(data);
+			finish();
+			return;
 		}
-		options.onAfterSync?.();
-		options.onRefModeChange?.(refOn);
+		void data.then((posts) => {
+			// The reader may have toggled again while the list was loading.
+			if (generation !== syncGeneration) return;
+			loadReferenceCards(posts);
+			finish();
+		});
 	}
 
 	function syncRefToggleState(active: boolean) {

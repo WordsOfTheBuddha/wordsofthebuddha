@@ -33,6 +33,12 @@ interface Props {
 	previewHasSvgViz: boolean;
 	/** When set, modal shows a checkbox tree and uses POST JSON for subset export. */
 	exportSelectionTree?: PdfExportSelectionTree | null;
+	/**
+	 * JSON (`{ chapters: [{ id, discourses: [{ slug, title, isReference? }] }] }`)
+	 * holding the tree's discourse rows. The rows are then fetched on first open
+	 * instead of shipping in the page; chapter rows and counts still render here.
+	 */
+	exportTreeSrc?: string;
 }
 
 const {
@@ -45,6 +51,7 @@ const {
 	previewChapters,
 	previewHasSvgViz,
 	exportSelectionTree = null,
+	exportTreeSrc,
 } = Astro.props;
 
 const showLargeExportNote = previewTotalTextFiles > 100;
@@ -136,6 +143,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 							class="collection-pdf-tree-scroll"
 							id="collection-pdf-tree-scroll"
 							tabindex="0"
+							data-export-tree-src={exportTreeSrc}
 						>
 							{exportSelectionTree!.chapters.map((ch) => (
 								<div class="pdf-tree-chapter" data-chapter-id={ch.id}>
@@ -165,7 +173,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 										</label>
 									</div>
 									<ul class="pdf-tree-discourses">
-										{ch.discourses.map((d) => (
+										{!exportTreeSrc && ch.discourses.map((d) => (
 											<li
 												class:list={[
 													d.isReference && "pdf-tree-discourse--reference",
@@ -408,9 +416,77 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 
 <script>
 	import { resolveRefMode } from "../utils/refModeClient";
+	import { transformId } from "../utils/transformId";
 
 	let toastTimer: ReturnType<typeof setTimeout>;
 	let keydownHandlerWired = false;
+
+	type ExportTreeRow = { slug: string; title: string; isReference?: boolean };
+	type ExportTreeData = {
+		chapters: { id: string; discourses: ExportTreeRow[] }[];
+	};
+
+	const exportTreeRequests = new Map<string, Promise<ExportTreeData>>();
+
+	function escapeHtml(text: string): string {
+		return text
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+	}
+
+	/** Same markup as the server-rendered rows in the template above. */
+	function exportTreeRowHtml(d: ExportTreeRow): string {
+		const ref = d.isReference === true;
+		const title =
+			d.title && d.title.trim() !== d.slug
+				? ` <span>${escapeHtml(d.title)}</span>`
+				: "";
+		return `<li${ref ? ' class="pdf-tree-discourse--reference" data-is-reference="true" hidden' : ""}><label class="pdf-tree-discourse-label${ref ? " pdf-tree-discourse-label--reference" : ""}"><input type="checkbox" class="pdf-discourse-cb" data-slug="${escapeHtml(d.slug)}" data-is-reference="${ref}"${ref ? " disabled" : " checked"} /><span class="pdf-tree-discourse-title"><span class="pdf-tree-id">${escapeHtml(transformId(d.slug))}</span>${title}${ref ? '<span class="pdf-tree-ref-badge">Ref.</span>' : ""}</span></label></li>`;
+	}
+
+	/** Fills the discourse rows for `exportTreeSrc` dialogs; true once filled. */
+	async function ensureExportTreeRows(dlg: HTMLDialogElement): Promise<boolean> {
+		const scroll = dlg.querySelector<HTMLElement>("[data-export-tree-src]");
+		const src = scroll?.dataset.exportTreeSrc;
+		if (!scroll || !src) return true;
+		let request = exportTreeRequests.get(src);
+		if (!request) {
+			request = fetch(src).then((res) => {
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				return res.json() as Promise<ExportTreeData>;
+			});
+			exportTreeRequests.set(src, request);
+		}
+		try {
+			const data = await request;
+			if (!scroll.dataset.exportTreeSrc) return true;
+			for (const chapter of data.chapters) {
+				const list = scroll.querySelector(
+					`.pdf-tree-chapter[data-chapter-id="${CSS.escape(chapter.id)}"] .pdf-tree-discourses`,
+				);
+				if (list) {
+					list.innerHTML = chapter.discourses.map(exportTreeRowHtml).join("");
+				}
+			}
+			delete scroll.dataset.exportTreeSrc;
+			return true;
+		} catch (err) {
+			exportTreeRequests.delete(src);
+			console.error("[collection-pdf-modal] discourse list failed to load", err);
+			return false;
+		}
+	}
+
+	function setExportTreeStatus(dlg: HTMLDialogElement, message: string) {
+		const countEl = dlg.querySelector("#pdf-selection-count");
+		if (countEl) countEl.textContent = message;
+		const gen = dlg.querySelector(
+			"#collection-pdf-generate",
+		) as HTMLButtonElement | null;
+		if (gen) gen.disabled = true;
+	}
 
 	function refsIncluded(dlg: HTMLDialogElement): boolean {
 		const refOpt = dlg.querySelector(
@@ -1045,8 +1121,21 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				const d = dedupeCollectionPdfDialogs();
 				if (!d) return;
 				wireDialogUi(d);
-				applyDefaultsFromPage(d);
+				if (!d.querySelector("[data-export-tree-src]")) {
+					applyDefaultsFromPage(d);
+					d.showModal();
+					return;
+				}
+				setExportTreeStatus(d, "Loading discourses…");
 				d.showModal();
+				void ensureExportTreeRows(d).then((filled) => {
+					if (filled) applyDefaultsFromPage(d);
+					else
+						setExportTreeStatus(
+							d,
+							"Could not load the discourse list. Close and try again.",
+						);
+				});
 			};
 		});
 
