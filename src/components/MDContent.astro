@@ -191,6 +191,12 @@ const paintInterleavedImmediately =
 		display: grid;
 	}
 
+	/* Panels are filled in the browser. Until then, keep commentary and the
+	   footer below the fold rather than under the title. */
+	:global(html.split.pali-on) .split-wrapper:not([data-split-built]) {
+		min-height: 100vh;
+	}
+
 	/* Hide interleaved when split + pali-on (except subset fallback notices) */
 	:global(html.split.pali-on) .interleaved-article:not(.subset-fallback) {
 		display: none;

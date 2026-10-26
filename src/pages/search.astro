@@ -134,6 +134,7 @@ const researchEnabled = isAskResearchEnabled();
 				// ?q= renders results straight away; start their data now rather
 				// than after every module script ahead of ExploreWidget has run.
 				if (!ask && (params.get("q") || "").trim()) {
+					if (root) root.setAttribute("data-query-on-load", "");
 					var categoryIndex = root && root.getAttribute("data-category-index-url");
 					["/search-meta.json", categoryIndex].forEach(function (href) {
 						if (!href) return;

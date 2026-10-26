@@ -207,7 +207,8 @@ const isSearchOnly = mode === "search-only";
 							Show:
 						</span>
 					</div>
-					<div class="flex flex-wrap gap-x-4 gap-y-2">
+					<!-- Fixed two columns on phones: counts arriving later must not re-wrap the row. -->
+					<div class="grid grid-cols-2 gap-x-4 gap-y-2 sm:flex sm:flex-wrap">
 						<label class="flex items-center gap-2 cursor-pointer">
 							<input
 								type="checkbox"
@@ -256,7 +257,7 @@ const isSearchOnly = mode === "search-only";
 								Similes <span id="count-similes" class="text-gray-500 dark:text-gray-400"></span>
 							</span>
 						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
+						<label class="col-span-2 flex items-center gap-2 cursor-pointer">
 							<input
 								type="checkbox"
 								id="search-filter-include-references"

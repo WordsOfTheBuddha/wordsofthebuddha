@@ -2,6 +2,13 @@
 	transform: translateY(-2px);
 }
 
+/* /search sets data-query-on-load before first paint for ?q= links. Results
+   render only after the index downloads; until then the page is short enough
+   to show the footer, which they would push away. */
+[data-query-on-load] #search-results {
+	min-height: 100vh;
+}
+
 .alphabet-link {
 	transition: all 0.2s ease;
 }

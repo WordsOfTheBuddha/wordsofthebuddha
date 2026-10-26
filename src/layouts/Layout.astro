@@ -535,6 +535,30 @@ const structuredData = buildStructuredData({
 				</script>
 			)
 		}
+		{
+			(showPali || referenceFallback) && (
+				<script is:inline>
+					/* Pāli paragraphs use Gentium Plus, which CSS only requests after
+					   global.css arrives — late enough to reflow the article on swap. */
+					(function () {
+						var root = document.documentElement;
+						if (
+							!root.classList.contains("pali-on") &&
+							!root.classList.contains("ref-pali-only")
+						) {
+							return;
+						}
+						var link = document.createElement("link");
+						link.rel = "preload";
+						link.as = "font";
+						link.type = "font/woff2";
+						link.crossOrigin = "anonymous";
+						link.href = "/assets/fonts/GentiumPlus-Regular-core.woff2";
+						document.head.appendChild(link);
+					})();
+				</script>
+			)
+		}
 		<!-- When navigating to a ?viz= URL, hide page content to prevent flash behind the modal -->
 		<style>
 			:root[style*="--viz-preload"] {
