@@ -5,6 +5,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { WOTB_SLUG } from "./anthologySlugs";
 import { allocateUniqueSlug, slugify } from "./slugify";
 
 export type WotbProse = { type: "prose"; text: string };
@@ -21,7 +22,7 @@ export type WotbBlock = WotbProse | WotbPassage;
 export type WotbNode = {
 	title: string;
 	slug: string;
-	/** Path segments after `/anthologies/word-of-the-buddha/`. */
+	/** Path segments after `/anthologies/the-word-of-the-buddha/`. */
 	segments: string[];
 	/** `src/content/word-of-the-buddha/<file>` for last-updated lookups. */
 	file: string;
@@ -35,7 +36,7 @@ const CHAPTER_DIR = path.join(
 	"src/content/word-of-the-buddha",
 );
 
-const BOOK_PREFIX = "/anthologies/word-of-the-buddha";
+const BOOK_PREFIX = `/anthologies/${WOTB_SLUG}`;
 
 let cached: { stamp: string; chapters: WotbNode[] } | null = null;
 

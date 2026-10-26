@@ -8,6 +8,7 @@ import MDContent from "../components/MDContent.astro";
 import { isAppApiCatchAllId } from "../utils/appApiPath";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
+import { WOTB_LEGACY_SLUG, WOTB_SLUG } from "../utils/anthologySlugs";
 import { organicSearchRedirects } from "../utils/organicSearch";
 import {
 	parsePostSlugFromGlobPath,
@@ -29,6 +30,16 @@ const rootPostEntries = Object.entries(rootPostModules).map(
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
+// The Word of the Buddha moved; old paths are not prerendered, so they land here.
+const legacyBook = `anthologies/${WOTB_LEGACY_SLUG}`;
+if (
+	id === WOTB_LEGACY_SLUG ||
+	id === legacyBook ||
+	id.startsWith(`${legacyBook}/`)
+) {
+	const rest = id.startsWith(legacyBook) ? id.slice(legacyBook.length) : "";
+	return Astro.redirect(`/anthologies/${WOTB_SLUG}${rest}`, 301);
+}
 if (isAppApiCatchAllId(originalId)) {
 	return new Response(
 		JSON.stringify({

@@ -13,6 +13,7 @@ export const keyMap: { [key: string]: string } = {
 	"noble-truths-noble-path": "Noble Truths, Noble Path",
 	"in-the-buddhas-words": "In the Buddha's Words",
 	"inquisitive-mind": "Teachings of the Buddha for an Inquisitive Mind",
+	"the-word-of-the-buddha": "The Word of the Buddha",
 	"word-of-the-buddha": "The Word of the Buddha",
 };
 

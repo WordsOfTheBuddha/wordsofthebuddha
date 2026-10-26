@@ -23,7 +23,7 @@ const wordOfTheBuddhaChapters: Record<string, string> = {
 };
 
 function anthologyChapterTitle(book: string, chapter: string): string {
-	if (book === "word-of-the-buddha") {
+	if (book === "the-word-of-the-buddha") {
 		return (
 			findWotbNode([chapter])?.title ||
 			wordOfTheBuddhaChapters[chapter] ||
@@ -60,7 +60,7 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 				path: `/anthologies/${book}/${chapter}`,
 			});
 		}
-		if (book === "word-of-the-buddha" && idPath.length > 3) {
+		if (book === "the-word-of-the-buddha" && idPath.length > 3) {
 			const section = findWotbNode(idPath.slice(2));
 			if (section && section.segments.length > 1) {
 				path.push({

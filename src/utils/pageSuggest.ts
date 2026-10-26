@@ -145,8 +145,12 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 	{
 		kind: "page",
 		title: "The Word of the Buddha",
-		href: "/anthologies/word-of-the-buddha",
-		aliases: ["word of the buddha", "word-of-the-buddha"],
+		href: "/anthologies/the-word-of-the-buddha",
+		aliases: [
+			"word of the buddha",
+			"word-of-the-buddha",
+			"the-word-of-the-buddha",
+		],
 		label: "Anthology",
 	},
 ];

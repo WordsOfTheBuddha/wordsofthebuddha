@@ -1,6 +1,7 @@
 import type { APIContext, MiddlewareNext } from "astro";
 import { defineMiddleware } from "astro:middleware";
 import { getEnglishEntry } from "./utils/getContentEntry";
+import { WOTB_LEGACY_SLUG, WOTB_SLUG } from "./utils/anthologySlugs";
 import { referenceOnlyRouteSet } from "./utils/referenceOnlyRoutes";
 import { routes } from "./utils/routes";
 import { canonicalOnSlug, resolveOnSlugFallback } from "./utils/discover-data";
@@ -201,8 +202,27 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
 	// Exact-match garbage paths → cheap cacheable 410 before any other work.
 	// Trailing-slash variants normalized; query strings ignored (pathname only).
-	if (GONE_PATHS.has(pathname.replace(/\/+$/, "") || "/")) {
+	const barePath = pathname.replace(/\/+$/, "") || "/";
+	if (GONE_PATHS.has(barePath)) {
 		return goneResponse();
+	}
+
+	// The Word of the Buddha moved from /anthologies/word-of-the-buddha.
+	const legacyBook = `/anthologies/${WOTB_LEGACY_SLUG}`;
+	if (
+		barePath === `/${WOTB_LEGACY_SLUG}` ||
+		barePath === legacyBook ||
+		barePath.startsWith(`${legacyBook}/`)
+	) {
+		const rest = barePath.startsWith(legacyBook)
+			? barePath.slice(legacyBook.length)
+			: "";
+		const target = new URL(
+			`/anthologies/${WOTB_SLUG}${rest}`,
+			context.url,
+		);
+		target.search = context.url.search;
+		return context.redirect(target.pathname + target.search, 301);
 	}
 
 	const researchApi = await dispatchResearchApi(context);

@@ -20,6 +20,7 @@ import { mermaidVendorVitePlugin } from "./scripts/copy-mermaid-vendor.mjs";
 import { contentImagesVitePlugin } from "./src/utils/copyContentImages.mjs";
 import { externalDataStoreVitePlugin } from "./src/integrations/externalDataStore.mjs";
 import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
+import { WOTB_LEGACY_SLUG, WOTB_SLUG } from "./src/utils/anthologySlugs.ts";
 import { organicSearchRedirects } from "./src/utils/organicSearch.ts";
 
 const mnVaggaRedirects = Object.fromEntries(
@@ -160,6 +161,9 @@ export default defineConfig({
 		"/suttanipata": "/snp",
 		"/sitemap.rss": "/sitemap.xml",
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
+		[`/${WOTB_LEGACY_SLUG}`]: `/anthologies/${WOTB_SLUG}`,
+		[`/anthologies/${WOTB_LEGACY_SLUG}`]: `/anthologies/${WOTB_SLUG}`,
+		[`/anthologies/${WOTB_LEGACY_SLUG}/[...path]`]: `/anthologies/${WOTB_SLUG}/[...path]`,
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
 		"/explore": "/discover",

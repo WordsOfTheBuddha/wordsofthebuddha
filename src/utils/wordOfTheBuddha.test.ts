@@ -34,7 +34,7 @@ describe("word of the buddha pages", () => {
 		assert.equal(node?.title, "Dependent Origination of Consciousness");
 		assert.equal(
 			wotbHref(node!.segments),
-			"/anthologies/word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
+			"/anthologies/the-word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
 		);
 		assert.ok(node!.blocks.some((block) => block.type === "passage"));
 	});
@@ -42,11 +42,11 @@ describe("word of the buddha pages", () => {
 	it("opens a heading with no passages at its first section", () => {
 		assert.equal(
 			resolveWotb(["origin", "karma"])?.redirectTo,
-			"/anthologies/word-of-the-buddha/origin/karma/present-karma-results",
+			"/anthologies/the-word-of-the-buddha/origin/karma/present-karma-results",
 		);
 		assert.equal(
 			resolveWotb(["path", "right-effort"])?.redirectTo,
-			"/anthologies/word-of-the-buddha/path/right-effort/effort-to-avoid",
+			"/anthologies/the-word-of-the-buddha/path/right-effort/effort-to-avoid",
 		);
 		assert.equal(
 			resolveWotb([
@@ -54,7 +54,7 @@ describe("word of the buddha pages", () => {
 				"right-mindfulness",
 				"contemplation-of-the-body",
 			])?.redirectTo,
-			"/anthologies/word-of-the-buddha/path/right-mindfulness/contemplation-of-the-body/mindfulness-of-breathing",
+			"/anthologies/the-word-of-the-buddha/path/right-mindfulness/contemplation-of-the-body/mindfulness-of-breathing",
 		);
 	});
 
@@ -102,8 +102,8 @@ describe("word of the buddha pages", () => {
 describe("word of the buddha breadcrumbs", () => {
 	it("shows the book, the chapter, and the current section", () => {
 		const trail = buildBreadcrumbTrail(
-			"anthologies/word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
-			"/anthologies/word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
+			"anthologies/the-word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
+			"/anthologies/the-word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
 		);
 		assert.deepEqual(
 			trail.map((crumb) => crumb.label),
@@ -117,11 +117,11 @@ describe("word of the buddha breadcrumbs", () => {
 		);
 		assert.equal(
 			trail.at(-1)?.path,
-			"/anthologies/word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
+			"/anthologies/the-word-of-the-buddha/suffering/group-of-consciousness/dependent-origination-of-consciousness",
 		);
 		assert.equal(
 			trail.at(-2)?.path,
-			"/anthologies/word-of-the-buddha/suffering",
+			"/anthologies/the-word-of-the-buddha/suffering",
 		);
 	});
 });
