@@ -18,6 +18,9 @@ const baseSchema = z.object({
 	// - imageCaption: caption with optional credit, e.g. "A lotus flower · Generated with ChatGPT"
 	image: z.string().optional(),
 	imageCaption: z.string().optional(),
+	// Work in progress. Anthologies with `draft: true` stay reachable by direct
+	// URL (noindex) but are left out of listings and the sitemap.
+	draft: z.boolean().optional(),
 });
 
 const bookSchema = baseSchema.extend({

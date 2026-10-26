@@ -4,6 +4,7 @@ description: Read the suttas of the Pāli canon in parallel Pāli and English. F
 slug: index
 ---
 
+import AnthologyCards from '../../components/AnthologyCards.astro'
 import CollectionCards from '../../components/CollectionCards.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
 import DailyQuote from '../../components/DailyQuote.astro'
@@ -159,6 +160,16 @@ import fireImage from '../../assets/content-images/fire.webp'
   trigger.addEventListener("click", openTestimonials);
 })();
 `}></script>
+
+{/* ── Anthologies ── */}
+<section class="max-w-5xl mx-auto px-4 mb-14">
+  <div class="flex items-baseline justify-between mb-2">
+    <h2 class="text-2xl font-semibold !mt-0 !mb-0">Anthologies</h2>
+    <a href="/anthologies" class="text-sm font-medium" style="color:var(--link-color);">See all &rarr;</a>
+  </div>
+  <p class="mb-5 text-sm" style="color:var(--text-muted);">Curated reading paths through the canon — a good place to begin.</p>
+  <AnthologyCards limit={3} />
+</section>
 
 {/* ── Collections ── */}
 <section class="max-w-5xl mx-auto px-4 mb-14">

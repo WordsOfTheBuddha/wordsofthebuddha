@@ -1,21 +1,10 @@
 ---
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
 import BookCard from "../components/BookCard.astro";
+import { getPublishedAnthologies } from "../utils/anthologies";
 
-const allBooks = await getCollection("anthologies");
-
-// Natural sort function
-const naturalSort = (
-	a: CollectionEntry<"anthologies">,
-	b: CollectionEntry<"anthologies">
-) => {
-	return a.data.order - b.data.order;
-};
-
-// console.log(allBooks);
-const sortedPosts = allBooks.sort(naturalSort);
+const sortedPosts = await getPublishedAnthologies();
 ---
 
 <Layout seoTitle="Anthologies" description="A curated collection of discourses from the Pāli Canon" showAuth={true}>

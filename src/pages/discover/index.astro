@@ -3,10 +3,9 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import BottomDrawer from "../../components/BottomDrawer.astro";
 import ExploreWidget from "../../components/ExploreWidget.astro";
-import StartHere from "../../components/StartHere.astro";
+import AnthologyCards from "../../components/AnthologyCards.astro";
 import OftenRead from "../../components/OftenRead.astro";
 import CollectionCards from "../../components/CollectionCards.astro";
-import { discoverStartHereEntries } from "../../data/discoverStartHere";
 
 const seoTitle = "Browse the Pāli Canon — Suttas by Collection and Topic";
 ---
@@ -30,9 +29,18 @@ const seoTitle = "Browse the Pāli Canon — Suttas by Collection and Topic";
 			</p>
 		</section>
 
-		<StartHere items={discoverStartHereEntries} />
+		<section class="max-w-5xl mx-auto px-4 mb-14" aria-labelledby="anthologies-heading">
+			<div class="flex items-baseline justify-between mb-2">
+				<h2 id="anthologies-heading" class="text-2xl font-semibold !mt-0 !mb-0">Start with an anthology</h2>
+				<a href="/anthologies" class="text-sm font-medium" style="color:var(--link-color);">See all &rarr;</a>
+			</div>
+			<p class="mb-5 text-sm" style="color:var(--text-muted);">
+				Curated reading paths through the canon, with parallel Pāli and English.
+			</p>
+			<AnthologyCards />
+		</section>
 
-		<OftenRead omitHrefs={["/dhp"]} />
+		<OftenRead />
 
 		<section class="max-w-5xl mx-auto px-4 mb-14">
 			<h2 class="text-2xl font-semibold mb-2">Explore the Collections</h2>

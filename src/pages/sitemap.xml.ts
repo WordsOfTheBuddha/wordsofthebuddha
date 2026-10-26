@@ -23,6 +23,7 @@ const SITE_URL = "https://www.wordsofthebuddha.org";
 
 /** Anthology content lives under /anthologies/; the bare slug is a redirect. */
 import { anthologySlugSet as ANTHOLOGY_SLUGS } from "../utils/anthologySlugs";
+import { getDraftAnthologySlugs } from "../utils/anthologies";
 
 /** Homepage content entry; its slug must not be emitted as /index. */
 const HOME_SLUG = "index";
@@ -128,8 +129,11 @@ export const GET: APIRoute = async () => {
 	}
 
 	// The site's own English translations.
+	const draftAnthologies = await getDraftAnthologySlugs();
 	routes.forEach((slug) => {
 		if (slug === HOME_SLUG) return;
+		// Work-in-progress anthologies (`draft: true`) stay out of the sitemap.
+		if (draftAnthologies.has(slug)) return;
 		const path = ANTHOLOGY_SLUGS.has(slug)
 			? `/anthologies/${slug}`
 			: `/${slug}`;

@@ -15,7 +15,7 @@ const covers: Record<string, ImageMetadata> = {
 interface Props {
 	src?: string;
 	alt: string;
-	variant?: "thumb" | "card";
+	variant?: "thumb" | "shelf" | "card";
 	class?: string;
 	loading?: "lazy" | "eager";
 }
@@ -30,11 +30,13 @@ const {
 
 const image = src ? covers[src] : undefined;
 const thumb = { widths: [80, 112, 168], sizes: "3.5rem" };
+// Anthology cards on home and /discover (~5.25rem wide).
+const shelf = { widths: [96, 168, 240], sizes: "5.25rem" };
 const card = {
 	widths: [240, 400, 656],
 	sizes: "(max-width: 640px) 90vw, 30vw",
 };
-const opts = variant === "thumb" ? thumb : card;
+const opts = variant === "thumb" ? thumb : variant === "shelf" ? shelf : card;
 ---
 
 {

@@ -85,6 +85,9 @@ const lastUpdated = wotbPage
 		? getLastModified(contentItem.filePath)
 		: null;
 
+// Work-in-progress anthologies stay previewable by URL but out of search engines.
+const isDraft = contentItem?.data.draft === true;
+
 const title = wotbPage?.title ?? contentItem?.data.title ?? "";
 const seoDescription = wotbPage
 	? wotbDescription(wotbPage)
@@ -100,6 +103,7 @@ const seoDescription = wotbPage
 	id={id}
 	lastUpdated={lastUpdated}
 	showAuth={true}
+	robots={isDraft ? "noindex, nofollow" : null}
 >
 	{
 		wotbPage ? (
