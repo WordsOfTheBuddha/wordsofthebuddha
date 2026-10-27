@@ -86,7 +86,8 @@ export function resolveGlossForDisplay(term: string, rest: string): GlossDisplay
 	return { kind: "tooltip", term, tooltip };
 }
 
-const GLOSS_RE = /\|(.+?)::(.+?)\|/g;
+/** `|term::rest|` glosses, including `|term::tooltip::tts|`. Global; reset `lastIndex` before reuse. */
+export const GLOSS_RE = /\|(.+?)::(.+?)\|/g;
 
 function applyPendingStartCap(text: string): { text: string; consumed: boolean } {
 	const capped = capitalizeAfterOmittedVocative(text);

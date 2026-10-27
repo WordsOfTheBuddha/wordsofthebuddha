@@ -1,0 +1,155 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import {
+	discourseCount,
+	encyclopediaPath,
+	entrySenses,
+	glossDefinition,
+} from "../../utils/encyclopedia";
+import { getEncyclopediaEntry } from "../../utils/encyclopediaIndex";
+
+const raw = Astro.params.norm ?? "";
+let param = raw;
+try {
+	param = decodeURIComponent(raw);
+} catch {
+	param = raw;
+}
+const found = getEncyclopediaEntry(param);
+if (!found) {
+	return Astro.rewrite("/404");
+}
+if (param !== found.canonical) {
+	return Astro.redirect(encyclopediaPath(found.canonical), 301);
+}
+
+const entry = found.entry;
+const senses = entrySenses(entry);
+const firstDefinition = senses
+	.map((sense) => glossDefinition(sense.gloss ?? ""))
+	.find((line) => line.length > 0);
+const seoDescription =
+	firstDefinition ||
+	(entry.labels.length > 0
+		? `${entry.pali}: ${entry.labels.slice(0, 6).join(", ")}`
+		: `How the Nikāyas use ${entry.pali}.`);
+const totalDiscourses = discourseCount(entry);
+---
+
+<Layout
+	seoTitle={`${entry.pali} - Nikāya encyclopedia`}
+	seoDescription={seoDescription}
+	showAuth={true}
+	fp={encyclopediaPath(entry.norm)}
+>
+	<main class="container mx-auto py-8">
+		<p class="text-sm mb-4">
+			<a href="/encyclopedia" style="color:var(--link-color);">Encyclopedia</a>
+		</p>
+		<div class="post-item relative flex flex-col w-full rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md p-5 mb-8">
+			<div class="flex items-start justify-between gap-4">
+				<div class="min-w-0">
+					<h1 class="text-xl font-semibold my-0 flex flex-wrap items-center gap-2">
+						<span class="pali-paragraph">{entry.pali}</span>
+						<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)] font-normal">
+							{entry.kind}
+						</span>
+						<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)] font-normal">
+							{entry.status}
+						</span>
+					</h1>
+					{
+						entry.labels.length > 0 && (
+							<p class="text-sm mt-2 mb-0" style="color:var(--text-muted);">
+								{entry.labels.slice(0, 8).join(", ")}
+							</p>
+						)
+					}
+					{
+						entry.related.length > 0 && (
+							<p class="text-sm mt-3 mb-0 flex flex-wrap gap-x-3 gap-y-1">
+								{entry.related.map((related) => (
+									<a
+										href={`/on/${related.slug}`}
+										style="color:var(--link-color);"
+									>
+										{related.title}
+										<span style="color:var(--text-muted);">
+											{" "}
+											/on/{related.slug}
+										</span>
+									</a>
+								))}
+							</p>
+						)
+					}
+				</div>
+				<span class="shrink-0 px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+					{totalDiscourses}
+				</span>
+			</div>
+		</div>
+
+		{
+			senses.length === 0 ? (
+				<p class="text-sm">No gloss is recorded for this headword yet.</p>
+			) : (
+				<div class="space-y-6">
+					{senses.map((sense) => {
+						const head = sense.label || entry.labels[0] || entry.pali;
+						const definition = glossDefinition(sense.gloss ?? "");
+						const occurrences = sense.occurrences ?? [];
+						return (
+							<section class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
+								<p class="my-0 text-base">
+									<span class="font-semibold">{head}</span>{" "}
+									<span class="pali-paragraph font-semibold">
+										[{entry.pali}]
+									</span>
+								</p>
+								{definition && (
+									<p class="text-sm mt-2 mb-0">{definition}</p>
+								)}
+								{sense.note && (
+									<p
+										class="text-sm mt-2 mb-0 italic"
+										style="color:var(--text-muted);"
+									>
+										{sense.note}
+									</p>
+								)}
+								<p
+									class="text-xs mt-2 mb-0"
+									style="color:var(--text-muted);"
+								>
+									{sense.origin === "human" ? "Reviewed" : "Gloss"}
+								</p>
+								{
+									occurrences.length > 0 && (
+										<ul class="mt-3 space-y-1 list-none pl-0">
+											{occurrences.map((occurrence) => (
+												<li>
+													<a
+														href={`/${encodeURIComponent(occurrence.id)}`}
+														style="color:var(--link-color);"
+													>
+														{occurrence.id}
+													</a>
+													<span style="color:var(--text-muted);">
+														{" "}
+														{occurrence.title}
+													</span>
+												</li>
+											))}
+										</ul>
+									)
+								}
+							</section>
+						);
+					})}
+				</div>
+			)
+		}
+	</main>
+</Layout>

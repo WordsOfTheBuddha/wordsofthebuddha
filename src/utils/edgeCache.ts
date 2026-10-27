@@ -26,6 +26,8 @@ export const PUBLIC_SSR_ROUTE_PATTERNS: ReadonlySet<string> = new Set([
 	"/qualities/[...id]",
 	"/person/[...id]",
 	"/simile/[...id]",
+	"/encyclopedia",
+	"/encyclopedia/[norm]",
 ]);
 
 /** Statuses Vercel's CDN will store. */

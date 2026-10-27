@@ -1,0 +1,11 @@
+# Human overlay for the headword chanda (desire).
+# Regen may add items and replace its own. It does not overwrite origin: human.
+norm: chanda
+items:
+  - id: human-chanda-wholesome
+    origin: human
+    source: editor
+    automationKey: a wholesome motivation to act [chanda]
+    label: desire
+    gloss: "a wholesome motivation to act [chanda]"
+    note: "Reviewed sense. Left as written when the index is regenerated."

@@ -1,0 +1,206 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import {
+	encyclopediaPath,
+	isEncyclopediaStatus,
+} from "../../utils/encyclopedia";
+import type {
+	EncyclopediaKind,
+	EncyclopediaStatus,
+} from "../../types/encyclopedia";
+import {
+	encyclopediaQueryFromUrl,
+	queryEncyclopediaIndex,
+} from "../../utils/encyclopediaIndex";
+
+const result = queryEncyclopediaIndex(encyclopediaQueryFromUrl(Astro.url));
+const { q, kind, status, total, counts, results } = result;
+
+const KIND_OPTIONS: { value: "" | EncyclopediaKind; label: string }[] = [
+	{ value: "", label: "All kinds" },
+	{ value: "term", label: "Term" },
+	{ value: "topic", label: "Topic" },
+	{ value: "quality", label: "Quality" },
+	{ value: "person", label: "Person" },
+	{ value: "simile", label: "Simile" },
+	{ value: "place", label: "Place" },
+];
+
+const STATUS_OPTIONS: { value: "" | EncyclopediaStatus; label: string }[] = [
+	{ value: "", label: "All statuses" },
+	{ value: "reviewed", label: "Reviewed" },
+	{ value: "seeded", label: "Seeded" },
+	{ value: "raw", label: "Raw" },
+];
+
+function filterHref(next: {
+	status?: EncyclopediaStatus | null;
+	kind?: EncyclopediaKind | null;
+}): string {
+	const params = new URLSearchParams();
+	if (q) params.set("q", q);
+	const nextKind = next.kind === undefined ? kind : next.kind;
+	const nextStatus = next.status === undefined ? status : next.status;
+	if (nextKind) params.set("kind", nextKind);
+	if (nextStatus) params.set("status", nextStatus);
+	const search = params.toString();
+	return search ? `/encyclopedia?${search}` : "/encyclopedia";
+}
+
+function kindCount(value: "" | EncyclopediaKind): number {
+	if (!value) return counts.entries;
+	return counts.byKind[value];
+}
+---
+
+<Layout
+	seoTitle="Nikāya encyclopedia - Words of the Buddha"
+	seoDescription="How the Pāli Nikāyas use a term: glosses from the discourses, joined to topics, qualities, persons, and similes."
+	showAuth={true}
+	fp="/encyclopedia"
+>
+	<main class="container mx-auto py-8">
+		<div class="flex justify-between items-baseline mb-4 border-b pb-2 gap-4">
+			<h1 class="text-2xl font-bold flex-grow">Nikāya encyclopedia</h1>
+		</div>
+		<p class="text-sm mb-4" style="color:var(--text-muted);">
+			One headword for each Pāli form in the glosses. Reviewed entries have a
+			human note, seeded entries match a curated map, and raw entries are
+			gloss clusters only.
+		</p>
+
+		<div class="mb-6 flex flex-wrap gap-2">
+			{
+				(["reviewed", "seeded", "raw"] as const).map((name) => (
+					<a
+						href={filterHref({ status: status === name ? null : name })}
+						class:list={[
+							"px-2 py-0.5 text-xs rounded-full border",
+							status === name
+								? "border-[var(--primary-color)] text-[var(--primary-color)]"
+								: "border-[var(--border-color)] text-[var(--text-color)]",
+						]}
+					>
+						{name} {counts.byStatus[name]}
+					</a>
+				))
+			}
+			<span class="text-xs self-center" style="color:var(--text-muted);">
+				{counts.entries} headwords
+			</span>
+		</div>
+
+		<form
+			method="get"
+			action="/encyclopedia"
+			class="mb-8 flex flex-wrap items-end gap-3"
+		>
+			<label class="flex flex-col gap-1 text-sm">
+				<span style="color:var(--text-muted);">Search</span>
+				<input
+					type="search"
+					name="q"
+					value={q}
+					placeholder="Pāli, English, or gloss"
+					class="w-48 sm:w-64 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color"
+				/>
+			</label>
+			<label class="flex flex-col gap-1 text-sm">
+				<span style="color:var(--text-muted);">Kind</span>
+				<select
+					name="kind"
+					class="px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700"
+				>
+					{
+						KIND_OPTIONS.map((option) => (
+							<option
+								value={option.value}
+								selected={kind === option.value || (!kind && option.value === "")}
+							>
+								{option.label} ({kindCount(option.value)})
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<label class="flex flex-col gap-1 text-sm">
+				<span style="color:var(--text-muted);">Status</span>
+				<select
+					name="status"
+					class="px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700"
+				>
+					{
+						STATUS_OPTIONS.map((option) => (
+							<option
+								value={option.value}
+								selected={
+									status === option.value || (!status && option.value === "")
+								}
+							>
+								{option.label}
+								{option.value && isEncyclopediaStatus(option.value)
+									? ` (${counts.byStatus[option.value]})`
+									: ""}
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<button
+				type="submit"
+				class="px-3 py-1 text-sm rounded-md text-white bg-[var(--primary-color)]"
+			>
+				Search
+			</button>
+		</form>
+
+		<p class="text-sm mb-4" style="color:var(--text-muted);">
+			Showing {results.length} of {total}
+		</p>
+
+		{
+			results.length === 0 ? (
+				<p class="text-sm">No headwords match.</p>
+			) : (
+				<div class="space-y-4">
+					{results.map((item) => (
+						<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
+							<div class="flex items-start justify-between gap-4">
+								<div class="min-w-0">
+									<h2 class="text-base sm:text-lg font-semibold my-0 flex flex-wrap items-baseline gap-2">
+										<a
+											href={encyclopediaPath(item.norm)}
+											class="post-link hover:text-link-color font-normal pali-paragraph"
+										>
+											{item.pali}
+										</a>
+										{item.label && (
+											<span class="text-sm font-normal">
+												{item.label}
+											</span>
+										)}
+										<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)]">
+											{item.kind}
+										</span>
+										<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)]">
+											{item.status}
+										</span>
+									</h2>
+									<p class="text-xs mt-2 mb-0" style="color:var(--text-muted);">
+										{item.senseCount === 1
+											? "1 sense"
+											: `${item.senseCount} senses`}
+									</p>
+								</div>
+								<span class="shrink-0 px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+									{item.discourseCount}
+								</span>
+							</div>
+						</div>
+					))}
+				</div>
+			)
+		}
+	</main>
+</Layout>
