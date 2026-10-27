@@ -220,6 +220,14 @@ describe("normalizeEncyclopediaPathname", () => {
 			normalizeEncyclopediaPathname("encyclopedia/chanda/index.html"),
 			"/encyclopedia/chanda",
 		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/encylopedia"),
+			"/encyclopedia",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/encylopedia/chanda"),
+			"/encyclopedia/chanda",
+		);
 		assert.equal(normalizeEncyclopediaPathname("/mn10"), null);
 	});
 });

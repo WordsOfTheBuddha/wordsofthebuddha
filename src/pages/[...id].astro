@@ -112,7 +112,7 @@ if (originalId?.startsWith("listen-dynamic/")) {
 // Real encyclopedia routes. A directory index (`/encyclopedia/chanda/index.html`)
 // or a catch-all that wins the match must not soft-404 to
 // `/search?q=encyclopedia/chanda`.
-if (originalId && /^encyclopedia(\/|$)/i.test(originalId)) {
+if (originalId && /^(?:encyclopedia|encylopedia)(\/|$)/i.test(originalId)) {
 	const target = normalizeEncyclopediaPathname(`/${originalId}`);
 	if (target) {
 		const here = `/${originalId}`.replace(/\/+$/, "") || "/";
