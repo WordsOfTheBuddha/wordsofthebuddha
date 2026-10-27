@@ -8,6 +8,7 @@ import {
 	glossDefinition,
 } from "../../utils/encyclopedia";
 import { getEncyclopediaEntry } from "../../utils/encyclopediaIndex";
+import { transformId } from "../../utils/transformId";
 
 const raw = Astro.params.norm ?? "";
 let param = raw;
@@ -74,9 +75,6 @@ const totalDiscourses = entry ? discourseCount(entry) : 0;
 	fp={encyclopediaPath(entry.norm)}
 >
 	<main class="container mx-auto py-8">
-		<p class="text-sm mb-4">
-			<a href="/encyclopedia" style="color:var(--link-color);">Encyclopedia</a>
-		</p>
 		<div class="post-item relative flex flex-col w-full rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md p-5 mb-8">
 			<div class="flex items-start justify-between gap-4">
 				<div class="min-w-0">
@@ -105,10 +103,6 @@ const totalDiscourses = entry ? discourseCount(entry) : 0;
 										style="color:var(--link-color);"
 									>
 										{related.title}
-										<span style="color:var(--text-muted);">
-											{" "}
-											/on/{related.slug}
-										</span>
 									</a>
 								))}
 							</p>
@@ -157,19 +151,17 @@ const totalDiscourses = entry ? discourseCount(entry) : 0;
 								</p>
 								{
 									occurrences.length > 0 && (
-										<ul class="mt-3 space-y-1 list-none pl-0">
+										<ul class="mt-3 space-y-2 list-none pl-0">
 											{occurrences.map((occurrence) => (
 												<li>
 													<a
-														href={`/${encodeURIComponent(occurrence.id)}`}
-														style="color:var(--link-color);"
+														href={`/${occurrence.id}`}
+														class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal"
 													>
-														{occurrence.id}
+														{transformId(occurrence.id)}&nbsp;<span
+															style="color:var(--text-color)"
+														>{occurrence.title}</span>
 													</a>
-													<span style="color:var(--text-muted);">
-														{" "}
-														{occurrence.title}
-													</span>
 												</li>
 											))}
 										</ul>
@@ -185,3 +177,15 @@ const totalDiscourses = entry ? discourseCount(entry) : 0;
 </Layout>
 	)
 }
+
+<style>
+	.id {
+		font-size: 0.95rem;
+		display: inline;
+	}
+	@media (min-width: 640px) {
+		.id {
+			font-size: 1.1rem;
+		}
+	}
+</style>
