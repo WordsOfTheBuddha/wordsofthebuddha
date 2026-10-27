@@ -121,9 +121,7 @@ export function onSlug(value: string): string {
 		.replace(/[^a-z0-9-]/g, "");
 }
 
-export function encyclopediaPath(norm: string): string {
-	return `/encyclopedia/${encodeURIComponent(norm)}`;
-}
+export { encyclopediaPath, normalizeEncyclopediaPathname } from "./encyclopediaPath";
 
 /**
  * A bracketed token worth its own headword.

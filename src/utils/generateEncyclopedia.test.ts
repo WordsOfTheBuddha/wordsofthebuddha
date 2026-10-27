@@ -10,6 +10,7 @@ import {
 	mergeHumanOverlay,
 	overlayItemsFromDocument,
 } from "./encyclopedia";
+import { normalizeEncyclopediaPathname } from "./encyclopediaPath";
 import type { EncyclopediaEntry, EncyclopediaItem } from "../types/encyclopedia";
 
 describe("extractGlossHits", () => {
@@ -190,5 +191,35 @@ describe("mergeEncyclopediaItems", () => {
 			twice.items.filter((item) => item.origin === "human").length,
 			1,
 		);
+	});
+});
+
+describe("normalizeEncyclopediaPathname", () => {
+	it("keeps term URLs and pulls directory indexes off the search catch-all", () => {
+		assert.equal(
+			normalizeEncyclopediaPathname("/encyclopedia/chanda"),
+			"/encyclopedia/chanda",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/encyclopedia/chanda/"),
+			"/encyclopedia/chanda",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/encyclopedia/chanda/index.html"),
+			"/encyclopedia/chanda",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/encyclopedia/index.html"),
+			"/encyclopedia",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("/Encyclopedia/chanda"),
+			"/encyclopedia/chanda",
+		);
+		assert.equal(
+			normalizeEncyclopediaPathname("encyclopedia/chanda/index.html"),
+			"/encyclopedia/chanda",
+		);
+		assert.equal(normalizeEncyclopediaPathname("/mn10"), null);
 	});
 });

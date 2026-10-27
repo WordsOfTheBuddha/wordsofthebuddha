@@ -17,26 +17,56 @@ try {
 	param = raw;
 }
 const found = getEncyclopediaEntry(param);
-if (!found) {
-	return Astro.rewrite("/404");
-}
-if (param !== found.canonical) {
+if (found && param !== found.canonical) {
 	return Astro.redirect(encyclopediaPath(found.canonical), 301);
 }
+// SSR cannot rewrite onto the prerendered /404 page (Astro forbids it and
+// the preview responded 500). Render the miss here.
+if (!found) {
+	Astro.response.status = 404;
+}
 
-const entry = found.entry;
-const senses = entrySenses(entry);
+const entry = found?.entry;
+const senses = entry ? entrySenses(entry) : [];
 const firstDefinition = senses
 	.map((sense) => glossDefinition(sense.gloss ?? ""))
 	.find((line) => line.length > 0);
-const seoDescription =
-	firstDefinition ||
-	(entry.labels.length > 0
-		? `${entry.pali}: ${entry.labels.slice(0, 6).join(", ")}`
-		: `How the Nikāyas use ${entry.pali}.`);
-const totalDiscourses = discourseCount(entry);
+const seoDescription = !entry
+	? null
+	: firstDefinition ||
+		(entry.labels.length > 0
+			? `${entry.pali}: ${entry.labels.slice(0, 6).join(", ")}`
+			: `How the Nikāyas use ${entry.pali}.`);
+const totalDiscourses = entry ? discourseCount(entry) : 0;
 ---
 
+{
+	!entry && (
+		<Layout
+			seoTitle="Not in the encyclopedia - Words of the Buddha"
+			seoDescription="This headword is not in the Nikāya encyclopedia."
+			showAuth={true}
+			fp="/encyclopedia"
+			robots="noindex, nofollow"
+		>
+			<main class="container mx-auto py-8">
+				<p class="text-sm mb-4">
+					<a href="/encyclopedia" style="color:var(--link-color);">
+						Encyclopedia
+					</a>
+				</p>
+				<h1 class="text-xl font-semibold">No entry for this headword</h1>
+				<p class="text-sm" style="color:var(--text-muted);">
+					<span class="pali-paragraph">{param}</span> is not in the
+					encyclopedia index.
+				</p>
+			</main>
+		</Layout>
+	)
+}
+
+{
+	entry && (
 <Layout
 	seoTitle={`${entry.pali} - Nikāya encyclopedia`}
 	seoDescription={seoDescription}
@@ -153,3 +183,5 @@ const totalDiscourses = discourseCount(entry);
 		}
 	</main>
 </Layout>
+	)
+}

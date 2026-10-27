@@ -8,6 +8,7 @@ import MDContent from "../components/MDContent.astro";
 import { isAppApiCatchAllId } from "../utils/appApiPath";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
 import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
+import { normalizeEncyclopediaPathname } from "../utils/encyclopediaPath";
 import { WOTB_LEGACY_SLUG, WOTB_SLUG } from "../utils/anthologySlugs";
 import { organicSearchRedirects } from "../utils/organicSearch";
 import {
@@ -106,6 +107,20 @@ if (originalId?.startsWith("listen-dynamic/")) {
 		return Astro.rewrite(`/listen-dynamic/${raw}`);
 	}
 	return new Response(null, { status: 404 });
+}
+
+// Real encyclopedia routes. A directory index (`/encyclopedia/chanda/index.html`)
+// or a catch-all that wins the match must not soft-404 to
+// `/search?q=encyclopedia/chanda`.
+if (originalId && /^encyclopedia(\/|$)/i.test(originalId)) {
+	const target = normalizeEncyclopediaPathname(`/${originalId}`);
+	if (target) {
+		const here = `/${originalId}`.replace(/\/+$/, "") || "/";
+		if (target !== here) {
+			return Astro.redirect(target, 301);
+		}
+		return Astro.rewrite(target);
+	}
 }
 
 // Non-prerendered /on/:slug variants miss the static /on/ page (unknown slugs,
@@ -217,6 +232,7 @@ const APP_TOP_LEVEL_SLUGS = new Set([
 	"characters",
 	"simile",
 	"qualities",
+	"encyclopedia",
 ]);
 
 const isSystemRequest =

@@ -5,6 +5,7 @@ import { WOTB_LEGACY_SLUG, WOTB_SLUG } from "./utils/anthologySlugs";
 import { referenceOnlyRouteSet } from "./utils/referenceOnlyRoutes";
 import { routes } from "./utils/routes";
 import { canonicalOnSlug, resolveOnSlugFallback } from "./utils/discover-data";
+import { normalizeEncyclopediaPathname } from "./utils/encyclopediaPath";
 import {
 	isRootPostCandidate,
 	parsePostSlugFromGlobPath,
@@ -205,6 +206,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	const barePath = pathname.replace(/\/+$/, "") || "/";
 	if (GONE_PATHS.has(barePath)) {
 		return goneResponse();
+	}
+
+	// `/encyclopedia/chanda/index.html` is not the `[norm]` route. The root
+	// catch-all used to send it to `/search?q=encyclopedia/chanda`.
+	const encyclopediaTarget = normalizeEncyclopediaPathname(barePath);
+	if (encyclopediaTarget && encyclopediaTarget !== barePath) {
+		const target = new URL(encyclopediaTarget, context.url);
+		target.search = context.url.search;
+		return context.redirect(target.pathname + target.search, 301);
 	}
 
 	// The Word of the Buddha moved from /anthologies/word-of-the-buddha.
