@@ -89,7 +89,7 @@ export function isRefiningAskFollowUp(question: string): boolean {
 		return true;
 	}
 	if (
-		/\b((mn|sn|an|dn|dhp|iti|ud|snp|thig|thag|kp|vv|pv|ja)\s*\d[\d.]*)\b/i.test(
+		/\b((mn|sn|an|dn|dhp|iti|ud|snp|thig|thag|kp|kd|vv|pv|ja)\s*\d[\d.]*)\b/i.test(
 			text,
 		) &&
 		/\b(about|explain|mean|say|said|tell me|deeper|elaborat)\b/i.test(text) &&

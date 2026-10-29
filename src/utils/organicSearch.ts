@@ -283,6 +283,11 @@ export const collectionSearch: Record<string, HubSearchEntry> = {
 		description:
 			"The Khuddakapāṭha in parallel Pāli and English: short chanting passages, including the Metta, Maṅgala, and Ratana Suttas.",
 	},
+	kd: {
+		title: "Mahākhandhaka — The Great Chapter in Pāli and English",
+		description:
+			"The narrative of the Mahākhandhaka in parallel Pāli and English, from the weeks after awakening through the going forth of Sāriputta and Moggallāna.",
+	},
 	sn12: {
 		title: "Dependent Origination — Saṁyutta Nikāya 12",
 		description:

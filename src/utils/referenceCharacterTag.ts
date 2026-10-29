@@ -919,7 +919,7 @@ export function includesPaliStem(text: string, stem: string): boolean {
 }
 
 export function collectionKeyForSlug(slug: string): string | null {
-	const match = slug.toLowerCase().match(/^(sn|an|snp|ud|iti|kp|dhp|mn|dn)(\d+)/);
+	const match = slug.toLowerCase().match(/^(sn|an|snp|ud|iti|kp|kd|dhp|mn|dn)(\d+)/);
 	if (!match) return null;
 	const book = match[1];
 	if (book === "sn" || book === "an" || book === "snp") {

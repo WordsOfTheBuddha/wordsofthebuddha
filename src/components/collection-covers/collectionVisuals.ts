@@ -91,6 +91,12 @@ export const collectionVisuals: Record<string, CollectionVisual> = {
 		accentMuted: "color-mix(in srgb, #6e8f7a 18%, var(--surface-elevated))",
 		emblemSvg: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 10l4 8h9l-7 6 3 9-9-5-9 5 3-9-7-6h9l4-8z" stroke="currentColor" stroke-width="1.3" opacity="0.7"/></svg>`,
 	},
+	kd: {
+		abbrev: "Kd",
+		accent: "#8a6232",
+		accentMuted: "color-mix(in srgb, #8a6232 18%, var(--surface-elevated))",
+		emblemSvg: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 38V18M24 22c-6 0-10-3-12-8 4 1 8 3 12 8 4-5 8-7 12-8-2 5-6 8-12 8z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+	},
 };
 
 const fallbackVisual: CollectionVisual = {

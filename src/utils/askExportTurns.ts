@@ -12,7 +12,7 @@ export const ASK_EXPORT_OPEN_EVENT = "ask-export-open";
 export const ASK_EXPORT_SITE_ORIGIN = "https://www.wordsofthebuddha.org";
 
 const NAMED_DISCOURSE_ID_IN_TEXT =
-	/\b(mn|dn|sn|an|dhp|ud|iti|snp|kp|thag|thig|vv|pv|ja|bv|cp|mil)\s*(\d+(?:\.\d+)*)\b/gi;
+	/\b(mn|dn|sn|an|dhp|ud|iti|snp|kp|kd|thag|thig|vv|pv|ja|bv|cp|mil)\s*(\d+(?:\.\d+)*)\b/gi;
 
 export type ResearchExportContents = "report" | "cited" | "all";
 

@@ -81,6 +81,7 @@ export const CANONICAL_TOTALS: Record<string, number> = {
 	an: 8122,
 	dn: 34,
 	kp: 9,
+	kd: 15,
 };
 
 export const COMPLETE_COLLECTIONS = new Set(["dhp", "iti", "ud", "kp"]);

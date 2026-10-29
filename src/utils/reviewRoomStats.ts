@@ -16,6 +16,7 @@ export const CANON_COLLECTION_ORDER = [
 	"an",
 	"snp",
 	"kp",
+	"kd",
 ] as const;
 
 export type CatalogDiscourse = {

@@ -82,7 +82,7 @@ export function isPrefixedAiDiscourseIdOnlyQuery(query: string): boolean {
 }
 
 const NAMED_DISCOURSE_PREFIX =
-	"mn|dn|sn|an|dhp|ud|iti|snp|kp|thag|thig|vv|pv|ja|bv|cp|mil";
+	"mn|dn|sn|an|dhp|ud|iti|snp|kp|kd|thag|thig|vv|pv|ja|bv|cp|mil";
 const NAMED_DISCOURSE_ID_IN_TEXT = new RegExp(
 	`\\b(${NAMED_DISCOURSE_PREFIX})\\s*(\\d+(?:\\.\\d+)*(?:\\s*[–-]\\s*\\d+)?)\\b`,
 	"gi",
