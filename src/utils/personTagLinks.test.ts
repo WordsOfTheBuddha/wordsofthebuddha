@@ -1,6 +1,9 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { resolveCharacterLinks } from "./personTagLinks";
+import {
+	personFallbackContext,
+	resolveCharacterLinks,
+} from "./personTagLinks";
 
 describe("resolveCharacterLinks", () => {
 	it("resolves labels to /on person hubs", () => {
@@ -69,6 +72,20 @@ describe("resolveCharacterLinks", () => {
 			dasama?.fallbackContext ?? "",
 			/^_Appears in 2 discourses in this library\._ .+/,
 		);
+		assert.equal(personFallbackContext("dasama"), dasama?.fallbackContext);
+	});
+
+	it("uses the same fallback on the person page as in the popover", () => {
+		const [mucalinda] = resolveCharacterLinks(["Mucalinda"]);
+		assert.match(
+			mucalinda?.fallbackContext ?? "",
+			/^_Appears in 2 discourses in this library\._ A serpent king coils/,
+		);
+		assert.equal(
+			personFallbackContext("mucalinda"),
+			mucalinda?.fallbackContext,
+		);
+		assert.equal(personFallbackContext("ananda"), undefined);
 	});
 
 	it("gives no fallback for 3+ discourse persons without a bio", () => {

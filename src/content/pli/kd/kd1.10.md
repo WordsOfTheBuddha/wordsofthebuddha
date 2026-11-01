@@ -1,10 +1,11 @@
 ---
-title: Dutiyamārakathā - Māra’s Snare
-description: After the rains, the Blessed One tells the bhikkhus that unsurpassed liberation is reached by radical attention and right striving. Māra claims he is still bound. A close parallel is SN 4.4.
+title: Dutiya mārakathā - Māra’s Snare
+description: After the rains, the Blessed One tells the bhikkhus that unsurpassed liberation is reached by radical attention and right striving. Māra claims he is still bound.
 qualities: radical attention, right effort, liberation
 theme: inspiration
 slug: kd1.10
 character: Māra the Evil One
+similar: sn4.4
 ---
 
 Atha kho bhagavā vassaṁvuṭṭho bhikkhū āmantesi— “mayhaṁ kho, bhikkhave, yoniso manasikārā yoniso sammappadhānā anuttarā vimutti anuppattā, anuttarā vimutti sacchikatā. Tumhepi, bhikkhave, yoniso manasikārā yoniso sammappadhānā anuttaraṁ vimuttiṁ anupāpuṇātha, anuttaraṁ vimuttiṁ sacchikarothā”ti.

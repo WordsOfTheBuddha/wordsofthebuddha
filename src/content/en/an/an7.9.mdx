@@ -1,6 +1,6 @@
 ---
 title: Pahāna sutta - Abandoning
-description: The spiritual life is lived for the abandoning and complete uprooting of the seven fetters—attraction, aversion, views, doubt, conceit, passion for existence, and ignorance—and one who has cut them off at the root has made an end of suffering.
+description: "The spiritual life is lived for the abandoning and complete uprooting of the seven fetters: 1) attraction, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance."
 qualities: spiritual life, aversion, wrong view, doubt, conceit, passion, ignorance, craving, suffering
 theme: wisdom, principle
 slug: an7.9

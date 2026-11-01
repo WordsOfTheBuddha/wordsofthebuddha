@@ -4,7 +4,6 @@ description: After the week at the Bodhi tree, the Blessed One sits for seven da
 qualities: conceit, brashness, humility
 theme: inspiration, wisdom
 slug: kd1.2
-character: The Buddha
 ---
 
 Atha kho bhagavā sattāhassa accayena tamhā samādhimhā vuṭṭhahitvā bodhirukkhamūlā yena ajapālanigrodho tenupasaṅkami, upasaṅkamitvā ajapālanigrodhamūle sattāhaṁ ekapallaṅkena nisīdi vimuttisukhapaṭisaṁvedī.

@@ -61,7 +61,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 			"Establishments of Mindfulness",
 			"Foundations of Mindfulness",
 		],
-		metaLead: "The Satipaṭṭhāna Sutta, on the establishments of mindfulness.",
+		metaLead: "The Satipaṭṭhāna Sutta, on the establishments of mindfulness",
 		redirects: [
 			"/satipatthana",
 			"/satipatthana-sutta",
@@ -73,7 +73,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "DN 22 Mahāsatipaṭṭhāna Sutta — The Longer Satipaṭṭhāna",
 		aliases: ["Mahasatipatthana Sutta", "Maha Satipatthana"],
 		alsoKnown: {
-			line: "The longer discourse on the establishments of mindfulness.",
+			line: "The longer discourse on the establishments of mindfulness",
 			phrase: "establishments of mindfulness",
 		},
 		metaLead: "The Mahāsatipaṭṭhāna Sutta, the longer discourse on the establishments of mindfulness.",
@@ -88,7 +88,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "MN 118 Ānāpānasati Sutta — Mindfulness of Breathing",
 		aliases: ["Anapanasati Sutta", "Mindfulness of Breathing"],
 		alsoKnown: {
-			line: "Also known as mindfulness of breathing.",
+			line: "Also known as mindfulness of breathing",
 			phrase: "mindfulness of breathing",
 		},
 		metaLead: "The Ānāpānasati Sutta, on mindfulness of breathing.",
@@ -109,7 +109,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "AN 3.65 Kālāma Sutta — Advice to the Kālāmas",
 		aliases: ["Kalama Sutta", "Kālāma Sutta", "Kesamutti Sutta"],
 		alsoKnown: {
-			line: "Also known as the Kālāma Sutta.",
+			line: "Also known as the Kālāma Sutta",
 			phrase: "kālāma sutta",
 		},
 		metaLead: "The Kālāma Sutta.",
@@ -123,7 +123,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 			"Buddha’s first sermon",
 		],
 		alsoKnown: {
-			line: "Also known as the Buddha’s first sermon.",
+			line: "Also known as the Buddha’s first sermon",
 			phrase: "first sermon",
 		},
 		metaLead: "The Buddha’s first sermon, the Dhammacakkappavattana Sutta.",
@@ -159,7 +159,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "SN 35.28 The Fire Sermon — Ādittapariyāya Sutta",
 		aliases: ["Fire Sermon", "Adittapariyaya Sutta"],
 		alsoKnown: {
-			line: "Also known as the Fire Sermon.",
+			line: "Also known as the Fire Sermon",
 			phrase: "fire sermon",
 		},
 		metaLead: "The Fire Sermon (Ādittapariyāya).",
@@ -169,7 +169,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "SN 12.2 Dependent Origination — The Twelve Links",
 		aliases: ["Dependent Origination", "Paticcasamuppada"],
 		alsoKnown: {
-			line: "Also called dependent origination.",
+			line: "Also called dependent origination",
 			phrase: "dependent origination",
 		},
 		metaLead: "The analysis of dependent origination (paṭiccasamuppāda).",
@@ -178,7 +178,7 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 		title: "DN 15 Mahānidāna Sutta — Dependent Origination",
 		aliases: ["Mahanidana Sutta", "Mahānidāna"],
 		alsoKnown: {
-			line: "The great discourse on dependent origination.",
+			line: "The great discourse on dependent origination",
 			phrase: "dependent origination",
 		},
 		metaLead: "The Mahānidāna Sutta, the great discourse on dependent origination.",
@@ -192,10 +192,6 @@ export const discourseSearch: Record<string, DiscourseSearchEntry> = {
 	dn31: {
 		title: "DN 31 Sigālovāda Sutta — Advice to Sigālaka",
 		aliases: ["Sigalovada Sutta", "Singalovada Sutta"],
-		alsoKnown: {
-			line: "Also known as the Sigālovāda Sutta.",
-			phrase: "sigālovāda",
-		},
 		metaLead: "The Sigālovāda Sutta, on ethics for householders.",
 		redirects: [
 			"/sigalovada",

@@ -1,7 +1,7 @@
 ---
 title: Mārakathā - The Mission
 description: The Blessed One sends the sixty arahants out to teach, no two by the same road, and says he will go to Uruvelā. Māra claims he is still bound. The Blessed One answers that he is freed from every snare.
-qualities: compassion, liberation
+qualities: compassion, liberation, recollection of the Sangha
 theme: inspiration
 slug: kd1.8
 character: Māra the Evil One

@@ -4,7 +4,6 @@ description: In the week after full awakening, the Blessed One sits at the foot 
 qualities: radical attention, dependent-co-arising
 theme: inspiration, wisdom, principle
 slug: kd1.1
-character: The Buddha
 ---
 
 Tena samayena buddho bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre bodhirukkhamūle paṭhamābhisambuddho. Atha kho bhagavā bodhirukkhamūle sattāhaṁ ekapallaṅkena nisīdi vimuttisukhapaṭisaṁvedī.

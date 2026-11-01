@@ -1,7 +1,7 @@
 ---
 title: Pabbajjūpasampadākathā - Going Forth by the Three Refuges
-description: Bhikkhus are tiring as they bring candidates from every region for the Blessed One to ordain. He allows them to give the going forth and full ordination themselves, by three goings for refuge.
-qualities: respect
+description: Bhikkhus are growing tired as they bring candidates from every region for the Blessed One to ordain. He allows them to give the going forth and full ordination themselves, by three goings for refuge.
+qualities: recollection of the Sangha
 theme: principle
 slug: kd1.9
 ---
