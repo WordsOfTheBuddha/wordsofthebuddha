@@ -1,9 +1,14 @@
 ---
+title: Nanda sutta - About Nanda
+description: How Venerable Nanda, despite being strongly prone to lust, lives the pure spiritual life through sense restraint, moderation, wakefulness, and radical comprehension.
+qualities: sense restraint, wakefulness, mindfulness, clear awareness, radical comprehension, passion, spiritual life, walking meditation, gradual training
+theme: training guideline, inspiration
 slug: an8.9
-source: suttacentral/bilara-data
-title: Nandasutta
-edition: ms
-granularity: paragraph
+character:
+  - Venerable Nanda
+commentary:
+  - "[1] Walking meditation is to be done with continuous awareness, i.e. maintaining spatial focus on the meditation path so as to not drift off into the past or future, with senses directed inward, and mind not straying outward. See [AN 7.61 - Dozing ¶11](/an7.61#11)"
+priority: 1.2
 ---
 
 “‘kulaputto’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Balavā’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Pāsādiko’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Tibbarāgo’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. Kimaññatra, bhikkhave, nando indriyesu guttadvāro, bhojane mattaññū, jāgariyaṁ anuyutto, satisampajaññena samannāgato, yehi nando sakkoti paripuṇṇaṁ parisuddhaṁ brahmacariyaṁ carituṁ.
@@ -19,5 +24,3 @@ Tatridaṁ, bhikkhave, nandassa jāgariyānuyogasmiṁ hoti. Idha, bhikkhave, na
 Tatridaṁ, bhikkhave, nandassa satisampajaññasmiṁ hoti. Idha, bhikkhave, nandassa viditā vedanā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṁ gacchanti; viditā saññā …pe… viditā vitakkā …pe… abbhatthaṁ gacchanti. Idaṁ kho, bhikkhave, nandassa satisampajaññasmiṁ hoti.
 
 Kimaññatra, bhikkhave, nando indriyesu guttadvāro, bhojane mattaññū, jāgariyaṁ anuyutto, satisampajaññena samannāgato, yehi nando sakkoti paripuṇṇaṁ parisuddhaṁ brahmacariyaṁ caritun”ti.
-
-Navamaṁ.
