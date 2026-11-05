@@ -1,10 +1,7 @@
 ---
+title: Pañcarāja sutta
 slug: sn3.12
 character: King Pasenadi of Kosala
-source: suttacentral/bilara-data
-title: Pañcarājasutta
-edition: ms
-granularity: paragraph
 ---
 
 Sāvatthinidānaṁ.
