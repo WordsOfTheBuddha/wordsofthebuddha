@@ -1,6 +1,6 @@
 ---
 title: Nanda sutta - About Nanda
-description: How Venerable Nanda, despite being strongly prone to lust, lives the pure spiritual life through sense restraint, moderation, wakefulness, and radical comprehension.
+description: How Venerable Nanda, despite being strongly prone to lust, lives the pure spiritual life through sense restraint, moderation in eating, wakefulness, and radical comprehension.
 qualities: sense restraint, wakefulness, mindfulness, clear awareness, radical comprehension, passion, spiritual life, walking meditation, gradual training
 theme: training guideline, inspiration
 slug: an8.9

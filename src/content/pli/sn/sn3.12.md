@@ -1,7 +1,14 @@
 ---
-title: Pañcarāja sutta
+title: Pañcarāja sutta - Five Kings
+description: When five kings headed by King Pasenadi of Kosala cannot agree on which of the five cords of sensual pleasure is foremost, they ask the Buddha, who explains that the foremost is determined by what is personally pleasing to each individual.
+qualities: sensual desire, wisdom
+theme: inspiration, wisdom, story
 slug: sn3.12
-character: King Pasenadi of Kosala
+character:
+  - King Pasenadi of Kosala
+  - Candanaṅgalika
+simile: fragrant red lotus, sun blazing in the sky
+priority: 1.2
 ---
 
 Sāvatthinidānaṁ.

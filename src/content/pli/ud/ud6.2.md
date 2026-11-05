@@ -6,6 +6,7 @@ theme: inspiration, wisdom
 character: King Pasenadi of Kosala
 slug: ud6.2
 priority: 1.1
+similar: sn3.11
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Tena kho pana samayena bhagavā sāyanhasamayaṁ paṭisallānā vuṭṭhito bahidvārakoṭṭhake nisinno hoti. Atha kho rājā pasenadi kosalo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi.

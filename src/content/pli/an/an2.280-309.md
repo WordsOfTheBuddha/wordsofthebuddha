@@ -1,7 +1,7 @@
 ---
 title: Vinayapeyyāla - Abbreviated Texts on the Vinaya
 description: "Why the Buddha established training rules and Vinaya procedures: ten paired purposes for the Saṅgha’s harmony and the endurance of the good Dhamma."
-qualities: ethical conduct, faith, compassion, wholesome, unwholesome, companionship
+qualities: ethical conduct, compassion, faith
 theme: training guideline, principle
 slug: an2.280-309
 ---
