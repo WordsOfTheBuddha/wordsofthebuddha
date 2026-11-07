@@ -5,10 +5,13 @@ import { describe, it } from "node:test";
 import yaml from "js-yaml";
 import {
 	automationKeyForText,
+	discourseCountLabel,
 	extractGlossHits,
+	glossLineDistinctFromLabel,
 	mergeEncyclopediaItems,
 	mergeHumanOverlay,
 	overlayItemsFromDocument,
+	queryEncyclopedia,
 } from "./encyclopedia";
 import { normalizeEncyclopediaPathname } from "./encyclopediaPath";
 import type { EncyclopediaEntry, EncyclopediaItem } from "../types/encyclopedia";
@@ -229,5 +232,46 @@ describe("normalizeEncyclopediaPathname", () => {
 			"/encyclopedia/chanda",
 		);
 		assert.equal(normalizeEncyclopediaPathname("/mn10"), null);
+	});
+});
+
+describe("queryEncyclopedia", () => {
+	it("pages the list and clamps a page past the end", () => {
+		const entries: Record<string, EncyclopediaEntry> = {};
+		for (let i = 0; i < 5; i++) {
+			entries[`t${i}`] = {
+				norm: `t${i}`,
+				pali: `t${i}`,
+				labels: [],
+				kind: "term",
+				status: "raw",
+				related: [],
+				dictionary: null,
+				items: [],
+			};
+		}
+		const index = { version: 1 as const, entries };
+		const page = queryEncyclopedia(index, { limit: 2, page: 2 });
+		assert.equal(page.total, 5);
+		assert.equal(page.page, 2);
+		assert.equal(page.pageCount, 3);
+		assert.equal(page.offset, 2);
+		assert.deepEqual(
+			page.results.map((item) => item.norm),
+			["t2", "t3"],
+		);
+		const clamped = queryEncyclopedia(index, { limit: 2, page: 9 });
+		assert.equal(clamped.page, 3);
+		assert.deepEqual(
+			clamped.results.map((item) => item.norm),
+			["t4"],
+		);
+		assert.equal(discourseCountLabel(1), "1 discourse");
+		assert.equal(discourseCountLabel(65), "65 discourses");
+		assert.equal(glossLineDistinctFromLabel("desire", "desire"), false);
+		assert.equal(
+			glossLineDistinctFromLabel("desire", "a wholesome motivation to act"),
+			true,
+		);
 	});
 });

@@ -135,11 +135,15 @@ export function encyclopediaQueryFromUrl(url: URL): EncyclopediaQuery {
 	const limitRaw = url.searchParams.get("limit");
 	const limit =
 		limitRaw == null || limitRaw === "" ? undefined : Number(limitRaw);
+	const pageRaw = url.searchParams.get("page");
+	const page =
+		pageRaw == null || pageRaw === "" ? undefined : Number(pageRaw);
 	return {
 		q: url.searchParams.get("q") ?? "",
 		kind: url.searchParams.get("kind"),
 		status: url.searchParams.get("status"),
 		limit: Number.isFinite(limit) ? limit : undefined,
+		page: Number.isFinite(page) ? page : undefined,
 	};
 }
 

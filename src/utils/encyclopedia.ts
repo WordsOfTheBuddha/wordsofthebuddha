@@ -21,8 +21,54 @@ import type {
 	EncyclopediaStatus,
 } from "../types/encyclopedia";
 
-export const ENCYCLOPEDIA_DEFAULT_LIMIT = 80;
+export const ENCYCLOPEDIA_DEFAULT_LIMIT = 40;
 export const ENCYCLOPEDIA_MAX_LIMIT = 500;
+
+/** Visible focus ring for filter pills and links on the dark surface. */
+export const ENCYCLOPEDIA_FOCUS =
+	"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-color)]";
+
+const KIND_PILL_TONE: Record<EncyclopediaKind, string> = {
+	topic: "border-blue-400 text-blue-800 dark:text-blue-300",
+	quality: "border-amber-400 text-amber-800 dark:text-amber-300",
+	person: "border-emerald-600 text-emerald-800 dark:text-emerald-300",
+	simile: "border-violet-400 text-violet-800 dark:text-violet-300",
+	place: "border-stone-400 text-stone-700 dark:text-stone-300",
+	term: "border-[var(--border-color)] text-[var(--text-color)]",
+};
+
+export function encyclopediaKindLabel(kind: EncyclopediaKind): string {
+	return kind.charAt(0).toUpperCase() + kind.slice(1);
+}
+
+export function encyclopediaStatusLabel(status: EncyclopediaStatus): string {
+	return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+/** Colored pill matching the qualities index tags. */
+export function kindPillClass(kind: EncyclopediaKind): string {
+	return `inline-flex items-center px-2 py-0.5 text-xs font-normal rounded-full border-2 ${KIND_PILL_TONE[kind]}`;
+}
+
+export function discourseCountLabel(count: number): string {
+	const n = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : 0;
+	return n === 1 ? "1 discourse" : `${n} discourses`;
+}
+
+/**
+ * The drawer line is worth showing when it says more than the English head.
+ * "desire" next to a definition of "desire" is the same gloss twice.
+ */
+export function glossLineDistinctFromLabel(
+	label: string | undefined,
+	definition: string,
+): boolean {
+	const line = definition.trim();
+	if (!line) return false;
+	const head = (label ?? "").trim();
+	if (!head) return true;
+	return automationKeyForText(line) !== automationKeyForText(head);
+}
 
 const KINDS: readonly EncyclopediaKind[] = [
 	"term",
@@ -516,6 +562,8 @@ export interface EncyclopediaQuery {
 	kind?: string | null;
 	status?: string | null;
 	limit?: number;
+	/** 1-based. Out of range clamps to the last page. */
+	page?: number;
 }
 
 export interface EncyclopediaQueryResult {
@@ -523,6 +571,9 @@ export interface EncyclopediaQueryResult {
 	kind: EncyclopediaKind | null;
 	status: EncyclopediaStatus | null;
 	limit: number;
+	page: number;
+	pageCount: number;
+	offset: number;
 	total: number;
 	counts: EncyclopediaMeta;
 	results: EncyclopediaListItem[];
@@ -534,6 +585,13 @@ function clampLimit(limit: number | undefined): number {
 		ENCYCLOPEDIA_MAX_LIMIT,
 		Math.max(1, Math.floor(limit)),
 	);
+}
+
+function clampPage(page: number | undefined, pageCount: number): number {
+	if (page == null || !Number.isFinite(page)) return 1;
+	const floored = Math.floor(page);
+	if (floored < 1) return 1;
+	return Math.min(floored, pageCount);
 }
 
 export function queryEncyclopedia(
@@ -554,14 +612,21 @@ export function queryEncyclopedia(
 		matched.push(entry);
 	}
 	matched.sort(compareEntries);
+	const total = matched.length;
+	const pageCount = Math.max(1, Math.ceil(total / limit));
+	const page = clampPage(query.page, pageCount);
+	const offset = (page - 1) * limit;
 	return {
 		q,
 		kind,
 		status,
 		limit,
-		total: matched.length,
+		page,
+		pageCount,
+		offset,
+		total,
 		counts,
-		results: matched.slice(0, limit).map(toListItem),
+		results: matched.slice(offset, offset + limit).map(toListItem),
 	};
 }
 

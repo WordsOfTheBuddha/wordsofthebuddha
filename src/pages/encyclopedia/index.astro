@@ -2,8 +2,12 @@
 export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import {
+	ENCYCLOPEDIA_FOCUS,
+	discourseCountLabel,
+	encyclopediaKindLabel,
 	encyclopediaPath,
-	isEncyclopediaStatus,
+	encyclopediaStatusLabel,
+	kindPillClass,
 } from "../../utils/encyclopedia";
 import type {
 	EncyclopediaKind,
@@ -15,43 +19,54 @@ import {
 } from "../../utils/encyclopediaIndex";
 
 const result = queryEncyclopediaIndex(encyclopediaQueryFromUrl(Astro.url));
-const { q, kind, status, total, counts, results } = result;
+const { q, kind, status, page, pageCount, offset, total, counts, results } =
+	result;
 
-const KIND_OPTIONS: { value: "" | EncyclopediaKind; label: string }[] = [
-	{ value: "", label: "All kinds" },
-	{ value: "term", label: "Term" },
-	{ value: "topic", label: "Topic" },
-	{ value: "quality", label: "Quality" },
-	{ value: "person", label: "Person" },
-	{ value: "simile", label: "Simile" },
-	{ value: "place", label: "Place" },
+const requestedPage = Astro.url.searchParams.get("page");
+if (
+	requestedPage != null &&
+	requestedPage !== "" &&
+	String(page) !== String(Number(requestedPage))
+) {
+	return Astro.redirect(listHref({ page }), 302);
+}
+
+const KIND_OPTIONS: EncyclopediaKind[] = [
+	"term",
+	"topic",
+	"quality",
+	"person",
+	"simile",
+	"place",
 ];
+const STATUS_OPTIONS: EncyclopediaStatus[] = ["reviewed", "seeded", "raw"];
 
-const STATUS_OPTIONS: { value: "" | EncyclopediaStatus; label: string }[] = [
-	{ value: "", label: "All statuses" },
-	{ value: "reviewed", label: "Reviewed" },
-	{ value: "seeded", label: "Seeded" },
-	{ value: "raw", label: "Raw" },
-];
+const filtered = Boolean(q || kind || status || page > 1);
+const rangeStart = total === 0 ? 0 : offset + 1;
+const rangeEnd = offset + results.length;
 
-function filterHref(next: {
+function listHref(next: {
 	status?: EncyclopediaStatus | null;
 	kind?: EncyclopediaKind | null;
+	page?: number | null;
+	q?: string | null;
 }): string {
 	const params = new URLSearchParams();
-	if (q) params.set("q", q);
+	const nextQ = next.q === undefined ? q : next.q;
 	const nextKind = next.kind === undefined ? kind : next.kind;
 	const nextStatus = next.status === undefined ? status : next.status;
+	const nextPage = next.page === undefined ? 1 : next.page;
+	if (nextQ) params.set("q", nextQ);
 	if (nextKind) params.set("kind", nextKind);
 	if (nextStatus) params.set("status", nextStatus);
+	if (nextPage && nextPage > 1) params.set("page", String(nextPage));
 	const search = params.toString();
 	return search ? `/encyclopedia?${search}` : "/encyclopedia";
 }
 
-function kindCount(value: "" | EncyclopediaKind): number {
-	if (!value) return counts.entries;
-	return counts.byKind[value];
-}
+const pillBase = `inline-flex items-center px-2.5 py-1 text-xs rounded-full border-2 transition-colors ${ENCYCLOPEDIA_FOCUS}`;
+const pillOn = `${pillBase} border-transparent text-white bg-[var(--primary-color)]`;
+const pillOff = `${pillBase} border-[color:var(--text-muted)] text-[var(--text-color)] hover:border-[var(--primary-color)]`;
 ---
 
 <Layout
@@ -59,132 +74,210 @@ function kindCount(value: "" | EncyclopediaKind): number {
 	seoDescription="How the Pāli Nikāyas use a term: glosses from the discourses, joined to topics, qualities, persons, and similes."
 	showAuth={true}
 	fp="/encyclopedia"
+	robots={filtered ? "noindex, follow" : null}
 >
 	<main class="container mx-auto py-8">
 		<div class="flex justify-between items-baseline mb-4 border-b pb-2 gap-4">
 			<h1 class="text-2xl font-bold flex-grow">Nikāya encyclopedia</h1>
 		</div>
-		<p class="text-sm mb-4" style="color:var(--text-muted);">
+		<p class="text-sm mb-6" style="color:var(--text-muted);">
 			One headword for each Pāli form in the glosses. Reviewed entries have a
 			human note, seeded entries match a curated map, and raw entries are
 			gloss clusters only.
 		</p>
 
-		<div class="mb-6 flex flex-wrap gap-2">
-			{
-				(["reviewed", "seeded", "raw"] as const).map((name) => (
-					<a
-						href={filterHref({ status: status === name ? null : name })}
+		<form method="get" action="/encyclopedia" class="mb-6" role="search">
+			{kind && <input type="hidden" name="kind" value={kind} />}
+			{status && <input type="hidden" name="status" value={status} />}
+			<label class="flex flex-col gap-1 text-sm max-w-xl">
+				<span style="color:var(--text-muted);">Search</span>
+				<span class="flex flex-wrap items-end gap-3">
+					<input
+						type="search"
+						name="q"
+						value={q}
+						placeholder="Pāli, English, or gloss"
 						class:list={[
-							"px-2 py-0.5 text-xs rounded-full border",
-							status === name
-								? "border-[var(--primary-color)] text-[var(--primary-color)]"
-								: "border-[var(--border-color)] text-[var(--text-color)]",
+							"w-full sm:w-72 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-[var(--primary-color)]",
+							ENCYCLOPEDIA_FOCUS,
+						]}
+					/>
+					<button
+						type="submit"
+						class:list={[
+							"px-3 py-1 text-sm rounded-md text-white bg-[var(--primary-color)]",
+							ENCYCLOPEDIA_FOCUS,
 						]}
 					>
-						{name} {counts.byStatus[name]}
-					</a>
-				))
-			}
-			<span class="text-xs self-center" style="color:var(--text-muted);">
-				{counts.entries} headwords
-			</span>
-		</div>
-
-		<form
-			method="get"
-			action="/encyclopedia"
-			class="mb-8 flex flex-wrap items-end gap-3"
-		>
-			<label class="flex flex-col gap-1 text-sm">
-				<span style="color:var(--text-muted);">Search</span>
-				<input
-					type="search"
-					name="q"
-					value={q}
-					placeholder="Pāli, English, or gloss"
-					class="w-48 sm:w-64 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color"
-				/>
-			</label>
-			<label class="flex flex-col gap-1 text-sm">
-				<span style="color:var(--text-muted);">Kind</span>
-				<select
-					name="kind"
-					class="px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700"
-				>
+						Search
+					</button>
 					{
-						KIND_OPTIONS.map((option) => (
-							<option
-								value={option.value}
-								selected={kind === option.value || (!kind && option.value === "")}
+						filtered && (
+							<a
+								href="/encyclopedia"
+								class:list={[
+									"text-sm self-center",
+									ENCYCLOPEDIA_FOCUS,
+								]}
+								style="color:var(--link-color);"
 							>
-								{option.label} ({kindCount(option.value)})
-							</option>
-						))
+								Clear
+							</a>
+						)
 					}
-				</select>
+				</span>
 			</label>
-			<label class="flex flex-col gap-1 text-sm">
-				<span style="color:var(--text-muted);">Status</span>
-				<select
-					name="status"
-					class="px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700"
-				>
-					{
-						STATUS_OPTIONS.map((option) => (
-							<option
-								value={option.value}
-								selected={
-									status === option.value || (!status && option.value === "")
-								}
-							>
-								{option.label}
-								{option.value && isEncyclopediaStatus(option.value)
-									? ` (${counts.byStatus[option.value]})`
-									: ""}
-							</option>
-						))
-					}
-				</select>
-			</label>
-			<button
-				type="submit"
-				class="px-3 py-1 text-sm rounded-md text-white bg-[var(--primary-color)]"
-			>
-				Search
-			</button>
 		</form>
 
-		<p class="text-sm mb-4" style="color:var(--text-muted);">
-			Showing {results.length} of {total}
-		</p>
+		<div class="mb-6 space-y-3">
+			<div>
+				<p class="text-xs mb-2" style="color:var(--text-muted);" id="encyclopedia-status-label">
+					Status
+				</p>
+				<nav class="flex flex-wrap gap-2" aria-labelledby="encyclopedia-status-label">
+					<a
+						href={listHref({ status: null })}
+						class={status ? pillOff : pillOn}
+						aria-current={status ? undefined : "true"}
+					>
+						All {counts.entries}
+					</a>
+					{
+						STATUS_OPTIONS.map((name) => (
+							<a
+								href={listHref({ status: name })}
+								class={status === name ? pillOn : pillOff}
+								aria-current={status === name ? "true" : undefined}
+							>
+								{encyclopediaStatusLabel(name)} {counts.byStatus[name]}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+			<div>
+				<p class="text-xs mb-2" style="color:var(--text-muted);" id="encyclopedia-kind-label">
+					Kind
+				</p>
+				<nav class="flex flex-wrap gap-2" aria-labelledby="encyclopedia-kind-label">
+					<a
+						href={listHref({ kind: null })}
+						class={kind ? pillOff : pillOn}
+						aria-current={kind ? undefined : "true"}
+					>
+						All kinds
+					</a>
+					{
+						KIND_OPTIONS.filter(
+							(name) => counts.byKind[name] > 0 || kind === name,
+						).map((name) => (
+							<a
+								href={listHref({ kind: name })}
+								class={kind === name ? pillOn : pillOff}
+								aria-current={kind === name ? "true" : undefined}
+							>
+								{encyclopediaKindLabel(name)} {counts.byKind[name]}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+		</div>
+
+		<div class="mb-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+			<p class="my-0" style="color:var(--text-muted);">
+				{
+					total === 0
+						? "No headwords match"
+						: `Showing ${rangeStart}–${rangeEnd} of ${total}`
+				}
+			</p>
+			{
+				pageCount > 1 && (
+					<nav class="flex items-center gap-3" aria-label="Headword pages">
+						{
+							page > 1 ? (
+								<a
+									href={listHref({ page: page - 1 })}
+									class:list={[ENCYCLOPEDIA_FOCUS]}
+									style="color:var(--link-color);"
+								>
+									Previous
+								</a>
+							) : (
+								<span style="color:var(--text-muted);">Previous</span>
+							)
+						}
+						<span style="color:var(--text-muted);">
+							Page {page} of {pageCount}
+						</span>
+						{
+							page < pageCount ? (
+								<a
+									href={listHref({ page: page + 1 })}
+									class:list={[ENCYCLOPEDIA_FOCUS]}
+									style="color:var(--link-color);"
+								>
+									Next
+								</a>
+							) : (
+								<span style="color:var(--text-muted);">Next</span>
+							)
+						}
+					</nav>
+				)
+			}
+		</div>
 
 		{
 			results.length === 0 ? (
-				<p class="text-sm">No headwords match.</p>
+				<div class="post-item rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] p-8 text-center">
+					<p class="text-base my-0">No headwords match this search.</p>
+					<p class="text-sm mt-2 mb-0" style="color:var(--text-muted);">
+						Try another spelling, or clear the kind and status filters.
+					</p>
+					{
+						filtered && (
+							<p class="mt-4 mb-0">
+								<a
+									href="/encyclopedia"
+									class:list={[ENCYCLOPEDIA_FOCUS]}
+									style="color:var(--link-color);"
+								>
+									Show every headword
+								</a>
+							</p>
+						)
+					}
+				</div>
 			) : (
 				<div class="space-y-4">
 					{results.map((item) => (
-						<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
-							<div class="flex items-start justify-between gap-4">
-								<div class="min-w-0">
-									<h2 class="text-base sm:text-lg font-semibold my-0 flex flex-wrap items-baseline gap-2">
+						<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md hover:shadow-lg">
+							<div class="flex items-start justify-between gap-3">
+								<div class="min-w-0 pr-2 sm:pr-4">
+									<h2 class="text-base sm:text-lg font-semibold my-0 flex flex-wrap items-center gap-x-2 gap-y-1">
 										<a
 											href={encyclopediaPath(item.norm)}
-											class="post-link hover:text-link-color font-normal pali-paragraph"
+											class:list={[
+												"post-link hover:text-[var(--link-color)] font-normal pali-paragraph",
+												ENCYCLOPEDIA_FOCUS,
+											]}
 										>
 											{item.pali}
 										</a>
-										{item.label && (
-											<span class="text-sm font-normal">
-												{item.label}
-											</span>
-										)}
-										<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)]">
-											{item.kind}
+										{
+											item.label && (
+												<span class="text-sm font-normal">
+													{item.label}
+												</span>
+											)
+										}
+										<span class={kindPillClass(item.kind)}>
+											{encyclopediaKindLabel(item.kind)}
 										</span>
-										<span class="px-2 py-0.5 text-xs rounded-full border border-[var(--border-color)]">
-											{item.status}
+										<span class="inline-flex items-center px-2 py-0.5 text-xs font-normal rounded-full border-2 border-[color:var(--text-muted)] text-[var(--text-color)]">
+											{encyclopediaStatusLabel(item.status)}
 										</span>
 									</h2>
 									<p class="text-xs mt-2 mb-0" style="color:var(--text-muted);">
@@ -193,13 +286,68 @@ function kindCount(value: "" | EncyclopediaKind): number {
 											: `${item.senseCount} senses`}
 									</p>
 								</div>
-								<span class="shrink-0 px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
-									{item.discourseCount}
-								</span>
+								<div
+									class="shrink-0 text-right"
+									aria-label={discourseCountLabel(item.discourseCount)}
+								>
+									{
+										item.discourseCount > 0 ? (
+											<span class="inline-block px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+												{item.discourseCount}
+											</span>
+										) : (
+											<span class="text-xs" style="color:var(--text-muted);">
+												0
+											</span>
+										)
+									}
+									<p class="text-xs mt-1 mb-0" style="color:var(--text-muted);">
+										{item.discourseCount === 1 ? "discourse" : "discourses"}
+									</p>
+								</div>
 							</div>
 						</div>
 					))}
 				</div>
+			)
+		}
+
+		{
+			pageCount > 1 && results.length > 0 && (
+				<nav
+					class="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm"
+					aria-label="Headword pages"
+				>
+					{
+						page > 1 ? (
+							<a
+								href={listHref({ page: page - 1 })}
+								class:list={[ENCYCLOPEDIA_FOCUS]}
+								style="color:var(--link-color);"
+							>
+								Previous
+							</a>
+						) : (
+							<span style="color:var(--text-muted);">Previous</span>
+						)
+					}
+					<span style="color:var(--text-muted);">
+						Page {page} of {pageCount}
+					</span>
+					{
+						page < pageCount ? (
+							<a
+								href={listHref({ page: page + 1 })}
+								class:list={[ENCYCLOPEDIA_FOCUS]}
+								style="color:var(--link-color);"
+							>
+								Next
+							</a>
+						) : (
+							<span style="color:var(--text-muted);">Next</span>
+						)
+					}
+				</nav>
 			)
 		}
 	</main>

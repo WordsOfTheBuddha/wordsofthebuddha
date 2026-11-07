@@ -516,6 +516,16 @@ describe("composeNavSuggestions", () => {
 		}
 	});
 
+	it("shows the encyclopedia for an encyclopedia query", () => {
+		const items = composeNavSuggestions(
+			"encyclopedia",
+			[],
+			SITE_PAGE_SUGGESTIONS,
+		);
+		assert.equal(items[0]?.type, "page");
+		assert.equal(items[0]?.hit.href, "/encyclopedia");
+	});
+
 	it("shows the qualities index for topic and topics queries", () => {
 		const topics = composeNavSuggestions(
 			"topics",
