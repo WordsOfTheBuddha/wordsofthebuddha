@@ -130,6 +130,12 @@ export const SITE_PAGE_SUGGESTIONS: PageSuggestEntry[] = [
 	},
 	{
 		kind: "page",
+		title: "Encyclopedia",
+		href: "/encyclopedia",
+		aliases: ["encyclopedia", "nikaya encyclopedia", "pali glossary"],
+	},
+	{
+		kind: "page",
 		title: "In the Buddha's Words",
 		href: "/anthologies/in-the-buddhas-words",
 		aliases: ["in the buddhas words", "in-the-buddhas-words"],

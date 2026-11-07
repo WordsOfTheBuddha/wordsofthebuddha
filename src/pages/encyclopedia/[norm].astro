@@ -1,0 +1,215 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import {
+	ENCYCLOPEDIA_FOCUS,
+	discourseCount,
+	discourseCountLabel,
+	encyclopediaKindLabel,
+	encyclopediaPath,
+	encyclopediaStatusLabel,
+	entrySenses,
+	glossDefinition,
+	glossLineDistinctFromLabel,
+	kindPillClass,
+} from "../../utils/encyclopedia";
+import { getEncyclopediaEntry } from "../../utils/encyclopediaIndex";
+import { transformId } from "../../utils/transformId";
+
+const raw = Astro.params.norm ?? "";
+let param = raw;
+try {
+	param = decodeURIComponent(raw);
+} catch {
+	param = raw;
+}
+const found = getEncyclopediaEntry(param);
+if (found && param !== found.canonical) {
+	return Astro.redirect(encyclopediaPath(found.canonical), 301);
+}
+// SSR cannot rewrite onto the prerendered /404 page (Astro forbids it and
+// the preview responded 500). Render the miss here.
+if (!found) {
+	Astro.response.status = 404;
+}
+
+const entry = found?.entry;
+const senses = entry ? entrySenses(entry) : [];
+const firstDefinition = senses
+	.map((sense) => glossDefinition(sense.gloss ?? ""))
+	.find((line) => line.length > 0);
+const seoDescription = !entry
+	? null
+	: firstDefinition ||
+		(entry.labels.length > 0
+			? `${entry.pali}: ${entry.labels.slice(0, 6).join(", ")}`
+			: `How the Nikāyas use ${entry.pali}.`);
+const totalDiscourses = entry ? discourseCount(entry) : 0;
+const countLabel = discourseCountLabel(totalDiscourses);
+---
+
+{
+	!entry && (
+		<Layout
+			seoTitle="Not in the encyclopedia - Words of the Buddha"
+			seoDescription="This headword is not in the Nikāya encyclopedia."
+			showAuth={true}
+			fp="/encyclopedia"
+			robots="noindex, nofollow"
+		>
+			<main class="container mx-auto py-8">
+				<div class="max-w-xl">
+					<h1 class="text-2xl font-bold mb-3">No entry for this headword</h1>
+					<p class="text-sm mb-4" style="color:var(--text-muted);">
+						<span class="pali-paragraph">{param}</span> is not in the
+						encyclopedia index.
+					</p>
+					<a
+						href="/encyclopedia"
+						class:list={["text-sm", ENCYCLOPEDIA_FOCUS]}
+						style="color:var(--link-color);"
+					>
+						Back to the encyclopedia
+					</a>
+				</div>
+			</main>
+		</Layout>
+	)
+}
+
+{
+	entry && (
+<Layout
+	seoTitle={`${entry.pali} - Nikāya encyclopedia`}
+	seoDescription={seoDescription}
+	showAuth={true}
+	fp={encyclopediaPath(entry.norm)}
+	canonicalPath={encyclopediaPath(entry.norm)}
+>
+	<main class="container mx-auto py-8">
+		<div class="post-item relative flex flex-col w-full rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md p-5 mb-8">
+			<div class="flex items-start justify-between gap-3">
+				<div class="min-w-0 pr-2 sm:pr-4">
+					<h1 class="text-xl font-semibold my-0 flex flex-wrap items-center gap-2">
+						<span class="pali-paragraph">{entry.pali}</span>
+						<span class={kindPillClass(entry.kind)}>
+							{encyclopediaKindLabel(entry.kind)}
+						</span>
+						<span class="inline-flex items-center px-2 py-0.5 text-xs font-normal rounded-full border-2 border-[color:var(--text-muted)]">
+							{encyclopediaStatusLabel(entry.status)}
+						</span>
+					</h1>
+					{
+						entry.related.length > 0 && (
+							<p class="text-sm mt-3 mb-0 flex flex-wrap gap-2">
+								{entry.related.map((related) => (
+									<a
+										href={`/on/${related.slug}`}
+										class:list={[kindPillClass(related.kind), ENCYCLOPEDIA_FOCUS, "hover:underline"]}
+									>
+										{related.title}
+									</a>
+								))}
+							</p>
+						)
+					}
+				</div>
+				<div class="shrink-0 text-right" aria-label={countLabel}>
+					{
+						totalDiscourses > 0 ? (
+							<span class="inline-block px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+								{totalDiscourses}
+							</span>
+						) : (
+							<span class="text-xs" style="color:var(--text-muted);">0</span>
+						)
+					}
+					<p class="text-xs mt-1 mb-0" style="color:var(--text-muted);">
+						{totalDiscourses === 1 ? "discourse" : "discourses"}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		{
+			senses.length === 0 ? (
+				<div class="post-item rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] p-5">
+					<p class="text-sm my-0" style="color:var(--text-muted);">
+						No gloss is recorded for this headword yet.
+					</p>
+				</div>
+			) : (
+				<div class="space-y-6">
+					{senses.map((sense) => {
+						const head = sense.label || entry.labels[0] || entry.pali;
+						const definition = glossDefinition(sense.gloss ?? "");
+						const showDefinition = glossLineDistinctFromLabel(head, definition);
+						const occurrences = sense.occurrences ?? [];
+						return (
+							<section class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
+								<h2 class="my-0 text-base sm:text-lg font-semibold">
+									{head}
+								</h2>
+								{showDefinition && (
+									<p class="text-sm mt-2 mb-0">{definition}</p>
+								)}
+								{sense.note && (
+									<p
+										class="text-sm mt-2 mb-0 italic"
+										style="color:var(--text-muted);"
+									>
+										{sense.note}
+									</p>
+								)}
+								{
+									sense.origin === "human" && (
+										<p class="mt-2 mb-0">
+											<span class="inline-flex items-center px-2 py-0.5 text-xs rounded-full border-2 border-[color:var(--text-muted)]" style="color:var(--text-color);">
+												Reviewed
+											</span>
+										</p>
+									)
+								}
+								{
+									occurrences.length > 0 && (
+										<ul class="mt-3 space-y-2 list-none pl-0">
+											{occurrences.map((occurrence) => (
+												<li>
+													<a
+														href={`/${occurrence.id}`}
+														class:list={[
+															"post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal",
+															ENCYCLOPEDIA_FOCUS,
+														]}
+													>
+														{transformId(occurrence.id)}&nbsp;<span
+															style="color:var(--text-color)"
+														>{occurrence.title}</span>
+													</a>
+												</li>
+											))}
+										</ul>
+									)
+								}
+							</section>
+						);
+					})}
+				</div>
+			)
+		}
+	</main>
+</Layout>
+	)
+}
+
+<style>
+	.id {
+		font-size: 0.95rem;
+		display: inline;
+	}
+	@media (min-width: 640px) {
+		.id {
+			font-size: 1.1rem;
+		}
+	}
+</style>

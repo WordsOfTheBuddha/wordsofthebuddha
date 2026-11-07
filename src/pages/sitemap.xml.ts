@@ -13,6 +13,7 @@ import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
 import personMappings from "../data/personMappings.json";
 import { canonicalOnSlug } from "../utils/discover-data";
+import { encyclopediaSitemapPaths } from "../utils/encyclopediaIndex";
 import {
 	isRootPostCandidate,
 	parsePostSlugFromGlobPath,
@@ -41,6 +42,7 @@ const STATIC_PAGES = [
 	"/anthologies",
 	"/buddha-quotes",
 	"/qualities",
+	"/encyclopedia",
 	"/simile",
 	"/person",
 	"/explorer",
@@ -164,6 +166,12 @@ export const GET: APIRoute = async () => {
 			Object.keys(group).forEach((slug) => add(`/on/${slug}`));
 		},
 	);
+
+	// Raw gloss clusters stay reachable from /encyclopedia search, but only
+	// seeded and reviewed headwords are sitemap URLs.
+	for (const encyclopediaPath of encyclopediaSitemapPaths()) {
+		add(encyclopediaPath);
+	}
 
 	const body = [...entries.entries()]
 		.sort(([a], [b]) => a.localeCompare(b))

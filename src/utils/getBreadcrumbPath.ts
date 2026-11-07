@@ -90,6 +90,21 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		return path;
 	}
 
+	if (idPath[0] === "encyclopedia") {
+		path.push({
+			label: "Encyclopedia",
+			path: "/encyclopedia",
+		});
+		const norm = idPath[1];
+		if (norm) {
+			path.push({
+				label: norm,
+				path: `/encyclopedia/${encodeURIComponent(norm)}`,
+			});
+		}
+		return path;
+	}
+
 	// Legacy /topic index now lives on /qualities
 	if (idPath[0] === "topic") {
 		path.push({

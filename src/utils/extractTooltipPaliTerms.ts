@@ -7,7 +7,7 @@ import { normalizeForComparison } from "./searchRanking";
 /** Bracketed Pali at the end of an MDX gloss: |English::definition [pali]| */
 const GLOSS_PALI_RE = /\|[^|]*\[([^\]]+)\]\|/g;
 
-function splitPaliTerms(raw: string): string[] {
+export function splitPaliTerms(raw: string): string[] {
 	return raw
 		.split(",")
 		.map((part) => part.trim())

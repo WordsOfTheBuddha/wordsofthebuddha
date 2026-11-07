@@ -46,7 +46,13 @@ export function buildBreadcrumbTrail(
 	const lastSlug = slugFromPath(
 		breadcrumbs[breadcrumbs.length - 1].path,
 	);
-	if (urlSlug && lastSlug !== urlSlug) {
+	// Encyclopedia crumbs already name the headword. Appending `/${norm}`
+	// would point at a discourse slug instead of `/encyclopedia/${norm}`.
+	if (
+		urlSlug &&
+		lastSlug !== urlSlug &&
+		!path.startsWith("/encyclopedia")
+	) {
 		breadcrumbs.push({
 			label: transformId(urlSlug).replace(/-/g, " "),
 			path: !path.startsWith("/qualities") ? `/${urlSlug}` : ``,

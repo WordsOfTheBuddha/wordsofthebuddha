@@ -82,6 +82,20 @@ const vercelTimestampCache = existsSync(join(__dirname, ".timestamp-cache.json")
 	? [".timestamp-cache.json"]
 	: [];
 
+/**
+ * Encyclopedia SSR reads the generated index (gzip companion) and the git
+ * YAML overlay. `prebuild` writes the index before `astro build`.
+ */
+const vercelEncyclopediaFiles = [
+	"generated/encyclopedia-index.json.gz",
+	"generated/encyclopedia-meta.json",
+	...globSync("src/data/encyclopedia/*.yaml", {
+		cwd: __dirname,
+		nodir: true,
+		dot: false,
+	}),
+].filter((file) => existsSync(join(__dirname, file)));
+
 const externalLinksOptions = {
 	target: "_blank",
 	rel: ["noopener", "noreferrer"],
@@ -145,6 +159,7 @@ export default defineConfig({
 			...vercelSearchIndexFiles,
 			...vercelMermaidUmd,
 			...vercelTimestampCache,
+			...vercelEncyclopediaFiles,
 		],
 		excludeFiles: [
 			"generated/search-index.json",
@@ -152,6 +167,7 @@ export default defineConfig({
 			"generated/reference-search-index.json",
 			"generated/suggestions-index.json",
 			"generated/discourse-suggest-index.json",
+			"generated/encyclopedia-index.json",
 		],
 	}),
 
