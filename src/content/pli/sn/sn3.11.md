@@ -1,11 +1,14 @@
 ---
+title: Sattajaṭila sutta - Seven Matted-Hair Ascetics
+description: When King Pasenadi of Kosala pays homage to passing ascetics assuming they are arahants, the Buddha explains how a person’s ethical conduct, integrity, resilience, and wisdom can only be known over time, before Pasenadi reveals that the ascetics are actually his undercover spies.
+qualities: ethical conduct, wisdom, treachery, person of integrity, sensual desire
+theme: inspiration, wisdom, cultivating discernment, story
 slug: sn3.11
 character:
   - King Pasenadi of Kosala
-source: suttacentral/bilara-data
-title: Sattajaṭilasutta
-edition: ms
-granularity: paragraph
+simile: clay earring, gold-plated copper coin
+priority: 1.2
+similar: ud6.2
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.

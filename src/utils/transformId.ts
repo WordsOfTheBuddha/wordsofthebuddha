@@ -9,6 +9,7 @@ export const keyMap: { [key: string]: string } = {
 	an: "Numerical Discourses",
 	iti: "As It Was Said",
 	kp: "Minor Passages",
+	kd: "The Great Chapter",
 	anthologies: "Anthologies",
 	"noble-truths-noble-path": "Noble Truths, Noble Path",
 	"in-the-buddhas-words": "In the Buddha's Words",

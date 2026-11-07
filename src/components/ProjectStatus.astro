@@ -65,6 +65,12 @@ const collections = [
 		total: collectionAvailability.kp.total,
 		status: "complete" as StatusType,
 	},
+	{
+		name: "kd",
+		suffix: "discourses",
+		title: "Mahākhandhaka",
+		total: collectionAvailability.kd.total,
+	},
 ].map((collection) => {
 	const avail = collectionAvailability[collection.name];
 	return {

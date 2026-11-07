@@ -1,6 +1,6 @@
 ---
 title: Kusītārambhavatthu sutta - Grounds for Laziness and Arousing Energy
-description: The Buddha explains the eight grounds of laziness and the eight grounds for rousing of energy.
+description: The Buddha explains the eight grounds of laziness and the eight grounds for arousing energy.
 qualities: laziness, rousing of energy, diligence
 theme: training guideline
 slug: an8.80
@@ -34,15 +34,15 @@ Aṭṭhimāni, bhikkhave, ārambhavatthūni. Katamāni aṭṭha?
 
 2.) Puna caparaṁ, bhikkhave, bhikkhunā kammaṁ kataṁ hoti. Tassa evaṁ hoti: ‘ahaṁ kho kammaṁ akāsiṁ. Kammaṁ kho panāhaṁ karonto nāsakkhiṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, dutiyaṁ ārambhavatthu.
 
-3.) Puna caparaṁ, bhikkhave, bhikkhunā maggo gantabbo hoti. Tassa evaṁ hoti—maggo kho me gantabbo bhavissati. Maggaṁ kho pana me gacchantena na sukaraṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, tatiyaṁ ārambhavatthu.
+3.) Puna caparaṁ, bhikkhave, bhikkhunā maggo gantabbo hoti. Tassa evaṁ hoti: ‘maggo kho me gantabbo bhavissati. Maggaṁ kho pana me gacchantena na sukaraṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, tatiyaṁ ārambhavatthu.
 
-4.) Puna caparaṁ, bhikkhave, bhikkhunā maggo gato hoti. Tassa evaṁ hoti—ahaṁ kho maggaṁ agamāsiṁ. Maggaṁ kho panāhaṁ gacchanto nāsakkhiṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, catutthaṁ ārambhavatthu.
+4.) Puna caparaṁ, bhikkhave, bhikkhunā maggo gato hoti. Tassa evaṁ hoti: ‘ahaṁ kho maggaṁ agamāsiṁ. Maggaṁ kho panāhaṁ gacchanto nāsakkhiṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, catutthaṁ ārambhavatthu.
 
-5.) Puna caparaṁ, bhikkhave, bhikkhu gāmaṁ vā nigamaṁ vā piṇḍāya caranto na labhati lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa evaṁ hoti—ahaṁ kho gāmaṁ vā nigamaṁ vā piṇḍāya caranto nālatthaṁ lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa me kāyo lahuko kammañño. Handāhaṁ vīriyaṁ ārabhāmi ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, pañcamaṁ ārambhavatthu.
+5.) Puna caparaṁ, bhikkhave, bhikkhu gāmaṁ vā nigamaṁ vā piṇḍāya caranto na labhati lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa evaṁ hoti: ‘ahaṁ kho gāmaṁ vā nigamaṁ vā piṇḍāya caranto nālatthaṁ lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa me kāyo lahuko kammañño. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, pañcamaṁ ārambhavatthu.
 
-6.) Puna caparaṁ, bhikkhave, bhikkhu gāmaṁ vā nigamaṁ vā piṇḍāya caranto labhati lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa evaṁ hoti—ahaṁ kho gāmaṁ vā nigamaṁ vā piṇḍāya caranto alatthaṁ lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa me kāyo balavā kammañño. Handāhaṁ vīriyaṁ ārabhāmi ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, chaṭṭhaṁ ārambhavatthu.
+6.) Puna caparaṁ, bhikkhave, bhikkhu gāmaṁ vā nigamaṁ vā piṇḍāya caranto labhati lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa evaṁ hoti: ‘ahaṁ kho gāmaṁ vā nigamaṁ vā piṇḍāya caranto alatthaṁ lūkhassa vā paṇītassa vā bhojanassa yāvadatthaṁ pāripūriṁ. Tassa me kāyo balavā kammañño. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, chaṭṭhaṁ ārambhavatthu.
 
-7.) Puna caparaṁ, bhikkhave, bhikkhuno uppanno hoti appamattako ābādho. Tassa evaṁ hoti—uppanno kho me ayaṁ appamattako ābādho. Ṭhānaṁ kho panetaṁ vijjati yaṁ me ābādho pavaḍḍheyya. Handāhaṁ paṭikacceva vīriyaṁ ārabhāmi ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, sattamaṁ ārambhavatthu.
+7.) Puna caparaṁ, bhikkhave, bhikkhuno uppanno hoti appamattako ābādho. Tassa evaṁ hoti: ‘uppanno kho me ayaṁ appamattako ābādho. Ṭhānaṁ kho panetaṁ vijjati yaṁ me ābādho pavaḍḍheyya. Handāhaṁ paṭikacceva vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, sattamaṁ ārambhavatthu.
 
 8.) Puna caparaṁ, bhikkhave, bhikkhu gilānā vuṭṭhito hoti aciravuṭṭhito gelaññā. Tassa evaṁ hoti: ‘ahaṁ kho gilānā vuṭṭhito aciravuṭṭhito gelaññā. Ṭhānaṁ kho panetaṁ vijjati yaṁ me ābādho paccudāvatteyya. Handāhaṁ paṭikacceva vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Idaṁ, bhikkhave, aṭṭhamaṁ ārambhavatthu.
 

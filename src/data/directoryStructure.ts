@@ -643,4 +643,16 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 		description:
 			"A concise collection of nine short passages serving as a primer for novice monks and nuns, including essential recitations on taking refuge, precepts, body contemplation, protective blessings, treasures, merit-sharing, and loving-kindness, widely chanted for daily practice, protection, and introduction to core teachings.",
 	},
+	kd: {
+		title: "Mahāvagga — The Great Chapter",
+		description:
+			"The narrative of the Mahākhandhaka, from the weeks after awakening through the going forth of Sāriputta and Moggallāna. Discourses spoken inside this narrative are read in the Nikāyas. The ordination procedures that follow in the same chapter are not part of this reading.",
+		children: {
+			kd1: {
+				title: "Mahākhandhaka — The Great Chapter",
+				description:
+					"From the Bodhi tree to the going forth of Sāriputta and Moggallāna.",
+			},
+		},
+	},
 };

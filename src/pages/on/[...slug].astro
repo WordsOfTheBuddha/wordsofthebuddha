@@ -25,6 +25,7 @@ import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClien
 import { urlHasRefParam } from "../../utils/urlRefParam";
 import { getPtsDisplay } from "../../utils/ptsReferences";
 import { renderInlineDescription, splitDescriptionParagraphs } from "../../utils/renderInlineDescription";
+import { personFallbackContext } from "../../utils/personTagLinks";
 import { topicDocumentMeta } from "../../utils/organicSearch";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
@@ -119,11 +120,21 @@ const onPageData = onPageDataUrls(slug);
 
 const displayTitle = content.title;
 const topicMeta = topicDocumentMeta(canonicalSlug);
+/**
+ * Same auto line the character popover shows for a person with no curated
+ * bio and fewer than three discourses.
+ */
+const personFallback =
+	contentType === "person" && !content.description
+		? personFallbackContext(canonicalSlug)
+		: undefined;
+const headerDescription = content.description || personFallback || "";
 /** Person bios can hold two paragraphs; meta descriptions stay single-line. */
 const pageSeoDescription =
 	(
 		(topicMeta?.description as string | undefined) ??
 		content.description ??
+		personFallback?.replace(/_([^_]+)_/g, "$1") ??
 		""
 	)
 		.replace(/\s+/g, " ")
@@ -181,7 +192,7 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 	: "";
 
 const hasHeaderMeta =
-	!!content.description ||
+	!!headerDescription ||
 	(content.synonyms?.length ?? 0) > 0 ||
 	!!content.context ||
 	(content.pali?.length ?? 0) > 0 ||
@@ -267,8 +278,8 @@ const showDiscourseSectionHeading =
 					hasHeaderMeta && (
 						<div class="mt-2 ml-2 space-y-2 text-sm">
 					{
-						content.description && (
-							splitDescriptionParagraphs(content.description).map(
+						headerDescription && (
+							splitDescriptionParagraphs(headerDescription).map(
 								(paragraph) => (
 									<div
 										class="text-text person-bio sm:text-base"

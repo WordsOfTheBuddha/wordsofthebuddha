@@ -90,6 +90,19 @@ function fallbackContextFor(person: PersonIndexEntry): string | undefined {
 	return first ? `${countLine} ${first}` : countLine;
 }
 
+/**
+ * The popover fallback, looked up by person slug or title, for the /on page
+ * header. Undefined when the person has a curated bio, or appears in 3+
+ * discourses.
+ */
+export function personFallbackContext(slugOrTitle: string): string | undefined {
+	const key = normKey(slugOrTitle);
+	if (!key) return undefined;
+	const match = personByNorm.get(key);
+	if (!match || match.description) return undefined;
+	return fallbackContextFor(match);
+}
+
 /** Accept string | string[] frontmatter; trim and de-duplicate case-insensitively. */
 function toLabels(raw: unknown): string[] {
 	const list = Array.isArray(raw)

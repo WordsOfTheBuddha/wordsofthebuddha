@@ -14,6 +14,7 @@ const COLLECTION_WEIGHT: Record<string, number> = {
 	kp: 60,
 	snp: 70,
 	ud: 80,
+	kd: 90,
 };
 
 function numericPartsAfterPrefix(rest: string): number[] {

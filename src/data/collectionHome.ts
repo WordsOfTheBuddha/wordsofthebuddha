@@ -90,4 +90,13 @@ export const homeCollections: HomeCollection[] = [
 		suffix: "passages",
 		badge: "new-translation",
 	},
+	{
+		slug: "kd",
+		englishName: keyMap.kd,
+		paliName: "Mahākhandhaka",
+		description:
+			"The founding narrative of the Great Chapter, from the weeks after awakening through the going forth of Sāriputta and Moggallāna.",
+		suffix: "discourses",
+		badge: "new-translation",
+	},
 ];

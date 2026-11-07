@@ -9,6 +9,7 @@ export const RECENT_COLLECTIONS = [
 	"snp",
 	"dhp",
 	"kp",
+	"kd",
 ] as const;
 
 export type RecentRange = (typeof RECENT_RANGES)[number];
@@ -34,6 +35,7 @@ const COLLECTION_CHIP_LABEL: Record<RecentCollection, string> = {
 	snp: "Snp",
 	dhp: "Dhp",
 	kp: "Kp",
+	kd: "Kd",
 };
 
 /** Committed state file: slug → first-added ISO date. Never gitignored. */
