@@ -161,11 +161,15 @@ const countLabel = discourseCountLabel(totalDiscourses);
 										{sense.note}
 									</p>
 								)}
-								<p class="mt-2 mb-0">
-									<span class="inline-flex items-center px-2 py-0.5 text-xs rounded-full border-2 border-[color:var(--text-muted)]" style="color:var(--text-color);">
-										{sense.origin === "human" ? "Reviewed" : "From the discourses"}
-									</span>
-								</p>
+								{
+									sense.origin === "human" && (
+										<p class="mt-2 mb-0">
+											<span class="inline-flex items-center px-2 py-0.5 text-xs rounded-full border-2 border-[color:var(--text-muted)]" style="color:var(--text-color);">
+												Reviewed
+											</span>
+										</p>
+									)
+								}
 								{
 									occurrences.length > 0 && (
 										<ul class="mt-3 space-y-2 list-none pl-0">
