@@ -1,13 +1,13 @@
 ---
+title: Kisāgotamī sutta - Kisāgotamī
+description: Māra tries to unsettle Kisāgotamī with memories of lost children and worldly desire, only to be met by an unshakeable demeanor.
+qualities: collectedness, fear, sorrow, delight
+theme: inspiration, wisdom, non-attachment
 slug: sn5.3
 character:
   - Māra the Evil One
   - Bhikkhunī Kisāgotamī
-  - Bhikkhunī Māro Pāpimā Kisāgotamiyā
-source: suttacentral/bilara-data
-title: Kisāgotamīsutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 Sāvatthinidānaṁ.
