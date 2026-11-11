@@ -1,12 +1,27 @@
 ---
+title: Samaṇa sutta - The Ascetic
+description: The Buddha explains eight epithets of the Tathāgata, sharing verses on supreme attainment and liberation from bondage.
+qualities: liberation, wisdom, recollection of the Buddha
+theme: recollection of the Buddha, inspiration
 slug: an8.85
-source: suttacentral/bilara-data
-title: Samaṇasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
-“‘Samaṇo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Brāhmaṇo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Vedagū’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Bhisakko’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Nimmalo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Vimalo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Ñāṇī’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa. ‘Vimutto’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassāti.
+“‘Samaṇo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Brāhmaṇo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Vedagū’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Bhisakko’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Nimmalo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Vimalo’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Ñāṇī’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassa.
+
+‘Vimutto’ti, bhikkhave, tathāgatassetaṁ adhivacanaṁ arahato sammāsambuddhassāti.
 
 Yaṁ samaṇena pattabbaṁ,
 brāhmaṇena vusīmatā;
@@ -22,5 +37,3 @@ Sohaṁ vijitasaṅgāmo,
 mutto mocemi bandhanā;
 Nāgomhi paramadanto,
 asekho parinibbuto”ti.
-
-Pañcamaṁ.
