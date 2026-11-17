@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <!-- Dashed ungraspable seated Tathagata silhouette -->
+    <g fill="none" stroke="#c8a040" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1.6 1.4" opacity="0.88">
+      <!-- Ushnisha + head -->
+      <path d="M -1.4 -7.8 C -1.4 -9.2, 1.4 -9.2, 1.4 -7.8" stroke-width="0.8" />
+      <circle cx="0" cy="-5.2" r="2.5" stroke-width="0.9" />
+      <!-- Meditative shoulders and crossed-leg base -->
+      <path d="M -2.5 -2.6 C -5.5 -2, -7 2, -7.5 5.2 C -4 6.2, 4 6.2, 7.5 5.2 C 7 2, 5.5 -2, 2.5 -2.6" stroke-width="0.95" />
+    </g>
+    <!-- Five surrounding aggregate dots (neither inside nor apart) -->
+    <circle cx="0" cy="-10.6" r="1.1" fill="#7888a0" opacity="0.85" />
+    <circle cx="-10" cy="-2.8" r="1.1" fill="#60a088" opacity="0.85" />
+    <circle cx="10" cy="-2.8" r="1.1" fill="#c8a040" opacity="0.85" />
+    <circle cx="-7.2" cy="8.4" r="1.1" fill="#a06070" opacity="0.85" />
+    <circle cx="7.2" cy="8.4" r="1.1" fill="#90a8c0" opacity="0.85" />
+  </g>
+</svg>

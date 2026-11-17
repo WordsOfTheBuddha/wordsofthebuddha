@@ -96,7 +96,8 @@
 				"mn140",
 				"mn148",
 				"dn9",
-				"dn22"
+				"dn22",
+				"sn22.85"
 			],
 			"labels": [
 				"phenomena",
@@ -119,7 +120,8 @@
 				"mn110",
 				"mn113",
 				"mn138",
-				"mn148"
+				"mn148",
+				"sn22.85"
 			],
 			"labels": [
 				"path",
@@ -145,7 +147,8 @@
 				"mn110",
 				"mn113",
 				"mn138",
-				"mn148"
+				"mn148",
+				"sn22.85"
 			],
 			"labels": [
 				"path",
@@ -996,6 +999,7 @@
 				"mn43",
 				"mn148",
 				"dn22",
+				"sn22.85",
 				"sn46.2",
 				"an10.60"
 			],
@@ -1022,7 +1026,8 @@
 				"mn10",
 				"mn43",
 				"mn80",
-				"dn22"
+				"dn22",
+				"sn22.85"
 			],
 			"labels": [
 				"mindfulness",
@@ -1248,7 +1253,8 @@
 				"mn118",
 				"mn9",
 				"mn10",
-				"dn22"
+				"dn22",
+				"sn22.85"
 			],
 			"labels": [
 				"mindfulness",
@@ -1793,7 +1799,8 @@
 				"mn80",
 				"mn111",
 				"mn119",
-				"mn140"
+				"mn140",
+				"sn22.85"
 			],
 			"labels": [
 				"awakening",
@@ -1989,7 +1996,8 @@
 				"mn80",
 				"mn111",
 				"mn138",
-				"mn140"
+				"mn140",
+				"sn22.85"
 			],
 			"labels": [
 				"liberation"
@@ -2779,6 +2787,7 @@
 				"mn9",
 				"mn111",
 				"mn138",
+				"sn22.85",
 				"an10.60"
 			],
 			"labels": [
@@ -2822,6 +2831,7 @@
 				"mn138",
 				"mn140",
 				"dn9",
+				"sn22.85",
 				"an10.60"
 			],
 			"labels": [
@@ -3081,7 +3091,8 @@
 			],
 			"discourse": [
 				"mn6",
-				"mn110"
+				"mn110",
+				"sn22.85"
 			],
 			"labels": [
 				"community",
@@ -3659,7 +3670,10 @@
 				"line-art",
 				"aggregates"
 			],
-			"discourse": "mn43",
+			"discourse": [
+				"mn43",
+				"sn22.85"
+			],
 			"labels": [
 				"perception",
 				"phenomena"
@@ -3887,6 +3901,44 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/infant-bonds-released.svg"
+		},
+		{
+			"id": "tathagata-unapprehended",
+			"title": "Tathāgata not apprehended",
+			"description": "Dashed ungraspable seated Tathāgata silhouette surrounded by the five aggregates — saccato thetato tathāgate anupalabbhiyamāne, neither in the aggregates nor apart from them",
+			"tags": [
+				"line-art",
+				"gold",
+				"dashed",
+				"aggregates"
+			],
+			"discourse": "sn22.85",
+			"labels": [
+				"non clinging",
+				"recognition of not self",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/tathagata-unapprehended.svg"
+		},
+		{
+			"id": "treacherous-servant",
+			"title": "Simile: treacherous servant (murderer in disguise)",
+			"description": "Bowing servant offering polite service forward while concealing a sharp blade behind his back — vadhaka, the five aggregates subject to clinging as a murderer in disguise",
+			"tags": [
+				"line-art",
+				"simile",
+				"burgundy"
+			],
+			"discourse": "sn22.85",
+			"labels": [
+				"harm",
+				"recognition of unsatisfactoriness",
+				"simile",
+				"wrong view"
+			],
+			"valence": "-ve",
+			"svg": "icons/treacherous-servant.svg"
 		}
 	]
 }
