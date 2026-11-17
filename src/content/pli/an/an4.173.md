@@ -1,12 +1,13 @@
 ---
+title: Mahākoṭṭhika sutta - Mahākoṭṭhika
+description: Mahākoṭṭhika asks whether anything else remains when the six fields of contact fade and cease without remainder. Each way he puts it, Sāriputta tells him not to say so.
+qualities: mental proliferation, non-proliferation, ending, quenching
+theme: principle, inquisitiveness
 slug: an4.173
 character:
   - Venerable Sāriputta
-  - Venerable Mahākoṭṭhita
-source: suttacentral/bilara-data
-title: Mahākoṭṭhikasutta
-edition: ms
-granularity: paragraph
+  - Venerable Mahākoṭṭhika
+priority: 1.4
 ---
 
 Atha kho āyasmā mahākoṭṭhiko yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā mahākoṭṭhiko āyasmantaṁ sāriputtaṁ etadavoca:
