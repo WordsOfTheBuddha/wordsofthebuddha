@@ -1,13 +1,12 @@
 ---
+title: Nidāna sutta - Causes
+description: "The Buddha outlines six causes of kamma: unwholesome roots perpetuate to bad destinations, whereas wholesome roots foster good outcomes."
+qualities: greed, aversion, delusion, giving, loving-kindness, radical attention
+theme: wisdom
 slug: an6.39
-source: suttacentral/bilara-data
-title: Nidānasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 “Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya. Katamāni tīṇi? Lobho nidānaṁ kammānaṁ samudayāya, doso nidānaṁ kammānaṁ samudayāya, moho nidānaṁ kammānaṁ samudayāya. Na, bhikkhave, lobhā alobho samudeti; atha kho, bhikkhave, lobhā lobhova samudeti. Na, bhikkhave, dosā adoso samudeti; atha kho, bhikkhave, dosā dosova samudeti. Na, bhikkhave, mohā amoho samudeti; atha kho, bhikkhave, mohā mohova samudeti. Na, bhikkhave, lobhajena kammena dosajena kammena mohajena kammena devā paññāyanti, manussā paññāyanti, yā vā panaññāpi kāci sugatiyo. Atha kho, bhikkhave, lobhajena kammena dosajena kammena mohajena kammena nirayo paññāyati tiracchānayoni paññāyati pettivisayo paññāyati, yā vā panaññāpi kāci duggatiyo. Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāya.
 
 Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya. Katamāni tīṇi? Alobho nidānaṁ kammānaṁ samudayāya, adoso nidānaṁ kammānaṁ samudayāya, amoho nidānaṁ kammānaṁ samudayāya. Na, bhikkhave, alobhā lobho samudeti; atha kho, bhikkhave, alobhā alobhova samudeti. Na, bhikkhave, adosā doso samudeti; atha kho, bhikkhave, adosā adosova samudeti. Na, bhikkhave, amohā moho samudeti; atha kho, bhikkhave, amohā amohova samudeti. Na, bhikkhave, alobhajena kammena adosajena kammena amohajena kammena nirayo paññāyati tiracchānayoni paññāyati pettivisayo paññāyati, yā vā panaññāpi kāci duggatiyo. Atha kho, bhikkhave, alobhajena kammena adosajena kammena amohajena kammena devā paññāyanti, manussā paññāyanti, yā vā panaññāpi kāci sugatiyo. Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāyā”ti.
-
-Navamaṁ.
