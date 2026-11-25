@@ -5,6 +5,9 @@
  *
  * Collapsed: GitHub-style “Type / to search” sized to the hint.
  * Focused (or with a query): the field grows into the navbar gap.
+ *
+ * Choosing a suggestion fills the field and does not search. An Enter key
+ * then appears inside the field until the query is submitted.
  */
 import SearchIcon from "../assets/search.svg?raw";
 import "../styles/search-gateway.css";
@@ -55,6 +58,29 @@ import "../styles/search-gateway.css";
 		>
 			<Fragment set:html={SearchIcon} />
 		</div>
+		<button
+			type="submit"
+			id="nav-search-enter"
+			class="nav-search-enter"
+			hidden
+			aria-label="Search"
+			title="Search"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 16 16"
+				stroke="currentColor"
+				stroke-width="1.5"
+				aria-hidden="true"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M13 4.5v3.25A2.25 2.25 0 0 1 10.75 10H3.5m0 0 2.5-2.5M3.5 10l2.5 2.5"
+				></path>
+			</svg>
+		</button>
 	</div>
 </form>
 
@@ -128,6 +154,80 @@ import "../styles/search-gateway.css";
 		height: 1rem;
 	}
 
+	/* Author display would otherwise beat the hidden attribute. */
+	.nav-search-enter[hidden] {
+		display: none;
+	}
+
+	.nav-search.is-pending .nav-search-input {
+		padding-right: 2.4rem;
+	}
+
+	.nav-search-enter {
+		position: absolute;
+		right: 0.28rem;
+		top: 50%;
+		z-index: 2;
+		transform: translateY(-50%);
+		align-items: center;
+		justify-content: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		padding: 0;
+		border: 1px solid color-mix(in srgb, var(--primary-color) 55%, var(--surface-border));
+		border-radius: 0.3rem;
+		background: color-mix(in srgb, var(--primary-color) 16%, var(--surface-elevated));
+		color: var(--primary-color);
+		font-family: inherit;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+		line-height: 1;
+		cursor: pointer;
+		user-select: none;
+		box-shadow: 0 1px 0 color-mix(in srgb, var(--text-color) 18%, transparent);
+	}
+
+	.nav-search-enter:not([hidden]) {
+		display: inline-flex;
+		animation: nav-search-enter-in 140ms ease;
+	}
+
+	.nav-search-enter svg {
+		width: 0.85rem;
+		height: 0.85rem;
+		flex: none;
+	}
+
+	.nav-search-enter:hover {
+		background: color-mix(in srgb, var(--primary-color) 26%, var(--surface-elevated));
+	}
+
+	.nav-search-enter:active {
+		transform: translateY(calc(-50% + 1px));
+		box-shadow: none;
+	}
+
+	.nav-search-enter:focus-visible {
+		outline: 2px solid var(--primary-color);
+		outline-offset: 1px;
+	}
+
+	@keyframes nav-search-enter-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nav-search-enter:not([hidden]) {
+			animation: none;
+		}
+	}
+
 	.nav-search :global(.search-suggest-item) {
 		font-size: 0.875rem;
 	}
@@ -146,13 +246,37 @@ import "../styles/search-gateway.css";
 	const dropdown = document.getElementById("nav-search-suggestions");
 	const list = document.getElementById("nav-search-suggestions-list");
 
-	if (form && input && dropdown && list) {
+	const enter = document.getElementById("nav-search-enter") as HTMLButtonElement | null;
+
+	if (form && input && dropdown && list && enter) {
 		const syncFilled = () => {
 			form.classList.toggle("is-filled", input.value.trim().length > 0);
 		};
+		// Suggestion accept writes the value without an input event, then closes
+		// the menu. Show Enter only once a term is sitting there unsearched.
+		const syncPending = () => {
+			const pending =
+				input.value.trim().length > 0 && dropdown.classList.contains("hidden");
+			form.classList.toggle("is-pending", pending);
+			enter.hidden = !pending;
+		};
+		const schedulePending = () => {
+			queueMicrotask(syncPending);
+		};
 		syncFilled();
-		input.addEventListener("input", syncFilled);
-		input.addEventListener("change", syncFilled);
+		syncPending();
+		input.addEventListener("input", () => {
+			syncFilled();
+			schedulePending();
+		});
+		input.addEventListener("change", () => {
+			syncFilled();
+			schedulePending();
+		});
+		new MutationObserver(syncPending).observe(dropdown, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
 
 		attachSearchGateway({
 			form,
