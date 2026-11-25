@@ -1,9 +1,11 @@
 ---
+title: Nidāna sutta - Causes
+description: Healthy seeds sown in rich, watered soil inevitably sprout and mature, just like kamma born of greed, aversion, or delusion. Yet once those roots vanish, kamma becomes like seeds burned to ashes and scattered in the wind, unable to grow again.
+qualities: greed, aversion, delusion, giving, loving-kindness, radical attention
+theme: wisdom, inspiration
 slug: an3.34
-source: suttacentral/bilara-data
-title: Nidānasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
+simile: seed
 ---
 
 “Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya. Katamāni tīṇi? Lobho nidānaṁ kammānaṁ samudayāya, doso nidānaṁ kammānaṁ samudayāya, moho nidānaṁ kammānaṁ samudayāya.
