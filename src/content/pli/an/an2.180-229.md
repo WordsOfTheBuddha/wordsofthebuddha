@@ -1,7 +1,7 @@
 ---
 title: Kodhapeyyāla - Abbreviated Texts Beginning with Anger
 description: "Five pairs of unwholesome qualities and their wholesome opposites are examined across five outcomes: living in suffering or contentment, a trainee bhikkhu’s decline or non-decline, and destinations after death."
-qualities: sincerity, conscience, fear of wrongdoing, happiness, anger, resentment, contempt, feuding, jealousy, stinginess, hypocrisy, treachery, shamlessness, moral recklessness, trainee
+qualities: sincerity, conscience, fear of wrongdoing, happiness, anger, resentment, contempt, feuding, jealousy, stinginess, hypocrisy, treachery, shamelessness, moral recklessness, trainee
 theme: principle, cultivating discernment
 slug: an2.180-229
 ---
